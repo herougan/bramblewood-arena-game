@@ -7036,7 +7036,7 @@ const SONGBOOK = {
 };
 const MAP_MUSIC = {
   m1:'conquest', mq:'conquest', mf:'conquest', ml:'conquest', mh:'conquest', mo:'conquest', ms:'map_swamp', mn:'map_cave', mv:'map_sky', mi:'map_snow',
-  m2:'map_water', mj:'map_water', mp:'map_water', mb:'map_water', mc:'map_water', m7:'map_water', mk:'map_water',
+  m2:'map_water', mj:'map_water', mjd:'map_water' /* RAIDGATE */, mp:'map_water', mb:'map_water', mc:'map_water', m7:'map_water', mk:'map_water',
   m3:'map_fire', m9:'map_fire', m11:'map_fire', me:'map_fire', mx:'map_fire', m22:'map_snow', m23:'map_sand', m24:'conquest', // 2026-10-17: the ice volcano, the siege fields, the keep
   m4:'map_cave', mg:'map_cave', mu:'map_cave', mz:'map_cave',
   m5:'map_sand', md:'map_sand', mpd:'map_sand', // + the Pale Desert (2026-10-18, package PD)
@@ -9677,6 +9677,7 @@ const MAP_BATTLEFIELD_CLASS = {
   m6:'map-m6',   // Wolfsbane Tundra -- icy blue-white
   m7:'map-m7',   // Coral Current -- vivid turquoise
   mj:'map-m7',   // The Sunken Ferry (Coral Current's side map)
+  mjd:'map-mabyss', // 2026-11-19 (RAIDGATE): The Deep Dark stands on the raid's abyss ground (MAP_ART_ALIAS)
   m8:'map-m8',   // Sable Swampmire -- murky green-brown
   m9:'map-m9',   // Basalt Foundry -- dark basalt/lava
   m10:'map-m10', // Eyrie Heights -- pale alpine sky
@@ -9798,7 +9799,7 @@ function battlefieldMapClass(m){
   if(!mapId && m && m.mode !== 'tutorial'){ if(!m.bfMapId){ const ids = Object.keys(MAP_BATTLEFIELD_CLASS).filter(id=> MAP_ART_IDS.has(id) && id !== 'marena' && id !== 'mabyss'); m.bfMapId = ids.length ? ids[Math.floor(Math.random()*ids.length)] : null; } mapId = m.bfMapId; }
   const cls = (mapId && MAP_BATTLEFIELD_CLASS[mapId]) || '';
   if(!cls && m && m.mode === 'tutorial') return 'bf-tutorial'; // 2026-10-18 (owner: "Make the tutorial background a bit greener"): a fresh-green tint (CSS)
-  return cls && MAP_ART_IDS.has(mapId) ? cls + ' has-floor-art' : cls;
+  return cls && MAP_ART_IDS.has((typeof MAP_ART_ALIAS !== 'undefined' && MAP_ART_ALIAS[mapId]) || mapId) ? cls + ' has-floor-art' : cls;
 }
 // 2026-09-29, per explicit request ("change its helper text from 'Not drafted, not bought' to a
 // more ecological description"): the 🔁 spawn-only badge's tooltip used to read as a flat rules
@@ -20215,8 +20216,10 @@ const FEATURE_SPOTS = [
   // The Quest board (Map 9): from here, some conversations on the road turn into errands (mini-quests) on the Notices.
   {key:'questboard', icon:'📌', name:'Quest Board', mapNumber:8, get map(){ return mapIdAt(8); }, after:null, dialogue:'unlock_questboard', tabs:['errands'], needs:'quests' /* 2026-10-24 (package MAP, owner 13:16 #20): it opens the Notices, so it waits for them */, go:()=> openQuestsModal('errands')},
   {key:'forge', icon:'🔨', name:'The Forge', mapNumber:11, get map(){ return mapIdAt(11); }, after:null, dialogue:'unlock_forge', tabs:['forge'], go:()=>{ codexSubTab = 'forge'; switchTab('codex'); }},
-  // Map 13: Raid 1, Pack C (Highcrest Cases) and the Wandering Trader (Mystery Boosters, 5 a visit).
-  {key:'raid', icon:'🐲', name:'Raid Banner', mapNumber:13, get map(){ return mapIdAt(13); }, after:null, dialogue:'unlock_raid', tabs:['raid'], go:()=>{ playSubTab = 'raid'; switchTab('play'); }},
+  // Map 13: Pack C (Highcrest Cases) and the Wandering Trader (Mystery Boosters, 5 a visit).
+  // 2026-11-19 (package RAIDGATE, OWN-1119-1): Raid 1 opens on The Deep Dark's boss clear (raidgateOpen), its banner after that fight. mapNumber
+  // stays 13: it is the raid cards' obtain map (OBTAIN_MAP_OF.raid, tests/forge-curve) and the Admin "start of Map N" unlock; moving it is a balance call.
+  {key:'raid', icon:'🐲', name:'Raid Banner', mapNumber:13, map:'mjd', after:'10-B-4', pos:{x:82, y:34}, dialogue:'unlock_raid', tabs:['raid'], go:()=>{ playSubTab = 'raid'; switchTab('play'); }},
   {key:'shop3', icon:'🐫', name:'Gilded Caravan', mapNumber:13, get map(){ return mapIdAt(13); }, after:null, dialogue:'unlock_shop3', tabs:[], merchant:true, pack:'gold', go:()=> switchTab('shop')},
   {key:'wanderer', icon:'🧭', name:'Wanderer’s Camp', mapNumber:13, get map(){ return mapIdAt(13); }, after:null, dialogue:'unlock_wanderer', tabs:[], go:()=> switchTab('shop')},
   // The Tavern (2026-10-13, user D40: "max energy progression is upgraded in a Tavern ... Maybe Map 14 or 16 for now").
@@ -20304,6 +20307,19 @@ function activateSpot(spot){
     if(script && script.lines.some(l=> l.act || (l.options||[]).some(o=> o.act))){ playDialogue(spot.dialogue, {once:true, expand:true}); return; }
     if(spot.dialogue) playDialogue(spot.dialogue, {once:true, expand:true}); } // (PL2: the Group Dungeon spot has no conversation)
   spot.go();
+}
+// 2026-11-19 (package RAIDGATE): The Deep Dark's boss clear opens the first raid by itself (toast, its conversation); a Home note points to it
+// until the raid page is opened (dialogue flag raidgate_note)
+function raidgateOpen(tries){
+  try{
+    tries = tries | 0;
+    const sp = FEATURE_SPOTS.find(x=> x.key === 'raid'); if(!sp || featureUnlocked('raid') || !loadTutorialDone() || !spotAvailable(sp, loadConquestProgress())) return false;
+    if((typeof matchState !== 'undefined' && matchState) || packRevealBusy() || document.getElementById('deckSwapOverlay') || tutorialRewardPopPending){ if(tries < 40) setTimeout(()=> raidgateOpen(tries + 1), 1500); return false; }
+    unlockFeature('raid'); setDialogueFlag('raidgate_note', true); try{ if(SoundKit.unlock) SoundKit.unlock(); }catch(e){}
+    showToast(TX('ui.raidgate-open', {name: raidTabLabel()}), 'ok');
+    try{ playDialogue(sp.dialogue, {once:true, expand:true}); }catch(e){}
+    return true;
+  }catch(e){ return false; }
 }
 // 2026-11-03 (package FIX8, QA2 M1): the Camp opens by itself once 0-1 and 0-2 are won. It used to unlock only when the player tapped its
 // spot on Map 0, which nothing pointed at, so a player who followed the Next buttons reached Map 1 (world still hidden, no way back to
@@ -20403,6 +20419,8 @@ function fadeNewBang(el){
   if(!el) return; el.classList.remove('is-new');
   el.querySelectorAll('.map-spot-new').forEach(b=>{ b.classList.add('is-fading'); setTimeout(()=> b.remove(), 450); });
 }
+// 2026-11-19 (package RAIDGATE): a map drawn with another map's art (no art of its own): The Deep Dark wears the raid's abyss
+const MAP_ART_ALIAS = {mjd: 'mabyss'};
 function mapSpotsHTML(map, positions, progress){
   // 2026-10-08 (user: "a little higher; draw less opaque lines towards their unlocking skirmish"):
   // spots sit further above their skirmish, joined to it by a faint dashed line.
@@ -20511,7 +20529,9 @@ function rel2FirstMapHint(){
   }catch(e){}
 }
 function subMapEntrancesHTML(map, progress){
-  return CONQUEST_MAPS.filter(m=> m.sub && m.parent===map.id && m.entry && !(typeof dungeonHiddenFromPlayer === 'function' && dungeonHiddenFromPlayer(m)) /* 2026-10-23 (TU2): a hidden daily dungeon has no entrance */).map(sm=>{
+  // 2026-11-19 (package RAIDGATE): a side map's entrance is drawn on entry.host (a side map inside a side map: The Deep Dark), else on its parent;
+  // leaveSubMap, subMapExitHTML, isMapUnlocked and mapLockReason read the same (inline: tests lift those functions alone)
+  return CONQUEST_MAPS.filter(m=> m.sub && ((m.entry && m.entry.host) || m.parent)===map.id && m.entry && !(typeof dungeonHiddenFromPlayer === 'function' && dungeonHiddenFromPlayer(m)) /* 2026-10-23 (TU2): a hidden daily dungeon has no entrance */).map(sm=>{
     const open = isMapUnlocked(sm, progress), after = sm.entry.after && map.nodes.find(n=> n.key===sm.entry.after);
     const fightable = sm.nodes.filter(n=> n.kind!=='tutorial'), done = fightable.filter(n=> progress.completed.includes(conquestNodeId(sm.id, n.key))).length;
     const seen = !!loadDialogueFlags()['submap_seen:'+sm.id];
@@ -20618,7 +20638,7 @@ function subMapIris(rect, cx, cy){
 function leaveSubMap(sm, body){
   const mainEl = document.getElementById('conquestMain');
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const go = ()=>{ conquestSelectedMap = sm.parent; conquestSelectedNodeKey = null; conquestSubZoom = reduce ? null : 'out'; renderConquestSubTab(body); };
+  const go = ()=>{ conquestSelectedMap = (sm.entry && sm.entry.host) || sm.parent; conquestSelectedNodeKey = null; conquestSubZoom = reduce ? null : 'out'; renderConquestSubTab(body); };
   if(!mainEl || reduce || !mainEl.animate) return go();
   const a = mainEl.animate([{transform:'none', opacity:1}, {transform:'scale(.6)', opacity:0}], {duration:220, easing:'ease-in', fill:'forwards'});
   a.onfinish = go;
@@ -20640,7 +20660,7 @@ function subMapExitHTML(map, positions){
   // taking it also sets the flags the full map needs (see the #mapSubExit click). Was: only once the Tutorial II flag was set.
   const tut = map.id === 'mtut';
   if(tut && !tutorialPairDone()) return '';
-  const parent = CONQUEST_MAPS.find(m=> m.id === map.parent); if(!parent) return '';
+  const parent = CONQUEST_MAPS.find(m=> m.id === ((map.entry && map.entry.host) || map.parent)); if(!parent) return '';
   const idx = tut ? map.nodes.findIndex(n=> n.key === 'tutorial2') : map.nodes.findIndex(n=> n.kind !== 'tutorial'), base = positions[Math.max(0, idx)] || {x:50, y:50};
   const def = tut ? {x: Math.max(6, Math.min(94, base.x + 12)), y: Math.max(10, Math.min(90, base.y - 14))} // beside T-2, up and to its right
     : map.axis === 'x' ? {x: Math.max(1, base.x - 2.6), y: Math.max(10, Math.min(90, base.y + 24))} // a left-to-right dungeon: just behind floor 1 (2026-10-16)
@@ -21267,7 +21287,7 @@ function skirmishTargetBand(mapId, node){
   const t = skirmishTargetWinRate(mapId, node); return {t, lo: Math.max(0, t - .12), hi: Math.min(1, t + .12), role: baseKind(node.kind) || 'skirmish', curve: false};
 }
 // D33 (2026-10-12): Conquest fights are day all match, except on the night maps; a fight's own phase rule wins.
-const NIGHT_MAPS = new Set(['m4', 'mg', 'm8', 'mt', 'mj']); // Caves & Alcoves, Smugglers' Grotto, Sable Swampmire, The Pinewood Taiga
+const NIGHT_MAPS = new Set(['m4', 'mg', 'm8', 'mt', 'mj', 'mjd']); // Caves & Alcoves, Smugglers' Grotto, Sable Swampmire, The Pinewood Taiga
 // Day and night by map (2026-10-14, user: "I think Night/Day, Darkness are all natural elements depending on the map. Not brought up by
 // playing a card. Dark places, Undersea, Caves, Misty mountains don't have Night/Day"): the map decides. Out in the open the sun rises
 // and sets ('cycle': Day, then Night, 3 rounds each; Dawn draws both sides a card). Under the ground, under the sea and in the dark
@@ -21276,7 +21296,7 @@ const NIGHT_MAPS = new Set(['m4', 'mg', 'm8', 'mt', 'mj']); // Caves & Alcoves, 
 const MAP_DAYNIGHT = {
   // no day or night: caves, the deep, the dark places (their darkness, rules.dark, is unchanged)
   // 2026-10-14 (user: "Dark places, Undersea, Caves ... don't have Night/Day"): the caves and the deep had been left on Night; now off
-  m4:'off', mg:'off', mj:'off',                                // Caves & Alcoves, Smugglers' Grotto, The Sunken Depths
+  m4:'off', mg:'off', mj:'off', mjd:'off',                     // Caves & Alcoves, Smugglers' Grotto, The Sunken Depths, The Deep Dark
   m8:'night', mt:'night',                                      // out in the open but always night: Sable Swampmire, The Pinewood Taiga
   mn:'off', mi:'off', mz:'off', mx:'off',                      // The Glimmer Depths, The Ice Hollow, The Mycelium Deep, Volcano Lair (inside the mountain)
   mtut:'day',                                                  // the Tutorial: no cycle
@@ -25280,6 +25300,16 @@ const CONQUEST_MAPS = [
       { key:"10-A-4", people:"deep", kind:"elite", name:"The Undertow", icon:"🌀", shieldOverride:0, leaders:["coral-reef-shark"], deck:{"mantis-shrimp":1,"reef-shark":2,"sea-turtle-elder":1,"giant-clam":3,"riptide-eel":4} /* 2026-11-17 (REFIT2, owner 11-15 23:00 "your balance recos must be in the game too"): legal re-fit after SKN1/ARROW1/ECONSK1, in band on two fresh seed sets; docs/balance/refit2/ */ /* 2026-11-13 (SIDE2 r2 fit, SKIR1's fit on the LIST1 lists): toward the road curve (target 60), 0.5% -> 37.5% at 200 games on the road seeds; deck (was {"coral-current-eel":3,"coral-polyp-colony":3,"giant-clam":1,"krill-swarm":1,"sea-turtle-elder":4}) */ /* 2026-11-13 (SIDE2 r2): re-carded from the side map's LIST1 list (the owner's 11-13 picks), SKIR1's builder, THEME5 plan: peak strategy BPRO (family:tide), slightly down-tuned; deck (was {"coral-current-eel":1,"kraken-spawnling":4,"krill-swarm":1,"orca-vanguard":4,"sea-turtle-elder":2}) */ /* 2026-11-13 (SIDE2 fit, SKIR1's fit on the SIDE1 lists): toward the road curve (target 60), 16.5% -> 55.5% at 200 games on the road seeds; deck (was {"coral-current-eel":3,"kraken-spawnling":1,"krill-swarm":1,"orca-vanguard":3,"sea-turtle-elder":4}); Shield override 12 -> 0 */ /* 2026-11-13 (SIDE2): re-carded from the side map's SIDE1 list (11-12), SKIR1's builder, THEME5 plan: peak strategy BPRO (family:tide), slightly down-tuned; deck (was {"clownfish-scout":1,"coral-polyp-colony":4,"giant-clam":4,"moon-jelly":1,"riptide-eel":2}) */ /* 2026-11-12 (SKIR3): hagfish-silencer (off the 11-12 list), nautilus-drifter (off the 11-12 list) out, the copies to the pool's nearest by stat score {"giant-clam":4}; deck (was {"clownfish-scout":1,"coral-polyp-colony":4,"hagfish-silencer":2,"moon-jelly":1,"nautilus-drifter":2,"riptide-eel":2}) */ /* 2026-11-11 (SKIR1 repair): coral-reef-shark x1 -> {"moon-jelly":1} (on no 2026-11-11 list: out of play, BAL9 JJ24); deck (was {"clownfish-scout":1,"coral-polyp-colony":4,"coral-reef-shark":1,"hagfish-silencer":2,"nautilus-drifter":2,"riptide-eel":2}) */ /* 2026-11-11 (SKIR1): rebuilt from the map's 2026-11-11 list, THEME5 plan: peak strategy BPRO (family:tide), slightly down-tuned; deck (was {"hagfish-silencer":1,"orca-vanguard":4,"kraken-spawnling":4,"nudibranch":2,"coral-reef-shark":1}) */ /* 2026-11-06 (BAL19): retuned toward the road curve after CONTENT12's fold (target 60), 51% -> 55% at 200 games; leader hagfish-silencer -> coral-reef-shark */ /* 2026-11-06 (BAL19): retuned toward the road curve after CONTENT12's fold (target 60), 13.5% -> 51% at 200 games; deck (was {"mangrove-manatee":1,"hagfish-silencer":3,"orca-vanguard":4,"kraken-spawnling":4}) */ /* 2026-11-05 (BAL16): retuned toward the road curve from the fight's own list (the weak pass), 2.5% -> 15% at 40 tune games, target 60 */ /* 2026-11-05 (BAL16): off-list abyss-lantern-squid x1, glass-octopus x1 rebuilt from the fight's list */ /* 2026-11-02 (BAL10): road retune toward the road curve (round 1), swaps only, 10% -> 12% at 40-50 tune games, target 60 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct; checked by tools/bal9/road_fix_2026_11_02.js: list, K14) */ /* 2026-11-02 (BAL9, JJ24): cut cards voltaic-eel, sea-cucumber swapped for the list's nearest (Lumber, Wait, 2A+H) */ /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 4 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-24 (BAL3, BAL2-1 owner 12:02 "use our agreed philosophy and schedule"): LEAD's Enemy level 3 dropped, the level schedule decides */, rules:{"highTide":true,"crushingDepths":true}, flavor:"The current through the hull pulls at everything, and lightning crawls along the eels.", requires:["10-A-3"] }, /* 2026-11-15 (BALREL1, owner 23:00 "Apply them": SIDE3-1 a): retuned toward the road curve; measured in docs/balance/allfix/ */
       { key:"10-A-5", brambleHealth:13, people:"deep", kind:"boss", name:"The Ferry's Last Passenger", icon:"🐙", shieldOverride:0, showcase:"hagfish-silencer" /* 2026-11-11 (SKIR1): its Auto showcase leader, pinned */, deck:{"blue-ringed-octopus":3,"mantis-shrimp":2,"sea-turtle-elder":4,"coral-current-eel":3,"giant-clam":4} /* 2026-11-16 (REFIT1, owner 11-15 23:00 "your balance recos must be in the game too"): legal re-fit to the folded cards (FOLD5); docs/balance/refit1/ */ /* 2026-11-13 (SIDE2 r2 fit, SKIR1's fit on the LIST1 lists): toward the road curve (target 40), 14.5% -> 23.5% at 200 games on the road seeds; deck (was {"blue-ringed-octopus":3,"coral-current-eel":2,"mantis-shrimp":3,"moon-jelly":3,"reef-shark":3,"sea-turtle-elder":2}) */ /* WHATIF1 scratch (carried x2): its deck scaled and refilled */ /* 2026-11-13 (SIDE2): the SK deck could not be eased into the band inside the list's rules (1% at 200 games, target 40); the builder's blend reads 16.5% and stays; deck (was {"blue-ringed-octopus":3,"coral-current-eel":3,"coral-polyp-colony":4,"giant-clam":2,"krill-swarm":4,"sea-turtle-elder":4}) */ /* 2026-11-13 (SIDE2 r2 SK anchor, owner 11-12 23:50; LIST1 lists): the map's hardest fight takes its BPRO-1 (10-A-BPRO-1, family:tide) scaled to the fight; Map reference 0.5% at 200 games (target 40): too hard, eased next by the fit; deck (was {"blue-ringed-octopus":3,"coral-current-eel":3,"mantis-shrimp":3,"moon-jelly":4,"reef-shark":4,"sea-turtle-elder":3}) */ /* 2026-11-13 (SIDE2 r2): re-carded from the side map's LIST1 list (the owner's 11-13 picks), SKIR1's builder, THEME5 plan: a blend of the list's cards (boss / ender; leader kept); deck (was {"blue-ringed-octopus":3,"coral-current-eel":3,"giant-clam":4,"moon-jelly":3,"orca-vanguard":2,"reef-shark":3,"sea-turtle-elder":2}) */ /* 2026-11-13 (SIDE2): the SK deck could not be eased into the band inside the list's rules (3% at 200 games, target 40); the builder's blend reads 5.5% and stays; deck (was {"blue-ringed-octopus":3,"coral-current-eel":3,"giant-clam":2,"krill-swarm":2,"moon-jelly":2,"orca-vanguard":4,"sea-turtle-elder":4}) */ /* 2026-11-13 (SIDE2 fit, SKIR1's fit on the SIDE1 lists): toward the road curve (target 40), 1.5% -> 4% at 200 games on the road seeds; deck (was {"blue-ringed-octopus":3,"coral-current-eel":3,"giant-clam":2,"krill-swarm":4,"orca-vanguard":4,"sea-turtle-elder":4}) */ /* 2026-11-13 (SIDE2 SK anchor, owner 11-12 23:50): the map's hardest fight takes its BPRO-1 (10-A-BPRO-1, family:tide) scaled to the fight; Map reference 2% at 200 games (target 40): too hard, eased next by the fit; deck (was {"blue-ringed-octopus":3,"coral-current-eel":3,"giant-clam":4,"moon-jelly":3,"orca-vanguard":2,"reef-shark":3,"sea-turtle-elder":2}) */ /* 2026-11-13 (SIDE2): re-carded from the side map's SIDE1 list (11-12), SKIR1's builder, THEME5 plan: a blend of the list's cards (boss / ender; leader kept); deck (was {"abyss-lantern-squid":2,"blue-ringed-octopus":3,"humpback-elder":4,"moon-jelly":4,"orca-vanguard":4,"riptide-eel":3}) */ /* 2026-11-12 (SKIR3 fit): toward the road curve (target 40), 7% -> 10.5% at 200 games on the road seeds; deck (was {"abyss-lantern-squid":4,"blue-ringed-octopus":3,"humpback-elder":4,"moon-jelly":4,"orca-vanguard":4,"riptide-eel":1}) */ /* 2026-11-12 (SKIR3): barnacle-fortress (off the 11-12 list), hagfish-silencer (off the 11-12 list) out, the copies to the pool's nearest by stat score {"abyss-lantern-squid":2,"moon-jelly":2,"riptide-eel":1}; deck (was {"abyss-lantern-squid":2,"barnacle-fortress":4,"blue-ringed-octopus":3,"hagfish-silencer":1,"humpback-elder":4,"moon-jelly":2,"orca-vanguard":4}) */ /* 2026-11-11 (SKIR1 fit): toward the road curve (target 40), 3% -> 20.5% at 200 games on the road seeds; deck (was {"abyss-lantern-squid":4,"barnacle-fortress":2,"blue-ringed-octopus":3,"giant-clam":4,"hagfish-silencer":3,"humpback-elder":4}); Shield override 2 -> 0 */ /* 2026-11-11 (SKIR1): rebuilt from the map's 2026-11-11 list, THEME5 plan: a blend of the list's cards (boss / ender; leader kept); deck (was {"blue-ringed-octopus":3,"hagfish-silencer":2,"kraken-spawnling":5,"orca-vanguard":5,"coral-reef-shark":4,"riptide-eel":1}) */ /* 2026-11-07 (BAL21): retuned toward the road curve after ENG27 / ENG28 (target 40), 33.5% -> 39% at 200 games; deck (was {"blue-ringed-octopus":3,"hagfish-silencer":3,"kraken-spawnling":5,"orca-vanguard":5,"coral-reef-shark":4}) */ /* 2026-11-06 (BAL19): retuned toward the road curve after CONTENT12's fold (target 40), 31.5% -> 33.5% at 200 games; Shield override 8 -> 2 */ /* 2026-11-06 (BAL19): retuned toward the road curve after CONTENT12's fold (target 40), 9.5% -> 31.5% at 200 games; Shield override rule 33 -> 8 */ /* 2026-11-05 (BAL16): retuned toward the road curve from the fight's own list (the weak pass), 10% -> 17.5% at 40 tune games, target 40 */ /* 2026-11-05 (BAL16): off-list vampire-squid x2 rebuilt from the fight's list */ /* 2026-11-02 (BAL11, owner on BAL10-6): enemy deck rebuilt weaker from the fight's own list toward its road target, 0% -> 25% at 40 tune games, target 40 (tools/skirmish_pass.js weak: rebuilt from the fight's own list, no Baby card, leaders / first-clear cards / size kept; checked by tools/bal9/road_fix_2026_11_02.js: list, K14) */ /* 2026-11-02 (BAL9, JJ24): cut card sulfur-vent-crab swapped for the list's nearest (Lumber, Wait, 2A+H) */ /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 3 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-24 (BAL3, BAL2-1 owner 12:02 "use our agreed philosophy and schedule"): LEAD's Enemy level 3 dropped, the level schedule decides */, rules:{"highTide":true,"crushingDepths":true}, flavor:"Something rode the ferry all the way down, and it has been waiting for the next stop.", requires:["10-A-4"] }, /* 2026-11-15 (BALREL1, owner 23:00 "Apply them": SIDE2-4 e): retuned toward the road curve; measured in docs/balance/allfix/ */
     ]},
+  // 2026-11-19 (package RAIDGATE, owner 00:02, decision OWN-1119-1): The Deep Dark, a side map inside The Sunken Depths (entry.host: its
+  // entrance is drawn there and leads back there; its data and codes stay Map 10's, 10-B-n). Opens after Map 21; fights count as Map 21
+  // (shieldMap), Pitch Black and Tide on every fight. Its boss clear opens the first raid (FEATURE_SPOTS 'raid', raidgateOpen).
+  { id:"mjd", sub:true, parent:"m7", shieldMap:21, entry:{host:"mj", x:22, y:82, afterMapCleared:"m21", label:"A light far below"}, name:"The Deep Dark", icon:"🦑", blurb:"Below the wreck the reef wall drops away into black water. Something down there is big enough to hold the whole river mouth.", sequential:true,
+    nodes: [
+      { key:"10-B-1", people:"deep", kind:"skirmish", name:"The Last Lantern", icon:"🏮", rules:{dark:"pitch", crushingDepths:true, tide:true}, deck:{"giant-clam":4,"sea-turtle-elder":4,"dolphin-knight":3,"blind-cave-fish":1,"electric-ray":1,"pincushion-urchin":1} },
+      { key:"10-B-2", people:"deep", kind:"skirmish", name:"The Crushing Dark", icon:"🫧", rules:{dark:"pitch", crushingDepths:true, tide:true}, deck:{"orca-vanguard":4,"riptide-eel":4,"crown-of-thorns-star":4,"horseshoe-crab":1,"old-sturgeon":1} },
+      { key:"10-B-3", people:"deep", kind:"elite", name:"The Ink Wall", icon:"🌑", rules:{dark:"pitch", crushingDepths:true, highTide:true}, deck:{"reef-shark":4,"coral-current-eel":3,"sea-turtle-elder":4,"giant-clam":4,"electric-ray":1} },
+      { key:"10-B-4", people:"deep", kind:"boss", name:"The Goliath's Shadow", icon:"🐙", rules:{dark:"pitch", crushingDepths:true, highTide:true}, deck:{"orca-vanguard":4,"mantis-shrimp":3,"reef-shark":4,"crown-of-thorns-star":4,"blind-cave-fish":1} },
+    ]},
   // 2026-10-21 (package RP, owner Oct 21: "Submaps should also only be unlocked quite late in the game. Maybe like smuggler's groto after Map 7"): opens once Map 7 is cleared (afterMapCleared "mu"); its fights count as Map 7 (shieldMap), as Lilypad Reach does. docs/balance/rewards-pass-2026-10-21.md
   { id:"mg", sub:true, parent:"mb", shieldMap:7, entry:{x:86, y:24, after:"2-2", afterMapCleared:"mu", label:"A sea cave"}, name:"Smugglers' Grotto", icon:"🕳️", blurb:"A sea cave under Pebble Beach. Whatever the smugglers left down here, something else has moved in.", sequential:true,
     nodes: [
@@ -26201,7 +26231,7 @@ const MAP_BIOMES = {
   castle:  {trees:['🏰','🗼','🏰'], small:['🪨','🛡️','⚔️','🪙','🌿','🚩'], mover:{emoji:'🕊️', kind:'bird', n:2}},
 };
 // 2026-10-15: m1 is 'meadow' and mf 'forest' now, following their swapped art ("I think the wetter one makes sense for the next map").
-const MAP_BIOME_OF = {mm:'swamp', mj:'reef', mx:'ash', me:'ash', ms:'swamp', mn:'cave', mv:'alpine', mi:'tundra', mo:'forest', mq:'meadow', mf:'forest', mb:'beach', mg:'cave', mu:'forest', mp:'water', mc:'alpine', mw:'swamp', mk:'reef', mh:'meadow', mr:'forest', ml:'meadow', mt:'tundra', md:'savanna', my:'forest', m1:'meadow', m2:'water', m3:'ash', m4:'cave', m5:'savanna', m6:'tundra', m7:'reef', m8:'swamp', m9:'forge', m10:'alpine', m11:'ash', m21:'alpine', m22:'frostfire', m23:'warfield', m24:'castle', mpd:'paledesert' /* 2026-10-18, package PD */, mtut:'meadow', m12:'forest', m13:'savanna', m14:'ash'};
+const MAP_BIOME_OF = {mm:'swamp', mj:'reef', mjd:'reef' /* RAIDGATE */, mx:'ash', me:'ash', ms:'swamp', mn:'cave', mv:'alpine', mi:'tundra', mo:'forest', mq:'meadow', mf:'forest', mb:'beach', mg:'cave', mu:'forest', mp:'water', mc:'alpine', mw:'swamp', mk:'reef', mh:'meadow', mr:'forest', ml:'meadow', mt:'tundra', md:'savanna', my:'forest', m1:'meadow', m2:'water', m3:'ash', m4:'cave', m5:'savanna', m6:'tundra', m7:'reef', m8:'swamp', m9:'forge', m10:'alpine', m11:'ash', m21:'alpine', m22:'frostfire', m23:'warfield', m24:'castle', mpd:'paledesert' /* 2026-10-18, package PD */, mtut:'meadow', m12:'forest', m13:'savanna', m14:'ash'};
 function distToSeg(px,py, ax,ay, bx,by){ const dx=bx-ax, dy=by-ay; const L=dx*dx+dy*dy||1; let t=((px-ax)*dx+(py-ay)*dy)/L; t=Math.max(0,Math.min(1,t)); const x=ax+t*dx, y=ay+t*dy; return Math.hypot(px-x, py-y); }
 function generatedMapDecor(map, positions){
   const biome = MAP_BIOMES[MAP_BIOME_OF[map.id]] || MAP_BIOMES.forest;
@@ -26553,7 +26583,7 @@ function isMapUnlocked(map, progress){
   if(map.sub){
     // a side map you already fought on stays open (2026-10-11: the Ashen Peak moved under the Tundra)
     if(map.nodes.some(n=> progress.completed.includes(conquestNodeId(map.id, n.key)))) return true;
-    const parent = CONQUEST_MAPS.find(m=> m.id===map.parent);
+    const parent = CONQUEST_MAPS.find(m=> m.id===((map.entry && map.entry.host) || map.parent)); // the map its entrance is on (RAIDGATE: entry.host)
     if(!parent || !isMapUnlocked(parent, progress)) return false;
     // Late arrivals (2026-10-12, user: "optional dungeons that appear as you progress (e.g. 5 days after map 15 is complete,
     // or when a quest is completed)"): entry.afterDays waits that many days after `after` was first cleared; entry.quest
@@ -26583,7 +26613,7 @@ function mapLockReason(map, progress){
   try{
     if(map.reserved) return TX('ui.pg-lock-soon', {map: map.name});
     if(map.sub){
-      const parent = CONQUEST_MAPS.find(m=> m.id === map.parent);
+      const parent = CONQUEST_MAPS.find(m=> m.id === ((map.entry && map.entry.host) || map.parent));
       if(parent && !isMapUnlocked(parent, progress)) return TX('ui.pg-lock-parent', {map: map.name, parent: nm(parent)});
       if(map.entry && map.entry.quest && !loadDialogueFlags()['quest_done:' + map.entry.quest]) return TX('ui.pg-lock-quest', {map: map.name});
       if(map.entry && map.entry.afterMapCleared && !conquestMapCleared(map.entry.afterMapCleared)){ const g = CONQUEST_MAPS.find(m=> m.id === map.entry.afterMapCleared); if(g) return TX('ui.pg-lock-clear-map', {map: map.name, other: nm(g)}); }
@@ -29559,6 +29589,7 @@ function renderConquestSubTab(body){
     if(nx && isMapUnlocked(nx, loadConquestProgress())){ conquestSelectedMap = nx.id; conquestSelectedNodeKey = null; conquestWorldView = false; } }
   setTimeout(maybeOfferDeckSwap, 600);
   setTimeout(fix8AutoCamp, 900); // 2026-11-03 (FIX8, QA2 M1)
+  setTimeout(raidgateOpen, 1000); // 2026-11-19 (RAIDGATE)
   grantClearedBossLeaders();
   // 2026-10-08 (user: "Conquest - we talked about making it full screen"): the map always fills the
   // whole window now (the ⛶ button still switches the browser itself to full screen).
@@ -29648,7 +29679,7 @@ function renderConquestSubTab(body){
   // bounded, themed Conquest panel. Individual .conquest-map-item pills keep their own opaque
   // surface so they stay legible sitting on top of the gradient.
   const layoutEl = document.getElementById('conquestLayout');
-  if(layoutEl) layoutEl.className = `conquest-layout map-theme-${map.id}${MAP_ART_IDS.has(map.id) ? ' has-map-art' : ''}`;
+  if(layoutEl){ const art = MAP_ART_ALIAS[map.id]; layoutEl.className = `conquest-layout map-theme-${map.id}${art ? ' map-theme-' + art : ''}${MAP_ART_IDS.has(art || map.id) ? ' has-map-art' : ''}`; } // RAIDGATE: + the borrowed art's theme
   if(conquestWorldView){ if(layoutEl) layoutEl.className = 'conquest-layout is-world'; renderConquestWorld(mainEl, body, progress); return; }
   if(!isMapUnlocked(map, progress) && !(adminModeEnabled && map.endless) && !(adminModeEnabled && pl2ProNodeOn(map, conquestSelectedNodeKey))){ // admins may open a locked dungeon or the Tower (2026-10-16); or a map to look at its PRO fight (PL2, 2026-10-25)
     // 2026-10-23 (package PG, owner item 13): no way should land you here any more (signposts check first), but if one does, the notice
@@ -32151,6 +32182,7 @@ function recordRaidAttempt(def, partId, cycle, dealt, overwhelmed, rank){
     myTotal: Math.round((after.contributors || {})[myGhostOwnerId()] || 0)}; // 2026-10-21 (package RK): your total in this life, for the total raid rank
 }
 function renderRaidSubTab(body){
+  try{ if(loadDialogueFlags()['raidgate_note']) setDialogueFlag('raidgate_note', false); }catch(e){} // 2026-11-19 (RAIDGATE): the Home note has done its job
   // Shares the Conquest map's full-width treatment (see renderConquestSubTab's own comment) —
   // the Raid tab is the other permanent home for these same map nodes (a beaten Raid Boss
   // replayed here), so it gets the same ~99%-width canvas rather than snapping back to the
@@ -59190,6 +59222,7 @@ function renderHome(){
         ${tabOpen('quests') ? `<button type="button" class="home-note note-quests" id="homeQuestsBtn" title="Notices"><i class="pin" aria-hidden="true">📌</i><b>📌 Notices</b><small>${qn ? `${qn} to claim!` : 'Dailies &amp; quests'}</small></button>` : ''}
         ${tabOpen('deck') ? (()=>{ try{ const ctx = achievementContext(); const ready = ACHIEVEMENT_DEFS.filter(d=>{ const st = achievementStatus(d, ctx); return st.claimable && !st.claimed; }).length; const got = ACHIEVEMENT_DEFS.filter(d=> myClaimedAchievements.has(d.id)).length;
           return `<button type="button" class="home-note note-achv" data-hometab="achievements" title="Achievements"><i class="pin" aria-hidden="true">📌</i><b>🏆 Achievements</b><small>${ready ? `${ready} ready to claim!` : `${got}/${ACHIEVEMENT_DEFS.length} claimed`}</small>${ready ? `<span class="home-badge">${ready}</span>` : ''}</button>`; }catch(e){ return ''; } })() : ''}
+        ${raidHome && loadDialogueFlags()['raidgate_note'] ? `<button type="button" class="home-note note-murgle" id="homeRaidgateBtn"><i class="pin" aria-hidden="true">📌</i><b>🐲 ${escapeHtml(raidTabLabel())}</b><small>${escapeHtml(TX('ui.raidgate-note'))}</small></button>` : '' /* 2026-11-19 (RAIDGATE) */}
         ${rel2MurgleOpen() ? `<button type="button" class="home-note note-murgle" id="homeMurgleBtn" title="Murgle Mayhem"><i class="pin" aria-hidden="true">📌</i><b>🐸 Murgle Mayhem</b><small>${escapeHtml(TX('ui.rel2-murgle-keys', {n: dungeonTicketsLeft()}))}</small></button>` : ''}
         ${featureUnlocked('tavern') ? (()=>{ try{ settleWeeklyBeer(); }catch(e){} const beer = myCurrencies.beer||0; return `<button type="button" class="home-note note-tavern" data-hometab="tavern" title="The Tavern: recruit cards, raise your max Energy"><i class="pin" aria-hidden="true">📌</i><b>🍺 The Tavern</b><small>${beer ? `${beer} Beer · Recruit` : 'Recruit · Stamina'}</small></button>`; })() : ''}
         ${community.length ? `<div class="home-community-wrap home-note-wrap"><button type="button" class="home-note note-community" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><i class="pin" aria-hidden="true">📌</i><b>👥 Community</b><small>${community.map(t=> _t(({ranking:'Ranking', friends:'Friends', guild:'Guild'})[t])).join(' · ') /* 2026-11-16 (package UX4): each word through the pack */}</small></button>
@@ -59203,8 +59236,10 @@ function renderHome(){
   root.querySelectorAll('[data-hometab]').forEach(b=> b.addEventListener('click', ()=>{ const t = b.getAttribute('data-hometab');
     if(t === 'play' && b.dataset.fix8map && !matchState){ try{ const pm = CONQUEST_MAPS.find(x=> x.id === b.dataset.fix8map); if(pm && isMapUnlocked(pm, loadConquestProgress()) && !(typeof dungeonHiddenFromPlayer === 'function' && dungeonHiddenFromPlayer(pm))){ conquestSelectedMap = pm.id; conquestSelectedNodeKey = null; playSubTab = 'conquest'; } }catch(e){} } // 2026-11-03 (FIX8, QA2 minor 9): "Play - Next: X" opens the map X is on
     if(t === 'tavern') openTavern(); else homeGo(t); }));
+  { const rg = document.getElementById('homeRaidgateBtn'); if(rg) rg.addEventListener('click', ()=> homeGo('play', 'raid')); } // 2026-11-19 (RAIDGATE)
   { const mb = document.getElementById('homeMurgleBtn'); if(mb) mb.addEventListener('click', ()=>{ conquestSelectedMap = 'm8'; conquestSelectedNodeKey = null; playSubTab = 'conquest'; switchTab('play'); }); } // 2026-11-19 (REL2): Murgle's entrance is on Map 6
   setTimeout(()=>{ try{ if(currentTab === 'home') rel2TellMurgle(); }catch(e){} }, 1200);
+  setTimeout(()=>{ try{ if(currentTab === 'home' && raidgateOpen()) renderHome(); }catch(e){} }, 1300); // 2026-11-19 (RAIDGATE)
   const rj = document.getElementById('homeRejoinBtn'); if(rj) rj.addEventListener('click', ()=>{ if(!resumeAbandonedMatchNow()) renderHome(); });
   const questsBtn = document.getElementById('homeQuestsBtn'); if(questsBtn){ questsBtn.addEventListener('click', openQuestsModal); refreshQuestBadge(); }
   const cb = document.getElementById('homeCommunityBtn');

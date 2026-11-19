@@ -243,6 +243,7 @@ Canonical: `canonical/map-pools.json` (card pools), the maps in `arena_app.js`, 
 - **Tutorial fights are T-1 to T-5;** tutorial brambles keep 9 and 11 Health, and the editor's value becomes the one used. [TU-1, TU2-3]
 - **Field effects that hand out units act per player:** Mirage gives each player (co-op seat, raid ally, each side) its own Illusion a round. **Built (ENG14, 2026-10-30).** [owner X10]
 - **Raid bosses sit near 20% win rate** and are rebalanced from where players unlock the raid. [RW2-4; tuning guide section 10]
+- **The first raid opens after Map 21** (owner 2026-11-19 00:02): The Deep Dark, a side map inside The Sunken Depths (Map 10's side map), opens once Map 21 is cleared; 4 fights at Map 21 strength; its boss clear opens the Goliath (toast, Home note). Was: the Raid Banner on Map 13. A player who already opened the raid keeps it. The raid cards' obtain map stays 13 for now (balance call). **Built (RAIDGATE, 2026-11-19).** [OWN-1119-1, default a, asked]
 
 - **Heavy and cross winds:** a Heavy Headwind is -2 Attack with the Flyers' active skills twice; a Heavy Tailwind is Quick + one Fast Forward; a Crosswind gives every Flyer on both sides +0/2 for the round (Heavy +0/5), no back or face. Only from Map 30 (a strong gust 1 in 4 heavy, 15% across); no windy map is that far yet. The calm wind pill shows still air. **Built (ENG20, 2026-11-02).** [owner 2026-11-02 22:44; owner 22:49; ENG20-4]
 

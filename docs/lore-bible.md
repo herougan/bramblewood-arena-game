@@ -116,6 +116,7 @@ Only a handful of creatures live in true societies: **ants, bees, termites and o
 ### Fish and other water folk
 - **Most fish** don't speak much and are tamed by the Otters as companions.
 - **The deep things** (kraken, cuttlefish, whales) are old, strange and independent. Raid bosses live here.
+- **The Deep Dark** (2026-11-19, package RAIDGATE): below The Sunken Depths the reef wall drops into black water, where the otters' last lantern still burns. Its four fights (The Last Lantern, The Crushing Dark, The Ink Wall, The Goliath's Shadow) are the deep's own people guarding the way down; past them lies the Goliath, the first raid.
 
 ### Subfactions to grow into (sketch, 2026-10-12)
 You said we'll build these out as we go. These are starting points to react to; nothing here is decided.
