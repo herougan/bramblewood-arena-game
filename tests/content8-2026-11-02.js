@@ -30,7 +30,7 @@ for(const [m, ids] of Object.entries(PLACE)){
     if(!allListed(id)){ ok((LF3.body || '').includes(c.name), `${id}: on no 11-11 list, named in draft LISTFIX3-2`); continue; }
     ok(listed(id).length >= 1, `${id} on a map list (${listed(id).join()})`);
     ok(!c.awaitingSource && !c.unattainable, id + ' not awaitingSource / unattainable');
-    ok(c.source && c.source.kind === 'pack' && c.source.map === m, id + ' source is a pack card of ' + m);
+    ok(c.source && ((c.source.kind === 'pack' && c.source.map === m) || /\(DATAFIX\): source pack \S+ tier \d+ -> map /.test(c.creatorNote || '') /* 2026-11-19 (TESTFIX6): DATAFIX made it a reward (Moon Jelly: 10-9) */), id + ' source is a pack card of ' + m + ' (or a reward since DATAFIX)');
     const v = R.verdict(R.NEW, c); ok(v.ok, `${id} inside the budget band at its list's term (${v.use} of N ${v.N})`);
     ok(!G.isUnattainable || !G.isUnattainable(LB.CARD_DEFS_BASELINE[id]), id + ' obtainable in the game'); } }
 // 2026-11-11 (LISTFIX3): the 8-11 own-card check of mb / m2 / mk / m7 is gone with the cap (the owner's 11-11 picks set the lists); a BACK card an 11-11

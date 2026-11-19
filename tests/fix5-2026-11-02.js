@@ -17,7 +17,8 @@ const defs = H.loadCardDefs();
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
 
 // ---- 1. engine: a deciding round keeps the survivors' bonuses
-[['soldier-ant', 'soldier-ant', 'soldier-ant'], ['dhole-runner', 'dhole-runner', 'soldier-ant'], ['rivergate-tribune', 'rivergate-tribune', 'soldier-ant']].forEach((ids, k)=>{
+// 2026-11-19 (TESTFIX6): FOLD7 took Soldier Ant's Swarm (the owner's 11-18 edit); Tunnel Ant (Swarm Ants) stands in
+[['tunnel-ant', 'tunnel-ant', 'tunnel-ant'], ['dhole-runner', 'dhole-runner', 'tunnel-ant'], ['rivergate-tribune', 'rivergate-tribune', 'tunnel-ant']].forEach((ids, k)=>{
   ids.forEach(id=> ok(!!defs[id], `card ${id} exists`));
   for(const seed of [1, 2, 3]){
     const e = E.makeSimEngine(defs, E.mulberry32(seed + 10 * k), {recordEvents:true, battleMode:'open'});
@@ -32,7 +33,7 @@ const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
     ok(units.length === ids.length, `[${ids} seed ${seed}] every unit still on the board (${units.length})`);
     const swarmAfter = units.map(c=> e.swarmBonusOf(P, c));
     ok(JSON.stringify(swarmAfter) === JSON.stringify(swarmBefore), `[${ids} seed ${seed}] Swarm bonus kept after the win ${swarmBefore} -> ${swarmAfter}`);
-    if(ids[0] === 'soldier-ant') ok(swarmAfter.every(n=> n > 0), `[${ids} seed ${seed}] each ant still counts its allies (${swarmAfter})`);
+    if(ids[0] === 'tunnel-ant') ok(swarmAfter.every(n=> n > 0), `[${ids} seed ${seed}] each ant still counts its allies (${swarmAfter})`);
     if(ids[0] === 'dhole-runner') ok(units.filter(c=> c.defId === 'dhole-runner').every(c=> (c.packBonus || 0) > 0 || (c.packChainBonus || 0) > 0), `[${ids} seed ${seed}] the Pack chain bonus is kept (${units.map(c=> c.packBonus + '/' + c.packChainBonus)})`);
   }
 });
