@@ -9,7 +9,7 @@
 //      (25 / +15 / +10 received, Rare not before Map 14, Very Rare not before Map 25) are constants and hold in factionTrackPick; the
 //      lowest rarity almost always first; plain first on Maps 0-1; the hand-out hooks are wired; the sim walks the road and the Rare
 //      gate opens at Map 14 with the count passing 40 in Maps 12-14, the Very Rare at Map 25;
-//   4. plain (no-skill) rewards on Maps 0-1, Map 1's one Lumber card; no keyword-teaching extra card there;
+//   4. no keyword-teaching extra card on Maps 0-1 (the plain-reward and one-Lumber-card pins retired 2026-11-19, DATAFIX-2 a);
 //   5. the gates: no Devilry card obtainable before Map 66, no Ecclesia before 77, no Evomax before 30;
 //   6. side maps: one unique reward at most (its boss's), the gates (Smugglers' Grotto after Map 7, every side map off Maps 0-19 opening
 //      at least four maps after its parent, its fights counting as the gate map);
@@ -104,16 +104,11 @@ for(const side of ['otters', 'hummingbirds']){ const r = S.simulate({side});
   ok(r.log.every(x=> !x.id || x.map >= Gt[x.rarity].map), `3. the sim (${side}): no card before its rarity's map`);
   ok(!r.log.filter(x=> x.map <= 20).some(x=> !x.id), `3. the sim (${side}): no hand-out comes back empty through Map 20 (the pool has the copies)`); }
 
-// ---- 4. plain rewards at the start
+// ---- 4. the start
+// 2026-11-19 (DEC20-SKILLS, owner DATAFIX-2 a: "Keep the lists' cards, retire the plain rule"): the Map 0-1 rewards are the lists' cards (4 slots,
+// with skills); the pins of 8 plain rewards, Map 1's one Lumber card and a card from every Map 0-1 fight are retired.
 const startMaps = MAPS.filter(m=> !m.reserved && (m.sub ? mapNo(m.parent) <= 1 && !(m.entry && m.entry.afterMapCleared && mapNo(m.entry.afterMapCleared) >= 2) : mapNo(m.id) <= 1));
-const LUMBER = new Set(['lumberjack', 'milling', 'harvest']);
-const early = live.filter(c=> c.source && c.source.kind === 'map' && startMaps.some(m=> m.id === c.source.id));
 ok(startMaps.some(m=> m.id === 'm1') && startMaps.some(m=> m.id === 'mf') && !startMaps.some(m=> m.id === 'mq'), `4. the start: ${startMaps.map(m=> m.id)} (Clovermead opens after Map 5 now)`);
-const skilled = early.filter(c=> Object.keys(c.effects || {}).length && !(R.PLAIN_LUMBER_OK.has(c.id) && Object.keys(c.effects).every(k=> LUMBER.has(k))));
-ok(early.length >= 8 && !skilled.length, `4. every Map 0-1 reward is plain, but the one Lumber card (${early.length} rewards): ` + skilled.map(c=> c.id + ' ' + Object.keys(c.effects)).join('; '));
-const lumber = early.filter(c=> Object.keys(c.effects || {}).some(k=> LUMBER.has(k)));
-ok(lumber.length === 1 && lumber[0].source.id === 'mf', `4. Map 1 introduces Lumber with one card (${lumber.map(c=> c.id + ' ' + c.source.node)})`);
-ok(mains.slice(0, 2).every(m=> m.nodes.filter(x=> x.kind !== 'tutorial').every(x=> early.some(c=> c.source.id === m.id && c.source.node === x.key))), '4. every Map 0-1 fight still gives a card');
 ok(/if\(typeof PLAIN_REWARDS_UPTO_MAP === 'number' && PLAIN_REWARDS_UPTO_MAP >= 1\) return null;/.test(fnSrc('teachingCardPick')), '4. no keyword-teaching extra card on Maps 0-1 wins');
 ok(!defs['meadow-frog'].source && defs['meadow-frog'].basic, '4. the Meadow Frog is a Base card only (it was Base and a 1-1 reward)');
 

@@ -89,7 +89,7 @@ const hitOn = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid)
 { const {e, P} = mk(); put(e, P, 1, 'gi-brittle'); const t = put(e, P, 2, 'gi-wall'); const ev = fight(e, P);
   ok(t.brittle === 2 && ev.some(x=> x.kind === 'brittle' && x.targetUid === t.uid), `Brittle 2: its hit makes the target Brittle for 2 (${t.brittle})`); }
 { const {e, P} = mk(); put(e, P, 1, 'gi-shatter'); const t = put(e, P, 2, 'gi-wall'); t.brittle = 1; const ev = fight(e, P);
-  ok(hitOn(ev, t.uid) === 5, `Shatter 3 on a Brittle unit: counts as Frozen, 2 + 3 (${hitOn(ev, t.uid)})`); }
+  ok(hitOn(ev, t.uid) === 4, `Shatter 3 on an Embrittled unit: no Shatter bonus, Fragile's x2: 2 x 2 (${hitOn(ev, t.uid)})`); } // 2026-11-19 (DEC20-SKILLS, SKN1-13): was 2 + 3, Frozen for Shatter
 { const {e, P} = mk(); put(e, P, 1, 'gi-wall'); const t = put(e, P, 2, 'gi-hit3'); t.brittle = 1; const ev = fight(e, P, 2);
   ok(ev.some(x=> x.type === 'hit' && x.attUid === t.uid), 'a Brittle unit still attacks (it is not Frozen)'); }
 { const {e, P} = mk(); put(e, P, 1, 'gi-brittle'); const t = put(e, P, 2, 'gi-wall'); fight(e, P); const w = all(P[1])[0]; w.atk = 0;
@@ -217,7 +217,7 @@ GI_KEYS.forEach(k=>{ ok(new RegExp(`\\{key:'${k}', category:'(passive|evergreen)
   ok(new RegExp(`\\b${k}: [^\\n]*(TX\\(|giHunterText)`).test(sTxt.slice(0, 1500)), `${k}: a terse SKILL_TEXT line`);
   ok(new RegExp(`\\b${k}:'[^']+'`).test(sIco.slice(0, 400)), `${k}: an icon`); });
 ok(/prayerWard:'🧿'/.test(appSrc) && !/prayerWard:'🪬'/.test(appSrc), 'Prayer Ward wears 🧿 Nazar (owner), never 🪬 Hamsa');
-ok(appSrc.includes("{k:'brittle', re:/\\b(brittle)\\b/gi, cs:true, name:TX('ui.skn-brittle')"), 'Brittle is in STATUS_KEYWORDS (the Statuses chapter, the keyword colour)');
+ok(appSrc.includes("{k:'brittle', re:/\\b(fragile)\\b/gi, cs:true, name:TX('ui.eng36-st-brittle')"), 'Embrittle\'s Fragile is in STATUS_KEYWORDS (the Statuses chapter, the keyword colour)'); // 2026-11-19 (DEC20-SKILLS, SKN1-13): was the Brittle word
 ['sporeCloud', 'thunderstorm', 'tangledRoots'].forEach(k=> ok(new RegExp(`\\n  ${k}: +\\{icon:'[^']+', name:TX\\('ui\\.fx-name-`).test(appSrc), `${k}: in FIELD2 (the Field effects chapter, Edit skirmish, the Effects library)`));
 ok(appSrc.indexOf('Object.assign(FIELD2, {\n  sporeCloud') > 0 && appSrc.indexOf('Object.assign(FIELD2, {\n  sporeCloud') < appSrc.indexOf('...Object.keys(FIELD2).map(k=>'), 'the new fields join FIELD2 before Edit skirmish reads it');
 ok(appSrc.includes('{ const g = giLogText(ev, nm); if(g) return g; }') && appSrc.includes('try{ giVfx(ev); }catch(e){}') && appSrc.includes('try{ giStatusBadges(c, badges); }catch(e){}'), 'the log, the looks and the badges are hooked');

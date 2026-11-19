@@ -368,7 +368,7 @@ const ENG36_STATUS = {
   strangle: {dot: true, icon: '🪢'}, wither: {dot: true, icon: '🥀'},
   freeze: {icon: '🧊'}, sleep: {icon: '💤'}, paralyze: {icon: '⚡'}, stun: {icon: '💫'}, blind: {icon: '🙈'}, tipsy: {icon: '🍺'}, confuse: {icon: '😵‍💫'},
   shock: {icon: '🎯'}, stagger: {icon: '🥴'}, silence: {icon: '🚫'}, stymie: {icon: '⏳'}, exhaust: {icon: '😫'}, petrify: {icon: '🗿'}, stench: {icon: '🦨'},
-  web: {icon: '🕸️'}, brittle: {icon: '🧊'}, daunt: {icon: '😨'}, scar: {icon: '🩹'}, corrode: {icon: '🧪'}, tangle: {icon: '🌿'}, bound: {icon: '🪢'},
+  web: {icon: '🕸️'}, brittle: {icon: '🪟'} /* DEC20-SKILLS (2026-11-19, SKN1-13): Embrittle's Fragile */, daunt: {icon: '😨'}, scar: {icon: '🩹'}, corrode: {icon: '🧪'}, tangle: {icon: '🌿'}, bound: {icon: '🪢'},
   constrict: {icon: '🐍'}, soak: {icon: '💧'},
   vulnerable: {icon: '💔'}, feeble: {icon: '🪶'} // ENG50 (2026-11-17): Rend's and Enfeeble's tokens
 };
@@ -909,7 +909,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       paralyzed:0, _paralyzedJustSet:false, // acid — a FRESH 50/50 coin flip gates each round's action while >0
       // Three more status effects (2026-09-17 batch) — see rollStatusOnHit/endOfRoundUpkeep/
       // computeHitDamage/effAtk for the full lifecycle of each:
-      brittle:0, _brittleJustSet:false,     // Brittle (2026-10-19, package GI): counts as Frozen for Shatter while >0, ticks down every upkeep
+      brittle:0, _brittleJustSet:false,     // Embrittle's Fragile (2026-10-19, package GI; DEC20-SKILLS 2026-11-19, SKN1-13: Fragile's x2 taken, was Frozen for Shatter) while >0, ticks down every upkeep
       smoke:0, _smokeJustSet:false,         // Smoke (2026-10-14): attacks at it miss 1 in 2 while >0 (a Smoke Bomb ally), ticks down every upkeep
       blind:0, _blindJustSet:false,         // this card's own attacks miss half the time while >0 (2026-10-11; was: always), ticks down every upkeep
       tipsy:0, _tipsyJustSet:false,         // Tipsy (2026-10-11): swings at the unit to the left, in front or to the right at random; nobody there = a miss
@@ -1033,11 +1033,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(attDef.effects.mighty && !quietOn()) f *= 2; // no Mighty ×2 under Quiet Contemplation (2026-10-19); Fragile, the target's own, stays
     return f;
   }
-  function defenderDamageFactor(defId){
+  // DEC20-SKILLS (2026-11-19, owner SKN1-13: "Embrittle gives Fragile"): a unit Embrittle made Fragile (card.brittle > 0, N rounds) takes
+  // Fragile's x2 as if it had the skill (not x4 with both).
+  function defenderDamageFactor(defId, card){
     const def = CARD_DEFS[defId];
-    if(!def || !def.effects) return 1;
+    const timed = !!(card && card.brittle > 0);
+    if(!def || !def.effects) return timed ? 2 : 1;
     let f = 1;
-    if(def.effects.fragile) f *= 2;
+    if(def.effects.fragile || timed) f *= 2;
     if(def.effects.sturdy) f *= 0.5;
     return f;
   }
@@ -2691,6 +2694,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function poisonOn(attDef){ const e = (attDef && attDef.effects) || {}; return (Number(e.poison)||0) + (!e.poison && e.venomous ? (e.venomous === true ? 2 : Math.max(0, Number(e.venomous)||0)) : 0) /* ENG33 (2026-11-07): an old Venomous reads as Venomous N (the poison key) */ + (e.rabid ? (e.rabid === true ? 2 : Math.max(0, Number(e.rabid)||0)) : 0); }
   // Illuminate (2026-10-15): the new name of Lantern; either key lights its side.
   function illuminates(def){ const e = (def && def.effects) || {}; return !!(e.illuminate || e.lantern); }
+  // DEC20-SKILLS (2026-11-19, owner SKN1-12 a: "Also reveals Invisible and Stealth units in its column and the ones beside it"): an enemy
+  // Illuminate unit (alive, in the front row) in unit c's column or the one either side of it. Revealed, Invisible can be found and hit
+  // (isInvisible) and a Stealth swing is blocked as anyone's (sk1Unhide), as Exposed does for those two. Its dark sight is unchanged.
+  function illumRevealed(c){
+    const pid = pidOfLive(c); if(!pid) return false; const pl = curPlayers[pid], foe = curPlayers[otherId(pid)]; if(!pl || !foe) return false;
+    const col = columnOfCard(pl, c.uid); if(col == null) return false; const fc = combatColumnsOf(foe);
+    for(let d = -1; d <= 1; d++){ const f = fc[col + d]; if(f && f.kind === 'card' && f.card && f.card.hp > 0 && illuminates(CARD_DEFS[f.card.defId])) return true; }
+    return false; }
   // Bounty N (2026-10-15, Worthy folded into Bounty): the card's Bounty (true = 1).
   // 2026-10-16 (user: "All Worthy cards become Bounty. Worthy will seem something else in the future."): `worthy` is no longer read
   // as Bounty. Every card carries Bounty now, and the app migrates an old Worthy N on a saved or published card to Bounty N as it
@@ -3446,7 +3457,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // (Keen Eye's +2 against a Changeling is gone: 2026-10-31, package ENG15, FF4: True Sight sees Invisible units and lifts fog instead.)
     if(attDef && attDef.effects && attDef.effects.predator && attCard && targetCard.hp > 0 && effAtk(targetCard) < effAtk(attCard)) amt += w2N(attDef, 'predator'); // Predator N (2026-10-16): +N on prey weaker than it
     if(attDef && attDef.effects && attDef.effects.hunter && attDef.effects.hunterVs === 'weaker' && attCard && targetCard.hp > 0 && targetCard.kind !== 'hq' && effAtk(targetCard) < effAtk(attCard)) amt += numN(attDef.effects.hunter, 1); // SKAUD1: Cull N (weaker), the old Predator
-    amt += shatterBonus(attDef, targetCard); // Shatter N (2026-10-17): +N on a Frozen unit (2026-10-19, GI: or a Brittle one)
+    amt += shatterBonus(attDef, targetCard); // Shatter N (2026-10-17): +N on a Frozen unit (a Brittle one 2026-10-19 to DEC20-SKILLS)
     amt += giHitBonus(attDef, targetCard, dmgType) + detonateBonus(attDef, targetCard, dmgType); // Hunter N, Executioner N, Detonate (2026-10-19, package GI)
     amt += wetShockBonus(targetCard, dmgType); // Wet (2026-10-17): +1 lightning damage per Wet counter (wetCountOf)
     // Siege N (2026-10-19, package SK1, owner 21:36: Demolition renamed Siege): +N on Structures (sk1SiegeN: Siege, or an old Demolisher).
@@ -3490,8 +3501,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // them).
     const rfH = resistFactor(targetCard.defId, dmgType, attDef), wfH = weaknessFactor(targetCard.defId, dmgType, attDef);
     const vulnF = eng50VulnUse(targetCard); if(vulnF !== 1) mods.push('vulnerable'); // ENG50 (2026-11-17): x2 while it has Vulnerable tokens (one used)
-    const factor = rfH * wfH * defenderDamageFactor(targetCard.defId) * vulnF;
-    dnFactorMods(mods, targetCard.defId, rfH, wfH); // 2026-10-22 (package DN)
+    const factor = rfH * wfH * defenderDamageFactor(targetCard.defId, targetCard) * vulnF;
+    dnFactorMods(mods, targetCard.defId, rfH, wfH, targetCard); // 2026-10-22 (package DN)
     // 2026-10-22 (package FX2): exact from here to applyDamage. The old "at least 1" after a Resist / Weakness / Fragile factor and after the
     // Atheist half was a patch for rounding down (a 1 resisted is 0.5, which now rounds to 1 anyway); dropped, so a 0 stays 0 and two halvings
     // of a 1 (0.25) come to 0, as the owner's rule says.
@@ -3585,11 +3596,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // 2026-10-22 (package DN, owner: "<Damage Type Emoji> <Number> <Target's Damage Modifier>"): the reasons a hit's number moved, kept
   // beside the damage math and never feeding back into it. dnFactorMods reads the factors the hit already computed; lastHitMods is the
   // most recent hit's list (damageCard and damageCardFlat both set it), and dnModsFor(uid) hands it to the 'hit' event pushed right after.
-  function dnFactorMods(mods, defId, rf, wf){
+  function dnFactorMods(mods, defId, rf, wf, card){
     const e = (CARD_DEFS[defId] && CARD_DEFS[defId].effects) || {};
     if(rf === 0) mods.push('immune'); else if(rf < 1) mods.push('resist');
     if(wf > 1) mods.push('weak');
-    if(e.fragile) mods.push('fragile');
+    if(e.fragile || (card && card.brittle > 0) /* DEC20-SKILLS: Embrittle's Fragile */) mods.push('fragile');
     if(e.sturdy) mods.push('sturdy');
   }
   let lastHitMods = null;
@@ -3697,8 +3708,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const crush = !!(attDef && attDef.effects && attDef.effects.supreme); if(crush) dmgType = 'magic'; // Supreme (2026-10-14): its bolts are magic too, and crush shells
     const rfH = resistFactor(card.defId, dmgType, attDef), wfH = weaknessFactor(card.defId, dmgType, attDef);
     const vulnF = (EXPOSE_TICKS.has(dmgType) || en20Tick) ? 1 : eng50VulnUse(card); // ENG50 (2026-11-17): Vulnerable tokens: shots and skills too, not a status tick
-    const factor = rfH * wfH * defenderDamageFactor(card.defId) * vulnF;
-    const mods = []; dnFactorMods(mods, card.defId, rfH, wfH); if(vulnF !== 1) mods.push('vulnerable'); // 2026-10-22 (package DN): display only
+    const factor = rfH * wfH * defenderDamageFactor(card.defId, card) * vulnF;
+    const mods = []; dnFactorMods(mods, card.defId, rfH, wfH, card); if(vulnF !== 1) mods.push('vulnerable'); // 2026-10-22 (package DN): display only
     // 2026-10-22 (package FX2): exact all the way to applyDamage (no "at least 1" after a factor or the Atheist half, no rounding of a
     // halving, of Shock's x1.5 or of stone); see damageCard.
     let dmg = factor===0 ? 0 : factor!==1 ? amount*factor : amount; // Immune takes nothing
@@ -5830,7 +5841,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // but a RANDOM target pick (pickRandomEnemyTarget, a 'random' sub) can land on it: eng36RandUid marks that pick, so dodgeCheck lets it hit.
   let eng36RandUid = null;
   function eng36LyingOnly(c, viewer){ if(!c || c.playingDead == null) return false; const was = c.playingDead; c.playingDead = null; const inv = isInvisible(c, viewer); c.playingDead = was; return !inv; }
-  function isInvisible(c, viewer){ return !!(c && c.hp > 0 && (inRitual(c) /* ENG-RC1 (2026-11-12): in its Ritual, not there */ || c.playingDead != null /* ENG33 (2026-11-07): playing dead (Thanatosis): nothing single-target finds it, True Sight included */ || c.diveAloft != null /* EN7 (2026-10-24): a diver aloft or under can't be found, Exposed or not */ || (c.invisible > 0 && !(c.exposed > 0) && !trueSightOf(viewer)))); }
+  function isInvisible(c, viewer){ return !!(c && c.hp > 0 && (inRitual(c) /* ENG-RC1 (2026-11-12): in its Ritual, not there */ || c.playingDead != null /* ENG33 (2026-11-07): playing dead (Thanatosis): nothing single-target finds it, True Sight included */ || c.diveAloft != null /* EN7 (2026-10-24): a diver aloft or under can't be found, Exposed or not */ || (c.invisible > 0 && !(c.exposed > 0) && !trueSightOf(viewer) && !illumRevealed(c) /* DEC20-SKILLS (2026-11-19): an enemy Illuminate beside it */))); }
   // True Sight (2026-10-31, package ENG15, owner FF4 + coordinator call AA4; was Keen Eye, key keenEye kept so saves and decks are untouched):
   // it sees Invisible units, so its swings, shots and skills can find and hit them (viewer: the unit looking; a defId or a card), and it lifts
   // the fog around it (FOG_REVEAL_KEYS). Keen Eye's +2 damage against a Changeling is gone. A diver aloft or under is out of reach, not hidden.
@@ -6394,7 +6405,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function sk1Unhidden(c, reason){ return !!(c && c.exposed > 0 && SK1_HIDING.has(reason)); }
   // An Exposed Stealth attacker swings as anyone does: its def is seen without its hiding keys while it is Exposed.
   const sk1UnhideCache = new Map();
+  const dec20UnstealthCache = new Map();
   function sk1Unhide(att, def){
+    // DEC20-SKILLS (2026-11-19, SKN1-12 a): a Stealth attacker an enemy Illuminate reveals swings as anyone does (Stealth only; Exposed strips all hiding).
+    if(att && !(att.exposed > 0) && def && def.effects && def.effects.stealth && illumRevealed(att)){
+      let d = dec20UnstealthCache.get(def); if(!d){ const e = Object.assign({}, def.effects); delete e.stealth; d = Object.assign({}, def, {effects:e}); dec20UnstealthCache.set(def, d); } return d; }
     if(!att || !(att.exposed > 0) || !def || !def.effects || ![...SK1_HIDING].some(k=> def.effects[k])) return def;
     let d = sk1UnhideCache.get(def); if(!d){ const e = Object.assign({}, def.effects); SK1_HIDING.forEach(k=>{ delete e[k]; }); d = Object.assign({}, def, {effects:e}); sk1UnhideCache.set(def, d); }
     return d;
@@ -6626,10 +6641,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Shatter N (2026-10-17, user: "Ice on ice, electric on water, fire on fire"): its hits deal N more to a Frozen unit (melee and
   // shots). Electric-on-water is the Wet rule (2026-10-17: +1 per Wet counter from any lightning hit, wetShockBonus); there is no
   // Burning status yet, so fire-on-fire waits for one.
-  // 2026-10-19 (package GI, docs/gameplay-ideas-2026-10-19.md "Brittle: counts as Frozen for Shatter"): a Brittle unit counts as Frozen
-  // here, and only here (it still acts, its Wait still ticks).
+  // (2026-10-19, package GI: a Brittle unit counted as Frozen here. DEC20-SKILLS, 2026-11-19, SKN1-13: Embrittle gives Fragile now, not that.)
   // 2026-10-19 (package SK3, owner 21:56: "extra damage to frozen OR petrified OR heavily armored units"): Petrified and Armor 3+ too.
-  function shatterBonus(attDef, target){ const e = (attDef && attDef.effects) || {}; return (e.shatter && target && (target.frozen > 0 || target.brittle > 0 || sk3ShatterMore(target))) ? numN(e.shatter, S17_DEF.shatter) : 0; }
+  function shatterBonus(attDef, target){ const e = (attDef && attDef.effects) || {}; return (e.shatter && target && (target.frozen > 0 || sk3ShatterMore(target))) ? numN(e.shatter, S17_DEF.shatter) : 0; }
   // ---- Package GI (2026-10-19, owner 00:19: "continue with action items, and considering our gameplay-ideas ... After running through the
   // ideas, create what you want to create"; docs/gameplay-ideas-built-2026-10-19.md). The skill rules; the field effects are in
   // fieldEffects2Tick, Field Breaker's pause in fieldPaused, Kin Rally / Pack Howl in trigsOf.
@@ -6640,10 +6654,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // 2026-10-19 (package SK3, owner 21:56: "bonus damage when target is extremely weak and low"): + 'weak' (Attack <= 2 AND Health <= 4,
   // SK3_DEF.cullAtk / cullHp), the new default; a card that stores no hunterVs reads Weak now (Fen Mink keeps its Poisoned explicitly).
   // SKAUD1 (2026-11-18, owner OWN-1117-3): Predator, Executioner and Shatter are Cull targets now: 'weaker' (less Attack than it, read beside
-  // the old Predator line, which knows the attacker), 'wounded' (below a quarter of its Health), 'frozen' (Frozen, Brittle, Petrified or Armor 3+).
+  // the old Predator line, which knows the attacker), 'wounded' (below a quarter of its Health), 'frozen' (Frozen, Petrified or Armor 3+; Brittle left with DEC20-SKILLS).
   const GI_HUNTER_VS = ['weak', 'poison', 'bleed', 'wet', 'exposed', 'weaker', 'wounded', 'frozen'];
   function hunterVsOf(e){ const v = e && e.hunterVs; return GI_HUNTER_VS.includes(v) ? v : 'weak'; }
-  function hunterMarked(t, vs){ if(!t || t.kind === 'hq') return false; if(vs === 'weaker') return false; if(vs === 'wounded') return sk3ExecLow(t); if(vs === 'frozen') return t.frozen > 0 || t.brittle > 0 || sk3ShatterMore(t);
+  function hunterMarked(t, vs){ if(!t || t.kind === 'hq') return false; if(vs === 'weaker') return false; if(vs === 'wounded') return sk3ExecLow(t); if(vs === 'frozen') return t.frozen > 0 || sk3ShatterMore(t);
     return vs === 'weak' ? sk3Weak(t) : vs === 'bleed' ? t.bleed > 0 : vs === 'wet' ? wetCountOf(t) > 0 : vs === 'exposed' ? t.exposed > 0 : (t.poison > 0 || t.gpoison > 0); } // + Greater Poison (EN4, 2026-10-23)
   function giHitBonus(attDef, t, dmgType){
     const e = (attDef && attDef.effects) || {}; if(!t || t.kind === 'hq' || !(t.hp > 0) || EXPOSE_TICKS.has(dmgType)) return 0; let b = 0;
@@ -6664,7 +6678,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && shieldEvents){ const pid = ownerPidOfCard(t), sd = shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B'), od = shieldSideOf ? shieldSideOf(otherId(pid)) : (pid===1 ? 'B' : 'A');
       shieldEvents.push({type:'statusFx', kind:'detonate', side:od, attDefId:attDef.id, targetSide:sd, targetUid:t.uid, targetDefId:t.defId, amount:ticks.reduce((a, b)=> a + b, 0), ticks, left:t.poison}); }
     return 0; }
-  // Brittle N (a skill): its hits make the target Brittle for N rounds (ticks down like Webbed). See shatterBonus.
+  // Embrittle N (key brittle; the skill was Brittle N until DEC20-SKILLS, 2026-11-19, owner SKN1-13: "Embrittle gives Fragile"): its hits make
+  // the target Fragile for N rounds (x2 taken, defenderDamageFactor; ticks down like Webbed). Before: Frozen for Shatter only.
   function brittleUnit(att, t, rounds, side, tSide, events){
     if(!t || !(t.hp > 0) || !(rounds > 0) || isStructureCard(t)) return;
     if(!eng36Lands(t, 'brittle')) return; // ENG36 (2026-11-08)
@@ -6855,7 +6870,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //                       per token (up to 3). Tokens stay until washed: a Wave / wash push of N removes N, a Tide in (flow / high)
   //                       removes 1 each upkeep. Flyers are above the smell.
   //   Executioner N       (package GI's key, aligned to the owner's spec): +N damage to a unit below 25% of its Health (was half).
-  //   Shatter N           (2026-10-17's key, aligned): +N to a Frozen, Brittle, Petrified or heavily armored (Armor 3+) unit; on a
+  //   Shatter N           (2026-10-17's key, aligned): +N to a Frozen, Petrified or heavily armored (Armor 3+) unit; on a
   //                       Petrified one the whole hit is doubled instead of halved by the stone.
   //   Hunter N -> "Cull"  (display rename, owner call; the key stays hunter): its picker gains Weak (Attack 2 or less AND Health 4 or
   //                       less), the new default. Executioner is the low-Health-share one; Cull wants a small, weak target.
@@ -6971,7 +6986,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Executioner N (aligned 2026-10-19, SK3): below executionerPct (25) % of its max Health. Cull (Hunter's Weak): small and weak.
   function sk3ExecLow(t){ return t.hp < (t.maxHp || 0) * SK3_DEF.executionerPct / 100; }
   function sk3Weak(t){ return effAtk(t) <= SK3_DEF.cullAtk && t.hp <= SK3_DEF.cullHp; }
-  // Shatter on stone or heavy Armor (the Frozen / Brittle part is shatterBonus's own).
+  // Shatter on stone or heavy Armor (the Frozen part is shatterBonus's own).
   function sk3ShatterMore(t){ if(!t || t.kind === 'hq') return false; const d = CARD_DEFS[t.defId] || {};
     return !!t.petrified || Math.max(0, (Number((d.effects||{}).armor)||0) - (t.armorLoss||0)) + sk3ArmorOf(t) + chainArmorOf(t) /* ENG-RC1 */ >= SK3_DEF.shatterArmor; }
   function sk3StoneFactor(card, attDef){ return attDef && attDef.effects && attDef.effects.shatter ? SK3_DEF.shatterStoneMult : 0.5; } // stone halves, Shatter doubles
@@ -9072,8 +9087,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // else a coin. (It took the left one every time before: the smartest CPU's left lean.)
   function aiLaneTie(foe, a, b){ const lean = allLive(foe).filter(c=> Number.isInteger(c.slot) && aiSees(c)).reduce((t, c)=> t + Math.sign(c.slot), 0);
     if(lean) return Math.sign(a) === Math.sign(lean) ? a : b; return rnd() < 0.5 ? a : b; }
-  // The CPU's view of the package GI skills (2026-10-19). aiBonusVs: what its own Hunter, Executioner, Detonate and Shatter (on a Frozen or
-  // Brittle unit) add to its hit on unit f, so a slot facing a unit it can now finish counts as a kill. aiGiWorth: how much more a card is
+  // The CPU's view of the package GI skills (2026-10-19). aiBonusVs: what its own Hunter, Executioner and Detonate (Shatter on a Brittle unit
+  // left with DEC20-SKILLS, 2026-11-19) add to its hit on unit f, so a slot facing a unit it can now finish counts as a kill. aiGiWorth: how much more a card is
   // worth on this board (the smart and smartest CPUs): Kin Rally and Pack Howl with their tribe in hand or on the field, Proliferate with
   // Poisoned foes, Prayer Ward on a Prayer unit, the marked foes a Hunter / Executioner / Detonate card would punish, Field Breaker while
   // the field's hazards hurt it, and the units a Spore Cloud, Thunderstorm or Tangled Roots field leaves alone.
@@ -9087,7 +9102,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(e.poisonPowder && !poisonProof(f)) v += 0.3 + Math.min(numN(e.poisonPowder, 1), 4) * 0.15;
     return v; }
   function aiBonusVs(d, f){ if(!d || !f || !(f.hp > 0)) return 0; const e = d.effects || {};
-    return giHitBonus(d, f, 'physical') + (e.shatter && f.brittle > 0 && !(f.frozen > 0) ? numN(e.shatter, S17_DEF.shatter) : 0) + (e.detonate ? detonateWorth(f.poison || 0, numN(e.detonate, DETONATE_DEF)) : 0); } // (Shatter on a Brittle unit only: the CPU's old play with Frozen stays as it was)
+    return giHitBonus(d, f, 'physical') + (e.detonate ? detonateWorth(f.poison || 0, numN(e.detonate, DETONATE_DEF)) : 0); } // (Shatter on a Frozen unit: the CPU's old play stays as it was)
   function aiGiWorth(players, aiId, defId){
     const d = CARD_DEFS[defId] || {}, e = d.effects || {}, ai = players[aiId], foe = players[otherId(aiId)]; if(!ai || !foe || d.cardType || d.field) return 0;
     const mine = liveUnits(ai), foes = aiFoes(liveUnits(foe)) /* FOG1 (EN) */, probe = {defId}, ready = c=> !(c.wait > 0) && !c.stunned && !(c.frozen > 0) && !dozing(c);
@@ -10421,7 +10436,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(c.tangled>0){ if(c._tangledJustSet) c._tangledJustSet=false; else c.tangled -= 1; } // Tangled (ENG9, 2026-10-26), same convention
       if(c.webbed>0){ if(c._webbedJustSet) c._webbedJustSet=false; else c.webbed -= 1; } // Webbed (2026-10-17), same convention
       if(c.pinDown>0){ if(c._pinDownJustSet) c._pinDownJustSet=false; else { c.pinDown = 0; c.pinFreed = turnNo; } } // Bola's Pin (ENG14, 2026-10-30): unspent, it runs out after the next round
-      if(c.brittle>0){ if(c._brittleJustSet) c._brittleJustSet=false; else c.brittle -= 1; } // Brittle (2026-10-19, package GI), same convention
+      if(c.brittle>0){ if(c._brittleJustSet) c._brittleJustSet=false; else c.brittle -= 1; } // Embrittle's Fragile (2026-10-19, package GI; DEC20-SKILLS), same convention
       sk1UpkeepTick(c); // Exposed N rounds (2026-10-19, package SK1), same convention
       const sk3Hold = sk3UpkeepTick(c, pl, sideOf, events); // Package SK3 (2026-10-19): Silence, Magnet's Grounded, Stymie, Petrify N, the Tide washing Stench
       if(c.invincible>0) c.invincible -= 1; // Invincible N / Invisible N (2026-10-16): one of its first N rounds is over
@@ -11894,7 +11909,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               if(attDef.effects.decay && c2.hp>0 && !immunityOf(c2) /* ENG24 */){ c2.decay = (c2.decay||0) + attDef.effects.decay; }
               { const hw = en4Hemorrhage(attDef, c2); /* EN4 (2026-10-23): Hemorrhage doubles the Bleed it already has first */ const bl = (Number(attDef.effects.bleed)||0) + en5HemoN(attDef) /* EN5: Hemorrhage N */ + (Number(attDef.effects.perforate)||0) + (isFrenzied(a.att) ? 1 : 0) + ((Number(attDef.effects.bleed)||0) > 0 && (perksOfSide(mySide)||{}).thornbite ? 1 : 0); if(bl > 0 && c2.hp>0 && !isGhost(c2)){ c2.bleed = (c2.bleed||0) + bl + venomBoost(a.attId); } en4HemorrhageEv(a.att, c2, hw, mySide, sideOf(a.enemyId), events); } // Ghosts don't bleed (2026-10-14); + Venom Master (2026-10-17)
               if(attDef.effects.web && c2.hp > 0) webUnit(a.att, c2, numN(attDef.effects.web, S17_DEF.web), mySide, sideOf(a.enemyId), events); // Web N (2026-10-17)
-              if(attDef.effects.brittle && c2.hp > 0) brittleUnit(a.att, c2, numN(attDef.effects.brittle, 1), mySide, sideOf(a.enemyId), events); // Brittle N (2026-10-19, package GI)
+              if(attDef.effects.brittle && c2.hp > 0) brittleUnit(a.att, c2, numN(attDef.effects.brittle, 1), mySide, sideOf(a.enemyId), events); // Embrittle N (2026-10-19, package GI; DEC20-SKILLS: gives Fragile)
               if(!nullF) ichorSplash(players, sideOf, a.enemyId, c2, a.att, stats, events, killCredit); // Ichor (2026-10-14)
               if(attDef.effects.scar && c2.hp>0 && eng36Lands(c2, 'scar') /* ENG36 */){ c2.scar = (c2.scar||0) + attDef.effects.scar; if(recordEvents && events) events.push({type:'statusFx', kind:'scar', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:attDef.effects.scar}); }
               rollStatusOnHit('freeze', attDef.effects.freeze, c2, mySide, a.att, sideOf, a.enemyId, events);
@@ -12078,7 +12093,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(e40M && attDef.effects && attDef.effects.bludgeon && defCard.hp>0) bludgeonHit(a.att, defCard, mySide, sideOf(a.enemyId), events);
         if(e40M) w2OnHit(a.att, attDef, defCard, dmg, mySide, sideOf(a.enemyId), events, aStat); // Venomous, Toxin, Weaken, Bulldoze, Tangleweed, Strangle (2026-10-16)
         if(e40M && attDef.effects && attDef.effects.web && defCard.hp > 0) webUnit(a.att, defCard, numN(attDef.effects.web, S17_DEF.web), mySide, sideOf(a.enemyId), events); // Web N (2026-10-17)
-        if(e40M && attDef.effects && attDef.effects.brittle && defCard.hp > 0) brittleUnit(a.att, defCard, numN(attDef.effects.brittle, 1), mySide, sideOf(a.enemyId), events); // Brittle N (2026-10-19, package GI)
+        if(e40M && attDef.effects && attDef.effects.brittle && defCard.hp > 0) brittleUnit(a.att, defCard, numN(attDef.effects.brittle, 1), mySide, sideOf(a.enemyId), events); // Embrittle N (2026-10-19, package GI; DEC20-SKILLS: gives Fragile)
         if(!nullHit) wiltOnHit(defCard, sideOf(a.enemyId), events); // Wilting (2026-10-16): the unit that was hit
         if(attDef.effects && attDef.effects.wave && defCard.hp>0) waveHit(players, sideOf, otherId(a.enemyId), a.att, defCard, events, stats, killCredit); // Wave (2026-10-14): push it a column; 2026-10-18: its crash kills go in this swing's book, swept with the swing
         if(e40M && attDef.effects && attDef.effects.wither && defCard.hp>0) applyWither(otherId(a.enemyId), a.att, defCard, numN(attDef.effects.wither, 1), sideOf, events); // Wither N (2026-10-14)

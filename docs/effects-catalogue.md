@@ -2049,3 +2049,9 @@ Owner: "new visual effects (e.g. crab claw doesn't look very nice), and also vis
 
 ## Names (2026-11-19, package SKFIN, owner 11-18 23:55)
 Display only; keys, rules and prices unchanged. **Delivery { Resource xN }** is one skill: the resource (Lumber, Stone, Metal, Gold, Pearl, Uranium, Grace) is its parameter, picked on the Delivery row (`delivery: {v, res}`; `deliveryRes` still reads). **Armoured Shield** (was "Shield: Armor"; `shield.armor` / `shieldArmor`): icon 🛡️🛡️, two shields drawn overlapped (`.ico-stack`); a Shield with Armor reads "Armoured Shield N" on the card line and chip. The heal triggers read **On Nurse** (`onHeal`), **On Nursed** (`onHealed`) and **On Ally Nursed** (`onAllyHealed`); they still fire on any heal.
+
+## Names and two rules (2026-11-19, package DEC20-SKILLS, owner 23:47: SKN1-11, SKN1-12, SKN1-13, SKN1-19)
+- **Empower: {who} {what}** is the stat action's name (was Buff; key `buff`, and Empower all allies, key `buffAll`). Display only.
+- **Mistwalker – {…}** is the fog state skill's name (was Fog; key `fog`, one card, the Ent). The field's Fog pill stays Fog.
+- **Embrittle N** (key `brittle`, Glasswing Moth): its hits make the target **Fragile** for N rounds: x2 from every hit, as the Fragile drawback (both: still x2). The old Brittle status (Frozen for Shatter) is gone: Shatter and Cull (frozen) no longer read it. Look: `statusFx brittle` keeps its float and log line, now 🪟 Fragile; the badge is 🪟N; a hit on it shows the `fragile` mark (🦴).
+- **Illuminate** also reveals Invisible and Stealth enemies in its column and the columns beside it (front row): Invisible can be hit, a Stealth swing is blocked as anyone's. No new event; the dark-sight rule is unchanged.

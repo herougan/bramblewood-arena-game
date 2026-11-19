@@ -501,3 +501,4 @@ run node tests/uifin3-2026-11-19.js   # 2026-11-19 (package UIFIN3): toasts clea
 run node tests/dec19-ui-2026-11-19.js   # 2026-11-19 (package DEC19-UI): Arena co-op entry, night tint under the top bar and dialogs, every Graveyard card arcs
 run node tests/uiq3-2026-11-20.js   # 2026-11-20 (package UIQ3): card editor map chips list only the lists that hold the card and follow list edits live
 run node tests/carry1-2026-11-20.js   # 2026-11-20 (package CARRY1, owner 00:26): the Map cards window's Carried group = the list's carried cards + the owner's flags + Claude's explicit carry picks (docs/design/carry-picks-2026-11-20.json), no accumulation, no pick from a later map
+run node tests/dec20-skills-2026-11-19.js   # 2026-11-19 (package DEC20-SKILLS, owner 23:47): Illuminate reveals Invisible / Stealth beside it, Embrittle gives Fragile, Empower / Mistwalker names, plain Map 0-1 reward pins retired
