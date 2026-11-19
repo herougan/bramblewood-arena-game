@@ -1,0 +1,62 @@
+hdr same True ('Skill', 'Key', 'Delivery', 'Its effect applies to', 'Delivery note', 'Category', 'Type', 'Cards with it', 'Card tooltip (short)', 'II', 'Comments', 'Codex description (N = the skill number)')
+NEW Adversity ('Adversity', None)
+NEW Awakening ('Awakening', None)
+NEW Backlash ('Backlash', None)
+NEW Broodmother ('Broodmother', None)
+NEW Emerge/Emergence ('Emerge/Emergence', None)
+NEW Forestry ('Forestry', None)
+NEW Ingress ('Ingress', None)
+NEW Masonry ('Masonry', None)
+NEW Metallurgy ('Metallurgy', None)
+NEW Mining ('Mining', None)
+NEW Mistwalker ('Mistwalker', None)
+NEW Onslaught ('Onslaught', None)
+NEW Pillage ('Pillage', None)
+NEW Refining ('Refining', None)
+NEW Resonance {Magic Skill} {Action} ('Resonance {Magic Skill} {Action}', None)
+NEW Sap ('Sap', None)
+NEW Vengence ('Vengence', None)
+NEW Warcry ('Warcry', None)
+bludgeon | II | None -> 7.0
+broodkeeper | II | 2.0 -> "4 (I don't really like the name)"
+bulldoze | Comments | None -> 6.0
+cure | II | None -> 1.0
+daunt | II | None -> 6.0
+deliveryRes | II | None -> 5.0
+dynamite | II | None -> 3.0
+electricity | II | None -> 2.0
+encore | Comments | None -> 'S'
+esprit | II | None -> 4.0
+expose | II | 3.0 -> 4.0
+fencing | II | None -> 4.0
+fragile | II | None -> 6.0
+herbalist | II | 2.0 -> 4.0
+illuminate | II | None -> 2.0
+lastStand | II | 2.0 -> 4.0
+loneWolf | II | 2.0 -> 4.0
+loyal | Card tooltip (short) | 'While one of your leaders is on the field: +0/+0.' -> 'While an ally leader is on the field: +0/+0.'
+loyal | II | None -> 3.0
+loyal | Codex description (N = the skill number) | 'While one of your leaders is on the battlefield: +1/+0.' -> 'While an ally leader is on the battlefield: +1/+0.'
+molting | II | 3.0 -> 4.0
+nursing | II | None -> 1.0
+octolash | II | 3.0 -> 5.0
+offspring | II | None -> 6.0
+onslaught | II | None -> 'Remove'
+onslaughtGrant | Comments | None -> 'Remove'
+pearl | II | None -> 5.0
+perforate | II | None -> 7.0
+pickpocket | II | None -> '3 (I think this steals items only)'
+pulverise | II | None -> 7.0
+puncture | II | None -> 7.0
+rainrunner | II | None -> 3.0
+rainrunner | Comments | None -> 4.0
+reach | II | None -> 3.0
+repair | II | None -> 2.0
+scare | Codex description (N = the skill number) | 'Anything attacking this card hits for N less.' -> 'Anything attacking this card hits for N less. (Change: Units with "Scared" attack for N less.)'
+smelter | II | None -> 5.0
+spawner | II | None -> 5.0
+stealth | II | None -> 2.0
+stonecutter | II | None -> 5.0
+taunt | II | None -> 6.0
+wave | II | None -> 2.0
+NEW {Status} Powder ('{Status} Powder', None)
