@@ -49406,7 +49406,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=c4d768d28c", "es": "assets/lang/es.js?v=42a19366d6", "fr": "assets/lang/fr.js?v=f4f97daa63", "id": "assets/lang/id.js?v=c509a95b35", "it": "assets/lang/it.js?v=218f861e15", "ja": "assets/lang/ja.js?v=2461c1a60c", "ko": "assets/lang/ko.js?v=cf76f9603a", "pt": "assets/lang/pt.js?v=43d5aabcf8", "ta": "assets/lang/ta.js?v=1742230f3c", "tl": "assets/lang/tl.js?v=283a199d4f", "zh-Hans": "assets/lang/zh-Hans.js?v=2005823f43", "zh-Hant": "assets/lang/zh-Hant.js?v=06b75f0cbc"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=3a3ba4d118", "es": "assets/lang/es.js?v=01d29f8ebf", "fr": "assets/lang/fr.js?v=5b26cdb66c", "id": "assets/lang/id.js?v=0e1280c387", "it": "assets/lang/it.js?v=a77feeb4d6", "ja": "assets/lang/ja.js?v=17fbd9e0bb", "ko": "assets/lang/ko.js?v=9ae46fdc5b", "pt": "assets/lang/pt.js?v=1dc9dc78f9", "ta": "assets/lang/ta.js?v=b84f247722", "tl": "assets/lang/tl.js?v=d09b801a84", "zh-Hans": "assets/lang/zh-Hans.js?v=7483f07020", "zh-Hant": "assets/lang/zh-Hant.js?v=a35e714fea"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -53403,7 +53403,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.raidgate-note": "First raid open",
   "ui.rel3-deck-line": "These {n} go with you",
   "ui.rel3-xp": "+{n} XP",
-  "ui.rel3-level": "Level {n}!"
+  "ui.rel3-level": "Level {n}!",
+  "ui.uifin2-pile-split": "{a} more in this set, {b} after"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -59020,6 +59021,8 @@ function ui27UngatedSkills(){
 function ui27OwnedWithSkill(k){ if(!UI27_KEEP_GATE.has(k)) return false;
   try{ const defs = Object.assign({}, CARD_DEFS_BASELINE, liveCards); for(const id of Object.keys(myCardCopies || {})){ if(!(myCardCopies[id] || []).length) continue; const e = defs[id] && defs[id].effects; if(e && (skillValOn(e[k]) || (SKILL_REVEAL_MAP[k].parts || []).some(x=> skillValOn(e[x])))) return true; } }catch(e){}
   return false; }
+// 2026-11-19 (package UIFIN2, PERF6 next step 3): the first call (~250 ms at 1x) is paid at idle after load, not while the entrance cards render; same function, same memo, identical results
+try{ window.addEventListener('load', ()=> setTimeout(()=> (window.requestIdleCallback || setTimeout)(()=>{ try{ ui27UngatedSkills(); }catch(e){} }), 1500)); }catch(e){}
 function ui27Ungated(k){ return ui27UngatedSkills().has(k) || ui27OwnedWithSkill(k); }
 // The other effect keys that belong to a hidden skill (its second number, its Flow grant): hidden with it.
 const SKILL_REVEAL_PARTS = Object.assign({swimmer:['swimmerGrant']}, Object.fromEntries(Object.entries(SKILL_REVEAL_MAP).map(([k, r])=> [k, (r.parts || []).slice()]))); // + the advanced forms' braces (2026-10-15)
@@ -59580,7 +59583,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '36f6b0aea5a4', BUILD_CARD_HASH = 'e9bc595c0698cc8864aa55673ac3e4fb65eee208265917687f1bcbea969871ea';
+const BUILD_ID = 'a1a656ba3545', BUILD_CARD_HASH = 'e9bc595c0698cc8864aa55673ac3e4fb65eee208265917687f1bcbea969871ea';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
@@ -118178,7 +118181,7 @@ function openPackAnimation(pack, opened, opts){
           <span class="po2-strip-face"><span class="po2-crimp" aria-hidden="true"></span><span class="po2-rip" aria-hidden="true"></span></span>
         </button>
       </div></div>
-      ${behind ? `<div class="po2-pile-n">${behind} more pack${behind === 1 ? '' : 's'} to open</div>` : ''}
+      ${behind ? `<div class="po2-pile-n">${opts.moreAfter > 0 && opened.length - packIdx - 1 > 0 ? escapeHtml(TX('ui.uifin2-pile-split', {a: opened.length - packIdx - 1, b: opts.moreAfter|0})) /* 2026-11-19 (package UIFIN2): "Pack 1 of 3" and "4 more" read as a contradiction; split the count */ : `${behind} more pack${behind === 1 ? '' : 's'} to open`}</div>` : ''}
     </div>
     <div class="po2-hint" id="poHint" aria-live="polite">Drag across the top to tear it open</div>`;
     wireTop();
