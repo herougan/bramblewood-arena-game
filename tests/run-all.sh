@@ -496,3 +496,4 @@ run node tests/vfx2-2026-11-19.js   # 2026-11-19 (package VFX2): battle effects 
 run node tests/console1-2026-11-19.js   # 2026-11-19 (package CONSOLE1): headless pass over the Release 1.0 screens (Maps 0/5, Sunken Depths, The Deep Dark, raid, Murgle, group dungeon solo, PvP ghost, Codex, Camp, Forge, Shop, Profile; 1366 + 390 dark); fails on any console error, page error or unhandled rejection except offline network noise
 run node tests/uifin2-2026-11-19.js   # 2026-11-19 (package UIFIN2): pack opener split count; gated-skills set warmed at idle
 run node tests/uifin3-2026-11-19.js   # 2026-11-19 (package UIFIN3): toasts clear of the pack opener
+run node tests/dec19-ui-2026-11-19.js   # 2026-11-19 (package DEC19-UI): Arena co-op entry, night tint under the top bar and dialogs, every Graveyard card arcs

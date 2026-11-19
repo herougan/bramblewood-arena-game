@@ -3871,7 +3871,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rel3-deck-line": "These {n} go with you",
   "ui.rel3-xp": "+{n} XP",
   "ui.rel3-level": "Level {n}!",
-  "ui.uifin2-pile-split": "{a} more in this set, {b} after"
+  "ui.uifin2-pile-split": "{a} more in this set, {b} after",
+  "ui.dec19-coop-tip": "Team up with friends in a dungeon"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

@@ -24877,6 +24877,7 @@ function renderArenaSubTabInner(body, title){
         <div class="ar3-modes">
           ${tile('startVsAiBtn', '🤖', 'Quick Battle', "You vs the computer, under today's rules · costs no Energy", '', 'is-hero')}
           ${tile('startVsPcBtn', '👥', 'Pass &amp; Play', 'Two players, one device')}
+          ${arenaCoopOpen() ? tile('openCoopBtn', '👥', escapeHtml(gdThemedName()), TX('ui.dec19-coop-tip')) : ''}${'' /* 2026-11-19 (package DEC19-UI, REL1-4 b): the Group Dungeon's entry on the Arena, once open */}
           ${tabOpen('gauntlet') ? tile('startGauntletBtn', '🏅', 'Gauntlet', `Win ${GAUNTLET_GOAL} in a row; one loss starts you over`, `<span class="ar3-mode-line">🔥 ${streak}/${GAUNTLET_GOAL}</span>`) : ''}
           <div class="ar3-mode is-caged" id="cagedPanel" title="Your leader is caged on the enemy board, 4 slots to the right. Break the cage to free it.">
             <span class="ar3-mode-ico" aria-hidden="true">⛓️</span><span class="ar3-mode-lbl">Caged Fight</span>
@@ -24895,6 +24896,7 @@ function renderArenaSubTabInner(body, title){
   $('startVsAiBtn').addEventListener('click', ()=> startMatch('ai'));
   { const abBtn = $('openAutobattleBtn'); if(abBtn) abBtn.addEventListener('click', ()=>{ playSubTab = 'autobattle'; renderPlay(); }); }
   $('startVsPcBtn').addEventListener('click', ()=> startMatch('pc'));
+  { const cb = $('openCoopBtn'); if(cb) cb.addEventListener('click', ()=>{ const sp = FEATURE_SPOTS.find(x=> x.key === 'coop'); if(sp) sp.go(); }); }
   { const pvpBtn = $('startPvpBtn'); if(pvpBtn) pvpBtn.addEventListener('click', ()=> startMatch('pvp', {standard:false})); }
   { const sp = $('startPvpStdBtn'); if(sp) sp.addEventListener('click', ()=> startMatch('pvp', {standard:true})); }
   { const gb = $('startGauntletBtn'); if(gb) gb.addEventListener('click', ()=> startMatch('gauntlet')); }
@@ -28269,6 +28271,7 @@ function dailyDungeonsOpen(){ try{ return !!(dungeonsAdminView() || unlockedDail
 // 👥 spot on Map GD_OPEN_AFTER_MAP after its last fight (FEATURE_SPOTS 'coop', pl2OpenCoopPop). Was: dailyDungeonsOpen() || gdPlayerOpen().
 function dungeonsTabOpen(){ try{ return dungeonsAdminView(); }catch(e){ return false; } }
 let pl2ArenaPane = 'modes';
+function arenaCoopOpen(){ try{ return gdPlayerOpen(); }catch(e){ return false; } } // 2026-11-19 (package DEC19-UI, REL1-4 b): open after Map GD_OPEN_AFTER_MAP
 function pl2CoopPaneOn(){ try{ return pl2ArenaPane === 'coop' && gdPlayerOpen(); }catch(e){ return false; } }
 function pl2ArenaTabsHTML(){
   let open = false; try{ open = gdPlayerOpen(); }catch(e){} if(!open) return '';
@@ -44740,6 +44743,8 @@ async function playCardByUid(uid, side, dropPoint, popts){
   // 2026-10-16 (user: "Sometimes the battle gets stuck ..."): from here the card is on the board in the engine, so the turn must be
   // committed whatever a log line or effect below does (fightSafe), or "played this turn" is left set with no round coming.
   const isFieldPlay = events.some(ev=> ev.type==='fieldSet');
+  // 2026-11-19 (package DEC19-UI, FX9-1 a): a field card or spell used up arcs into the Graveyard like a pitch (from the drop point, or its place in your hand)
+  { const gv = events.find(ev=> ev.type==='fieldSet' || ev.type==='spell'); if(gv && activePid === viewerHandPid(m)) fightSafe(()=> ui16PitchToGrave(m, handTileEl, {defId: gv.defId, gains: [], at: dropPoint && capturedHandOrigin ? {x: capturedHandOrigin.x, y: capturedHandOrigin.y} : null}), 'graveFlight'); }
   // 2026-10-17 (user: "When I play a shiny card, it should still look shiny on the board!"): the board unit's uid is new, so the copy's
   // look moves from the hand uid to it before anything renders it (carryCardLook).
   if(activePid === localPid(m)) try{ const pe = events.find(ev=> (ev.type==='play' && !ev.leader) || ev.type==='evolve' /* EV (2026-10-21): the evolute's look rides on the stack */); if(pe) carryCardLook(m, uid, pe.uid, pe.defId); }catch(e){}
@@ -45125,8 +45130,10 @@ async function eng23FeedByUid(uid){
   const pid = activePlayerId(m), pl = m.players[pid], card = pl.hand.find(h=> h.uid === uid), btn = document.querySelector('[data-eng23-feed]');
   if(!card || !m.engine.eng23CanFeed(pl)){ denyShake(document.querySelector(`.card-tile[data-handuid="${uid}"]`) || btn); return; }
   recordFightAction(m, {a:'feed', uid});
+  const feedTile = document.querySelector(`#handStrip .card-tile[data-handuid="${CSS.escape(String(uid))}"]`); // 2026-11-19 (package DEC19-UI, FX9-1 a): the fed card arcs into the Graveyard
   const ev = [], r = m.engine.feedBramble(m.players, m.sideOf, pid, card, m.stats, ev); if(!r) return;
   if(m.selectedUid === uid) m.selectedUid = null;
+  fightSafe(()=> ui16PitchToGrave(m, feedTile, {defId: card.defId, gains: []}), 'feed flight');
   fightSafe(()=>{ try{ SoundKit.healTone && SoundKit.healTone(); }catch(e){} ev.forEach(x=>{ try{ pushLog(x); renderVfxForEvent(x); }catch(e){} }); }, 'feed presentation');
   await eng23AfterAct(m, pid);
 }
@@ -48909,6 +48916,8 @@ function animateOverdraw(ev){
   if(!from) return;
   const to = mine ? document.getElementById('dropDiscard') : null;
   const fr = from.getBoundingClientRect();
+  // 2026-11-19 (package DEC19-UI, FX9-1 a): your overdrawn card arcs into the Graveyard the way a pitched card does (from the deck; the +1 Lumber chip rides the landing)
+  if(mine && matchState && to){ ui16PitchToGrave(matchState, null, {defId: ev.defId, gains: [{amount: ev.lumber||1, glyph: PITCH_RESOURCE_META.lumber.glyph, pillId: PITCH_RESOURCE_META.lumber.pillId}], at: {x: fr.left + fr.width/2, y: fr.top + fr.height/2}}); return; }
   const card = document.createElement('div');
   card.className = 'overdraw-fly ' + cardBackClass(ev.defId); // 2026-10-16 (user: "Card backings -> 4 types…"): the pitched card's own back
   card.innerHTML = '<span>🌰</span>';

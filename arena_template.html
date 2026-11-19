@@ -6405,6 +6405,7 @@
   :root{--splash-art:url(__SPLASH_ART__);}
   /* Atmosphere packs (2026-10-03, "shaders" v0): a colour grade + a light/particle layer over everything. */
   #atmoTint, #atmoCanvas{position:fixed; inset:0; pointer-events:none; z-index:9000;}
+  #atmoTint{z-index:90;} .topbar-wrap{position:relative; z-index:95;} /* 2026-11-19 (package DEC19-UI, UX4-1 a): the night tint sits under the top bar and dialogs (.modal-overlay 600) */
   #atmoTint{mix-blend-mode:soft-light; opacity:0; transition:opacity .6s ease, background .6s ease;}
   body[data-atmo="golden"] #atmoTint{opacity:.55; background:radial-gradient(ellipse at 78% 8%, rgba(255,214,140,.9), rgba(255,160,60,.35) 45%, rgba(90,40,10,.45) 100%);}
   body[data-atmo="moonlit"] #atmoTint{opacity:.7; background:radial-gradient(ellipse at 20% 0%, rgba(170,200,255,.6), rgba(30,50,110,.6) 55%, rgba(5,10,30,.8) 100%);}
@@ -9683,7 +9684,7 @@
   /* Perf (2026-10-05): no per-card filter on board and hand name scrolls (a filter on every card
      made each one its own offscreen paint); the live-clock tint blends normally during a fight. */
   .board-card .card-tile .nm, .hand-strip .card-tile .nm, #handStrip .card-tile .nm, .drag-ghost-host .card-tile .nm{filter:none !important; box-shadow:0 1px 2px rgba(0,0,0,.35);}
-  body.in-fight #atmoTint{mix-blend-mode:normal !important; opacity:.12 !important;}
+  body.in-fight #atmoTint{mix-blend-mode:normal !important; opacity:.12 !important; z-index:9000;}
 
   /* Rain on the battlefield without shaders (fallback; the shader draws its own when it's on) */
   /* 2026-11-07 (package UI32 #8, owner 19:23): the medium / low rain was one 120px tile of evenly spaced lines (a flat stripe pattern). Now three layers of

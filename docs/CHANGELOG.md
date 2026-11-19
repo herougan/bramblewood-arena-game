@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-19 (package DEC19-UI: Arena co-op entry, night tint, Graveyard arcs)
+- Players see: once the co-op dungeon is open (after Map 16) the Arena's modes list has its entry, which opens the same dungeon card as the map spot (REL1-4 b). The night tint now sits under the top bar and dialogs, so menus stay clear at night; the fight board still darkens (UX4-1 a). A field card or spell you play, a Feed, and an overdrawn card now arc into the Graveyard like a pitch (FX9-1 a; reduced motion: no flight).
+- Under the hood: `ui16PitchToGrave` reused (`playCardByUid`, `eng23FeedByUid`, `animateOverdraw`); one new text `ui.dec19-coop-tip` in 12 packs; `tests/dec19-ui-2026-11-19.js`.
+
 ## 2026-11-19 (package DEC19: the easy decisions settled, owner 22:18)
 - Players see: on a slow machine, Auto-lower effects can now step down twice in a session (High -> Medium -> Low; was once), decision PERF2-1 b (`FX_AUTO_STEPS` in `arena_app.js`).
 - Decisions: 131 of 143 open decisions settled (48 superseded, 76 default, 7 another option); 12 left for the owner. Builds still to run: `docs/design/dec19-builds-2026-11-19.json`. `docs/evaluation-protocol.md` records the B5 / B6 readings (CHK1-1 a, CHK1-2 a).
