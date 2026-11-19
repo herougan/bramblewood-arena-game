@@ -1,0 +1,27 @@
+START 15-7 06:43:04
+15-7 target 40 (30-49) size 17 start {"border-collie":4,"mosquito-cloud":1,"siege-rhino":2,"sworn-shieldbearer":4,"gale-swift":2,"cataphract-destrier":3,"warhorse-charger":1} problems []
+start {"border-collie":4,"mosquito-cloud":1,"siege-rhino":2,"sworn-shieldbearer":4,"gale-swift":2,"cataphract-destrier":3,"warhorse-charger":1} 14.4
+round 1: cur 25/14.4; 84 legal, 44 read + 6 predicted (of 21); top: -1 warhorse-charger -1 mosquito-cloud +2 elderhorn-monarch 41.7/34.4 | -4 border-collie +4 elderhorn-monarch 41.7/47.5 | -1 sworn-shieldbearer +1 cataphract-destrier 41.7/22.5
+round 2: cur 41.7/34.4; 141 legal, 50 read + 6 predicted (of 33); top: -3 border-collie +3 grass-viper 41.7/35 | -1 cataphract-destrier +1 warhorse-charger 41.7/31.3 | -1 elderhorn-monarch +1 grass-viper 41.7/24.4
+no nearer move
+RESULT 15-7 {"border-collie":4,"siege-rhino":2,"sworn-shieldbearer":4,"gale-swift":2,"cataphract-destrier":3,"elderhorn-monarch":2} 34.4 {} moves: -1 warhorse-charger -1 mosquito-cloud +2 elderhorn-monarch problems: []
+START 15-6 06:53:47
+15-6 target 60 (52-68) size 16 start {"mosquito-cloud":1,"sworn-shieldbearer":4,"warhorse-charger":3,"grass-viper":4,"village-miller":1,"pronghorn-racer":3} problems []
+start {"mosquito-cloud":1,"sworn-shieldbearer":4,"warhorse-charger":3,"grass-viper":4,"village-miller":1,"pronghorn-racer":3} 41.3
+round 1: cur 58.3/41.3; 80 legal, 49 read + 6 predicted (of 31); top: -2 warhorse-charger +2 elderhorn-monarch 58.3/56.3 | -2 pronghorn-racer +2 elderhorn-monarch 58.3/55.6 | -1 sworn-shieldbearer +1 cataphract-destrier 58.3/50.6
+round 2: cur 58.3/56.3; 80 legal, 38 read + 6 predicted (of 43); top: -1 mosquito-cloud +1 warhorse-charger 58.3/60.6 | -1 warhorse-charger +1 tasmanian-devil 58.3/58.1 | -1 warhorse-charger +1 elderhorn-monarch 58.3/69.4
+RESULT 15-6 {"sworn-shieldbearer":4,"warhorse-charger":2,"grass-viper":4,"village-miller":1,"pronghorn-racer":3,"elderhorn-monarch":2} 60.6 {} moves: -2 warhorse-charger +2 elderhorn-monarch ; -1 mosquito-cloud +1 warhorse-charger problems: []
+START 15-5 07:00:09
+15-5 target 66 (58-74) size 20 start {"adder-ambusher":2,"elderhorn-monarch":3,"hoopoe-herald":1,"siege-rhino":2,"sworn-shieldbearer":4,"warhorse-charger":4,"village-miller":4} problems []
+start {"adder-ambusher":2,"elderhorn-monarch":3,"hoopoe-herald":1,"siege-rhino":2,"sworn-shieldbearer":4,"warhorse-charger":4,"village-miller":4} 56.9
+round 1: cur 75/56.9; 29 legal, 29 read + 6 predicted (of 45); top: -1 adder-ambusher +1 elderhorn-monarch 66.7/61.3 | -1 hoopoe-herald +1 adder-ambusher 66.7/59.4 | -3 elderhorn-monarch +3 cataphract-destrier 66.7/51.3
+round 2: cur 66.7/61.3; 26 legal, 26 read + 6 predicted (of 41); top: -1 hoopoe-herald +1 mosquito-cloud 66.7/73.8 | -1 hoopoe-herald +1 bramblewood-lynx 66.7/75.6 | -1 hoopoe-herald +1 cataphract-destrier 66.7/76.9
+no nearer move
+RESULT 15-5 {"adder-ambusher":1,"elderhorn-monarch":4,"hoopoe-herald":1,"siege-rhino":2,"sworn-shieldbearer":4,"warhorse-charger":4,"village-miller":4} 61.3 {} moves: -1 adder-ambusher +1 elderhorn-monarch problems: []
+START 6-5 07:01:48
+6-5 target 70 (62-78) size 14 start {"crocodile-ambusher":2,"lamprey":4,"newt-doctor":1,"venomlord-serpent":3,"alligator-gar":1,"booming-bittern":3} problems []
+start {"crocodile-ambusher":2,"lamprey":4,"newt-doctor":1,"venomlord-serpent":3,"alligator-gar":1,"booming-bittern":3} 65
+round 1: cur 75/65; 74 legal, 41 read + 6 predicted (of 25); top: -1 booming-bittern +1 pond-algae 70.8/61.3 | -3 booming-bittern +1 water-shrew +2 alligator-gar 70.8/56.9 | -1 alligator-gar +1 water-shrew 70.8/52.5
+no nearer move
+RESULT 6-5 {"crocodile-ambusher":2,"lamprey":4,"newt-doctor":1,"venomlord-serpent":3,"alligator-gar":1,"booming-bittern":3} 65 {} moves:  problems: []
+LANE DONE 07:02:34
