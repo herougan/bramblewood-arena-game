@@ -75,6 +75,13 @@ const EXPS = {
   E18: { design: 'eq', ownBody: true, stat: 'A', cs: { kind: 'homo', foe: 'bodyV', seed: 'skmE18' }, probeM: [40, 80], idea: 'own-body stat equivalence in Attack (3 points each)' },
   E19: { design: 'eq', ownBody: true, stat: 'H', cs: { kind: 'homo', foe: 'bodyV', aiMe: 0, aiFoe: 0, seed: 'skmE19' }, probeM: [40, 80], idea: 'own-body stat equivalence with the basic CPU on both sides' },
   E20: { design: 'eq', ownBody: true, stat: 'H', cs: { kind: 'homo', foe: 'bodyV', bramble: 15, seed: 'skmE20' }, probeM: [40, 80], idea: 'own-body stat equivalence with the road brambles (15 Health)' },
+  // counter strength (2026-11-20 03:45): 20 farm-dogs given the skill against 20 copies of another family's body +h Health; the even point
+  // minus the plain farm-dog's even point against the same foe = what the skill is worth against that family
+  C1: { design: 'eq', body: BODY1, foeBody: 'bee-sentry', stat: 'H', cs: { kind: 'homo', foe: 'bodyV', seed: 'skmC1' }, probeM: [40, 80], idea: 'counter strength vs Flying: the even point against 20 bee-sentries +h, minus the plain farm-dog\'s' },
+  C2: { design: 'eq', body: BODY1, foeBody: 'horseshoe-crab', stat: 'H', cs: { kind: 'homo', foe: 'bodyV', seed: 'skmC2' }, probeM: [40, 80], idea: 'counter strength vs Armor: the even point against 20 horseshoe-crabs +h, minus the plain farm-dog\'s' },
+  C3: { design: 'eq', body: BODY1, foeBody: 'chipmunk-skirmisher', stat: 'H', cs: { kind: 'homo', foe: 'bodyV', seed: 'skmC3' }, probeM: [40, 80], idea: 'counter strength vs shooters (Arrow): the even point against 20 chipmunk-skirmishers +h, minus the plain farm-dog\'s' },
+  C4: { design: 'eq', body: BODY1, foeBody: 'hedgehog-scout', stat: 'H', cs: { kind: 'homo', foe: 'bodyV', seed: 'skmC4' }, probeM: [40, 80], idea: 'counter strength vs Thorns: the even point against 20 hedgehog-scouts +h, minus the plain farm-dog\'s' },
+  C5: { design: 'eq', body: BODY1, foeBody: 'gallery-orb-weaver', stat: 'H', cs: { kind: 'homo', foe: 'bodyV', seed: 'skmC5' }, probeM: [40, 80], idea: 'counter strength vs Poison hitters: the even point against 20 gallery-orb-weavers +h, minus the plain farm-dog\'s' },
   E21: { design: 'eq', ownBody: true, stat: 'H', perMap: true, cs: { kind: 'homo', foe: 'bodyV', seed: 'skmE21' }, probeM: [40, 80], idea: 'own-body stat equivalence at the skill\'s first map\'s level and fields' },
   // round 2 (new kinds once the first designs stabilised)
   V12: { design: 'van', body: BODY1, cs: { kind: 'homo', foe: 'random', body: BODY1, seed: 'skmV12' }, stages: [40, 60], yardM: 300,
@@ -230,18 +237,18 @@ async function playDesign(sim, E, s, M) {
 // halve down until p brackets 1/2, then bisect once; h* by interpolation between the bracketing probes. Deterministic given the cached games,
 // so the estimators re-walk the same probes without new games.
 async function playEq(sim, E, s, M, est) {
-  const U = S.universe(sim.gm), gm = sim.gm, c = carrierOf(U, s, 1)[0], body = E.ownBody ? c : E.body;
-  if (!E.ownBody && S.SK.skillsOf(gm, gm.D[body]).includes(s)) return { skip: 'the body already has this skill' };
+  const U = S.universe(sim.gm), gm = sim.gm, c = s ? carrierOf(U, s, 1)[0] : null, body = E.ownBody ? c : E.body;
+  if (s && !E.ownBody && S.SK.skillsOf(gm, gm.D[body]).includes(s)) return { skip: 'the body already has this skill' };
   // ownBody (2026-11-20 03:00): the carrier itself against its own copies without the skill, the bump on those
-  const withV = E.ownBody ? { base: c } : Object.assign({ base: body }, S.addOf(gm, c, s)), foe0 = E.ownBody ? S.withoutV(c, s) : { base: body };
-  const pts = E.stat === 'A' ? AW : 1, d = gm.D[body], lo0 = E.stat === 'A' ? -(d.attack || 0) : -((d.health || 1) - 1);
+  const withV = !s ? { base: body } : E.ownBody ? { base: c } : Object.assign({ base: body }, S.addOf(gm, c, s)), foe0 = E.ownBody ? S.withoutV(c, s) : { base: E.foeBody || body };
+  const fb = E.foeBody || body, pts = E.stat === 'A' ? AW : 1, d = gm.D[fb], lo0 = E.stat === 'A' ? -(d.attack || 0) : -((d.health || 1) - 1);
   const base = E.perMap ? Object.assign({}, E.cs, { scope: 'map:' + U.skills[s].firstMap }) : E.cs, probes = new Map(); let games = 0;
-  const x1 = v => L.budgetOf(L.printedDef(gm, v), 1).x1, price = x1(withV) - x1(foe0);
+  const x1 = v => L.budgetOf(L.printedDef(gm, v), 1).x1, price = E.foeBody ? x1(withV) - x1({ base: body }) : x1(withV) - x1(foe0);
   async function P(h) { if (probes.has(h)) return probes.get(h);
     const fv = Object.assign({}, foe0); if (h) fv[E.stat === 'A' ? 'dA' : 'dH'] = h;
-    const X = sim.context(Object.assign({}, base, E.ownBody ? { body: c } : {}, { foeV: E.ownBody ? fv : Object.assign({ base: body }, E.stat === 'A' ? { dA: h } : { dH: h }) })); if (!h && !E.ownBody) delete X.foeV.dH;
+    const X = sim.context(Object.assign({}, base, E.ownBody ? { body: c } : {}, { foeV: E.ownBody || E.foeBody ? fv : Object.assign({ base: body }, E.stat === 'A' ? { dA: h } : { dH: h }) })); if (!h && !E.ownBody && !E.foeBody) delete X.foeV.dH;
     await sim.need(X, [{ v: withV }], M); games += M; const o = sim.outcomes(X, withV, body, M), r = { h, X, o, ...meanSE(o.map(x => x.s)) }; probes.set(h, r); return r; }
-  let h = Math.max(lo0, Math.min(40, Math.round(price / pts))), p = await P(h), lo = null, hi = null;
+  let h = Math.max(lo0, Math.min(40, Math.round(price / pts) + (E.foeBody && s ? Math.round(E._h0 || 0) : 0))), p = await P(h), lo = null, hi = null;
   for (let k = 0; k < 6 && (lo == null || hi == null); k++) { // lo: a probe the skill side wins (p > 1/2), hi: one it loses
     if (p.m > 0.5) { lo = p; if (hi) break; h = h <= 0 ? (h < 0 ? Math.min(0, h + Math.max(1, Math.ceil(-h / 2))) : 1) : Math.min(60, 2 * h + 1); }
     else { hi = p; if (lo) break; h = h > 1 ? Math.floor(h / 2) : h === 1 ? 0 : Math.max(lo0, 2 * h - 1); }
@@ -338,8 +345,12 @@ const EQEST = [{ k: 'win', name: 'even-fight point', idea: 'h* by interpolation 
 Object.keys(EXPS).filter(id => EXPS[id].design === 'eq').forEach(eid => { const E = EXPS[eid];
   EQEST.forEach((e, j) => REG.push({ id: eid + '-' + e.k, exp: eid, primary: j === 0, name: eid + ' ' + e.name, idea: E.idea + '; ' + e.idea,
     async run(s, o) { const stages = this.primary ? (o.stages || E.probeM) : [o.M || E.probeM[E.probeM.length - 1]]; let R, res, M;
-      for (const st of stages) { M = st; R = await playEq(o.sim, E, s, M); if (R.skip) return { worth: null, M, note: R.skip, games: 0 };
-        res = eqEstimate(R, e.k, (R.all[0].X.bramble)); if (this.primary && res && res.worth != null && res.ci < 0.1 * Math.abs(res.worth)) break; }
+      for (const st of stages) { M = st;
+        let b0 = null; if (E.foeBody) { const B = await playEq(o.sim, E, null, M), bw = eqEstimate(B, 'win', B.all[0].X.bramble); E._h0 = bw && bw.worth != null ? bw.worth : 0; b0 = e.k === 'win' ? bw : eqEstimate(B, e.k, B.all[0].X.bramble); } // the plain body's even point (its win point also starts the skill's search)
+        R = await playEq(o.sim, E, s, M); if (R.skip) return { worth: null, M, note: R.skip, games: 0 };
+        res = eqEstimate(R, e.k, (R.all[0].X.bramble));
+        if (b0 && res && res.worth != null) { if (b0.worth == null) res = null; else res = { worth: res.worth - b0.worth, ci: res.ci != null && b0.ci != null ? Math.sqrt(res.ci ** 2 + b0.ci ** 2) : null, note: res.note }; }
+        if (this.primary && res && res.worth != null && res.ci < 0.1 * Math.abs(res.worth)) break; }
       return { worth: res ? res.worth : null, ci: res ? res.ci : null, games: R.games, carrier: R.carrier, M, n: R.all.length, note: res ? res.note : 'no estimate' }; } })); });
 
 // ---------------------------------------------------------------- offline methods (no games: earlier measurements and cross-sections)
