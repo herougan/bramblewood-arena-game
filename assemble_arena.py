@@ -274,7 +274,6 @@ def sub_once(text, placeholder, replacement):
         raise SystemExit(f"Expected exactly 1 occurrence of {placeholder!r}, found {count}")
     return text.replace(placeholder, replacement, 1)
 
-engine_src_string_literal = json.dumps(engine_src)
 
 out = template
 # Splash art (2026-10-02): PixelLab otters-vs-hummingbirds scene, inlined as a data URI like the
@@ -347,8 +346,8 @@ def _home_sprite(name):
     path = SCRATCH + "art/home/" + name + ".png"
     return asset_url("home/" + name + ".png", open(path, "rb").read()) if os.path.exists(path) else ""
 app_src = app_src.replace("__HOME_OTTER__", _home_sprite("otter"), 1).replace("__HOME_BIRD__", _home_sprite("hummingbird"), 1)
-out = sub_once(out, "__ENGINE_SRC__", engine_src + "\n" + ghosts_src)
-out = sub_once(out, "__ENGINE_SRC_STRING__", engine_src_string_literal)
+# 2026-11-19 (package PERF6): the marker line ends the engine's own part; the page cuts the simulator worker's engine text from the block (window.__BRAMBLEWOOD_ENGINE_SRC__)
+out = sub_once(out, "__ENGINE_SRC__", engine_src + "\n/*BW_ENGINE_END*/\n" + ghosts_src)
 # app_src references __CARD_DEFS__ / __ARCHETYPE_ICON__ / __CHARACTER_DEFS__ inside itself
 app_src = sub_once(app_src, "__CARD_DEFS__", card_defs_literal)
 app_src = sub_once(app_src, "__POOL_CARD_DEFS__", json.dumps(pool_defs_obj, ensure_ascii=False))  # 2026-10-19 (package AN): Admin only

@@ -15975,7 +15975,7 @@ body.bw-in-match .signin-banner{display:none;}
 <div id="cardDetailOverlay" class="modal-overlay" hidden></div>
 <div id="authGateOverlay" class="modal-overlay" hidden></div>
 
-<script>
+<script id="bwEngineBlock">
 /* ============================================================
    PART 0 — engine (identical file to bramblewood-engine.js),
    used both directly (Play view) and inside a Web Worker blob
@@ -15984,7 +15984,12 @@ body.bw-in-match .signin-banner{display:none;}
 __ENGINE_SRC__
 </script>
 <script>
-window.__BRAMBLEWOOD_ENGINE_SRC__ = __ENGINE_SRC_STRING__;
+// 2026-11-19 (package PERF6): the simulator worker's engine text used to be a second, 1.5 MB JSON-escaped copy of the engine in the page.
+// It is now cut from the engine block above when first asked for (the assembler puts a marker line after the engine's own part).
+Object.defineProperty(window, '__BRAMBLEWOOD_ENGINE_SRC__', {configurable: true, get: function(){
+  const el = document.getElementById('bwEngineBlock'), t = el ? el.textContent : '', k = t.indexOf('/*BW_ENGINE_END*/');
+  return k < 0 ? t : t.slice(0, k);
+}});
 </script>
 </body>
 </html>

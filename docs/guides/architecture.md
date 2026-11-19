@@ -8,7 +8,7 @@ One static page, no framework, no bundler, no server code of ours except Supabas
 | Placeholder | Filled with |
 |---|---|
 | `__ENGINE_SRC__` (in the template) | engine block + "ghosts" block, below |
-| `__ENGINE_SRC_STRING__` | the engine block as a string, `window.__BRAMBLEWOOD_ENGINE_SRC__`: the simulator Web Worker runs it |
+| `window.__BRAMBLEWOOD_ENGINE_SRC__` | (PERF6) no second copy: a getter cuts the engine's part out of `<script id="bwEngineBlock">` (it ends at the `/*BW_ENGINE_END*/` marker line); the simulator Web Worker runs it |
 | `</body>` | GSAP 3.13 + Flip (`gsap.min.js`, `Flip.min.js`), `supabase.umd.js` (supabase-js 2.116), then `arena_app.js` |
 | `__CARD_DEFS__`, `__RAIDS__`, `__MAP_POOLS__`, `__SKILL_COSTS__`, `__PRO_SKIRMISHES__`, ... (about 40, all `__NAME__`) | JSON from `canonical/*.json` (and a few `docs/` files), put into `arena_app.js` |
 
