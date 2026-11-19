@@ -1,0 +1,6 @@
+19-A-7 target 67.5 (59.5-75.5) size 16 side (min 12) start {"cinder-hornet":4,"malachite-golem":3,"obsidian-scorpion":3,"stalactite-golem":2,"tide-spirit":2,"stoat-cutthroat":1,"cinder-gecko":1} problems []
+start {"cinder-hornet":4,"malachite-golem":3,"obsidian-scorpion":3,"stalactite-golem":2,"tide-spirit":2,"stoat-cutthroat":1,"cinder-gecko":1} 36.9
+round 1: cur 35/36.9; 23 legal, 23 read + 10 predicted (of 29); top: -1 stoat-cutthroat +1 tide-spirit 42.5/38.1 | -1 cinder-hornet +1 cinder-gecko 42.5/31.9 | -1 cinder-hornet +1 tide-spirit 40/30.6 | -1 cinder-hornet -1 stoat-cutthroat +1 cinder-gecko +1 tide-spirit 45/30
+round 2: cur 42.5/38.1; 31 legal, 31 read + 10 predicted (of 30); top: -3 obsidian-scorpion +2 stoat-cutthroat +1 cinder-gecko 42.5/33.1 | -1 cinder-hornet -1 tide-spirit +1 cinder-gecko +1 stoat-cutthroat 42.5/31.9 | -1 cinder-hornet +1 stoat-cutthroat 40/30.6 | -1 cinder-hornet +1 cinder-gecko 45/30
+no nearer move
+RESULT 19-A-7 {"cinder-hornet":4,"malachite-golem":3,"obsidian-scorpion":3,"stalactite-golem":2,"tide-spirit":3,"cinder-gecko":1} 38.1 {} moves: -1 stoat-cutthroat +1 tide-spirit problems: []
