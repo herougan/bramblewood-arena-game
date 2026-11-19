@@ -7578,7 +7578,7 @@
      ],
      "level": 1,
      "leaders": [
-      "puddle-skimmer"
+      "moonlit-hare"
      ],
      "deck": {
       "duck-paddler": 4,
@@ -9595,6 +9595,16 @@
       "2-PRO-3": "2-PRO-2",
       "2-PRO-4": "2-PRO-3"
      }
+    },
+    {
+     "package": "SKWK2",
+     "on": "2026-11-18",
+     "leaders": {
+      "2-BPRO-3": [
+       "puddle-skimmer"
+      ]
+     },
+     "why": "re-baked after FOLD6 / CARDPOW2 / REFIT5-6 (SKWK2): the showcase leaders under the re-set cards; the previous values are here"
     }
    ],
    "wpro": [
@@ -16720,7 +16730,7 @@
      ],
      "level": 1,
      "leaders": [
-      "snapstick-turtle"
+      "slow-worm"
      ],
      "deck": {
       "gannet-nestweaver": 4,
@@ -18851,6 +18861,16 @@
        "why": "the Map reference wins under 50% against it and two descents found no legal deck of its list at 50%+ (N-WK TOO STRONG)"
       }
      ]
+    },
+    {
+     "package": "SKWK2",
+     "on": "2026-11-18",
+     "leaders": {
+      "4-PRO-2": [
+       "snapstick-turtle"
+      ]
+     },
+     "why": "re-baked after FOLD6 / CARDPOW2 / REFIT5-6 (SKWK2): the showcase leaders under the re-set cards; the previous values are here"
     }
    ],
    "wpro": [
@@ -19012,7 +19032,7 @@
      ],
      "level": 1,
      "leaders": [
-      "shoal-shark"
+      "river-mink"
      ],
      "deck": {
       "alley-cat": 4,
@@ -21019,6 +21039,16 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKWK2",
+     "on": "2026-11-18",
+     "leaders": {
+      "5-PRO-3": [
+       "shoal-shark"
+      ]
+     },
+     "why": "re-baked after FOLD6 / CARDPOW2 / REFIT5-6 (SKWK2): the showcase leaders under the re-set cards; the previous values are here"
     }
    ],
    "wpro": [
