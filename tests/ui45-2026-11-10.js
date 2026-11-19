@@ -17,7 +17,7 @@ const sp = fn('ui37Split'), fill = fn('ui38Fill');
 ok(/ui38Fill\(top, defs, ok, idx, neu, car\)/.test(sp) && /return \{n, neu, car, extra: \[\], idx: idx2\}/.test(sp), 'ui37Split passes the Yes-only index and returns it for the Map N pills'); // 2026-11-13 TESTFIX3: LIST1 returns idx: idx2 (the Yes index plus a side map's own cards)
 ok(!/carFill|carriedFill/.test(fill), 'ui38Fill has no Carried fill');
 ok(/newMax = R\.newMax \|\| 60/.test(fill), 'JS fallback 60 (UI48: no newTarget top-up)');
-ok(/\.sort\(\(a, b\)=> idx\.get\(b\) - idx\.get\(a\)\)/.test(fill), "Carried: previous map's Yes cards first");
+ok(!/idx\.keys\(\)/.test(fill), 'ui38Fill adds no earlier Yes cards to Carried (2026-11-20 CARRY1: Carried = list + flags + explicit picks, tests/carry1-2026-11-20.js)');
 ok(!/carriedTarget/.test(app), 'no Carried minimum in the window');
 ok(html.includes("R.newMax || 60") || html.includes('newMax = R.newMax || 60'), 'index.html rebuilt');
 // fill on a small case: a Yes-flagged card leaves NEW!, shows in Carried; an unflagged earlier-map card stays NEW!
@@ -28,5 +28,5 @@ ok(html.includes("R.newMax || 60") || html.includes('newMax = R.newMax || 60'), 
   const f = new Function(env + blk.replace('__MAP_PROSPECTS__', JSON.stringify(P)) + '; return {ui38Fill};')();
   const defs = {a: {name: 'a'}, b: {name: 'b'}, c: {name: 'c'}}, neu = [], car = [];
   f.ui38Fill('mx', defs, ()=> true, new Map([['b', 0]]), neu, car);
-  ok(neu.map(p=> p.id).join() === 'a,c' && car.map(p=> p.id).join() === 'b', 'Yes card b: Carried, not NEW!; the others stay NEW!: ' + neu.map(p=> p.id) + ' | ' + car.map(p=> p.id)); }
+  ok(neu.map(p=> p.id).join() === 'a,c' && car.map(p=> p.id).join() === '', 'Yes card b: not NEW!, and (CARRY1) no fill puts it in Carried; the others stay NEW!: ' + neu.map(p=> p.id) + ' | ' + car.map(p=> p.id)); }
 console.log(fail ? 'FAIL ' + fail : 'ok', pass + ' checks'); process.exit(fail ? 1 : 0);

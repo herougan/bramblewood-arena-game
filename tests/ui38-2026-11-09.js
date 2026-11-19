@@ -55,8 +55,7 @@ MAIN.forEach(k=>{ const m = D.maps[k], st = m.static;
   ok(f.ui38SideOnly('mx').has('e3') && !f.ui38SideOnly('m1').has('e3') && !f.ui38SideOnly('mx').has('e1'), "a card on the map's own side map's list is left out on that map only");
   ok(JSON.stringify(ids(neu)) === JSON.stringify(['w1', 'a1', 'a2', 'a5', 'concept-x']), 'NEW!: list first, fit by score, family cap 2 (a3 left out), score < 4 left out, side-only s1 left out, concepts last: ' + ids(neu).join(','));
   ok(neu[1].src.has('fit') && neu[4].src.has('concept') && neu[1].why.length > 0, 'fit / concept sources and a why text');
-  ok(JSON.stringify(ids(car)) === JSON.stringify(['e2']), 'Carried (UI45): only the card flagged Yes on an earlier map (e2); e1 and e4 are on earlier lists but not Yes, so they are not carried: ' + ids(car).join(','));
-  ok(car.length === 1 && car[0].src.has('earlier'), 'a card flagged Yes on an earlier map gets the "Yes earlier" pill');
+  ok(JSON.stringify(ids(car)) === '[]', 'Carried (2026-11-20 CARRY1): ui38Fill adds nothing, not even the earlier Yes card e2 (Carried = list + flags + picks, tests/carry1-2026-11-20.js): ' + ids(car).join(','));
   ok(f.ui38Concept('concept-x').mapId === 'mx' && f.ui38Concept('a1') === null, 'concept lookup by id'); }
 
 // 3. wiring

@@ -8,6 +8,8 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Admin: the card editor's map chips list only maps whose list holds the card (main, Special, side map); a card in no list reads "no map" (an obtain source alone no longer makes a chip). The row re-renders in the open editor when a map list changes (map card-list editor, live map-pools / map-picks row), the form untouched. Every chip now opens its map's cards (only the first did).
 ## 2026-11-20 UIQ2
 - Admin map card list, "Skills on these cards": one colour per meaning, with a legend line. Red = NEW! here (every NEW! skill, the header count too), green = on these cards and recommended, blue = suggested but on none of them (pills keep the reason), grey = carried. Focus is an outline plus a "Focus" pill; the map keyword is an "Intro" pill (gold is gone).
+## 2026-11-20 (package CARRY1: explicit carry picks in the Map cards window)
+- Admin: a map's Carried group no longer collects every card flagged Yes on earlier maps. It shows the map's own list cards from earlier maps, the owner's flags, and Claude's explicit picks (docs/design/carry-picks-2026-11-20.json: 99 picks for Maps 1-20 and 16 side maps, 0-5 each, each with a short why in the hover). A pick shows only while it comes from an earlier map. Tutorial cards show only where listed or picked. Test: tests/carry1-2026-11-20.js; ui38 / ui44 / ui45 / list1 / e2e ui47 pins follow.
 
 ## 2026-11-19 DEC19-DATA
 - Honey Badger Fury attainable (TF5-3 a). Basalt Foundry (m9) takes Malachite Golem, Granite Ox Golem stays on Volcano Lair (LIST1-1 a): m9 list and the nine 19-A fights re-fitted, card-obtain-maps regenerated. Refine note and Elemental Energy card read "Every Turn".
