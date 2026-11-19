@@ -3,6 +3,9 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 - 2026-11-19 (UIFIN3): while the pack opener is open, reward toasts drop to the bottom edge (newest two only), so the "2 more in this set, 2 after" line stays readable on phone and desktop.
+## 2026-11-19 (package REFIT8: swap-only re-fit of the 17 Maps 0-20 fights REFIT7 left 20+ off)
+- Road decks (swaps only; leaders, first-clear cards, sizes and K14 kept): 2-2 Pincushion Urchin x4 -> Limpet Clinger x4; 4-5 Grass Snake x4 -> Slow-worm x4; 17-6 Ice Crevasse Wolf x3 + Harbor Seal x4 -> Polar Bear, Snow Ermine, Warhorse Charger, Ringed Seal x4; 17-8 Pinecone Sapper, Warhorse Charger, Ringed Seal x4 -> Briarback Hedgehog, Cataphract Destrier, Harbor Seal x4. Seed 9100, 400 games: 2-2 47.8 -> 61.3 (target 80), 4-5 25.8 -> 31.8 (40, in band), 17-6 31.8 -> 48.5 (65), 17-8 13.8 -> 19 (40).
+- Each kept only on 2+ points closed on the mean of two unused seed sets (71100 / 72100, 73100 / 74100 for 17-6's second step). The other 13 fights found no swap that held: the pool lacks the cards (decision REFIT7-1). FOLD8's card fold (merged after REFIT7) moved unchanged fights: fights of Maps 1-A, 2, 3, 5, 7-A and 8 are 10-35 points harder for the player (3-2, 3-7, 5-1, 8-3, 1-A-1, 7-A-3/4/5 now 20+ too hard). Files: `docs/balance/refit8/`.
 
 ## 2026-11-19 (package UIFIN2, pack opener count)
 - Players see: with reward packs queued, "Pack 1 of 3" no longer sits above "4 more packs to open"; the line now reads "2 more in this set, 2 after" (`ui.uifin2-pile-split`, 12 packs; Tagalog, Tamil, Japanese, Korean drafts). Without queued sets the old line stays.

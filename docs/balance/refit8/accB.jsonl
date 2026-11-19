@@ -1,0 +1,9 @@
+{"key":"18-A-4","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":97.5,"seed2":192300,"games":160},"moves":[]}
+{"key":"18-A-7","deck":{"barrel-cactus":2,"dune-jackal":4,"quicksand-queen":2,"sand-widow":4,"horned-lizard":3},"shieldOverride":null,"hqHp":null,"tune":{"w2":92.5,"seed2":192300,"games":160},"moves":["-2 roadrunner-courier +2 dune-jackal","-1 barrel-cactus +1 dune-jackal"]}
+{"key":"18-A-6","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":92.5,"seed2":192300,"games":160},"moves":[]}
+{"key":"18-4","deck":{"ant-scout":1,"armadillo-guard":5,"barrel-cactus":2,"dust-devil-kestrel":2,"horned-lizard":3,"sandstorm-roc":5},"shieldOverride":null,"hqHp":null,"tune":{"w2":93.8,"seed2":192300,"games":160},"moves":["-1 horned-lizard +1 sandstorm-roc"]}
+{"key":"18-7","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":71.3,"seed2":192300,"games":160},"moves":[]}
+{"key":"3-6","deck":{"feral-tomcat":3,"hawk-arrowkeeper":4,"peak-condor":4,"kittiwake-flock":3,"pika-hoarder":1,"gannet-nestweaver":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":68.8,"seed2":192300,"games":160},"moves":["-1 beachcomber-sanderling +1 gannet-nestweaver"]}
+{"key":"20-A-4","deck":{"brimstone-hound":2,"obsidian-scorpion":3,"the-contradiction":1,"ur-elk":2,"honey-badger-fury":2},"shieldOverride":null,"hqHp":null,"tune":{"w2":58.1,"seed2":192300,"games":160},"moves":["-1 brimstone-hound +1 ur-elk"]}
+{"key":"10-A-5","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":66.9,"seed2":192300,"games":160},"moves":[]}
+{"key":"5-A-4","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":59.4,"seed2":192300,"games":160},"moves":[]}

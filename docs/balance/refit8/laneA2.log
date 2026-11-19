@@ -1,0 +1,12 @@
+17-8 target 40 (30-49) size 16 start {"glacier-yak":4,"ice-crevasse-wolf":3,"walrus-icebreaker":2,"elderhorn-monarch":1,"briarback-hedgehog":1,"cataphract-destrier":1,"harbor-seal":4} problems []
+start {"glacier-yak":4,"ice-crevasse-wolf":3,"walrus-icebreaker":2,"elderhorn-monarch":1,"briarback-hedgehog":1,"cataphract-destrier":1,"harbor-seal":4} 17.5
+round 1: cur 33.3/17.5; 18 legal, 18 read + 6 predicted (of 47); top: -4 harbor-seal +4 ringed-seal 33.3/20.6 | -3 ice-crevasse-wolf +3 arctic-tern 12.5/17.5 | -4 harbor-seal -3 ice-crevasse-wolf +4 ringed-seal +3 arctic-tern 16.7/11.3
+round 2: cur 33.3/20.6; 18 legal, 18 read + 6 predicted (of 51); top: -4 ringed-seal +4 harbor-seal 33.3/17.5 | -3 ice-crevasse-wolf +3 arctic-tern 16.7/11.3 | -1 cataphract-destrier +1 cone-cutter-squirrel 12.5/6.3
+no nearer move
+RESULT 17-8 {"glacier-yak":4,"ice-crevasse-wolf":3,"walrus-icebreaker":2,"elderhorn-monarch":1,"briarback-hedgehog":1,"cataphract-destrier":1,"ringed-seal":4} 20.6 {} moves: -4 harbor-seal +4 ringed-seal problems: []
+17-6 target 65 (57-73) size 20 start {"arctic-tern":4,"glacier-yak":4,"ice-crevasse-wolf":1,"polar-bear":2,"snow-ermine":4,"elderhorn-monarch":1,"harbor-seal":4} problems []
+start {"arctic-tern":4,"glacier-yak":4,"ice-crevasse-wolf":1,"polar-bear":2,"snow-ermine":4,"elderhorn-monarch":1,"harbor-seal":4} 36.9
+round 1: cur 45.8/36.9; 24 legal, 24 read + 6 predicted (of 19); top: -1 ice-crevasse-wolf -4 harbor-seal +1 warhorse-charger +4 ringed-seal 58.3/48.1 | -1 ice-crevasse-wolf -4 harbor-seal +1 cataphract-destrier +4 ringed-seal 66.7/42.5 | -1 ice-crevasse-wolf -4 harbor-seal +1 briarback-hedgehog +4 ringed-seal 70.8/40
+round 2: cur 58.3/48.1; 13 legal, 13 read + 6 predicted (of 31); top: -1 warhorse-charger +1 cataphract-destrier 66.7/42.5 | -1 warhorse-charger +1 briarback-hedgehog 70.8/40 | -1 warhorse-charger +1 cone-cutter-squirrel 58.3/35.6
+no nearer move
+RESULT 17-6 {"arctic-tern":4,"glacier-yak":4,"polar-bear":2,"snow-ermine":4,"elderhorn-monarch":1,"warhorse-charger":1,"ringed-seal":4} 48.1 {} moves: -1 ice-crevasse-wolf -4 harbor-seal +1 warhorse-charger +4 ringed-seal problems: []
