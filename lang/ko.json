@@ -4678,5 +4678,11 @@
  "These {n} go with you": "이 {n}장이 함께합니다",
  "Level {n} reward: {name}": "레벨 {n} 보상: {name}",
  "{a} more in this set, {b} after": "이 세트에 {a}개 더, 이후 {b}개",
- "Team up with friends in a dungeon": "친구와 함께 던전에 도전하세요"
+ "Team up with friends in a dungeon": "친구와 함께 던전에 도전하세요",
+ "When played, your other units get +{n}/+{n} for the fight.": "낼 때 이번 전투 동안 아군의 다른 유닛이 +{n}/+{n}을 얻어요.",
+ "An Every Turn trigger: every turn it is Ready, from its first. It mills Lumber you hold (1 becomes 2); with no Lumber nothing happens. Lumberjack adds to it.": "매 턴 트리거: 가능 상태인 매 턴, 첫 턴부터 발동해요. 가진 목재를 제재해요 (1이 2가 됨). 목재가 없으면 아무 일도 없어요. 나무꾼이 더해져요.",
+ "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "대가가 있는 매 턴 트리거: 실제로 발동할 때만 목재를 냅니다. 유닛은 유지 단계 순서로 행동하므로, 먼저 행동하는 채석이 제련소에 공급할 수 있습니다.",
+ "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "매 턴 트리거: 대기, 기절, 빙결, 수면 중에는 꺼져요. 빈칸이 없으면 아무것도 안 나와요.",
+ "Deliver": "전달",
+ "Every Turn": "매 턴"
 }

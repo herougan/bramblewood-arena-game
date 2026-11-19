@@ -49409,7 +49409,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=ef29a2d751", "es": "assets/lang/es.js?v=905a22eed2", "fr": "assets/lang/fr.js?v=f40b28665e", "id": "assets/lang/id.js?v=08ec7b61b4", "it": "assets/lang/it.js?v=5b22a4386f", "ja": "assets/lang/ja.js?v=54e1d3a355", "ko": "assets/lang/ko.js?v=73ca3d3fad", "pt": "assets/lang/pt.js?v=be33600156", "ta": "assets/lang/ta.js?v=872cad0e88", "tl": "assets/lang/tl.js?v=fb1e2a16c9", "zh-Hans": "assets/lang/zh-Hans.js?v=96dfc051a3", "zh-Hant": "assets/lang/zh-Hant.js?v=1a0b49e2f3"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=4eded4febe", "es": "assets/lang/es.js?v=775f0359e0", "fr": "assets/lang/fr.js?v=7c77b52cf7", "id": "assets/lang/id.js?v=128df32933", "it": "assets/lang/it.js?v=4a3cb69568", "ja": "assets/lang/ja.js?v=3fd45b9650", "ko": "assets/lang/ko.js?v=4b7a46a9dc", "pt": "assets/lang/pt.js?v=703856b5ff", "ta": "assets/lang/ta.js?v=11c2d547eb", "tl": "assets/lang/tl.js?v=879be7e203", "zh-Hans": "assets/lang/zh-Hans.js?v=3998b3ad9b", "zh-Hant": "assets/lang/zh-Hant.js?v=26c8aa0e2e"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -50977,8 +50977,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk2-salvage-codex": "Like Scavenge, but only Structures count, on either side, and the points become Stone. Heavy Metal adds to it.",
   "ui.sk2-repair-codex": "Within 1 column; never itself. The bramble takes half, rounded down, at least 1. Waiting, Stunned, Frozen or Asleep: no repair.",
   "ui.sk2-foraging-codex": "It holds at most a full basket. With nobody hurt it waits. The heal stanches Bleed first. A Pickpocket can steal Berries.",
-  "ui.sk2-milling-codex": "An On Turn Start trigger: every turn it is Ready, from its first. It mills Lumber you hold (1 becomes 2); with no Lumber nothing happens. Lumberjack adds to it.",
-  "ui.sk2-quarry-codex": "An On Turn Start trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.",
+  "ui.sk2-milling-codex": "An Every Turn trigger: every turn it is Ready, from its first. It mills Lumber you hold (1 becomes 2); with no Lumber nothing happens. Lumberjack adds to it.",
+  "ui.sk2-quarry-codex": "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.",
   "ui.sk2-smelter-codex": "Each conversion is paid whole or not at all. Heavy Metal adds to the Metal. Units act in upkeep order: let a Quarry act first.",
   "ui.sk2-disarm-codex": "A weapon is any equipment. An equipped piece takes its Attack, Health and skills with it. The thief equips it for a round, as with any piece.",
   "ui.sk2-sabotage-codex": "Lumber first, then Stone, Metal and Uranium. A missed or dodged swing destroys nothing.",
@@ -51203,9 +51203,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.skn-exhaust": "Exhaust",
   "ui.skn-petrify": "Petrify",
   "ui.sk3-spawner": "While Ready, it spawns {card} into the free slot nearest it every turn.",
-  "ui.sk3-spawner-codex": "An On Turn Start trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.",
+  "ui.sk3-spawner-codex": "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.",
   "ui.sk3-banner": "Your other units have +{n} Attack while it lives.",
-  "ui.sk3-warcry": "When played, your other units get +{n}/+{n}.",
+  "ui.sk3-warcry": "When played, your other units get +{n}/+{n} for the fight.",
   "ui.sk3-shieldwall": "Its adjacent allies have +{n} Armor while it lives.",
   "ui.sk3-corpsefeeder": "Each turn while Ready, it exiles your oldest graveyard card and gains +{n}/+{n}.",
   "ui.sk3-corpsefeeder-codex": "An empty graveyard feeds nothing. The exile is a real one: you get an Echo and On Exile fires.",
@@ -56872,7 +56872,7 @@ const TRIGGER_DEFS = [
   // where the card is simply sitting at Wait=0 already. "Per Turn" below is the hook that
   // actually re-fires every such round; this fixed text says so, so no future card design gets
   // fooled the way this feature nearly did.
-  {key:'onReady', label:'On Ready', desc:'the moment this card\'s Wait first reaches 0 — fires ONCE, not every round. For an effect that repeats every round this card is Ready, use "On Turn Start" instead.'},
+  {key:'onReady', label:'On Ready', desc:'the moment this card\'s Wait first reaches 0 — fires ONCE, not every round. For an effect that repeats every round this card is Ready, use "Every Turn" instead.'},
   {key:'onDeath', label:'On Death', desc:'the moment this card dies'},
   {key:'onAttacked', label:'On Attacked', desc:'every time this card is hit (melee or ranged/skill) and survives'},
   {key:'onAttack', label:'On Attack', desc:'every time this card commits to attacking this round (before its target resolves)'},
@@ -56906,7 +56906,7 @@ const TRIGGER_DEFS = [
   // Renamed "Per Turn" -> "On Turn Start" (2026-10-10, user). Its first parameter picks whose turn: both (every
   // round, the old behaviour), yours or the opponent's. Both sides plan and then resolve together, so "your turn" is
   // the round where you strike first (initiative alternates every round).
-  {key:'perTurn', label:'On Turn Start', desc:"the start of a turn while this card is Ready (Wait 0, not Stunned/Frozen/Asleep/Paralyzed). Pick whose turn: both (every round), yours (the rounds you strike first) or the opponent's (the rounds they strike first)"},
+  {key:'perTurn', label:'Every Turn', desc:"the start of a turn while this card is Ready (Wait 0, not Stunned/Frozen/Asleep/Paralyzed). Pick whose turn: both (every round), yours (the rounds you strike first) or the opponent's (the rounds they strike first)"},
   {key:'onEnemySpawn', label:'On Enemy Spawn', desc:"every time a card the OPPONENT controls is put into play by a card's ABILITY (the Spawn action, On Death: Spawn) — not a hand play. For a hand play, use \"On Enemy Played\" instead"},
   {key:'onColumnSpawn', label:'On Column Spawn', desc:'every time ANY card (either side) is spawned into this card\'s own lane/column'},
   {key:'onAllyDie', label:'On Ally Die', desc:"every time a DIFFERENT card this player controls dies — the flip side of On Death, which only fires for this card's own death"},
@@ -56994,13 +56994,13 @@ const ACTION_DEFS = [
   // specifics into parameters" pass the rest of this list just went through. The engine's four old
   // gainX cases are all still honored as legacy aliases for any existing save data; canonical
   // cards that used them were migrated to this shape directly (see cards.json).
-  {key:'gain', label:'Gain', fields:['resource','amount'], desc:"This card's owner gains the chosen resource — Lumber, Grace, Stone, or Dark Points."},
+  {key:'gain', label:'Deliver', fields:['resource','amount'], desc:"This card's owner gains the chosen resource — Lumber, Grace, Stone, or Dark Points."},
   // Refine (2026-09-18, "do an advanced resource where it takes refining from units — e.g. maybe
   // some units take a stone every turn and produce this advanced resource"): pair with the
   // existing Per Turn trigger. Consumes exactly 1 Stone (no-ops if the owner has none that turn)
   // and produces Amount Elemental Energy — the fixed 1-Stone cost keeps this a simple two-field
   // ask (trigger + amount) rather than a fully generic resource-conversion system.
-  {key:'refine', label:'Refine', fields:['amount'], desc:"Pair with On Turn Start. Consumes 1 Lumber from this card's owner (no-op if they have none) and produces Amount Elemental Energy — the advanced resource."},
+  {key:'refine', label:'Refine', fields:['amount'], desc:"Pair with Every Turn. Consumes 1 Lumber from this card's owner (no-op if they have none) and produces Amount Elemental Energy — the advanced resource."},
   {key:'drawCard', label:'Draw', fields:['count'], desc:"This card's owner draws that many cards."},
   {key:'exileGrave', label:'Exile from graveyard', fields:['count'], desc:"Move that many random cards from the owner's graveyard to the Removal Zone. Each one gives 1 Echo."},
   {key:'spawnCard', label:'Spawn', fields:['defId','count'], desc:'Spawn copies of another card onto this row.'},
@@ -59587,7 +59587,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '1ce7df62d728', BUILD_CARD_HASH = 'e9bc595c0698cc8864aa55673ac3e4fb65eee208265917687f1bcbea969871ea';
+const BUILD_ID = '1f269309340f', BUILD_CARD_HASH = 'e9bc595c0698cc8864aa55673ac3e4fb65eee208265917687f1bcbea969871ea';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed

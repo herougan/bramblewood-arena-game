@@ -12,5 +12,5 @@ ok(/map\.id==='md' \? mapSkullHTML\(\)/.test(src) && /\.map-skull\{/.test(tpl), 
 ok(/poison:'Poison' \/\* ENG33; 2026-11-18 \(UIFIN\)/.test(src) && /name:'Poison', c:'#3fa535'/.test(src) && !/label:'Venom'/.test(src), '5 damage type and status chip read Poison');
 const fk = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/design/redesign3-2026-11-17.json'), 'utf8')).focus;
 const m = /const MAP_FOCUS_SKILLS = (\{[^;]*\});/.exec(src); const cfg = m && eval('(' + m[1] + ')');
-ok(cfg && fk.filter(f=> f.map >= 0 && f.map <= 20).every(f=> JSON.stringify(cfg[f.map]) === JSON.stringify(f.skills.map(s=> s.key))), '6 MAP_FOCUS_SKILLS = REDESIGN3 focus keys');
+ok(cfg && fk.filter(f=> f.map >= 0 && f.map <= 20).every(f=> JSON.stringify(cfg[f.map]) === JSON.stringify(f.skills.map(s=> s.key === 'arrowFlaming' ? 'fireArrow' : s.key))), '6 MAP_FOCUS_SKILLS = REDESIGN3 focus keys (2026-11-19 TESTFIX7: the design file\'s arrowFlaming is the game\'s fireArrow)');
 console.log(fail ? 'FAIL ' + fail : 'ok uifin'); process.exit(fail ? 1 : 0);

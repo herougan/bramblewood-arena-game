@@ -4676,5 +4676,11 @@
  "These {n} go with you": "Itong {n} ay sasama sa iyo",
  "Level {n} reward: {name}": "Gantimpala sa Antas {n}: {name}",
  "{a} more in this set, {b} after": "{a} pa dito, {b} pagkatapos",
- "Team up with friends in a dungeon": "Makipagtulungan sa mga kaibigan sa dungeon"
+ "Team up with friends in a dungeon": "Makipagtulungan sa mga kaibigan sa dungeon",
+ "When played, your other units get +{n}/+{n} for the fight.": "Kapag nilaro, makakakuha ng +{n}/+{n} ang iba mong unit sa buong laban.",
+ "An Every Turn trigger: every turn it is Ready, from its first. It mills Lumber you hold (1 becomes 2); with no Lumber nothing happens. Lumberjack adds to it.": "Isang trigger na Bawat Turn: bawat turn na Handa ito, mula sa una. Nilalagari nito ang Kahoy na hawak mo (ang 1 ay nagiging 2); kung walang Kahoy, walang mangyayari. Nadaragdagan ito ng Lumberjack.",
+ "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "Isang trigger na Bawat Turn na may presyo: binabayaran lang ang Kahoy kapag tumama ito. Kumikilos ang mga unit ayon sa ayos ng upkeep, kaya ang Tibagan na unang kumilos ay makapagpapakain sa Pandayan.",
+ "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "Isang trigger na Bawat Turn: patay habang Naghihintay, Stunned, Frozen o Tulog. Walang bakanteng puwesto, walang lalabas.",
+ "Deliver": "Ihatid",
+ "Every Turn": "Bawat Turn"
 }
