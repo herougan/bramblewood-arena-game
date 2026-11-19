@@ -49,7 +49,8 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   ok(row && row.scale === 'mult' && row.value === 0.85, `Slow is priced as a x0.85 multiplier on S: ${row && row.value} (was -0.8: bench.js skill slow -0.9 at 80, -0.8 at 200)`);
   const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8'));
   // 2026-10-30 TUT2: owner ENG13-2 "maybe just sloth titan, old-growth tortoise and garden snail": Slow on those three only
-  ok(cards.filter(c=> c.effects && c.effects.slow).map(c=> c.id).sort().join(',') === 'ancient-sloth-titan,garden-snail,old-growth-tortoise', 'Slow is on the three cards the owner named (ENG13-2)');
+  // 2026-11-19 (TESTFIX7): FOLD8 folded the owner's 11-18 edit giving Slow-worm Slow (its budget is FOLD8-1, not this check)
+  ok(cards.filter(c=> c.effects && c.effects.slow).map(c=> c.id).sort().join(',') === 'ancient-sloth-titan,garden-snail,old-growth-tortoise,slow-worm', 'Slow is on the three cards the owner named (ENG13-2) and Slow-worm (his 11-18 edit)');
   const TXT = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT;
   ok(TXT['ui.eng13-slow-name'] === 'Slow' && /same Speed/.test(TXT['ui.eng13-slow']), 'Slow has its TX name and line');
   ok(app.includes("PASSIVE_DEFS.push({key:'slow', category:'passive', label:TX('ui.eng13-slow-name')") && app.includes("Object.assign(SKILL_ICON, {slow:'🐌'})") && app.includes("Object.assign(SKILL_TEXT, {slow: ()=> TX('ui.eng13-slow')})"), 'arena_app.js: the passive row, the 🐌 icon and the skill line');

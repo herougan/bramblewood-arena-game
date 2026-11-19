@@ -79,7 +79,7 @@ ok(/BB?\.ARROW_FAMILY|ARROW_FAMILY/.test(app.slice(app.indexOf('function skillFa
 ok(T['ui.skn-bolt'] === 'Bolt' && /arrow/i.test(T['ui.sk-arrow-family-codex']) && /Speed 2/.test(T['ui.sk-bolt-family-codex']), 'the Codex family notes and the Bolt chip name');
 ok(/after the swings/.test(T['ui.sk-archer']) /* 2026-11-17: under 20 words (d-2026-10-19) */ && !/Speed 1/.test(T['ui.skx-shock-bolt']), "Archer's text says after the swings; Shock Bolt's note no longer says Speed 1");
 ok(!/at Speed 1 \(after Quick units/.test(app) && (app.match(/at Speed 2 \(with Quick units, before the rest swing\)/g) || []).length === 6, 'the six bolt descriptions read Speed 2');
-{ const F = new Function(app.match(/const MAP_FOCUS_SKILLS = \{[^\n]*\n/)[0] + 'return MAP_FOCUS_SKILLS;')(); ok(F[20].join() === 'fireArrow', "Map 20's focus skill is Arrow (Flaming)"); }
+{ const F = new Function(app.match(/const MAP_FOCUS_SKILLS = \{[^\n]*\n/)[0] + 'return MAP_FOCUS_SKILLS;')(); ok(F[19].join() === 'fireArrow' && F[20].join() === 'fireBolt', "Map 19's focus skill is Arrow (Flaming), Map 20's Fire Bolt"); } // 2026-11-19 (TESTFIX7): UIFIN's REDESIGN3 v2 table moved Arrow (Flaming) to Map 19 (was Map 20 in REDESIGN2)
 { const j = JSON.parse(rd('docs/design/redesign2-2026-11-16.json')); ok(j.MAP_FOCUS['20'].join() === 'Arrow (Flaming)' && /Fire Bolt/.test(rd('docs/design/redesign2-2026-11-16.md')), 'REDESIGN2: Map 20 Arrow (Flaming), Fire Bolt on the Dragon Lair'); }
 ok(/ARROW1/.test(rd('docs/project-state.md')) && /ARROW1/.test(rd('docs/CHANGELOG.md')), 'project-state and the CHANGELOG name ARROW1');
 ok(/arrow1-2026-11-16/.test(rd('tests/run-all.sh')), 'run-all.sh lists this test');

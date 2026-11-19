@@ -9,7 +9,7 @@ R({id:'sk-shield-break', stage:'board', inGameHook:'shieldSoak with 0 left → v
     ctx.float(t, '💠 Shield breaks', 'debuff'); ctx.sound('iceShatter'); if(typeof vis4ShieldBreak === 'function') vis4ShieldBreak(bc(t)); return ctx.wait(120).then(()=> A().shieldBurst(t)); }}]});
 R({id:'sk-stun-player', stage:'board', inGameHook:'the stunned side\'s turn opens (resolveRoundCore: fxHook(\'turnSkipped\', side)) → FX.A.hooks.turnSkipped → FX.A.frozenClock; the bell (A) still tolls when the stun lands',
   variants:[{key:'V2', label:'VFX2 · Your skipped turn: a frosted clock over your hand races and jams, ice chips, a frost wash', play:ctx=>{ ctx.sound('freezeChime');
-      return A().frozenClock(ctx.board.hand || ctx.board.castleMine); }},
+      const h = (ctx.board.hand || [])[0]; return A().frozenClock((h && h.parentNode) || ctx.board.castleMine); /* 2026-11-19 (TESTFIX7): ctx.board.hand is the hand's card list, not an element (lab-errors: getBoundingClientRect); the game passes #handStrip */ }},
     {key:'V2B', label:'VFX2 · The enemy\'s skipped turn: the same clock over their castle', play:ctx=>{ ctx.sound('freezeChime'); return A().frozenClock(ctx.board.castleFoe); }}]});
 R({id:'sk-mind-control', stage:'board', inGameHook:'mindControl → vfx2MindControlRows (arena_app.js: the unit is redrawn on the caster\'s row, its old rect on ev._fromRect) → FX.A.mindFlip',
   variants:[{key:'V2', label:'VFX2 · A tether and a swirl, the unit flies over to your row, flipping from violet to your blue, and lands with a ring', play:ctx=>{
@@ -21,11 +21,11 @@ R({id:'sk-exile-board', stage:'board', inGameHook:'death {exiled | nullified} �
 // The tutorial's first-deck window (REL3's moment) and its Claim button: FX.F.momentRing on the Level chip, FX.F.coinBurst on Claim.
 const tmp = (html, css)=>{ const e = document.createElement('div'); e.innerHTML = html; const n = e.firstChild; n.style.cssText = 'position:fixed; left:50%; top:55%; transform:translate(-50%,-50%); z-index:5000;' + (css || ''); document.body.appendChild(n); return n; };
 const F = ()=> window.FX && FX.F;
-R({id:'meta-account-level', stage:'board', inGameHook:"REL3's first-deck window paints its Level chip and sends 'bw-moment' {up:true} -> FX.F.momentRing (bramblewood-fx-f.js listener; reduced motion and Effects None skip it)",
+R({id:'meta-account-level', stage:'ui' /* 2026-11-19 (TESTFIX7): was 'board', which moved f.js's A/B/C onto the board stage (no ctx.ui: TypeError reading 'results'); V2 floats its own chip, any stage */, inGameHook:"REL3's first-deck window paints its Level chip and sends 'bw-moment' {up:true} -> FX.F.momentRing (bramblewood-fx-f.js listener; reduced motion and Effects None skip it)",
   variants:[{key:'V2', label:'VFX2 · First-deck window: a gold ring fills round the Level chip, flashes and throws coins', play:ctx=>{ ctx.sound('unlockChime');
     const chip = tmp('<span class="trm is-lvl">⭐ Level 2</span>', 'padding:6px 14px; border-radius:999px; font:800 15px/1.1 system-ui; color:#3b2a06; background:linear-gradient(#fff3c2,#ffd04a);');
     return F().momentRing(chip).then(()=> ctx.wait(700)).then(()=> chip.remove()); }}]});
-R({id:'res-tutorial-result', stage:'board', inGameHook:"tutorial win, Claim Rewards (wlPrimaryBtn click: fxHook('claimBurst', btn)) -> FX.F.hooks.claimBurst -> FX.F.coinBurst + coinRegister",
+R({id:'res-tutorial-result', stage:'ui' /* 2026-11-19 (TESTFIX7): as above, f.js's A/B need the ui stage */, inGameHook:"tutorial win, Claim Rewards (wlPrimaryBtn click: fxHook('claimBurst', btn)) -> FX.F.hooks.claimBurst -> FX.F.coinBurst + coinRegister",
   variants:[{key:'V2', label:'VFX2 · Claim Rewards: gold coins pop out of the button and fall', play:ctx=>{ ctx.sound('coinRegister');
     const b = tmp('<button class="btn primary big">Claim Rewards</button>'); return F().coinBurst(b).then(()=> ctx.wait(300)).then(()=> b.remove()); }}]});
 })();

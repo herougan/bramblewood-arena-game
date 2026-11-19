@@ -13,8 +13,9 @@ ok(/mapFocusKeys\(r\.n\)/.test(app.slice(app.indexOf('function skmapHTML('), app
 ok(/\.ui19-sk\.is-focus\{border-color:#c62828/.test(tpl) && /\.ui19-new\.is-minor/.test(tpl), 'red for focus, a muted NEW! tag');
 ok(/ux7-2026-11-16/.test(read('tests/run-all.sh')), 'run-all.sh lists this test');
 const F = new Function(app.match(/const MAP_FOCUS_SKILLS = \{[^\n]*\n/)[0] + 'return MAP_FOCUS_SKILLS;')();
-ok(Object.keys(F).length === 21 && Object.values(F).every(a=> a.length <= 3), '21 maps, 0-3 focus skills each');
-ok(F[0].join() === 'evasive,swarm,nursing' && F[19].join() === 'recoil' && F[20].join() === 'fireArrow', 'the REDESIGN2 draft values'); // 2026-11-16 (coordinator): the table now holds REDESIGN2's focus; Map 20 Arrow (Flaming) (ARROW1, owner 11-16 23:10)
+// 2026-11-19 (TESTFIX7): UIFIN (11-18) put REDESIGN3 v2's focus in the table: up to 5 a map, mapFocusKeys shows the first 3
+ok(Object.keys(F).length === 21 && Object.values(F).every(a=> a.length <= 5) && /function mapFocusKeys\(n\)\{[^\n]*\.slice\(0, 3\)/.test(app), '21 maps, 0-5 focus skills each, 3 shown');
+ok(F[0].join() === 'swarm,flying,nursing' && F[3].join() === 'pounce,swift,arrow' && F[19].join() === 'fireArrow' && F[20].join() === 'fireBolt', 'the REDESIGN3 v2 values');
 
 async function browser(){
   let pw; try{ pw = require('playwright'); }catch(e){ try{ pw = require(path.join(require('child_process').execSync('npm root -g').toString().trim(), 'playwright')); }catch(_){ console.log('  (browser part skipped: no playwright)'); return; } }
@@ -47,7 +48,7 @@ async function browser(){
       // a side map has no focus skills
       const sub = (typeof mpSubsOf === 'function' ? mpSubsOf(mapId) : [])[0]; out.subRed = sub ? mapFocusSet(sub.id).size : 0;
       return out; })()`);
-    ok(r.red.includes('sweep') && r.red.includes('swift') && r.red.includes('pounce') && r.red.length === 3, /* 2026-11-16: REDESIGN2's Map 3 focus */ `only the three focus skills are red (${r.red})`);
+    ok(r.red.includes('arrow') && r.red.includes('swift') && r.red.includes('pounce') && r.red.length === 3, /* 2026-11-19 (TESTFIX7): REDESIGN3 v2's Map 3 focus (UIFIN) */ `only the three focus skills are red (${r.red})`);
     ok(r.cls.indexOf('red') < r.cls.indexOf('normal') && r.cls.indexOf('normal') < r.cls.indexOf('add') && (r.cls.indexOf('counter') < 0 || r.cls.indexOf('add') < r.cls.indexOf('counter')) && (r.cls.indexOf('other') < 0 || r.cls.lastIndexOf('add') < r.cls.indexOf('other')) && r.cls.indexOf('sugg') > r.cls.lastIndexOf('add'), `red, normal, to-add, blue, muted order (${r.cls.join(',')})`);
     ok(r.newN === '3', `N new counts the red chips (${r.newN})`);
     ok(r.bleedMinor && r.pounceOther === 0, `a new non-focus skill keeps a muted tag; a focus skill leaves the muted group (${r.bleedMinor} ${r.pounceOther})`);

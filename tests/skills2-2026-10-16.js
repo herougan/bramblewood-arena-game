@@ -115,7 +115,7 @@ ok(/\{key:'pounce', category:'evergreen', label:'Pounce', kind:'selectNumber', n
   // 2026-10-16 (placement and rarity): most are now placed on the road, so a source is a map reward or nothing
   // 2026-11-18 (TESTFIX): FOLD5 renamed some (Planarian Splitter -> Planarian, Platypus Spur -> Platypus); the id keeps the old name
   const byId2 = {}; cards.forEach(c=> byId2[c.id] = c);
-  const bad = names.filter(n=> { const c = byName[n] || byId2[n.toLowerCase().replace(/[^a-z0-9]+/g, '-')]; return !c || (c.source && !['map','pack'].includes(c.source.kind)) /* 2026-10-19 card pass: some went into the basic pack */ || c.test || !(c.species && c.species.length) || !Object.keys(c.effects || {}).length || !c.locked; });
+  const bad = names.filter(n=> { const c = byName[n] || byId2[n.toLowerCase().replace(/[^a-z0-9]+/g, '-')]; return !c || (c.source && !['map','pack'].includes(c.source.kind)) /* 2026-10-19 card pass: some went into the basic pack */ || c.test || !(c.species && c.species.length) || !Object.keys(Object.assign({}, c.effects, ...Object.values(c.levelSkills || {}))).length /* 2026-11-19 (TESTFIX7): FOLD8 folded the owner's 11-18 edit: Platypus learns Poison at Level 2 (levelSkills), none at Level 1 */ || !c.locked; });
   ok(!bad.length, `each is in cards.json: locked, no source or a map reward (art came 10-18), a species and its skill (${bad.slice(0, 5)})`);
   const lc = names.map(n=> n.toLowerCase()); ok(new Set(lc).size === lc.length, 'no two share a name');
 }

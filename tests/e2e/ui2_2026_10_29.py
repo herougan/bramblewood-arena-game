@@ -207,13 +207,14 @@ async def test_zoom(b, url):
             if n in (7, 9, 12): await shot(pg, f'zoom-{w}x{h}-{n}')
         await close(pg)
 
+# 2026-11-19 (TESTFIX7): Cottontail (3/1) is played into the Ambush; FOLD8 folded the owner's Meadow Rabbit 3 health, which the Ambush's 2 no longer kills
 AMB = """(async()=>{ const m = matchState, e = m.engine; for(const pid of [1,2]){ const pl = m.players[pid]; pl.row.left = []; pl.row.center = []; pl.row.right = []; }
   const a = e.makeBoardCard('tunnel-ant'); a.slot = 0; a._seenAt = 0; a.hp = a.maxHp = 20; m.players[2].row.center.push(a); e.syncSlots(m.players[2]);
   const b = e.makeBoardCard('otter-kit'); b.slot = 1; b._seenAt = 1; b.hp = b.maxHp = 20; m.players[1].row.right.push(b); e.syncSlots(m.players[1]);
-  m.players[1].lumber = 9; m.players[1].hand = [{uid: 880001, defId: 'meadow-rabbit'}]; m.resolving = false; m.replayCards = null; m.speedMult = 0.5; renderMatchUI(); await new Promise(r=> setTimeout(r, 1200));
+  m.players[1].lumber = 9; m.players[1].hand = [{uid: 880001, defId: 'cottontail'}]; m.resolving = false; m.replayCards = null; m.speedMult = 0.5; renderMatchUI(); await new Promise(r=> setTimeout(r, 1200));
   window.__amb = {ev: [], seen: false, moved: 0, uid: a.uid}; const o = renderVfxForEvent;
   window.renderVfxForEvent = function(ev){ try{ window.__amb.ev.push(ev.type + (ev.ambush ? '+' : '')); }catch(_){} return o.apply(this, arguments); };
-  const t0 = performance.now(); const tick = ()=>{ const el = document.querySelector('.board-card[data-uid="9"], .board-card[data-defid="meadow-rabbit"]'); if(el) window.__amb.seen = true;
+  const t0 = performance.now(); const tick = ()=>{ const el = document.querySelector('.board-card[data-uid="9"], .board-card[data-defid="cottontail"]'); if(el) window.__amb.seen = true;
     const at = document.querySelector('.board-card[data-uid="' + a.uid + '"] .card-tile'); if(at){ const t = getComputedStyle(at).transform; if(t && t !== 'none'){ const mm = new DOMMatrix(t); window.__amb.moved = Math.max(window.__amb.moved, Math.abs(mm.m42)); } }
     if(performance.now() - t0 < 6000) requestAnimationFrame(tick); }; tick();
   playCardByUid(880001, 0); return a.uid; })()"""

@@ -85,7 +85,8 @@ async function browser(){
       // UI25 counted 17 with the unobtainable cards (cardObtainMap 0); Frostbite, Fire Arrow, Molting and Stem sit early only on cards no one can own
       // 2026-11-12 (SKIR3): Crepuscular and Keen Eye left the list; their early carriers are off the 11-12 map lists, so their maps gate them again
       // 2026-11-16 (coordinator): Esprit left the list: FOLD5 folded the owner's 11-06..11-13 edits, so its early carriers changed and its map gates it again
-      ok(['nocturnal', 'tide', 'evasive', 'delivery', 'diurnal', 'taunt', 'inspiring', 'reach', 'chrysalis'].every(k=> g.s.includes(k)), `@${w} #11 the skills on cards owned before their map are un-gated (${g.s.join(', ')})`);
+      // 2026-11-19 (TESTFIX7): FOLD8 folded the owner's 11-18 edits that took Nocturnal off Slow-worm, River Mink and Platypus, the early cards that un-gated it
+      ok(['tide', 'evasive', 'delivery', 'diurnal', 'taunt', 'inspiring', 'reach', 'chrysalis'].every(k=> g.s.includes(k)), `@${w} #11 the skills on cards owned before their map are un-gated (${g.s.join(', ')})`);
       ok(['frostbite', 'fireArrow', 'molting', 'stem'].every(k=> !g.s.includes(k)), `@${w} #11 skills whose early cards can't be owned keep their gate`);
       ok(!g.s.includes('sonar') && !g.s.includes('keenSense'), `@${w} #11 Sonar / Keen Sense keep ENG28's gate`);
       ok(g.far < 1 && !g.tide && g.sonar, `@${w} #11 on a fresh save Tide reads as itself, Sonar is still "?" (hidden: ${g.h.join(', ')})`);

@@ -37,6 +37,7 @@ async function browser(){
         out.tideBg = tide ? getComputedStyle(tide).backgroundColor : '';
         out.picks2 = chips(rowOf(ov, 2), 2).map(c=> c.textContent); out.none10 = (()=>{ const e = [...Array(21).keys()].find(n=> !mapFocusKeys(n).length); return e == null ? true : !!rowOf(ov, e).querySelector('.skm-none'); })(); /* 2026-11-17 (coordinator): ARROW1 gave Map 20 Arrow (Flaming); check whichever map has no focus skill, if any */
         out.pastTags = [...rowOf(ov, 2).querySelectorAll('.skm-src b')].map(x=> x.textContent);
+        out.struck0 = chips(rowOf(ov, 2), 2).filter(c=> c.classList.contains('is-bad')).map(c=> c.textContent); // 2026-11-19 (TESTFIX7): REDESIGN3 v2's Map 2 picks (UIFIN) may already strike one (Shield); the edit must add exactly Armor
         // a live edit: a Map 0 card gains Tide -> Map 0 shows it as new, Map 2's Tide is no longer new
         const id = mpEntry(skmapRows()[0].id).cards[0]; const base = Object.assign({}, CARD_DEFS_BASELINE[id]); base.effects = Object.assign({}, base.effects, {armor: 1}); liveCards[id] = base;
         ov = await open(); const t0 = chips(rowOf(ov, 0), 0).find(c=> /^Armor /.test(c.textContent)); out.t0new = !!t0 && t0.classList.contains('is-new');
@@ -54,7 +55,7 @@ async function browser(){
       ok(/ on 21 maps · \d+ new skills/.test(r.totals) || r.totals.length > 5, `${t} totals line (${r.totals})`);
       ok(r.tideNew && r.tideBg !== 'rgba(0, 0, 0, 0)', `${t} Map 2 shows Tide as a red chip (${r.tideNew} ${r.tideBg})`);
       ok(r.picks2.length === 3 && r.none10 && r.pastTags.length >= 3, `${t} picks render, Map 10 shows none, past tags (${JSON.stringify([r.picks2, r.none10, r.pastTags])})`);
-      ok(r.t0new && !r.t2new && r.tideStruck.length === 1, `${t} a live card edit moves Tide's new to Map 0 and strikes Map 2's pick (${JSON.stringify([r.t0new, r.t2new, r.tideStruck])})`);
+      ok(r.t0new && !r.t2new && r.tideStruck.length === r.struck0.length + 1 && r.tideStruck.filter(x=> !r.struck0.includes(x)).every(x=> /^Armor/.test(x)),`${t} a live card edit moves Tide's new to Map 0 and strikes Map 2's pick (${JSON.stringify([r.t0new, r.t2new, r.tideStruck])})`);
       ok(r.gone && r.closed, `${t} struck picks match the data; closes`);
       ok(!r.playerBtn && !r.playerOv, `${t} admin only (${r.playerBtn} ${r.playerOv})`);
       await ctx.close();
