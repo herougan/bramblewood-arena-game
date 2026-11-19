@@ -1302,6 +1302,80 @@ M.puddleSkim = function(att, castle){
   return done(1200);
 };
 
+// ======================= VFX2 (2026-11-19): Mind Control crosses over, the stunned turn, the shield's burst =======================
+// Each takes opts.speed (the replay's speed, 1 and up) and plays that much faster. Transform and opacity only; every node removes itself.
+css('vfx2', `
+.fxa-swirl{border-radius:50%; border:3px dashed rgba(214,188,255,.95); box-sizing:border-box; box-shadow:0 0 12px rgba(164,107,255,.75), inset 0 0 10px rgba(164,107,255,.5);}
+.fxa-tether{stroke:#d9b8ff; stroke-width:3; fill:none; stroke-linecap:round;}
+.fxa-tint{border-radius:10px; background:linear-gradient(160deg, rgba(190,140,255,.5), rgba(110,60,200,.3)); box-shadow:0 0 0 2px rgba(214,188,255,.9), 0 0 16px rgba(164,107,255,.8);}
+.fxa-tint.is-a{background:linear-gradient(160deg, rgba(120,200,255,.45), rgba(40,120,220,.25)); box-shadow:0 0 0 2px rgba(170,225,255,.95), 0 0 16px rgba(70,160,255,.8);}
+.fxa-tint.is-b{background:linear-gradient(160deg, rgba(255,150,140,.45), rgba(220,50,40,.25)); box-shadow:0 0 0 2px rgba(255,190,180,.95), 0 0 16px rgba(255,80,60,.8);}
+.fxa-clock{width:64px; height:64px; border-radius:50%; overflow:hidden; background:radial-gradient(circle at 38% 32%, #fff, #dff3ff 45%, #9fd2f2 100%);
+  box-shadow:0 0 0 4px #e9f7ff, 0 0 0 6px #5aa9dc, 0 6px 14px rgba(0,0,0,.45), 0 0 22px rgba(140,210,255,.8);}
+.fxa-clock i{position:absolute; left:50%; bottom:50%; width:4px; height:17px; margin-left:-2px; border-radius:2px; background:#24425e; transform-origin:50% 100%;}
+.fxa-clock i.m{height:25px; width:3px; margin-left:-1.5px; background:#2d5b84;}
+.fxa-clock b{position:absolute; left:50%; top:50%; width:8px; height:8px; margin:-4px 0 0 -4px; border-radius:50%; background:#24425e;}
+.fxa-clock s{position:absolute; left:-30%; top:0; width:60%; height:100%; background:linear-gradient(100deg, rgba(255,255,255,0), rgba(255,255,255,.9), rgba(255,255,255,0)); opacity:0;}
+.fxa-frost{border-radius:14px; background:radial-gradient(ellipse at 50% 50%, rgba(225,246,255,.5), rgba(150,210,245,.28) 60%, rgba(150,210,245,.08) 100%); box-shadow:inset 0 0 0 2px rgba(220,244,255,.75), inset 0 0 24px rgba(170,225,255,.7);}
+.fxa-icechip{width:8px; height:8px; background:linear-gradient(135deg, #fff, #9fd6ff); clip-path:polygon(50% 0, 100% 50%, 50% 100%, 0 50%);}
+`);
+const speedOf = o=> Math.max(1, (o && o.speed) || 1);
+// Mind Control: a violet tether runs from the caster to the unit and a swirl spins over it; the unit lifts out of its old slot, flips over
+// in the air (its glow turns from violet to its new side's colour at the turn) and lands in its new slot with a ring. opts.from is its old
+// rect (the game has already re-rendered it on the caster's side); without it, it flips in place.
+M.mindFlip = function(el, o){
+  o = o || {}; const g = G(), t = tileOf(el); if(!g || !el || !t) return done(0);
+  const sp = speedOf(o), side = o.side === 'B' ? 'b' : 'a', col = side === 'a' ? '#8fd0ff' : '#ff9a8a';
+  const sc = (()=>{ const w = t.offsetWidth, r = t.getBoundingClientRect().width; return w && r ? r / w : 1; })();
+  const L0 = centre(el), live = el !== t ? ()=> centre(el) : ()=> L0, F = o.from ? {x:o.from.left + o.from.width/2, y:o.from.top + o.from.height/2} : {x:L0.x, y:L0.y};
+  const W = L0.w, H = L0.h, perp = {x:-(L0.y - F.y), y:L0.x - F.x}, pl = Math.hypot(perp.x, perp.y) || 1, bend = Math.min(90, Math.hypot(L0.x - F.x, L0.y - F.y)*.28);
+  const mid = {x:(F.x + L0.x)/2 + perp.x/pl*bend, y:(F.y + L0.y)/2 + perp.y/pl*bend};
+  const tint = layer('fxa-over fxa-tint'), sw = P('fxa-swirl', '', F.x, F.y, {width:Math.max(W, H)*1.25, height:Math.max(W, H)*1.25, opacity:0, scale:.6});
+  const cs = o.caster ? centre(tileOf(o.caster)) : null, sv = cs ? svgL() : null;
+  let line = null; if(sv){ sv.innerHTML = `<path class="fxa-tether" d="M${cs.x},${cs.y} L${F.x},${F.y}"/>`; line = sv.firstChild; const len = Math.hypot(F.x - cs.x, F.y - cs.y); line.style.strokeDasharray = len; line.style.strokeDashoffset = len; }
+  const at = q=>{ const Lc = live(); g.set(t, {x:(q.x - Lc.x)/sc, y:(q.y - Lc.y)/sc}); g.set(tint, {x:q.x - W/2, y:q.y - H/2, width:W, height:H}); if(line && cs) line.setAttribute('d', `M${cs.x},${cs.y} L${q.x},${q.y}`); };
+  g.killTweensOf(t); at(F); g.set(tint, {opacity:0});
+  const s = {p:0}, tl = g.timeline({onComplete:()=>{ g.set(t, {clearProps:'transform'}); kill(tint); kill(sw); kill(sv); call(o.onDone); }});
+  tl.timeScale(sp);
+  if(line) tl.to(line, {strokeDashoffset:0, duration:.2, ease:'power2.out'}, 0);
+  tl.to(sw, {opacity:1, scale:1, rotation:200, duration:.3, ease:'power2.out'}, 0).to(sw, {rotation:420, scale:.5, opacity:0, duration:.3, ease:'power2.in'}, .3)
+    .to(tint, {opacity:1, duration:.15}, .08)
+    .to(s, {p:1, duration:.48, ease:'power2.inOut', onUpdate:()=>{ const p = s.p, Lc = live(), m2 = {x:mid.x + (Lc.x - L0.x)*p, y:mid.y + (Lc.y - L0.y)*p};
+      at(qpt(F, m2, Lc, p)); g.set(t, {scaleX:Math.max(.06, Math.abs(Math.cos(Math.PI*p))), scaleY:1 + Math.sin(Math.PI*p)*.08, rotation:Math.sin(Math.PI*p)*8});
+      tint.classList.toggle('is-' + side, p >= .5); g.set(tint, {scaleX:Math.max(.06, Math.abs(Math.cos(Math.PI*p)))}); }}, .22)
+    .add(()=>{ const q = live(); ring(q.x, q.y, {color:col, size:Math.max(W, H)*1.7, w:4, glow:12, dur:420/sp}); if(line) g.to(line, {opacity:0, duration:.15/sp}); }, .7)
+    .to(t, {y:`+=${4/sc}`, duration:.08, ease:'power2.out'}, .7).to(t, {y:`-=${4/sc}`, duration:.3, ease:'elastic.out(1, .5)'}, .78)
+    .to(tint, {opacity:0, duration:.3}, .74);
+  return done(Math.round(1100/sp));
+};
+// Player Stun, the skipped turn: a frosted clock pops up over the stunned side's hand (yours) or castle (the enemy's), its hands race and jam,
+// ice chips burst off it and a frost wash covers the hand or castle for a moment.
+M.frozenClock = function(anchor, o){
+  o = o || {}; const g = G(); if(!g || !anchor) return done(0); const sp = speedOf(o), c = centre(anchor);
+  const fr = layer('fxa-over fxa-frost'); g.set(fr, {x:c.r.left, y:c.r.top, width:c.w, height:c.h, opacity:0});
+  const cy = Math.min(innerHeight - 44, Math.max(44, c.y)), ck = P('fxa-clock', '<i class="h"></i><i class="m"></i><b></b><s></s>', c.x, cy, {scale:.3, opacity:0});
+  const hh = ck.querySelector('i.h'), mm = ck.querySelector('i.m'), sh = ck.querySelector('s'); g.set(hh, {rotation:60}); g.set(mm, {rotation:0});
+  const tl = g.timeline({onComplete:()=>{ kill(ck); kill(fr); }}); tl.timeScale(sp);
+  tl.to(ck, {scale:1, opacity:1, duration:.22, ease:'back.out(2.2)'}, 0)
+    .to(mm, {rotation:540, duration:.5, ease:'power1.in'}, .08).to(hh, {rotation:105, duration:.5, ease:'power1.in'}, .08)
+    .to(mm, {rotation:552, duration:.16, ease:'power4.out'}, .58)
+    .add(()=>{ call(o.onFreeze); ring(c.x, cy, {color:'#dff3ff', size:150, w:3, glow:10, dur:520/sp});
+      spray(c.x, cy, {n:12, cls:'fxa-icechip', d0:30, d1:70, grav:24, spin:300, dur:.6/sp, s0:1.2, s1:.4}); }, .6)
+    .to(ck, {x:'+=3', duration:.04, yoyo:true, repeat:5, ease:'none'}, .6)
+    .fromTo(sh, {opacity:1, x:-10}, {x:70, duration:.35, ease:'power1.inOut'}, .66).set(sh, {opacity:0}, 1.01)
+    .to(fr, {opacity:1, duration:.15}, .6).to(fr, {opacity:0, duration:.45}, 1.15)
+    .to(ck, {y:'-=14', opacity:0, duration:.35, ease:'power1.in'}, 1.25);
+  return done(Math.round(1650/sp));
+};
+// Shield breaks: on top of the game's own pane break (vis4ShieldBreak), a bright ring, a burst of hexagon shards and a few glints.
+M.shieldBurst = function(el, o){
+  o = o || {}; const g = G(); if(!g || !el) return done(0); const sp = speedOf(o), c = centre(tileOf(el));
+  ring(c.x, c.y, {color:'#dff3ff', size:c.w*2.1, w:4, glow:12, dur:420/sp});
+  spray(c.x, c.y, {n:12, cls:'fxa-hexs', d0:c.w*.5, d1:c.w*1.15, grav:30, dur:.6/sp, spin:400, s0:1.1, s1:.4});
+  spray(c.x, c.y, {n:6, html:'✦', size:14, color:'#fff', style:{textShadow:'0 0 6px #8fd4ff'}, d0:c.w*.3, d1:c.w*.75, dur:.5/sp});
+  return done(Math.round(700/sp));
+};
+
 // ======================= game wiring (2026-10-15) =======================
 // Where a new look replaces an older one the game still draws (the emoji missile, the lava-shaped wave geyser, the CSS dynamite
 // blast), the old element is hidden as it appears instead of editing arena_app.js: hideNext watches <body> for the next matching
@@ -1355,6 +1429,13 @@ else if(document.addEventListener) document.addEventListener('DOMContentLoaded',
 let ST = null;
 const state = env=>{ if(!ST || ST.match !== env.match) ST = {match:env.match, arrow:{}, ballista:{}}; return ST; };
 const IMPACT_LIVE = new Set(['acid', 'poison', 'decay', 'magic', 'water', 'true']);
+const mSpeed = env=> Math.max(1, (env && env.match && env.match.speedMult) || 1);
+// 2026-11-19 (package VFX2): a Player Stun's skipped turn, as that turn opens (arena_app.js: fxHook('turnSkipped', side)): the frozen clock
+// over your hand, or over the enemy castle.
+M.hooks.turnSkipped = function(side, env){
+  if(!env || !env.fxAtLeast('low')) return; const a = side === 'A' ? document.getElementById('handStrip') : hq(side);
+  if(a) M.frozenClock(a, {onFreeze:()=> env.sound('freezeChime')});
+};
 M.onEvent = function(ev, env){
   if(!ev || !env) return; ensureLights();
   const med = env.fxAtLeast('med'), high = env.fxAtLeast('high'), low = env.fxAtLeast('low'), st = state(env), el = env.el, fxOf = env.fxOf, defs = env.defs, A = am();
@@ -1448,7 +1529,8 @@ M.onEvent = function(ev, env){
     case 'explode': { const t = el(ev.uid); if(t) M.creeperBurst(t); break; }
     case 'rally': { const F = S(), t = el(ev.uid); if(F && F.rally && t) F.rally([t].concat(rowCards(t).filter(x=> x !== t))); break; } // SkillFX.rally, wired
     case 'heal': if(ev.attUid != null && ev.attUid !== ev.targetUid && !fxOf(ev.attDefId).bloom && (ev.amount || 0) > 0 && env.once('heal' + ev.targetUid)){ const F = S(), t = el(ev.targetUid); if(F && F.heal && t) F.heal(t); } break; // SkillFX.heal, wired
-    case 'mindControl': { const t = el(ev.targetUid); if(t) M.puppetStrings(t, {to:el(ev.attUid)}); break; }
+    // 2026-11-19 (package VFX2): the unit crosses over (the game moves it in the replay first and leaves its old rect on ev._fromRect); M.puppetStrings stays in the Lab.
+    case 'mindControl': { const t = el(ev.targetUid); if(t) M.mindFlip(t, {from:ev._fromRect || null, caster:el(ev.attUid), side:ev.side, speed:mSpeed(env)}); break; }
     case 'swapPositions': { const a = el(ev.aUid), b = el(ev.bUid); if(a && b) M.swapArcs(a, b); break; }
     case 'converge': { const row = sideRow(ev.targetSide), cards = row ? [...row.querySelectorAll('.board-card')].filter(b=> b.querySelector('.card-tile')) : []; if(cards.length) M.magnetPull(cards); break; }
     case 'restless': { const a = el(ev.uid); if(a) M.footsteps(a, {to:ev.swapUid != null ? el(ev.swapUid) : null, dir:(ev.to || 0) >= (ev.from || 0) ? 1 : -1}); break; }
@@ -1462,7 +1544,8 @@ M.onEvent = function(ev, env){
     case 'devour': { const t = el(ev.uid); if(t) M.devourJaws(t); break; }
     case 'equip': { const t = el(ev.uid), d = defs[ev.equipDefId] || {}, ic = typeof d.icon === 'string' && d.icon.length <= 4 ? d.icon : '🗡️'; if(t) M.equipClank(t, {glyph:ic}); break; }
     case 'sacrifice': { const t = el(ev.uid); if(t) M.ritualSigil(t); break; }
-    case 'shieldSoak': { const t = el(ev.uid); if(t && low){ if(ev.left) M.shieldFlare(t); else M.shieldShatter(t); } break; }
+    case 'shieldSoak': { const t = el(ev.uid); if(t && low){ if(ev.left) M.shieldFlare(t); else { M.shieldShatter(t); // 2026-11-19 (VFX2): + a burst as the panes fly, on the blow (vis4ShieldBreak's timing)
+      env.at((env.match && env.match.resolving ? A.windup + A.impactPad : 0) + 120, ()=>{ if(t.isConnected) M.shieldBurst(t, {speed:mSpeed(env)}); }); } } break; }
     case 'curse': { const t = el(ev.targetUid); if(t && low) M.cursedSigil(t); break; }
     case 'skipTurn': if(ev.reason === 'reload'){ const t = el(ev.uid); if(t && env.once('reloadwait' + ev.uid)) M.reloadDial(t, {part:true}); } break;
     case 'fieldTick':

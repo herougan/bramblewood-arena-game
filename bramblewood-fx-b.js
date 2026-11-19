@@ -156,16 +156,16 @@ M.poisonApply = function(el, opts){
 // Bleed applied (st-bleed-apply): a quick gash across the card, then drops fall from it.
 css('bleed', `.fxb-gash{position:absolute; left:8%; top:44%; width:84%; height:6px; border-radius:6px; transform-origin:0 50%;
   background:linear-gradient(90deg, rgba(255,240,240,0), #fff 18%, #ff3b3b 45%, #8a0b12); box-shadow:0 0 10px rgba(255,40,40,.75);}
-.fxb-drop{position:absolute; width:7px; height:10px; border-radius:50% 50% 50% 50% / 62% 62% 38% 38%; background:radial-gradient(circle at 40% 35%, #ff8a8a, #d31d2a 55%, #6d0710);}
+.fxb-drop{position:absolute; width:10px; height:14px; border-radius:50% 50% 50% 50% / 62% 62% 38% 38%; background:radial-gradient(circle at 40% 35%, #ffb0b0, #d31d2a 55%, #6d0710); box-shadow:0 0 0 1px rgba(60,0,6,.55), 0 0 6px rgba(255,40,40,.6);}
 .fxb-seep{position:absolute; inset:0; background:radial-gradient(ellipse 70% 30% at 50% 46%, rgba(200,20,30,.45), transparent 70%); border-radius:10px;}`);
 M.bleedApply = function(el, opts){
   opts = opts || {}; const r = rectOf(el); if(!r) return Promise.resolve();
   const box = over(r, 'fxb-round', '<i class="fxb-bit fxb-seep"></i><i class="fxb-bit fxb-gash"></i>'); const gash = box.querySelector('.fxb-gash'), seep = box.querySelector('.fxb-seep');
-  const drops = bits(box, 5, i=> ({cls:'fxb-drop', style:`left:${18 + i*15 + rnd(-4, 4)}%; top:46%;`}));
+  const drops = bits(box, 7, i=> ({cls:'fxb-drop', style:`left:${12 + i*12 + rnd(-3, 3)}%; top:46%;`})); // 2026-11-19 (VFX2): bigger drops that run down the card, so the drip reads at 390 px
   return run([box], opts, (t)=>{
     t.set(gash, {rotation:-14}).fromTo(gash, {scaleX:0, opacity:1}, {scaleX:1, duration:.13, ease:'power3.out'}).call(()=> call(opts.onImpact))
       .fromTo(seep, {opacity:0}, {opacity:1, duration:.15}, '<').to(gash, {opacity:.0, duration:.5, ease:'power1.in'}, '+=.15').to(seep, {opacity:0, duration:.4}, '<');
-    drops.forEach((d, i)=> t.fromTo(d, {y:-4, scale:.4, opacity:0}, {y:r.height*rnd(.32, .55), scale:1, opacity:1, duration:.5, ease:'power2.in'}, .14 + i*.06).to(d, {opacity:0, scaleY:.4, duration:.12}, '>'));
+    drops.forEach((d, i)=> t.fromTo(d, {y:-4, scale:.4, opacity:0}, {y:r.height*rnd(.4, .52), scaleY:1.25, scaleX:.9, opacity:1, duration:.6, ease:'power2.in'}, .14 + i*.05).to(d, {opacity:0, scaleY:.35, scaleX:1.5, duration:.14}, '>'));
   });
 };
 

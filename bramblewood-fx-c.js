@@ -887,6 +887,23 @@ M.deathExile_B = function(el, opts){
     fadeSlot(tl, el, t, .3); tl.add(()=> snd('exile'), 0).add(()=> snd('reflectTone'), .6);
   });
 };
+// C (2026-11-19, package VFX2; the look in fights): the banish swirl of the Forgotten Ones. A violet rift opens over it, the card spirals into
+// it, the rift seals in a pale ring and a candle Echo 🕯️ flickers where it stood. Transform and opacity only (A and B grey it with a filter).
+M.deathExile_C = function(el, opts){
+  const D = dying(el); if(!D) return Promise.resolve(); const {t, x, y, w, h} = D;
+  exileCss();
+  return run(opts, (tl, mk)=>{
+    const r = mk('fxc-rift'); tl.set(r, {x, y, xPercent:-50, yPercent:-50, width:6, height:h*1.15, opacity:0}, 0).to(r, {opacity:1, width:w*.6, duration:.18, ease:'back.out(2)'}, 0)
+      .to(r, {width:w*1.05, duration:.25, ease:'sine.inOut'}, .18).to(r, {width:2, opacity:0, duration:.16, ease:'power3.in'}, .72);
+    tl.to(t, {rotation:240, scale:.06, opacity:.3, duration:.5, ease:'power2.in'}, .2).set(t, {opacity:0}, .7);
+    spray(tl, mk, .15, x, y, {n:10, colors:['#d6bcff', '#a46bff', '#fff'], size:[3, 5], dist:[w*.6, w*.95], dur:[.4, .5], ease:'power2.in', scale0:1, scale1:.2, stagger:.02});
+    ringAt(tl, mk, .74, x, y, {color:'#c9a2ff', from:w*.3, to:w*1.6, glow:'rgba(160,90,255,.7)', dur:.42});
+    const e = mk('fxc-p fxc-g', '🕯️'); e.style.fontSize = '22px';
+    tl.set(e, {x, y:y + h*.2, xPercent:-50, yPercent:-50, opacity:0, scale:.5}, .8).to(e, {opacity:1, scale:1, duration:.18}, .8).to(e, {scaleY:1.12, duration:.1, yoyo:true, repeat:3}, .98).to(e, {opacity:0, y:y + h*.2 - 12, duration:.35}, 1.38);
+    chip(tl, mk, .5, t, '🌫 Exiled', '#4b4f5c', {y:D.top + h*.1});
+    fadeSlot(tl, el, t, .3); tl.add(()=> snd('exile'), 0);
+  });
+};
 // ---- The King falls (2026-10-15, B for death-leader): the whole death, not an add-on. A gold flash, it sinks to its knees, the crown
 // lifts off and cracks in two, the royal banner behind it is lowered, and it fades to grey. About 1.2 s. ----
 M.kingFall = function(el, opts){
@@ -1698,7 +1715,7 @@ M.deathPlan = function(el, uid, env){
   const boss = M.isBoss(uid, d, env);
   if(boss) plan.look = 'bossDeath';
   else if(!token){
-    if(EXILED.has(String(uid))) plan.look = 'deathExile';
+    if(EXILED.has(String(uid))) plan.look = 'deathExile_C'; // 2026-11-19 (package VFX2): the banish swirl (A, the grey fold, and B stay in the Lab)
     else if(d.hatchInto) plan.look = 'deathEgg';
     else if((b && b.classList.contains('is-petrified')) || PETRI.has(String(uid))) plan.look = 'deathPetrified';
     // 2026-10-18 (audit E2): who the unit is beats what killed it for the great beasts and ghosts (a Dragon crashes down whatever

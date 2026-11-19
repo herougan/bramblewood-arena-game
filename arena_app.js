@@ -47852,6 +47852,7 @@ async function resolveRoundCore(opts){
   if(m._fieldChilled){ const ids = m._fieldChilled; m._fieldChilled = null; const wait = coldWaveVfx(m); setTimeout(()=> ids.forEach(icePulseVfx), 120 + wait); }
   // Your-turn lane glow (2026-10-03, effects experiment #5): a soft pulse along your row.
   if(!m.over) fightSafe(()=> ui14TurnGlow(), 'ui14TurnGlow'); // 2026-11-02 (package UI14, JJ14): was the #rowMine.turn-glow inset shadow
+  if(!m.over) [1, 2].forEach(p=>{ if((m.players[p].skipTurns||0) > 0) fxHook('turnSkipped', p===1 ? 'A' : 'B'); }); // 2026-11-19 (package VFX2): a Player Stun's skipped turn opens
   if(!m.over && m.raidRoundCap) try{ u3TurnFlash(m); }catch(e){} // 2026-10-19 (package U3): the turn meter ticks as your turn starts
   if(!m.over && document.querySelector('.bounty-bubble')) bountyPeek(); // bounty bubbles show for 3s as your turn starts
   syncBountyHolding();
@@ -53884,7 +53885,8 @@ function sixthPassVfx(ev){
     vis4PatchShieldFx(); const am = animMs(), at = matchState.resolving ? am.windup + am.impactPad : 0;
     const rc = rcs[ev.uid]; if(rc) rc.shield = ev.left;
     setTimeout(()=>{ try{ updateCardStatusDisplay(ev.uid); }catch(e){}
-      const el = boardCardEl(ev.uid); if(el) try{ floatText(el, ev.left ? '💠 -' + ev.soaked : '💠 Shield breaks', 'debuff'); }catch(e){} }, at);
+      const el = boardCardEl(ev.uid); if(el) try{ floatText(el, ev.left ? '💠 -' + ev.soaked : '💠 Shield breaks', 'debuff'); }catch(e){}
+      try{ ev.left ? SoundKit.shield() : SoundKit.iceShatter(); }catch(e){} }, at); // 2026-11-19 (package VFX2): a unit's soak and break were silent (the castle's had these two)
   }
   // 2026-10-16 (user: "The chain lightning & electricity arced damage should come from that itself! And the damage should be lightning damage, not physical damage."): the 'electricity' event only notes the chain (attacker, the struck unit); the bolt is drawn by the arc's own hit (and the
   // wet target's zap), and that hit's number pops as its bolt lands (electricityImpactMs). With no hit to follow, a spark crackles.
@@ -54044,7 +54046,6 @@ function eighthPassVfx(ev){
   if(ev.type === 'curseTick' && skillFxOnce('curse' + ev.uid)){ const t = el(ev.uid); if(t) F.curseDrain(t); }
   if(ev.type === 'frenzy' && skillFxOnce('frenzy' + ev.attUid)){ const t = el(ev.attUid); if(t) F.rageFlare(t); }
   if(ev.type === 'gash' && F.bleedDrip){ const t = el(ev.targetUid); if(t) F.bleedDrip(t); }           // reused: Gash's opening cut
-  if(ev.type === 'mindControl' && F.mindWave){ const t = el(ev.targetUid); if(t) F.mindWave(el(ev.attUid), t, {}); } // reused: Mind Control
   if(ev.type === 'spawn' && ev.cause !== 'shieldCall' && ev.kind !== 'bloom' /* BL: its own bloom */ && ev.kind !== 'bulwark' /* FX6: it rises, no portal */ && ev.kind !== 'brood' /* FX10: silk (SkillFX.broodDrop) */ && !(window.FX && FX.C && FX.C.ownsSpawn && FX.C.ownsSpawn(ev))){ const uids = (ev.uids || (ev.placements||[]).map(p=> p.uid) || []).slice(0, 4);
     // 2026-10-25 (package FIX3, F5, owner #17: "cards played disappear then appear again at the end of the round - no it's just tokens"): the
     // portal pops the new token's tile from 30% opacity, 140 ms (+60 per token) after the spawn, when the token has already landed at full
@@ -55734,6 +55735,21 @@ function fx10Vfx(ev){
   else if(t === 'statusFx' && k === 'skitter') go('skitterDash', ev.attUid, 'skitterPatter');
   else if(t === 'statusFx' && k === 'thanatosis') go('playDead', ev.targetUid, 'playDeadFlop');
 }
+// 2026-11-19 (package VFX2): Mind Control redraws the board with the unit on the caster's side, its old rect on ev._fromRect for FX.A.mindFlip.
+// In a replay it is moved in m.replayRows first (it stayed on the enemy row until the round's last redraw; slot lanes rebuilt from slots, as
+// for Restless); when played, the live rows already hold it there.
+function vfx2MindControlRows(ev){
+  const m = matchState; if(!m || !ev || ev.type !== 'mindControl' || ev.targetUid == null) return;
+  const u = ev.targetUid, old = boardCardEl(u), rows = m.replayRows; if(old) ev._fromRect = old.getBoundingClientRect();
+  const mine = rows && rows[ev.side==='A' ? 1 : 2], foe = rows && rows[ev.side==='A' ? 2 : 1];
+  if(mine && foe){ ['left','center','right'].forEach(ln=>{ foe[ln] = foe[ln].filter(x=> String(x) !== String(u)); });
+    const rc = m.replayCards && m.replayCards[u]; if(rc && ev.slot != null) rc.slot = ev.slot;
+    if(isSlotMatch(m)){ const all = ['left','center','right'].flatMap(ln=> mine[ln]).concat([u]), sl = x=>{ const c = m.replayCards && m.replayCards[x]; return c && c.slot != null ? c.slot : 0; };
+      mine.center = all.filter(x=> sl(x)===0); mine.left = all.filter(x=> sl(x)<0).sort((a,b)=> Math.abs(sl(a))-Math.abs(sl(b))); mine.right = all.filter(x=> sl(x)>0).sort((a,b)=> sl(a)-sl(b)); }
+    else (mine.center.length ? mine.right : mine.center).push(u); }
+  try{ SoundKit.confuseWarble(); }catch(e){}
+  renderBoard({collapseLandingUids:[]});
+}
 function renderVfxForEvent(ev){
   if(emptyHealEvent(ev)) return; // 2026-10-19 (package HN): nothing healed, nothing shown
   if(ev && ev.type === 'forkSwing'){ try{ forkSwingVfx(ev); }catch(e){} return; } // one Fork / Trident / Pitchfork swing (2026-10-17)
@@ -55768,6 +55784,7 @@ function renderVfxForEvent(ev){
   try{ sk2Vfx(ev); }catch(e){} // Package SK2 (2026-10-19)
   try{ field2Vfx(ev); }catch(e){} // field effects 2 (2026-10-16)
   try{ eighthPassVfx(ev); }catch(e){} // 29 more skill looks: Flying swoop, Armor, Fork, Pierce, the statuses, Sap, Bloom... (2026-10-15)
+  try{ vfx2MindControlRows(ev); }catch(e){} // 2026-11-19 (package VFX2): before FX.A draws the crossing
   try{ fxBatchVfx(ev); }catch(e){} // the six effect batches, FX.A … FX.F (2026-10-15, docs/effects-lab-contract.md)
   try{ fx10Vfx(ev); }catch(e){} // 2026-11-13 (package FX10): ten skill looks
   // 2026-10-10: attack changes during the replay keep the snapshot (and the number on the card) in step.
