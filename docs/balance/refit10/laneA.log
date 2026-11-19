@@ -1,0 +1,13 @@
+START 19-A-7 03:38:33
+19-A-7 target 67.5 (59.5-75.5) size 16 side (min 12) start {"cinder-hornet":4,"malachite-golem":3,"obsidian-scorpion":3,"stalactite-golem":2,"tide-spirit":2,"stoat-cutthroat":1,"pumice-beetle":1} problems []
+start {"cinder-hornet":4,"malachite-golem":3,"obsidian-scorpion":3,"stalactite-golem":2,"tide-spirit":2,"stoat-cutthroat":1,"pumice-beetle":1} 31.3
+round 1: cur 33.3/31.3; 31 legal, 31 read + 6 predicted (of 26); top: -1 pumice-beetle +1 cinder-gecko 41.7/41.9 | -1 stoat-cutthroat -1 pumice-beetle +1 tide-spirit +1 cinder-gecko 54.2/38.8 | -1 stoat-cutthroat +1 tide-spirit 45.8/32.5
+round 2: cur 41.7/41.9; 23 legal, 23 read + 6 predicted (of 24); top: -1 stoat-cutthroat +1 tide-spirit 54.2/38.8 | -1 stoat-cutthroat -1 cinder-gecko +1 tide-spirit +1 pumice-beetle 45.8/32.5 | -1 cinder-hornet +1 tide-spirit 41.7/30.6
+no nearer move
+RESULT 19-A-7 {"cinder-hornet":4,"malachite-golem":3,"obsidian-scorpion":3,"stalactite-golem":2,"tide-spirit":2,"stoat-cutthroat":1,"cinder-gecko":1} 41.9 {} moves: -1 pumice-beetle +1 cinder-gecko problems: []
+START 19-A-5 03:41:03
+19-A-5 target 75 (67-83) size 12 side (min 10) start {"ashbone-ghoul":2,"cinder-gecko":1,"cinder-hornet":3,"malachite-golem":2,"obsidian-scorpion":3,"stalactite-golem":1} problems []
+start {"ashbone-ghoul":2,"cinder-gecko":1,"cinder-hornet":3,"malachite-golem":2,"obsidian-scorpion":3,"stalactite-golem":1} 56.9
+round 1: cur 66.7/56.9; 42 legal, 42 read + 6 predicted (of 34); top: -1 ashbone-ghoul +1 stalactite-golem 75/72.5 | -1 ashbone-ghoul +1 cinder-hornet 75/67.5 | -1 cinder-gecko +1 ashbone-ghoul 75/62.5
+RESULT 19-A-5 {"ashbone-ghoul":1,"cinder-gecko":1,"cinder-hornet":3,"malachite-golem":2,"obsidian-scorpion":3,"stalactite-golem":2} 72.5 {} moves: -1 ashbone-ghoul +1 stalactite-golem problems: []
+LANE DONE 03:43:19
