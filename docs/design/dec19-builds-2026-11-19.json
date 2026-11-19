@@ -1,0 +1,26 @@
+{
+  "package": "DEC19",
+  "date": "2026-11-19",
+  "source": "Owner 11-19 22:18: \"Execute the easy decisions too. only leave those that absolutely need me.\" Settled decisions that need building, grouped by file so they run one after another without conflicts. Already built in DEC19: PERF2-1 (FxAutoLower), CHK1-1 / CHK1-2 (docs/evaluation-protocol.md).",
+  "packages": [
+    {"id": "DEC19-UI", "order": 1, "size": "M", "agent": "ui-ux (cheaper model, clear spec)", "decisions": ["REL1-4", "UX4-1", "FX9-1"],
+     "what": "REL1-4 b: an entry to the co-op dungeon (FEATURE_SPOTS 'coop', pl2OpenCoopPop) on the Arena tab, shown once it is open (after Map 16). UX4-1 a: #atmoTint (z-index 9000) sits under the top bar and dialogs (.modal-overlay z 600) so menus stay clear at night; the fight board still darkens (body.in-fight rule). FX9-1 a: every card that reaches the Graveyard (field card used up, Feed, overdraw) arcs into it like a pitched card. Shots at 390 and 1440, light and dark.",
+     "files": ["arena_app.js", "arena_template.html", "bramblewood-texts.js", "lang/*.json (1 new row for the Arena entry, add-texts)", "tests/dec19-ui-2026-11-19.js"]},
+    {"id": "DEC19-TEXT", "order": 2, "size": "S", "agent": "translator / cheaper model via the add-texts skill", "decisions": ["SKN1-1", "SKN1-18"],
+     "what": "SKN1-1 a: Warcry's text says \"for the fight\". SKN1-18 a: the action label Gain reads Deliver and the trigger On Turn Start reads Every Turn (labels and descriptions only; keys perTurn / gain unchanged). Update the pins that read the old words.",
+     "files": ["arena_app.js (TRIGGER / ACTION label tables ~1518-1640)", "bramblewood-texts.js", "lang/*.json", "tests that pin 'On Turn Start' or 'Gain'"]},
+    {"id": "DEC19-DATA", "order": 3, "size": "S", "agent": "card-data-editor", "decisions": ["TF5-3", "LIST1-1"],
+     "what": "TF5-3 a: Honey Badger Fury attainable (unattainable flag off; it stays the 19-1 reward), together with the next batch's 21 unattainable flags (bal7 M3). LIST1-1 a: Granite Ox Golem stays on Volcano Lair (mx) only; Basalt Foundry (m9) takes Malachite Golem; re-fit any Basalt Foundry fight that used the Golem (deck rules, problems()). Regenerate card-obtain-maps.",
+     "files": ["canonical/cards.json (flags only, via the card-data tools)", "canonical/map-pools.json", "canonical/card-obtain-maps.json", "arena_app.js (Basalt Foundry decks, if any use the Golem)"]},
+    {"id": "DEC19-BUDGET", "order": 4, "size": "S", "agent": "balance-analyst (top model)", "decisions": ["ENG52-1"],
+     "what": "ENG52-1 b: price Hatchling lower (its +1/+2 pays only when an evolute is played onto it, e.g. by the evolute play rate), so Compost Grub, Fox Kit, Otter Kit, Caiman / Fire Drake Hatchling, Shallows Fry and Harp Seal Pup fit; no card stats change. Report what is still over (Chipmunk Forager, Musk Ox Calf). Card-pass / budget pins follow.",
+     "files": ["bramblewood-budget.js", "canonical/skill-costs.json", "tests (budget / card-pass pins)"]},
+    {"id": "NET2", "order": 5, "size": "L", "agent": "perf + backend-supabase", "decisions": ["NET1-3"],
+     "what": "NET1-3 a: open realtime only on the Friends, Arena and co-op screens; split index.html into cached hashed files (PERF6's next step, same work); the server picks ghost opponents (SQL in supabase/proposed only, live after the owner's \"apply it\").",
+     "files": ["arena_app.js", "assemble_arena.py", "vercel.json", "supabase/proposed/"]},
+    {"id": "DEC19-BUDGET2", "order": 6, "size": "M", "agent": "balance-analyst (top model)", "after": "1.0 release", "decisions": ["SKW1-3", "SKW1-4"],
+     "what": "After 1.0. SKW1-3 a: pairs that can never do anything cost 0; repeating Draw capped at about 1.6x its On Play worth. SKW1-4 a: re-price Dry, Fork, Reach, Diurnal 1, Guardian and Keen Eye by measure and home share. Prices only; list the cards whose budget % moves.",
+     "files": ["bramblewood-budget.js", "canonical/skill-costs.json", "tests (budget pins)"]}
+  ],
+  "parked": {"note": "Settled as designs, no 1.0 build: built when a card carries them (new skills arrive past Map 40; Metal tier past Map 20).", "decisions": ["ECONSK1-1", "SKN1-5", "SKN1-6", "SKN1-7", "SKN1-8", "SKN1-9", "SKN1-14", "SKN1-17"]}
+}

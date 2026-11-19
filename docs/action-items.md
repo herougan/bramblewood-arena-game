@@ -8,6 +8,12 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-19 22:18 Decisions settled (owner)
+- Owner: "Execute the easy decisions too. only leave those that absolutely need me." DEC19 triaged the 143 open decisions: 131 settled (48 superseded, 76 default, 7 another option), 12 left open.
+- [x] Built in DEC19: PERF2-1 b (auto-lower effects can step twice, High -> Low), CHK1-1 / CHK1-2 a (B5 / B6 readings in `docs/evaluation-protocol.md`)
+- [ ] Build packages, in order (`docs/design/dec19-builds-2026-11-19.json`): DEC19-UI (REL1-4 co-op entry on the Arena tab, UX4-1 tint under menus, FX9-1 all cards fly to the Graveyard) -> DEC19-TEXT (SKN1-1 Warcry "for the fight", SKN1-18 Deliver / Every Turn) -> DEC19-DATA (TF5-3 Honey Badger Fury attainable, LIST1-1 Granite Ox Golem on Volcano Lair only) -> DEC19-BUDGET (ENG52-1 b Hatchling price) -> NET2 (NET1-3) -> after 1.0: DEC19-BUDGET2 (SKW1-3, SKW1-4). Parked (no 1.0 build): ECONSK1-1, SKN1-5..9, SKN1-14, SKN1-17
+- Left for the owner (12): REL1-1 energy, REL1-2 guest packs, DESK2-1 Steam demo, DESK2-2 desktop guest packs, NET1-2 hosting upgrade, CHEAT2-1 live SQL, GUIDE1-1 settings hooks, DATAFIX-2 plain-rewards rule, SKN1-11 / SKN1-13 / SKN1-19 names, SKN1-12 Illuminate
+
 ## 11-19 08:21: Eight hours of code, UI/UX and game improvements, then release (owner)
 - Owner: "you have anohter 8 hours to make code improvements, UIUX improvements, game improvements. We want this shippable. When done, push your cards. Then push." Card push (FOLD8 SQL, `supabase/proposed/20261119_fold8_sync_overrides.sql`) waits for the owner's "apply it"; the git release goes at 15:00 SGT.
 - [x] TESTFIX6: 87 failing tests triaged; 20-3 paid two first-clear cards, Delivery / Plunder resource counted as a skill, RAIDGATE's `mjd` swept by three Maps 0-20 tools; ~50 stale pins; 38 left, each tied to an owner call or a re-measure

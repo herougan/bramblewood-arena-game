@@ -59585,7 +59585,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '7d6019d25277', BUILD_CARD_HASH = 'e9bc595c0698cc8864aa55673ac3e4fb65eee208265917687f1bcbea969871ea';
+const BUILD_ID = '61ac472393df', BUILD_CARD_HASH = 'e9bc595c0698cc8864aa55673ac3e4fb65eee208265917687f1bcbea969871ea';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
@@ -63588,11 +63588,12 @@ try{ installFxStylePicks(); }catch(e){}
 // Auto-lower effects (2026-10-17): while a fight plays (renderVfxForEvent pokes FxAutoLower), frame times are sampled in 2 s
 // windows. If a window averages over 33 ms a frame (under 30 fps), the effects level steps down one notch (High → Medium →
 // Low, never to None) and a toast says so. At most once per session; Settings → "Auto-lower effects: Off" turns it off.
-var FX_AUTO_KEY = 'bramblewood_fx_auto';
+// 2026-11-19 (DEC19, PERF2-1 b, owner 11-19 22:18 "settle the easy decisions"): up to FX_AUTO_STEPS steps a session (High → Medium → Low).
+var FX_AUTO_KEY = 'bramblewood_fx_auto', FX_AUTO_STEPS = 2;
 function fxAutoEnabled(){ try{ return localStorage.getItem(FX_AUTO_KEY) !== 'off'; }catch(e){ return true; } }
 var FxAutoLower = (function(){
   const WINDOW_MS = 2000, LIMIT_MS = 33, IDLE_MS = 1500;
-  let raf = 0, lastPoke = 0, t0 = 0, prev = 0, frames = 0, sum = 0, done = false;
+  let raf = 0, lastPoke = 0, t0 = 0, prev = 0, frames = 0, sum = 0, done = false, steps = 0;
   const stop = ()=>{ if(raf) cancelAnimationFrame(raf); raf = 0; frames = 0; sum = 0; prev = 0; };
   const step = now=>{
     raf = 0;
@@ -63608,8 +63609,9 @@ var FxAutoLower = (function(){
   };
   const lower = avg=>{
     const lv = fxLevelSetting(), i = FX_ORDER.indexOf(lv);
-    done = true; stop();
-    if(i <= 1) return;                                         // already Low (or None): nothing left to lower
+    steps++; done = steps >= FX_AUTO_STEPS || i <= 2;          // DEC19: keep watching after the first step unless Low is next
+    if(done) stop();
+    if(i <= 1){ done = true; stop(); return; }                 // already Low (or None): nothing left to lower
     setFxLevel(FX_ORDER[i - 1]);
     try{ document.querySelectorAll('select[id^="fxSelect"]').forEach(x=>{ x.value = fxLevelSetting(); }); }catch(e){}
     try{ showToast(TX('toast.effectsLowered')); }catch(e){}

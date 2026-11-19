@@ -61,6 +61,10 @@ Read as a ladder for the gap between a fight's measured win rate and its target 
 
 The sign matters: a negative gap (win rate under target) is a fight that is too hard; a positive gap is too easy. Too hard is the urgent one for a player, too easy for the road's shape ("roughly always harder"). The hub's 📈 Difficulty tab colours each fight by this ladder and lists the too-hard fights first. [DF-1b, recorded here]
 
+### Alpha checklist readings (2026-11-19, DEC19: CHK1-1 a, CHK1-2 a)
+- **B5, progression decks:** flag only fights 25+ points too hard for them. They are stronger than the Map reference by design, so too easy is not a flag.
+- **B6, a PRO / BPRO wall:** the 10 reference-ladder decks average under 5% and the Map reference is under 5% (CHK1's strict reading).
+
 ### The strongest deck (owner 2026-11-02 20:19)
 The Map reference should win **at most 15%** against the map's strongest deck (its BPRO-1, played as the game builds that PRO fight). A map above it is flagged in the balance summary (section 4a, "OVER"). Before the cap: Pebble Beach 31%, Eye of the Volcano 26%, Wolfsbane Tundra 18% (BAL11's strong / weak table).
 
