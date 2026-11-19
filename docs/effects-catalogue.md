@@ -1933,6 +1933,20 @@ Owner 00:03: "interesting vfx to improve our general UI experience and also skil
 
 Lab: group "FX10" (`tools/effects-lab/manifest/fx10.js`, ids `fun-fx10-*`; A the full look, B Effects Low / reduced motion / 4x). Contact sheet: `docs/art/fx10-sheet.png` (`python3 tests/e2e/fx10_2026_11_13.py`, which also checks the camera layer, the piece count, Low / 4x / None and that Brood and Confuse lost their shared looks). Check: `tests/fx10-2026-11-13.js`.
 
+## 2026-11-19 (package VFX2): battle effects on the Release 1.0 path (wired into fights)
+Re-checked in play from frame strips (`tools/vfx2_strips_2026_11_19.js`, `docs/release/vfx2/`). Lab: key V2 (`tools/effects-lab/manifest/vfx2.js`).
+
+| Moment | Look | Function | Status |
+|---|---|---|---|
+| Shield breaks (`sk-shield-break`) | VIS4's glass panes, then a bright ring, hex shards and glints; `SoundKit.iceShatter` (the unit's break was silent) | `FX.A.shieldBurst` | ✅ live |
+| Shield soaks (`sk-shield-soak`) | unchanged look (VIS4 rectangle and ripple), now with `SoundKit.shield` | — | ✅ live |
+| Bleed applied (`st-bleed-apply`) | the gash, then seven bigger outlined drops that run down the card | `FX.B.bleedApply` | ✅ live |
+| Player Stun, the skipped turn (`sk-stun-player`) | as the stunned side's turn opens, a frosted clock over your hand (or the enemy castle) races and jams; ice chips, a frost wash, `freezeChime`. The bell still tolls when the stun lands | `FX.A.frozenClock`, `fxHook('turnSkipped', side)` | ✅ live (no 1.0 card has Player Stun) |
+| Mind Control (`sk-mind-control`) | the unit is redrawn on the caster's row (in a replay it stayed on the enemy row until round end), then a tether and swirl, an arc flight that flips it from violet to its new side's colour, a landing ring; `confuseWarble`. The doubled `SkillFX.mindWave` is gone; `FX.A.puppetStrings` stays in the Lab | `vfx2MindControlRows`, `FX.A.mindFlip` | ✅ live (no 1.0 card has Mind Control) |
+| Exiled death (`sk-exile-board`) | the banish swirl: a violet rift, the card spirals in, the rift seals in a ring, a candle Echo (Marsh Wisp Map 6, Ashbone Ghoul Map 20, a Nullify kill). The grey fold (A) and the rift fold (B) stay in the Lab | `FX.C.deathExile_C` | ✅ live |
+
+Already good when re-checked (inventory text was stale): Poison applied (glop, ooze, bubbles), Explode (`FX.A.creeperBurst`), the ranged missile per damage type (`FX.A.missile`), the magic / water / true battlefield light (`FX.A.ensureLights` fills `LIGHT_COLORS`). Not done: the level-up ring and the Claim coin burst on the tutorial win screen.
+
 ## 2026-11-18 (package FXAUD2): the audit's fix list (sound, text, guardrails)
 Spec `docs/perf/fxaud1-2026-11-18.md` ("Fix list by file"). Code: `arena_app.js` (SoundKit cue list, `sk1Vfx`, `w2SkillVfx`, `dnMarkSoundKey`), `bramblewood-skillfx.js` (`quiet()`), `bramblewood-fx-h.js` (`powder1Event`), `arena_template.html` (`.elite-polish::after`). Lab: `tools/effects-lab/manifest/h.js` (`sk-rend-enfeeble`, `sk-weaken-axe`; the sound grid lists every new cue). Check: `tests/fxaud2-2026-11-18.js`, browser gates `tests/e2e/fxaud2_gates.py`.
 

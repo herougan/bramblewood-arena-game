@@ -24,11 +24,12 @@
 
 ## Most-called helpers in arena_app.js (reuse before writing a new one)
 
-`escapeHtml` 1754, `escapeAttr` 1233, `getCardDefs` 615, `numOr` 374, `boardCardEl` 343, `showToast` 323, `reducedMotion` 244, `floatText` 207, `hasGsap` 160, `iconHTML` 152, `fxAtLeast` 145, `cardTileHTML` 136, `switchTab` 118, `fightSafe` 90, `mapNumberOf` 88, `sk1Patch` 87, `denyShake` 87, `fnoise` 82, `loadConquestProgress` 80, `isSignedIn` 76, `conquestNodeId` 74, `sleep` 71, `renderBoard` 71, `fxHook` 70, `hqTileEl` 69, `grantText` 61, `cardBaseLevel` 61, `viewerHandPid` 60, `grantCurrency` 59, `findConquestNode` 58, `baseKind` 57, `renderPlay` 51, `parseGrantText` 50, `mainConquestMaps` 49, `saveCurrencies` 48, `updateCardHpDisplay` 47, `unlockCardForPlayer` 47, `tabOpen` 47, `updateCardStatusDisplay` 46, `deckTotal` 46, `loadTutorialDone` 44, `isMapUnlocked` 44, `dnFloat` 41, `renderForge` 40, `loadDialogueFlags` 40, `animMs` 40, `maxCopiesForRarity` 38, `mapIdAt` 37, `loadFactionChoice` 36, `fxLevel` 36, `cardSourceOf` 36, `resolveRound` 33, `pushLog` 33, `puff` 33, `loadTutorial2Done` 33, `featureUnlocked` 33, `dnLogNum` 33, `blip` 32, `copyModelOn` 31, `getCardLevel` 30
+`escapeHtml` 1815, `escapeAttr` 1275, `getCardDefs` 620, `numOr` 392, `boardCardEl` 352, `showToast` 307, `reducedMotion` 255, `floatText` 206, `fxAtLeast` 163, `hasGsap` 162, `iconHTML` 153, `cardTileHTML` 136, `switchTab` 119, `fnoise` 106, `mapNumberOf` 96, `sk1Patch` 90, `fightSafe` 90, `denyShake` 87, `loadConquestProgress` 83, `isSignedIn` 78, `conquestNodeId` 76, `renderBoard` 72, `fxHook` 72, `sleep` 71, `hqTileEl` 71, `cardBaseLevel` 71, `viewerHandPid` 61, `grantText` 61, `grantCurrency` 59, `findConquestNode` 58, `baseKind` 57, `mainConquestMaps` 53, `renderPlay` 52, `parseGrantText` 50, `saveCurrencies` 48, `updateCardHpDisplay` 47, `unlockCardForPlayer` 47, `updateCardStatusDisplay` 46, `loadDialogueFlags` 46, `loadTutorialDone` 45, `isMapUnlocked` 45, `deckTotal` 45, `dnFloat` 41, `renderForge` 40, `fxLevel` 40, `animMs` 40, `maxCopiesForRarity` 38, `tabOpen` 37, `mapIdAt` 37, `loadFactionChoice` 36, `cardSourceOf` 36, `loadTutorial2Done` 34, `resolveRound` 33, `pushLog` 33, `featureUnlocked` 33, `dnLogNum` 33, `skillDefOf` 32, `setDialogueFlag` 32, `getCardLevel` 32, `blip` 32
 
 ## Blocks that tests cut out and evaluate (keep the `NAME:BEGIN` / `NAME:END` lines; edit inside them with care)
 
 - `ROAD_RARITY`: card-pool-2026-10-19.js, content14-2026-11-07.js, decisions-2026-10-18.js, pale-desert-2026-10-19.js
+- `CHEAT2`: cheat2-2026-11-16.js
 - `NET1_OVR`: net1-2026-11-12.js
 - `CODEX_ANIMAL_UT`: animal-tags-2026-10-19.js
 - `CODEX_UX`: ux-2026-10-19.js
@@ -60,7 +61,7 @@
 
 ## Engine: AI (CPU) functions
 
-`aiDevourPlan`, `aiEvoluteBase`, `aiEquipWorth`, `aiEquipPlay`, `aiHazardPick`, `aiHazardWorth`, `aiChooseSlot`, `aiLaneWeight`, `aiLanePick`, `aiLaneBonus`, `aiLaneTie`, `aiBonusVs`, `aiGiWorth`, `aiCanSwing`, `aiSwingOdds`, `aiChooseSlotSmartest`, `aiSlotScorerSmartest`, `aiBloomOdds`, `aiBloomSlotTerm`, `aiWinEnds`, `aiDeckAvgCost`, `aiReserveOf`, `aiPlanPlay`, `aiLosingBadly`, `aiSavePlan`, `aiLeaderToGather`, `aiFreeCard`, `aiBestKillNow`, `aiDoomed`, `aiSacrificePick`, `aiFieldWorth`, `aiDarkCastWorth`, `aiSightMissAt`, `aiPitch`, `aiSpellGainNow`, `aiUsefulNow`, `aiResourceGap`, `aiIncomingOnBramble`, `aiLethalBlock`, `aiShortOfResources`, `aiFogFor`, `aiSees`, `aiFront`, `aiFoes`, `aiTakeTurn`, `aiTakeTurnInner`, `aiTakeTurnOnce`
+`aiDevourPlan`, `aiEvoluteBase`, `aiEquipWorth`, `aiEquipPlay`, `aiHazardPick`, `aiHazardWorth`, `aiChooseSlot`, `aiLaneWeight`, `aiLanePick`, `aiLaneBonus`, `aiLaneTie`, `aiPowderVs`, `aiBonusVs`, `aiGiWorth`, `aiCanSwing`, `aiSwingOdds`, `aiChooseSlotSmartest`, `aiSlotScorerSmartest`, `aiBloomOdds`, `aiBloomSlotTerm`, `aiWinEnds`, `aiDeckAvgCost`, `aiReserveOf`, `aiPlanPlay`, `aiLosingBadly`, `aiSavePlan`, `aiLeaderToGather`, `aiFreeCard`, `aiBestKillNow`, `aiDoomed`, `aiSacrificePick`, `aiFieldWorth`, `aiDarkCastWorth`, `aiSightMissAt`, `aiPitch`, `aiSpellGainNow`, `aiUsefulNow`, `aiResourceGap`, `aiIncomingOnBramble`, `aiLethalBlock`, `aiShortOfResources`, `aiFogFor`, `aiSees`, `aiFront`, `aiFoes`, `aiTakeTurn`, `aiTakeTurnInner`, `aiTakeTurnOnce`
 
 ## Engine: Trigger and effect firing
 
@@ -68,5 +69,5 @@
 
 ## Saved state
 
-166 localStorage key constants: `grep -n "_KEY = '" arena_app.js`. The cloud save is the `PROGRESS_KEYS` blob
+167 localStorage key constants: `grep -n "_KEY = '" arena_app.js`. The cloud save is the `PROGRESS_KEYS` blob
 (docs/guides/networking-api.md).

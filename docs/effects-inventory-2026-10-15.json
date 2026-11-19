@@ -356,7 +356,7 @@
   "name": "Generic ranged / triggered missile",
   "trigger": "hit with ev.ranged and no pending arrow/bolt → spawnProjectile(from, to, dmgGlyph) after windup",
   "current": "spawnProjectile (an emoji glyph flies)",
-  "quality": "basic — an emoji sliding across; no arc, trail or impact flash of its own",
+  "quality": "good — re-checked in play 2026-11-19 (VFX2): a stone / ember / spore / star / droplet per damage type with a trail and its impact (no emoji)",
   "priority": 1,
   "themeNotes": "Give each damage type a real projectile (spit, stone, spark); fallback stays the castle.",
   "variantsSuggested": false,
@@ -368,7 +368,8 @@
   "batch": "A",
   "status": "live",
   "lab": "a.js",
-  "inGameHook": "onEvent (bramblewood-fx-a.js): ranged hit with no arrow or bolt: a real missile per type (the emoji glyph is hidden)"
+  "inGameHook": "onEvent (bramblewood-fx-a.js): ranged hit with no arrow or bolt: a real missile per type (the emoji glyph is hidden)",
+  "updated": "2026-11-19"
  },
  {
   "id": "atk-arrow",
@@ -2353,7 +2354,7 @@
   "name": "Explode (lit fuse ends)",
   "trigger": "explode {uid} (Explode N skill)",
   "current": "shakeEl + \"💥 Boom!\" + SoundKit.boom",
-  "quality": "basic — a small shake for a self-destruct",
+  "quality": "good — re-checked in play 2026-11-19 (VFX2): FX.A.creeperBurst (flashing swell, green ring, spores) + the Boom float",
   "priority": 1,
   "themeNotes": "Pesky Bee (creeper) burst — green flash, spores.",
   "variantsSuggested": false,
@@ -2365,7 +2366,8 @@
   "batch": "A",
   "status": "live",
   "lab": "a.js",
-  "inGameHook": "onEvent (bramblewood-fx-a.js): explode"
+  "inGameHook": "onEvent (bramblewood-fx-a.js): explode",
+  "updated": "2026-11-19"
  },
  {
   "id": "sk-rocket",
@@ -2706,8 +2708,8 @@
   "area": "combat-skill",
   "name": "Shield soaks damage",
   "trigger": "shieldSoak {soaked, left}",
-  "current": "\"💠 -N\" float",
-  "quality": "basic — no shield flare on impact",
+  "current": "vis4ShieldHit (the rectangle lights up and ripples) + the blue number counts down + SoundKit.shield (VFX2: was silent)",
+  "quality": "good — re-checked in play 2026-11-19 (VFX2)",
   "priority": 2,
   "themeNotes": "",
   "variantsSuggested": false,
@@ -2718,15 +2720,16 @@
   "batch": "A",
   "status": "live",
   "lab": "a.js",
-  "inGameHook": "onEvent (bramblewood-fx-a.js): shieldSoak with shield left"
+  "inGameHook": "renderVfxForEvent shieldSoak: the float and SoundKit.shield at the blow; FX.A.onEvent → vis4ShieldHit",
+  "updated": "2026-11-19"
  },
  {
   "id": "sk-shield-break",
   "area": "combat-skill",
   "name": "Shield breaks",
   "trigger": "shieldSoak with left 0",
-  "current": "\"💠 Shield breaks\" float",
-  "quality": "basic — should shatter visibly",
+  "current": "vis4ShieldBreak (glass panes) + FX.A.shieldBurst (ring, hex shards, glints) + SoundKit.iceShatter",
+  "quality": "good — VFX2 2026-11-19: a visible shatter and a sound (was a faint pane drift, silent)",
   "priority": 2,
   "themeNotes": "",
   "variantsSuggested": false,
@@ -2737,7 +2740,8 @@
   "batch": "A",
   "status": "live",
   "lab": "a.js",
-  "inGameHook": "onEvent (bramblewood-fx-a.js): shieldSoak with 0 left"
+  "inGameHook": "FX.A.onEvent shieldSoak with 0 left: vis4ShieldBreak, then FX.A.shieldBurst 120 ms later; renderVfxForEvent: SoundKit.iceShatter",
+  "updated": "2026-11-19"
  },
  {
   "id": "sk-shell-up",
@@ -2921,8 +2925,8 @@
   "area": "combat-skill",
   "name": "Mind Control",
   "trigger": "mindControl {targetUid, slot}",
-  "current": "SkillFX.mindWave (reused) then board re-render",
-  "quality": "basic — the unit just reappears on your side; no crossing / puppet strings",
+  "current": "vfx2MindControlRows redraws the unit on the caster's row, then FX.A.mindFlip flies it over (tether, swirl, flip into the new side's colour, landing ring) + SoundKit.confuseWarble",
+  "quality": "good — VFX2 2026-11-19: the unit visibly crosses (in a replay it stayed on the enemy row until round end); the doubled mindWave is gone",
   "priority": 1,
   "themeNotes": "Psychic Map 50+ / spy theme: strings snap to your castle colour.",
   "variantsSuggested": false,
@@ -2934,7 +2938,8 @@
   "batch": "A",
   "status": "live",
   "lab": "a.js",
-  "inGameHook": "onEvent (bramblewood-fx-a.js): mindControl"
+  "inGameHook": "renderVfxForEvent: vfx2MindControlRows before fxBatchVfx → FX.A.onEvent mindControl → FX.A.mindFlip",
+  "updated": "2026-11-19"
  },
  {
   "id": "sk-swap",
@@ -3001,8 +3006,8 @@
   "area": "combat-skill",
   "name": "Player Stun (enemy skips their turn)",
   "trigger": "stunPlayer {turns}",
-  "current": "none (battle log only)",
-  "quality": "missing — a whole skipped turn has no on-screen cue",
+  "current": "the bell toll when the stun lands (FX.A.bellToll) + FX.A.frozenClock when the skipped turn opens",
+  "quality": "good — VFX2 2026-11-19: the skipped turn has its own cue (a frosted clock over your hand or the enemy castle, frost wash, freezeChime)",
   "priority": 1,
   "themeNotes": "A bell tolls; the enemy hand greys and rattles chains.",
   "variantsSuggested": false,
@@ -3014,15 +3019,16 @@
   "batch": "A",
   "status": "live",
   "lab": "a.js",
-  "inGameHook": "onEvent (bramblewood-fx-a.js): stunPlayer (Low effects and up)"
+  "inGameHook": "stunPlayer → FX.A.bellToll; resolveRoundCore, the stunned side's turn opens → fxHook('turnSkipped', side) → FX.A.frozenClock (Low effects and up)",
+  "updated": "2026-11-19"
  },
  {
   "id": "sk-exile-board",
   "area": "combat-skill",
   "name": "Exile a unit from the board",
   "trigger": "statusFx exile → exile {zone:'board'}",
-  "current": "SoundKit.exile only; the card just disappears",
-  "quality": "missing — no banish visual for a removal",
+  "current": "FX.C.deathExile_C: a violet rift, the card spirals in, a ring and a candle Echo (the banish swirl)",
+  "quality": "good — VFX2 2026-11-19: the exiled death (Marsh Wisp Map 6, Ashbone Ghoul Map 20, Nullify) is a banish swirl, not a grey fold",
   "priority": 1,
   "themeNotes": "Forgotten Ones: the card is pulled into a violet rift and leaves an Echo 🕯️.",
   "variantsSuggested": false,
@@ -3035,7 +3041,8 @@
   "batch": "A",
   "status": "live",
   "lab": "a.js, c.js",
-  "inGameHook": "batch C: death {nullified | exiled} → hooks.deathLook → FX.C.deathExile (G)"
+  "inGameHook": "death {exiled | nullified} → FX.C.hooks.deathLook → FX.C.deathExile_C; statusFx exile (no shipped card) → FX.A.violetRift",
+  "updated": "2026-11-19"
  },
  {
   "id": "sk-exile-zone",
@@ -3709,7 +3716,7 @@
   "name": "Poison: applied",
   "trigger": "statusFx poison (on-hit Poison, Poison action, Poison Bolt)",
   "current": "\"+N☠\" float + poisonApply",
-  "quality": "basic — number only; poisonCloud plays only on the tick",
+  "quality": "good — re-checked in play 2026-11-19 (VFX2): glop splats, green ooze and bubbles, not a number only",
   "priority": 1,
   "themeNotes": "Swamp green, bubbling glop.",
   "variantsSuggested": false,
@@ -3722,7 +3729,8 @@
   "batch": "B",
   "status": "live",
   "lab": "b.js",
-  "inGameHook": "onEvent: statusFx poison"
+  "inGameHook": "onEvent: statusFx poison",
+  "updated": "2026-11-19"
  },
  {
   "id": "st-poison-active",
@@ -3789,8 +3797,8 @@
   "area": "status",
   "name": "Bleed: applied",
   "trigger": "statusFx bleed / gash",
-  "current": "\"+N🩸\" float + bleedApply",
-  "quality": "basic — number only",
+  "current": "FX.B.bleedApply: a gash, then seven drops that run down the card (VFX2: bigger, outlined)",
+  "quality": "good — VFX2 2026-11-19: the drip reads at phone size (the drops were 7 px and faint)",
   "priority": 1,
   "themeNotes": "Beasts: blood red, Frenzy.",
   "variantsSuggested": false,
@@ -3803,7 +3811,8 @@
   "batch": "B",
   "status": "live",
   "lab": "b.js",
-  "inGameHook": "onEvent: statusFx bleed"
+  "inGameHook": "onEvent: statusFx bleed",
+  "updated": "2026-11-19"
  },
  {
   "id": "st-bleed-active",

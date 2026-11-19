@@ -490,3 +490,4 @@ run node tests/skfin-2026-11-18.js   # 2026-11-19 (package SKFIN, owner 11-18 23
 run node tests/rel2-2026-11-19.js   # 2026-11-19 (package REL2): Release 1.0 path UI fixes (guest banner in fights, tutorial win, Murgle announcement, touch wording, folds, stickers)
 run node tests/lvl11-2026-11-19.js   # 2026-11-19 (package LVL11, owner 11-18 21:29 / 21:31): the Codex level bar, the "?" of a skill learnt later, tokens grow by their own table at the summoner's level (priced)
 run node tests/raidgate-2026-11-19.js   # 2026-11-19 (package RAIDGATE, OWN-1119-1): The Deep Dark inside The Sunken Depths opens after Map 21; its boss clear opens the first raid
+run node tests/vfx2-2026-11-19.js   # 2026-11-19 (package VFX2): battle effects on the 1.0 path: shield break burst and sounds, Bleed drip, the stunned turn's frozen clock, Mind Control's crossing (replay row move), the exiled death's banish swirl

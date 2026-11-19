@@ -1310,10 +1310,10 @@ css('vfx2', `
 .fxa-tint{border-radius:10px; background:linear-gradient(160deg, rgba(190,140,255,.5), rgba(110,60,200,.3)); box-shadow:0 0 0 2px rgba(214,188,255,.9), 0 0 16px rgba(164,107,255,.8);}
 .fxa-tint.is-a{background:linear-gradient(160deg, rgba(120,200,255,.45), rgba(40,120,220,.25)); box-shadow:0 0 0 2px rgba(170,225,255,.95), 0 0 16px rgba(70,160,255,.8);}
 .fxa-tint.is-b{background:linear-gradient(160deg, rgba(255,150,140,.45), rgba(220,50,40,.25)); box-shadow:0 0 0 2px rgba(255,190,180,.95), 0 0 16px rgba(255,80,60,.8);}
-.fxa-clock{width:64px; height:64px; border-radius:50%; overflow:hidden; background:radial-gradient(circle at 38% 32%, #fff, #dff3ff 45%, #9fd2f2 100%);
+.fxa-clock{width:76px; height:76px; border-radius:50%; overflow:hidden; background:radial-gradient(circle at 38% 32%, #fff, #dff3ff 45%, #9fd2f2 100%);
   box-shadow:0 0 0 4px #e9f7ff, 0 0 0 6px #5aa9dc, 0 6px 14px rgba(0,0,0,.45), 0 0 22px rgba(140,210,255,.8);}
-.fxa-clock i{position:absolute; left:50%; bottom:50%; width:4px; height:17px; margin-left:-2px; border-radius:2px; background:#24425e; transform-origin:50% 100%;}
-.fxa-clock i.m{height:25px; width:3px; margin-left:-1.5px; background:#2d5b84;}
+.fxa-clock i{position:absolute; left:50%; bottom:50%; width:4px; height:20px; margin-left:-2px; border-radius:2px; background:#24425e; transform-origin:50% 100%;}
+.fxa-clock i.m{height:30px; width:3px; margin-left:-1.5px; background:#2d5b84;}
 .fxa-clock b{position:absolute; left:50%; top:50%; width:8px; height:8px; margin:-4px 0 0 -4px; border-radius:50%; background:#24425e;}
 .fxa-clock s{position:absolute; left:-30%; top:0; width:60%; height:100%; background:linear-gradient(100deg, rgba(255,255,255,0), rgba(255,255,255,.9), rgba(255,255,255,0)); opacity:0;}
 .fxa-frost{border-radius:14px; background:radial-gradient(ellipse at 50% 50%, rgba(225,246,255,.5), rgba(150,210,245,.28) 60%, rgba(150,210,245,.08) 100%); box-shadow:inset 0 0 0 2px rgba(220,244,255,.75), inset 0 0 24px rgba(170,225,255,.7);}
@@ -1324,10 +1324,12 @@ const speedOf = o=> Math.max(1, (o && o.speed) || 1);
 // in the air (its glow turns from violet to its new side's colour at the turn) and lands in its new slot with a ring. opts.from is its old
 // rect (the game has already re-rendered it on the caster's side); without it, it flips in place.
 M.mindFlip = function(el, o){
-  o = o || {}; const g = G(), t = tileOf(el); if(!g || !el || !t) return done(0);
+  o = o || {}; const g = G(); let t = tileOf(el); if(!g || !el || !t) return done(0);
   const sp = speedOf(o), side = o.side === 'B' ? 'b' : 'a', col = side === 'a' ? '#8fd0ff' : '#ff9a8a';
+  // the board may redraw during the flight (a new .board-card for the same unit): follow the unit by its uid and move onto the new tile
+  const cur = ()=>{ const n = o.uid != null && document.querySelector(`.board-card[data-uid="${o.uid}"]`); if(n && n !== el){ g.set(t, {clearProps:'transform'}); el = n; t = tileOf(n); } return el; };
   const sc = (()=>{ const w = t.offsetWidth, r = t.getBoundingClientRect().width; return w && r ? r / w : 1; })();
-  const L0 = centre(el), live = el !== t ? ()=> centre(el) : ()=> L0, F = o.from ? {x:o.from.left + o.from.width/2, y:o.from.top + o.from.height/2} : {x:L0.x, y:L0.y};
+  const L0 = centre(el), live = el !== t ? ()=> centre(cur()) : ()=> L0, F = o.from ? {x:o.from.left + o.from.width/2, y:o.from.top + o.from.height/2} : {x:L0.x, y:L0.y};
   const W = L0.w, H = L0.h, perp = {x:-(L0.y - F.y), y:L0.x - F.x}, pl = Math.hypot(perp.x, perp.y) || 1, bend = Math.min(90, Math.hypot(L0.x - F.x, L0.y - F.y)*.28);
   const mid = {x:(F.x + L0.x)/2 + perp.x/pl*bend, y:(F.y + L0.y)/2 + perp.y/pl*bend};
   const tint = layer('fxa-over fxa-tint'), sw = P('fxa-swirl', '', F.x, F.y, {width:Math.max(W, H)*1.25, height:Math.max(W, H)*1.25, opacity:0, scale:.6});
@@ -1335,7 +1337,7 @@ M.mindFlip = function(el, o){
   let line = null; if(sv){ sv.innerHTML = `<path class="fxa-tether" d="M${cs.x},${cs.y} L${F.x},${F.y}"/>`; line = sv.firstChild; const len = Math.hypot(F.x - cs.x, F.y - cs.y); line.style.strokeDasharray = len; line.style.strokeDashoffset = len; }
   const at = q=>{ const Lc = live(); g.set(t, {x:(q.x - Lc.x)/sc, y:(q.y - Lc.y)/sc}); g.set(tint, {x:q.x - W/2, y:q.y - H/2, width:W, height:H}); if(line && cs) line.setAttribute('d', `M${cs.x},${cs.y} L${q.x},${q.y}`); };
   g.killTweensOf(t); at(F); g.set(tint, {opacity:0});
-  const s = {p:0}, tl = g.timeline({onComplete:()=>{ g.set(t, {clearProps:'transform'}); kill(tint); kill(sw); kill(sv); call(o.onDone); }});
+  const s = {p:0}, tl = g.timeline({onComplete:()=> later(()=>{ cur(); g.set(t, {clearProps:'transform'}); kill(tint); kill(sw); kill(sv); call(o.onDone); }, 400/sp)});
   tl.timeScale(sp);
   if(line) tl.to(line, {strokeDashoffset:0, duration:.2, ease:'power2.out'}, 0);
   tl.to(sw, {opacity:1, scale:1, rotation:200, duration:.3, ease:'power2.out'}, 0).to(sw, {rotation:420, scale:.5, opacity:0, duration:.3, ease:'power2.in'}, .3)
@@ -1344,7 +1346,7 @@ M.mindFlip = function(el, o){
       at(qpt(F, m2, Lc, p)); g.set(t, {scaleX:Math.max(.06, Math.abs(Math.cos(Math.PI*p))), scaleY:1 + Math.sin(Math.PI*p)*.08, rotation:Math.sin(Math.PI*p)*8});
       tint.classList.toggle('is-' + side, p >= .5); g.set(tint, {scaleX:Math.max(.06, Math.abs(Math.cos(Math.PI*p)))}); }}, .22)
     .add(()=>{ const q = live(); ring(q.x, q.y, {color:col, size:Math.max(W, H)*1.7, w:4, glow:12, dur:420/sp}); if(line) g.to(line, {opacity:0, duration:.15/sp}); }, .7)
-    .to(t, {y:`+=${4/sc}`, duration:.08, ease:'power2.out'}, .7).to(t, {y:`-=${4/sc}`, duration:.3, ease:'elastic.out(1, .5)'}, .78)
+    .add(()=>{ cur(); g.to(t, {keyframes:[{y:`+=${4/sc}`, duration:.08/sp, ease:'power2.out'}, {y:`-=${4/sc}`, duration:.3/sp, ease:'elastic.out(1, .5)'}]}); }, .7)
     .to(tint, {opacity:0, duration:.3}, .74);
   return done(Math.round(1100/sp));
 };
@@ -1371,8 +1373,8 @@ M.frozenClock = function(anchor, o){
 M.shieldBurst = function(el, o){
   o = o || {}; const g = G(); if(!g || !el) return done(0); const sp = speedOf(o), c = centre(tileOf(el));
   ring(c.x, c.y, {color:'#dff3ff', size:c.w*2.1, w:4, glow:12, dur:420/sp});
-  spray(c.x, c.y, {n:12, cls:'fxa-hexs', d0:c.w*.5, d1:c.w*1.15, grav:30, dur:.6/sp, spin:400, s0:1.1, s1:.4});
-  spray(c.x, c.y, {n:6, html:'✦', size:14, color:'#fff', style:{textShadow:'0 0 6px #8fd4ff'}, d0:c.w*.3, d1:c.w*.75, dur:.5/sp});
+  spray(c.x, c.y, {n:8, cls:'fxa-hexs', d0:c.w*.5, d1:c.w*1.15, grav:30, dur:.6/sp, spin:400, s0:1.1, s1:.4}); // 2026-11-19: 12 pieces in all (VFX2 A/B: 18 tripled the style passes)
+  spray(c.x, c.y, {n:4, html:'✦', size:14, color:'#fff', style:{textShadow:'0 0 6px #8fd4ff'}, d0:c.w*.3, d1:c.w*.75, dur:.5/sp});
   return done(Math.round(700/sp));
 };
 
@@ -1530,7 +1532,7 @@ M.onEvent = function(ev, env){
     case 'rally': { const F = S(), t = el(ev.uid); if(F && F.rally && t) F.rally([t].concat(rowCards(t).filter(x=> x !== t))); break; } // SkillFX.rally, wired
     case 'heal': if(ev.attUid != null && ev.attUid !== ev.targetUid && !fxOf(ev.attDefId).bloom && (ev.amount || 0) > 0 && env.once('heal' + ev.targetUid)){ const F = S(), t = el(ev.targetUid); if(F && F.heal && t) F.heal(t); } break; // SkillFX.heal, wired
     // 2026-11-19 (package VFX2): the unit crosses over (the game moves it in the replay first and leaves its old rect on ev._fromRect); M.puppetStrings stays in the Lab.
-    case 'mindControl': { const t = el(ev.targetUid); if(t) M.mindFlip(t, {from:ev._fromRect || null, caster:el(ev.attUid), side:ev.side, speed:mSpeed(env)}); break; }
+    case 'mindControl': { const t = el(ev.targetUid); if(t) M.mindFlip(t, {uid:ev.targetUid, from:ev._fromRect || null, caster:el(ev.attUid), side:ev.side, speed:mSpeed(env)}); break; }
     case 'swapPositions': { const a = el(ev.aUid), b = el(ev.bUid); if(a && b) M.swapArcs(a, b); break; }
     case 'converge': { const row = sideRow(ev.targetSide), cards = row ? [...row.querySelectorAll('.board-card')].filter(b=> b.querySelector('.card-tile')) : []; if(cards.length) M.magnetPull(cards); break; }
     case 'restless': { const a = el(ev.uid); if(a) M.footsteps(a, {to:ev.swapUid != null ? el(ev.swapUid) : null, dir:(ev.to || 0) >= (ev.from || 0) ? 1 : -1}); break; }

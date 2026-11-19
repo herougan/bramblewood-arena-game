@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-19 (package VFX2, owner 00:02 / 08:21: the first release experience, shippable)
+- Players see: a shield break shatters (VIS4's panes, then a ring, hex shards and glints) and a unit's shield soak / break now sound (`shield`, `iceShatter`); Bleed drips with bigger drops; an exiled death (Marsh Wisp Map 6, Ashbone Ghoul Map 20, a Nullify kill) is a banish swirl into a violet rift with a candle Echo, not a grey fold.
+- Players see (no 1.0 card has these yet): Mind Control's unit visibly crosses to the caster's row (tether, swirl, a flip into its new colour; in a replay it used to stay on the enemy row until round end, and two looks played); a Player Stun's skipped turn opens with a frosted clock over your hand or the enemy castle.
+- Re-checked and already good (inventory text was stale): Poison applied, Explode, the ranged missile per damage type, the magic / water / true light. Not done: level-up ring and Claim coin burst on the tutorial win.
+- Frame cost (A/B, `tools/perf/vfx2_ab_2026_11_19.js`): medians of 3, 1.8 s windows, a loaded box (idle windows 103-118 ms CPU): no task over 50 ms before or after; exiled death 219 -> 111 ms CPU (the swirl has no filter), shield break 112 -> 147 ms with 103 style passes before its 18 pieces were cut to 12, Mind Control's fire 9 -> 32 ms (the board redraw that moves the unit), Bleed and the skipped turn within noise.
+- Under the hood: `FX.A.mindFlip`, `FX.A.frozenClock`, `FX.A.shieldBurst`, `FX.A.hooks.turnSkipped`, `FX.C.deathExile_C`; arena_app.js `vfx2MindControlRows` + four one-line hooks; Lab key V2 (`manifest/vfx2.js`); `tests/vfx2-2026-11-19.js`; strips `tools/vfx2_strips_2026_11_19.js` → `docs/release/vfx2/`.
+
 ## 2026-11-19 (package RAIDGATE, owner 00:02: the raid unlocks past Map 21, from a submap in a submap of a water map)
 - Players see: a locked "A light far below" spot in The Sunken Depths; after Map 21 it opens The Deep Dark (abyss art, Pitch Black), 4 fights 10-B-1 to 10-B-4 at Map 21 strength (existing deep-water cards, its own list). Winning 10-B-4 opens the first raid (the Goliath): toast, the raid conversation, a Home note until the raid page is opened; the Raid Banner stands after 10-B-4.
 - Gate: was the Raid Banner on Map 13; now The Deep Dark's boss. Saves that already opened the raid keep it; Admin unlocks unchanged. The raid cards' obtain map (OBTAIN_MAP_OF.raid, spot mapNumber) stays 13.

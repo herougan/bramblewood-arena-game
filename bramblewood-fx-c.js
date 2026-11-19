@@ -893,8 +893,8 @@ M.deathExile_C = function(el, opts){
   const D = dying(el); if(!D) return Promise.resolve(); const {t, x, y, w, h} = D;
   exileCss();
   return run(opts, (tl, mk)=>{
-    const r = mk('fxc-rift'); tl.set(r, {x, y, xPercent:-50, yPercent:-50, width:6, height:h*1.15, opacity:0}, 0).to(r, {opacity:1, width:w*.6, duration:.18, ease:'back.out(2)'}, 0)
-      .to(r, {width:w*1.05, duration:.25, ease:'sine.inOut'}, .18).to(r, {width:2, opacity:0, duration:.16, ease:'power3.in'}, .72);
+    const r = mk('fxc-rift'); tl.set(r, {x, y, xPercent:-50, yPercent:-50, width:6, height:h*1.15, opacity:0}, 0).to(r, {opacity:1, width:w*.3, duration:.18, ease:'back.out(2)'}, 0)
+      .to(r, {width:w*.9, duration:.3, ease:'power2.in'}, .3).to(r, {width:2, opacity:0, duration:.16, ease:'power3.in'}, .72); // thin while the card turns in front, wide as it vanishes
     tl.to(t, {rotation:240, scale:.06, opacity:.3, duration:.5, ease:'power2.in'}, .2).set(t, {opacity:0}, .7);
     spray(tl, mk, .15, x, y, {n:10, colors:['#d6bcff', '#a46bff', '#fff'], size:[3, 5], dist:[w*.6, w*.95], dur:[.4, .5], ease:'power2.in', scale0:1, scale1:.2, stagger:.02});
     ringAt(tl, mk, .74, x, y, {color:'#c9a2ff', from:w*.3, to:w*1.6, glow:'rgba(160,90,255,.7)', dur:.42});
