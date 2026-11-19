@@ -10368,7 +10368,7 @@
       "Mustelid"
     ],
     "animal": "honey badger",
-    "unattainable": true,
+    "unattainable": false,
     "creatorNote": "2026-10-19 retune (v5 L/10): was 2/10 (well under: 2A+H+S 54.8% -> 73% of N 27.38). 2026-10-19 halve (BF5): was 3/13. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 1/6. 2026-10-24 BAL3 (owner BAL2-5 12:02 \"Basic logic return\"): the held card takes its formula line: 2/9 -> 1/6. 2026-11-18 (CARDPOW2, owner 11-17 23:41 overnight plan): 1/6 -> 3/7; budget fill 48.9% -> 85.1% at its level, power -42 (docs/balance/cardpow2-2026-11-18.md).",
     "levelBonus": {
       "4": {
