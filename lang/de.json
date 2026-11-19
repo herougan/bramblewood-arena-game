@@ -31,7 +31,7 @@
  "+{n} Energy each": "je +{n} Energie",
  "+{n} Hero XP — {why}": "+{n} Helden-EP — {why}",
  "+{n} Materia XP waiting for the next level": "+{n} Materia-EP warten auf die nächste Stufe",
- "+{n} XP": "+{n} EP",
+ "+{n} XP": "+{n} XP",
  "+{n}/+{n} for each adjacent ally, up to 2.": "+{n}/+{n} je angrenzendem Verbündeten, bis zu 2.",
  "+{raidInk} Abyssal Ink": "+{raidInk} Abgrundtinte",
  "+{total} XP — {v2}": "+{total} EP — {v2}",
@@ -4671,5 +4671,7 @@
  "Slide to see it at another level, up to one past your best copy.": "Schieben, um sie auf einer anderen Stufe zu sehen, bis eine Stufe über deinem besten Exemplar.",
  "Own a copy to look further ahead.": "Besitze ein Exemplar, um weiter vorauszuschauen.",
  "First raid open: {name}.": "Erster Raid offen: {name}.",
- "First raid open": "Erster Raid offen"
+ "First raid open": "Erster Raid offen",
+ "These {n} go with you": "Diese {n} begleiten dich",
+ "Level {n} reward: {name}": "Stufe-{n}-Belohnung: {name}"
 }

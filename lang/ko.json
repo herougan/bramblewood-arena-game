@@ -31,7 +31,7 @@
  "+{n} Energy each": "개당 에너지 +{n}",
  "+{n} Hero XP — {why}": "영웅 XP +{n} — {why}",
  "+{n} Materia XP waiting for the next level": "+{n} 마테리아 XP가 다음 레벨을 기다리는 중",
- "+{n} XP": "+{n} 경험치",
+ "+{n} XP": "+{n} XP",
  "+{n}/+{n} for each adjacent ally, up to 2.": "인접한 아군 하나마다 +{n}/+{n}, 최대 2.",
  "+{raidInk} Abyssal Ink": "심연의 먹물 +{raidInk}",
  "+{total} XP — {v2}": "+{total} XP — {v2}",
@@ -4674,5 +4674,7 @@
  "Slide to see it at another level, up to one past your best copy.": "밀어서 다른 레벨을 보세요. 가장 높은 카드보다 한 레벨 위까지.",
  "Own a copy to look further ahead.": "한 장을 가지면 더 앞을 볼 수 있다.",
  "First raid open: {name}.": "첫 레이드 개방: {name}.",
- "First raid open": "첫 레이드 개방"
+ "First raid open": "첫 레이드 개방",
+ "These {n} go with you": "이 {n}장이 함께합니다",
+ "Level {n} reward: {name}": "레벨 {n} 보상: {name}"
 }

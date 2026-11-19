@@ -848,7 +848,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.res3-forge-locked": "Locked for now",
   "ui.res3-lt-card": "A card",
   "ui.res3-lt-faction": "Faction pack",
-  "ui.res3-lt-pack-name": "Level {n}: {name}",
+  "ui.res3-lt-pack-name": "Level {n} reward: {name}",
   "ui.res3-lt-aria": "Level {n}, {into} of {need} XP",
   "ui.res3-lt-level": "Level {n}",
   "ui.res3-lt-xp": "{into}/{need} XP",
@@ -3867,7 +3867,10 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.lvl11-slider-tip": "Slide to see it at another level, up to one past your best copy.",
   "ui.lvl11-own": "Own a copy to look further ahead.",
   "ui.raidgate-open": "🐲 First raid open: {name}.",
-  "ui.raidgate-note": "First raid open"
+  "ui.raidgate-note": "First raid open",
+  "ui.rel3-deck-line": "These {n} go with you",
+  "ui.rel3-xp": "+{n} XP",
+  "ui.rel3-level": "Level {n}!"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

@@ -31,7 +31,7 @@
  "+{n} Energy each": "每个 +{n} 能量",
  "+{n} Hero XP — {why}": "+{n} 英雄经验 — {why}",
  "+{n} Materia XP waiting for the next level": "+{n} 魔晶经验等待下一级",
- "+{n} XP": "+{n} 经验",
+ "+{n} XP": "+{n} XP",
  "+{n}/+{n} for each adjacent ally, up to 2.": "每个相邻的友军 +{n}/+{n}，最多2个。",
  "+{raidInk} Abyssal Ink": "+{raidInk} 深渊墨汁",
  "+{total} XP — {v2}": "+{total} 经验 — {v2}",
@@ -4672,5 +4672,7 @@
  "Slide to see it at another level, up to one past your best copy.": "拖动查看其他等级，最多比你最好的那张高一级。",
  "Own a copy to look further ahead.": "拥有一张后可以看得更远。",
  "First raid open: {name}.": "首个突袭已开启：{name}。",
- "First raid open": "首个突袭已开启"
+ "First raid open": "首个突袭已开启",
+ "These {n} go with you": "这 {n} 张跟你走",
+ "Level {n} reward: {name}": "{n} 级奖励：{name}"
 }

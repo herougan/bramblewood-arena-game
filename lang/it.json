@@ -31,7 +31,7 @@
  "+{n} Energy each": "+{n} Energia ciascuna",
  "+{n} Hero XP — {why}": "+{n} PE dell’Eroe — {why}",
  "+{n} Materia XP waiting for the next level": "+{n} PE di Materia in attesa del prossimo livello",
- "+{n} XP": "+{n} PE",
+ "+{n} XP": "+{n} XP",
  "+{n}/+{n} for each adjacent ally, up to 2.": "+{n}/+{n} per ogni alleato adiacente, fino a 2.",
  "+{raidInk} Abyssal Ink": "+{raidInk} Inchiostro abissale",
  "+{total} XP — {v2}": "+{total} PE — {v2}",
@@ -4673,5 +4673,7 @@
  "Slide to see it at another level, up to one past your best copy.": "Scorri per vederla a un altro livello, fino a uno oltre la tua copia migliore.",
  "Own a copy to look further ahead.": "Possiedi una copia per guardare più avanti.",
  "First raid open: {name}.": "Primo raid aperto: {name}.",
- "First raid open": "Primo raid aperto"
+ "First raid open": "Primo raid aperto",
+ "These {n} go with you": "Queste {n} vengono con te",
+ "Level {n} reward: {name}": "Premio livello {n}: {name}"
 }
