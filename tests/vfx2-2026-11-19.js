@@ -51,11 +51,19 @@ has(fxc, /M\.deathExile_C = function\(el, opts\)/, '5. FX.C.deathExile_C exists'
 has(fxc, /if\(EXILED\.has\(String\(uid\)\)\) plan\.look = 'deathExile_C';/, '5. an exiled / nullified death plays deathExile_C');
 ok(!/deathExile_C[\s\S]{0,900}filter:/.test(fxc.slice(fxc.indexOf('M.deathExile_C'), fxc.indexOf('M.deathExile_C') + 1400)), '5. the swirl uses transform and opacity (no filter on the card)');
 
+// 5b. the tutorial's first-deck level-up ring (REL3's bw-moment) and the Claim coin burst
+{ const fxf = rd('bramblewood-fx-f.js');
+  has(fxf, /M\.momentRing = function\(chip, opts\)/, '5b. FX.F.momentRing exists');
+  has(fxf, /document\.addEventListener\('bw-moment', e=>\{ const d = e && e\.detail; if\(!d \|\| !d\.up \|\| !vfx2On\(\)\) return;[\s\S]{0,200}M\.momentRing\(chip/, "5b. a level-up 'bw-moment' plays momentRing (gated by reduced motion / Effects None)");
+  has(fxf, /H\.claimBurst = \(btn, env\)=>\{ if\(env\.fxAtLeast\('low'\)\) M\.coinBurst\(btn/, '5b. hooks.claimBurst -> coinBurst');
+  has(app, /if\(mode==='tutorial' && m\.winner===1\) fxHook\('claimBurst', document\.getElementById\('wlPrimaryBtn'\)\);/, "5b. the tutorial win's Claim fires claimBurst");
+  has(app, /document\.dispatchEvent\(new CustomEvent\('bw-moment'/, "5b. REL3 still sends 'bw-moment'"); }
+
 // 6. speed: each new look plays faster with the replay
 ['mindFlip', 'frozenClock', 'shieldBurst'].forEach(k=>{ const i = fxa.indexOf('M.' + k + ' = function'); ok(i > 0 && /speedOf\(o\)/.test(fxa.slice(i, i + 600)), `6. ${k} reads opts.speed`); });
 
 // 7. Effects Lab, inventory, catalogue, CHANGELOG
-{ const lab = rd('tools/effects-lab/manifest/vfx2.js'); ['sk-shield-break', 'sk-stun-player', 'sk-mind-control', 'sk-exile-board'].forEach(id=> ok(new RegExp(`id:'${id}'[\\s\\S]{0,400}key:'V2'`).test(lab), `7. the Effects Lab plays ${id} (V2)`)); }
+{ const lab = rd('tools/effects-lab/manifest/vfx2.js'); ['sk-shield-break', 'sk-stun-player', 'sk-mind-control', 'sk-exile-board', 'meta-account-level', 'res-tutorial-result'].forEach(id=> ok(new RegExp(`id:'${id}'[\\s\\S]{0,400}key:'V2'`).test(lab), `7. the Effects Lab plays ${id} (V2)`)); }
 { const inv = JSON.parse(rd('docs/effects-inventory-2026-10-15.json')), by = id=> inv.find(e=> e.id === id) || {};
   ['sk-shield-soak', 'sk-shield-break', 'st-poison-apply', 'st-bleed-apply', 'sk-stun-player', 'sk-mind-control', 'sk-exile-board', 'sk-explode', 'atk-ranged-projectile']
     .forEach(id=> ok(by(id).updated === '2026-11-19' && /^good/.test(by(id).quality || ''), `7. inventory ${id} re-rated 2026-11-19`)); }

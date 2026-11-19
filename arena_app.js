@@ -40449,6 +40449,7 @@ function renderMatchUI(){
       conquestSelectedMap = loadTutorial2Done() ? 'm1' : 'mtut'; conquestSelectedNodeKey = null; playSubTab = 'conquest'; switchTab('play'); if(!loadTutorial2Done()) try{ guideToTutorial2(); }catch(e){} }); }
     document.getElementById('wlPrimaryBtn').addEventListener('click', ()=>{
       const mode=m.mode;
+      if(mode==='tutorial' && m.winner===1) fxHook('claimBurst', document.getElementById('wlPrimaryBtn')); // 2026-11-19 (package VFX2): coins pop from Claim
       if(mode==='tutorial'){
         // Won -> advance to the next skirmish (or, on skirmish 6, grant the series' rewards, build
         // the player's real starter deck, mark the whole tutorial done, and land on the real Home

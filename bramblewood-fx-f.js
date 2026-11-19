@@ -2147,4 +2147,34 @@ M.bossVictory = function(cardEl, opts){
   return Promise.all(jobs).then(()=> wait(900)).then(()=> call(opts.onDone));
 };
 
+// ---- VFX2 (2026-11-19): the tutorial's first-deck moment (REL3) and its Claim button ----
+// M.momentRing: a gold ring fills round the Level chip, flashes and throws gold coins. M.coinBurst: coins pop out of an element (Claim).
+css('vfx2', `.fxf .fxf-mring{position:absolute; left:0; top:0;} .fxf .fxf-mring svg{display:block; overflow:visible;}
+.fxf .fxf-mring circle{fill:none; stroke-width:5; stroke-linecap:round;} .fxf .fxf-mring .bg{stroke:rgba(200,140,40,.25);} .fxf .fxf-mring .fg{stroke:#e8961a; filter:drop-shadow(0 0 4px rgba(255,190,60,.9));}`);
+const COIN = 'radial-gradient(circle at 35% 30%, #fff3b0, #ffcf4a 45%, #c98a1c 100%)';
+M.coinBurst = function(el, opts){
+  opts = opts || {}; if(!alive(el)) return Promise.resolve(); const c = pt(el);
+  try{ opts.sound && opts.sound(); }catch(e){}
+  ring(c.x, c.y, {color:'#ffd56e', size:Math.max(120, c.w*1.3), width:3, dur:.5});
+  return burst(c.x, c.y - c.h*.2, {n:opts.n || 14, colors:[COIN], size:13, spread:1.6, angle:-Math.PI/2, dist:[50, 130], dur:.9, gravity:90, from:.6, to:1, glow:false, stagger:.02});
+};
+M.momentRing = function(chip, opts){
+  opts = opts || {}; const g = G(); if(!g || !alive(chip)) return Promise.resolve();
+  const c = pt(chip), R = Math.max(c.w, c.h)*.62 + 8, C = 2*Math.PI*R, S = R*2 + 10;
+  const h = lay('fxf-mringh', `<div class="fxf-mring"><svg width="${S}" height="${S}" viewBox="0 0 ${S} ${S}"><circle class="bg" cx="${S/2}" cy="${S/2}" r="${R}"/><circle class="fg" cx="${S/2}" cy="${S/2}" r="${R}" transform="rotate(-90 ${S/2} ${S/2})" stroke-dasharray="${C}" stroke-dashoffset="${C}"/></svg></div>`, 3000);
+  const box = h.firstChild, fg = box.querySelector('.fg'); g.set(box, {x:c.x - S/2, y:c.y - S/2, opacity:0, scale:.8});
+  return new Promise(res=> g.timeline({onComplete:()=>{ h.remove(); call(opts.onDone); res(); }})
+    .to(box, {opacity:1, scale:1, duration:.2, ease:'back.out(2)'})
+    .to(fg, {attr:{'stroke-dashoffset':0}, duration:.55, ease:'power2.inOut'}, .1)
+    .add(()=>{ M.coinBurst(chip, {n:12, sound:opts.sound}); }, .65)
+    .to(box, {scale:1.25, opacity:0, duration:.35, ease:'power2.out'}, .68));
+};
+// REL3's hook: arena_app.js rel3PaintMoment sends 'bw-moment' {kind:'tutorial-xp', xp, level, up}; the level chip is .trm.is-lvl. Gated here (a DOM
+// event, not an fxHook): reduced motion and Effects None skip it.
+const vfx2On = ()=>{ try{ return !(typeof reducedMotion === 'function' && reducedMotion()) && !(typeof fxAtLeast === 'function' && !fxAtLeast('low')); }catch(e){ return false; } };
+const snd2 = k=> ()=>{ try{ if(typeof SoundKit !== 'undefined' && SoundKit[k]) SoundKit[k](); }catch(e){} };
+if(document.addEventListener) document.addEventListener('bw-moment', e=>{ const d = e && e.detail; if(!d || !d.up || !vfx2On()) return;
+  later(()=>{ const chip = document.querySelector('.is-first-deck .tr-moment[data-up] .trm.is-lvl'); if(chip) M.momentRing(chip, {sound:snd2('unlockChime')}); }, 550); }); // after the chip's pop-in (0.25 s delay)
+H.claimBurst = (btn, env)=>{ if(env.fxAtLeast('low')) M.coinBurst(btn, {sound:()=> env.sound('coinRegister')}); };
+
 })(typeof window !== 'undefined' ? window : globalThis);

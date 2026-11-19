@@ -16812,7 +16812,7 @@
   "area": "meta-progression",
   "name": "Account level-up",
   "trigger": "awardXp crosses a level",
-  "current": "toast \"⭐ Level N!\"",
+  "current": "toast \"⭐ Level N!\"; in the tutorial's first-deck window (REL3 chips): FX.F.momentRing, a ring fills round the Level chip and throws coins (VFX2)",
   "quality": "basic — toast only for a player level-up",
   "priority": 1,
   "themeNotes": "Big star burst, level ring fills and pops.",
@@ -16824,7 +16824,8 @@
   "batch": "F",
   "status": "live",
   "lab": "f.js",
-  "inGameHook": "awardXp level-up → fxHook(xpGain) (variant A)"
+  "inGameHook": "awardXp level-up → fxHook(xpGain) (variant A); first-deck window: 'bw-moment' {up} -> FX.F.momentRing (VFX2 2026-11-19)",
+  "updated": "2026-11-19"
  },
  {
   "id": "meta-xp-gain",
@@ -17502,7 +17503,7 @@
   "area": "rewards-results",
   "name": "Tutorial win/loss",
   "trigger": "tutorialWinLossTitle",
-  "current": "result card",
+  "current": "result card; Claim Rewards throws gold coins (FX.F.coinBurst, coinRegister) (VFX2)",
   "quality": "basic — a generic or reused look that does not say what happened",
   "priority": 3,
   "themeNotes": "",
@@ -17514,7 +17515,8 @@
   "batch": "F",
   "status": "live",
   "lab": "f.js",
-  "inGameHook": "results (tutorial) → fxHook(resultsShown)"
+  "inGameHook": "results (tutorial) → fxHook(resultsShown); Claim: fxHook('claimBurst', btn) -> FX.F.coinBurst (VFX2 2026-11-19)",
+  "updated": "2026-11-19"
  },
  {
   "id": "res-castle-falls",

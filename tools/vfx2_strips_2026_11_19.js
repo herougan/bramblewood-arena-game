@@ -27,6 +27,9 @@ const EFFECTS = {
   mindControl: `[[0, 'js:(()=>{ const P = matchState.players, c = ["left","center","right"].map(l=> P[2].row[l].find(x=> String(x.uid) === String(__vfx2Ids.eu))).find(Boolean); ["left","center","right"].forEach(l=>{ P[2].row[l] = P[2].row[l].filter(x=> x !== c); }); c.slot = 1; P[1].row.right.push(c); })()'],
     [0, {type:'mindControl', side:'A', attUid:mu, attDefId:md, targetUid:eu, targetDefId:ed, slot:1}]]`,
   exile: `[[0, {type:'death', side:'B', uid:eu, defId:ed, exiled:true}]]`,
+  // REL3's first-deck window with +40 XP and Level 2 (its 'bw-moment' starts FX.F.momentRing), and the Claim coin burst on a button
+  levelRing: `[[0, 'js:(()=>{ rel3Moment.xp = 40; rel3Moment.lvl = 2; openStarterDeckStep("otters", ()=>{}); })()']]`,
+  claim: `[[0, 'js:(()=>{ const b = document.createElement("button"); b.className = "btn primary big"; b.textContent = "Claim Rewards"; b.style.cssText = "position:fixed; left:50%; top:60%; transform:translate(-50%,-50%); z-index:5000"; document.body.appendChild(b); fxHook("claimBurst", b); })()']]`,
   explode: `[[0, {type:'explode', side:'B', uid:eu, defId:ed, dmg:3, targetUid:mu, targetDefId:md}]]`,
   ranged: `[[0, {type:'hit', ranged:true, side:'A', attUid:mu, attDefId:md, targetSide:'B', targetUid:eu, targetDefId:ed, dmg:2, dmgType:'physical'}]]`,
   magic: `[[0, {type:'hit', ranged:true, side:'A', attUid:mu, attDefId:md, targetSide:'B', targetUid:eu, targetDefId:ed, dmg:2, dmgType:'magic'}]]`,
@@ -44,7 +47,7 @@ async function main(){
     await pg.evaluate(`(async()=>{ adminModeEnabled = true; forcedNextSeed = 777; switchTab('play'); startConquestMatch('mw', '5-3', {skipEnergyCost:true, noOpener:true}); await new Promise(r=> setTimeout(r, 2600)); try{ skipTriggerLesson(); }catch(e){} const h = document.getElementById('toastHost'); if(h) h.remove(); window.showToast = ()=>{};
       const m = matchState, pl = m.players[1], c = pl.hand.find(h=> m.engine.canPlay(pl, h.defId, h.uid)); if(c) await playCardByUid(c.uid, 'left'); await new Promise(r=> setTimeout(r, 2500)); matchState.speedMult = ${+opt('--speed', 1)}; })()`);
     // the frame: the two cards and the space around them (Player Stun: the whole window, for the castle and the hand)
-    const full = /^stun/.test(name);
+    const full = /^(stun|levelRing|claim)/.test(name);
     const bf = await pg.evaluate(`(()=>{ const E = document.querySelector('#rowEnemy .board-card[data-uid]'), M = document.querySelector('#rowMine .board-card[data-uid]');
       if(${full} || !E || !M) return {x:0, y:0, width:innerWidth, height:innerHeight}; const a = E.getBoundingClientRect(), b = M.getBoundingClientRect();
       const x0 = Math.max(0, Math.min(a.left, b.left) - 230), y0 = Math.max(0, Math.min(a.top, b.top) - 110), x1 = Math.min(innerWidth, Math.max(a.right, b.right) + 230), y1 = Math.min(innerHeight, Math.max(a.bottom, b.bottom) + 110);
