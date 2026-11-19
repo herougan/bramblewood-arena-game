@@ -4674,5 +4674,6 @@
  "First raid open: {name}.": "最初のレイド解放：{name}。",
  "First raid open": "最初のレイド解放",
  "These {n} go with you": "この{n}枚が一緒に行く",
- "Level {n} reward: {name}": "レベル{n}の報酬：{name}"
+ "Level {n} reward: {name}": "レベル{n}の報酬：{name}",
+ "{a} more in this set, {b} after": "このセットにあと{a}、その後{b}"
 }

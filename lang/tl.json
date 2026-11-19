@@ -4674,5 +4674,6 @@
  "First raid open: {name}.": "Bukas na ang unang raid: {name}.",
  "First raid open": "Bukas na ang unang raid",
  "These {n} go with you": "Itong {n} ay sasama sa iyo",
- "Level {n} reward: {name}": "Gantimpala sa Antas {n}: {name}"
+ "Level {n} reward: {name}": "Gantimpala sa Antas {n}: {name}",
+ "{a} more in this set, {b} after": "{a} pa dito, {b} pagkatapos"
 }

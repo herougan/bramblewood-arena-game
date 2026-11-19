@@ -4674,5 +4674,6 @@
  "First raid open: {name}.": "首个突袭已开启：{name}。",
  "First raid open": "首个突袭已开启",
  "These {n} go with you": "这 {n} 张跟你走",
- "Level {n} reward: {name}": "{n} 级奖励：{name}"
+ "Level {n} reward: {name}": "{n} 级奖励：{name}",
+ "{a} more in this set, {b} after": "本组还有 {a} 包，之后 {b} 包"
 }

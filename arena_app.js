@@ -3668,6 +3668,8 @@ function ui27UngatedSkills(){
 function ui27OwnedWithSkill(k){ if(!UI27_KEEP_GATE.has(k)) return false;
   try{ const defs = Object.assign({}, CARD_DEFS_BASELINE, liveCards); for(const id of Object.keys(myCardCopies || {})){ if(!(myCardCopies[id] || []).length) continue; const e = defs[id] && defs[id].effects; if(e && (skillValOn(e[k]) || (SKILL_REVEAL_MAP[k].parts || []).some(x=> skillValOn(e[x])))) return true; } }catch(e){}
   return false; }
+// 2026-11-19 (package UIFIN2, PERF6 next step 3): the first call (~250 ms at 1x) is paid at idle after load, not while the entrance cards render; same function, same memo, identical results
+try{ window.addEventListener('load', ()=> setTimeout(()=> (window.requestIdleCallback || setTimeout)(()=>{ try{ ui27UngatedSkills(); }catch(e){} }), 1500)); }catch(e){}
 function ui27Ungated(k){ return ui27UngatedSkills().has(k) || ui27OwnedWithSkill(k); }
 // The other effect keys that belong to a hidden skill (its second number, its Flow grant): hidden with it.
 const SKILL_REVEAL_PARTS = Object.assign({swimmer:['swimmerGrant']}, Object.fromEntries(Object.entries(SKILL_REVEAL_MAP).map(([k, r])=> [k, (r.parts || []).slice()]))); // + the advanced forms' braces (2026-10-15)
@@ -62826,7 +62828,7 @@ function openPackAnimation(pack, opened, opts){
           <span class="po2-strip-face"><span class="po2-crimp" aria-hidden="true"></span><span class="po2-rip" aria-hidden="true"></span></span>
         </button>
       </div></div>
-      ${behind ? `<div class="po2-pile-n">${behind} more pack${behind === 1 ? '' : 's'} to open</div>` : ''}
+      ${behind ? `<div class="po2-pile-n">${opts.moreAfter > 0 && opened.length - packIdx - 1 > 0 ? escapeHtml(TX('ui.uifin2-pile-split', {a: opened.length - packIdx - 1, b: opts.moreAfter|0})) /* 2026-11-19 (package UIFIN2): "Pack 1 of 3" and "4 more" read as a contradiction; split the count */ : `${behind} more pack${behind === 1 ? '' : 's'} to open`}</div>` : ''}
     </div>
     <div class="po2-hint" id="poHint" aria-live="polite">Drag across the top to tear it open</div>`;
     wireTop();

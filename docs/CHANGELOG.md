@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-19 (package UIFIN2, pack opener count)
+- Players see: with reward packs queued, "Pack 1 of 3" no longer sits above "4 more packs to open"; the line now reads "2 more in this set, 2 after" (`ui.uifin2-pile-split`, 12 packs; Tagalog, Tamil, Japanese, Korean drafts). Without queued sets the old line stays.
+- Code: the gated-skills set (`ui27UngatedSkills`, first call ~250 ms) is warmed at idle after load, same function and memo. Test: `tests/uifin2-2026-11-19.js`.
+
 ## 2026-11-19 (package PERF6, REL1 audit P2 "page weight 18.4 MB": first load)
 - Players see: nothing different. A phone on mobile data (or with data-saver, 2g / 3g) no longer downloads all ~900 card paintings (13 MB) in the first seconds: the cards you hold load first, the rest only on a good connection, 8 s later (a card not loaded yet paints when its tile first shows). Fonts and `art/` are cached for a week.
 - Page: 18.5 -> 16.9 MB raw (gzip 5.38 -> 4.90 MB, brotli q5 4.65 -> 4.26 MB): the simulator worker's 1.5 MB second copy of the engine is gone (`window.__BRAMBLEWOOD_ENGINE_SRC__` is cut from `<script id="bwEngineBlock">` at the `/*BW_ENGINE_END*/` marker). Boot: the card-data sha256 is ~10x faster (typed array, 236 -> 17 ms in node; the hash run 4 s after load went 680 -> 280 ms at 4x CPU) and the loader's map-art scan reads one property per rule instead of every rule's cssText (250 -> 75 ms at 4x).

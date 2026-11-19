@@ -4675,5 +4675,6 @@
  "First raid open: {name}.": "Raid pertama terbuka: {name}.",
  "First raid open": "Raid pertama terbuka",
  "These {n} go with you": "{n} kartu ini ikut denganmu",
- "Level {n} reward: {name}": "Hadiah Level {n}: {name}"
+ "Level {n} reward: {name}": "Hadiah Level {n}: {name}",
+ "{a} more in this set, {b} after": "{a} lagi di sini, {b} setelahnya"
 }

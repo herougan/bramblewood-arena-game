@@ -4675,5 +4675,6 @@
  "First raid open: {name}.": "Primo raid aperto: {name}.",
  "First raid open": "Primo raid aperto",
  "These {n} go with you": "Queste {n} vengono con te",
- "Level {n} reward: {name}": "Premio livello {n}: {name}"
+ "Level {n} reward: {name}": "Premio livello {n}: {name}",
+ "{a} more in this set, {b} after": "{a} ancora qui, {b} dopo"
 }

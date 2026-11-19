@@ -1,0 +1,14 @@
+{"tx":{"ui.uifin2-pile-split":{
+"en":"{a} more in this set, {b} after",
+"fr":"{a} de plus ici, {b} après",
+"de":"{a} weitere hier, {b} danach",
+"es":"{a} más aquí, {b} después",
+"it":"{a} ancora qui, {b} dopo",
+"pt":"mais {a} aqui, {b} depois",
+"tl":"{a} pa dito, {b} pagkatapos",
+"ta":"இங்கே இன்னும் {a}, பிறகு {b}",
+"id":"{a} lagi di sini, {b} setelahnya",
+"zh-Hans":"本组还有 {a} 包，之后 {b} 包",
+"zh-Hant":"本組還有 {a} 包，之後 {b} 包",
+"ja":"このセットにあと{a}、その後{b}",
+"ko":"이 세트에 {a}개 더, 이후 {b}개"}}}

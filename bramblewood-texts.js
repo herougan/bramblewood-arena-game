@@ -3870,7 +3870,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.raidgate-note": "First raid open",
   "ui.rel3-deck-line": "These {n} go with you",
   "ui.rel3-xp": "+{n} XP",
-  "ui.rel3-level": "Level {n}!"
+  "ui.rel3-level": "Level {n}!",
+  "ui.uifin2-pile-split": "{a} more in this set, {b} after"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
