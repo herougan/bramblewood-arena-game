@@ -4672,5 +4672,7 @@
  "Will learn another skill as it grows": "성장하면 새 스킬을 하나 더 배운다",
  "See it at other levels": "다른 레벨로 보기",
  "Slide to see it at another level, up to one past your best copy.": "밀어서 다른 레벨을 보세요. 가장 높은 카드보다 한 레벨 위까지.",
- "Own a copy to look further ahead.": "한 장을 가지면 더 앞을 볼 수 있다."
+ "Own a copy to look further ahead.": "한 장을 가지면 더 앞을 볼 수 있다.",
+ "First raid open: {name}.": "첫 레이드 개방: {name}.",
+ "First raid open": "첫 레이드 개방"
 }
