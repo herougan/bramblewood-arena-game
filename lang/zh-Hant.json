@@ -4682,5 +4682,13 @@
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "帶代價的每回合觸發：只有真正觸發時才支付木材。單位按維持階段的順序行動，所以先行動的採石可以供給冶煉。",
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "每回合觸發：等待、暈眩、冰凍或睡眠時無效。沒有空格就不生成。",
  "Deliver": "送達",
- "Every Turn": "每回合"
+ "Every Turn": "每回合",
+ "Focus": "重點",
+ "A focus skill for this map": "本地圖的重點技能",
+ "Intro": "引入",
+ "This map's keyword skill": "本地圖的關鍵詞技能",
+ "Red = new here": "紅 = 此處新增",
+ "Green = on these cards and recommended": "綠 = 在這些卡上且被推薦",
+ "Blue = suggested, not on these cards": "藍 = 建議,不在這些卡上",
+ "Grey = carried": "灰 = 已攜帶"
 }

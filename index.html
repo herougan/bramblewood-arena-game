@@ -15425,14 +15425,23 @@ html[data-fx="none"] .map-node.is-lair-final:not(.done), html[data-fx="none"] .f
 .pk1-mc-overlay .ui19-sk.is-grey .ui19-sk-main b{color:var(--ink-muted);}
 .ui28-sug{display:inline-block; font:800 9px/1 'Baloo 2',system-ui,sans-serif; font-style:normal; letter-spacing:.03em; padding:1px 5px; border-radius:999px; background:#4f8ee8; color:#fff; cursor:help; vertical-align:1px; white-space:nowrap;}
 /* 2026-11-16 (package UX7, owner 20:24): the Map cards skill list's colours. RED = the map's focus skills only; main-card skills normal (a new one keeps a small muted NEW!); counters BLUE; suggestions a lighter blue; special-only skills muted. */
-.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new{border-color:var(--surface-border); background:var(--bg);}
-.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new.is-intro{border-color:#e0b23a; background:linear-gradient(135deg, color-mix(in srgb, #ffd36b 34%, var(--bg)), color-mix(in srgb, #ffffff 22%, var(--bg)));}
-.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus{border-color:#c62828; background:#c62828; color:#fff;} /* 2026-11-17 (UX9, owner 22:33): a focus skill is a solid red pill (red fill and red border), on the main cards or still to add */
-.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus .ui19-sk-main b, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus .ui19-sk-main small{color:#fff;}
-.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus .ui35-pill, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus .ui19-new{background:#fff; color:#c62828; box-shadow:none;}
+/* 2026-11-20 (package UIQ2, owner 00:20): one colour meaning per tile. Red = NEW! here, green = carried and recommended, blue = suggested but carried by none of these cards, grey = carried. Focus = an outline, Intro = a pill (gold is not a tile colour) */
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new{border-color:#c62828; background:#c62828; color:#fff;}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new .ui19-sk-main b, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new .ui19-sk-main small{color:#fff;}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new .ui35-pill, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new .ui28-sug, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new .ui30-sugg, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-new .ui19-new{background:#fff; color:#c62828; box-shadow:none;}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-have{border-color:#2e8b57; background:color-mix(in srgb, #2e9e5b 28%, var(--bg)); opacity:1;}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus{outline:2px solid var(--accent-strong); outline-offset:1px;}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-focus-add{background:transparent;}
+.ui19-sk .ui35-pill.is-focus{background:transparent; color:inherit; box-shadow:inset 0 0 0 1px currentColor;}
+.ui19-sk .ui35-pill.is-intro{background:var(--ink); color:var(--bg);}
+.ui30-sugg{background:#2f6fd0;}
+.uiq2-legend{display:flex; flex-wrap:wrap; gap:3px 5px; margin:0 0 5px; font:700 11px/1.5 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted);}
+.uiq2-legend span{display:inline-block; padding:0 6px; border-radius:6px; border:1px solid var(--surface-border); color:var(--ink);}
+.uiq2-legend .is-new{border-color:#c62828; background:color-mix(in srgb, #c62828 28%, var(--bg));} .uiq2-legend .is-have{border-color:#2e8b57; background:color-mix(in srgb, #2e9e5b 28%, var(--bg));}
+.uiq2-legend .is-sugg{border-color:#2f6fd0; background:color-mix(in srgb, #3b7de0 24%, var(--bg));} .uiq2-legend .is-carried{background:color-mix(in srgb, #8a8f99 16%, var(--bg));}
 .pk1-mc-overlay .ui19-sk .ui19-new.is-minor{background:var(--ink-muted); color:var(--bg); box-shadow:none;}
-.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-counter, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-counter.is-intro{border-color:#2f6fd0; background:linear-gradient(135deg, color-mix(in srgb, #3b7de0 30%, var(--bg)), color-mix(in srgb, #3b7de0 14%, var(--bg)));}
-.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-rec, .pk1-mc-overlay .ui19-sk-list .ui19-sk.ui30-sugg-tile, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-sugg{border-color:color-mix(in srgb, #3b7de0 45%, var(--surface-border)); border-style:solid; background:color-mix(in srgb, #3b7de0 9%, var(--bg));}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-counter, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-counter.is-intro{border-color:#2f6fd0; background:color-mix(in srgb, #3b7de0 24%, var(--bg));}
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-rec, .pk1-mc-overlay .ui19-sk-list .ui19-sk.ui30-sugg-tile, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-sugg{border-color:#2f6fd0; border-style:solid; background:color-mix(in srgb, #3b7de0 24%, var(--bg));}
 .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-other{border-color:var(--surface-border); background:transparent; color:var(--ink-muted); opacity:.8;}
 .ui35-pill.is-counter{background:#2f6fd0; color:#fff;} .ui35-pill.is-focus{background:#c62828; color:#fff;} .ui19-sk .ui34-cn{background:color-mix(in srgb, #2f6fd0 24%, transparent);}
 @media (max-width:560px){ .pk1-mc-overlay .rv2-panel{padding:6px 6px 4px; margin:6px 0 8px;} .pk1-mc-overlay .rv1-row{gap:8px 8px;} }
@@ -49418,7 +49427,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=4eded4febe", "es": "assets/lang/es.js?v=775f0359e0", "fr": "assets/lang/fr.js?v=7c77b52cf7", "id": "assets/lang/id.js?v=128df32933", "it": "assets/lang/it.js?v=4a3cb69568", "ja": "assets/lang/ja.js?v=3fd45b9650", "ko": "assets/lang/ko.js?v=4b7a46a9dc", "pt": "assets/lang/pt.js?v=703856b5ff", "ta": "assets/lang/ta.js?v=11c2d547eb", "tl": "assets/lang/tl.js?v=879be7e203", "zh-Hans": "assets/lang/zh-Hans.js?v=3998b3ad9b", "zh-Hant": "assets/lang/zh-Hant.js?v=26c8aa0e2e"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=10b849e0e8", "es": "assets/lang/es.js?v=3aa5f8f567", "fr": "assets/lang/fr.js?v=2cd8b62ed4", "id": "assets/lang/id.js?v=cf51f04d3d", "it": "assets/lang/it.js?v=c183baf87e", "ja": "assets/lang/ja.js?v=1eb7cd744e", "ko": "assets/lang/ko.js?v=19c6310039", "pt": "assets/lang/pt.js?v=bd2b83d9a3", "ta": "assets/lang/ta.js?v=38419d951b", "tl": "assets/lang/tl.js?v=bf44bfee19", "zh-Hans": "assets/lang/zh-Hans.js?v=de08ebd9ca", "zh-Hant": "assets/lang/zh-Hant.js?v=81b0f75cd8"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -53417,7 +53426,15 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rel3-xp": "+{n} XP",
   "ui.rel3-level": "Level {n}!",
   "ui.uifin2-pile-split": "{a} more in this set, {b} after",
-  "ui.dec19-coop-tip": "Team up with friends in a dungeon"
+  "ui.dec19-coop-tip": "Team up with friends in a dungeon",
+  "ui.uiq2-pill-focus": "Focus",
+  "ui.uiq2-pill-focus-tip": "A focus skill for this map",
+  "ui.uiq2-pill-intro": "Intro",
+  "ui.uiq2-pill-intro-tip": "This map's keyword skill",
+  "ui.uiq2-leg-new": "Red = new here",
+  "ui.uiq2-leg-have": "Green = on these cards and recommended",
+  "ui.uiq2-leg-sugg": "Blue = suggested, not on these cards",
+  "ui.uiq2-leg-carried": "Grey = carried"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -59596,7 +59613,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'eea7d2722b4b', BUILD_CARD_HASH = '2d1423e14cc826d2ff8b84fe8bd0bb0db9d51df7a645d42655afef90678d29ee';
+const BUILD_ID = '1c57c65f453a', BUILD_CARD_HASH = '2d1423e14cc826d2ff8b84fe8bd0bb0db9d51df7a645d42655afef90678d29ee';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
@@ -90040,7 +90057,7 @@ function ui30SuggTilesHTML(sugg, shown){
   if(!sugg || !sugg.size) return ''; let h = '';
   sugg.forEach((why, key)=>{ if(shown.has(key)) return; const p = skillDefOf(key); if(!p) return; let text = ''; try{ text = ui19McSkillText({key, fx: {[key]: true}}); }catch(e){}
     const ctx = TX('ui.ui30-sugg-missing') + (why ? ' (' + why + ')' : ''); // ENG35 (2026-11-07): one line; the text and why go in the hover window
-    h += `<li class="ui19-sk is-intro ui30-sugg-tile" data-ui19-skill="${escapeAttr(key)}" data-ui30-sugg="1" ${typeof eng35TileAttrs === 'function' ? eng35TileAttrs(key, p.label, text, ctx) : `title="${escapeAttr(p.label + (text ? ': ' + text : '') + (why ? ' (' + why + ')' : ''))}"`}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml((typeof SKILL_ICON !== 'undefined' && SKILL_ICON[key]) || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(p.label)}</b>${ui30SuggPillHTML(key, sugg)}</span></li>`; });
+    h += `<li class="ui19-sk ui30-sugg-tile" data-ui19-skill="${escapeAttr(key)}" data-ui30-sugg="1" ${typeof eng35TileAttrs === 'function' ? eng35TileAttrs(key, p.label, text, ctx) : `title="${escapeAttr(p.label + (text ? ': ' + text : '') + (why ? ' (' + why + ')' : ''))}"`}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml((typeof SKILL_ICON !== 'undefined' && SKILL_ICON[key]) || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(p.label)}</b>${ui30SuggPillHTML(key, sugg)}</span></li>`; });
   return h;
 }
 // UI30_SUGG:END
@@ -90165,7 +90182,7 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId, otherIds){
   const flagOf = (arr, isMain)=> arr.map(r=>{ const mt = typeof ui28SkillMeet === 'function' ? ui28SkillMeet(r, defs, mapN) : {met: true, lvl: 0}; const useSet = new Set(); if(typeof ui35UseSigs === 'function') r.ids.forEach(id=>{ const u = ui35UseSigs(defs[id]).get(r.key); if(u) u.forEach(x=> useSet.add(x)); }); const seenUse = (early.uses && early.uses.get(r.key)) || new Set(), isNewUse = isMain && mt.met && early.has(r.key) && useSet.size > 0 && [...useSet].some(x=> !seenUse.has(x)); // UI35 #7: a known skill with a parameter no earlier main map used
     return Object.assign(r, {isNew: isMain && mt.met && !early.has(r.key), isNewUse, p: skillDefOf(r.key), grey: !mt.met, greyLvl: mt.lvl, outside: !isMain, late: !mt.met && mt.lvl > 0, lateBaby: !mt.met && mt.lvl > 0 && r.ids.every(id=> cardKindOf(defs[id]) === 'baby')}); }).filter(r=> r.p).map(r=> Object.assign(r, {isFocus: isMain && focus.has(r.key) && !r.grey})).sort((a, b)=> (ux7Rank(a) - ux7Rank(b)) || (b.ids.length - a.ids.length) || String(a.p.label).localeCompare(String(b.p.label)));
   // 2026-11-16 (UX7, owner 20:24): main-card order: red focus, normal, new-but-not-focus (normal colour, small NEW!), grey (not unlocked yet); the rest follow below
-  function ux7Rank(r){ return r.outside ? 0 : r.isFocus ? 0 : r.grey ? 3 : r.isNew ? 2 : 1; }
+  function ux7Rank(r){ return r.outside ? 0 : r.isNew ? 0 : r.isFocus ? 1 : r.grey ? 3 : 2; } // 2026-11-20 (package UIQ2): red NEW! first, then focus, normal, grey
   const flaggedMain = flagOf(rows, true), flaggedOther = flagOf(rowsO, false), flagged = flaggedMain.concat(flaggedOther);
   // 2026-11-04 (UI22a): each skill tile carries its full text as a tooltip (the text is clamped to two lines)
   // 2026-11-07 (package ENG35, owner 21:13: "simplify the skill 'card': just leave 1 line of emoji and title"): a tile is one line (icon, name, pills); its text,
@@ -90174,18 +90191,20 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId, otherIds){
   // 2026-11-08 (package UI35, owner 09:27 #2: "Collapse the main and recommend skill card sections together. The only thing that differentiates them are pills"): Main, Counters and the
   // recommendations are ONE list of one-line tiles, the kind shown by a pill (Main / Counter / Suggested / Sugg. Intro / NEW!); the hover says what the skill does. Others stays its own group.
   const pill = (cls, key, tipKey, tipArgs)=> ` <i class="ui35-pill is-${cls}" title="${escapeAttr(TX(tipKey, tipArgs))}">${escapeHtml(TX(key))}</i>`;
-  const cxo = typeof ui35CodexOf === 'function' ? ui35CodexOf(mapId || top) : null, cx = k=> cxo && cxo.map.has(k) ? pill('cx' + cxo.map.get(k), 'ui.ui35-pill-cx' + cxo.map.get(k), 'ui.ui35-pill-cx' + cxo.map.get(k) + '-tip') : ''; // UI35 #22
+  const cxo = typeof ui35CodexOf === 'function' ? ui35CodexOf(mapId || top) : null, introPill = pill('intro', 'ui.uiq2-pill-intro', 'ui.uiq2-pill-intro-tip'), cx = k=> cxo && cxo.map.has(k) ? pill('cx' + cxo.map.get(k), 'ui.ui35-pill-cx' + cxo.map.get(k), 'ui.ui35-pill-cx' + cxo.map.get(k) + '-tip') : ''; // UI35 #22
   const sugPill = tip=> ` <i class="ui28-sug" title="${escapeAttr(tip)}">${escapeHtml(TX('ui.ui28-suggested'))}</i>`;
-  const li = r=>{ const rec = r.grey ? recBy.get(r.key) : null, why = r.grey ? (r.greyLvl > 0 ? TX('ui.ui28-grey-lvl', {n: r.greyLvl}) : TX('ui.ui28-grey-hidden')) : '';
-    return `<li class="ui19-sk${r.grey ? ' is-grey' : ''}${r.isNew ? ' is-new' : ''}${r.isFocus ? ' is-focus' : ''}${r.outside ? ' is-other' : ''}${r.key === kw && !r.grey ? ' is-intro' : ''}${r.late ? ' is-late' : ''}" data-ui19-skill="${escapeAttr(r.key)}"${rec ? ` data-ui28-suggested="1"` : ''} ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}) + (why ? ' - ' + why : '') + (rec ? ' - ' + TX('ui.ui28-suggested-tip', {card: rec.card}) : ''))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.grey && typeof ui31GreyQHTML === 'function' ? ui31GreyQHTML(r.greyLvl) : ''}${r.lateBaby ? pill('baby', 'ui.ui13-tag-baby', 'ui.ux8-late-baby-tip') /* 2026-11-16 (UX8): only Baby cards carry it, not yet at their map level */ : r.outside ? '' : pill('main', 'ui.ui35-pill-main', 'ui.ui35-pill-main-tip')}${r.isNew ? ` <i class="ui19-new${r.isFocus ? '' : ' is-minor'}" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : r.isNewUse ? pill('newuse', 'ui.ui35-pill-newuse', 'ui.ui35-pill-newuse-tip') : ''}${rec ? ` <i class="ui28-sug" title="${escapeAttr(TX('ui.ui28-suggested-tip', {card: rec.card}))}">${escapeHtml(TX('ui.ui28-suggested'))}</i>` : ''}${sp(r.key)}${cx(r.key)}</span></li>`; };
+  const li = r=>{ const rec = recBy.get(r.key) || (!ctrAllKeys.has(r.key) && picksAllKeys.has(r.key) ? {card: picksAllKeys.get(r.key)} : null), green = !r.grey && !r.isNew && recKeys.has(r.key), why = r.grey ? (r.greyLvl > 0 ? TX('ui.ui28-grey-lvl', {n: r.greyLvl}) : TX('ui.ui28-grey-hidden')) : '';
+    return `<li class="ui19-sk${r.grey ? ' is-grey' : ''}${r.isNew ? ' is-new' : ''}${green ? ' is-have' : ''}${r.isFocus ? ' is-focus' : ''}${r.outside ? ' is-other' : ''}${r.late ? ' is-late' : ''}" data-ui19-skill="${escapeAttr(r.key)}"${rec ? ` data-ui28-suggested="1"` : ''} ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}) + (why ? ' - ' + why : '') + (rec ? ' - ' + TX('ui.ui28-suggested-tip', {card: rec.card}) : ''))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.grey && typeof ui31GreyQHTML === 'function' ? ui31GreyQHTML(r.greyLvl) : ''}${r.lateBaby ? pill('baby', 'ui.ui13-tag-baby', 'ui.ux8-late-baby-tip') /* 2026-11-16 (UX8): only Baby cards carry it, not yet at their map level */ : r.outside ? '' : pill('main', 'ui.ui35-pill-main', 'ui.ui35-pill-main-tip')}${r.isFocus ? pill('focus', 'ui.uiq2-pill-focus', 'ui.uiq2-pill-focus-tip') : ''}${r.key === kw && !r.grey ? introPill : ''}${r.isNew ? ` <i class="ui19-new" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : r.isNewUse ? pill('newuse', 'ui.ui35-pill-newuse', 'ui.ui35-pill-newuse-tip') : ''}${rec ? ` <i class="ui28-sug" title="${escapeAttr(TX('ui.ui28-suggested-tip', {card: rec.card}))}">${escapeHtml(TX('ui.ui28-suggested'))}</i>` : ctrAllKeys.has(r.key) ? pill('counter', 'ui.ui35-pill-counter', 'ui.ui35-pill-counter-tip') : ''}${sp(r.key)}${cx(r.key)}</span></li>`; };
   const focusAdd = [...focus].filter(k=> !mainKeys.has(k) && skillDefOf(k)); // 2026-11-16 (UX7): focus skills no main card carries yet: red outline, to add
   const have = new Set(rows.concat(rowsO).map(r=> r.key).concat(focusAdd)), seenRec = new Set(); // 2026-11-07 (UI28 #3): a recommendation tile only for a skill none of this map's cards carries (a grey tile wears the Suggested pill instead)
   // 2026-11-08 (package UI34, owner 23:49): a Counters group (skills that answer the main cards' skills, canonical/skill-counters.json); a counter is a tile once: not in Main / Other, and off the blue group
   let ctr = []; try{ ctr = typeof ui34CounterRows === 'function' ? ui34CounterRows(flaggedMain, defs, have) : []; }catch(e){ ctr = []; }
   const ctrKeys = new Set(ctr.map(r=> r.key));
+  let ctrAllKeys = new Set(), picksAllKeys = new Map(); try{ ctrAllKeys = new Set((typeof ui34CounterRows === 'function' ? ui34CounterRows(flaggedMain, defs, new Set()) : []).map(r=> r.key)); picksAllKeys = new Map((typeof ui34ClaudePicks === 'function' ? ui34ClaudePicks(mapId || top, defs, new Set(), 15) : []).map(r=> [r.key, r.card])); }catch(e){} // 2026-11-20 (package UIQ2): the recommended keys, carried or not
+  const recKeys = new Set([...recBy.keys(), ...sugg.keys(), ...ctrAllKeys, ...picksAllKeys.keys(), ...(kw ? [kw] : [])]); // keys recommended for this map: a carried one is green
   const recs = recs0.filter(r=>{ if(have.has(r.key) || ctrKeys.has(r.key) || seenRec.has(r.key)) return false; seenRec.add(r.key); return true; });
   const rli = r=> `<li class="ui19-sk is-rec" data-ui24-rec="${escapeAttr(r.key)}" ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui24-rec-tip', {card: r.card}) + (r.why ? ' (' + r.why + ')' : ''), r.p.label + ': ' + TX('ui.ui24-rec-for', {card: r.card}))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${sugPill(TX('ui.ui24-rec-tip', {card: r.card}) + (r.why ? ' (' + r.why + ')' : ''))}${sp(r.key)}${cx(r.key)}</span></li>`;
-  const kwMissing = kw && !have.has(kw) && !ctrKeys.has(kw) && skillDefOf(kw) ? `<li class="ui19-sk is-intro is-sugg" data-ui19-skill="${escapeAttr(kw)}" ${tipA(kw, skillDefOf(kw).label, ui19McSkillText({key: kw, fx: {[kw]: true}}), TX('ui.ui24-intro-missing'))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[kw] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(skillDefOf(kw).label)}</b>${sugPill(TX('ui.ui24-intro-missing'))}${sp(kw)}</span></li>` : '';
+  const kwMissing = kw && !have.has(kw) && !ctrKeys.has(kw) && skillDefOf(kw) ? `<li class="ui19-sk is-sugg" data-ui19-skill="${escapeAttr(kw)}" ${tipA(kw, skillDefOf(kw).label, ui19McSkillText({key: kw, fx: {[kw]: true}}), TX('ui.ui24-intro-missing'))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[kw] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(skillDefOf(kw).label)}</b>${introPill}${sugPill(TX('ui.ui24-intro-missing'))}${sp(kw)}</span></li>` : '';
   const suggShown = new Set([...have, ...ctrKeys, ...(kwMissing ? [kw] : []), ...recs.map(r=> r.key)]);
   const suggTiles = typeof ui30SuggTilesHTML === 'function' ? ui30SuggTilesHTML(sugg, suggShown) : ''; // 2026-11-07 (UI30 #16): a pick no tile shows yet
   // 2026-11-08 (package UI34 item 3, owner 23:49: up to 15 Claude recommendations per map where sensible): the blue group tops up to 15 with the skills of Claude's picked cards for this map (ui34ClaudePicks) that no tile shows yet
@@ -90200,10 +90219,10 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId, otherIds){
     return `<li class="ui19-sk is-focus is-focus-add" data-ux7-focus-add="${escapeAttr(k)}" data-ui19-skill="${escapeAttr(k)}" ${tipA(k, p.label, text, TX('ui.ux7-focus-add-tip'))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[k] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(p.label)}</b> <i class="ui35-pill is-focus" title="${escapeAttr(TX('ui.ux7-focus-add-tip'))}">${escapeHtml(TX('ui.ux7-focus-add'))}</i>${sp(k)}</span></li>`; }).join('');
   const ctrTiles = ctr.map(r=> typeof ui34CounterTileHTML === 'function' ? ui34CounterTileHTML(r, defs, kw, tipA, sp) : '').join('');
   const hd = (k, n)=> n ? `<li class="ui32-sk-head is-${k}" role="presentation">${escapeHtml(TX('ui.ui32-sk-' + k))}</li>` : ''; // UI32 #7: a divider; UI35: only the Other group keeps one
-  const newN = flaggedMain.filter(r=> r.isFocus).length + focusAdd.length; // 2026-11-16 (UX7, owner 20:24): the header count is the red focus chips only (was: every new skill, UI35 #9)
+  const newN = flaggedMain.filter(r=> r.isNew).length; // 2026-11-20 (UIQ2): the red tiles are the NEW! skills, so the header counts those (was the focus chips); // 2026-11-16 (UX7, owner 20:24): the header count is the red focus chips only (was: every new skill, UI35 #9)
   ; // 2026-11-08 (UI35 #6): how many skills this map introduces (the owner wants 2-3 on a main map, 0-1 on a side map)
   const tileN = flaggedMain.length + focusAdd.length + ctr.length + (cxTiles ? 1 : 0) + (kwMissing ? 1 : 0) + (suggTiles ? 1 : 0) + recs.length + picks.length + flaggedOther.length;
-  return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small> <small class="ui35-newn${newN ? ' has-new' : ''}" data-ui35-new="${newN}" title="${escapeAttr(TX('ui.ui35-new-count-tip'))}">${escapeHtml(TX('ui.ui35-new-count', {n: newN}))}</small></h3>${tileN ? `<ul class="ui19-sk-list">${flaggedMain.filter(r=> !r.late).map(li).join('')}${addTiles}${ctrTiles}${kwMissing}${suggTiles}${recs.map(rli).join('')}${pickTiles}${cxTiles}${hd('other', flaggedOther.length)}${flaggedOther.filter(r=> !r.late).map(li).join('')}${flagged.filter(r=> r.late).map(li).join('') /* 2026-11-16 (UX8, owner 23:35 #2): a skill no carrier has yet at its map level is not in the map: listed last */}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
+  return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small> <small class="ui35-newn${newN ? ' has-new' : ''}" data-ui35-new="${newN}" title="${escapeAttr(TX('ui.ui35-new-count-tip'))}">${escapeHtml(TX('ui.ui35-new-count', {n: newN}))}</small></h3>${tileN ? `<p class="uiq2-legend">${['new', 'have', 'sugg', 'carried'].map(k=> `<span class="is-${k}">${escapeHtml(TX('ui.uiq2-leg-' + k))}</span>`).join('')}</p><ul class="ui19-sk-list">${flaggedMain.filter(r=> !r.late).map(li).join('')}${addTiles}${ctrTiles}${kwMissing}${suggTiles}${recs.map(rli).join('')}${pickTiles}${cxTiles}${hd('other', flaggedOther.length)}${flaggedOther.filter(r=> !r.late).map(li).join('')}${flagged.filter(r=> r.late).map(li).join('') /* 2026-11-16 (UX8, owner 23:35 #2): a skill no carrier has yet at its map level is not in the map: listed last */}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
 }
 // UI19_MC_SKILLS:END
 // UI34_COUNTERS:START
@@ -90248,7 +90267,7 @@ function ui34CounterTileHTML(r, defs, kw, tipA, sp){
   const seen = new Set(), why = []; r.pairs.forEach(x=>{ if(seen.has(x.threat) || why.length >= 4) return; seen.add(x.threat); let tl = x.threat; try{ tl = skillDefOf(x.threat).label || tl; }catch(e){}
     why.push(tl + ': ' + x.why + (x.unc ? ' (' + TX('ui.ui34-unsure') + ')' : '')); });
   const ctx = TX('ui.ui34-counter-ctx', {n: names.length, cards: shown}) + ' - ' + why.join(' | ') + (seen.size < r.threats.size ? ' | +' + (r.threats.size - seen.size) : '');
-  return `<li class="ui19-sk is-counter${r.key === kw ? ' is-intro' : ''}" data-ui34-counter="${escapeAttr(r.key)}" ${tipA(r.key, label, text, ctx)}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(ico)}</span><span class="ui19-sk-main"><b>${escapeHtml(label)}</b> <i class="ui35-pill is-counter" title="${escapeAttr(TX('ui.ui35-pill-counter-tip'))}">${escapeHtml(TX('ui.ui35-pill-counter'))}</i><i class="ui34-cn" title="${escapeAttr(TX('ui.ui34-cn-tip', {n: names.length}))}">${names.length}</i>${typeof sp === 'function' ? sp(r.key) : ''}</span></li>`;
+  return `<li class="ui19-sk is-counter" data-ui34-counter="${escapeAttr(r.key)}" ${tipA(r.key, label, text, ctx)}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(ico)}</span><span class="ui19-sk-main"><b>${escapeHtml(label)}</b> <i class="ui35-pill is-counter" title="${escapeAttr(TX('ui.ui35-pill-counter-tip'))}">${escapeHtml(TX('ui.ui35-pill-counter'))}</i>${r.key === kw ? ` <i class="ui35-pill is-intro" title="${escapeAttr(TX('ui.uiq2-pill-intro-tip'))}">${escapeHtml(TX('ui.uiq2-pill-intro'))}</i>` : ''}<i class="ui34-cn" title="${escapeAttr(TX('ui.ui34-cn-tip', {n: names.length}))}">${names.length}</i>${typeof sp === 'function' ? sp(r.key) : ''}</span></li>`;
 }
 // item 3 (owner 23:49: up to 15 recommendations per map where sensible): the skills of Claude's picked cards for this map (THEME5, SKILLREC1 and CONTENT17 picks,
 // the current theme first) that no tile shows yet, the most-carried first, at most `room`. Dynamic: a skill a map card gains leaves the list.

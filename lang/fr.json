@@ -4682,5 +4682,13 @@
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "Un déclencheur Chaque tour avec un prix : le Bois n'est payé que s'il se déclenche. Les unités agissent dans l'ordre de l'Entretien : une Carrière qui agit d'abord peut nourrir une Fonderie.",
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "Un déclencheur Chaque tour : inactif tant qu’elle attend, est étourdie, gelée ou endormie. Sans case libre, rien n’apparaît.",
  "Deliver": "Livrer",
- "Every Turn": "Chaque tour"
+ "Every Turn": "Chaque tour",
+ "Focus": "Cible",
+ "A focus skill for this map": "Une compétence cible de cette carte",
+ "Intro": "Intro",
+ "This map's keyword skill": "La compétence-clé de cette carte",
+ "Red = new here": "Rouge = nouveau ici",
+ "Green = on these cards and recommended": "Vert = sur ces cartes et recommandé",
+ "Blue = suggested, not on these cards": "Bleu = suggéré, pas sur ces cartes",
+ "Grey = carried": "Gris = portée"
 }

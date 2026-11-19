@@ -4681,5 +4681,13 @@
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "Ein Auslöser „Jeder Zug“ mit Preis: Das Holz wird nur bezahlt, wenn er auslöst. Einheiten handeln in der Reihenfolge der Unterhaltsphase, also kann ein Steinbruch, der zuerst handelt, eine Schmelze versorgen.",
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "Ein Auslöser „Jeder Zug“: aus, solange sie wartet, betäubt, gefroren oder eingeschlafen ist. Kein freies Feld mehr, nichts erscheint.",
  "Deliver": "Liefern",
- "Every Turn": "Jeder Zug"
+ "Every Turn": "Jeder Zug",
+ "Focus": "Fokus",
+ "A focus skill for this map": "Ein Fokus-Skill dieser Karte",
+ "Intro": "Intro",
+ "This map's keyword skill": "Der Schlüssel-Skill dieser Karte",
+ "Red = new here": "Rot = neu hier",
+ "Green = on these cards and recommended": "Grün = auf diesen Karten und empfohlen",
+ "Blue = suggested, not on these cards": "Blau = vorgeschlagen, nicht auf diesen Karten",
+ "Grey = carried": "Grau = vorhanden"
 }

@@ -32,7 +32,7 @@ const fn = (src, name)=>{ const m = src.match(new RegExp('function ' + name + '\
   ok(/\$\{flaggedMain\.filter\(r=> !r\.late\)\.map\(li\)\.join\(''\)\}\$\{addTiles\}\$\{ctrTiles\}\$\{kwMissing\}\$\{suggTiles\}\$\{recs\.map\(rli\)\.join\(''\)\}\$\{pickTiles\}\$\{cxTiles\}\$\{hd\('other'/.test(f), 'one <ul>: Main, Counters, keyword, Sugg. Intro, recommendations, picks, then Other');
   ok(/r\.outside \? '' : pill\('main', 'ui\.ui35-pill-main'/.test(f), 'a Main tile wears the Main pill (Other tiles do not)');
   ok((f.match(/sugPill\(/g) || []).length >= 3, 'recommendation, keyword and pick tiles wear the Suggested pill');
-  ok(/class="ui35-newn/.test(f) && /ui35-new-count/.test(f) && /const newN = flaggedMain\.filter\(r=> r\.isFocus\)\.length \+ focusAdd\.length/.test(app), '"N new" beside the heading counts the red focus chips (UX7, owner 11-16 20:24; was every NEW! tile)'); // 2026-11-19 (TESTFIX6)
+  ok(/class="ui35-newn/.test(f) && /ui35-new-count/.test(f) && /const newN = flaggedMain\.filter\(r=> r\.isNew\)\.length/.test(app), '"N new" beside the heading counts the red NEW! tiles (UIQ2, 11-20; UX7 counted focus chips)'); // 2026-11-19 (TESTFIX6)
   ok(/isNew: isMain && mt\.met/.test(f), 'NEW! only on the main list');
   ok(/ui35-pill is-counter/.test(fn(app, 'ui34CounterTileHTML')) && /ui34-cn/.test(fn(app, 'ui34CounterTileHTML')), 'a counter tile wears the Counter pill and keeps its count');
   // rendered
@@ -112,7 +112,7 @@ ok(fs.existsSync(path.join(ROOT, 'tests/e2e/ui35_2026_11_08.py')) && ['mapcards-
 
 // ================= 8. owner 10:52 add-ons: minor skills, New use, Codex picks, display renames =================
 { const minor = J('canonical/minor-skills.json').skills; ok(['flying', 'diurnal', 'tide', 'salt'].every(k=> minor.includes(k)), 'canonical/minor-skills.json lists Flying, Diurnal, Tide, Salt');
-  ok(/__MINOR_SKILLS__/.test(app) && /__MINOR_SKILLS__/.test(rd('assemble_arena.py')) && /const newN = flaggedMain\.filter\(r=> r\.isFocus\)/.test(app) && /ui19-new\$\{r\.isFocus \? '' : ' is-minor'\}/.test(app), 'the N new count skips minor skills (their tiles may still say NEW!, marked is-minor; UX7 counts focus skills only)'); // 2026-11-19 (TESTFIX6)
+  ok(/__MINOR_SKILLS__/.test(app) && /__MINOR_SKILLS__/.test(rd('assemble_arena.py')) && /const newN = flaggedMain\.filter\(r=> r\.isNew\)/.test(app), 'the N new count is the red NEW! tiles (UIQ2 2026-11-20: the minor tag is gone, every NEW! tile is red)'); // 2026-11-19 (TESTFIX6)
   const cx = J('canonical/codex-skill-suggestions.json').maps, ids = Object.keys(cx);
   ok(ids.length === 21 && cx.m1.sig.join() === 'flying,diurnal,swarm' && cx.m4.sig.includes('sonar') && cx.mk.unmatched.some(u=> u.name === 'Pressure'), 'canonical/codex-skill-suggestions.json: 21 maps, draft names matched to skill keys, new names kept text-only');
   ok(ids.every(m=> [...cx[m].sig, ...cx[m].side].every(k=> new RegExp("'" + k + "'").test(app))), 'every matched Codex skill is an existing skill key');

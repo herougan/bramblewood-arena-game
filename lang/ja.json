@@ -4682,5 +4682,13 @@
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "代償つきの毎ターンのトリガー：実際に誘発したときだけ木材を払う。ユニットはアップキープの順に動くので、先に動く採石場が精錬所に供給できる。",
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "毎ターンのトリガー：待機・スタン・凍結・睡眠中は働かない。空きマスがなければ何も出ない。",
  "Deliver": "届ける",
- "Every Turn": "毎ターン"
+ "Every Turn": "毎ターン",
+ "Focus": "注目",
+ "A focus skill for this map": "このマップの注目スキル",
+ "Intro": "導入",
+ "This map's keyword skill": "このマップのキーワードスキル",
+ "Red = new here": "赤 = ここで新登場",
+ "Green = on these cards and recommended": "緑 = このカードにあり推奨",
+ "Blue = suggested, not on these cards": "青 = 提案、このカードにはない",
+ "Grey = carried": "灰 = 所持"
 }

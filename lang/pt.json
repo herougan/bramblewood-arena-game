@@ -4683,5 +4683,13 @@
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "Um gatilho A cada turno com preço: a Madeira só é paga se disparar. As unidades agem na ordem da Manutenção, por isso uma Pedreira que age primeiro pode alimentar uma Fundição.",
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "Um gatilho A cada turno: desligado enquanto espera, está atordoada, congelada ou adormecida. Sem casas livres, nada aparece.",
  "Deliver": "Entregar",
- "Every Turn": "A cada turno"
+ "Every Turn": "A cada turno",
+ "Focus": "Foco",
+ "A focus skill for this map": "Uma habilidade foco deste mapa",
+ "Intro": "Intro",
+ "This map's keyword skill": "A habilidade-chave deste mapa",
+ "Red = new here": "Vermelho = novo aqui",
+ "Green = on these cards and recommended": "Verde = nestas cartas e recomendada",
+ "Blue = suggested, not on these cards": "Azul = sugerida, não está nestas cartas",
+ "Grey = carried": "Cinza = presente"
 }

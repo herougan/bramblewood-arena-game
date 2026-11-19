@@ -4683,5 +4683,13 @@
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "Pemicu Tiap Giliran dengan harga: Kayu hanya dibayar saat pemicu berjalan. Unit bertindak sesuai urutan pemeliharaan, jadi Tambang Batu yang bertindak dulu bisa memasok Peleburan.",
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "Pemicu Tiap Giliran: mati selama Menunggu, Pingsan, Beku, atau Tertidur. Tanpa petak kosong, tak ada yang muncul.",
  "Deliver": "Antar",
- "Every Turn": "Tiap Giliran"
+ "Every Turn": "Tiap Giliran",
+ "Focus": "Fokus",
+ "A focus skill for this map": "Skill fokus peta ini",
+ "Intro": "Intro",
+ "This map's keyword skill": "Skill kunci peta ini",
+ "Red = new here": "Merah = baru di sini",
+ "Green = on these cards and recommended": "Hijau = ada di kartu ini dan direkomendasikan",
+ "Blue = suggested, not on these cards": "Biru = disarankan, tidak ada di kartu ini",
+ "Grey = carried": "Abu-abu = dibawa"
 }

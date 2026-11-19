@@ -3872,7 +3872,15 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rel3-xp": "+{n} XP",
   "ui.rel3-level": "Level {n}!",
   "ui.uifin2-pile-split": "{a} more in this set, {b} after",
-  "ui.dec19-coop-tip": "Team up with friends in a dungeon"
+  "ui.dec19-coop-tip": "Team up with friends in a dungeon",
+  "ui.uiq2-pill-focus": "Focus",
+  "ui.uiq2-pill-focus-tip": "A focus skill for this map",
+  "ui.uiq2-pill-intro": "Intro",
+  "ui.uiq2-pill-intro-tip": "This map's keyword skill",
+  "ui.uiq2-leg-new": "Red = new here",
+  "ui.uiq2-leg-have": "Green = on these cards and recommended",
+  "ui.uiq2-leg-sugg": "Blue = suggested, not on these cards",
+  "ui.uiq2-leg-carried": "Grey = carried"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
