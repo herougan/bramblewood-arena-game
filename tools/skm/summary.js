@@ -91,7 +91,7 @@ function main() {
     '## Method agreement (Spearman with the consensus of the other kinds)', '', '| Method | Skills | rho consensus | rho price | Scale |', '|---|---|---|---|---|',
     ...good.slice(0, 6).map(ml), '| ... | | | | |', ...good.slice(-5).map(ml), '',
     '| Kind | Families | Skills | rho consensus |', '|---|---|---|---|', ...kindRows.map(k => `| ${k.kind} | ${k.families.join(', ')} | ${k.skills} | ${k.rhoConsensus} |`), '',
-    '| Family | Methods | Skills | rho consensus | rho price | Scale |', '|---|---|---|---|---|---|', ...famRows.map(f => `| ${f.family} | ${f.methods} | ${f.skills} | ${f.rhoConsensus} | ${f.rhoPrice} | ${f.scale} |`), '',
+    'Per family (scale, agreement with the price): `families` in the JSON.', '',
     '## Proposals for the owner', '', ...(P.length ? P.map((p, i) => `${i + 1}. ${p}`) : ['(none yet)']), ''];
   fs.writeFileSync(path.join(DIR, `summary-${date}.md`), md.join('\n'));
   console.log(`methods ${methods.length} (sim ${simM.length}), families ${Object.keys(fams).length}, kinds ${Object.keys(kinds).length}, skills covered ${out.counts.skillsCovered}/${skills.length}, flagged ${flagged.length}, overall sim scale ${out.overallSimScale}`);

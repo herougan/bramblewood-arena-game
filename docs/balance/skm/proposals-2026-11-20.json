@@ -1,0 +1,7 @@
+[
+  "Flying: all 14 kinds read it under-priced (worth about 5 points against 2.2). Re-measure it in the pipeline, then raise its constant (`run.sh price --set-const flying=...`). Your call.",
+  "Combat skills that 3 in 4 kinds call cheap: pack, corrode, evasive, poisonBarbs, trident, diurnal, sleepPowder, poisonPowder (and Dive's drawback reads about 0, not -1.7). Re-measure them at 1,000 fights (`run.sh measure --skills ...`), then raise the confirmed ones.",
+  "Combat skills that 3 in 4 kinds call dear: keenSense, parasite, overwhelm, offspring. Same re-measure, then lower the confirmed ones.",
+  "Skills that need an economy or partners (forestry, rainrunner, dry, bloomCopy, broodkeeper, bounty, herald, loyal, salvage, delivery, Deliver on Attack / on Healed) read about 0 in every fight design. Choose: keep them priced by the 4-round logic and mark them so, or fund a design whose decks pay Lumber and hold their tribe.",
+  "Price evidence: keep the stat-equivalence searches and the carrier x20 test as the check before a price change (rank agreement 0.8-0.9); stop using card-contribution regressions, the deckopt pick rate and the workbook figures for prices (under 0.4)."
+]
