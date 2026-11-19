@@ -1,0 +1,19 @@
+{
+ "about": "DEC19-BUDGET (2026-11-19, decision ENG52-1 b): the evolute play rate onto Hatchling cards. Decks: every road fight deck (tools/lib_bramble.js B.MAPS, all maps) and every PRO / BPRO / WPRO deck (canonical/pro-skirmishes.json maps.*). An evolute can land on a Hatchling card only when one deck holds both; none does, so the rate is 0 and Hatchling costs Stem 2 x 0 = 0.",
+ "rate": 0,
+ "price": 0,
+ "decks": 722,
+ "withHatchling": 7,
+ "withEvolute": 6,
+ "both": [],
+ "hatchCopies": 17,
+ "evolutes": [
+  "gale-sprite",
+  "stormcaller",
+  "raven-harbinger",
+  "hanging-loafer",
+  "raven-hexcaller",
+  "bone-diviner",
+  "canopy-sloth-guardian"
+ ]
+}

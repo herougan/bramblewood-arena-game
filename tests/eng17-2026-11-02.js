@@ -140,7 +140,8 @@ const cells = list=> list.map(x=> x.row + ':' + x.slot).join(' ');
   const sc = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8'));
   const list = sc.skills || sc.entries || Object.values(sc).find(v=> Array.isArray(v)) || [];
   const hs = list.find(x=> x.id === 'hatchling'), st = list.find(x=> x.id === 'stem');
-  ok(hs && st && hs.value === st.value && hs.scale === st.scale, `skill-costs: Hatchling priced as a Stem (${hs && hs.value} vs ${st && st.value})`);
+  // 2026-11-19 (DEC19-BUDGET, ENG52-1 b): a Stem's price x the evolute play rate (measured 0: docs/balance/dec19-budget/evolute-rate-2026-11-19.json)
+  ok(hs && st && hs.stemValue === st.value && hs.value === Math.round(100 * st.value * hs.evolutePlayRate) / 100 && hs.scale === st.scale, `skill-costs: Hatchling priced as a Stem x the evolute play rate (${hs && hs.value} = ${st && st.value} x ${hs && hs.evolutePlayRate})`);
 }
 
 // ---- 5. the page

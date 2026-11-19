@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-19 (package DEC19-BUDGET: Hatchling priced by its evolute play rate, decision ENG52-1 b)
+- Players see: the card editor's budget panel reads the Baby cards lower (no card stats change).
+- Budget: Hatchling 2 -> 0 (Stem 2 x the evolute play rate, measured 0: none of the 722 fielded decks holds a Hatchling card and an evolute); Hatchling no longer takes the plain bonus away; a Level 1 skill replaces its family's key, as the game does (Fire Drake Hatchling paid a Fire Bolt and a Fire Arrow). Compost Grub, Fox Kit, Otter Kit, Caiman / Fire Drake Hatchling, Shallows Fry, Harp Seal Pup now fit; Chipmunk Forager (108%) and Musk Ox Calf (102%) stay over. Files: `docs/balance/dec19-budget/`.
+
 ## 2026-11-19 (package DEC19: the easy decisions settled, owner 22:18)
 - Players see: on a slow machine, Auto-lower effects can now step down twice in a session (High -> Medium -> Low; was once), decision PERF2-1 b (`FX_AUTO_STEPS` in `arena_app.js`).
 - Decisions: 131 of 143 open decisions settled (48 superseded, 76 default, 7 another option); 12 left for the owner. Builds still to run: `docs/design/dec19-builds-2026-11-19.json`. `docs/evaluation-protocol.md` records the B5 / B6 readings (CHK1-1 a, CHK1-2 a).
