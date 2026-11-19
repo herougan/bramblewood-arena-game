@@ -17,7 +17,7 @@ const pools = JSON.parse(rd('canonical/map-pools.json')).maps;
 const dd = byId('mjd'), m21 = G.mapNumberOf('m21') === 21 ? byId('m21') : null;
 ok(dd && dd.sub && dd.parent === 'm7' && dd.entry && dd.entry.host === 'mj', '1. The Deep Dark is a side map of Map 10 drawn inside The Sunken Depths');
 ok(dd && dd.entry.afterMapCleared === 'm21' && m21, '1. it opens once Map 21 is cleared');
-ok(dd && dd.entry.after === byId('mj').nodes[byId('mj').nodes.length - 1].key, '1. ... and The Sunken Depths\' boss is won');
+ok(dd && !dd.entry.after, '1. no fight of The Sunken Depths gates it (only Map 21 and the Depths being open)');
 ok(G.mapNumberOf('mjd') === 10 && G.mapUnlockNumberOf('mjd') === 21, '1. it counts as Map 10 for its codes and opens at Map 21');
 const fights = dd ? dd.nodes : [];
 ok(fights.length >= 3 && fights.length <= 4 && /boss/.test(fights[fights.length - 1].kind), '1. 3-4 fights, the last a boss');
@@ -47,7 +47,9 @@ mains.slice(0, 21).forEach(m=> cleared.add(m.id));
 ok(!gate.isMapUnlocked(dd, prog(tut.concat(upTo(20), all('mj')))), '3. locked with Maps 0-20 and The Sunken Depths cleared');
 cleared.add('m21');
 ok(gate.isMapUnlocked(dd, prog(tut.concat(upTo(21), all('mj')))), '3. open once Map 21 is cleared too');
-ok(!gate.isMapUnlocked(dd, prog(tut.concat(upTo(21), all('mj').slice(0, -1)))), '3. still locked while The Sunken Depths\' boss stands');
+const mjKey = byId('mj').entry.after;
+ok(mjKey && !gate.isMapUnlocked(dd, prog(tut.concat(upTo(21).filter(id=> id !== 'm7:' + mjKey)))), '3. still locked while The Sunken Depths is (its entrance fight on Coral Current not won)');
+ok(gate.isMapUnlocked(dd, prog(tut.concat(upTo(21)))), '3. open with Map 21 cleared, before any Sunken Depths fight');
 ok(HOST('mjd') === 'mj' && HOST('mj') === 'm7' && MAPS.filter(m=> m.sub && m.entry && m.entry.host).every(m=> m.id === 'mjd'), '3. host: The Sunken Depths for The Deep Dark, the parent for every other side map');
 ok(app.includes("CONQUEST_MAPS.filter(m=> m.sub && ((m.entry && m.entry.host) || m.parent)===map.id && m.entry"), '3. the entrance is drawn on its host map');
 ok(app.includes('conquestSelectedMap = (sm.entry && sm.entry.host) || sm.parent;') && app.includes("m.id === ((map.entry && map.entry.host) || map.parent)); if(!parent) return '';"), '3. its exit leads back to The Sunken Depths');
@@ -64,7 +66,8 @@ ok(/function renderRaidSubTab\(body\)\{\n  try\{ if\(loadDialogueFlags\(\)\['rai
 ok(/FEATURE_SPOTS\.forEach\(sp=>\{ if\(sp\.mapNumber != null && sp\.mapNumber < job\.n\) unlockFeature\(sp\.key\); \}\);/.test(app), '4. Admin "start of Map N" still unlocks the raid by its mapNumber');
 
 // 5. art, dark, music
-ok(/const MAP_ART_ALIAS = \{mjd: 'mabyss'\};/.test(app) && /mjd:'map-mabyss'/.test(app) && /\['mjd','pitch'\]/.test(app), '5. abyss art, the raid\'s ground, Pitch Black');
+ok(/const MAP_ART_ALIAS = \{mjd: 'mabyss'\};/.test(app) && /mjd:'map-mabyss'/.test(app), '5. abyss art and the raid\'s ground');
+fights.forEach(f=> ok(G.fightRules('mjd', f).dark === 'pitch' && G.fightRules('mjd', f).crushingDepths, `5. ${f.key}: Pitch Black and Crushing Depths`));
 ok(/\.map-theme-mjd\{--mt-a:/.test(rd('arena_template.html')), '5. its palette');
 
 // 6. texts

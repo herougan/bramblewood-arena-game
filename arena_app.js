@@ -9799,7 +9799,7 @@ function battlefieldMapClass(m){
   if(!mapId && m && m.mode !== 'tutorial'){ if(!m.bfMapId){ const ids = Object.keys(MAP_BATTLEFIELD_CLASS).filter(id=> MAP_ART_IDS.has(id) && id !== 'marena' && id !== 'mabyss'); m.bfMapId = ids.length ? ids[Math.floor(Math.random()*ids.length)] : null; } mapId = m.bfMapId; }
   const cls = (mapId && MAP_BATTLEFIELD_CLASS[mapId]) || '';
   if(!cls && m && m.mode === 'tutorial') return 'bf-tutorial'; // 2026-10-18 (owner: "Make the tutorial background a bit greener"): a fresh-green tint (CSS)
-  return cls && MAP_ART_IDS.has(MAP_ART_ALIAS[mapId] || mapId) ? cls + ' has-floor-art' : cls;
+  return cls && MAP_ART_IDS.has((typeof MAP_ART_ALIAS !== 'undefined' && MAP_ART_ALIAS[mapId]) || mapId) ? cls + ' has-floor-art' : cls;
 }
 // 2026-09-29, per explicit request ("change its helper text from 'Not drafted, not bought' to a
 // more ecological description"): the 🔁 spawn-only badge's tooltip used to read as a flat rules
@@ -21835,7 +21835,7 @@ const WIND_SHORT = {windy:'Random wind each round', gale:'Strong wind, random wa
 // 2026-10-16 (placement and rarity; user: "2B: Should it be darkness or pitch black. I think pitch black is super advanced, maybe a
 // submap in a later map"): Smugglers' Grotto is Darkness now, and Pitch Black moves down to The Sunken Depths (Map 10's side map,
 // under the reef, where no light reaches).
-const DARK_MAPS = new Map([['mg','dark'], ['m4','dark'], ['mz','dark'], ['mj','pitch'], ['mjd','pitch']]);
+const DARK_MAPS = new Map([['mg','dark'], ['m4','dark'], ['mz','dark'], ['mj','pitch']]);
 const DARK_LEVEL_NAME = {dark:'Darkness', pitch:'Pitch Black', absolute:'Absolute darkness'};
 // 2026-10-18 (package D; owner: just "Dark-blind creatures miss 1/4 the time."): one plain line, the card's face and its detail alike;
 // who is dark-blind and what Illuminate does is in the Map Codex (DARK_CODEX_TEXT) and the Dark-blind keyword's gloss.
@@ -25302,13 +25302,13 @@ const CONQUEST_MAPS = [
     ]},
   // 2026-11-19 (package RAIDGATE, owner 00:02, decision OWN-1119-1): The Deep Dark, a side map inside The Sunken Depths (entry.host: its
   // entrance is drawn there and leads back there; its data and codes stay Map 10's, 10-B-n). Opens after Map 21; fights count as Map 21
-  // (shieldMap). Its boss clear opens the first raid (FEATURE_SPOTS 'raid', raidgateOpen).
-  { id:"mjd", sub:true, parent:"m7", shieldMap:21, entry:{host:"mj", x:22, y:82, after:"10-A-5", afterMapCleared:"m21", label:"A light far below"}, name:"The Deep Dark", icon:"🦑", blurb:"Below the wreck the reef wall drops away into black water. Something down there is big enough to hold the whole river mouth.", sequential:true,
+  // (shieldMap), Pitch Black and Tide on every fight. Its boss clear opens the first raid (FEATURE_SPOTS 'raid', raidgateOpen).
+  { id:"mjd", sub:true, parent:"m7", shieldMap:21, entry:{host:"mj", x:22, y:82, afterMapCleared:"m21", label:"A light far below"}, name:"The Deep Dark", icon:"🦑", blurb:"Below the wreck the reef wall drops away into black water. Something down there is big enough to hold the whole river mouth.", sequential:true,
     nodes: [
-      { key:"10-B-1", people:"deep", kind:"skirmish", name:"The Last Lantern", icon:"🏮", rules:{crushingDepths:true}, deck:{"giant-clam":4,"sea-turtle-elder":4,"reef-shark":2,"blind-cave-fish":2,"electric-ray":2} },
-      { key:"10-B-2", people:"deep", kind:"skirmish", name:"The Crushing Dark", icon:"🫧", rules:{crushingDepths:true, tide:true}, deck:{"orca-vanguard":4,"riptide-eel":4,"mantis-shrimp":3,"horseshoe-crab":2,"pincushion-urchin":2} },
-      { key:"10-B-3", people:"deep", kind:"elite", name:"The Ink Wall", icon:"🌑", rules:{crushingDepths:true, highTide:true}, deck:{"reef-shark":4,"coral-current-eel":3,"sea-turtle-elder":3,"giant-clam":2,"old-sturgeon":2,"horseshoe-crab":2} },
-      { key:"10-B-4", people:"deep", kind:"boss", name:"The Goliath's Shadow", icon:"🐙", rules:{crushingDepths:true, highTide:true}, deck:{"orca-vanguard":4,"mantis-shrimp":3,"riptide-eel":3,"electric-ray":2,"blind-cave-fish":2,"pincushion-urchin":2} },
+      { key:"10-B-1", people:"deep", kind:"skirmish", name:"The Last Lantern", icon:"🏮", rules:{dark:"pitch", crushingDepths:true, tide:true}, deck:{"giant-clam":4,"sea-turtle-elder":4,"dolphin-knight":3,"blind-cave-fish":1,"electric-ray":1,"pincushion-urchin":1} },
+      { key:"10-B-2", people:"deep", kind:"skirmish", name:"The Crushing Dark", icon:"🫧", rules:{dark:"pitch", crushingDepths:true, tide:true}, deck:{"orca-vanguard":4,"riptide-eel":4,"crown-of-thorns-star":4,"horseshoe-crab":1,"old-sturgeon":1} },
+      { key:"10-B-3", people:"deep", kind:"elite", name:"The Ink Wall", icon:"🌑", rules:{dark:"pitch", crushingDepths:true, highTide:true}, deck:{"reef-shark":4,"coral-current-eel":3,"sea-turtle-elder":4,"giant-clam":4,"electric-ray":1} },
+      { key:"10-B-4", people:"deep", kind:"boss", name:"The Goliath's Shadow", icon:"🐙", rules:{dark:"pitch", crushingDepths:true, highTide:true}, deck:{"orca-vanguard":4,"mantis-shrimp":3,"reef-shark":4,"crown-of-thorns-star":4,"blind-cave-fish":1} },
     ]},
   // 2026-10-21 (package RP, owner Oct 21: "Submaps should also only be unlocked quite late in the game. Maybe like smuggler's groto after Map 7"): opens once Map 7 is cleared (afterMapCleared "mu"); its fights count as Map 7 (shieldMap), as Lilypad Reach does. docs/balance/rewards-pass-2026-10-21.md
   { id:"mg", sub:true, parent:"mb", shieldMap:7, entry:{x:86, y:24, after:"2-2", afterMapCleared:"mu", label:"A sea cave"}, name:"Smugglers' Grotto", icon:"🕳️", blurb:"A sea cave under Pebble Beach. Whatever the smugglers left down here, something else has moved in.", sequential:true,
