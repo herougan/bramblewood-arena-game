@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-20 (package TESTFIX9: release 4 stragglers)
+- Players see: on a phone, the Map cards window's "Export all" tip no longer widens the window sideways (its right-align rule counted the wrong child after the map links changed; now by id).
+- Tests: pins follow UIQ1 (keywords-15b "?" line with text, cs-c popover tile `noQ`) and CARRY1 (ui41: only NEW! is capped, Carried is explicit). ed and ui27 passed when rerun alone. card-matrix golden updated: 259 diffs, all duels / matches with Ladybird Guard, Sworn Shieldbearer, Booming Bittern, Glacier Wolf Pack, Meerkat Sentry or Tsetse Drainer (FOCUS2).
 ## 2026-11-20 (package TESTFIX8: release 4 full-suite triage)
 - Players see: French, German, Spanish and the other 9 languages translate "3/5 cleared", "48 cards collected", "Clear A / B", "Pick a part to fight" and about 35 other lines again (DEC19-TEXT had dropped those rows from `lang/ui/*.json`; restored, 408 rows, its renamed "Gain" / "On Turn Start" left out).
 - Tests: stale pins follow DEC19 (raidgate, econsk1: OWN-1119-1 / ECONSK1-1 settled; content4, side1, skir1: m9 takes Malachite Golem, a DEC19-DATA move in `tests/lib/redesign.js`; skill-worth: DEC19-BUDGET's hyphenated package note on Hatchling; eng50: Underwater Currents from either pack). fin2 opens the editor on all 953 cards in slices of 40 (one synchronous loop let the renderer reach 4.4 GB and be OOM-killed, so the 600 s timeout). card-matrix golden refreshed: 1732 changed fights, 0 failures, all on the 26 cards FOLD8 / DEC19-DATA changed (and Roe Pearl's hatch pool). typeahead, ux, fx11, fx14 pass alone (machine load).

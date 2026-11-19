@@ -35569,7 +35569,7 @@ function ui38Css(){
     + ' .ui39-cc-name{font:800 11.5px/1.15 \'Baloo 2\',system-ui,sans-serif; color:#ffe7b0;} .ui39-cc-art{display:flex; align-items:center; justify-content:center; min-height:30px; border-radius:6px; background:rgba(0,0,0,.25); font-size:9px; opacity:.75;}'
     + ' .ui39-cc-line{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;} .ui39-cc-rar{font-weight:800; white-space:normal;} .ui39-cc-animal{text-transform:capitalize;} .ui39-cc-role{opacity:.9; display:-webkit-box; -webkit-line-clamp:5; -webkit-box-orient:vertical; overflow:hidden;}'
     + ' .ui44-after{display:inline-flex; align-items:center; gap:6px; flex-wrap:wrap; max-width:100%; font-weight:700;} .ui44-after select{max-width:100%; min-width:0; font:inherit; padding:3px 6px; border-radius:8px; background:var(--surface-2, #fff8e8); color:inherit; border:1px solid rgba(120,90,50,.45);} .ui44-sel{display:flex; flex-direction:column; gap:2px; max-width:100%; min-width:0;} .ui44-note{margin:0; font-size:.85em;}' // 2026-11-10 (UI44): the side map's "Unlocks after" select
-    + ' @media (max-width:560px){ .pk1-mc-modal .rv2-tip{max-width:min(240px, 62vw);} .pk1-mc-modal .rv1-bar .rv2-copy:nth-child(2) .rv2-tip{left:auto; right:0;} }'; // the Export all tip, hidden, made the window scroll sideways at 390 (as UI29 for its window)
+    + ' @media (max-width:560px){ .pk1-mc-modal .rv2-tip{max-width:min(240px, 62vw);} .pk1-mc-modal .rv1-bar .rv2-copy:nth-child(2) .rv2-tip, .pk1-mc-modal #rv3ExportTip{left:auto; right:0;} }'; // 2026-11-20 (TESTFIX9): by id, the map links now push Export all to the 3rd child; the Export all tip, hidden, made the window scroll sideways at 390 (as UI29 for its window)
   document.head.appendChild(st);
 }
 // UI38_PROS:END

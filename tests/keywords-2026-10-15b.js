@@ -57,7 +57,7 @@ ctx.adminModeEnabled = true; R.reset(); ok(!R.skillHiddenNow('tide') && !R.skill
 ctx.adminModeEnabled = false; R.reset();
 // where the "?" is applied
 ok(/function describeEffects\(def, liveCard(, opt)?\)\{\n  def = maskHiddenSkills\(def\);/.test(src) /* 2026-11-04 (TESTFIX1): a third parameter (opt.terse) since */, '1. card text lines go through the mask');
-ok(/if\(def\._hiddenSkills\) lines\.push\(`<span class="skill-q-line">\$\{skillQChipHTML\(\)\}<\/span>`\);/.test(src), '1. ...and get one "?" line');
+ok(/if\(def\._hiddenSkills\) lines\.push\(`<span class="skill-q-line">\$\{skillQChipHTML\(\)\}(<span class="uiq1-q-text">\$\{escapeHtml\(TX\('ui\.uiq1-locked'\)\)\}<\/span>)?<\/span>`\);/.test(src), '1. ...and get one "?" line'); // 2026-11-20 (TESTFIX9): UIQ1 adds the line's text
 ok(/function abilityBadges\(d, bopts\)\{\n  d = maskHiddenSkills\(d\);/.test(src) && /if\(d\._hiddenSkills\) out\.push\(skillQChipHTML\(\)\);/.test(src), '1. the skill strip shows one "?" chip');
 ok(/PASSIVE_DEFS\.filter\(p=> met\.has\(p\.key\) && p\.label && !p\.retired && !skillHiddenNow\(p\.key\)\)/.test(src) || /shown = p=> p\.label && !p\.retired && [^;\n]*!skillHiddenNow\(p\.key\)/.test(src) /* 2026-10-19: the Skills book; 2026-11-08 (FIX10): ENG35 adds a shot-rider clause before it */, '1. the Skills codex leaves hidden skills out');
 ok(/if\(hid\) return open \? `<span class="sbm-chip" title="\$\{escapeAttr\(SKILL_Q_TIP\)\}">\?<\/span>`/.test(src), '1. Skills along the road: a bare "?"');
