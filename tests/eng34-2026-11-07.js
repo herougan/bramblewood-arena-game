@@ -95,7 +95,7 @@ for(const [id, base, plus] of [['e34-cinder', 2, 0], ['e34-arrow', 2, 1]]){
 
 // ---- texts and translations
 const tx = rd('bramblewood-texts.js'), txv = k=> (tx.match(new RegExp('"' + k.replace(/[.]/g, '\\.') + '":\\s*"([^"]*)"')) || [])[1];
-const T = {'ui.eng33-venomous': 'Every melee hit it lands adds {n} Venom.', 'ui.eng34-bleed': 'Every melee hit it lands adds {n} Bleed.',
+const T = {'ui.eng33-venomous': 'Every melee hit it lands adds {n} Poison.' /* 2026-11-19 (TESTFIX6): POISON2 */, 'ui.eng34-bleed': 'Every melee hit it lands adds {n} Bleed.',
   'ui.ui31-daunt': 'When it attacks, the unit it hits loses {n} Attack until the end of next round. Stacks.' /* SKN1 (2026-11-16) */, 'ui.sk-breach': 'Every melee hit it lands also deals {n} damage to the enemy bramble.',
   'ui.eng34-fletcher': "Your units' arrows deal {n} more damage.", 'ui.sk-weapon-master': "Your side's arrows deal {n} more; your equipped units get +1/+1." /* ENG40 (2026-11-09, ENG34-3 c): arrows only */};
 for(const [k, v] of Object.entries(T)) ok(txv(k) === v, `${k}: "${txv(k)}"`);

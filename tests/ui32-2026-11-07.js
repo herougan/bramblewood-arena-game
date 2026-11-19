@@ -19,7 +19,7 @@ KEYS.forEach(k=>{
   const en = JSON.parse('"' + m[1] + '"');
   CODES.forEach(c=>{ const d = JSON.parse(read(`lang/${c}.json`)), t = d[en]; ok(t && t !== en, `lang/${c}.json translates ${k}`); if(t) ok(phs(t) === phs(en), `lang/${c}.json keeps the placeholders of ${k} (${phs(en)})`); });
 });
-ok(/Venom tokens: \{n\}/.test(texts) && !/Envenomed: \{n\}/.test(texts), 'the Venom pip tooltip says "Venom tokens: {n}"');
+ok(/Poison tokens: \{n\}/.test(texts) && !/Envenomed: \{n\}/.test(texts), 'the Poison pip tooltip says "Poison tokens: {n}"'); // 2026-11-19 (TESTFIX6): POISON2 named the counter Poison
 CODES.forEach(c=>{ ok(!('Envenomed: {n}. It takes damage equal to its stacks each round, then loses 1 stack.' in JSON.parse(read(`lang/${c}.json`))), `lang/${c}.json has no stale Envenomed row`); });
 
 // 1 log: every ENG20 kind has a line; a field line is skipped while the same one was just printed; an unknown kind prints nothing
