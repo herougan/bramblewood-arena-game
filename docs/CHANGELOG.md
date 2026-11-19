@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-20 (package UIQ2b: Skills on these cards, no cut pills, compact legend)
+- Map card editor: pills on a skill tile wrap to a second line instead of being cut ("NE..."); the colour legend is one row of four at desktop, 2x2 on a phone.
+
 ## 2026-11-20 (package REFIT10: Basalt Foundry fights re-fitted after DEC19-DATA's Malachite Golem swap)
 - Road decks (swaps only on the m9 list; leaders, first-clear cards, sizes kept; Malachite Golem kept in every fight that holds it): 19-A-5 -1 Ashbone Ghoul +1 Stalactite Golem; 19-A-7 -1 Pumice Beetle +1 Cinder Gecko; 19-A-8 -1 Peak Condor -2 Pumice Beetle +1 Cinder Gecko +2 Smoke Raccoon; 19-A-9 -1 Pumice Beetle -1 Smoke Raccoon +1 Cinder Gecko +1 Malachite Golem. Seed 9100, 400 games, before -> after (target): 19-A-5 61.8 -> 70 (75), 19-A-7 29 -> 36.8 (67.5), 19-A-8 29.3 -> 63.5 (63.8), 19-A-9 42.5 -> 63.5 (60). Side: in band / within 10 / beyond 20 52/55/12 -> 55/58/11; Main unchanged 101/110/5.
 - These four fights were too hard for the player, not too easy (release 5's summary gap is win - target). Malachite Golem (2/23 Shell 4) replaced Granite Ox Golem, whose on-spawn stun also hit the CPU's own side. Run 44547933762 -> 44597653420: only the six Basalt Foundry fights holding Malachite moved; all other 239 fights read identically. Each kept only on 2+ points closed on the mean of fresh seeds (101100 / 102100; 19-A-9's second step 103100 / 104100). No legal same-size deck lifts 19-A-7 past about 37, and Shield 0 alone reads 50.5. A 12-card deck (-3 Obsidian Scorpion, -1 Tide Spirit, allowed on side maps by SIDE2-2 e) reads 62.5 (200 games), but that changes the size, so it waits on an owner call. Files: `docs/balance/refit10/`.
