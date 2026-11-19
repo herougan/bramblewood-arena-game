@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-19 (package DEC19: the easy decisions settled, owner 22:18)
+- Players see: on a slow machine, Auto-lower effects can now step down twice in a session (High -> Medium -> Low; was once), decision PERF2-1 b (`FX_AUTO_STEPS` in `arena_app.js`).
+- Decisions: 131 of 143 open decisions settled (48 superseded, 76 default, 7 another option); 12 left for the owner. Builds still to run: `docs/design/dec19-builds-2026-11-19.json`. `docs/evaluation-protocol.md` records the B5 / B6 readings (CHK1-1 a, CHK1-2 a).
+
 ## 2026-11-19 (package SKWK3: the reference ladder rebuilt on today's cards, Maps 10-20 N-SK decks re-tuned, SKWK2-1 a)
 - Players see: new enemy decks in the N-SK practice fight of Maps 11, 12, 14-17, 10-A and 20-B and the N-WK fight of 19-A (15 decks).
 - Protocol marks (pro_ease, 40 games a pairing, 36 maps; before = today's cards on the old ladder): all three 10 -> 15 (Maps 10-20: 1 -> 7), N-SK vs the ladder 15-30% 14 -> 17, N-SK not TOO WEAK 29 -> 29, N-WK not TOO STRONG 33 -> 34. The ladder rebuild alone left 10.

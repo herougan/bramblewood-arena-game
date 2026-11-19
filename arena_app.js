@@ -8233,11 +8233,12 @@ try{ installFxStylePicks(); }catch(e){}
 // Auto-lower effects (2026-10-17): while a fight plays (renderVfxForEvent pokes FxAutoLower), frame times are sampled in 2 s
 // windows. If a window averages over 33 ms a frame (under 30 fps), the effects level steps down one notch (High → Medium →
 // Low, never to None) and a toast says so. At most once per session; Settings → "Auto-lower effects: Off" turns it off.
-var FX_AUTO_KEY = 'bramblewood_fx_auto';
+// 2026-11-19 (DEC19, PERF2-1 b, owner 11-19 22:18 "settle the easy decisions"): up to FX_AUTO_STEPS steps a session (High → Medium → Low).
+var FX_AUTO_KEY = 'bramblewood_fx_auto', FX_AUTO_STEPS = 2;
 function fxAutoEnabled(){ try{ return localStorage.getItem(FX_AUTO_KEY) !== 'off'; }catch(e){ return true; } }
 var FxAutoLower = (function(){
   const WINDOW_MS = 2000, LIMIT_MS = 33, IDLE_MS = 1500;
-  let raf = 0, lastPoke = 0, t0 = 0, prev = 0, frames = 0, sum = 0, done = false;
+  let raf = 0, lastPoke = 0, t0 = 0, prev = 0, frames = 0, sum = 0, done = false, steps = 0;
   const stop = ()=>{ if(raf) cancelAnimationFrame(raf); raf = 0; frames = 0; sum = 0; prev = 0; };
   const step = now=>{
     raf = 0;
@@ -8253,8 +8254,9 @@ var FxAutoLower = (function(){
   };
   const lower = avg=>{
     const lv = fxLevelSetting(), i = FX_ORDER.indexOf(lv);
-    done = true; stop();
-    if(i <= 1) return;                                         // already Low (or None): nothing left to lower
+    steps++; done = steps >= FX_AUTO_STEPS || i <= 2;          // DEC19: keep watching after the first step unless Low is next
+    if(done) stop();
+    if(i <= 1){ done = true; stop(); return; }                 // already Low (or None): nothing left to lower
     setFxLevel(FX_ORDER[i - 1]);
     try{ document.querySelectorAll('select[id^="fxSelect"]').forEach(x=>{ x.value = fxLevelSetting(); }); }catch(e){}
     try{ showToast(TX('toast.effectsLowered')); }catch(e){}

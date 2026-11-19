@@ -4,34 +4,6 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 
 ## Waiting on you
 
-**REFIT7-1. 17 road fights no legal deck brings within 20 of target** · Decide · Balance · asked 2026-11-19
-- After REFIT7 (seed 9100, 400 games). Too hard: 8-7 23% (target 60), 17-8 14 (40), 17-6 32 (65), 17-4 45 (75), 17-7 38 (60), 4-3 45 (70), 4-5 20 (40), 2-2 56 (80). Too easy: 18-A-4 100 (77), 18-A-7 97 (64), 18-A-6 95 (69), 18-4 95 (62), 18-7 73 (40), 3-6 84 (60), 20-A-4 64 (36), 10-A-5 68 (40), 5-A-4 60 (40). Map 17 lost about 21 points with LVL10 / ENG52; its reference deck is unchanged and fully owned.
-  - a) A card-list look: stronger or weaker cards from these maps' lists for these fights (you pick)
-  - b) Shield / Health what-ifs on these fights in the next package
-  - c) List only for now
-- **Default:** c
-
-**FOLD8-1. Five of your 11-18 card edits are over budget** · Decide · Balance · asked 2026-11-19
-- Folded as you saved them: Pika Hoarder 139%, Feral Tomcat 116%, Peak Condor 116%, Alley Cat 116%, Slow-worm 102% of N(L). Their Level 10 forms cannot fit the cap. Field Vole: your last save dropped Cure at Level 3; kept it. These edits made 8 early road fights 20-35 points harder (3-2 67->32%, 3-7, 5-1, 8-3, 1-A-1, 7-A-3/4/5; REFIT8). Today: your numbers stand.
-  - a) Keep your numbers
-  - b) Trim each to 100% (Claude picks, stats first)
-  - c) You re-edit them
-- **Default:** a
-
-**OWN-1119-1. Where the first raid unlocks** · Decide · Progression · asked 2026-11-19
-- Owner 11-19 00:02: the raid unlocks between Maps 21-25 through a submap in a submap of a water map. Built as a: The Deep Dark (4 fights at Map 21 strength) inside The Sunken Depths (Map 10's side map), open after Map 21; its boss clear opens the Goliath (was: the Raid Banner on Map 13). Players who already opened the raid keep it.
-  - a) The Deep Dark inside The Sunken Depths, after Map 21 (built)
-  - b) Same, inside Lilypad Reach or Smugglers' Grotto instead
-  - c) Same place, open after Map 23 or 25 instead of 21
-- **Default:** a
-
-**SKWK2-1. Five N-SK fights stay TOO WEAK after the rebuild** · Decide · Balance · asked 2026-11-19
-- SKWK2 tuned the N-SK / N-WK decks (docs/balance/pro-ease-skwk2-2-after.json, 40 games). Still TOO WEAK: 7-SK and 7-A-SK (their lists' best decks, the strong search's included, lose 83-98% to the Map reference) and 13-SK, 20-SK, 20-A-SK. On those three the REFIT6 Map reference beats the reference ladder, so a deck the ladder beats 70-85% loses over 85% to it. The ladder (BAL24, 11-07) predates FOLD6 and CARDPOW2.
-  - a) Rebuild the reference ladder on today's cards, then re-tune; give Map 7 / 7-A's lists a stronger card (you pick)
-  - b) Accept TOO WEAK on these five
-  - c) Let the 85% line win there: SK decks beat the ladder 30-45%
-- **Default:** a
-
 **REL1-1. Energy per fight and cap on Maps 5-10** · Decide · Economy · asked 2026-11-19
 - A Map 5 fight costs 5 Energy of a 20 cap: about 4 fights per full bar, so a player runs dry inside the first session (REL1 audit). Today nothing changes.
   - a) Keep today's cost and cap
@@ -46,100 +18,6 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
   - c) Guests may buy any pack
 - **Default:** a
 
-**REL1-3. Murgle Mayhem: open on Map 6, and is it 1.0's only daily dungeon?** · Decide · Dungeons · asked 2026-11-19
-- It opens after Map 10 but its entrance sits on Map 6 (REL2 now announces it and pulses the node). The Undercroft and Long Burrow stay hidden. Today: opens after Map 10, only one in 1.0.
-  - a) Keep: opens after Map 10, Murgle is the only one
-  - b) Open it with Map 6, Murgle is the only one
-  - c) Open on Map 6 and release a second daily dungeon
-- **Default:** a
-
-**REL1-4. Co-op dungeon entry on the Arena tab and Home?** · Decide · Dungeons · asked 2026-11-19
-- The multiplayer dungeon is entered from the Map 16 spot only. You asked on 2026-10-25 for an Arena tab entry. Today: Map 16 spot only.
-  - a) Keep: Map 16 spot only
-  - b) Add an Arena tab entry
-  - c) Arena tab entry and a Home note
-- **Default:** a
-
-**LVL10-1. 36% of cards grow in stats only (asked 25%)** · Decide · Balance · asked 2026-11-18
-- 166 of 463 in-play cards have no skill whose number can grow (vanilla or flag skills like Flying, Guardian) and only one skill, so they are style A (stats only). B, C and D are 21% each. Stats-first cards (A + B + C) are 79%.
-  - a) Keep: A is every card with nothing to grow
-  - b) You pick flag-only cards to gain a second skill at Level 5-7 (they become C or D)
-- **Default:** a
-
-**ROLE1-1. Card roles on the Maps 0-20 lists: take the proposed swaps?** · Decide · Balance · asked 2026-11-18
-- Every map has strong cards and Maps 0-5 have cute ones. Gaps: no healer/buffer on Maps 4, 9, 10, 12, 16, 17, 19, 20; no resource card on 6, 7, 19; no ranged card on 4-6, 8, 16, 17; one Leech (6) and one Pack (14) carrier since DATAFIX; peaks drop on 13, 16, 18. 21 proposals (19 list swaps, 2 skill tweaks), all in budget: docs/design/role1-2026-11-18.md.
-  - a) All
-  - b) Some (name the numbers)
-  - c) None
-- **Default:** c
-
-**REFIT6-1. Eight road fights too easy against the rebuilt Map reference decks** · Decide · Balance · asked 2026-11-18
-- REFIT6 rebuilt the Map 3, 9, 13-16 and 18-20 reference decks from owned cards; they are stronger (Thorn Shrike, Shoal Shark, Giant Cave Huntsman, Eagle-Owl Quartermaster). No legal deck brings these into band (seed 9100, 400 games): 18-7 78% (target 40), 18-4 97 (62), 18-A-4 100 (77), 18-A-7 95 (64), 18-A-6 91 (69), 3-6 90 (60), 9-7 65 (40), 13-8 65 (40). Shield or Health +10 moves them 3 points at most (docs/balance/refit6/whatif-2026-11-18.jsonl).
-  - a) A card-list look: stronger cards from these maps' lists for these fights (you pick)
-  - b) Rebuild the Map 3, 9 and 18 references no stronger than the old ones
-  - c) Leave them
-- **Default:** a
-
-**REFIT5-1. Eight road fights no legal deck brings into band** · Decide · Balance · asked 2026-11-18
-- After REFIT5 (seed 9100, 400 games): too hard 8-7 25% (target 60), 19-5 37 (60), 2-2 57 (80); too easy 7-6 73 (40), 7-A-2 92 (70), 10-A-5 67 (40), 20-A-4 58 (36), 20-9 70 (50). What-ifs (200 games, docs/balance/refit5/whatif-2026-11-18.jsonl): Health 10 puts 19-5 in band (42 to 58), Shield 10 puts 10-A-5 in band (69 to 42), Health 8 lifts 8-7 to 31 and 2-2 to 64. Shield or Health up to +10 moves 7-6, 7-A-2, 20-A-4 and 20-9 by 4 points at most.
-  - a) Health 10 on 19-5, Shield 10 on 10-A-5; the other six wait for a card-list look
-  - b) a) plus Health 8 on 8-7 and 2-2
-  - c) Leave them
-- **Default:** a
-
-**REFIT4-2. 5-3 Cypress Roots has no legal deck** · Decide · Balance · asked 2026-11-18
-- Its venomGlands boon needs 9 of its 17 cards to carry it. Since FOLD6 moved Constrictor Coil off Map 5, only Swamp Alligator on Map 5's list carries it, so every legal deck turns the boon off. The deck stays as it is (one deck problem).
-  - a) Add Constrictor Coil to Map 5's SPECIAL list
-  - b) Give 5-3 another boon
-  - c) Leave it
-- **Default:** a
-
-**CARDPOW2-1. Cards the budget misreads (not changed)** · Decide · Balance · asked 2026-11-18
-- Over budget but weak by power: Nutria Reedcutter (103%), Pond Algae (111%), Raccoon Nightcrew (111%). Under budget but strong: 16, e.g. Stonedrop Vulture, Magma Salamander, Ossuary Lammergeier, Talon Archer. Granite Ox Golem (55%, power -41) would need 3/17 to 6/22. List: docs/balance/cardpow2-2026-11-18.md.
-  - a) Leave them; look at the skill prices behind them
-  - b) Trim the three to budget anyway
-  - c) Also apply Granite Ox Golem 6/22
-- **Default:** a
-
-**NAV1-1. Home shortcuts for Nest, Inventory, Wildpaths?** · Decide · UI · asked 2026-11-18
-- After the page split, Nest, Inventory and Wildpaths are reached only from the Camp bar. Keep it that way, or also add their notes on the Home board?
-  - a) Camp bar only (default, now live after release)
-  - b) Also a note on Home
-- **Default:** a
-
-**NAV1-2. Make the Forge a separate page under the hood?** · Decide · UI · asked 2026-11-18
-- Players already see the Forge as its own Camp page. Under the hood it still draws inside the Codex view. Splitting it fully means rewriting about 15 tests and gives no visible change.
-  - a) Leave as is (default)
-  - b) Split it fully
-- **Default:** a
-
-**SKAUD1-1. Exhaust: keep or cut?** · Decide · Skills · asked 2026-11-18
-- Your note: Exhaust, Exploit and Expose are similar but give tactical depth together. Exhaust N (its hits give N tokens; each makes the target's next trigger or skill fizzle) is on no card. The audit cuts skills on no card that a kept skill covers; Exhaust has no close twin.
-  - a) Keep it for Maps 21+
-  - b) Cut it
-- **Default:** a
-
-**SKAUD1-2. Pickpocket steals items only: then it is Disarm** · Decide · Skills · asked 2026-11-18
-- Your note on Pickpocket: "I think this steals items only." Today it steals a token (or the bramble's lowest resource). Disarm takes the enemy's weapon on play and on hit. Glintsnatch Magpie has both; Field Mouse has Pickpocket.
-  - a) Pickpocket steals items only and takes Disarm's place (Disarm goes)
-  - b) Keep both as they are
-  - c) Pickpocket items only, Disarm stays too
-- **Default:** a
-
-**SKAUD1-3. Thanatosis and Undead overlap** · Decide · Skills · asked 2026-11-18
-- Both come back once at 1 Health: Thanatosis plays dead (no death, no On Death), Undead dies and returns as a token. You set both on 11-07. After REDESIGN3, Thanatosis is on no card; Undead is on 2 (Cinder Skeleton, Ember Revenant).
-  - a) Keep both
-  - b) Thanatosis folds into Undead
-  - c) Undead folds into Thanatosis
-- **Default:** a
-
-**DATAFIX-1. Dormouse and Hedgerow Shrew: your live edits are not on the cards** · Decide · Cards · asked 2026-11-18
-- Your edits are in the notes but not the data: Dormouse nocturnal 2 (11-13), Hedgerow Shrew health 7 and Injured 2 (11-05). Both read as the same 2/5 Foraging line, so I made the Shrew 2/4 and left the Dormouse. Restore either edit?
-  - a) Restore both, drop my 2/4
-  - b) Restore the Dormouse only
-  - c) Leave both as they are
-- **Default:** a
-
 **DATAFIX-2. Maps 0-1 rewards: plain, or the new lists?** · Decide · Rewards · asked 2026-11-18
 - The rewards rule wants 8 plain Map 0-1 rewards with one Lumber card. The lists now give 4 slots, none of them plain. I filled them from the Map 0 and 1 lists (Elder Willow, Thorn Shrike, Cricket Drummer, Hedgehog Scout).
   - a) Keep the lists' cards, retire the plain rule
@@ -147,133 +25,11 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
   - c) Add plain cards to the Map 0-1 lists
 - **Default:** a
 
-**ENG52-1. 8 cards over budget once their Level 1 skills count** · Decide · Balance · asked 2026-11-18
-- The budget now prices Level 1 skills (OWN-1118-2). Over: Compost Grub, Fox Kit, Otter Kit, Caiman / Fire Drake Hatchling, Shallows Fry, Harp Seal Pup (Hatchling 2 each) and Chipmunk Forager (Foraging); Musk Ox Calf was over already. Fire Drake Hatchling's Level 1 arrow lost its bolt form (a Fire Arrow from Level 1).
-  - a) Re-fit their stats (balance-analyst)
-  - b) Price Hatchling lower (its +1/+2 only pays when an evolute is played onto it)
-  - c) Leave them over
-- **Default:** a
-
-**ENG50-1. The Vulnerable passive is Fragile** · Decide · Skills · asked 2026-11-18
-- You asked for Vulnerable (takes 2x) as a card passive. Fragile already is exactly that (takes 2x, frees budget through the caps), so ENG50 built no second skill. Vulnerable is now Rend's token (2x on the next hit). Rename Fragile to Vulnerable on cards?
-  - a) Keep the name Fragile.
-  - b) Show Fragile as Vulnerable.
-- **Default:** a
-
-**ENG50-2. Exploit: +1 a hit, or + the tokens?** · Decide · Skills · asked 2026-11-18
-- Your note: "Exploit N: Exploit tokens, extra damage by tokens, then remove 1." Today each hit on it deals +1 and uses one token. Did you mean + the number of tokens it has (3 tokens: +3, then +2, +1)? ENG50 kept +1 and named the tokens Exploit again (they read Vulnerable since ENG39).
-  - a) Keep +1 a hit.
-  - b) + the tokens it has, then remove 1.
-- **Default:** a
-
-**POWDER1-1. Sleeping Powder: can it keep one unit asleep?** · Decide · Engine · asked 2026-11-17
-- Sleeping Powder N puffs every round at Speed -1. Built so it skips a unit that is already asleep (as Ice Arrow skips a Frozen one): the unit facing it sleeps N rounds, then gets 1 round awake. Stacking like Sleep N (up to N+1 tokens) would keep that unit asleep every round while the powder unit lives.
-  - a) Keep it: no puff lands on a sleeping unit (N rounds asleep in N + 1).
-  - b) Stack like Sleep N: it can keep one unit asleep for good (priced about twice as high).
-- **Default:** a
-
-**ECONSK1-1. Metallurgy: what does it do?** · Decide · Engine · asked 2026-11-16
-- Metallurgy is on the skill list as "Unknown, Metal tier only" and does nothing yet (owner 11-16 23:28). It is on no card and priced 0. Pick its effect.
-  - a) Every turn while Ready: Refining costs 1 Lumber less on your side (2 Lumber + 2 Stone becomes 1 Lumber + 2 Stone).
-  - b) Your units with a Metal cost get +1/+1 for each Metal you hold (up to 3).
-  - c) Every turn while Ready: 1 Metal becomes 4 Gold.
-  - d) Something else (tell me).
-- **Default:** a
-
-**CARDPOW1-1. Level 0 cards: Level 1 gives too little** · Decide · Balance · asked 2026-11-16
-- The 18 Level 0 cards (tutorial, Base, Baby) get a third of their 0-1 budget gain at Level 1, so Level 2 jumps: median +12 fill points (other cards dip 3). Card stats are unchanged either way.
-  - a) Level 1 counts as a major level for Level 0 cards (one line in bramblewood-budget.js).
-  - b) Leave it.
-- **Default:** a
-
-**CARDPOW1-2. Cards outside 85-100% at Level 1 (Maps 0-20)** · Decide · Balance · asked 2026-11-16
-- Of 398 in-play Maps 0-20 cards, 161 sit under 85% and 47 over 100% of N at Level 1. Fixes are proposed per card in the CardPower workbook (OK? column); nothing changed.
-  - a) You mark OK? in the workbook; Claude applies the OK'd rows.
-  - b) Fold them into your REDESIGN2 workbook instead.
-  - c) Leave them.
-- **Default:** a
-
 **CHEAT2-1. Apply the cheat-detection SQL ("apply it")** · Approve · Supabase · asked 2026-11-16
-- supabase/proposed/cheat2-2026-11-16.sql. A: the old market functions let two accounts create Leaves; they now run the safe versions (urgent). B: a flags table the game reports to. C: fight hand-in checks. D: daily caps on server-paid rewards. E: card and raid burst notes. F: a ranked draw moves no rating; the same pair 6+ times a day is noted. G: six functions hardened. All only flag; nothing changes for players. H (server-paid rewards) is a separate call.
+- supabase/proposed/cheat2-2026-11-16.sql. A: the old market functions let two accounts create Leaves (urgent fix). B-G: a flags table, fight hand-in checks, daily reward caps, burst notes, ranked-draw rules, six functions hardened. All only flag; players see nothing. H is separate. Needs your "apply it".
   - a) Apply A-G.
   - b) Apply A only.
   - c) Not yet.
-- **Default:** a
-
-**ARROW1-3. Snipe, Bola, Lasso: arrows?** · Decide · Skills · asked 2026-11-16
-- Every arrow now counts as one skill: Arrow, Arrow (Flaming), Ice Arrow, Twin Shot, Volley, Archer. Snipe, Bola and Lasso already fire at the arrows' time (after the swings) but are not arrows by name, so each still counts as its own skill.
-  - a) Keep them apart (thrown or aimed, not arrows)
-  - b) Count them in the arrow family
-- **Default:** a
-
-**SKN1-1. Warcry: already permanent** · Decide · Skills · asked 2026-11-16
-- Your note: "Maybe make this permanent." It already is: when played, your other units get +N/+N for the rest of the fight (added to their base Attack and max Health). Warcry is on no card. The text could say "for the fight" so it reads as permanent.
-  - a) Keep it; add "for the fight" to the text
-  - b) Make it temporary (this round only) instead
-  - c) Keep as is
-- **Default:** a
-
-**SKN1-2. Repair: keep or cut?** · Decide · Skills · asked 2026-11-16
-- Your note: "Same as Rebuild but for structures. Not sure about this one." Repair N: each turn it repairs the most damaged structure within 1 column for N; with none, your bramble for half. One card: Cypress Root Lurker (Repair 2, Guardian).
-  - a) Keep Repair (structures first, bramble second)
-  - b) Cut it; Cypress Root Lurker gets Rebuild N instead (bramble only)
-  - c) Repair heals structures only, never the bramble
-- **Default:** a
-
-**SKN1-3. Stonecutter: every turn, 2 Lumber into 1 Stone?** · Decide · Skills · asked 2026-11-16
-- Your note: "maybe instead it's every turn, turn 2 Lumber into 1 Stone." Today: every second turn while Ready you gain N Stone, free. One card: Marmot Stonecutter. A converter needs Lumber to work, so it is weaker early and better beside Lumber makers.
-  - a) Every turn while Ready: pay 2 Lumber, gain 1 Stone (nothing if short)
-  - b) Keep the free Stone every second turn
-  - c) Both, as two kinds of Stonecutter
-- **Default:** a
-
-**SKN1-4. Spawner instead of Every turn: Spawn triggers** · Decide · Skills · asked 2026-11-16
-- Your note: "Maybe better to use this instead of Every turn -> {Spawn} trigger-action pairs." Spawner {card}: while Ready, it spawns the card into the nearest free slot every turn. Two cards spawn through the trigger form today: Ant Hill and Mother Carrier. Same rule, one keyword instead of a trigger line.
-  - a) Move both cards to Spawner {card}; the trigger form stays for odd cases
-  - b) Keep the trigger form on cards
-  - c) Spawner only on new cards
-- **Default:** a
-
-**SKN1-5. Mimic's parameters** · Decide · Skills · asked 2026-11-16
-- Your note: "Param 1: 3 types: Copy Attack, Copy Defence, Copy N Skills of Param 2 <Target>." Today Mimic copies a random ally's skills and the higher of each stat as it enters. One card: Mirrorhide Mutant. Proposed: Mimic {copy: attack / health / N skills} {target: random ally / facing enemy / strongest ally}.
-  - a) Build both parameters; Mirrorhide Mutant keeps today's effect as its default
-  - b) Copy type only; the target stays a random ally
-  - c) Keep Mimic as is
-- **Default:** a
-
-**SKN1-6. Assiduous: a new trigger** · Decide · Skills · asked 2026-11-16
-- Your idea: "Player discards or exiles N cards, do {action}." A counter trigger: after you discard or exile N cards (pitches count as discards), the action fires, then the count resets. On no card until you place it.
-  - a) Build it as a trigger (N, then any action); discards and exiles count
-  - b) Discards only
-  - c) Not now
-- **Default:** a
-
-**SKN1-7. Industry: what should it do?** · Decide · Skills · asked 2026-11-16
-- Your idea: "Something about resources." Three shapes that fit the resource tiers: a counter trigger (after you spend N resources, do {action}); +1 to the first resource you gain each turn; or +N/+N while you hold Stone or Metal.
-  - a) A counter trigger: after you spend N resources, do {action}
-  - b) +1 to the first resource gain each turn
-  - c) +N/+N while you hold Stone or Metal
-- **Default:** a
-
-**SKN1-8. Havoc: a new counter trigger** · Decide · Skills · asked 2026-11-16
-- Your idea: "Upon dealing N damage, do {action}, then reset." The unit counts the damage it deals (to units and the bramble); at N it fires the action and starts again. Shown as a pip with the count.
-  - a) Build it: its own damage only, N default 10
-  - b) Count your whole side's damage
-  - c) Not now
-- **Default:** a
-
-**SKN1-9. "???": a trigger when it ingests an item** · Decide · Skills · asked 2026-11-16
-- Your note: "(When it ingests an item.)" A trigger for eating: fires when the unit eats something (Devour, Berries, Lumber Feast, food items). It needs a name and the list of what counts as eating.
-  - a) "On Feed": fires when it eats a Berry, an item or a unit (Devour)
-  - b) Items only (equipment or food it consumes)
-  - c) Not now
-- **Default:** a
-
-**SKN1-10. Bioelectric, and Chain Lightning for bosses** · Decide · Skills · asked 2026-11-16
-- Your note: Chain Lightning is S (bosses only), with a new normal skill, Bioelectric, at rank 1. Voltaic Eel (rare, Chain Lightning 2, Shock 40%) is the only card with it. Proposed Bioelectric N: its melee hits deal N extra shock damage to the target (no jump). It counts with Electricity as one skill.
-  - a) Bioelectric N as proposed; Voltaic Eel swaps Chain Lightning for Bioelectric 2
-  - b) Bioelectric = Electricity renamed; Chain Lightning off the Eel
-  - c) Keep Chain Lightning on the Eel
 - **Default:** a
 
 **SKN1-11. A better name for "Buff: {who} {what}"** · Decide · Skills · asked 2026-11-16
@@ -297,397 +53,11 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
   - c) Splinter N
 - **Default:** a
 
-**SKN1-14. Arrow – bleed: Laceration or Laced?** · Decide · Skills · asked 2026-11-16
-- Your note: "(Laceration / Laced)." Fire Arrow now reads "Arrow (Flaming)" (SKN1). The bleed form would match as "Arrow (Laced)"; or the rider becomes a skill of its own, "Laceration". On no card.
-  - a) Arrow (Laced) 2
-  - b) Laceration 2 (its own line)
-  - c) Arrow 2 – bleed, as now
-- **Default:** a
-
-**SKN1-15. Shell "same as Turtle": what did you mean?** · Decide · Skills · asked 2026-11-16
-- Your note on Shell: "(Same as Turtle)." There is no Turtle skill. Shell N: the first hit each round gives it N Armor until the round ends. Eight cards carry it (Box Turtle, Reefback Turtle, Giant Clam, Conch Crawler, Limpet Clinger, Shellwright Apprentice, two golems).
-  - a) Rename Shell to Turtle
-  - b) Shell only on shelled animals; the golems lose it
-  - c) Keep Shell as is
-- **Default:** c
-
-**SKN1-17. Assault: what is "attacking first"?** · Decide · Skills · asked 2026-11-16
-- Your note: "(If it's attacking first)." Today Assault N is +N Attack on its own swings, not on counterattacks. On no card. "First" can mean three things.
-  - a) +N Attack when its side strikes first this round (initiative)
-  - b) +N Attack when it swings before the unit it attacks has acted this round
-  - c) +N on its first attack of the fight only
-- **Default:** b
-
-**SKN1-18. Deliver and Every Turn: the action names** · Decide · Skills · asked 2026-11-16
-- Your notes: Felling should be "On kill -> Deliver (Lumber)"; Delivery every turn's action version is "Every Turn, Deliver". Today the action reads "Gain" and the trigger "On Turn Start". Felling (4 cards) would then be written as a trigger line; the 11 Delivery every turn cards keep the keyword.
-  - a) Rename Gain to Deliver and On Turn Start to Every Turn; Felling's 4 cards become On Kill: Deliver
-  - b) Rename only; cards keep Felling
-  - c) Keep the names
-- **Default:** a
-
 **SKN1-19. The Fog skill's new name** · Decide · Skills · asked 2026-11-16
 - Your note: Fog should be a field tracker, not the skill name. SKN1 added a "Fog" pill on foggy fields (Thick Fog). The skill "Fog – {Evasive}" (one card, the Ent) still reads Fog; it gives its braces while the field is foggy.
   - a) In Fog – {…}
   - b) Mistwalker – {…}
   - c) Foggy – {…}
-- **Default:** a
-
-**REFIT1-1. Road re-fit after your folded card edits** · Decide · Balance · asked 2026-11-16
-- Your 11-06..11-13 edits dropped the main road from 136 to 86 of 149 fights in band. Cricket Drummer (2/7 to 1/5, Inspiring 2), in the Map 2-6 reference deck, alone makes 34 fights harder; Wolf Spider Mother's Swarm makes 22 fights on Maps 10-12 easier; then Peak Condor, Soldier Ant, Moon Jelly, Dormouse, Water Shrew. REFIT1 re-fits 54 decks to the cards as they are: 125/149 in band. If Cricket Drummer goes back, 13 of them become too easy. Table: docs/balance/refit1/attribution-2026-11-16.md.
-  - a) Keep the edits; apply the 54 decks
-  - b) Also apply the 9 nearer decks (still outside the band)
-  - c) Some edits were typos: fix those first, then re-fit
-- **Default:** a
-
-**CHK1-1. Progression check: flag too-easy fights too?** · Decide · Balance · asked 2026-11-16
-- The progression-deck tournament (checklist B5) flags fights 25+ points off either way: 18 too easy, 14 too hard. Too easy for a progression deck may be fine.
-  - a) Flag only fights too hard for the progression decks
-  - b) Keep flagging both ways (±25)
-- **Default:** a
-
-**CHK1-2. What counts as a wall (checklist B6)?** · Decide · Balance · asked 2026-11-16
-- B6 says no PRO/BPRO fight may be a wall, but never defines one. Two readings: both the ladder decks and the Map reference win under 5% (6 decks today), or the ladder wins under the 15% band floor (66 decks).
-  - a) Ladder and Map reference both under 5%
-  - b) Ladder under 15%
-- **Default:** a
-
-**TF5-1. Armor 5 costs 2.9x Armor 1, not 10x** · Decide · Skills · asked 2026-11-16
-- ENG9-9 said Armor 5 should cost about 10x Armor 1. Since the SKILL2/BAL12 re-measure it costs 2.9x (measured worth). The test now checks the measured price.
-  - a) Keep the measured price (2.9x)
-  - b) Set Armor 5 to about 10x as ENG9-9 said
-- **Default:** a
-
-**TF5-2. Siege Rhino priced for Map 23, sits on Maps 15/16** · Decide · Cards · asked 2026-11-16
-- Siege Rhino's budget assumes Map 23, but it is on the Map 15 and 16 lists and in 12 decks there, so it is over budget where it is met.
-  - a) Move it off the Map 15/16 lists
-  - b) Price it for Map 15 (weaker card)
-  - c) Keep it as an early strong card
-- **Default:** a
-
-**TF5-3. Honey Badger Fury: unattainable but a reward** · Decide · Cards · asked 2026-11-16
-- Honey Badger Fury is flagged unattainable, yet it is on 3 map lists and is 19-1's first-clear reward.
-  - a) Make it attainable (keep it as the 19-1 reward)
-  - b) Replace the 19-1 reward and take it off the lists
-- **Default:** a
-
-**FOLD5-1. Does Lion's Mane Jelly resist Poison?** · Decide · Cards · asked 2026-11-16
-- Your 11-06..11-13 live edits gave Lion's Mane Jelly and Venomlord Serpent a resist-Poison entry in a place the game ignores. Venomlord already resists Poison properly; Lion's Mane does not. Should it?
-  - a) Yes, Lion's Mane resists Poison
-  - b) No, drop it
-- **Default:** a
-
-**UX4-1. Atmosphere tint dims the menus at night** · Decide · UI · asked 2026-11-16
-- With Atmosphere set to Live, the night tint (#atmoTint) lies over the whole screen, so the top bar, small text and the splash fine print read dim. The battle board is meant to darken; the menus probably are not.
-  - a) Keep the tint under the top bar and dialogs (menus stay clear)
-  - b) Lighten the tint everywhere
-  - c) Leave it as it is
-- **Default:** a
-
-**SKR1-1. Which named skills each map introduces** · Decide · Skills · asked 2026-11-14
-- From your second pass (column J): all 43 rank 1s and 11 of the 13 rank 2s on Maps 0-20; 3-4 new skills on Maps 0-10, 1-2 on Maps 11-20; 54 in all. Helmet, Pitchfork and the rank 3s wait for later maps or one-offs. Cure, Nursing, Delivery, Electricity and Illuminate are treated as actions or damage types, not named skills. Table: docs/skill-intro-proposal-2026-11-14.md.
-  - a) This split (54 skills)
-  - b) Rank 1 only on Maps 0-20 (43)
-  - c) Change it (say which)
-- **Default:** a
-
-**SKW2-1. Attack's worth depends on Health** · Decide · Budget · asked 2026-11-14
-- SKW2: +1 Attack is worth about Health ÷ Attack (fragile units 0.8, sturdy 20+), not cap 1's flat 3. Cap 1 binds on all 472 cards; cap 2 (A·H) on none. SKW3 (no games): cap 2 alone ranks cards closer to their measured worth (0.32 vs 0.14; 0.37 vs 0.27), but puts 43 Maps 0-20 cards over budget. A softer cap 1 (square root of A·H) puts 22 over (mostly small Commons on Maps 0-5). Either needs a road check first.
-  - a) Cap 2 alone (cap 1 dropped), after a road check
-  - b) Square-root cap 1, after a road check
-  - c) Keep both caps as they are
-- **Default:** a
-
-**REF7-1. Map 16 walls** · Decide · Balance · asked 2026-11-14
-- Even decks built well from a player's collection fall short on 16-2, 16-3, 16-4 and 16-6. The cause is the enemy Cone-cutter Squirrel's economy and the enemy at level 4 against the player's 3. Measured, 200 games: 16-3 enemy level 4 to 3 goes from 46% to 68% (target 68). Cutting Squirrel copies fixes each fight too (table in docs/balance/ref7/ref7-2026-11-14.md).
-  - a) Cut Squirrel copies per the table
-  - b) Enemy level 3 on 16-3 and 16-4
-  - c) Keep it as a deliberate step
-- **Default:** b
-
-**REF7-2. Windfall on Map 18** · Decide · Balance · asked 2026-11-14
-- Windfall drives every Map 18 wall: switching it off adds 14-42 points in every fight. 18-4 (33% vs target 72) can only be fixed through it (79% with Windfall off); the best level, Health, Shield or card change reaches 54%. Note: the Map reference deck finds 18-4 too easy (BAL42-1), so the two decks disagree.
-  - a) Windfall off on 18-4
-  - b) Windfall off on all of Map 18
-  - c) Keep it; accept 18-4 at about 33%
-- **Default:** a
-
-**REF7-3. 19-5 has no single fix** · Decide · Balance · asked 2026-11-14
-- 19-5 reads 18.5% against a target of 60 for well-built player decks. Taking out all 3 Obsidian Scorpions reaches 44.5%; no level, Health or Shield change does better. One Scorpion is also behind 19-1 (68 to 92.5% without it).
-  - a) Take out the Scorpions and lower the level (two changes)
-  - b) Redesign the fight in your card pass
-- **Default:** b
-
-**SKW1-1. Trigger weights** · Decide · Budget · asked 2026-11-14
-- SKW1 measured each trigger's worth against On Spawn. It is about 0.5-0.75 x how often the trigger fires per copy played. Today's weights run high: On Kill 1.33 (measured 0.42), On Death 0.76 (0.26), On Enemy Spawn 2.86 (0.08). The pair prices still looked right only because the action values (SKW1-2) are low and the two errors cancel. Details: docs/balance/skw1/skw1-2026-11-14.md.
-  - a) Adopt the measured table
-  - b) Rule: weight = 0.6 x fires per copy played
-  - c) Keep
-- **Default:** a
-
-**SKW1-2. Action values** · Decide · Budget · asked 2026-11-14
-- Measured worth of one On Play firing: Deal 2 is 3.1 (the budget implies 0.7), so about 1.5 a point against 0.4; +2 Health, Shield 2 and Heal 2 are 2-3x their prices; Draw 1 is lower (2.0 against 3.4). Changing this means changing SKW1-1 with it, then a re-fit of every card's price.
-  - a) Re-base actions with SKW1-1, then re-fit
-  - b) Keep
-- **Default:** a
-
-**SKW1-3. Pairs that do nothing, and repeating Draw** · Decide · Budget · asked 2026-11-14
-- Some pairs can never do anything: a self action On Death, or Heal On Spawn at full Health. Repeating Draw saturates: On Turn Start Draw 1 measured 4.3 against a price of 12.3. Proposal: those pairs cost 0, and repeating Draw is capped at about 1.6x its On Play worth.
-  - a) Yes
-  - b) No
-- **Default:** a
-
-**SKW1-4. Four skills priced off their worth** · Decide · Budget · asked 2026-11-14
-- Over seven contexts: Dry costs 4 but measured 0.2 (it only matters on heat or sandstorm fields); Fork 4.95, measured 3.1; Reach 1, measured -0.4; Diurnal 1 costs 1.14 but measured 2.3 (a fight with no day/night rule is day all match). Guardian is below zero everywhere; Keen Eye never changed a game.
-  - a) Re-price by measure and home share
-  - b) Keep
-- **Default:** a
-
-**SKW1-5. Attack weight** · Decide · Budget · asked 2026-11-14
-- SKW2 measured it properly (bramble 15, Maps 3/8/13/18, 17 commons, 400k games): +1 Attack = 2.91 Health [2.74-3.09], so the budget's 3 holds. SKW1's 4.3-9.9 came from sturdy carriers. Cost doesn't change it. +1 Shield = about 1.0 Health (budget 0.8). The real miss is the shape: see SKW2-1.
-  - a) Measure it properly first (done: SKW2)
-  - b) Keep 3
-- **Default:** b
-
-**SKW1-6. Named-skill cap** · Decide · Budget · asked 2026-11-14
-- A player meets 151 named skills by Map 20; your 25-30 is passed at Map 1. 101 of them sit on a single card, and Map 11 alone adds 49. The SKW1 doc lists near-duplicate groups (e.g. Poison 2 / Bleed 2 measured 5.3 / 5.6; Flying / Evasive 3.45 / 3.34) and marks the skills that carry theme. No cuts are proposed.
-  - a) Set a cap and merge from the list
-  - b) No cap
-- **Default:** a
-
-**UI54-1. Codex World 1 roll: show the map total?** · Decide · UI · asked 2026-11-14
-- World 1 is Maps 0-40, but only Maps 0-24 exist yet, so its roll reads "x of 25 reached".
-  - a) Keep "x of 25" (grows as maps are added)
-  - b) Show only maps reached
-- **Default:** a
-
-**UI54-2. Names for the worlds in the Codex?** · Decide · UI · asked 2026-11-14
-- The world rolls say only "World 1 · Maps 0-40", maps reached and fights cleared. No lore was invented.
-  - a) You name World 1 and World 2 (lore bible)
-  - b) Keep "World 1", "World 2"
-- **Default:** b
-
-**UI54-3. Codex map scrolls: what New! means** · Decide · UI · asked 2026-11-14
-- In a map's scroll, New! marks cards whose first map list is this map; the rest show as "+N from earlier maps". (The admin Map cards window uses your review's New!/Carried flags instead.)
-  - a) First map list that holds the card (as built)
-  - b) Use your review's New! flags
-- **Default:** a
-
-**FIX11-1. Cards above their map's rarity cap** · Decide · Balance · asked 2026-11-13
-- These listed cards are rarer than their map's fights may hold: Dolphin Knight (Rare) on Maps 2 and 4 (cap Uncommon, from before your 11-13 picks); from your 11-13 picks Phoenix Mushrooms (Epic) on Map 7 (cap Rare), Tide Spirit (Very Rare) on Map 9 (cap Rare), Caldera Snow Leopard (Super Rare) on Map 19 (cap Very Rare).
-  - a) Allow them as exceptions
-  - b) Move each to a map whose cap fits
-  - c) Lower their rarity
-- **Default:** a
-
-**FIX11-2. Three card pairs with identical stats** · Decide · Balance · asked 2026-11-13
-- Same cost, wait, Attack/Health and skills, both cards now on the lists: Plains Zebra / Snowshoe Hare (0-cost 1/7 Evasive), Village Miller / Farm Dog (0-cost 2/7, no skills), Pine Marten / Fishing Cat (1-cost wait 1, 1/14 Pounce 2).
-  - a) You retune one of each pair in your redesign
-  - b) Leave them identical
-- **Default:** a
-
-**FIX11-3. Fight 8-A-3 holds both bats** · Decide · Balance · asked 2026-11-13
-- Echo Screecher and Fruit Bat are the two-card bat family; the family rule says one per fight. 8-A-3 holds both.
-  - a) Swap one out in the LIST1-2 re-card
-  - b) Allow it
-- **Default:** a
-
-**UI52-1. Should a tutorial reset replay the Map T fights?** · Decide · UI · asked 2026-11-13
-- Profile → Tutorials resets the coach tips and lessons. It leaves the tutorial-fight done flags alone, because clearing them locks tabs again until the fights are replayed.
-  - a) Tips and lessons only (as built).
-  - b) Also replay the T fights (tabs lock until done).
-- **Default:** a
-
-**UI52-2. Shop and Premium on the places strip: always or only in the shop?** · Decide · UI · asked 2026-11-13
-- Shop and Premium are now places on the shared strip (like Forge, Nest, Codex), shown on every page.
-  - a) Always on the strip (as built).
-  - b) Only while you're in the shop.
-- **Default:** a
-
-**UI51-1. Season crossfade on the map: keep it?** · Decide · UI · asked 2026-11-13
-- The conquest paw prints are off. Moving between seasons on the map still crossfades the colours.
-  - a) Keep the crossfade.
-  - b) Turn it off too.
-- **Default:** a
-
-**LIST1-1. Granite Ox Golem is NEW! on two side maps** · Decide · Balance · asked 2026-11-13
-- You picked Granite Ox Golem as an own card for both Volcano Lair (opens after Map 20) and Basalt Foundry (opens after Map 23 today). A card belongs to one map only. Volcano Lair opens first, so it would own the Golem. Basalt Foundry then has 2 own cards, and Claude's pick for its third is Malachite Golem (Shell, a skill its Carried cards already have).
-  - a) Volcano Lair keeps it; Basalt Foundry takes Malachite Golem
-  - b) Basalt Foundry keeps it; Volcano Lair needs a third card
-  - c) Keep it on both
-- **Default:** a
-
-**LIST1-2. Fights to re-card after your 11-13 picks** · Decide · Balance · asked 2026-11-13
-- Your 11-13 picks are now the lists. Some fights no longer match them: 24 dropped cards are still in fights (they sit on SPECIAL so the fights stay legal), 26 road fights field more than one copy of a card that is now Carried (K14), a few PRO decks use dropped cards, and 2 bosses' auto leaders changed.
-  - a) Re-card those fights next (SIDE2 for the side maps, a SKIR pass for the main maps)
-  - b) Leave them as they are
-- **Default:** a
-
-**LIST1-3. Stone cards before Map 21** · Decide · Balance · asked 2026-11-13
-- Two of your picks break the rule of no Stone before Map 21: Phoenix Mushrooms on Map 7 (an Epic that costs Stone; the road ladder has Epics from Map 22) and Pumice Beetle on Map 20 (it makes Stone). The lists keep them for now.
-  - a) Keep them (an exception)
-  - b) Move them to Map 21+ lists
-  - c) Change the cards (you design)
-- **Default:** b
-
-**AUDIT1-1. Start locked while a cloud save loads** · Decide · Cloud · asked 2026-11-13
-- Signed in, the front screen's Start waits until your cloud save has loaded, so fresh play can't be overwritten by it. On a stalled connection that wait has no end until the browser gives up (minutes). Unlock Start after 30 s and load the save later?
-  - a) Keep waiting (as built).
-  - b) Unlock after 30 s; a save that arrives later asks before replacing.
-- **Default:** a
-
-**SIDE2-1. Side bosses the list can't make hard enough** · Decide · Balance · asked 2026-11-13
-- BPRO-1 in the hardest fight, 400 games: Eye of the Volcano 69% (target 36), Basalt Foundry 51% (target 40). WHATIF1 measured (b): Basalt Foundry falls to 31-33%, in band at its low edge. Eye of the Volcano doesn't change (its 10-card size, not K14, is the limit), so only (a) can fix it. Under SIDE2-2 (c) Basalt Foundry reads 39-41%.
-  - a) Add one stronger NEW! card each (theme pick)
-  - b) Let a side boss hold Carried cards at 2 copies
-  - c) Leave them easy for now
-- **Default:** a
-
-**SIDE2-3. Re-price Chained now that chains soak damage?** · Decide · Balance · asked 2026-11-13
-- ENG-RC1 made each chain 1 Armor that breaks as it soaks, worth about a Shield N that chainedMult doesn't count. Chained Binturong, the only Chained card, has been on no list since 11-02, so no road fight holds it: the 400-game road read of Basalt Foundry and Maps 0-20 is unchanged.
-  - a) Re-price when a Chained card is back on a list
-  - b) Re-price now (the chains as Shield N)
-- **Default:** a
-
-**FX9-1. More cards fly to the Graveyard?** · Decide · UI · asked 2026-11-13
-- A card you pitch now arcs into the Graveyard (note 7). Cards that get there another way (a field card used up, Feed, overdraw) still jump straight to the pile. Make those fly too?
-  - a) Yes, every card flies there.
-  - b) Pitches only (as built).
-- **Default:** a
-
-**UIFX1-1. Place entrances: full once a session** · Decide · UI · asked 2026-11-13
-- The shop tent, Premium pavilion, Nest, Codex, Camp, Stomping Grounds and Inventory entrances play in full (0.8-0.9 s) on the first visit each session, then a 0.4 s short take (your 10-08 note: "instantly transit you"). A tap skips. Or play the full take every visit?
-  - a) Full once a session (as built).
-  - b) Full every visit.
-- **Default:** a
-
-**ENG-RC1-1. Ritual hides from the enemy only** · Confirm · Rules · asked 2026-11-13
-- A Ritual unit (The Sixfold) can't be attacked or targeted by the enemy; swings into its slot go on to the bramble. Your own buffs and heals can still reach it. Confirm, or should it be out of reach for both sides?
-  - a) Enemy only (as built).
-  - b) Both sides.
-- **Default:** a
-
-**ENG-RC1-2. Chained N = N chains** · Confirm · Rules · asked 2026-11-13
-- Chained Binturong (Chained 4) starts with 4 chains = 4 Armor; each point of a blow breaks one chain before Armor counts, so small hits still free it. The other reading: 1 chain = 1 Armor that breaks at N damage. Its budget (chainedMult) doesn't yet count the soak.
-  - a) N chains (as built).
-  - b) One chain, breaks at N.
-- **Default:** a
-
-**SIDE1-1. The Old Bramble: your 6 own cards, the limit is 3** · Decide · Balance · asked 2026-11-12
-- You picked 6 own cards there (Ent, Elder Willow, Shimmerwing Stag, Strangler Vine, Thorn Shrike, Hedgehog Herbalist); a side map takes 3 and 1-3 skills. The list takes Ent (its reward), Elder Willow and Thorn Shrike: Fog, Delivery, Bleed. Strangler Vine has no source, so no player can own it; Hedgehog Herbalist is The Sunken Grove's reward; Shimmerwing Stag adds a 4th skill. Your flags are unchanged.
-  - a) Keep Claude's three
-  - b) You pick three in Map cards
-  - c) Raise The Old Bramble's limit
-- **Default:** a
-
-**SIDE1-2. Three side-map rewards miss their map's theme** · Decide · Balance · asked 2026-11-12
-- A fight's reward must stay on its list, so each takes an own-card slot and brings its skills: Hedgehog Herbalist (The Sunken Grove 5-A-4; a forest hedgehog you picked for The Old Bramble), Wound Reaver (The Aerie Vault 11-A-4; a volcanic lizard in the nests), Greenland Shark (The Ice Hollow 17-A-4; a deep-sea shark).
-  - a) Phase B gives each fight a reward of its theme (Herbalist moves to The Old Bramble)
-  - b) Keep them
-- **Default:** a
-
-**SIDE1-3. Do Flying, Tide and Nocturnal count toward 1-3 skills?** · Decide · Balance · asked 2026-11-12
-- Phase A counts a side map's skills on its own cards, but not plain Flying, Tide, Diurnal, Nocturnal (the two-skill rule counts them half) or Baby cards. Counting them puts 7 side maps at 4-5 skills (The Old Bramble, Smugglers' Grotto, The Sunken Grove, The Glimmer Depths, The Aerie Vault, The Ice Hollow, Eye of the Volcano).
-  - a) As built: not counted
-  - b) Count them
-  - c) Count them half
-- **Default:** a
-
-**SIDE1-4. Main maps: 1-3 skills too?** · Decide · Balance · asked 2026-11-12
-- Every main map of 0-21 shows 4-14 skills on its own cards (8-10 cards each; Map 7 the most). docs/balance/card-power-2026-11-12.md names the odd card out on each. Strict 1-3 there means a card pass or new cards.
-  - a) Side maps only for now
-  - b) Main maps at most 5, Claude proposes swaps
-  - c) Main maps 1-3 too
-- **Default:** a
-
-**DUNGEON1-1. Partial dungeon rewards: my reading of note 21** · Confirm · Group dungeon · asked 2026-11-12
-- Your note: "%completed * 0.5 ... If only 1-3rd map completed, 0.25". Built: f = parts won / parts. All parts: full rewards. 1-3 parts won: f x 0.25. More, short of all (4 of 5): f x 0.5. So 4/5 pays 40%, 3/5 15%, 2/5 10%, 1/5 5%. The other reading of "1-3rd" is "a third or less" (f <= 1/3: x 0.25, else x 0.5: 3/5 would pay 30%). One table in bramblewood-coop.js (RUN_PAY_BANDS).
-  - As built (1-3 parts: x 0.25)
-  - A third or less: x 0.25, otherwise x 0.5
-  - Other figures (say which)
-- **Default:** As built (1-3 parts: x 0.25)
-
-**DUNGEON1-2. A second multiplayer dungeon: the Mire Warren (Admin preview)** · Decide · Group dungeon · asked 2026-11-12
-- To show the switcher and a room built from data, I added the Mire Warren: 3 parts in the Gnawed's swamp tunnels (frogs and shrews, rats and leeches, then the Mire Matriarch, a Gnawed Matriarch scaled as the Tidewarden is). Admin Mode only, no map spot, not tuned. Giving it a map number (data: mapNumber) adds its spot and opens it to players.
-  - Keep as a preview
-  - Place it on a map (say which)
-  - Rename or retheme it
-  - Remove it
-- **Default:** Keep as a preview
-
-**DUNGEON1-3. How the next part's enemies arrive** · Confirm · Group dungeon · asked 2026-11-12
-- Built: 3-5 units (seeded) from the next part's deck, each with at least Wait 1 (a Wait-0 card too), every second one in the enemy's middle row, the boss first on the boss part; no On Spawn for them (they came during the free turns, as a daily dungeon's next bramble). The enemy's survivors stay. The CPU still plays only into its front row; its middle row fills from these arrivals.
-  - As built
-  - Wait-0 cards arrive ready
-  - The CPU also plays into its middle row each turn
-  - Clear the enemy's survivors between parts
-- **Default:** As built
-
-**UIFX2-1. Map vignette: the place's season or the calendar month** · Decide · Map · asked 2026-11-13
-- Built (UIFX2, your 00:03 note): every map has a season or biome (Maps 0-1 spring, 2-3 coast, 4-5 summer, 6-7 autumn, 11 winter, 18 desert, 19-20 ash ...), with a change when you move between seasons, a travel beat and a light ambient. The map's edge tint used to follow the real calendar month (2026-10-07); it now follows the place, so a desert never wears November's autumn rim.
-  - a) As built: the place's season.
-  - b) The calendar month on spring / summer / autumn / winter maps, the place elsewhere.
-  - c) The calendar month everywhere (the ambient stays by place).
-- **Default:** a
-
-**BAL43-1. Thistlewood 1-3 / 1-4 still too easy at 85 / 80** · Decide · Road · asked 2026-11-10
-- Burrow Line 96% (target 85) and Sapper Hedge 94% (80), 200 games. Every legal deck from their lists reads 87-100%; the Shield is at the rule and their leader is hidden.
-  - a) You add one slightly stronger Thistlewood common to 1-3 / 1-4; Claude retunes.
-  - b) Raise their targets to about 93 / 88 (a warm-up map).
-  - c) Leave them.
-- **Default:** a
-
-**PUFF1-1. A spore-puff card skill?** · Decide · Cards · asked 2026-11-12
-- You asked for "maybe a puff cloud skill for cards". The dark lime puff now plays on Spore Cloud sleepers and Puffball Bombardier hits. A new skill would need pricing in the budget before any card gets it.
-  - a) No: keep the puff a visual only.
-  - b) Spore puff (attack): 50% to put the target to sleep for a round.
-  - c) Spore puff (defence): when hit, the attacker gets Poison 1.
-- **Default:** a
-
-**SKIR3-1. Six main maps have no Guardian on their list** · Decide · Balance · asked 2026-11-12
-- With your 11-12 picks, Maps 3, 10, 11, 15, 16 and 17 list no defender (Guardian / Bulwark / Taunt), which BAL9's JJ28 asks of Maps 1-19. Claude's Guardian adds (Grey Seal Bull on Map 10, Alpine Marmot on Map 11) had no room under NEW!.
-  - a) You pick a Guardian on each (it may replace one of your picks)
-  - b) Claude adds a carried Guardian where Carried has room
-  - c) Drop JJ28
-- **Default:** a
-
-**SKIR3-2. Side maps cut to 3 own cards: 75 cards left play** · Decide · Balance · asked 2026-11-12
-- Side maps now list 3 own cards (your 1-3). Their other own cards were on no other list, so 75 cards left play, among them side-map set pieces (Kraken Spawnling, Komodo Warlord, Permafrost Mammoth, Obsidian Lich). The full list is in docs/balance/skir3/drop-list-2026-11-12.md.
-  - a) Keep
-  - b) Move some to a main map's list (under its limits)
-  - c) Raise the side-map NEW! default to 5
-- **Default:** a
-
-**SKIR3-3. Two challenge fights lost their boon's cards** · Decide · Balance · asked 2026-11-12
-- 13-4 (Wild Rage) and 20-4 (Restless Dead) need half their deck to hold the boon's theme. Map 13's list has one Wild Rage card; no list up to Map 20 has an undead card. Both fights now play with the boon off; nothing else changed.
-  - a) Keep the boon off
-  - b) Add a theme card to the map
-  - c) Give the fight another boon
-- **Default:** a
-
-**SKIR3-4. Over-limit picks pile up on Maps 18-21** · Decide · Balance · asked 2026-11-12
-- A pick cut where it is NEW! but listed again later becomes NEW! on that later map. Maps 12-18 pushed cards forward, so Maps 19-21 dropped 3-5 of your picks each. One pick left play: Nightshade Moth (Map 17).
-  - a) Keep
-  - b) Raise NEW! on Maps 18-21 by 1-2
-  - c) You choose the cuts on those maps
-- **Default:** a
-
-**SKIR3-5. Carried top-ups on four side maps** · Decide · Balance · asked 2026-11-12
-- The Old Bramble, The Ice Hollow, The Pale Desert and Basalt Foundry could not build their fights from 3 own cards (K14 holds carried cards to 1 copy). Claude topped Carried up to 8; The Old Bramble got 5 of its old cards plus 3 Map 0 cards (House Cat, Earthworm, Farm Dog).
-  - a) Keep
-  - b) You pick the carried cards
-- **Default:** a
-
-**SKIR3-6. 15 first-clear cards changed** · Decide · Balance · asked 2026-11-12
-- Fifteen fights paid a pack card that is no longer on its map's list. Each now pays the nearest card on that list (GD-5), as LISTFIX3 did. Examples: 10-3 Giant Clam (was Parrotfish), 13-4 Pine Marten (was Berserker Boar), 20-4 Vampire Roost (was Cinder Skeleton).
-  - a) Keep
-  - b) You choose per fight
-- **Default:** a
-
-**SKIR3-7. Maps 13, 16 and 19 miss the road curve on the 11-12 lists** · Decide · Balance · asked 2026-11-12
-- After a night of deck and Shield moves, Map 13 has 2 of 8 fights in band (its fights are too easy: the list has few strong cards), Map 16 3 of 7 and Map 19 3 of 6 (too hard). Their Carried counts have room (13: 6 of 8, 16: 8 of 10, 19: 9 of 12).
-  - a) Claude adds 1-2 carried cards there (admin adds, within Carried) and re-tunes
-  - b) You re-pick those maps
-  - c) Accept for now
 - **Default:** a
 
 **NET1-2. When to upgrade hosting plans** · Decide · Network · asked 2026-11-12
@@ -696,153 +66,11 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
   - b) Other thresholds.
 - **Default:** a
 
-**NET1-3. Next network steps** · Decide · Network · asked 2026-11-12
-- Three changes would cut load further: open realtime only on the Friends, Arena and co-op screens; split index.html into cached files so a release doesn't re-download all 5 MB; let the server pick ghost opponents (a sign-in reads up to 3,000 rows).
-  - a) Do all three next.
-  - b) Pick some.
-  - c) Later.
-- **Default:** a
-
-**LISTFIX3-1. New first-clear rewards for four fights** · Decide · Balance · asked 2026-11-11
-- 5-2 paid Sphagnum Vole, a card you cut; it now pays Raft Spider, your Map 5 Yes card nearest it (Common, 1 Lumber, Wait 1, 3/8), already in 5-2's deck. No other Cure card is on your Map 5 picks (CONTENT3 C1 wanted one). Three rewards were off their map's new list (a first-clear card must be on it, GD-5): 1-4 Field Mouse -> Bramble Sprout, 7-2 Dung Beetle -> Fungus Gnat Cloud, 10-5 Kraken Spawnling -> Sea Bass.
-  - a) Keep.
-  - b) Name other cards.
-- **Default:** a
-
-**LISTFIX3-2. Cards that left play with your Map cards picks** · Decide · Balance · asked 2026-11-11
-- These 17 were on a list before SKIR1 and are on none now, so no pack, fight or reward gives them: Raven Scout, Alpha Howler, Pelican Diver, Frost Hare Sprinter, Tidepool Trapper Crab, Lunar Howler, Lion's Mane Jelly, Supernova Jelly, Spitting Spider, Weaver Bird, Water Vole, Woodcock Lookout, Marsh Harrier, Cane Toad, Badger Stonemason, Prospector Mole, Nudibranch. The two jellyfish were your CONTENT7-1 wish.
-  - a) Fine, they stay out.
-  - b) Name the ones to place, and where.
-- **Default:** a
-
-**LISTFIX3-3. Map 16 lost its weak card** · Decide · Balance · asked 2026-11-11
-- 16-5 and 16-6 got much harder once Dhole Runner left Map 16 (49% vs target 66; 31% vs target 60). That cut was mine (11-05, a second dhole on the list), not yours, and Map 16's list is still my suggestion. Putting it back returns both fights to their earlier decks (about 60% each).
-  - a) Put Dhole Runner back on Map 16.
-  - b) Allow 16-6's Shield 47 -> 0 instead (reads 49%).
-  - c) Leave both fights hard.
-- **Default:** a
-
-**LISTFIX3-4. Two of your cuts still on lists you have not picked** · Decide · Balance · asked 2026-11-11
-- You cut Caiman Hatchling (Maps 5 and 9) and Phoenix Fledgling (Maps 19 and 20-B) on 11-01. My suggestions still list Caiman on side map 5-A and Phoenix on Map 20. Removing them means re-fitting the fights that use them.
-  - a) Take them off those lists too.
-  - b) Keep them there.
-- **Default:** a
-
-**SKIR2-1. Keep SKIR2's list adds** · Decide · Balance · asked 2026-11-11
-- No card stats changed. Rewards made obtainable: Sphagnum Vole (Map 5), Parrotfish, Coral Reef Shark (10), Gilded Roadwarden (15), Snow Ermine, Harbor Seal, Snow Bunting Archer (17). Guardians (JJ28): Grey Seal Bull (10), Shepherd (17), Marula Elephant (18), Stalactite Pill Bug (19). Fights: Planarian Splitter (7), Swift Fox, Tasmanian Devil, Bramblewood Lynx (13).
-  - a) Keep.
-  - b) Drop the ones you name.
-- **Default:** a
-
-**SKIR2-2. Caves & Alcoves needs a second weak card** · Decide · Balance · asked 2026-11-11
-- 8-2 reads 66% (target 85) and 8-7 46% (target 60). Map 8's only weak card, Stalactite Pill Bug, is already in 5 of 8 fights, the most the rule allows. With it, 8-2 reads about 80%.
-  - a) Allow the Pill Bug in 6 of Map 8's fights.
-  - b) You add a weak Map 8 card.
-  - c) Leave both.
-- **Default:** a
-
-**SKIR2-3. Fights no legal deck can fix** · Decide · Balance · asked 2026-11-11
-- 2-1 (63%, target 90) and 2-2 (62%, target 80): every legal Pebble Beach deck reads about 60%. 17-8 (23%, target 40): its Walrus Icebreaker leader and the frost decide it; every deck reads 0-23%. Side 10-A-4 reads 0%.
-  - a) Allow a Health or Shield change on these.
-  - b) Leave them.
-- **Default:** a
-
-**SKIR2-4. First-clear cards missing from their fight** · Decide · Balance · asked 2026-11-11
-- 27 of 50 fights that pay a first-clear pack card no longer field that card (SKIR1's rebuild could not see the table). Players win a card they never met in that fight.
-  - a) Put each back in its fight in the next road pass.
-  - b) Leave it.
-- **Default:** a
-
-**CONTENT19-1. Sea Bass: 3/6, not 3/7** · Decide · Cards · asked 2026-11-11
-- You asked for a Sea Bass on Map 10. A Pack 2 card is priced at the pack's first map (Map 7), where 3/7 is over budget; 3/6 fits (20.8 of 21.5).
-  - a) Keep 3/6.
-  - b) 3/7, priced at Map 10 as an exception.
-- **Default:** a
-
-**PERF2-1. More effect savings (small look changes)** · Decide · Performance · asked 2026-11-11
-- PERF2 cut a fight's main-thread time by 61% and effects by 76% with no visible change. Three further cuts change the look slightly: Auto-lower steps down twice (High to Low) instead of stopping at Medium; the card-name scroll becomes a PNG strip instead of SVG (an art change); card filter flashes and the dragon's blend layer become plain overlays.
-  - a) None for now.
-  - b) Auto-lower twice only.
-  - c) All three.
-- **Default:** b
-
-**THEME8-1. When the Ice Hollow opens** · Decide · Maps · asked 2026-11-11
-- The Ice Hollow (side map of Map 17, Wolfsbane Tundra) opens after Map 21 today. Opening it after Map 17 brings its monsters (Yeti Chieftain, Permafrost Mammoth, Beluga ...) into the Maps 0-20 road, so they would be tuned with it.
-  - a) Keep: after Map 21.
-  - b) After Map 17.
-- **Default:** a
-
-**THEME8-2. Monster leaders stay on their main fights** · Decide · Maps · asked 2026-11-11
-- Some monsters THEME8 placed in side maps lead main fights today: Komodo Warlord (18-6), Yeti (19-6), Cave Warlord (20-5), Ancient Sloth Titan (20-9). The Caldera Wyrm costs Stone, so it can only lead the Volcano Lair boss as a SPECIAL leader.
-  - a) Keep them as SPECIAL leaders there (not obtainable from those fights).
-  - b) Side maps only; those fights get new leaders.
-- **Default:** a
-
 **GUIDE1-1. Claude Code hooks (needs your yes)** · Decide · Tools · asked 2026-11-11
 - Three hooks in .claude/settings.json: check a .js file's syntax after each edit; block reading the huge generated files (cards.json, index.html, language packs) and print the jq / grep way instead; warn on edits to generated files. They save tokens and catch broken edits. It is a settings change, so I wait for you.
   - a) Add all three.
   - b) Only the syntax check.
   - c) None.
-- **Default:** a
-
-**SKIR1-1. K14 reads the new lists** · Decide · Balance · asked 2026-11-11
-- K14 (carried cards 1 copy, 6 in all) took 'own card' from each card's old source map. Under the new lists Ashen Spurn had 2 own cards and Map 1 had 5. Now a card first listed on a map counts as that map's own.
-  - a) Keep.
-  - b) Revert, and re-place source maps card by card.
-- **Default:** a
-
-**SKIR1-2. Skirmish rewards on later lists** · Decide · Balance · asked 2026-11-11
-- You picked some fight rewards for later maps (Terrier Pup, Cricket Drummer, Driftwood Crab, Golden Eagle Diver ...). Decks keep the rule that a reward appears only in its own fight (or a fight that already fielded it). This also leaves Map 13 with 10 usable cards.
-  - a) Keep.
-  - b) A later map's fights may use an earlier reward you listed there.
-- **Default:** a
-
-**SKIR1-3. Six cards over budget on their new map** · Decide · Balance · asked 2026-11-11
-- Moray Ambusher, Raccoon Nightcrew (Smugglers' Grotto), Mudpuppy, Peat-cutter Vole (Map 5) and Planarian Splitter (Maps 4-5) are over budget where your lists put them; Termite Forager (Map 14) is borderline (100%). They wait on a pending list for your re-fit.
-  - a) You re-fit them.
-  - b) Claude fits them by the formula.
-- **Default:** a
-
-**SKIR1-4. Stone cards left Maps 0-20** · Decide · Balance · asked 2026-11-11
-- 'No stone until Map 21+': the Malachite Golem (led 8-7 and 8-A-4) and the Pumice Beetle (19-3, 19-6) left their decks; those fights now lead with their new top card.
-  - a) Keep.
-  - b) Bring the golem back as an exception.
-- **Default:** a
-
-**SKIR1-5. Mix gaps the lists cannot fill** · Decide · Balance · asked 2026-11-11
-- Map 0 has 2 Lumber-cost and 3 Wait cards; Maps 3, 7 and 11 one plain animal; Map 11 two no-Wait cards; Map 1 no usable status card; Map 18 no plain animal. Each map's decks show what its list holds.
-  - a) Leave them.
-  - b) Claude suggests 1-2 cards per gap.
-- **Default:** a
-
-**SKIR1-6. SKIR1's Lumber admin adds** · Decide · Balance · asked 2026-11-11
-- Carried cards added for a second Lumber maker (no card's first map moved): Map 1 Hazel Coppice, Map 8 Pack Rat Looter and Bone Diviner, Map 9 Salvager Hermit Crab.
-  - a) Keep.
-  - b) Drop them.
-- **Default:** a
-
-**SKIR1-8. A card in more than half a map's fights** · Decide · Balance · asked 2026-11-11
-- Rule used: no card in more than half a map's fights. Where a fight could not reach its band inside it (Coral Current's fillers, Map 20's boss ...), one more fight was allowed. Thin lists make the line tight.
-  - a) Half, plus one where a fight needs it.
-  - b) Strictly half; those fights stay off band.
-- **Default:** a
-
-**REF6-1. How the 100 reference decks are built** · Decide · Balance · asked 2026-11-11
-- Each of the 100 simulated players' decks takes their cards in the order the map's optimised decks use them (fast). A true optimiser run per player is about 60 core-hours. Result today: the 100 decks are very close in strength (spread 0-5 points), so pack luck barely matters.
-  - a) Keep the fast method.
-  - b) Run true per-player optimisation overnight on GitHub's free runners.
-- **Default:** a
-
-**REF6-2. Rarity cap for reference decks** · Decide · Balance · asked 2026-11-11
-- The cap would remove cards every player holds early (2 rare Otter Centurions from the starter, at Map 3 where the cap is Uncommon). Faction cards are already excluded.
-  - a) No cap for reference decks (players really hold these).
-  - b) Apply the cap.
-- **Default:** a
-
-**REF6-3. Which reference ladder the game deals** · Decide · Balance · asked 2026-11-11
-- Admin "Reference (Random)" still deals the older 10-deck ladder. Since the 100 decks barely differ, 10 are enough.
-  - a) Keep dealing the 10.
-  - b) Deal from the 100.
 - **Default:** a
 
 **DESK2-1. Steam demo scope** · Decide · Desktop · asked 2026-11-11
@@ -858,93 +86,55 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
   - b) Allow offline pack opening for guests (local only, no cloud sync).
 - **Default:** a
 
-**DESK2-3. Mac build on Steam** · Decide · Desktop · asked 2026-11-11
-- CI builds an ad-hoc signed Mac app (free). Apple notarisation needs a paid developer account (99 USD a year); without it, Mac players see a warning on first launch.
-  - a) Ship Windows and Linux first; Mac later.
-  - b) Ship the ad-hoc Mac build now.
-  - c) Get the Apple account (you buy it; Claude never buys).
-- **Default:** a
-
-**DESK2-4. How builds reach Steam** · Decide · Desktop · asked 2026-11-11
-- The GitHub workflow builds Windows, Mac and Linux on a desktop-v* tag.
-  - a) You upload builds to Steam by hand for now.
-  - b) Later, CI uploads to Steam (needs a Steam build account secret you add).
-- **Default:** a
-
-**SKILL9-1. Skill versions read under one family name** · Decide · Skills · asked 2026-11-11
-- Today 133 skills reach Map 20; target under 80. Group look-alikes under one name, each keeping its own rule and price (no fight changes): Arrow (Ice/Fire Arrow, Venom Spit, Twin Shot, Spitfire, Archer), Keen Sense, Evasive, Daunt, Delivery (Milling, Scavenge, Driftwood), Venomous, Decay, Pounce, Progeny, Fletcher, Nocturnal, Shell, Immunity, Ambush (Trap). Saves 23.
-  - a) Do it.
-  - b) Keep today's names.
-- **Default:** a
-
-**SKILL9-2. Cull family** · Decide · Skills · asked 2026-11-11
-- Predator, Executioner, Shatter and Siege each add damage against one kind of target, as Cull does. They become "Cull N – weaker / wounded / frozen / structures", rules and prices kept. Saves 4.
-  - a) Merge.
-  - b) Keep the four names.
-- **Default:** a
-
-**SKILL9-3. Tally family** · Decide · Skills · asked 2026-11-11
-- Carnage, Tally, Requiem, Dirge, Onslaught, Riled, Almanac and Foe's Scarcity all read "while a count reaches N: +2/+2". They become "Tally N – what it counts"; rules kept, prices re-measured as one family later. Saves 7 (without it: 80 skills).
-  - a) One family.
-  - b) Merge only Carnage's versions.
-- **Default:** a
-
-**SKILL9-4. Heal family's name** · Decide · Skills · asked 2026-11-11
-- Regenerate, Heal, Repair, Carrion and Herbalist all restore Health. One family, rules and prices kept. Saves 4.
-  - a) Call it Heal (Earthworm reads "Heal 1 – self").
-  - b) Call it Regenerate.
-- **Default:** a
-
-**SKILL9-5. Speed family's name** · Decide · Skills · asked 2026-11-11
-- Quick is Speed 2; Speed, Haste, Slow and Fast Forward are all about when a unit acts. One family. Saves 4.
-  - a) Call it Speed (Cottontail reads "Speed 2").
-  - b) Keep the name Quick.
-- **Default:** a
-
-**SKILL9-6. Thrive family** · Decide · Skills · asked 2026-11-11
-- Frost, Heat, Salt, Timbered, Bedrock, Crepuscular and Rainrunner all read "while a condition holds: +A/+H". They become "Thrive – condition". Diurnal and Nocturnal stay. Saves 5.
-  - a) Merge.
-  - b) Keep the seven names.
-- **Default:** a
-
-**SKILL9-7. Inflict family** · Decide · Skills · asked 2026-11-11
-- Freeze, Confuse and Shock share one text: "Chance% to <status> the target". They become "Inflict – Freeze 25%"; statuses keep their names, rules and prices. Saves 1-2.
-  - a) Merge.
-  - b) Keep the names.
-- **Default:** a
-
-**SKILL9-8. Afflicted family** · Decide · Skills · asked 2026-11-11
-- Purblind, Night-blind, Scatterbrained and Drunk are all a status the unit always has. They become "Afflicted – Blind / Blind at night / Confused / Tipsy", rules and prices kept. Saves 2-3.
-  - a) Merge.
-  - b) Keep the names.
-- **Default:** a
-
-**SKILL9-9. Four skill swaps, six skills off the road** · Decide · Skills · asked 2026-11-11
-- Swaps: Tasmanian Devil Berserk→Rage, Yeti Scare→Armor, Ashbone Ghoul Remember→Undead, Dhole Matriarch drops Pack Leader (no Pack units before Map 21). Off the road: Sequestration, Meld, Pickpocket (cards you didn't pick); Gorge, Parasite, Rupture (one enemy-only deck). Saves 10; a few fights get re-measured.
-  - a) Do all.
-  - b) Keep them.
-- **Default:** a
-
-**SKILL9-10. Quarry Mole needs Stone on Map 8** · Decide · Skills · asked 2026-11-11
-- Your Map 8 pick Quarry Mole gets Armor while holding 2+ Stone, which breaks "no Stone before Map 21".
-  - a) It reads "Thrive – 3+ Lumber: Armor 1" and is re-fitted to the budget.
-  - b) Move Quarry Mole past Map 20.
-- **Default:** a
-
-**BAL46-1. Morel Hollow 7-6 Morel Monarch a little easy** · Decide · Road · asked 2026-11-10
-- The Morel Monarch boss reads 46.3% at 400 games (target 40, band 30-49). All 514 legal decks were screened; the current one is near the strongest, and Shield is already above the rule. In band, so not urgent.
-  - a) Leave it (in band).
-  - b) You add a stronger Morel card to 7-6's list; Claude retunes.
-- **Default:** a
-
-**BAL42-1. Glass Dunes 18-4 Sandstorm stays too easy** · Decide · Road · asked 2026-11-10
-- Sandstorm 18-4 83% (target 62), 200 games, after BAL42's best move (was 85.5%). Every legal deck from its list with Sand Veil on (all 679) reads 80-100%; its Shield is at the rule.
-  - a) You add stronger Desert cards to 18-4's list; Claude retunes.
-  - b) Raise its target.
-  - c) Leave it.
-- **Default:** a
-
 ## Decided
+
+**REFIT7-1. 17 road fights no legal deck brings within 20 of target** · Decide · Balance · asked 2026-11-19 · decided 2026-11-19
+- After REFIT7 (seed 9100, 400 games). Too hard: 8-7 23% (target 60), 17-8 14 (40), 17-6 32 (65), 17-4 45 (75), 17-7 38 (60), 4-3 45 (70), 4-5 20 (40), 2-2 56 (80). Too easy: 18-A-4 100 (77), 18-A-7 97 (64), 18-A-6 95 (69), 18-4 95 (62), 18-7 73 (40), 3-6 84 (60), 20-A-4 64 (36), 10-A-5 68 (40), 5-A-4 60 (40). Map 17 lost about 21 points with LVL10 / ENG52; its reference deck is unchanged and fully owned.
+  - a) A card-list look: stronger or weaker cards from these maps' lists for these fights (you pick)
+  - b) Shield / Health what-ifs on these fights in the next package
+  - c) List only for now
+- **Default:** c
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): c) List only for now. REFIT8 and REFIT9 already tried swaps on these fights; a card-list look needs your picks, so the list rides in the balance status.
+
+**FOLD8-1. Five of your 11-18 card edits are over budget** · Decide · Balance · asked 2026-11-19 · decided 2026-11-19
+- Folded as you saved them: Pika Hoarder 139%, Feral Tomcat 116%, Peak Condor 116%, Alley Cat 116%, Slow-worm 102% of N(L). Their Level 10 forms cannot fit the cap. Field Vole: your last save dropped Cure at Level 3; kept it. These edits made 8 early road fights 20-35 points harder (3-2 67->32%, 3-7, 5-1, 8-3, 1-A-1, 7-A-3/4/5; REFIT8). Today: your numbers stand.
+  - a) Keep your numbers
+  - b) Trim each to 100% (Claude picks, stats first)
+  - c) You re-edit them
+- **Default:** a
+- **Outcome:** Owner 22:18: "Do apply it to FOLD8-1." a) Your numbers stand. Live: the 92 whole-card rows were cleared to empty patches (all already folded into cards.json), so the game reads cards.json; backup card_overrides_backup_20261119 (supabase/oneoff/20261119_fold8_clear_folded_overrides.sql).
+
+**OWN-1119-1. Where the first raid unlocks** · Decide · Progression · asked 2026-11-19 · decided 2026-11-19
+- Owner 11-19 00:02: the raid unlocks between Maps 21-25 through a submap in a submap of a water map. Built as a: The Deep Dark (4 fights at Map 21 strength) inside The Sunken Depths (Map 10's side map), open after Map 21; its boss clear opens the Goliath (was: the Raid Banner on Map 13). Players who already opened the raid keep it.
+  - a) The Deep Dark inside The Sunken Depths, after Map 21 (built)
+  - b) Same, inside Lilypad Reach or Smugglers' Grotto instead
+  - c) Same place, open after Map 23 or 25 instead of 21
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) The Deep Dark inside The Sunken Depths, after Map 21 (built). It is your 00:02 direction as built (RAIDGATE); reversible.
+
+**SKWK2-1. Five N-SK fights stay TOO WEAK after the rebuild** · Decide · Balance · asked 2026-11-19 · decided 2026-11-19
+- SKWK2 tuned the N-SK / N-WK decks (docs/balance/pro-ease-skwk2-2-after.json, 40 games). Still TOO WEAK: 7-SK and 7-A-SK (their lists' best decks, the strong search's included, lose 83-98% to the Map reference) and 13-SK, 20-SK, 20-A-SK. On those three the REFIT6 Map reference beats the reference ladder, so a deck the ladder beats 70-85% loses over 85% to it. The ladder (BAL24, 11-07) predates FOLD6 and CARDPOW2.
+  - a) Rebuild the reference ladder on today's cards, then re-tune; give Map 7 / 7-A's lists a stronger card (you pick)
+  - b) Accept TOO WEAK on these five
+  - c) Let the 85% line win there: SK decks beat the ladder 30-45%
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Rebuild the reference ladder on today's cards, then re-tune; give Map 7 / 7-A's lists a stronger card (you pick). Superseded: Built by SKWK3 (11-19: ladder rebuilt, Maps 10-20 N-SK decks re-tuned); a stronger Map 7 / 7-A card is part of REFIT7-1's card-list look.
+
+**REL1-3. Murgle Mayhem: open on Map 6, and is it 1.0's only daily dungeon?** · Decide · Dungeons · asked 2026-11-19 · decided 2026-11-19
+- It opens after Map 10 but its entrance sits on Map 6 (REL2 now announces it and pulses the node). The Undercroft and Long Burrow stay hidden. Today: opens after Map 10, only one in 1.0.
+  - a) Keep: opens after Map 10, Murgle is the only one
+  - b) Open it with Map 6, Murgle is the only one
+  - c) Open on Map 6 and release a second daily dungeon
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep: opens after Map 10, Murgle is the only one. 1.0 names one daily dungeon; REL2 already announces Murgle and pulses its node.
+
+**REL1-4. Co-op dungeon entry on the Arena tab and Home?** · Decide · Dungeons · asked 2026-11-19 · decided 2026-11-19
+- The multiplayer dungeon is entered from the Map 16 spot only. You asked on 2026-10-25 for an Arena tab entry. Today: Map 16 spot only.
+  - a) Keep: Map 16 spot only
+  - b) Add an Arena tab entry
+  - c) Arena tab entry and a Home note
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): b) Add an Arena tab entry. You asked for an Arena tab entry on 2026-10-25; reversible UI. Build: DEC19-UI (docs/design/dec19-builds-2026-11-19.json).
 
 **OWN-1118-5. Codex level bar, "?" for skills learnt later, tokens grow** · Decide · Levels · asked 2026-11-18 · decided 2026-11-19
 - Owner 11-18 21:29: "In the codex, let players move a small bar at the bottom to discover the stats at different levels. They can only move at most to their highest unlocked level for that card + 1." "future skills showing up at ? as well ... it says the creature will learn more as it grows". 21:31: "Tokens should also grow in strength. E.g. the Bee Swarmling is a flying 1/1. Maybe this becomes a 2/3 at level 10." Built in LVL11.
@@ -958,6 +148,37 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 - Owner 11-18 21:11: "After the skill budget calculations, define the lvl 10 form. Then fill out the stats from 1-10 (save it as stat differences) ... 25% - only stat increase, 25% - 10/90 budget split, 25% - 25/75 split, 25% - 50/50 split." 21:22: extra skills unlock at later levels. Built in LVL10.
   - Level 10 form at the card's Level 1 fill; levelBonus deltas; styles A-D; skills past the core unlock at Level 2+
 
+**LVL10-1. 36% of cards grow in stats only (asked 25%)** · Decide · Balance · asked 2026-11-18 · decided 2026-11-19
+- 166 of 463 in-play cards have no skill whose number can grow (vanilla or flag skills like Flying, Guardian) and only one skill, so they are style A (stats only). B, C and D are 21% each. Stats-first cards (A + B + C) are 79%.
+  - a) Keep: A is every card with nothing to grow
+  - b) You pick flag-only cards to gain a second skill at Level 5-7 (they become C or D)
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep: A is every card with nothing to grow. No card changes; picking second skills is a later card pass.
+
+**ROLE1-1. Card roles on the Maps 0-20 lists: take the proposed swaps?** · Decide · Balance · asked 2026-11-18 · decided 2026-11-19
+- Every map has strong cards and Maps 0-5 have cute ones. Gaps: no healer/buffer on Maps 4, 9, 10, 12, 16, 17, 19, 20; no resource card on 6, 7, 19; no ranged card on 4-6, 8, 16, 17; one Leech (6) and one Pack (14) carrier since DATAFIX; peaks drop on 13, 16, 18. 21 proposals (19 list swaps, 2 skill tweaks), all in budget: docs/design/role1-2026-11-18.md.
+  - a) All
+  - b) Some (name the numbers)
+  - c) None
+- **Default:** c
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): c) None. The road was just re-fitted to these lists; the 21 proposals stay in docs/design/role1-2026-11-18.md for a later list pass.
+
+**REFIT6-1. Eight road fights too easy against the rebuilt Map reference decks** · Decide · Balance · asked 2026-11-18 · decided 2026-11-19
+- REFIT6 rebuilt the Map 3, 9, 13-16 and 18-20 reference decks from owned cards; they are stronger (Thorn Shrike, Shoal Shark, Giant Cave Huntsman, Eagle-Owl Quartermaster). No legal deck brings these into band (seed 9100, 400 games): 18-7 78% (target 40), 18-4 97 (62), 18-A-4 100 (77), 18-A-7 95 (64), 18-A-6 91 (69), 3-6 90 (60), 9-7 65 (40), 13-8 65 (40). Shield or Health +10 moves them 3 points at most (docs/balance/refit6/whatif-2026-11-18.jsonl).
+  - a) A card-list look: stronger cards from these maps' lists for these fights (you pick)
+  - b) Rebuild the Map 3, 9 and 18 references no stronger than the old ones
+  - c) Leave them
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: Same fights (18-7, 18-4, 18-A-4/6/7, 3-6) are in REFIT7-1 (11-19), after the REFIT5-REFIT9 re-fits.
+
+**REFIT5-1. Eight road fights no legal deck brings into band** · Decide · Balance · asked 2026-11-18 · decided 2026-11-19
+- After REFIT5 (seed 9100, 400 games): too hard 8-7 25% (target 60), 19-5 37 (60), 2-2 57 (80); too easy 7-6 73 (40), 7-A-2 92 (70), 10-A-5 67 (40), 20-A-4 58 (36), 20-9 70 (50). What-ifs (200 games, docs/balance/refit5/whatif-2026-11-18.jsonl): Health 10 puts 19-5 in band (42 to 58), Shield 10 puts 10-A-5 in band (69 to 42), Health 8 lifts 8-7 to 31 and 2-2 to 64. Shield or Health up to +10 moves 7-6, 7-A-2, 20-A-4 and 20-9 by 4 points at most.
+  - a) Health 10 on 19-5, Shield 10 on 10-A-5; the other six wait for a card-list look
+  - b) a) plus Health 8 on 8-7 and 2-2
+  - c) Leave them
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: REFIT6-REFIT9 re-fitted these; 19-5 is no longer 20+ off and the rest (8-7, 2-2, 10-A-5, 20-A-4) are in REFIT7-1.
+
 **REFIT4-1. Maps 11 and 17: too hard with any legal deck** · Decide · Balance · asked 2026-11-18 · decided 2026-11-18
 - After the re-fit (seed 9100): 11-9 16% (target 60), 11-10 0 (40), 11-5 33 (75), 17-6 20 (65), 17-7 19 (60), 17-8 13 (40), 17-3 51 (80), 17-4 38 (75). Shield 0 with Health down to 8 still misses for 11-9, 11-10 and 17-6 to 17-8 (whatif-hp-2026-11-18.jsonl). Shield 0 alone puts 11-6 in band (51 to 65). The Map 11 and 17 reference decks lost strength in the fold (Brood, Charge, Thunderstorm).
   - a) Rebuild the Map 10-12 and 17 reference decks to the folded cards, then re-fit
@@ -965,9 +186,78 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
   - c) Leave them
 - **Default:** a
 
+**REFIT4-2. 5-3 Cypress Roots has no legal deck** · Decide · Balance · asked 2026-11-18 · decided 2026-11-19
+- Its venomGlands boon needs 9 of its 17 cards to carry it. Since FOLD6 moved Constrictor Coil off Map 5, only Swamp Alligator on Map 5's list carries it, so every legal deck turns the boon off. The deck stays as it is (one deck problem).
+  - a) Add Constrictor Coil to Map 5's SPECIAL list
+  - b) Give 5-3 another boon
+  - c) Leave it
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: Done: Constrictor Coil is on Map 5's SPECIAL list (canonical/map-pools.json).
+
+**CARDPOW2-1. Cards the budget misreads (not changed)** · Decide · Balance · asked 2026-11-18 · decided 2026-11-19
+- Over budget but weak by power: Nutria Reedcutter (103%), Pond Algae (111%), Raccoon Nightcrew (111%). Under budget but strong: 16, e.g. Stonedrop Vulture, Magma Salamander, Ossuary Lammergeier, Talon Archer. Granite Ox Golem (55%, power -41) would need 3/17 to 6/22. List: docs/balance/cardpow2-2026-11-18.md.
+  - a) Leave them; look at the skill prices behind them
+  - b) Trim the three to budget anyway
+  - c) Also apply Granite Ox Golem 6/22
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Leave them; look at the skill prices behind them. Keeps the cards as they are.
+
+**NAV1-1. Home shortcuts for Nest, Inventory, Wildpaths?** · Decide · UI · asked 2026-11-18 · decided 2026-11-19
+- After the page split, Nest, Inventory and Wildpaths are reached only from the Camp bar. Keep it that way, or also add their notes on the Home board?
+  - a) Camp bar only (default, now live after release)
+  - b) Also a note on Home
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Camp bar only (default, now live after release). As live; reversible.
+
+**NAV1-2. Make the Forge a separate page under the hood?** · Decide · UI · asked 2026-11-18 · decided 2026-11-19
+- Players already see the Forge as its own Camp page. Under the hood it still draws inside the Codex view. Splitting it fully means rewriting about 15 tests and gives no visible change.
+  - a) Leave as is (default)
+  - b) Split it fully
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Leave as is (default). No visible change and 15 tests to rewrite.
+
+**SKAUD1-1. Exhaust: keep or cut?** · Decide · Skills · asked 2026-11-18 · decided 2026-11-19
+- Your note: Exhaust, Exploit and Expose are similar but give tactical depth together. Exhaust N (its hits give N tokens; each makes the target's next trigger or skill fizzle) is on no card. The audit cuts skills on no card that a kept skill covers; Exhaust has no close twin.
+  - a) Keep it for Maps 21+
+  - b) Cut it
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep it for Maps 21+. On no card; no cost to keep for Maps 21+.
+
+**SKAUD1-2. Pickpocket steals items only: then it is Disarm** · Decide · Skills · asked 2026-11-18 · decided 2026-11-19
+- Your note on Pickpocket: "I think this steals items only." Today it steals a token (or the bramble's lowest resource). Disarm takes the enemy's weapon on play and on hit. Glintsnatch Magpie has both; Field Mouse has Pickpocket.
+  - a) Pickpocket steals items only and takes Disarm's place (Disarm goes)
+  - b) Keep both as they are
+  - c) Pickpocket items only, Disarm stays too
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Pickpocket steals items only and takes Disarm's place (Disarm goes). Superseded: Built by SKAUD1 phase 2 (11-18): Pickpocket steals items only, Disarm merged into it.
+
+**SKAUD1-3. Thanatosis and Undead overlap** · Decide · Skills · asked 2026-11-18 · decided 2026-11-19
+- Both come back once at 1 Health: Thanatosis plays dead (no death, no On Death), Undead dies and returns as a token. You set both on 11-07. After REDESIGN3, Thanatosis is on no card; Undead is on 2 (Cinder Skeleton, Ember Revenant).
+  - a) Keep both
+  - b) Thanatosis folds into Undead
+  - c) Undead folds into Thanatosis
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep both. No card changes; Thanatosis is on no card.
+
+**DATAFIX-1. Dormouse and Hedgerow Shrew: your live edits are not on the cards** · Decide · Cards · asked 2026-11-18 · decided 2026-11-19
+- Your edits are in the notes but not the data: Dormouse nocturnal 2 (11-13), Hedgerow Shrew health 7 and Injured 2 (11-05). Both read as the same 2/5 Foraging line, so I made the Shrew 2/4 and left the Dormouse. Restore either edit?
+  - a) Restore both, drop my 2/4
+  - b) Restore the Dormouse only
+  - c) Leave both as they are
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: FOLD8 folded your 11-18 saves (both 2/5 Foraging 1, your numbers stand, FOLD8-1) and REDESIGN3 retired Injured; the older 11-05 / 11-13 values would overwrite newer saves.
+
 **OWN-1117-3. First pass overnight plan** · Decide · Roadmap · asked 2026-11-17 · decided 2026-11-17
 - Owner 11-17 23:41: edit the cards to fit each map's skillset (take out Injured; move Chipmunk Skirmisher away, it has Arrow; Map 1 gets 1 more Diurnal card); rebalance by power ratings, then assume balanced; build SK and WK; assign the skirmishes. Audit every skill, also outside Maps 0-20, and remove useless, duplicate or closely overlapping ones; audit VFX and SFX; remove heavy polling. Pages: Shop and Premium their own page; Camp the main page of Forge and the other subpages; Codex its own page.
   - As stated
+
+**ENG52-1. 8 cards over budget once their Level 1 skills count** · Decide · Balance · asked 2026-11-18 · decided 2026-11-19
+- The budget now prices Level 1 skills (OWN-1118-2). Over: Compost Grub, Fox Kit, Otter Kit, Caiman / Fire Drake Hatchling, Shallows Fry, Harp Seal Pup (Hatchling 2 each) and Chipmunk Forager (Foraging); Musk Ox Calf was over already. Fire Drake Hatchling's Level 1 arrow lost its bolt form (a Fire Arrow from Level 1).
+  - a) Re-fit their stats (balance-analyst)
+  - b) Price Hatchling lower (its +1/+2 only pays when an evolute is played onto it)
+  - c) Leave them over
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): b) Price Hatchling lower (its +1/+2 only pays when an evolute is played onto it). Six of the eight are over only through Hatchling, whose +1/+2 pays only when an evolute lands on it; no card stats change. Chipmunk Forager and Musk Ox Calf stay listed over. Build: DEC19-BUDGET (docs/design/dec19-builds-2026-11-19.json).
 
 **OWN-1118-2. A Level 1 skill on a base Level 1 card** · Decide · Skills · asked 2026-11-18 · decided 2026-11-18
 - Owner 11-18 21:04: "If I indicate a skill as L1 but the card's base level is 1, it still doesn't show up in the budget calculations or the card preview." A card at its base level skipped its levelSkills; the budget never read them.
@@ -976,6 +266,20 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 **OWN-1118-1. Poison counters: one counter named Poison** · Decide · Skills · asked 2026-11-18 · decided 2026-11-18
 - Owner 11-18 20:26: Venomous gives poison counters; poison gas, eating poisonous animals and poison fields give poison too. You picked one counter named Poison, fed by everything including Venomous; the word Venom goes away. Venomous N keeps its name. Wording only (POISON2).
   - One counter named Poison; Venom goes away
+
+**ENG50-1. The Vulnerable passive is Fragile** · Decide · Skills · asked 2026-11-18 · decided 2026-11-19
+- You asked for Vulnerable (takes 2x) as a card passive. Fragile already is exactly that (takes 2x, frees budget through the caps), so ENG50 built no second skill. Vulnerable is now Rend's token (2x on the next hit). Rename Fragile to Vulnerable on cards?
+  - a) Keep the name Fragile.
+  - b) Show Fragile as Vulnerable.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep the name Fragile. No change; Vulnerable is Rend's token now.
+
+**ENG50-2. Exploit: +1 a hit, or + the tokens?** · Decide · Skills · asked 2026-11-18 · decided 2026-11-19
+- Your note: "Exploit N: Exploit tokens, extra damage by tokens, then remove 1." Today each hit on it deals +1 and uses one token. Did you mean + the number of tokens it has (3 tokens: +3, then +2, +1)? ENG50 kept +1 and named the tokens Exploit again (they read Vulnerable since ENG39).
+  - a) Keep +1 a hit.
+  - b) + the tokens it has, then remove 1.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep +1 a hit. No change; as built.
 
 **OWN-1117-2. Damage-taken and damage-dealt modifiers** · Decide · Skills · asked 2026-11-17 · decided 2026-11-17
 - Owner 11-17 23:14: Rend N gives the opposing unit Vulnerable N (on hit: double damage taken, remove 1 token). Exploit N: Exploit tokens, extra damage by tokens, then remove 1. Weaken N: linear. Enfeeble N: halving. Expose: as is. Rend and Enfeeble not featured (2x / 0.5x too strong). Sturdy and Mighty only as card passives (granting them via Grant {}). Feeble and Vulnerable also as passives (drawbacks that free budget). All need action forms too, e.g. Weaken 1 on Ally Spawn.
@@ -995,6 +299,13 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
   - c) Hold: I will redesign from it first.
 - **Default:** c
 
+**POWDER1-1. Sleeping Powder: can it keep one unit asleep?** · Decide · Engine · asked 2026-11-17 · decided 2026-11-19
+- Sleeping Powder N puffs every round at Speed -1. Built so it skips a unit that is already asleep (as Ice Arrow skips a Frozen one): the unit facing it sleeps N rounds, then gets 1 round awake. Stacking like Sleep N (up to N+1 tokens) would keep that unit asleep every round while the powder unit lives.
+  - a) Keep it: no puff lands on a sleeping unit (N rounds asleep in N + 1).
+  - b) Stack like Sleep N: it can keep one unit asleep for good (priced about twice as high).
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep it: no puff lands on a sleeping unit (N rounds asleep in N + 1). As built and priced.
+
 **OWN-1117-1. Bolts and powders on Maps 0-20** · Decide · Skills · asked 2026-11-17 · decided 2026-11-17
 - Owner 11-17 17:32: "Bolts - only fire bolt in Map 20. The rest of the bolts e.g. Archer Fish's Water Bolt is in Map 21+. Status Powder: Start with Sleeping Powder and Poison Powder for now. Powders would be Speed -1 actions." Built as BOLT2 (bolt cards off Maps 0-19) and POWDER1 (the powder family).
   - As stated
@@ -1005,6 +316,30 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
   - b) Apply 1-5, 10-A-1, 12-7; leave 11-9 (marginal)
   - c) Leave them
 - **Default:** a
+
+**ECONSK1-1. Metallurgy: what does it do?** · Decide · Engine · asked 2026-11-16 · decided 2026-11-19
+- Metallurgy is on the skill list as "Unknown, Metal tier only" and does nothing yet (owner 11-16 23:28). It is on no card and priced 0. Pick its effect.
+  - a) Every turn while Ready: Refining costs 1 Lumber less on your side (2 Lumber + 2 Stone becomes 1 Lumber + 2 Stone).
+  - b) Your units with a Metal cost get +1/+1 for each Metal you hold (up to 3).
+  - c) Every turn while Ready: 1 Metal becomes 4 Gold.
+  - d) Something else (tell me).
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Every turn while Ready: Refining costs 1 Lumber less on your side (2 Lumber + 2 Stone becomes 1 Lumber + 2 Stone). Metal tier is past Map 20; recorded as the design, built when a card carries it. Build: none for 1.0 (parked until a card carries it).
+
+**CARDPOW1-1. Level 0 cards: Level 1 gives too little** · Decide · Balance · asked 2026-11-16 · decided 2026-11-19
+- The 18 Level 0 cards (tutorial, Base, Baby) get a third of their 0-1 budget gain at Level 1, so Level 2 jumps: median +12 fill points (other cards dip 3). Card stats are unchanged either way.
+  - a) Level 1 counts as a major level for Level 0 cards (one line in bramblewood-budget.js).
+  - b) Leave it.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: LVL10 (11-18) stores each card's growth per level (levelBonus on 840 cards), which overrides the Forge curve up to Level 10.
+
+**CARDPOW1-2. Cards outside 85-100% at Level 1 (Maps 0-20)** · Decide · Balance · asked 2026-11-16 · decided 2026-11-19
+- Of 398 in-play Maps 0-20 cards, 161 sit under 85% and 47 over 100% of N at Level 1. Fixes are proposed per card in the CardPower workbook (OK? column); nothing changed.
+  - a) You mark OK? in the workbook; Claude applies the OK'd rows.
+  - b) Fold them into your REDESIGN2 workbook instead.
+  - c) Leave them.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: REDESIGN3 / FOLD6 refit the Maps 0-20 cards within budget().ok; what is left is CARDPOW2-1.
 
 **ARROW1-1. Arrows and Bolts are one skill each; Arrows slow, Bolts fast** · Decide · Skills · asked 2026-11-16 · decided 2026-11-16
 - All arrow variants (serrated/bleed, poison, sleep, paralysis and other status arrows, fire, electric, water and other elements) count as one skill; the same for bolts. Arrows fire slower than normal (speed 0), Bolts faster (speed 2). Arrow (Flaming) is Map 20's skill; Fire Bolt goes on the Dragon Lair map. Some list skills may sit on submaps instead of Maps 0-20.
@@ -1018,12 +353,139 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
   - c) A new Lair card later
 - **Default:** a
 
+**ARROW1-3. Snipe, Bola, Lasso: arrows?** · Decide · Skills · asked 2026-11-16 · decided 2026-11-19
+- Every arrow now counts as one skill: Arrow, Arrow (Flaming), Ice Arrow, Twin Shot, Volley, Archer. Snipe, Bola and Lasso already fire at the arrows' time (after the swings) but are not arrows by name, so each still counts as its own skill.
+  - a) Keep them apart (thrown or aimed, not arrows)
+  - b) Count them in the arrow family
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep them apart (thrown or aimed, not arrows). No change; Lasso merged into Bola in SKAUD1.
+
+**SKN1-1. Warcry: already permanent** · Decide · Skills · asked 2026-11-16 · decided 2026-11-19
+- Your note: "Maybe make this permanent." It already is: when played, your other units get +N/+N for the rest of the fight (added to their base Attack and max Health). Warcry is on no card. The text could say "for the fight" so it reads as permanent.
+  - a) Keep it; add "for the fight" to the text
+  - b) Make it temporary (this round only) instead
+  - c) Keep as is
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep it; add "for the fight" to the text. Text only; Warcry is on no card. Build: DEC19-TEXT (docs/design/dec19-builds-2026-11-19.json).
+
+**SKN1-2. Repair: keep or cut?** · Decide · Skills · asked 2026-11-16 · decided 2026-11-19
+- Your note: "Same as Rebuild but for structures. Not sure about this one." Repair N: each turn it repairs the most damaged structure within 1 column for N; with none, your bramble for half. One card: Cypress Root Lurker (Repair 2, Guardian).
+  - a) Keep Repair (structures first, bramble second)
+  - b) Cut it; Cypress Root Lurker gets Rebuild N instead (bramble only)
+  - c) Repair heals structures only, never the bramble
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep Repair (structures first, bramble second). Repair is on two Maps 0-20 cards now (Badger Lumberjack, Beaver Feller).
+
+**SKN1-3. Stonecutter: every turn, 2 Lumber into 1 Stone?** · Decide · Skills · asked 2026-11-16 · decided 2026-11-19
+- Your note: "maybe instead it's every turn, turn 2 Lumber into 1 Stone." Today: every second turn while Ready you gain N Stone, free. One card: Marmot Stonecutter. A converter needs Lumber to work, so it is weaker early and better beside Lumber makers.
+  - a) Every turn while Ready: pay 2 Lumber, gain 1 Stone (nothing if short)
+  - b) Keep the free Stone every second turn
+  - c) Both, as two kinds of Stonecutter
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Every turn while Ready: pay 2 Lumber, gain 1 Stone (nothing if short). Superseded: Built by SKAUD1 (11-18): Stonecutter merged into Masonry (Lumber into Stone each turn); Marmot Stonecutter has Masonry 1.
+
+**SKN1-4. Spawner instead of Every turn: Spawn triggers** · Decide · Skills · asked 2026-11-16 · decided 2026-11-19
+- Your note: "Maybe better to use this instead of Every turn -> {Spawn} trigger-action pairs." Spawner {card}: while Ready, it spawns the card into the nearest free slot every turn. Two cards spawn through the trigger form today: Ant Hill and Mother Carrier. Same rule, one keyword instead of a trigger line.
+  - a) Move both cards to Spawner {card}; the trigger form stays for odd cases
+  - b) Keep the trigger form on cards
+  - c) Spawner only on new cards
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): c) Spawner only on new cards. Ant Hill and Mother Carrier are unattainable, so moving them changes nothing a player sees; the least work.
+
+**SKN1-5. Mimic's parameters** · Decide · Skills · asked 2026-11-16 · decided 2026-11-19
+- Your note: "Param 1: 3 types: Copy Attack, Copy Defence, Copy N Skills of Param 2 <Target>." Today Mimic copies a random ally's skills and the higher of each stat as it enters. One card: Mirrorhide Mutant. Proposed: Mimic {copy: attack / health / N skills} {target: random ally / facing enemy / strongest ally}.
+  - a) Build both parameters; Mirrorhide Mutant keeps today's effect as its default
+  - b) Copy type only; the target stays a random ally
+  - c) Keep Mimic as is
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Build both parameters; Mirrorhide Mutant keeps today's effect as its default. Mirrorhide Mutant keeps today's effect; the parameters wait for a card that uses them. Build: none for 1.0 (parked until a card carries it).
+
+**SKN1-6. Assiduous: a new trigger** · Decide · Skills · asked 2026-11-16 · decided 2026-11-19
+- Your idea: "Player discards or exiles N cards, do {action}." A counter trigger: after you discard or exile N cards (pitches count as discards), the action fires, then the count resets. On no card until you place it.
+  - a) Build it as a trigger (N, then any action); discards and exiles count
+  - b) Discards only
+  - c) Not now
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Build it as a trigger (N, then any action); discards and exiles count. New skills arrive past Map 40 (owner rule); recorded as the design. Build: none for 1.0 (parked until a card carries it).
+
+**SKN1-7. Industry: what should it do?** · Decide · Skills · asked 2026-11-16 · decided 2026-11-19
+- Your idea: "Something about resources." Three shapes that fit the resource tiers: a counter trigger (after you spend N resources, do {action}); +1 to the first resource you gain each turn; or +N/+N while you hold Stone or Metal.
+  - a) A counter trigger: after you spend N resources, do {action}
+  - b) +1 to the first resource gain each turn
+  - c) +N/+N while you hold Stone or Metal
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) A counter trigger: after you spend N resources, do {action}. New skills arrive past Map 40 (owner rule); recorded as the design. Build: none for 1.0 (parked until a card carries it).
+
+**SKN1-8. Havoc: a new counter trigger** · Decide · Skills · asked 2026-11-16 · decided 2026-11-19
+- Your idea: "Upon dealing N damage, do {action}, then reset." The unit counts the damage it deals (to units and the bramble); at N it fires the action and starts again. Shown as a pip with the count.
+  - a) Build it: its own damage only, N default 10
+  - b) Count your whole side's damage
+  - c) Not now
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Build it: its own damage only, N default 10. New skills arrive past Map 40 (owner rule); recorded as the design. Build: none for 1.0 (parked until a card carries it).
+
+**SKN1-9. "???": a trigger when it ingests an item** · Decide · Skills · asked 2026-11-16 · decided 2026-11-19
+- Your note: "(When it ingests an item.)" A trigger for eating: fires when the unit eats something (Devour, Berries, Lumber Feast, food items). It needs a name and the list of what counts as eating.
+  - a) "On Feed": fires when it eats a Berry, an item or a unit (Devour)
+  - b) Items only (equipment or food it consumes)
+  - c) Not now
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) "On Feed": fires when it eats a Berry, an item or a unit (Devour). New skills arrive past Map 40 (owner rule); recorded as the design. Build: none for 1.0 (parked until a card carries it).
+
+**SKN1-10. Bioelectric, and Chain Lightning for bosses** · Decide · Skills · asked 2026-11-16 · decided 2026-11-19
+- Your note: Chain Lightning is S (bosses only), with a new normal skill, Bioelectric, at rank 1. Voltaic Eel (rare, Chain Lightning 2, Shock 40%) is the only card with it. Proposed Bioelectric N: its melee hits deal N extra shock damage to the target (no jump). It counts with Electricity as one skill.
+  - a) Bioelectric N as proposed; Voltaic Eel swaps Chain Lightning for Bioelectric 2
+  - b) Bioelectric = Electricity renamed; Chain Lightning off the Eel
+  - c) Keep Chain Lightning on the Eel
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: Voltaic Eel now has Electricity 2 (REDESIGN3 / SKAUD1), so Chain Lightning is off it and stays S (bosses); no Bioelectric needed.
+
+**SKN1-14. Arrow – bleed: Laceration or Laced?** · Decide · Skills · asked 2026-11-16 · decided 2026-11-19
+- Your note: "(Laceration / Laced)." Fire Arrow now reads "Arrow (Flaming)" (SKN1). The bleed form would match as "Arrow (Laced)"; or the rider becomes a skill of its own, "Laceration". On no card.
+  - a) Arrow (Laced) 2
+  - b) Laceration 2 (its own line)
+  - c) Arrow 2 – bleed, as now
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Arrow (Laced) 2. Matches Arrow (Flaming); on no card. Build: none for 1.0 (parked until a card carries it).
+
+**SKN1-15. Shell "same as Turtle": what did you mean?** · Decide · Skills · asked 2026-11-16 · decided 2026-11-19
+- Your note on Shell: "(Same as Turtle)." There is no Turtle skill. Shell N: the first hit each round gives it N Armor until the round ends. Eight cards carry it (Box Turtle, Reefback Turtle, Giant Clam, Conch Crawler, Limpet Clinger, Shellwright Apprentice, two golems).
+  - a) Rename Shell to Turtle
+  - b) Shell only on shelled animals; the golems lose it
+  - c) Keep Shell as is
+- **Default:** c
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): c) Keep Shell as is. No change; Shell is off Maps 0-20 since REDESIGN3.
+
 **SKN1-16. Nursing instead of Heal; the action is Nurse** · Decide · Skills · asked 2026-11-16 · decided 2026-11-18
 - Your note: "I think we'll use this instead of Heal. And the action of Heal will be called Nurse." Heal N (9 cards) heals your most wounded unit each round; Nursing N (on no card) heals your lowest-Health wounded unit, not itself. Merging changes who gets healed on those 9 cards.
   - a) Heal becomes Nursing (lowest Health); the Heal action reads Nurse
   - b) Rename only: the skill and action read Nursing / Nurse, the rule stays most wounded
   - c) Keep both
 - **Default:** b
+
+**SKN1-17. Assault: what is "attacking first"?** · Decide · Skills · asked 2026-11-16 · decided 2026-11-19
+- Your note: "(If it's attacking first)." Today Assault N is +N Attack on its own swings, not on counterattacks. On no card. "First" can mean three things.
+  - a) +N Attack when its side strikes first this round (initiative)
+  - b) +N Attack when it swings before the unit it attacks has acted this round
+  - c) +N on its first attack of the fight only
+- **Default:** b
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): b) +N Attack when it swings before the unit it attacks has acted this round. On no card; recorded for when one carries it. Build: none for 1.0 (parked until a card carries it).
+
+**SKN1-18. Deliver and Every Turn: the action names** · Decide · Skills · asked 2026-11-16 · decided 2026-11-19
+- Your notes: Felling should be "On kill -> Deliver (Lumber)"; Delivery every turn's action version is "Every Turn, Deliver". Today the action reads "Gain" and the trigger "On Turn Start". Felling (4 cards) would then be written as a trigger line; the 11 Delivery every turn cards keep the keyword.
+  - a) Rename Gain to Deliver and On Turn Start to Every Turn; Felling's 4 cards become On Kill: Deliver
+  - b) Rename only; cards keep Felling
+  - c) Keep the names
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Rename Gain to Deliver and On Turn Start to Every Turn; Felling's 4 cards become On Kill: Deliver. Your own words; labels only (Felling's cards are On Kill lines since SKAUD1). Build: DEC19-TEXT (docs/design/dec19-builds-2026-11-19.json).
+
+**REFIT1-1. Road re-fit after your folded card edits** · Decide · Balance · asked 2026-11-16 · decided 2026-11-19
+- Your 11-06..11-13 edits dropped the main road from 136 to 86 of 149 fights in band. Cricket Drummer (2/7 to 1/5, Inspiring 2), in the Map 2-6 reference deck, alone makes 34 fights harder; Wolf Spider Mother's Swarm makes 22 fights on Maps 10-12 easier; then Peak Condor, Soldier Ant, Moon Jelly, Dormouse, Water Shrew. REFIT1 re-fits 54 decks to the cards as they are: 125/149 in band. If Cricket Drummer goes back, 13 of them become too easy. Table: docs/balance/refit1/attribution-2026-11-16.md.
+  - a) Keep the edits; apply the 54 decks
+  - b) Also apply the 9 nearer decks (still outside the band)
+  - c) Some edits were typos: fix those first, then re-fit
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep the edits; apply the 54 decks. Superseded: Applied in BALREL4 (11-16), then REFIT2-REFIT9; what is left is REFIT7-1.
 
 **REFIT2-1. Road re-fit after SKN1, ARROW1, ECONSK1, CARDPOW1** · Decide · Balance · asked 2026-11-17 · decided 2026-11-17
 - 17 road fights get legal enemy-deck changes (no Shield or Health change), each in band on two fresh seed sets at 400 games. The whole road with them, seed 7600: main 128/149 in band (was 121), 134 within 10 (130), 9 beyond 20 (10); side 78/81 (72). Maps 4-5 and 20-9 stay out (REFIT2-2). Fixes: docs/balance/refit2/refit2-fixes.jsonl.
@@ -1037,6 +499,57 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
   - b) Fen Mink 1/8 plus the Health cuts for 5-2, 4-3, 4-5
   - c) Leave them; decide REFIT1-1 first
 - **Default:** b
+
+**CHK1-1. Progression check: flag too-easy fights too?** · Decide · Balance · asked 2026-11-16 · decided 2026-11-19
+- The progression-deck tournament (checklist B5) flags fights 25+ points off either way: 18 too easy, 14 too hard. Too easy for a progression deck may be fine.
+  - a) Flag only fights too hard for the progression decks
+  - b) Keep flagging both ways (±25)
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Flag only fights too hard for the progression decks. The progression decks are stronger than the Map reference by design. Built: DEC19 (docs/evaluation-protocol.md).
+
+**CHK1-2. What counts as a wall (checklist B6)?** · Decide · Balance · asked 2026-11-16 · decided 2026-11-19
+- B6 says no PRO/BPRO fight may be a wall, but never defines one. Two readings: both the ladder decks and the Map reference win under 5% (6 decks today), or the ladder wins under the 15% band floor (66 decks).
+  - a) Ladder and Map reference both under 5%
+  - b) Ladder under 15%
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Ladder and Map reference both under 5%. The strict reading CHK1 already used. Built: DEC19 (docs/evaluation-protocol.md).
+
+**TF5-1. Armor 5 costs 2.9x Armor 1, not 10x** · Decide · Skills · asked 2026-11-16 · decided 2026-11-19
+- ENG9-9 said Armor 5 should cost about 10x Armor 1. Since the SKILL2/BAL12 re-measure it costs 2.9x (measured worth). The test now checks the measured price.
+  - a) Keep the measured price (2.9x)
+  - b) Set Armor 5 to about 10x as ENG9-9 said
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep the measured price (2.9x). Measured price; no change.
+
+**TF5-2. Siege Rhino priced for Map 23, sits on Maps 15/16** · Decide · Cards · asked 2026-11-16 · decided 2026-11-19
+- Siege Rhino's budget assumes Map 23, but it is on the Map 15 and 16 lists and in 12 decks there, so it is over budget where it is met.
+  - a) Move it off the Map 15/16 lists
+  - b) Price it for Map 15 (weaker card)
+  - c) Keep it as an early strong card
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): c) Keep it as an early strong card. Your 11-17 REDESIGN3 lists kept it on Maps 15 / 16 after this was asked; moving it would re-fit 12 road decks before 1.0.
+
+**TF5-3. Honey Badger Fury: unattainable but a reward** · Decide · Cards · asked 2026-11-16 · decided 2026-11-19
+- Honey Badger Fury is flagged unattainable, yet it is on 3 map lists and is 19-1's first-clear reward.
+  - a) Make it attainable (keep it as the 19-1 reward)
+  - b) Replace the 19-1 reward and take it off the lists
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Make it attainable (keep it as the 19-1 reward). A flag only (no stats); with the open unattainable-flags item. Build: DEC19-DATA (docs/design/dec19-builds-2026-11-19.json).
+
+**FOLD5-1. Does Lion's Mane Jelly resist Poison?** · Decide · Cards · asked 2026-11-16 · decided 2026-11-19
+- Your 11-06..11-13 live edits gave Lion's Mane Jelly and Venomlord Serpent a resist-Poison entry in a place the game ignores. Venomlord already resists Poison properly; Lion's Mane does not. Should it?
+  - a) Yes, Lion's Mane resists Poison
+  - b) No, drop it
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Yes, Lion's Mane resists Poison. Superseded: Done: Lion's Mane Jelly already resists Poison in cards.json.
+
+**UX4-1. Atmosphere tint dims the menus at night** · Decide · UI · asked 2026-11-16 · decided 2026-11-19
+- With Atmosphere set to Live, the night tint (#atmoTint) lies over the whole screen, so the top bar, small text and the splash fine print read dim. The battle board is meant to darken; the menus probably are not.
+  - a) Keep the tint under the top bar and dialogs (menus stay clear)
+  - b) Lighten the tint everywhere
+  - c) Leave it as it is
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep the tint under the top bar and dialogs (menus stay clear). Menus stay readable; the board still darkens; reversible. Build: DEC19-UI (docs/design/dec19-builds-2026-11-19.json).
 
 **SIDE5-1. 19-A-1 almost always won** · Decide · Balance · asked 2026-11-15 · decided 2026-11-15
 - With every other proposed fix in, side fight 19-A-1 reads 99% against a target of 90 (band 82-98). The only legal deck move that reaches the band swaps 2 Granite Ox Golem for 2 Obsidian Scorpion: 88 / 88 / 89 on three seed sets. Cost: with SIDE4-1, Obsidian Scorpion would be in 9 of Map 19's 10 fights. File: docs/balance/allfix/side19a1-fixes.jsonl.
@@ -1085,12 +598,196 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
   - c) Wait for the card redesign
 - **Default:** a
 
+**SKR1-1. Which named skills each map introduces** · Decide · Skills · asked 2026-11-14 · decided 2026-11-19
+- From your second pass (column J): all 43 rank 1s and 11 of the 13 rank 2s on Maps 0-20; 3-4 new skills on Maps 0-10, 1-2 on Maps 11-20; 54 in all. Helmet, Pitchfork and the rank 3s wait for later maps or one-offs. Cure, Nursing, Delivery, Electricity and Illuminate are treated as actions or damage types, not named skills. Table: docs/skill-intro-proposal-2026-11-14.md.
+  - a) This split (54 skills)
+  - b) Rank 1 only on Maps 0-20 (43)
+  - c) Change it (say which)
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: REDESIGN3 v2 set each map's focus skills (63 on Maps 0-20, MAP_FOCUS_SKILLS).
+
+**SKW2-1. Attack's worth depends on Health** · Decide · Budget · asked 2026-11-14 · decided 2026-11-19
+- SKW2: +1 Attack is worth about Health ÷ Attack (fragile units 0.8, sturdy 20+), not cap 1's flat 3. Cap 1 binds on all 472 cards; cap 2 (A·H) on none. SKW3 (no games): cap 2 alone ranks cards closer to their measured worth (0.32 vs 0.14; 0.37 vs 0.27), but puts 43 Maps 0-20 cards over budget. A softer cap 1 (square root of A·H) puts 22 over (mostly small Commons on Maps 0-5). Either needs a road check first.
+  - a) Cap 2 alone (cap 1 dropped), after a road check
+  - b) Square-root cap 1, after a road check
+  - c) Keep both caps as they are
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): c) Keep both caps as they are. For 1.0: a new cap shape puts 22-43 Maps 0-20 cards over budget right before release; revisit after 1.0.
+
 **EDGE1-1. Five main fights just outside band** · Decide · Balance · asked 2026-11-14 · decided 2026-11-15
 - At 1,000 games 2-4 (51%), 14-5 (60%) and 14-8 (28%) are too hard; 11-9 (71%) and 16-5 (75%) too easy, each 1-3 points out. The road tuner found one enemy deck change each (400 games, tune seeds): 2-4 2 Beaver Lumberjack to Riverworks Bastion, 58%; 14-5 2 Bramblewood Macaque to Jaguar Stalker, 67%; 14-8 1 Bramble Sprout to Jaguar Stalker, Shield 0, 39%; 11-9 2 Chipmunk Hoarder to Stonedrop Vulture, 59%; 16-5 +1 Mountain Hare, 69%. Fresh seeds, 1,000 games: 2-4 60.5, 11-9 57.4, 14-8 38.1, 16-5 70.8 in band; 14-5 61.2, still 1 under. Fixes in docs/balance/b1114-edge-fixes.jsonl.
   - a) Apply all five (14-5 may need one more step)
   - b) Apply some (say which)
   - c) Leave them; they are close
 - **Default:** a
+
+**REF7-1. Map 16 walls** · Decide · Balance · asked 2026-11-14 · decided 2026-11-19
+- Even decks built well from a player's collection fall short on 16-2, 16-3, 16-4 and 16-6. The cause is the enemy Cone-cutter Squirrel's economy and the enemy at level 4 against the player's 3. Measured, 200 games: 16-3 enemy level 4 to 3 goes from 46% to 68% (target 68). Cutting Squirrel copies fixes each fight too (table in docs/balance/ref7/ref7-2026-11-14.md).
+  - a) Cut Squirrel copies per the table
+  - b) Enemy level 3 on 16-3 and 16-4
+  - c) Keep it as a deliberate step
+- **Default:** b
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: After REFIT1-REFIT9 no Map 16 fight is 20+ off (none in REFIT7-1).
+
+**REF7-2. Windfall on Map 18** · Decide · Balance · asked 2026-11-14 · decided 2026-11-19
+- Windfall drives every Map 18 wall: switching it off adds 14-42 points in every fight. 18-4 (33% vs target 72) can only be fixed through it (79% with Windfall off); the best level, Health, Shield or card change reaches 54%. Note: the Map reference deck finds 18-4 too easy (BAL42-1), so the two decks disagree.
+  - a) Windfall off on 18-4
+  - b) Windfall off on all of Map 18
+  - c) Keep it; accept 18-4 at about 33%
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: 18-4 is now too easy (95%, target 62; REFIT7-1), so Windfall off would push it further.
+
+**REF7-3. 19-5 has no single fix** · Decide · Balance · asked 2026-11-14 · decided 2026-11-19
+- 19-5 reads 18.5% against a target of 60 for well-built player decks. Taking out all 3 Obsidian Scorpions reaches 44.5%; no level, Health or Shield change does better. One Scorpion is also behind 19-1 (68 to 92.5% without it).
+  - a) Take out the Scorpions and lower the level (two changes)
+  - b) Redesign the fight in your card pass
+- **Default:** b
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: After REFIT5-REFIT9 19-5 is no longer 20+ off (not in REFIT7-1).
+
+**SKW1-1. Trigger weights** · Decide · Budget · asked 2026-11-14 · decided 2026-11-19
+- SKW1 measured each trigger's worth against On Spawn. It is about 0.5-0.75 x how often the trigger fires per copy played. Today's weights run high: On Kill 1.33 (measured 0.42), On Death 0.76 (0.26), On Enemy Spawn 2.86 (0.08). The pair prices still looked right only because the action values (SKW1-2) are low and the two errors cancel. Details: docs/balance/skw1/skw1-2026-11-14.md.
+  - a) Adopt the measured table
+  - b) Rule: weight = 0.6 x fires per copy played
+  - c) Keep
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): c) Keep. For 1.0: re-basing triggers with actions (SKW1-2) re-prices every card; the two errors cancel today. Revisit after 1.0.
+
+**SKW1-2. Action values** · Decide · Budget · asked 2026-11-14 · decided 2026-11-19
+- Measured worth of one On Play firing: Deal 2 is 3.1 (the budget implies 0.7), so about 1.5 a point against 0.4; +2 Health, Shield 2 and Heal 2 are 2-3x their prices; Draw 1 is lower (2.0 against 3.4). Changing this means changing SKW1-1 with it, then a re-fit of every card's price.
+  - a) Re-base actions with SKW1-1, then re-fit
+  - b) Keep
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): b) Keep. For 1.0, with SKW1-1: no whole-budget re-base before release.
+
+**SKW1-3. Pairs that do nothing, and repeating Draw** · Decide · Budget · asked 2026-11-14 · decided 2026-11-19
+- Some pairs can never do anything: a self action On Death, or Heal On Spawn at full Health. Repeating Draw saturates: On Turn Start Draw 1 measured 4.3 against a price of 12.3. Proposal: those pairs cost 0, and repeating Draw is capped at about 1.6x its On Play worth.
+  - a) Yes
+  - b) No
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Yes. A price correctness fix; no card stats change. Build: DEC19-BUDGET2 (after 1.0) (docs/design/dec19-builds-2026-11-19.json).
+
+**SKW1-4. Four skills priced off their worth** · Decide · Budget · asked 2026-11-14 · decided 2026-11-19
+- Over seven contexts: Dry costs 4 but measured 0.2 (it only matters on heat or sandstorm fields); Fork 4.95, measured 3.1; Reach 1, measured -0.4; Diurnal 1 costs 1.14 but measured 2.3 (a fight with no day/night rule is day all match). Guardian is below zero everywhere; Keen Eye never changed a game.
+  - a) Re-price by measure and home share
+  - b) Keep
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Re-price by measure and home share. Prices only, by measure; no card stats change. Build: DEC19-BUDGET2 (after 1.0) (docs/design/dec19-builds-2026-11-19.json).
+
+**SKW1-5. Attack weight** · Decide · Budget · asked 2026-11-14 · decided 2026-11-19
+- SKW2 measured it properly (bramble 15, Maps 3/8/13/18, 17 commons, 400k games): +1 Attack = 2.91 Health [2.74-3.09], so the budget's 3 holds. SKW1's 4.3-9.9 came from sturdy carriers. Cost doesn't change it. +1 Shield = about 1.0 Health (budget 0.8). The real miss is the shape: see SKW2-1.
+  - a) Measure it properly first (done: SKW2)
+  - b) Keep 3
+- **Default:** b
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): b) Keep 3. SKW2 measured +1 Attack = 2.91 Health.
+
+**SKW1-6. Named-skill cap** · Decide · Budget · asked 2026-11-14 · decided 2026-11-19
+- A player meets 151 named skills by Map 20; your 25-30 is passed at Map 1. 101 of them sit on a single card, and Map 11 alone adds 49. The SKW1 doc lists near-duplicate groups (e.g. Poison 2 / Bleed 2 measured 5.3 / 5.6; Flying / Evasive 3.45 / 3.34) and marks the skills that carry theme. No cuts are proposed.
+  - a) Set a cap and merge from the list
+  - b) No cap
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: SKAUD1 (11-18) merged 71 skills and removed 82.
+
+**UI54-1. Codex World 1 roll: show the map total?** · Decide · UI · asked 2026-11-14 · decided 2026-11-19
+- World 1 is Maps 0-40, but only Maps 0-24 exist yet, so its roll reads "x of 25 reached".
+  - a) Keep "x of 25" (grows as maps are added)
+  - b) Show only maps reached
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep "x of 25" (grows as maps are added). As built.
+
+**UI54-2. Names for the worlds in the Codex?** · Decide · UI · asked 2026-11-14 · decided 2026-11-19
+- The world rolls say only "World 1 · Maps 0-40", maps reached and fights cleared. No lore was invented.
+  - a) You name World 1 and World 2 (lore bible)
+  - b) Keep "World 1", "World 2"
+- **Default:** b
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): b) Keep "World 1", "World 2". No lore invented; you can name the worlds in the lore bible any time.
+
+**UI54-3. Codex map scrolls: what New! means** · Decide · UI · asked 2026-11-14 · decided 2026-11-19
+- In a map's scroll, New! marks cards whose first map list is this map; the rest show as "+N from earlier maps". (The admin Map cards window uses your review's New!/Carried flags instead.)
+  - a) First map list that holds the card (as built)
+  - b) Use your review's New! flags
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) First map list that holds the card (as built). As built.
+
+**FIX11-1. Cards above their map's rarity cap** · Decide · Balance · asked 2026-11-13 · decided 2026-11-19
+- These listed cards are rarer than their map's fights may hold: Dolphin Knight (Rare) on Maps 2 and 4 (cap Uncommon, from before your 11-13 picks); from your 11-13 picks Phoenix Mushrooms (Epic) on Map 7 (cap Rare), Tide Spirit (Very Rare) on Map 9 (cap Rare), Caldera Snow Leopard (Super Rare) on Map 19 (cap Very Rare).
+  - a) Allow them as exceptions
+  - b) Move each to a map whose cap fits
+  - c) Lower their rarity
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Allow them as exceptions. Your picks; REDESIGN3 kept them.
+
+**FIX11-2. Three card pairs with identical stats** · Decide · Balance · asked 2026-11-13 · decided 2026-11-19
+- Same cost, wait, Attack/Health and skills, both cards now on the lists: Plains Zebra / Snowshoe Hare (0-cost 1/7 Evasive), Village Miller / Farm Dog (0-cost 2/7, no skills), Pine Marten / Fishing Cat (1-cost wait 1, 1/14 Pounce 2).
+  - a) You retune one of each pair in your redesign
+  - b) Leave them identical
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: REDESIGN3 retuned them; no pair is identical now (Zebra 1/9 vs Hare 1/7, Miller 2/6 Pitchfork vs Farm Dog 2/7, Marten 1/14 vs Fishing Cat 1/15).
+
+**FIX11-3. Fight 8-A-3 holds both bats** · Decide · Balance · asked 2026-11-13 · decided 2026-11-19
+- Echo Screecher and Fruit Bat are the two-card bat family; the family rule says one per fight. 8-A-3 holds both.
+  - a) Swap one out in the LIST1-2 re-card
+  - b) Allow it
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: Done: 8-A-3 holds Echo Screecher only.
+
+**UI52-1. Should a tutorial reset replay the Map T fights?** · Decide · UI · asked 2026-11-13 · decided 2026-11-19
+- Profile → Tutorials resets the coach tips and lessons. It leaves the tutorial-fight done flags alone, because clearing them locks tabs again until the fights are replayed.
+  - a) Tips and lessons only (as built).
+  - b) Also replay the T fights (tabs lock until done).
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Tips and lessons only (as built). As built.
+
+**UI52-2. Shop and Premium on the places strip: always or only in the shop?** · Decide · UI · asked 2026-11-13 · decided 2026-11-19
+- Shop and Premium are now places on the shared strip (like Forge, Nest, Codex), shown on every page.
+  - a) Always on the strip (as built).
+  - b) Only while you're in the shop.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: NAV1 (11-17) made Shop a page with Shop / Premium tabs; the strip is the Camp bar.
+
+**UI51-1. Season crossfade on the map: keep it?** · Decide · UI · asked 2026-11-13 · decided 2026-11-19
+- The conquest paw prints are off. Moving between seasons on the map still crossfades the colours.
+  - a) Keep the crossfade.
+  - b) Turn it off too.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep the crossfade. As built.
+
+**LIST1-1. Granite Ox Golem is NEW! on two side maps** · Decide · Balance · asked 2026-11-13 · decided 2026-11-19
+- You picked Granite Ox Golem as an own card for both Volcano Lair (opens after Map 20) and Basalt Foundry (opens after Map 23 today). A card belongs to one map only. Volcano Lair opens first, so it would own the Golem. Basalt Foundry then has 2 own cards, and Claude's pick for its third is Malachite Golem (Shell, a skill its Carried cards already have).
+  - a) Volcano Lair keeps it; Basalt Foundry takes Malachite Golem
+  - b) Basalt Foundry keeps it; Volcano Lair needs a third card
+  - c) Keep it on both
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Volcano Lair keeps it; Basalt Foundry takes Malachite Golem. One card, one map; Basalt Foundry opens after Map 23. Build: DEC19-DATA (docs/design/dec19-builds-2026-11-19.json).
+
+**LIST1-2. Fights to re-card after your 11-13 picks** · Decide · Balance · asked 2026-11-13 · decided 2026-11-19
+- Your 11-13 picks are now the lists. Some fights no longer match them: 24 dropped cards are still in fights (they sit on SPECIAL so the fights stay legal), 26 road fights field more than one copy of a card that is now Carried (K14), a few PRO decks use dropped cards, and 2 bosses' auto leaders changed.
+  - a) Re-card those fights next (SIDE2 for the side maps, a SKIR pass for the main maps)
+  - b) Leave them as they are
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: FOLD6 / REDESIGN3 lists and the REFIT1-REFIT9 re-fits re-carded the road.
+
+**LIST1-3. Stone cards before Map 21** · Decide · Balance · asked 2026-11-13 · decided 2026-11-19
+- Two of your picks break the rule of no Stone before Map 21: Phoenix Mushrooms on Map 7 (an Epic that costs Stone; the road ladder has Epics from Map 22) and Pumice Beetle on Map 20 (it makes Stone). The lists keep them for now.
+  - a) Keep them (an exception)
+  - b) Move them to Map 21+ lists
+  - c) Change the cards (you design)
+- **Default:** b
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: REDESIGN3 changed both: Phoenix Mushrooms costs no Stone, Pumice Beetle makes Lumber.
+
+**AUDIT1-1. Start locked while a cloud save loads** · Decide · Cloud · asked 2026-11-13 · decided 2026-11-19
+- Signed in, the front screen's Start waits until your cloud save has loaded, so fresh play can't be overwritten by it. On a stalled connection that wait has no end until the browser gives up (minutes). Unlock Start after 30 s and load the save later?
+  - a) Keep waiting (as built).
+  - b) Unlock after 30 s; a save that arrives later asks before replacing.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep waiting (as built). As built; never risks overwriting a save.
+
+**SIDE2-1. Side bosses the list can't make hard enough** · Decide · Balance · asked 2026-11-13 · decided 2026-11-19
+- BPRO-1 in the hardest fight, 400 games: Eye of the Volcano 69% (target 36), Basalt Foundry 51% (target 40). WHATIF1 measured (b): Basalt Foundry falls to 31-33%, in band at its low edge. Eye of the Volcano doesn't change (its 10-card size, not K14, is the limit), so only (a) can fix it. Under SIDE2-2 (c) Basalt Foundry reads 39-41%.
+  - a) Add one stronger NEW! card each (theme pick)
+  - b) Let a side boss hold Carried cards at 2 copies
+  - c) Leave them easy for now
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: Eye of the Volcano (20-A-4) is in REFIT7-1; Basalt Foundry opens after Map 23.
 
 **SIDE2-2. Thin side lists lock many side decks** · Decide · Balance · asked 2026-11-13 · decided 2026-11-15
 - With few own cards and K14 (Carried 1 copy each), many side decks have no room: 0-B-3, 2-A-6 and 14-A-5 can't be built; Clovermead, Lilypad Reach and The Canopy are stuck. Of 77 side fights in band: today 39 (mean gap 11.8); (a) 48 (9.4); (c) 47 (10.3); (a)+(c) 53 (7.9), 8 beyond 20, about 51 on fresh seeds. (a)+(c) builds 0-B-3 and 14-A-5 in band; 2-A-6 stays too hard. Bosses 10-A-5 and 18-A-9 still need SIDE2-4. Four seed sets, SIDE2-2 e with SIDE2-4 e: side fights 54/77 in band, 60 within 10, 6 beyond 20 (now 38/42/13); docs/balance/side2p/.
@@ -1101,6 +798,13 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
   - e) Both a and c
 - **Default:** e
 
+**SIDE2-3. Re-price Chained now that chains soak damage?** · Decide · Balance · asked 2026-11-13 · decided 2026-11-19
+- ENG-RC1 made each chain 1 Armor that breaks as it soaks, worth about a Shield N that chainedMult doesn't count. Chained Binturong, the only Chained card, has been on no list since 11-02, so no road fight holds it: the 400-game road read of Basalt Foundry and Maps 0-20 is unchanged.
+  - a) Re-price when a Chained card is back on a list
+  - b) Re-price now (the chains as Shield N)
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Re-price when a Chained card is back on a list. No Chained card is on a list.
+
 **SIDE2-4. Three side bosses stay too hard** · Decide · Balance · asked 2026-11-13 · decided 2026-11-15
 - Too hard today (boss band 30-49): The Old Bramble 0-B-4 22%, The Sunken Depths 10-A-5 17%, The Pale Desert 18-A-9 26%. With SIDE2-2 e: Old Bramble in band as is (41%); Sunken Depths Health 16 to 13 gives 38%; Pale Desert level 4 to 3 gives 37% (or Shield 41 to 29). No single rule fits all three. 2-A-6 (band 52-68): Health 17 to 8 gives 59-62%; no deck move works. Four seed sets, SIDE2-2 e with SIDE2-4 e: side fights 54/77 in band, 60 within 10, 6 beyond 20 (now 38/42/13).
   - a) Lower their bramble Health (the Pale Desert: its Shield)
@@ -1110,11 +814,182 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
   - e) With SIDE2-2 e: Old Bramble as is, Sunken Depths Health 13, Pale Desert level 3, 2-A-6 Health 8
 - **Default:** e
 
+**FX9-1. More cards fly to the Graveyard?** · Decide · UI · asked 2026-11-13 · decided 2026-11-19
+- A card you pitch now arcs into the Graveyard (note 7). Cards that get there another way (a field card used up, Feed, overdraw) still jump straight to the pile. Make those fly too?
+  - a) Yes, every card flies there.
+  - b) Pitches only (as built).
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Yes, every card flies there. One consistent look; reversible. Build: DEC19-UI (docs/design/dec19-builds-2026-11-19.json).
+
+**UIFX1-1. Place entrances: full once a session** · Decide · UI · asked 2026-11-13 · decided 2026-11-19
+- The shop tent, Premium pavilion, Nest, Codex, Camp, Stomping Grounds and Inventory entrances play in full (0.8-0.9 s) on the first visit each session, then a 0.4 s short take (your 10-08 note: "instantly transit you"). A tap skips. Or play the full take every visit?
+  - a) Full once a session (as built).
+  - b) Full every visit.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Full once a session (as built). As built.
+
+**ENG-RC1-1. Ritual hides from the enemy only** · Confirm · Rules · asked 2026-11-13 · decided 2026-11-19
+- A Ritual unit (The Sixfold) can't be attacked or targeted by the enemy; swings into its slot go on to the bramble. Your own buffs and heals can still reach it. Confirm, or should it be out of reach for both sides?
+  - a) Enemy only (as built).
+  - b) Both sides.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Enemy only (as built). As built.
+
+**ENG-RC1-2. Chained N = N chains** · Confirm · Rules · asked 2026-11-13 · decided 2026-11-19
+- Chained Binturong (Chained 4) starts with 4 chains = 4 Armor; each point of a blow breaks one chain before Armor counts, so small hits still free it. The other reading: 1 chain = 1 Armor that breaks at N damage. Its budget (chainedMult) doesn't yet count the soak.
+  - a) N chains (as built).
+  - b) One chain, breaks at N.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) N chains (as built). As built.
+
+**SIDE1-1. The Old Bramble: your 6 own cards, the limit is 3** · Decide · Balance · asked 2026-11-12 · decided 2026-11-19
+- You picked 6 own cards there (Ent, Elder Willow, Shimmerwing Stag, Strangler Vine, Thorn Shrike, Hedgehog Herbalist); a side map takes 3 and 1-3 skills. The list takes Ent (its reward), Elder Willow and Thorn Shrike: Fog, Delivery, Bleed. Strangler Vine has no source, so no player can own it; Hedgehog Herbalist is The Sunken Grove's reward; Shimmerwing Stag adds a 4th skill. Your flags are unchanged.
+  - a) Keep Claude's three
+  - b) You pick three in Map cards
+  - c) Raise The Old Bramble's limit
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: SKIR3 and REDESIGN3 re-picked The Old Bramble's list.
+
+**SIDE1-2. Three side-map rewards miss their map's theme** · Decide · Balance · asked 2026-11-12 · decided 2026-11-19
+- A fight's reward must stay on its list, so each takes an own-card slot and brings its skills: Hedgehog Herbalist (The Sunken Grove 5-A-4; a forest hedgehog you picked for The Old Bramble), Wound Reaver (The Aerie Vault 11-A-4; a volcanic lizard in the nests), Greenland Shark (The Ice Hollow 17-A-4; a deep-sea shark).
+  - a) Phase B gives each fight a reward of its theme (Herbalist moves to The Old Bramble)
+  - b) Keep them
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: REDESIGN3 lists: Hedgehog Herbalist is on The Old Bramble now.
+
+**SIDE1-3. Do Flying, Tide and Nocturnal count toward 1-3 skills?** · Decide · Balance · asked 2026-11-12 · decided 2026-11-19
+- Phase A counts a side map's skills on its own cards, but not plain Flying, Tide, Diurnal, Nocturnal (the two-skill rule counts them half) or Baby cards. Counting them puts 7 side maps at 4-5 skills (The Old Bramble, Smugglers' Grotto, The Sunken Grove, The Glimmer Depths, The Aerie Vault, The Ice Hollow, Eye of the Volcano).
+  - a) As built: not counted
+  - b) Count them
+  - c) Count them half
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) As built: not counted. As built.
+
+**SIDE1-4. Main maps: 1-3 skills too?** · Decide · Balance · asked 2026-11-12 · decided 2026-11-19
+- Every main map of 0-21 shows 4-14 skills on its own cards (8-10 cards each; Map 7 the most). docs/balance/card-power-2026-11-12.md names the odd card out on each. Strict 1-3 there means a card pass or new cards.
+  - a) Side maps only for now
+  - b) Main maps at most 5, Claude proposes swaps
+  - c) Main maps 1-3 too
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: REDESIGN3 v2 set each main map's focus skills.
+
+**DUNGEON1-1. Partial dungeon rewards: my reading of note 21** · Confirm · Group dungeon · asked 2026-11-12 · decided 2026-11-19
+- Your note: "%completed * 0.5 ... If only 1-3rd map completed, 0.25". Built: f = parts won / parts. All parts: full rewards. 1-3 parts won: f x 0.25. More, short of all (4 of 5): f x 0.5. So 4/5 pays 40%, 3/5 15%, 2/5 10%, 1/5 5%. The other reading of "1-3rd" is "a third or less" (f <= 1/3: x 0.25, else x 0.5: 3/5 would pay 30%). One table in bramblewood-coop.js (RUN_PAY_BANDS).
+  - As built (1-3 parts: x 0.25)
+  - A third or less: x 0.25, otherwise x 0.5
+  - Other figures (say which)
+- **Default:** As built (1-3 parts: x 0.25)
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): As built (1-3 parts: x 0.25). Your note read as written; one table to change.
+
+**DUNGEON1-2. A second multiplayer dungeon: the Mire Warren (Admin preview)** · Decide · Group dungeon · asked 2026-11-12 · decided 2026-11-19
+- To show the switcher and a room built from data, I added the Mire Warren: 3 parts in the Gnawed's swamp tunnels (frogs and shrews, rats and leeches, then the Mire Matriarch, a Gnawed Matriarch scaled as the Tidewarden is). Admin Mode only, no map spot, not tuned. Giving it a map number (data: mapNumber) adds its spot and opens it to players.
+  - Keep as a preview
+  - Place it on a map (say which)
+  - Rename or retheme it
+  - Remove it
+- **Default:** Keep as a preview
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Keep as a preview. Admin only; 1.0 has one co-op dungeon.
+
+**DUNGEON1-3. How the next part's enemies arrive** · Confirm · Group dungeon · asked 2026-11-12 · decided 2026-11-19
+- Built: 3-5 units (seeded) from the next part's deck, each with at least Wait 1 (a Wait-0 card too), every second one in the enemy's middle row, the boss first on the boss part; no On Spawn for them (they came during the free turns, as a daily dungeon's next bramble). The enemy's survivors stay. The CPU still plays only into its front row; its middle row fills from these arrivals.
+  - As built
+  - Wait-0 cards arrive ready
+  - The CPU also plays into its middle row each turn
+  - Clear the enemy's survivors between parts
+- **Default:** As built
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): As built. As built.
+
+**UIFX2-1. Map vignette: the place's season or the calendar month** · Decide · Map · asked 2026-11-13 · decided 2026-11-19
+- Built (UIFX2, your 00:03 note): every map has a season or biome (Maps 0-1 spring, 2-3 coast, 4-5 summer, 6-7 autumn, 11 winter, 18 desert, 19-20 ash ...), with a change when you move between seasons, a travel beat and a light ambient. The map's edge tint used to follow the real calendar month (2026-10-07); it now follows the place, so a desert never wears November's autumn rim.
+  - a) As built: the place's season.
+  - b) The calendar month on spring / summer / autumn / winter maps, the place elsewhere.
+  - c) The calendar month everywhere (the ambient stays by place).
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) As built: the place's season. As built.
+
+**BAL43-1. Thistlewood 1-3 / 1-4 still too easy at 85 / 80** · Decide · Road · asked 2026-11-10 · decided 2026-11-19
+- Burrow Line 96% (target 85) and Sapper Hedge 94% (80), 200 games. Every legal deck from their lists reads 87-100%; the Shield is at the rule and their leader is hidden.
+  - a) You add one slightly stronger Thistlewood common to 1-3 / 1-4; Claude retunes.
+  - b) Raise their targets to about 93 / 88 (a warm-up map).
+  - c) Leave them.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: 1-3 / 1-4 are no longer 20+ off after the REFIT re-fits (not in REFIT7-1).
+
+**PUFF1-1. A spore-puff card skill?** · Decide · Cards · asked 2026-11-12 · decided 2026-11-19
+- You asked for "maybe a puff cloud skill for cards". The dark lime puff now plays on Spore Cloud sleepers and Puffball Bombardier hits. A new skill would need pricing in the budget before any card gets it.
+  - a) No: keep the puff a visual only.
+  - b) Spore puff (attack): 50% to put the target to sleep for a round.
+  - c) Spore puff (defence): when hit, the attacker gets Poison 1.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) No: keep the puff a visual only. No new skill to price.
+
+**SKIR3-1. Six main maps have no Guardian on their list** · Decide · Balance · asked 2026-11-12 · decided 2026-11-19
+- With your 11-12 picks, Maps 3, 10, 11, 15, 16 and 17 list no defender (Guardian / Bulwark / Taunt), which BAL9's JJ28 asks of Maps 1-19. Claude's Guardian adds (Grey Seal Bull on Map 10, Alpine Marmot on Map 11) had no room under NEW!.
+  - a) You pick a Guardian on each (it may replace one of your picks)
+  - b) Claude adds a carried Guardian where Carried has room
+  - c) Drop JJ28
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: REDESIGN3 lists (11-17); defenders per map are in ROLE1's role mix.
+
+**SKIR3-2. Side maps cut to 3 own cards: 75 cards left play** · Decide · Balance · asked 2026-11-12 · decided 2026-11-19
+- Side maps now list 3 own cards (your 1-3). Their other own cards were on no other list, so 75 cards left play, among them side-map set pieces (Kraken Spawnling, Komodo Warlord, Permafrost Mammoth, Obsidian Lich). The full list is in docs/balance/skir3/drop-list-2026-11-12.md.
+  - a) Keep
+  - b) Move some to a main map's list (under its limits)
+  - c) Raise the side-map NEW! default to 5
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep. No change.
+
+**SKIR3-3. Two challenge fights lost their boon's cards** · Decide · Balance · asked 2026-11-12 · decided 2026-11-19
+- 13-4 (Wild Rage) and 20-4 (Restless Dead) need half their deck to hold the boon's theme. Map 13's list has one Wild Rage card; no list up to Map 20 has an undead card. Both fights now play with the boon off; nothing else changed.
+  - a) Keep the boon off
+  - b) Add a theme card to the map
+  - c) Give the fight another boon
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep the boon off. No change.
+
+**SKIR3-4. Over-limit picks pile up on Maps 18-21** · Decide · Balance · asked 2026-11-12 · decided 2026-11-19
+- A pick cut where it is NEW! but listed again later becomes NEW! on that later map. Maps 12-18 pushed cards forward, so Maps 19-21 dropped 3-5 of your picks each. One pick left play: Nightshade Moth (Map 17).
+  - a) Keep
+  - b) Raise NEW! on Maps 18-21 by 1-2
+  - c) You choose the cuts on those maps
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: REDESIGN3 re-picked the Maps 18-21 lists.
+
+**SKIR3-5. Carried top-ups on four side maps** · Decide · Balance · asked 2026-11-12 · decided 2026-11-19
+- The Old Bramble, The Ice Hollow, The Pale Desert and Basalt Foundry could not build their fights from 3 own cards (K14 holds carried cards to 1 copy). Claude topped Carried up to 8; The Old Bramble got 5 of its old cards plus 3 Map 0 cards (House Cat, Earthworm, Farm Dog).
+  - a) Keep
+  - b) You pick the carried cards
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep. No change.
+
+**SKIR3-6. 15 first-clear cards changed** · Decide · Balance · asked 2026-11-12 · decided 2026-11-19
+- Fifteen fights paid a pack card that is no longer on its map's list. Each now pays the nearest card on that list (GD-5), as LISTFIX3 did. Examples: 10-3 Giant Clam (was Parrotfish), 13-4 Pine Marten (was Berserker Boar), 20-4 Vampire Roost (was Cinder Skeleton).
+  - a) Keep
+  - b) You choose per fight
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep. No change.
+
+**SKIR3-7. Maps 13, 16 and 19 miss the road curve on the 11-12 lists** · Decide · Balance · asked 2026-11-12 · decided 2026-11-19
+- After a night of deck and Shield moves, Map 13 has 2 of 8 fights in band (its fights are too easy: the list has few strong cards), Map 16 3 of 7 and Map 19 3 of 6 (too hard). Their Carried counts have room (13: 6 of 8, 16: 8 of 10, 19: 9 of 12).
+  - a) Claude adds 1-2 carried cards there (admin adds, within Carried) and re-tunes
+  - b) You re-pick those maps
+  - c) Accept for now
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: REDESIGN3 lists and REFIT1-REFIT9; none of Maps 13, 16 and 19's fights is in REFIT7-1.
+
 **NET1-1. Apply the database speed-ups** · Decide · Network · asked 2026-11-12
 - supabase/proposed/20261112_net1_scale.sql: 5 indexes, 19 security rules rewritten to check the player once per query (not once per row), 3 duplicate rules dropped, and card_overrides' updated_at set by the server clock (an admin with a slow clock is then never missed). No rows change. Say "apply it" to run it.
   - a) Apply it.
   - b) Not yet.
 - **Default:** a
+
+**NET1-3. Next network steps** · Decide · Network · asked 2026-11-12 · decided 2026-11-19
+- Three changes would cut load further: open realtime only on the Friends, Arena and co-op screens; split index.html into cached files so a release doesn't re-download all 5 MB; let the server pick ghost opponents (a sign-in reads up to 3,000 rows).
+  - a) Do all three next.
+  - b) Pick some.
+  - c) Later.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Do all three next. Engineering only; the page split is already PERF6's next step; the server ghost pick goes to supabase/proposed. Build: NET2 (docs/design/dec19-builds-2026-11-19.json).
 
 **PICKS1-1. Maps 0-11 over your card limits because of Claude's adds** · Decide · Balance · asked 2026-11-11 · decided 2026-11-12
 - Claude's admin adds (32 cards on Maps 0-11, put on lists to keep road fights in band: UI47, SKIR2, LISTFIX3) count as Yes, so all 12 maps are over their NEW! limit and 7 over Carried. Without them, only Maps 0-3 and 8 are over, by 1 each. Pressing No on an admin add now sticks (it did not before).
@@ -1123,11 +998,268 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
   - c) You press No on the adds you don't want; Claude re-fits after.
 - **Default:** c
 
+**LISTFIX3-1. New first-clear rewards for four fights** · Decide · Balance · asked 2026-11-11 · decided 2026-11-19
+- 5-2 paid Sphagnum Vole, a card you cut; it now pays Raft Spider, your Map 5 Yes card nearest it (Common, 1 Lumber, Wait 1, 3/8), already in 5-2's deck. No other Cure card is on your Map 5 picks (CONTENT3 C1 wanted one). Three rewards were off their map's new list (a first-clear card must be on it, GD-5): 1-4 Field Mouse -> Bramble Sprout, 7-2 Dung Beetle -> Fungus Gnat Cloud, 10-5 Kraken Spawnling -> Sea Bass.
+  - a) Keep.
+  - b) Name other cards.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep. No change.
+
+**LISTFIX3-2. Cards that left play with your Map cards picks** · Decide · Balance · asked 2026-11-11 · decided 2026-11-19
+- These 17 were on a list before SKIR1 and are on none now, so no pack, fight or reward gives them: Raven Scout, Alpha Howler, Pelican Diver, Frost Hare Sprinter, Tidepool Trapper Crab, Lunar Howler, Lion's Mane Jelly, Supernova Jelly, Spitting Spider, Weaver Bird, Water Vole, Woodcock Lookout, Marsh Harrier, Cane Toad, Badger Stonemason, Prospector Mole, Nudibranch. The two jellyfish were your CONTENT7-1 wish.
+  - a) Fine, they stay out.
+  - b) Name the ones to place, and where.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Fine, they stay out. Your 11-17 REDESIGN3 lists came after this and left them out.
+
+**LISTFIX3-3. Map 16 lost its weak card** · Decide · Balance · asked 2026-11-11 · decided 2026-11-19
+- 16-5 and 16-6 got much harder once Dhole Runner left Map 16 (49% vs target 66; 31% vs target 60). That cut was mine (11-05, a second dhole on the list), not yours, and Map 16's list is still my suggestion. Putting it back returns both fights to their earlier decks (about 60% each).
+  - a) Put Dhole Runner back on Map 16.
+  - b) Allow 16-6's Shield 47 -> 0 instead (reads 49%).
+  - c) Leave both fights hard.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: No Map 16 fight is 20+ off after the REFIT re-fits; Dhole Runner is unattainable.
+
+**LISTFIX3-4. Two of your cuts still on lists you have not picked** · Decide · Balance · asked 2026-11-11 · decided 2026-11-19
+- You cut Caiman Hatchling (Maps 5 and 9) and Phoenix Fledgling (Maps 19 and 20-B) on 11-01. My suggestions still list Caiman on side map 5-A and Phoenix on Map 20. Removing them means re-fitting the fights that use them.
+  - a) Take them off those lists too.
+  - b) Keep them there.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: REDESIGN3 lists: Caiman Hatchling is unattainable, Phoenix Fledgling sits on Map 22.
+
+**SKIR2-1. Keep SKIR2's list adds** · Decide · Balance · asked 2026-11-11 · decided 2026-11-19
+- No card stats changed. Rewards made obtainable: Sphagnum Vole (Map 5), Parrotfish, Coral Reef Shark (10), Gilded Roadwarden (15), Snow Ermine, Harbor Seal, Snow Bunting Archer (17). Guardians (JJ28): Grey Seal Bull (10), Shepherd (17), Marula Elephant (18), Stalactite Pill Bug (19). Fights: Planarian Splitter (7), Swift Fox, Tasmanian Devil, Bramblewood Lynx (13).
+  - a) Keep.
+  - b) Drop the ones you name.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: SKIR3 and REDESIGN3 replaced these lists.
+
+**SKIR2-2. Caves & Alcoves needs a second weak card** · Decide · Balance · asked 2026-11-11 · decided 2026-11-19
+- 8-2 reads 66% (target 85) and 8-7 46% (target 60). Map 8's only weak card, Stalactite Pill Bug, is already in 5 of 8 fights, the most the rule allows. With it, 8-2 reads about 80%.
+  - a) Allow the Pill Bug in 6 of Map 8's fights.
+  - b) You add a weak Map 8 card.
+  - c) Leave both.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: 8-2 is no longer 20+ off; 8-7 is in REFIT7-1.
+
+**SKIR2-3. Fights no legal deck can fix** · Decide · Balance · asked 2026-11-11 · decided 2026-11-19
+- 2-1 (63%, target 90) and 2-2 (62%, target 80): every legal Pebble Beach deck reads about 60%. 17-8 (23%, target 40): its Walrus Icebreaker leader and the frost decide it; every deck reads 0-23%. Side 10-A-4 reads 0%.
+  - a) Allow a Health or Shield change on these.
+  - b) Leave them.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: HPCUT1 and REFIT5-REFIT9; what is left (2-2, 17-8) is in REFIT7-1.
+
+**SKIR2-4. First-clear cards missing from their fight** · Decide · Balance · asked 2026-11-11 · decided 2026-11-19
+- 27 of 50 fights that pay a first-clear pack card no longer field that card (SKIR1's rebuild could not see the table). Players win a card they never met in that fight.
+  - a) Put each back in its fight in the next road pass.
+  - b) Leave it.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: The deck rules check first-clear cards since BALREL1 (11-15), and every REFIT keeps them.
+
+**CONTENT19-1. Sea Bass: 3/6, not 3/7** · Decide · Cards · asked 2026-11-11 · decided 2026-11-19
+- You asked for a Sea Bass on Map 10. A Pack 2 card is priced at the pack's first map (Map 7), where 3/7 is over budget; 3/6 fits (20.8 of 21.5).
+  - a) Keep 3/6.
+  - b) 3/7, priced at Map 10 as an exception.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep 3/6. Keeps the card as is.
+
+**PERF2-1. More effect savings (small look changes)** · Decide · Performance · asked 2026-11-11 · decided 2026-11-19
+- PERF2 cut a fight's main-thread time by 61% and effects by 76% with no visible change. Three further cuts change the look slightly: Auto-lower steps down twice (High to Low) instead of stopping at Medium; the card-name scroll becomes a PNG strip instead of SVG (an art change); card filter flashes and the dragon's blend layer become plain overlays.
+  - a) None for now.
+  - b) Auto-lower twice only.
+  - c) All three.
+- **Default:** b
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): b) Auto-lower twice only. Smoother on slow machines; one step more of a setting the player can turn off. Built: DEC19 (arena_app.js FxAutoLower).
+
+**THEME8-1. When the Ice Hollow opens** · Decide · Maps · asked 2026-11-11 · decided 2026-11-19
+- The Ice Hollow (side map of Map 17, Wolfsbane Tundra) opens after Map 21 today. Opening it after Map 17 brings its monsters (Yeti Chieftain, Permafrost Mammoth, Beluga ...) into the Maps 0-20 road, so they would be tuned with it.
+  - a) Keep: after Map 21.
+  - b) After Map 17.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep: after Map 21. No change.
+
+**THEME8-2. Monster leaders stay on their main fights** · Decide · Maps · asked 2026-11-11 · decided 2026-11-19
+- Some monsters THEME8 placed in side maps lead main fights today: Komodo Warlord (18-6), Yeti (19-6), Cave Warlord (20-5), Ancient Sloth Titan (20-9). The Caldera Wyrm costs Stone, so it can only lead the Volcano Lair boss as a SPECIAL leader.
+  - a) Keep them as SPECIAL leaders there (not obtainable from those fights).
+  - b) Side maps only; those fights get new leaders.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep them as SPECIAL leaders there (not obtainable from those fights). No change.
+
+**SKIR1-1. K14 reads the new lists** · Decide · Balance · asked 2026-11-11 · decided 2026-11-19
+- K14 (carried cards 1 copy, 6 in all) took 'own card' from each card's old source map. Under the new lists Ashen Spurn had 2 own cards and Map 1 had 5. Now a card first listed on a map counts as that map's own.
+  - a) Keep.
+  - b) Revert, and re-place source maps card by card.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep. No change.
+
+**SKIR1-2. Skirmish rewards on later lists** · Decide · Balance · asked 2026-11-11 · decided 2026-11-19
+- You picked some fight rewards for later maps (Terrier Pup, Cricket Drummer, Driftwood Crab, Golden Eagle Diver ...). Decks keep the rule that a reward appears only in its own fight (or a fight that already fielded it). This also leaves Map 13 with 10 usable cards.
+  - a) Keep.
+  - b) A later map's fights may use an earlier reward you listed there.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep. No change.
+
+**SKIR1-3. Six cards over budget on their new map** · Decide · Balance · asked 2026-11-11 · decided 2026-11-19
+- Moray Ambusher, Raccoon Nightcrew (Smugglers' Grotto), Mudpuppy, Peat-cutter Vole (Map 5) and Planarian Splitter (Maps 4-5) are over budget where your lists put them; Termite Forager (Map 14) is borderline (100%). They wait on a pending list for your re-fit.
+  - a) You re-fit them.
+  - b) Claude fits them by the formula.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: REDESIGN3 refit the cards; what is left (Raccoon Nightcrew) is in CARDPOW2-1.
+
+**SKIR1-4. Stone cards left Maps 0-20** · Decide · Balance · asked 2026-11-11 · decided 2026-11-19
+- 'No stone until Map 21+': the Malachite Golem (led 8-7 and 8-A-4) and the Pumice Beetle (19-3, 19-6) left their decks; those fights now lead with their new top card.
+  - a) Keep.
+  - b) Bring the golem back as an exception.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep. Keeps the no-Stone-before-Map-21 rule.
+
+**SKIR1-5. Mix gaps the lists cannot fill** · Decide · Balance · asked 2026-11-11 · decided 2026-11-19
+- Map 0 has 2 Lumber-cost and 3 Wait cards; Maps 3, 7 and 11 one plain animal; Map 11 two no-Wait cards; Map 1 no usable status card; Map 18 no plain animal. Each map's decks show what its list holds.
+  - a) Leave them.
+  - b) Claude suggests 1-2 cards per gap.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Leave them. No change.
+
+**SKIR1-6. SKIR1's Lumber admin adds** · Decide · Balance · asked 2026-11-11 · decided 2026-11-19
+- Carried cards added for a second Lumber maker (no card's first map moved): Map 1 Hazel Coppice, Map 8 Pack Rat Looter and Bone Diviner, Map 9 Salvager Hermit Crab.
+  - a) Keep.
+  - b) Drop them.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep. No change.
+
+**SKIR1-8. A card in more than half a map's fights** · Decide · Balance · asked 2026-11-11 · decided 2026-11-19
+- Rule used: no card in more than half a map's fights. Where a fight could not reach its band inside it (Coral Current's fillers, Map 20's boss ...), one more fight was allowed. Thin lists make the line tight.
+  - a) Half, plus one where a fight needs it.
+  - b) Strictly half; those fights stay off band.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Half, plus one where a fight needs it. As used by every re-fit since.
+
+**REF6-1. How the 100 reference decks are built** · Decide · Balance · asked 2026-11-11 · decided 2026-11-19
+- Each of the 100 simulated players' decks takes their cards in the order the map's optimised decks use them (fast). A true optimiser run per player is about 60 core-hours. Result today: the 100 decks are very close in strength (spread 0-5 points), so pack luck barely matters.
+  - a) Keep the fast method.
+  - b) Run true per-player optimisation overnight on GitHub's free runners.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep the fast method. The 100 decks barely differ.
+
+**REF6-2. Rarity cap for reference decks** · Decide · Balance · asked 2026-11-11 · decided 2026-11-19
+- The cap would remove cards every player holds early (2 rare Otter Centurions from the starter, at Map 3 where the cap is Uncommon). Faction cards are already excluded.
+  - a) No cap for reference decks (players really hold these).
+  - b) Apply the cap.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) No cap for reference decks (players really hold these). Players really hold these.
+
+**REF6-3. Which reference ladder the game deals** · Decide · Balance · asked 2026-11-11 · decided 2026-11-19
+- Admin "Reference (Random)" still deals the older 10-deck ladder. Since the 100 decks barely differ, 10 are enough.
+  - a) Keep dealing the 10.
+  - b) Deal from the 100.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Keep dealing the 10. SKWK3 rebuilt the 10 on today's cards.
+
+**DESK2-3. Mac build on Steam** · Decide · Desktop · asked 2026-11-11 · decided 2026-11-19
+- CI builds an ad-hoc signed Mac app (free). Apple notarisation needs a paid developer account (99 USD a year); without it, Mac players see a warning on first launch.
+  - a) Ship Windows and Linux first; Mac later.
+  - b) Ship the ad-hoc Mac build now.
+  - c) Get the Apple account (you buy it; Claude never buys).
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Ship Windows and Linux first; Mac later. Costs nothing; the Apple account stays your call.
+
+**DESK2-4. How builds reach Steam** · Decide · Desktop · asked 2026-11-11 · decided 2026-11-19
+- The GitHub workflow builds Windows, Mac and Linux on a desktop-v* tag.
+  - a) You upload builds to Steam by hand for now.
+  - b) Later, CI uploads to Steam (needs a Steam build account secret you add).
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) You upload builds to Steam by hand for now. No secret or account needed.
+
+**SKILL9-1. Skill versions read under one family name** · Decide · Skills · asked 2026-11-11 · decided 2026-11-19
+- Today 133 skills reach Map 20; target under 80. Group look-alikes under one name, each keeping its own rule and price (no fight changes): Arrow (Ice/Fire Arrow, Venom Spit, Twin Shot, Spitfire, Archer), Keen Sense, Evasive, Daunt, Delivery (Milling, Scavenge, Driftwood), Venomous, Decay, Pounce, Progeny, Fletcher, Nocturnal, Shell, Immunity, Ambush (Trap). Saves 23.
+  - a) Do it.
+  - b) Keep today's names.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: SKAUD1 (11-18) did the merges.
+
+**SKILL9-2. Cull family** · Decide · Skills · asked 2026-11-11 · decided 2026-11-19
+- Predator, Executioner, Shatter and Siege each add damage against one kind of target, as Cull does. They become "Cull N – weaker / wounded / frozen / structures", rules and prices kept. Saves 4.
+  - a) Merge.
+  - b) Keep the four names.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: SKAUD1: Predator / Executioner became Cull (Weaker / Wounded).
+
+**SKILL9-3. Tally family** · Decide · Skills · asked 2026-11-11 · decided 2026-11-19
+- Carnage, Tally, Requiem, Dirge, Onslaught, Riled, Almanac and Foe's Scarcity all read "while a count reaches N: +2/+2". They become "Tally N – what it counts"; rules kept, prices re-measured as one family later. Saves 7 (without it: 80 skills).
+  - a) One family.
+  - b) Merge only Carnage's versions.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: SKAUD1: Dirge / Requiem / Tally merged into Carnage.
+
+**SKILL9-4. Heal family's name** · Decide · Skills · asked 2026-11-11 · decided 2026-11-19
+- Regenerate, Heal, Repair, Carrion and Herbalist all restore Health. One family, rules and prices kept. Saves 4.
+  - a) Call it Heal (Earthworm reads "Heal 1 – self").
+  - b) Call it Regenerate.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: SKAUD1 and SKN1-16: Heal became Nursing (action Nurse).
+
+**SKILL9-5. Speed family's name** · Decide · Skills · asked 2026-11-11 · decided 2026-11-19
+- Quick is Speed 2; Speed, Haste, Slow and Fast Forward are all about when a unit acts. One family. Saves 4.
+  - a) Call it Speed (Cottontail reads "Speed 2").
+  - b) Keep the name Quick.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: SKAUD1: Quick became Swift.
+
+**SKILL9-6. Thrive family** · Decide · Skills · asked 2026-11-11 · decided 2026-11-19
+- Frost, Heat, Salt, Timbered, Bedrock, Crepuscular and Rainrunner all read "while a condition holds: +A/+H". They become "Thrive – condition". Diurnal and Nocturnal stay. Saves 5.
+  - a) Merge.
+  - b) Keep the seven names.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: SKAUD1 (11-18) decided each of these skills.
+
+**SKILL9-7. Inflict family** · Decide · Skills · asked 2026-11-11 · decided 2026-11-19
+- Freeze, Confuse and Shock share one text: "Chance% to <status> the target". They become "Inflict – Freeze 25%"; statuses keep their names, rules and prices. Saves 1-2.
+  - a) Merge.
+  - b) Keep the names.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: SKAUD1 (11-18) decided each of these skills.
+
+**SKILL9-8. Afflicted family** · Decide · Skills · asked 2026-11-11 · decided 2026-11-19
+- Purblind, Night-blind, Scatterbrained and Drunk are all a status the unit always has. They become "Afflicted – Blind / Blind at night / Confused / Tipsy", rules and prices kept. Saves 2-3.
+  - a) Merge.
+  - b) Keep the names.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: SKAUD1 (11-18) decided each of these skills.
+
+**SKILL9-9. Four skill swaps, six skills off the road** · Decide · Skills · asked 2026-11-11 · decided 2026-11-19
+- Swaps: Tasmanian Devil Berserk→Rage, Yeti Scare→Armor, Ashbone Ghoul Remember→Undead, Dhole Matriarch drops Pack Leader (no Pack units before Map 21). Off the road: Sequestration, Meld, Pickpocket (cards you didn't pick); Gorge, Parasite, Rupture (one enemy-only deck). Saves 10; a few fights get re-measured.
+  - a) Do all.
+  - b) Keep them.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: SKAUD1 and REDESIGN3 reworked these cards and skills.
+
+**SKILL9-10. Quarry Mole needs Stone on Map 8** · Decide · Skills · asked 2026-11-11 · decided 2026-11-19
+- Your Map 8 pick Quarry Mole gets Armor while holding 2+ Stone, which breaks "no Stone before Map 21".
+  - a) It reads "Thrive – 3+ Lumber: Armor 1" and is re-fitted to the budget.
+  - b) Move Quarry Mole past Map 20.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: REDESIGN3: Quarry Mole has Keen Sense, no Stone.
+
+**BAL46-1. Morel Hollow 7-6 Morel Monarch a little easy** · Decide · Road · asked 2026-11-10 · decided 2026-11-19
+- The Morel Monarch boss reads 46.3% at 400 games (target 40, band 30-49). All 514 legal decks were screened; the current one is near the strongest, and Shield is already above the rule. In band, so not urgent.
+  - a) Leave it (in band).
+  - b) You add a stronger Morel card to 7-6's list; Claude retunes.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): a) Leave it (in band). In band.
+
 **BAL43-2. Redwood Deep 13-3 Antler Grove a little easy** · Decide · Road · asked 2026-11-10 · decided 2026-11-16
 - Antler Grove 88.5% (target 80, band top 88), 200 games. Its list allows only 15 legal decks; all read 90-98%, and no leader or Shield move helps.
   - a) You add a stronger Redwood card (a stag fits the name) to 13-3's list; Claude retunes.
   - b) Leave it (just over the band).
 - **Default:** a
+
+**BAL42-1. Glass Dunes 18-4 Sandstorm stays too easy** · Decide · Road · asked 2026-11-10 · decided 2026-11-19
+- Sandstorm 18-4 83% (target 62), 200 games, after BAL42's best move (was 85.5%). Every legal deck from its list with Sand Veil on (all 679) reads 80-100%; its Shield is at the rule.
+  - a) You add stronger Desert cards to 18-4's list; Claude retunes.
+  - b) Raise its target.
+  - c) Leave it.
+- **Default:** a
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: 18-4 is in REFIT7-1 (11-19), after the REFIT5-REFIT9 re-fits.
 
 **BAL40-1. Glimmer Depths 8-A-3 stays too easy** · Decide · Road · asked 2026-11-10 · decided 2026-11-10
 - Shard Gallery 8-A-3 58% (target 50), 200 games. Its deck has its Sky Ambush boon off (7 of the 10 cards it needs), so no deck move is legal, and its Shield is at the rule.
