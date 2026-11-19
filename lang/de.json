@@ -4675,5 +4675,11 @@
  "These {n} go with you": "Diese {n} begleiten dich",
  "Level {n} reward: {name}": "Stufe-{n}-Belohnung: {name}",
  "{a} more in this set, {b} after": "{a} weitere hier, {b} danach",
- "Team up with friends in a dungeon": "Mit Freunden gemeinsam ins Verlies"
+ "Team up with friends in a dungeon": "Mit Freunden gemeinsam ins Verlies",
+ "When played, your other units get +{n}/+{n} for the fight.": "Wenn gespielt, erhalten deine anderen Einheiten +{n}/+{n} pendant le combat.",
+ "An Every Turn trigger: every turn it is Ready, from its first. It mills Lumber you hold (1 becomes 2); with no Lumber nothing happens. Lumberjack adds to it.": "Ein Auslöser „Jeder Zug“: in jedem Zug, in dem sie Bereit ist, ab dem ersten. Sie sägt Holz, das du hältst (aus 1 wird 2); ohne Holz passiert nichts. Holzfäller addiert sich dazu.",
+ "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "Ein Auslöser „Jeder Zug“ mit Preis: Das Holz wird nur bezahlt, wenn er auslöst. Einheiten handeln in der Reihenfolge der Unterhaltsphase, also kann ein Steinbruch, der zuerst handelt, eine Schmelze versorgen.",
+ "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "Ein Auslöser „Jeder Zug“: aus, solange sie wartet, betäubt, gefroren oder eingeschlafen ist. Kein freies Feld mehr, nichts erscheint.",
+ "Deliver": "Liefern",
+ "Every Turn": "Jeder Zug"
 }

@@ -4676,5 +4676,11 @@
  "These {n} go with you": "这 {n} 张跟你走",
  "Level {n} reward: {name}": "{n} 级奖励：{name}",
  "{a} more in this set, {b} after": "本组还有 {a} 包，之后 {b} 包",
- "Team up with friends in a dungeon": "与好友组队闯地下城"
+ "Team up with friends in a dungeon": "与好友组队闯地下城",
+ "When played, your other units get +{n}/+{n} for the fight.": "打出时，你的其他单位在本场战斗中获得+{n}/+{n}。",
+ "An Every Turn trigger: every turn it is Ready, from its first. It mills Lumber you hold (1 becomes 2); with no Lumber nothing happens. Lumberjack adds to it.": "每回合触发：每个处于可进行状态的回合都会触发，从第一回合起。它会锯切你持有的木材（1 变成 2）；没有木材则无事发生。伐木工的加成会叠加。",
+ "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "带代价的每回合触发：只有真正触发时才支付木材。单位按维持阶段的顺序行动，所以先行动的采石可以供给冶炼。",
+ "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "每回合触发：等待、眩晕、冻结或睡眠时无效。没有空格就不生成。",
+ "Deliver": "送达",
+ "Every Turn": "每回合"
 }

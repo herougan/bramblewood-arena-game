@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-19 (package DEC19-TEXT: Deliver, Every Turn, Warcry wording)
+- Players see: the skill action "Gain" reads "Deliver" and the trigger "On Turn Start" reads "Every Turn" (labels and codex texts, 12 languages; keys perTurn / gain unchanged, SKN1-18 a). Warcry says "for the fight" (SKN1-1 a). Tests: uifin pin follows the Arrow (Flaming) key fix; ui29 pins follow today's pack lists.
+
 ## 2026-11-19 (package DEC19-UI: Arena co-op entry, night tint, Graveyard arcs)
 - Players see: once the co-op dungeon is open (after Map 16) the Arena's modes list has its entry, which opens the same dungeon card as the map spot (REL1-4 b). The night tint now sits under the top bar and dialogs, so menus stay clear at night; the fight board still darkens (UX4-1 a). A field card or spell you play, a Feed, and an overdrawn card now arc into the Graveyard like a pitch (FX9-1 a; reduced motion: no flight).
 - Under the hood: `ui16PitchToGrave` reused (`playCardByUid`, `eng23FeedByUid`, `animateOverdraw`); one new text `ui.dec19-coop-tip` in 12 packs; `tests/dec19-ui-2026-11-19.js`.

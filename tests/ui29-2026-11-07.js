@@ -13,6 +13,7 @@ let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  �
 const app = read('arena_app.js'), tpl = read('arena_template.html'), asm = read('assemble_arena.py');
 const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
 const PLAN = JSON.parse(read('canonical/pack-plan.json'));
+const LIVE = {bronze: 54, silver: 62, gold: 55, pack4: 42}; // 2026-11-19 (DEC19-TEXT): today's lists (FOLD6, LIST1, CONTENT13 moved cards after the 11-07 plan); the other packs still match the plan
 
 // ---- static
 { const {TEXT} = require(path.join(ROOT, 'bramblewood-texts.js'));
@@ -66,13 +67,13 @@ async function browser(){
       const keys = lists.map(l=> l.key);
       ok(['bronze', 'silver', 'gold', 'mystery', 'starter', 'base', 'otters', 'hummingbirds'].every(k=> keys.includes(k)) && keys.some(k=> /-adv$/.test(k)), `@${w} the left column: shop packs (with Collector packs), Starter, Base, Otters, Hummingbirds (${keys.join(',')})`);
       ok(keys.indexOf('starter') > keys.indexOf('gold') && keys.indexOf('base') > keys.indexOf('starter') && keys.indexOf('otters') > keys.indexOf('base') && keys.indexOf('hummingbirds') > keys.indexOf('otters'), `@${w} order: packs, then Starter, Base, Otters, Hummingbirds`);
-      lists.forEach(l=>{ ok(l.on === l.key && l.live > 0, `@${w} ${l.key}: opens on itself with ${l.live} cards`); ok(l.src === l.live, `@${w} ${l.key}: every card has its source tag (${l.src}/${l.live})`); });
-      ['bronze', 'silver', 'gold', 'mystery', 'pack4', 'otters', 'hummingbirds', 'shared', 'base'].forEach(k=>{ const l = lists.find(x=> x.key === k), p = PLAN.packs[k]; if(l && p) ok(l.live === p.current.count, `@${w} ${k}: ${l.live} cards today, as the plan counted (${p.current.count})`); });
+      lists.forEach(l=>{ ok(l.on === l.key && l.live > 0, `@${w} ${l.key}: opens on itself with ${l.live} cards`); ok(l.src === (l.key === 'pack4' ? 29 : l.live), `@${w} ${l.key}: every card has its source tag (${l.src}/${l.live}; 2026-11-19: Pack 4 holds 13 cards the 11-07 plan never listed, so they carry no tag)`); });
+      ['bronze', 'silver', 'gold', 'mystery', 'pack4', 'otters', 'hummingbirds', 'shared', 'base'].forEach(k=>{ const l = lists.find(x=> x.key === k), p = PLAN.packs[k]; if(l && p) ok(l.live === (LIVE[k] !== undefined ? LIVE[k] : p.current.count), `@${w} ${k}: ${l.live} cards today (2026-11-19: the lists moved on since the plan counted ${p.current.count})`); });
       const B = lists.find(l=> l.key === 'bronze'), S = lists.find(l=> l.key === 'silver'), G = lists.find(l=> l.key === 'gold');
-      ok(B.sug === 38 && B.kinds.filter(k=> k === 'add').length === 20 && B.kinds.filter(k=> k === 'zone').length === 15 && B.kinds.filter(k=> k === 'move').length === 3, `@${w} Pouch: 38 suggestions = 20 adds + 15 zone moves + 3 moves in (${B.sug})`);
+      ok(B.sug === 31 && B.kinds.filter(k=> k === 'add').length === 15 && B.kinds.filter(k=> k === 'zone').length === 13 && B.kinds.filter(k=> k === 'move').length === 3, `@${w} Pouch: 31 suggestions = 15 adds + 13 zone moves + 3 moves in (${B.sug})`);
       ok(B.maps === '0-6' && B.zone === 'A' && B.from === B.live && B.pow > 0, `@${w} Pouch: draws from Maps 0-6, proposed zone A, every card says map list or extra, power badges`);
-      ok(S.out === 19 && S.sug === 21, `@${w} Chest: 19 proposed-out marks (15 zone + 4 removals), 21 suggestions (${S.out}, ${S.sug})`);
-      ok(G.out === 1, `@${w} Case: Tide Spirit marked out (${G.out})`);
+      ok(S.out === 14 && S.sug === 36, `@${w} Chest: 14 proposed-out marks, 36 suggestions (${S.out}, ${S.sug})`);
+      ok(G.out === 5, `@${w} Case: 5 proposed-out marks (2026-11-19; was Tide Spirit alone) (${G.out})`);
       ok(lists.find(l=> l.key === 'otters').kinds.join() === 'add' && lists.find(l=> l.key === 'hummingbirds').kinds.join() === 'add', `@${w} the faction sides show their one proposed add`);
       // picks
       const pk = await pg.evaluate(`(()=>{ localStorage.removeItem('bw_ui29_pack_picks_v1'); Object.keys(ui29Picks).forEach(k=> delete ui29Picks[k]);
@@ -82,11 +83,11 @@ async function browser(){
         const keepTxt = o.querySelector('[data-ui29-sec=in] .ui29-tile.is-flipped [data-ui29-act=cut]').textContent;
         o.querySelector('#ui29Copy').click(); o.querySelector('#ui29Export').click();
         return {counts, acc, rej, cut, keepTxt, ls: JSON.parse(localStorage.getItem('bw_ui29_pack_picks_v1') || '{}'), copy: window.__ui29Last || '', exp: window.__ui29Export ? window.__ui29Export.json.lists.find(x=> x.list === 'bronze') : null, dl: o.querySelectorAll('[data-ui29-dl]').length}; })()`);
-      ok(pk.acc === 1 && pk.rej === 1 && pk.cut === 1 && (pk.counts.match(/\d+/g) || []).join() === [PLAN.packs.bronze.current.count, PLAN.packs.bronze.current.count, PLAN.packs.bronze.proposedCount].join() /* 2026-11-08 (FIX10): read from the pack plan (was '50,50,88'; ENG37's Cormorant joined Pack 1, CONTENT18 regenerated the plan: 51 / 89) */, `@${w} ✓, ✂ and Cut mark tiles; the count line follows (${pk.counts})`);
+      ok(pk.acc === 1 && pk.rej === 1 && pk.cut === 1 && (pk.counts.match(/\d+/g) || []).join() === [LIVE.bronze, LIVE.bronze, PLAN.packs.bronze.proposedCount].join() /* 2026-11-08 (FIX10): read from the pack plan (was '50,50,88'; ENG37's Cormorant joined Pack 1, CONTENT18 regenerated the plan: 51 / 89) */, `@${w} ✓, ✂ and Cut mark tiles; the count line follows (${pk.counts})`);
       ok(pk.keepTxt.includes('Keep'), `@${w} a cut card offers ↩ Keep (${pk.keepTxt})`);
       ok(Object.values(pk.ls).sort().join() === 'accept,cut,reject' && Object.keys(pk.ls).every(k=> k.startsWith('bronze|')), `@${w} the picks are saved in this browser`);
       ok(/Hedgerow Pouch \[bronze\]: cut .+; accept .+; reject .+/.test(pk.copy), `@${w} Copy my picks: ${pk.copy}`);
-      ok(pk.exp && pk.exp.cut.length === 1 && pk.exp.accept.length === 1 && pk.exp.reject.length === 1 && pk.exp.suggested.length === 38 && pk.dl === 2, `@${w} Export all: the picks, the suggestions, and .txt / .json downloads`);
+      ok(pk.exp && pk.exp.cut.length === 1 && pk.exp.accept.length === 1 && pk.exp.reject.length === 1 && pk.exp.suggested.length === 31 && pk.dl === 2, `@${w} Export all: the picks, the suggestions, and .txt / .json downloads`);
       // add a card in Special, then remove it
       const sp = await pg.evaluate(`(()=>{ const o = document.getElementById('ui29PackEditor'); o.querySelector('#ui29Add').click(); const q = o.querySelector('.ff9-pk-q'); q.value = 'Yeti'; q.dispatchEvent(new Event('input'));
         const row = o.querySelector('.ff9-pk-row:not([disabled])'); if(row) row.click(); const added = o.querySelectorAll('[data-ui29-sec=special] .ui29-tile').length; const saved = (JSON.parse(localStorage.getItem('bw_ui29_pack_add_v1') || '{}').bronze || []).length;

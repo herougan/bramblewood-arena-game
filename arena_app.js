@@ -1515,7 +1515,7 @@ const TRIGGER_DEFS = [
   // where the card is simply sitting at Wait=0 already. "Per Turn" below is the hook that
   // actually re-fires every such round; this fixed text says so, so no future card design gets
   // fooled the way this feature nearly did.
-  {key:'onReady', label:'On Ready', desc:'the moment this card\'s Wait first reaches 0 — fires ONCE, not every round. For an effect that repeats every round this card is Ready, use "On Turn Start" instead.'},
+  {key:'onReady', label:'On Ready', desc:'the moment this card\'s Wait first reaches 0 — fires ONCE, not every round. For an effect that repeats every round this card is Ready, use "Every Turn" instead.'},
   {key:'onDeath', label:'On Death', desc:'the moment this card dies'},
   {key:'onAttacked', label:'On Attacked', desc:'every time this card is hit (melee or ranged/skill) and survives'},
   {key:'onAttack', label:'On Attack', desc:'every time this card commits to attacking this round (before its target resolves)'},
@@ -1549,7 +1549,7 @@ const TRIGGER_DEFS = [
   // Renamed "Per Turn" -> "On Turn Start" (2026-10-10, user). Its first parameter picks whose turn: both (every
   // round, the old behaviour), yours or the opponent's. Both sides plan and then resolve together, so "your turn" is
   // the round where you strike first (initiative alternates every round).
-  {key:'perTurn', label:'On Turn Start', desc:"the start of a turn while this card is Ready (Wait 0, not Stunned/Frozen/Asleep/Paralyzed). Pick whose turn: both (every round), yours (the rounds you strike first) or the opponent's (the rounds they strike first)"},
+  {key:'perTurn', label:'Every Turn', desc:"the start of a turn while this card is Ready (Wait 0, not Stunned/Frozen/Asleep/Paralyzed). Pick whose turn: both (every round), yours (the rounds you strike first) or the opponent's (the rounds they strike first)"},
   {key:'onEnemySpawn', label:'On Enemy Spawn', desc:"every time a card the OPPONENT controls is put into play by a card's ABILITY (the Spawn action, On Death: Spawn) — not a hand play. For a hand play, use \"On Enemy Played\" instead"},
   {key:'onColumnSpawn', label:'On Column Spawn', desc:'every time ANY card (either side) is spawned into this card\'s own lane/column'},
   {key:'onAllyDie', label:'On Ally Die', desc:"every time a DIFFERENT card this player controls dies — the flip side of On Death, which only fires for this card's own death"},
@@ -1637,13 +1637,13 @@ const ACTION_DEFS = [
   // specifics into parameters" pass the rest of this list just went through. The engine's four old
   // gainX cases are all still honored as legacy aliases for any existing save data; canonical
   // cards that used them were migrated to this shape directly (see cards.json).
-  {key:'gain', label:'Gain', fields:['resource','amount'], desc:"This card's owner gains the chosen resource — Lumber, Grace, Stone, or Dark Points."},
+  {key:'gain', label:'Deliver', fields:['resource','amount'], desc:"This card's owner gains the chosen resource — Lumber, Grace, Stone, or Dark Points."},
   // Refine (2026-09-18, "do an advanced resource where it takes refining from units — e.g. maybe
   // some units take a stone every turn and produce this advanced resource"): pair with the
   // existing Per Turn trigger. Consumes exactly 1 Stone (no-ops if the owner has none that turn)
   // and produces Amount Elemental Energy — the fixed 1-Stone cost keeps this a simple two-field
   // ask (trigger + amount) rather than a fully generic resource-conversion system.
-  {key:'refine', label:'Refine', fields:['amount'], desc:"Pair with On Turn Start. Consumes 1 Lumber from this card's owner (no-op if they have none) and produces Amount Elemental Energy — the advanced resource."},
+  {key:'refine', label:'Refine', fields:['amount'], desc:"Pair with Every Turn. Consumes 1 Lumber from this card's owner (no-op if they have none) and produces Amount Elemental Energy — the advanced resource."},
   {key:'drawCard', label:'Draw', fields:['count'], desc:"This card's owner draws that many cards."},
   {key:'exileGrave', label:'Exile from graveyard', fields:['count'], desc:"Move that many random cards from the owner's graveyard to the Removal Zone. Each one gives 1 Echo."},
   {key:'spawnCard', label:'Spawn', fields:['defId','count'], desc:'Spawn copies of another card onto this row.'},
