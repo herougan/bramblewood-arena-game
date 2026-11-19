@@ -142,7 +142,7 @@ const hook = (P, pid, p, host)=>{ const pl = P[pid]; ['left', 'center', 'right']
   ok(d && d.dmg === 3 && h0 - host.hp === 3, `PROP1-3 Gorge: a hooked Parasite feeds again at round end, at half its Attack (5 -> ${d && d.dmg})`);
   const {e: e2, P: P2} = mk(132); const host2 = put(e2, P2, 2, 'x-wall', 0), l = put(e2, P2, 1, 'x-leech', 1); hook(P2, 1, l, host2); const ev2 = []; e2.endOfRoundUpkeep(P2, so, {}, ev2);
   ok(!ev2.some(x=> x.type === 'parasiteDrain'), 'PROP1-3 ... a plain Parasite does not');
-  ok(cid['gangrenous-leech'].effects.parasite && cid['gangrenous-leech'].effects.fester && by.fester.value === 2.8 && by.fester.label === 'Gorge', 'PROP1-3 the Gangrenous Leech is a Parasite with Gorge (2.8)'); }
+  ok(require('./lib/redesign.js').skillsAt10('gangrenous-leech').parasite && require('./lib/redesign.js').skillsAt10('gangrenous-leech').fester /* 2026-11-19 (TESTFIX6): LVL10, Parasite at Level 2, Gorge at 6 */ && by.fester.value === 2.8 && by.fester.label === 'Gorge', 'PROP1-3 the Gangrenous Leech is a Parasite with Gorge (2.8)'); }
 
 // ---- PROP1-4 the threshold skills -----------------------------------------------------------------------------------------------------------
 { const on = (c, k)=> String(c._en5On || '').split(',').includes(k);
@@ -172,7 +172,7 @@ const hook = (P, pid, p, host)=>{ const pl = P[pid]; ['left', 'center', 'right']
   // 2026-11-18 (SKAUD1, owner on Dirge: "Explicit remove, and remove other duplicates"): Dirge, Requiem and Tally merged into Carnage, Muster and
   // Beset into Throng; their cards carry the survivor, and the old keys are on no card (the engine and the prices still read them for old saves)
   const SKAUD1_TO = {dirge: 'carnage', requiem: 'carnage', muster: 'throng', beset: 'throng'};
-  Object.entries(homes).forEach(([k, id])=>{ const k2 = SKAUD1_TO[k] || k; ok(cidX[id] && cidX[id].effects[k2] && (om[id] == null || om[id] <= 20 || redesigned(id) /* 2026-11-18 (TESTFIX): FOLD6 moved it past Map 20 */) && T.budget(cidX[id], {level: 1}).ok, `PROP1-4 ${k2} on ${id} (Maps 0-20, inside its budget)`); });
+  Object.entries(homes).forEach(([k, id])=>{ const k2 = SKAUD1_TO[k] || k; ok(cidX[id] && (cidX[id].effects[k2] || require('./lib/redesign.js').skillsAt10(id)[k2] /* 2026-11-19 (TESTFIX6): LVL10 skills learnt later */) && (om[id] == null || om[id] <= 20 || redesigned(id) /* 2026-11-18 (TESTFIX): FOLD6 moved it past Map 20 */) && T.budget(cidX[id], {level: 1}).ok, `PROP1-4 ${k2} on ${id} (Maps 0-20, inside its budget)`); });
   ok(!cardsX.some(c=> c.effects && ['dirge', 'requiem', 'tally', 'muster', 'beset'].some(k=> c.effects[k])), 'PROP1-4 no card carries Dirge, Requiem, Tally, Muster or Beset (SKAUD1)');
   Object.keys(homes).forEach(k=> ok(tx['ui.skn-e10-' + k] && tx['ui.sk-e10-' + k], `PROP1-4 ${k}: name and text`)); }
 
