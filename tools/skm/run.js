@@ -15,7 +15,7 @@ function args(a) { const o = { methods: 'all', skills: 'all', workers: 2 }; for 
 const glob = (pat, id) => new RegExp('^' + pat.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*') + '$').test(id);
 function pick(sel) {
   if (sel === 'all') return R.REG; if (sel === 'offline') return R.REG.filter(m => !m.exp); if (sel === 'sim') return R.REG.filter(m => m.exp);
-  const pats = sel.split(','); return R.REG.filter(m => pats.some(p => glob(p, m.id)));
+  const pats = sel.split(','), out = []; pats.forEach(p => R.REG.forEach(m => { if (glob(p, m.id) && !out.includes(m)) out.push(m); })); return out; // in the order the patterns name them
 }
 function readLines(f) { if (!fs.existsSync(f)) return []; return fs.readFileSync(f, 'utf8').split('\n').filter(Boolean).map(l => { try { return JSON.parse(l); } catch (e) { return null; } }).filter(Boolean); }
 

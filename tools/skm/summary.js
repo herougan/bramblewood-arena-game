@@ -66,7 +66,8 @@ function main() {
   fs.writeFileSync(path.join(DIR, `summary-${date}.json`), JSON.stringify(out, null, 1) + '\n');
   // the short page
   const P = fs.existsSync(path.join(DIR, `proposals-${date}.json`)) ? JSON.parse(fs.readFileSync(path.join(DIR, `proposals-${date}.json`), 'utf8')) : [];
-  const flagged = out.skills.filter(r => r.flag), top = flagged.slice(0, 10);
+  const agree = r => Math.max(r.higher, r.lower) / Math.max(1, r.families); // the share of families on the flag's side
+  const flagged = out.skills.filter(r => r.flag).sort((a, b) => agree(b) - agree(a) || Math.abs(b.gapPct) - Math.abs(a.gapPct)), top = flagged.slice(0, 10);
   const line = r => `| ${r.skill} | ${r.price} | ${r.consensus} | ${r.gapPct > 0 ? '+' : ''}${r.gapPct}% | ${r.spreadIQR} | ${r.higher}/${r.lower} of ${r.families} | ${r.flag} |`;
   const ml = m => `| ${m.id} | ${m.skills} | ${m.rhoConsensus} | ${m.rhoPrice} | ${m.scale} |`;
   const good = mrows.filter(m => !m.circular && m.rhoConsensus != null);

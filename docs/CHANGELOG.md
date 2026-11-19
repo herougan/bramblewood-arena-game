@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-20 (package SKM1: the skill measurement registry)
+- Measurement only (no price, card or engine change). `tools/skm/`: a registry of skill-worth methods (`registry.js`: sim designs and their estimators, offline sources), a resumable runner (`run.js`, one line a skill in `docs/balance/skm/results/<method>.jsonl`, stops a skill at a 95% half-width under 10% or the design's cap), the niced queue (`queue.sh`) and the summary (`summary.js` -> `docs/balance/skm/summary-2026-11-20.md` + `.json`: per skill today's price, the consensus of the method families, the spread and an over / under flag; per method its rank agreement).
+
 ## 2026-11-19 DEC19-DATA
 - Honey Badger Fury attainable (TF5-3 a). Basalt Foundry (m9) takes Malachite Golem, Granite Ox Golem stays on Volcano Lair (LIST1-1 a): m9 list and the nine 19-A fights re-fitted, card-obtain-maps regenerated. Refine note and Elemental Energy card read "Every Turn".
 

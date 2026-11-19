@@ -96,6 +96,7 @@ function fightOf(gm, X, i) {
   else if (X.kind === 'pro') { f.pro = X.pro[i % X.pro.length]; }
   else if (X.foe === 'vanilla') f.B = { [VAN_FOE]: 20 };
   else if (X.foe === 'body') f.B = { [X.body]: 20 }; // the mirror: 20 copies of the vanilla body
+  else if (X.foe === 'bodyV') f.B = {}; // the bumped body (X.foeV), built in makeGame
   else f.B = L.randomDeck(gm, X.pool, rng, 20);
   X.fights.set(i, f); return f;
 }
@@ -128,6 +129,7 @@ function makeGame(gm, X) {
     let rules = X.fieldList[fx.f].rules, road = null, opp = null, oppCastle = castle;
     if (fx.road) { road = roadSetup(fx); rules = road.rules; }
     else if (fx.pro) { opp = O.mineFor(gm, defs, fx.pro.deck, X.level); if (X.fields !== 'neutral') rules = fx.pro.rules; }
+    else if (X.foeV) opp = L.slotMine(gm, defs, X.foeV, X.level, 20); // the stat-equivalence foe: 20 copies of the body with a stat bump
     else opp = fx.B[VAN_FOE] ? { [VAN_FOE]: 20 } : O.mineFor(gm, defs, fx.B, X.level);
     if (road) Object.keys(defs).forEach(id => { if (!road.defs[id]) road.defs[id] = defs[id]; });
     const mirror = !road, aFirst = !mirror || i % 2 === 0;

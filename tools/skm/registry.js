@@ -52,6 +52,25 @@ const EXPS = {
   V8: { design: 'van', body: BODY1, cs: { kind: 'homo', foe: 'body', body: BODY1, bramble: 45, seed: 'skmV8' }, stages: [40, 60], yardM: 300,
     idea: 'mirror match with 45-Health brambles (long games)' },
   D1: { design: 'own', yard: 'own', road: true, cs: { kind: 'road', k: 6, seed: 'skmD1' }, stages: [40], idea: 'bench slot in a random deck of the skill\'s first map against that map\'s road fights as the game builds them' },
+  // stat-equivalence search in the mirror (2026-11-20 01:10: the plain mirror saturates near 100% for any real skill, so its win-rate gain
+  // tops out; here the foe body gets the stat bump that makes the fight even instead): 20 bodies given the skill vs 20 bodies +h Health
+  // (or +a Attack); h* where the skill side scores 50% = the skill's worth in Health points (Attack x 3)
+  E1: { design: 'eq', body: BODY1, stat: 'H', cs: { kind: 'homo', foe: 'bodyV', body: BODY1, seed: 'skmE1' }, probeM: [40, 80], idea: 'stat-equivalence search: the Health on 20 plain farm-dogs that makes 20 farm-dogs with the skill an even fight' },
+  E2: { design: 'eq', body: BODY1, stat: 'A', cs: { kind: 'homo', foe: 'bodyV', body: BODY1, seed: 'skmE2' }, probeM: [40, 80], idea: 'stat-equivalence search in Attack (3 points each) on the farm-dog mirror' },
+  E3: { design: 'eq', body: BODY1, stat: 'H', cs: { kind: 'homo', foe: 'bodyV', body: BODY1, aiMe: 0, aiFoe: 0, seed: 'skmE3' }, probeM: [40, 80], idea: 'stat-equivalence search with the basic CPU on both sides' },
+  E4: { design: 'eq', body: BODY1, stat: 'H', cs: { kind: 'homo', foe: 'bodyV', body: BODY1, aiMe: 2, aiFoe: 2, seed: 'skmE4' }, probeM: [40, 80], idea: 'stat-equivalence search with the smartest CPU on both sides' },
+  E5: { design: 'eq', body: BODY1, stat: 'H', cs: { kind: 'homo', foe: 'bodyV', body: BODY1, bramble: 15, seed: 'skmE5' }, probeM: [40, 80], idea: 'stat-equivalence search with the road brambles (15 Health)' },
+  E6: { design: 'eq', body: BODY2, stat: 'H', cs: { kind: 'homo', foe: 'bodyV', body: BODY2, fields: 'neutral', seed: 'skmE6' }, probeM: [40, 80], idea: 'stat-equivalence search on a 3/7 soldier-ant body, plain day' },
+  E9: { design: 'eq', body: 'bee-sentry', stat: 'H', cs: { kind: 'homo', foe: 'bodyV', body: 'bee-sentry', seed: 'skmE9' }, probeM: [40, 80], idea: 'synergy with Flying: stat-equivalence search on a Flying body (bee-sentry)' },
+  E10: { design: 'eq', body: 'horseshoe-crab', stat: 'H', cs: { kind: 'homo', foe: 'bodyV', body: 'horseshoe-crab', seed: 'skmE10' }, probeM: [40, 80], idea: 'synergy with Armor: stat-equivalence search on an Armor body (horseshoe-crab)' },
+  E8: { design: 'eq', body: BODY1, stat: 'H', perMap: true, cs: { kind: 'homo', foe: 'bodyV', body: BODY1, seed: 'skmE8' }, probeM: [40, 80], idea: 'per map level: stat-equivalence search at the skill\'s first map\'s level and fields' },
+  E7: { design: 'eq', body: BODY3, stat: 'H', cs: { kind: 'homo', foe: 'bodyV', body: BODY3, level: 10, seed: 'skmE7' }, probeM: [40, 80], idea: 'stat-equivalence search on a bear-cub body at Level 10' },
+  E11: { design: 'eq', body: 'mudpuppy', stat: 'H', cs: { kind: 'homo', foe: 'bodyV', body: 'mudpuppy', seed: 'skmE11' }, probeM: [40, 80], idea: 'synergy with Tide: stat-equivalence search on a Tide body (mudpuppy)' },
+  E12: { design: 'eq', body: 'moonlit-hare', stat: 'H', cs: { kind: 'homo', foe: 'bodyV', body: 'moonlit-hare', seed: 'skmE12' }, probeM: [40, 80], idea: 'synergy with Nocturnal: stat-equivalence search on a 4/4 Nocturnal body' },
+  E13: { design: 'eq', body: 'hedgehog-scout', stat: 'H', cs: { kind: 'homo', foe: 'bodyV', body: 'hedgehog-scout', seed: 'skmE13' }, probeM: [40, 80], idea: 'synergy with Thorns: stat-equivalence search on a 1/6 Thorns body' },
+  E14: { design: 'eq', body: BODY1, stat: 'H', cs: { kind: 'homo', foe: 'bodyV', body: BODY1, level: 0, seed: 'skmE14' }, probeM: [40, 80], idea: 'stat-equivalence search at Level 0 (Maps 0-5)' },
+  E15: { design: 'eq', body: BODY1, stat: 'H', cs: { kind: 'homo', foe: 'bodyV', body: BODY1, aiMe: 1, aiFoe: 2, seed: 'skmE15' }, probeM: [40, 80], idea: 'stat-equivalence search, the skill side Smart CPU against the smartest' },
+  E16: { design: 'eq', body: BODY1, stat: 'H', cs: { kind: 'homo', foe: 'bodyV', body: BODY1, bramble: 45, seed: 'skmE16' }, probeM: [40, 80], idea: 'stat-equivalence search with 45-Health brambles (long games)' },
   // round 2 (new kinds once the first designs stabilised)
   V12: { design: 'van', body: BODY1, cs: { kind: 'homo', foe: 'random', body: BODY1, seed: 'skmV12' }, stages: [40, 60], yardM: 300,
     idea: '20 farm-dogs given the skill vs 20 plain farm-dogs, both against random Maps 0-20 decks' },
@@ -200,6 +219,45 @@ async function playDesign(sim, E, s, M) {
   return { X, carrier: c, pairs: w.map((x, j) => ({ w: x, c: o[j] })), yard, games: M * items.length };
 }
 
+// ---------------------------------------------------------------- the stat-equivalence search
+// probes h (integer stat bumps on the foe body); at each the skill side's mean score p(h) over M fights. Start at the row price, double up or
+// halve down until p brackets 1/2, then bisect once; h* by interpolation between the bracketing probes. Deterministic given the cached games,
+// so the estimators re-walk the same probes without new games.
+async function playEq(sim, E, s, M, est) {
+  const U = S.universe(sim.gm), gm = sim.gm, c = carrierOf(U, s, 1)[0], body = E.body;
+  if (S.SK.skillsOf(gm, gm.D[body]).includes(s)) return { skip: 'the body already has this skill' };
+  const withV = Object.assign({ base: body }, S.addOf(gm, c, s)), pts = E.stat === 'A' ? AW : 1, d = gm.D[body], lo0 = E.stat === 'A' ? -(d.attack || 0) : -((d.health || 1) - 1);
+  const base = E.perMap ? Object.assign({}, E.cs, { scope: 'map:' + U.skills[s].firstMap }) : E.cs, probes = new Map(); let games = 0;
+  const x1 = v => L.budgetOf(L.printedDef(gm, v), 1).x1, price = x1(withV) - x1({ base: body });
+  async function P(h) { if (probes.has(h)) return probes.get(h);
+    const X = sim.context(Object.assign({}, base, { foeV: Object.assign({ base: body }, E.stat === 'A' ? { dA: h } : { dH: h }) })); if (!h) delete X.foeV.dH;
+    await sim.need(X, [{ v: withV }], M); games += M; const o = sim.outcomes(X, withV, body, M), r = { h, X, o, ...meanSE(o.map(x => x.s)) }; probes.set(h, r); return r; }
+  let h = Math.max(lo0, Math.min(40, Math.round(price / pts))), p = await P(h), lo = null, hi = null;
+  for (let k = 0; k < 6 && (lo == null || hi == null); k++) { // lo: a probe the skill side wins (p > 1/2), hi: one it loses
+    if (p.m > 0.5) { lo = p; if (hi) break; h = h <= 0 ? (h < 0 ? Math.min(0, h + Math.max(1, Math.ceil(-h / 2))) : 1) : Math.min(60, 2 * h + 1); }
+    else { hi = p; if (lo) break; h = h > 1 ? Math.floor(h / 2) : h === 1 ? 0 : Math.max(lo0, 2 * h - 1); }
+    if (probes.has(h)) break; p = await P(h); if (p.m > 0.5) lo = lo && lo.h > p.h ? lo : p; else hi = hi && hi.h < p.h ? hi : p; }
+  if (lo && hi && hi.h - lo.h > 2) { const mid = Math.round((lo.h + hi.h) / 2), q = await P(mid); if (q.m > 0.5) lo = q; else hi = q; }
+  const all = [...probes.values()].sort((a, b) => a.h - b.h);
+  return { lo, hi, all, pts, price, games, carrier: c };
+}
+function eqEstimate(R, est, bramble) {
+  const { lo, hi, all, pts } = R;
+  if (est === 'fit') { // least squares of the score on h over every probe (a straight line through the probes; h* where it crosses 1/2)
+    if (all.length < 2) return null; const xs = [], ys = []; all.forEach(p => p.o.forEach(o => { xs.push(p.h); ys.push(o.s); }));
+    const n = xs.length, mx = xs.reduce((a, b) => a + b, 0) / n, my = ys.reduce((a, b) => a + b, 0) / n; let sxy = 0, sxx = 0; xs.forEach((x, i) => { sxy += (x - mx) * (ys[i] - my); sxx += (x - mx) ** 2; });
+    const b = sxy / sxx; if (!(b < 0)) return null; const a = my - b * mx, hs = (0.5 - a) / b; let rss = 0; xs.forEach((x, i) => rss += (ys[i] - a - b * x) ** 2);
+    const se = Math.sqrt(rss / (n - 2) / sxx) * Math.abs((0.5 - a) / (b * b)) + Math.sqrt(rss / (n - 2) / n) / Math.abs(b); return { worth: hs * pts, ci: 1.96 * se * pts }; }
+  const f = est === 'margin' ? (o => (o.hm - o.hf) / bramble) : (o => o.s), t = est === 'margin' ? 0 : 0.5;
+  if (est === 'margin') { // the margin's own bracket among the probes
+    const ms = all.map(p => ({ h: p.h, ...meanSE(p.o.map(f)) })); let a = null, b = null; ms.forEach(p => { if (p.m > t && (!a || p.h > a.h)) a = p; if (p.m <= t && (!b || p.h < b.h)) b = p; });
+    if (!a || !b || b.h < a.h) return null; return interp(a, b, t, pts); }
+  if (!lo || !hi) return { worth: null, note: lo ? 'the skill side still wins at the largest bump' : 'the skill side loses even at the smallest bump' };
+  return interp(lo, hi, t, pts);
+}
+function interp(a, b, t, pts) { const slope = (a.m - b.m) / (b.h - a.h || 1), fr = slope ? (a.m - t) / (a.m - b.m || 1e-9) : 0.5, hs = a.h + fr * (b.h - a.h);
+  const se = Math.sqrt(((1 - fr) * a.se) ** 2 + (fr * b.se) ** 2) / Math.max(1e-3, Math.abs(slope)); return { worth: hs * pts, ci: 1.96 * se * pts }; }
+
 // ---------------------------------------------------------------- registry entries
 const REG = [];
 const ESTS = [
@@ -236,28 +294,14 @@ const PLAN = {
   V1: ['win', 'margin', 'dealt', 'kept', 'surv', 'logit', 'yA', 'yH', 'early', 'late', 'field', 'first', 'second', 'speed', 'strict', 'close', 'blowout', 'ps'],
   H1: ['win', 'margin', 'dealt', 'kept', 'logit', 'yA', 'yH', 'ladder', 'early', 'late', 'field', 'vsRanged', 'vsMelee', 'vsFlyers', 'vsGround', 'surv', 'speed', 'close', 'ps'],
   R1: ['win', 'margin', 'dealt', 'kept', 'logit', 'yA', 'yH', 'early', 'late', 'vsRanged', 'vsMelee', 'vsFlyers', 'vsGround', 'surv', 'ps'],
-  V3: ['win', 'margin', 'logit', 'early', 'late', 'dealt', 'kept', 'ps'],
-  V4: ['win', 'margin', 'logit', 'early', 'late', 'dealt', 'kept', 'ps'],
   DK: ['margin', 'win', 'dealt', 'kept', 'logit', 'yH', 'yA', 'ps', 'early', 'late'],
   AD: ['margin', 'win', 'dealt', 'kept', 'logit', 'yH', 'yA', 'ps', 'early', 'late'],
-  V9: ['win', 'margin', 'logit'],
-  V10: ['win', 'margin', 'logit'],
-  P1: ['win', 'margin', 'dealt', 'logit', 'early', 'late'],
-  V11: ['win', 'margin', 'logit'],
-  V2: ['win', 'margin', 'logit', 'yH', 'early', 'late'],
-  V5: ['win', 'margin', 'logit', 'early', 'late'],
-  V7: ['win', 'margin', 'logit'],
-  V6: ['win', 'margin', 'logit'],
-  V8: ['win', 'margin', 'logit', 'early', 'late'],
-  D1: ['margin', 'win', 'dealt', 'yH', 'early', 'late'],
   V12: ['win', 'margin', 'logit', 'vsRanged', 'vsMelee', 'vsFlyers', 'vsGround', 'early', 'late'],
-  V13: ['win', 'margin', 'logit'],
-  V14: ['win', 'margin', 'logit'],
-  V15: ['win', 'margin', 'logit'],
+  P1: ['win', 'margin', 'dealt', 'logit', 'early', 'late'],
+  H2: ['win', 'margin', 'logit', 'yA', 'yH', 'early', 'late'],
   R2: ['win', 'margin', 'logit'],
   R3: ['win', 'margin', 'logit', 'vsRanged', 'vsMelee'],
-  H2: ['win', 'margin', 'logit', 'yA', 'yH', 'early', 'late'],
-  V16: ['win', 'margin', 'logit'],
+  D1: ['margin', 'win', 'dealt', 'yH', 'early', 'late'],
 };
 const ALL_EST = {}; ESTS.concat(MORE, OPP).forEach(e => ALL_EST[e.k] = e);
 ALL_EST.ladder = { k: 'ladder', est: { metric: 'win', yard: 'ladder' }, name: 'stat-equivalence ladder', idea: 'the Health that matches the skill: least-squares line through +0 / +2 / +4 Health on the bare carrier' };
@@ -276,6 +320,15 @@ Object.keys(PLAN).forEach(eid => {
       } });
   });
 });
+
+const EQEST = [{ k: 'win', name: 'even-fight point', idea: 'h* by interpolation between the bracketing probes' },
+  { k: 'margin', name: 'even-margin point', idea: 'h* where the mean bramble margin crosses 0' }, { k: 'fit', name: 'line through probes', idea: 'h* from a least-squares line through every probe\'s fights' }];
+Object.keys(EXPS).filter(id => EXPS[id].design === 'eq').forEach(eid => { const E = EXPS[eid];
+  EQEST.forEach((e, j) => REG.push({ id: eid + '-' + e.k, exp: eid, primary: j === 0, name: eid + ' ' + e.name, idea: E.idea + '; ' + e.idea,
+    async run(s, o) { const stages = this.primary ? (o.stages || E.probeM) : [o.M || E.probeM[E.probeM.length - 1]]; let R, res, M;
+      for (const st of stages) { M = st; R = await playEq(o.sim, E, s, M); if (R.skip) return { worth: null, M, note: R.skip, games: 0 };
+        res = eqEstimate(R, e.k, (R.all[0].X.bramble)); if (this.primary && res && res.worth != null && res.ci < 0.1 * Math.abs(res.worth)) break; }
+      return { worth: res ? res.worth : null, ci: res ? res.ci : null, games: R.games, carrier: R.carrier, M, n: R.all.length, note: res ? res.note : 'no estimate' }; } })); });
 
 // ---------------------------------------------------------------- offline methods (no games: earlier measurements and cross-sections)
 const readJ = f => { const p = path.join(BAL, f); return fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')) : null; };
@@ -383,7 +436,7 @@ function rowPrice(U, methodId, s, carrier) {
   const m = REG.find(x => x.id === methodId), gm = U.gm; if (!m || !m.exp || !carrier) return null; const E = EXPS[m.exp];
   const x1 = v => L.budgetOf(L.printedDef(gm, v), 1).x1, src = carrierOf(U, s, 1)[0];
   try {
-    if (E.design === 'van') return x1(Object.assign({ base: E.body }, S.addOf(gm, src, s))) - x1({ base: E.body });
+    if (E.design === 'van' || E.design === 'eq') return x1(Object.assign({ base: E.body }, S.addOf(gm, src, s))) - x1({ base: E.body });
     const card = String(carrier).split('@')[0];
     if (E.design === 'deck' && E.mode === 'add') return x1(Object.assign({ base: card }, S.addOf(gm, src, s))) - x1({ base: card });
     return S.priceOn(gm, card, s, 1);
