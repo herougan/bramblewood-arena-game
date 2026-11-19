@@ -1,18 +1,18 @@
 {
  "about": "Package SKM1 (2026-11-20): skill worth by many methods vs today's price, Maps 0-20 skills. worth / price in budget points (cap-1 (3A + H) x m + S). Measurement only: nothing applied. tools/skm/summary.js",
- "generated": "2026-11-19T17:01:51.834Z",
+ "generated": "2026-11-19T17:03:57.929Z",
  "fingerprint": "8b6f2a672f5f",
  "counts": {
-  "methodsRegistered": 121,
-  "methodsWithResults": 17,
-  "simMethods": 1,
+  "methodsRegistered": 147,
+  "methodsWithResults": 22,
+  "simMethods": 6,
   "families": 6,
   "designsPlayed": 1,
   "skills": 103,
-  "skillsCovered": 89,
-  "simGamesPlayed": 2280
+  "skillsCovered": 90,
+  "simGamesPlayed": 3480
  },
- "overallSimScale": 0.67,
+ "overallSimScale": 0.71,
  "rules": {
   "flag": "3+ families and more than half of the families with an estimate 25%+ off the price (of max(price, 1)) the same way, on calibrated values",
   "circular": "O-hedonic-*, O-measuredS, O-canon listed, not in the consensus"
@@ -68,7 +68,7 @@
    "gapPct": -733,
    "spreadIQR": 6.33,
    "families": 2,
-   "methods": 5,
+   "methods": 10,
    "higher": 0,
    "lower": 2,
    "flag": null,
@@ -105,19 +105,19 @@
    "price": 0.89,
    "carriers": 1,
    "firstMap": 2,
-   "consensus": -5.51,
-   "rawMedian": -5.36,
-   "gap": -6.4,
-   "gapPct": -640,
-   "spreadIQR": 5.3,
+   "consensus": -5.46,
+   "rawMedian": -5.33,
+   "gap": -6.35,
+   "gapPct": -635,
+   "spreadIQR": 5.35,
    "families": 2,
-   "methods": 6,
+   "methods": 11,
    "higher": 0,
    "lower": 2,
    "flag": null,
    "byFamily": {
     "O-pickrate": -10.81,
-    "V1": -0.21
+    "V1": -0.12
    }
   },
   {
@@ -131,7 +131,7 @@
    "gapPct": 589,
    "spreadIQR": 21.43,
    "families": 3,
-   "methods": 8,
+   "methods": 13,
    "higher": 2,
    "lower": 1,
    "flag": null,
@@ -152,9 +152,9 @@
    "gapPct": 575,
    "spreadIQR": 10.43,
    "families": 6,
-   "methods": 17,
-   "higher": 6,
-   "lower": 0,
+   "methods": 22,
+   "higher": 5,
+   "lower": 1,
    "flag": "under-priced",
    "byFamily": {
     "bench-history": 14.03,
@@ -162,7 +162,7 @@
     "O-pickrate": 8.81,
     "O-robust": 11.51,
     "workbook": 21.88,
-    "V1": 4.31
+    "V1": 1.07
    }
   },
   {
@@ -170,13 +170,13 @@
    "price": 0,
    "carriers": 1,
    "firstMap": 0,
-   "consensus": -5.71,
+   "consensus": -5.6,
    "rawMedian": -2.75,
-   "gap": -5.71,
-   "gapPct": -571,
-   "spreadIQR": 9.48,
+   "gap": -5.6,
+   "gapPct": -560,
+   "spreadIQR": 9.64,
    "families": 4,
-   "methods": 11,
+   "methods": 16,
    "higher": 1,
    "lower": 3,
    "flag": "over-priced",
@@ -184,29 +184,7 @@
     "bench-history": 7.7,
     "O-pickrate": -9.17,
     "workbook": -9.48,
-    "V1": -2.26
-   }
-  },
-  {
-   "skill": "carnage",
-   "price": 1.68,
-   "carriers": 1,
-   "firstMap": 14,
-   "consensus": 11.03,
-   "rawMedian": 4.16,
-   "gap": 9.35,
-   "gapPct": 557,
-   "spreadIQR": 5.75,
-   "families": 4,
-   "methods": 10,
-   "higher": 4,
-   "lower": 0,
-   "flag": "under-priced",
-   "byFamily": {
-    "bench-history": 4.4,
-    "contribution": 9.62,
-    "O-pickrate": 18.92,
-    "workbook": 12.44
+    "V1": -2.04
    }
   },
   {
@@ -229,6 +207,29 @@
     "contribution": -4.52,
     "O-pickrate": -13.08,
     "workbook": -11.57
+   }
+  },
+  {
+   "skill": "carnage",
+   "price": 1.68,
+   "carriers": 1,
+   "firstMap": 14,
+   "consensus": 9.62,
+   "rawMedian": 3.2,
+   "gap": 7.94,
+   "gapPct": 473,
+   "spreadIQR": 8.04,
+   "families": 5,
+   "methods": 16,
+   "higher": 5,
+   "lower": 0,
+   "flag": "under-priced",
+   "byFamily": {
+    "bench-history": 4.4,
+    "contribution": 9.62,
+    "O-pickrate": 18.92,
+    "workbook": 12.44,
+    "V1": 3.32
    }
   },
   {
@@ -275,28 +276,6 @@
     "O-pickrate": -10.54,
     "O-robust": 3.07,
     "workbook": -8.25
-   }
-  },
-  {
-   "skill": "cure",
-   "price": 0.5,
-   "carriers": 1,
-   "firstMap": 5,
-   "consensus": -3.49,
-   "rawMedian": -0.79,
-   "gap": -3.99,
-   "gapPct": -399,
-   "spreadIQR": 9.5,
-   "families": 4,
-   "methods": 10,
-   "higher": 0,
-   "lower": 2,
-   "flag": null,
-   "byFamily": {
-    "bench-history": 0.55,
-    "contribution": -7.54,
-    "O-pickrate": -13.04,
-    "O-robust": 0.7
    }
   },
   {
@@ -412,27 +391,6 @@
    }
   },
   {
-   "skill": "crepuscular",
-   "price": 3.96,
-   "carriers": 1,
-   "firstMap": 18,
-   "consensus": -6.7,
-   "rawMedian": -2.12,
-   "gap": -10.66,
-   "gapPct": -269,
-   "spreadIQR": 6.59,
-   "families": 3,
-   "methods": 8,
-   "higher": 1,
-   "lower": 2,
-   "flag": null,
-   "byFamily": {
-    "bench-history": 5.09,
-    "contribution": -8.08,
-    "O-pickrate": -6.7
-   }
-  },
-  {
    "skill": "sleepPowder",
    "price": 2.5,
    "carriers": 2,
@@ -472,29 +430,6 @@
     "O-pickrate": 15.87,
     "O-robust": 0.72,
     "workbook": 3.61
-   }
-  },
-  {
-   "skill": "diurnal",
-   "price": 1.52,
-   "carriers": 8,
-   "firstMap": 1,
-   "consensus": 5.16,
-   "rawMedian": 3.66,
-   "gap": 3.64,
-   "gapPct": 240,
-   "spreadIQR": 4.84,
-   "families": 5,
-   "methods": 14,
-   "higher": 4,
-   "lower": 0,
-   "flag": "under-priced",
-   "byFamily": {
-    "bench-history": 3.3,
-    "contribution": 8.14,
-    "O-pickrate": 5.16,
-    "O-robust": 1.52,
-    "workbook": 15.2
    }
   },
   {
@@ -653,29 +588,6 @@
    }
   },
   {
-   "skill": "corrode",
-   "price": 2.41,
-   "carriers": 2,
-   "firstMap": 7,
-   "consensus": 7.35,
-   "rawMedian": 3.32,
-   "gap": 4.94,
-   "gapPct": 205,
-   "spreadIQR": 7.26,
-   "families": 5,
-   "methods": 15,
-   "higher": 4,
-   "lower": 1,
-   "flag": "under-priced",
-   "byFamily": {
-    "bench-history": -0.13,
-    "contribution": 4.37,
-    "O-pickrate": 27.52,
-    "O-robust": 11.63,
-    "workbook": 7.35
-   }
-  },
-  {
    "skill": "flying",
    "price": 2.21,
    "carriers": 41,
@@ -686,7 +598,7 @@
    "gapPct": 197,
    "spreadIQR": 4.37,
    "families": 6,
-   "methods": 15,
+   "methods": 20,
    "higher": 6,
    "lower": 0,
    "flag": "under-priced",
@@ -696,7 +608,31 @@
     "O-pickrate": 9.88,
     "O-robust": 9.21,
     "workbook": 7.96,
-    "V1": 3.62
+    "V1": 2.97
+   }
+  },
+  {
+   "skill": "diurnal",
+   "price": 1.52,
+   "carriers": 8,
+   "firstMap": 1,
+   "consensus": 4.34,
+   "rawMedian": 3.11,
+   "gap": 2.82,
+   "gapPct": 185,
+   "spreadIQR": 4.04,
+   "families": 6,
+   "methods": 15,
+   "higher": 5,
+   "lower": 0,
+   "flag": "under-priced",
+   "byFamily": {
+    "bench-history": 3.3,
+    "contribution": 8.14,
+    "O-pickrate": 5.16,
+    "O-robust": 1.52,
+    "workbook": 15.2,
+    "V1": 3.51
    }
   },
   {
@@ -812,6 +748,30 @@
    }
   },
   {
+   "skill": "corrode",
+   "price": 2.41,
+   "carriers": 2,
+   "firstMap": 7,
+   "consensus": 5.86,
+   "rawMedian": 3.03,
+   "gap": 3.45,
+   "gapPct": 143,
+   "spreadIQR": 6.6,
+   "families": 6,
+   "methods": 21,
+   "higher": 5,
+   "lower": 1,
+   "flag": "under-priced",
+   "byFamily": {
+    "bench-history": -0.13,
+    "contribution": 4.37,
+    "O-pickrate": 27.52,
+    "O-robust": 11.63,
+    "workbook": 7.35,
+    "V1": 3.83
+   }
+  },
+  {
    "skill": "dynamite",
    "price": 1.1,
    "carriers": 1,
@@ -832,6 +792,28 @@
     "O-pickrate": 0.17,
     "O-robust": 4.9,
     "workbook": 6.81
+   }
+  },
+  {
+   "skill": "crepuscular",
+   "price": 3.96,
+   "carriers": 1,
+   "firstMap": 18,
+   "consensus": -1.41,
+   "rawMedian": 0.33,
+   "gap": -5.37,
+   "gapPct": -136,
+   "spreadIQR": 11.23,
+   "families": 4,
+   "methods": 11,
+   "higher": 1,
+   "lower": 2,
+   "flag": null,
+   "byFamily": {
+    "bench-history": 5.09,
+    "contribution": -8.08,
+    "O-pickrate": -6.7,
+    "V1": 3.88
    }
   },
   {
@@ -930,9 +912,9 @@
    "rawMedian": -0.16,
    "gap": -2.29,
    "gapPct": -117,
-   "spreadIQR": 4.21,
+   "spreadIQR": 4.14,
    "families": 4,
-   "methods": 10,
+   "methods": 15,
    "higher": 1,
    "lower": 3,
    "flag": "over-priced",
@@ -940,7 +922,7 @@
     "bench-history": 0,
     "O-pickrate": -11.39,
     "workbook": -0.68,
-    "V1": 3.42
+    "V1": 3.13
    }
   },
   {
@@ -954,7 +936,7 @@
    "gapPct": -113,
    "spreadIQR": 2.73,
    "families": 4,
-   "methods": 9,
+   "methods": 14,
    "higher": 0,
    "lower": 4,
    "flag": "over-priced",
@@ -962,7 +944,7 @@
     "O-pickrate": -9.87,
     "O-robust": -0.23,
     "workbook": -0.56,
-    "V1": 0.07
+    "V1": 0.06
    }
   },
   {
@@ -976,7 +958,7 @@
    "gapPct": -108,
    "spreadIQR": 8.95,
    "families": 5,
-   "methods": 12,
+   "methods": 17,
    "higher": 0,
    "lower": 5,
    "flag": "over-priced",
@@ -985,7 +967,7 @@
     "contribution": -19.68,
     "O-pickrate": -8.67,
     "workbook": -0.52,
-    "V1": 0.62
+    "V1": 0.44
    }
   },
   {
@@ -1019,9 +1001,9 @@
    "rawMedian": 1.42,
    "gap": 1.21,
    "gapPct": 102,
-   "spreadIQR": 0.95,
+   "spreadIQR": 0.86,
    "families": 4,
-   "methods": 10,
+   "methods": 15,
    "higher": 3,
    "lower": 1,
    "flag": "under-priced",
@@ -1029,7 +1011,7 @@
     "bench-history": 2.29,
     "O-pickrate": 0.53,
     "workbook": 2.51,
-    "V1": 3.69
+    "V1": 3.32
    }
   },
   {
@@ -1043,7 +1025,7 @@
    "gapPct": -100,
    "spreadIQR": 7.35,
    "families": 5,
-   "methods": 14,
+   "methods": 19,
    "higher": 1,
    "lower": 4,
    "flag": "over-priced",
@@ -1052,6 +1034,27 @@
     "contribution": 0.22,
     "O-pickrate": -7.13,
     "workbook": -17.13,
+    "V1": 0
+   }
+  },
+  {
+   "skill": "delivery",
+   "price": 4.52,
+   "carriers": 3,
+   "firstMap": 3,
+   "consensus": 0,
+   "rawMedian": 0,
+   "gap": -4.52,
+   "gapPct": -100,
+   "spreadIQR": 6.28,
+   "families": 3,
+   "methods": 8,
+   "higher": 1,
+   "lower": 2,
+   "flag": null,
+   "byFamily": {
+    "O-pickrate": 11.14,
+    "workbook": -1.41,
     "V1": 0
    }
   },
@@ -1192,29 +1195,6 @@
    }
   },
   {
-   "skill": "daunt",
-   "price": 2.61,
-   "carriers": 3,
-   "firstMap": 3,
-   "consensus": 0.55,
-   "rawMedian": 0.4,
-   "gap": -2.06,
-   "gapPct": -79,
-   "spreadIQR": 7.11,
-   "families": 5,
-   "methods": 13,
-   "higher": 2,
-   "lower": 3,
-   "flag": "over-priced",
-   "byFamily": {
-    "bench-history": 0.55,
-    "contribution": -7.46,
-    "O-pickrate": 7.8,
-    "O-robust": 3.49,
-    "workbook": -3.62
-   }
-  },
-  {
    "skill": "sweep",
    "price": 5.46,
    "carriers": 3,
@@ -1246,9 +1226,9 @@
    "rawMedian": 0.66,
    "gap": -3.49,
    "gapPct": -78,
-   "spreadIQR": 2.83,
+   "spreadIQR": 2.74,
    "families": 4,
-   "methods": 10,
+   "methods": 15,
    "higher": 0,
    "lower": 3,
    "flag": "over-priced",
@@ -1256,7 +1236,31 @@
     "bench-history": 1.51,
     "O-pickrate": -4.32,
     "workbook": 0.48,
-    "V1": 3.9
+    "V1": 3.57
+   }
+  },
+  {
+   "skill": "crabClaws",
+   "price": 0.1,
+   "carriers": 4,
+   "firstMap": 2,
+   "consensus": 0.85,
+   "rawMedian": 0.59,
+   "gap": 0.75,
+   "gapPct": 75,
+   "spreadIQR": 1.77,
+   "families": 6,
+   "methods": 18,
+   "higher": 4,
+   "lower": 2,
+   "flag": "under-priced",
+   "byFamily": {
+    "bench-history": 1.28,
+    "contribution": -0.97,
+    "O-pickrate": -12.14,
+    "O-robust": 0.69,
+    "workbook": 5.05,
+    "V1": 1
    }
   },
   {
@@ -1280,29 +1284,6 @@
     "O-pickrate": -0.72,
     "O-robust": 2.41,
     "workbook": -0.1
-   }
-  },
-  {
-   "skill": "bulwark",
-   "price": 7.42,
-   "carriers": 1,
-   "firstMap": 20,
-   "consensus": 2.06,
-   "rawMedian": 1.5,
-   "gap": -5.36,
-   "gapPct": -72,
-   "spreadIQR": 3.8,
-   "families": 5,
-   "methods": 13,
-   "higher": 1,
-   "lower": 4,
-   "flag": "over-priced",
-   "byFamily": {
-    "bench-history": 2.06,
-    "contribution": 1.32,
-    "O-pickrate": 13.5,
-    "O-robust": 5.12,
-    "workbook": -0.54
    }
   },
   {
@@ -1382,9 +1363,9 @@
    "rawMedian": 6.25,
    "gap": 5.86,
    "gapPct": 63,
-   "spreadIQR": 14.24,
+   "spreadIQR": 14.48,
    "families": 6,
-   "methods": 15,
+   "methods": 20,
    "higher": 4,
    "lower": 2,
    "flag": "under-priced",
@@ -1394,7 +1375,31 @@
     "O-pickrate": -7.54,
     "O-robust": 34.74,
     "workbook": 14.25,
-    "V1": 4.37
+    "V1": 4.04
+   }
+  },
+  {
+   "skill": "bulwark",
+   "price": 7.42,
+   "carriers": 1,
+   "firstMap": 20,
+   "consensus": 2.74,
+   "rawMedian": 1.99,
+   "gap": -4.69,
+   "gapPct": -63,
+   "spreadIQR": 3.19,
+   "families": 6,
+   "methods": 19,
+   "higher": 1,
+   "lower": 5,
+   "flag": "over-priced",
+   "byFamily": {
+    "bench-history": 2.06,
+    "contribution": 1.32,
+    "O-pickrate": 13.5,
+    "O-robust": 5.12,
+    "workbook": -0.54,
+    "V1": 3.41
    }
   },
   {
@@ -1443,76 +1448,6 @@
    }
   },
   {
-   "skill": "carrion",
-   "price": 2.68,
-   "carriers": 2,
-   "firstMap": 7,
-   "consensus": 4.26,
-   "rawMedian": 2.5,
-   "gap": 1.58,
-   "gapPct": 59,
-   "spreadIQR": 0.49,
-   "families": 5,
-   "methods": 14,
-   "higher": 4,
-   "lower": 1,
-   "flag": "under-priced",
-   "byFamily": {
-    "bench-history": 4.4,
-    "contribution": 4.26,
-    "O-pickrate": -1.19,
-    "O-robust": 3.91,
-    "workbook": 10.21
-   }
-  },
-  {
-   "skill": "crabClaws",
-   "price": 0.1,
-   "carriers": 4,
-   "firstMap": 2,
-   "consensus": 0.69,
-   "rawMedian": 0.44,
-   "gap": 0.59,
-   "gapPct": 59,
-   "spreadIQR": 2.25,
-   "families": 5,
-   "methods": 12,
-   "higher": 3,
-   "lower": 2,
-   "flag": "under-priced",
-   "byFamily": {
-    "bench-history": 1.28,
-    "contribution": -0.97,
-    "O-pickrate": -12.14,
-    "O-robust": 0.69,
-    "workbook": 5.05
-   }
-  },
-  {
-   "skill": "armor",
-   "price": 3.13,
-   "carriers": 10,
-   "firstMap": 2,
-   "consensus": 4.78,
-   "rawMedian": 2.72,
-   "gap": 1.65,
-   "gapPct": 53,
-   "spreadIQR": 2.1,
-   "families": 6,
-   "methods": 16,
-   "higher": 4,
-   "lower": 0,
-   "flag": "under-priced",
-   "byFamily": {
-    "bench-history": 3.58,
-    "contribution": 6.19,
-    "O-pickrate": 12.84,
-    "O-robust": 5.32,
-    "workbook": 3.75,
-    "V1": 4.24
-   }
-  },
-  {
    "skill": "frostbite",
    "price": 0.19,
    "carriers": 1,
@@ -1556,6 +1491,30 @@
    }
   },
   {
+   "skill": "carrion",
+   "price": 2.68,
+   "carriers": 2,
+   "firstMap": 7,
+   "consensus": 4.09,
+   "rawMedian": 2.61,
+   "gap": 1.41,
+   "gapPct": 52,
+   "spreadIQR": 0.57,
+   "families": 6,
+   "methods": 20,
+   "higher": 5,
+   "lower": 1,
+   "flag": "under-priced",
+   "byFamily": {
+    "bench-history": 4.4,
+    "contribution": 4.26,
+    "O-pickrate": -1.19,
+    "O-robust": 3.91,
+    "workbook": 10.21,
+    "V1": 3.76
+   }
+  },
+  {
    "skill": "paralysisPowder",
    "price": 3.34,
    "carriers": 2,
@@ -1573,6 +1532,29 @@
    "byFamily": {
     "O-pickrate": -0.68,
     "workbook": 3.93
+   }
+  },
+  {
+   "skill": "cure",
+   "price": 0.5,
+   "carriers": 1,
+   "firstMap": 5,
+   "consensus": 0,
+   "rawMedian": 0,
+   "gap": -0.5,
+   "gapPct": -50,
+   "spreadIQR": 8.09,
+   "families": 5,
+   "methods": 11,
+   "higher": 0,
+   "lower": 3,
+   "flag": "over-priced",
+   "byFamily": {
+    "bench-history": 0.55,
+    "contribution": -7.54,
+    "O-pickrate": -13.04,
+    "O-robust": 0.7,
+    "V1": 0
    }
   },
   {
@@ -1609,7 +1591,7 @@
    "gapPct": 48,
    "spreadIQR": 3.3,
    "families": 4,
-   "methods": 11,
+   "methods": 16,
    "higher": 3,
    "lower": 1,
    "flag": "under-priced",
@@ -1641,6 +1623,30 @@
     "O-pickrate": 32.97,
     "O-robust": 23.69,
     "workbook": 4.08
+   }
+  },
+  {
+   "skill": "armor",
+   "price": 3.13,
+   "carriers": 10,
+   "firstMap": 2,
+   "consensus": 4.54,
+   "rawMedian": 2.48,
+   "gap": 1.41,
+   "gapPct": 45,
+   "spreadIQR": 2.35,
+   "families": 6,
+   "methods": 21,
+   "higher": 3,
+   "lower": 0,
+   "flag": null,
+   "byFamily": {
+    "bench-history": 3.58,
+    "contribution": 6.19,
+    "O-pickrate": 12.84,
+    "O-robust": 5.32,
+    "workbook": 3.75,
+    "V1": 3.32
    }
   },
   {
@@ -1735,30 +1741,6 @@
    }
   },
   {
-   "skill": "bulldoze",
-   "price": 2.23,
-   "carriers": 2,
-   "firstMap": 12,
-   "consensus": 3.01,
-   "rawMedian": 1.98,
-   "gap": 0.78,
-   "gapPct": 35,
-   "spreadIQR": 4.67,
-   "families": 6,
-   "methods": 16,
-   "higher": 3,
-   "lower": 2,
-   "flag": null,
-   "byFamily": {
-    "bench-history": 4.95,
-    "contribution": -3.19,
-    "O-pickrate": -0.59,
-    "O-robust": 1.99,
-    "workbook": 12.67,
-    "V1": 4.03
-   }
-  },
-  {
    "skill": "offspring",
    "price": 6.08,
    "carriers": 2,
@@ -1799,6 +1781,30 @@
     "O-pickrate": -11.41,
     "O-robust": 0.09,
     "workbook": 4.89
+   }
+  },
+  {
+   "skill": "bulldoze",
+   "price": 2.23,
+   "carriers": 2,
+   "firstMap": 12,
+   "consensus": 2.85,
+   "rawMedian": 1.98,
+   "gap": 0.61,
+   "gapPct": 28,
+   "spreadIQR": 4.58,
+   "families": 6,
+   "methods": 21,
+   "higher": 3,
+   "lower": 2,
+   "flag": null,
+   "byFamily": {
+    "bench-history": 4.95,
+    "contribution": -3.19,
+    "O-pickrate": -0.59,
+    "O-robust": 1.99,
+    "workbook": 12.67,
+    "V1": 3.7
    }
   },
   {
@@ -1915,6 +1921,30 @@
    }
   },
   {
+   "skill": "daunt",
+   "price": 2.61,
+   "carriers": 3,
+   "firstMap": 3,
+   "consensus": 2.02,
+   "rawMedian": 1.32,
+   "gap": -0.59,
+   "gapPct": -23,
+   "spreadIQR": 6.38,
+   "families": 6,
+   "methods": 14,
+   "higher": 3,
+   "lower": 3,
+   "flag": null,
+   "byFamily": {
+    "bench-history": 0.55,
+    "contribution": -7.46,
+    "O-pickrate": 7.8,
+    "O-robust": 3.49,
+    "workbook": -3.62,
+    "V1": 3.91
+   }
+  },
+  {
    "skill": "siege",
    "price": 1.43,
    "carriers": 3,
@@ -2027,30 +2057,6 @@
    }
   },
   {
-   "skill": "bleed",
-   "price": 3.96,
-   "carriers": 9,
-   "firstMap": 0,
-   "consensus": 3.32,
-   "rawMedian": 2.18,
-   "gap": -0.64,
-   "gapPct": -16,
-   "spreadIQR": 2.93,
-   "families": 6,
-   "methods": 16,
-   "higher": 1,
-   "lower": 3,
-   "flag": null,
-   "byFamily": {
-    "bench-history": 4.77,
-    "contribution": -2.87,
-    "O-pickrate": 1.29,
-    "O-robust": 2.68,
-    "workbook": 8.56,
-    "V1": 3.96
-   }
-  },
-  {
    "skill": "harbinger",
    "price": 6.5,
    "carriers": 2,
@@ -2102,9 +2108,9 @@
    "rawMedian": 1.14,
    "gap": -0.26,
    "gapPct": -14,
-   "spreadIQR": 2.61,
+   "spreadIQR": 1.82,
    "families": 6,
-   "methods": 16,
+   "methods": 21,
    "higher": 2,
    "lower": 3,
    "flag": null,
@@ -2114,7 +2120,7 @@
     "O-pickrate": -6.91,
     "O-robust": 1.08,
     "workbook": 0.86,
-    "V1": 3.96
+    "V1": 2.91
    }
   },
   {
@@ -2207,29 +2213,6 @@
    }
   },
   {
-   "skill": "bludgeon",
-   "price": 3.95,
-   "carriers": 1,
-   "firstMap": 9,
-   "consensus": 4.31,
-   "rawMedian": 2.88,
-   "gap": 0.36,
-   "gapPct": 9,
-   "spreadIQR": 3.96,
-   "families": 5,
-   "methods": 9,
-   "higher": 2,
-   "lower": 2,
-   "flag": null,
-   "byFamily": {
-    "bench-history": 2.2,
-    "contribution": -9.1,
-    "O-pickrate": 6.16,
-    "O-robust": 8.42,
-    "V1": 4.31
-   }
-  },
-  {
    "skill": "smokeBomb",
    "price": 2,
    "carriers": 1,
@@ -2249,26 +2232,6 @@
     "contribution": -2.08,
     "O-pickrate": 30.82,
     "O-robust": 3.27
-   }
-  },
-  {
-   "skill": "delivery",
-   "price": 4.52,
-   "carriers": 3,
-   "firstMap": 3,
-   "consensus": 4.87,
-   "rawMedian": 5.12,
-   "gap": 0.34,
-   "gapPct": 8,
-   "spreadIQR": 6.28,
-   "families": 2,
-   "methods": 7,
-   "higher": 1,
-   "lower": 1,
-   "flag": null,
-   "byFamily": {
-    "O-pickrate": 11.14,
-    "workbook": -1.41
    }
   },
   {
@@ -2293,6 +2256,30 @@
    }
   },
   {
+   "skill": "bleed",
+   "price": 3.96,
+   "carriers": 9,
+   "firstMap": 0,
+   "consensus": 3.72,
+   "rawMedian": 2.59,
+   "gap": -0.24,
+   "gapPct": -6,
+   "spreadIQR": 3.38,
+   "families": 6,
+   "methods": 21,
+   "higher": 2,
+   "lower": 3,
+   "flag": null,
+   "byFamily": {
+    "bench-history": 4.77,
+    "contribution": -2.87,
+    "O-pickrate": 1.29,
+    "O-robust": 2.68,
+    "workbook": 8.56,
+    "V1": 5.1
+   }
+  },
+  {
    "skill": "shield",
    "price": 4.93,
    "carriers": 1,
@@ -2314,6 +2301,29 @@
     "O-robust": 4.65,
     "workbook": -2.66
    }
+  },
+  {
+   "skill": "bludgeon",
+   "price": 3.95,
+   "carriers": 1,
+   "firstMap": 9,
+   "consensus": 3.95,
+   "rawMedian": 2.82,
+   "gap": 0,
+   "gapPct": 0,
+   "spreadIQR": 3.96,
+   "families": 5,
+   "methods": 14,
+   "higher": 2,
+   "lower": 2,
+   "flag": null,
+   "byFamily": {
+    "bench-history": 2.2,
+    "contribution": -9.1,
+    "O-pickrate": 6.16,
+    "O-robust": 8.42,
+    "V1": 3.95
+   }
   }
  ],
  "methods": [
@@ -2325,23 +2335,36 @@
    "idea": "the SKILL2 / pipeline measure (tools/skill_canon) at the number nearest the carriers'; the source of most of today's prices",
    "skills": 57,
    "scale": 1,
-   "rhoConsensus": 0.65,
+   "rhoConsensus": 0.67,
    "rhoPrice": 0.88,
    "medianRelCI": 0.2,
    "games": 16600
   },
   {
-   "id": "V1-win",
+   "id": "V1-speed",
    "family": "V1",
    "circular": false,
-   "name": "V1 win rate",
-   "idea": "mirror match: 20 farm-dogs given the skill vs 20 plain farm-dogs, map fields; win-rate gain / the win-rate gain of a budget point (+1 Attack = 3, +2 Health = 2)",
-   "skills": 19,
-   "scale": 0.67,
-   "rhoConsensus": 0.57,
-   "rhoPrice": 0.56,
-   "medianRelCI": 0.22,
-   "games": 2280
+   "name": "V1 win tempo",
+   "idea": "mirror match: 20 farm-dogs given the skill vs 20 plain farm-dogs, map fields; gain in a tempo score (a win scores 1 - rounds / 30) / that of a budget point",
+   "skills": 24,
+   "scale": 0.69,
+   "rhoConsensus": 0.49,
+   "rhoPrice": 0.64,
+   "medianRelCI": 0.18,
+   "games": 2880
+  },
+  {
+   "id": "V1-strict",
+   "family": "V1",
+   "circular": false,
+   "name": "V1 wins only",
+   "idea": "mirror match: 20 farm-dogs given the skill vs 20 plain farm-dogs, map fields; win-rate gain with draws counted as losses / that of a budget point",
+   "skills": 24,
+   "scale": 0.72,
+   "rhoConsensus": 0.45,
+   "rhoPrice": 0.58,
+   "medianRelCI": 0.24,
+   "games": 2880
   },
   {
    "id": "O-bench1030",
@@ -2357,17 +2380,17 @@
    "games": 32960
   },
   {
-   "id": "O-bench1030r",
-   "family": "bench-history",
+   "id": "V1-close",
+   "family": "V1",
    "circular": false,
-   "name": "history: bench-skills-2026-10-30-remeasure.json",
-   "idea": "the workbench re-measure of 2026-10-30 (bench T2 file of that date; worth rescaled to the 3A + H yardstick, the engine and prices of that day)",
-   "skills": 28,
-   "scale": 0.59,
+   "name": "V1 close fights",
+   "idea": "mirror match: 20 farm-dogs given the skill vs 20 plain farm-dogs, map fields; only fights whose control game ended within 30% of a bramble's Health",
+   "skills": 24,
+   "scale": 0.71,
    "rhoConsensus": 0.41,
-   "rhoPrice": 0.63,
-   "medianRelCI": 0.49,
-   "games": 38000
+   "rhoPrice": 0.47,
+   "medianRelCI": 0.3,
+   "games": 2880
   },
   {
    "id": "O-robust",
@@ -2377,10 +2400,36 @@
    "idea": "robust skill test (random rarity / Wait / Lumber profiles and fields, 2,000 fights a row) of 2026-10-22, BF7 units",
    "skills": 73,
    "scale": 0.64,
-   "rhoConsensus": 0.41,
+   "rhoConsensus": 0.4,
    "rhoPrice": 0.57,
    "medianRelCI": 0.09,
    "games": 146000
+  },
+  {
+   "id": "V1-blowout",
+   "family": "V1",
+   "circular": false,
+   "name": "V1 lopsided fights",
+   "idea": "mirror match: 20 farm-dogs given the skill vs 20 plain farm-dogs, map fields; only fights whose control game was lopsided (margin over 30%)",
+   "skills": 25,
+   "scale": 0.77,
+   "rhoConsensus": 0.4,
+   "rhoPrice": 0.61,
+   "medianRelCI": 0.44,
+   "games": 3000
+  },
+  {
+   "id": "V1-ps",
+   "family": "V1",
+   "circular": false,
+   "name": "V1 probability of superiority",
+   "idea": "mirror match: 20 farm-dogs given the skill vs 20 plain farm-dogs, map fields; how often the skill side ends with the better bramble margin than its control (sign test) / the same for a budget point",
+   "skills": 25,
+   "scale": 0.65,
+   "rhoConsensus": 0.39,
+   "rhoPrice": 0.57,
+   "medianRelCI": 0.08,
+   "games": 3000
   },
   {
    "id": "O-workbook-basic",
@@ -2390,10 +2439,23 @@
    "idea": "the 2026-11-07 workbook's per-card basic figure on bare stat points and skill terms (ridge)",
    "skills": 84,
    "scale": 0.42,
-   "rhoConsensus": 0.39,
+   "rhoConsensus": 0.38,
    "rhoPrice": 0.15,
    "medianRelCI": null,
    "games": 0
+  },
+  {
+   "id": "O-bench1030r",
+   "family": "bench-history",
+   "circular": false,
+   "name": "history: bench-skills-2026-10-30-remeasure.json",
+   "idea": "the workbench re-measure of 2026-10-30 (bench T2 file of that date; worth rescaled to the 3A + H yardstick, the engine and prices of that day)",
+   "skills": 28,
+   "scale": 0.59,
+   "rhoConsensus": 0.37,
+   "rhoPrice": 0.63,
+   "medianRelCI": 0.49,
+   "games": 38000
   },
   {
    "id": "O-workbook-power",
@@ -2403,7 +2465,7 @@
    "idea": "the 2026-11-07 workbook's per-card power figure on bare stat points and skill terms (ridge)",
    "skills": 84,
    "scale": 0.47,
-   "rhoConsensus": 0.38,
+   "rhoConsensus": 0.37,
    "rhoPrice": 0.15,
    "medianRelCI": null,
    "games": 0
@@ -2416,23 +2478,10 @@
    "idea": "the workbench skill test of 2026-10-28 (bench T2 file of that date; worth rescaled to the 3A + H yardstick, the engine and prices of that day)",
    "skills": 84,
    "scale": 0.73,
-   "rhoConsensus": 0.37,
+   "rhoConsensus": 0.36,
    "rhoPrice": 0.42,
    "medianRelCI": 0.82,
    "games": 37280
-  },
-  {
-   "id": "O-contrib-bal6",
-   "family": "contribution",
-   "circular": false,
-   "name": "contribution regression: contribution-2026-10-27.json",
-   "idea": "BAL6 all-cards regression (2026-10-27); per-copy contribution = a + b x bare stat points + sum of skill terms, worth = term / b (ridge)",
-   "skills": 79,
-   "scale": 0.26,
-   "rhoConsensus": 0.36,
-   "rhoPrice": 0.18,
-   "medianRelCI": null,
-   "games": 0
   },
   {
    "id": "O-workbook-advanced",
@@ -2442,10 +2491,36 @@
    "idea": "the 2026-11-07 workbook's per-card advanced figure on bare stat points and skill terms (ridge)",
    "skills": 84,
    "scale": 0.39,
-   "rhoConsensus": 0.36,
+   "rhoConsensus": 0.35,
    "rhoPrice": 0.17,
    "medianRelCI": null,
    "games": 0
+  },
+  {
+   "id": "O-contrib-bal6",
+   "family": "contribution",
+   "circular": false,
+   "name": "contribution regression: contribution-2026-10-27.json",
+   "idea": "BAL6 all-cards regression (2026-10-27); per-copy contribution = a + b x bare stat points + sum of skill terms, worth = term / b (ridge)",
+   "skills": 79,
+   "scale": 0.26,
+   "rhoConsensus": 0.32,
+   "rhoPrice": 0.18,
+   "medianRelCI": null,
+   "games": 0
+  },
+  {
+   "id": "V1-win",
+   "family": "V1",
+   "circular": false,
+   "name": "V1 win rate",
+   "idea": "mirror match: 20 farm-dogs given the skill vs 20 plain farm-dogs, map fields; win-rate gain / the win-rate gain of a budget point (+1 Attack = 3, +2 Health = 2)",
+   "skills": 29,
+   "scale": 0.73,
+   "rhoConsensus": 0.32,
+   "rhoPrice": 0.5,
+   "medianRelCI": 0.23,
+   "games": 3480
   },
   {
    "id": "O-contrib-b15",
@@ -2455,7 +2530,7 @@
    "idea": "workbench card contribution at 15-Health brambles (2026-11-03); per-copy contribution = a + b x bare stat points + sum of skill terms, worth = term / b (ridge)",
    "skills": 43,
    "scale": 0.37,
-   "rhoConsensus": 0.31,
+   "rhoConsensus": 0.3,
    "rhoPrice": 0.21,
    "medianRelCI": null,
    "games": 0
@@ -2481,7 +2556,7 @@
    "idea": "today's price scaled by the entry's measuredS / value (skill_worth.js measures of 10-19 / 10-21)",
    "skills": 79,
    "scale": 1,
-   "rhoConsensus": 0.29,
+   "rhoConsensus": 0.3,
    "rhoPrice": 0.69,
    "medianRelCI": 0.16,
    "games": 0
@@ -2494,7 +2569,7 @@
    "idea": "what the card designs leave for skills: N minus the bare stats' (3A + H) x m, shared among each card's skills (ridge), Maps 0-20 cards",
    "skills": 103,
    "scale": 1.16,
-   "rhoConsensus": 0.26,
+   "rhoConsensus": 0.28,
    "rhoPrice": 0.7,
    "medianRelCI": null,
    "games": 0
@@ -2507,7 +2582,7 @@
    "idea": "median slack of the cards that carry only this skill (no sharing assumption)",
    "skills": 84,
    "scale": 1.51,
-   "rhoConsensus": 0.22,
+   "rhoConsensus": 0.25,
    "rhoPrice": 0.71,
    "medianRelCI": null,
    "games": 0
@@ -2520,7 +2595,7 @@
    "idea": "how often the deck optimiser picks a card (copies in the Maps 0-20 PRO / BPRO decks over the map's list) = a + b x bare stat points + skill terms; worth = term / b",
    "skills": 103,
    "scale": 0.98,
-   "rhoConsensus": 0.18,
+   "rhoConsensus": 0.17,
    "rhoPrice": 0.21,
    "medianRelCI": null,
    "games": 0
@@ -2533,7 +2608,7 @@
    "idea": "workbench card contribution after SKILL2 (2026-10-31), random decks; per-copy contribution = a + b x bare stat points + sum of skill terms, worth = term / b (ridge)",
    "skills": 19,
    "scale": 0.63,
-   "rhoConsensus": 0.13,
+   "rhoConsensus": 0.11,
    "rhoPrice": -0.17,
    "medianRelCI": null,
    "games": 0
@@ -2541,45 +2616,45 @@
  ],
  "families": [
   {
-   "family": "V1",
-   "methods": 1,
-   "skills": 19,
-   "rhoConsensus": 0.57,
-   "rhoPrice": 0.56
-  },
-  {
    "family": "O-robust",
    "methods": 1,
    "skills": 73,
-   "rhoConsensus": 0.41,
+   "rhoConsensus": 0.4,
    "rhoPrice": 0.57
   },
   {
    "family": "bench-history",
    "methods": 3,
    "skills": 85,
-   "rhoConsensus": 0.4,
+   "rhoConsensus": 0.39,
    "rhoPrice": 0.44
   },
   {
    "family": "workbook",
    "methods": 3,
    "skills": 84,
-   "rhoConsensus": 0.38,
+   "rhoConsensus": 0.37,
    "rhoPrice": 0.16
+  },
+  {
+   "family": "V1",
+   "methods": 6,
+   "skills": 29,
+   "rhoConsensus": 0.33,
+   "rhoPrice": 0.5
   },
   {
    "family": "contribution",
    "methods": 3,
    "skills": 79,
-   "rhoConsensus": 0.32,
+   "rhoConsensus": 0.28,
    "rhoPrice": 0.14
   },
   {
    "family": "O-pickrate",
    "methods": 1,
    "skills": 103,
-   "rhoConsensus": 0.18,
+   "rhoConsensus": 0.17,
    "rhoPrice": 0.21
   }
  ]

@@ -13,7 +13,7 @@ const DIR = path.join(S.ROOT, 'docs', 'balance', 'skm'), RES = path.join(DIR, 'r
 const date = (process.argv.indexOf('--date') > 0 ? process.argv[process.argv.indexOf('--date') + 1] : null) || '2026-11-20';
 const CIRCULAR = /^O-(hedonic|measuredS|canon)/;
 const famOf = id => { const m = R.REG.find(x => x.id === id); if (m && m.exp) return m.exp;
-  if (/^O-bench/.test(id)) return 'bench-history'; if (/^O-contrib/.test(id)) return 'contribution'; if (/^O-workbook/.test(id)) return 'workbook'; return id; };
+  if (/^O-bench/.test(id)) return 'bench-history'; if (/^O-contrib/.test(id)) return 'contribution'; if (/^O-workbook/.test(id)) return 'workbook'; if (/^O-ladder/.test(id)) return 'skill-ladder'; return id; };
 const r2 = v => v == null || !isFinite(v) ? null : Math.round(v * 100) / 100;
 const med = S.median;
 function q(a, p) { const v = a.filter(x => x != null && isFinite(x)).sort((x, y) => x - y); if (!v.length) return null; const i = (v.length - 1) * p, lo = Math.floor(i); return v[lo] + (v[Math.min(v.length - 1, lo + 1)] - v[lo]) * (i - lo); }
@@ -21,10 +21,14 @@ function q(a, p) { const v = a.filter(x => x != null && isFinite(x)).sort((x, y)
 function main() {
   const U = S.universe(), fp = S.L.fingerprint(), skills = U.list;
   const files = fs.existsSync(RES) ? fs.readdirSync(RES).filter(f => f.endsWith('.jsonl')) : [];
-  const M = {}; // method -> skill -> row
+  const M = {}, RP = new Map(); // method -> skill -> row; row prices
   files.forEach(f => { const id = f.slice(0, -6), sim = /^O-/.test(id) ? false : true;
     fs.readFileSync(path.join(RES, f), 'utf8').split('\n').filter(Boolean).forEach(l => { let r; try { r = JSON.parse(l); } catch (e) { return; }
-      if (sim && r.fp !== fp) return; if (r.worth == null || !isFinite(r.worth)) return; (M[id] = M[id] || {})[r.skill] = r; }); });
+      if (sim && r.fp !== fp) return; if (r.worth == null || !isFinite(r.worth) || !U.skills[r.skill]) return;
+      // a sim row measured the skill on one card at that card's number: brought to the skill's mean price by the row's own price
+      if (sim) { const k = id.split('-')[0] + '|' + r.skill + '|' + r.carrier; if (!RP.has(k)) RP.set(k, R.rowPrice(U, id, r.skill, r.carrier)); const rp = RP.get(k), p = U.skills[r.skill].price;
+        r.rowPrice = rp; r.worthRow = r.worth; if (rp != null && rp >= 0.5 && p >= 0.5) r.worth = r.worth * p / rp; }
+      (M[id] = M[id] || {})[r.skill] = r; }); });
   const methods = Object.keys(M).filter(id => Object.keys(M[id]).length >= 10).sort();
   const price = s => U.skills[s].price, base = s => Math.max(1, price(s));
   // per method scale and calibrated worth

@@ -10,7 +10,7 @@ const S = require('./lib.js'), R = require('./registry.js');
 const OUT = path.join(S.ROOT, 'docs', 'balance', 'skm', 'results');
 
 function args(a) { const o = { methods: 'all', skills: 'all', workers: 2 }; for (let i = 0; i < a.length; i++) { const k = a[i];
-  if (k === '--methods') o.methods = a[++i]; else if (k === '--skills') o.skills = a[++i]; else if (k === '--workers') o.workers = +a[++i]; else if (k === '--list') o.list = true; else if (k === '--force') o.force = true; }
+  if (k === '--methods') o.methods = a[++i]; else if (k === '--skills') o.skills = a[++i]; else if (k === '--workers') o.workers = +a[++i]; else if (k === '--list') o.list = true; else if (k === '--force') o.force = true; else if (k === '--refine') o.refine = +a[++i]; }
   return o; }
 const glob = (pat, id) => new RegExp('^' + pat.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*') + '$').test(id);
 function pick(sel) {
@@ -26,14 +26,18 @@ async function main() {
   const sim = new S.Sim({ workers: o.workers, quiet: true }), U = S.universe(sim.gm), fp = S.L.fingerprint();
   const skills = o.skills === 'all' ? U.list : o.skills.split(',');
   for (const m of methods) {
-    const f = path.join(OUT, m.id + '.jsonl'), have = new Set(readLines(f).filter(r => r.fp === fp || !m.exp).map(r => r.skill));
-    const todo = skills.filter(s => o.force || !have.has(s)); if (!todo.length) { console.log(`${m.id}: done (cached)`); continue; }
+    const f = path.join(OUT, m.id + '.jsonl'), mine = readLines(f).filter(r => r.fp === fp || !m.exp), last = new Map(mine.map(r => [r.skill, r]));
     const prim = m.exp && !m.primary ? R.REG.find(x => x.exp === m.exp && x.primary) : null;
     const primM = prim ? new Map(readLines(path.join(OUT, prim.id + '.jsonl')).filter(r => r.fp === fp).map(r => [r.skill, r.M])) : null;
+    // --refine N (the stabilising pass): a primary re-plays, up to N fights, the skills whose 95% half-width is still over 10% of the estimate;
+    // an estimator re-reads the skills its primary has measured further since
+    const unstable = r => r.worth == null ? (r.M || 0) < o.refine && !/body already|no real deck/.test(r.note || '') : r.ci != null && r.ci >= 0.1 * Math.abs(r.worth) && (r.M || 0) < o.refine;
+    const todo = skills.filter(s => o.force || !last.has(s) || (o.refine && m.exp && (m.primary ? unstable(last.get(s)) : primM && primM.get(s) > (last.get(s).M || 0))));
+    if (!todo.length) { console.log(`${m.id}: done (cached)`); continue; }
     const t0 = Date.now(), p0 = sim.played; let n = 0, got = 0;
     for (const s of todo) {
       if (prim && !primM.has(s)) continue; // its design's primary has not measured this skill yet
-      let r; try { r = await m.run(s, { sim, U, M: prim ? primM.get(s) : null }); } catch (e) { r = { worth: null, note: 'error: ' + String(e.message || e).slice(0, 160) }; }
+      let r; try { r = await m.run(s, { sim, U, M: prim ? primM.get(s) : null, stages: o.refine && m.primary && last.has(s) ? [o.refine] : null }); } catch (e) { r = { worth: null, note: 'error: ' + String(e.message || e).slice(0, 160) }; }
       const line = { method: m.id, skill: s, worth: r.worth == null ? null : +r.worth.toFixed(3), ci: r.ci == null ? null : +r.ci.toFixed(3), games: r.games || 0,
         price: +U.skills[s].price.toFixed(3), carrier: r.carrier, M: r.M, n: r.n, note: r.note, fp, t: new Date().toISOString() };
       fs.appendFileSync(f, JSON.stringify(line) + '\n'); n++; if (r.worth != null) got++;

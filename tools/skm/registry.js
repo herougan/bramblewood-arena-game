@@ -52,6 +52,20 @@ const EXPS = {
   V8: { design: 'van', body: BODY1, cs: { kind: 'homo', foe: 'body', body: BODY1, bramble: 45, seed: 'skmV8' }, stages: [40, 60], yardM: 300,
     idea: 'mirror match with 45-Health brambles (long games)' },
   D1: { design: 'own', yard: 'own', road: true, cs: { kind: 'road', k: 6, seed: 'skmD1' }, stages: [40], idea: 'bench slot in a random deck of the skill\'s first map against that map\'s road fights as the game builds them' },
+  // round 2 (new kinds once the first designs stabilised)
+  V12: { design: 'van', body: BODY1, cs: { kind: 'homo', foe: 'random', body: BODY1, seed: 'skmV12' }, stages: [40, 60], yardM: 300,
+    idea: '20 farm-dogs given the skill vs 20 plain farm-dogs, both against random Maps 0-20 decks' },
+  V13: { design: 'van', body: 'mudpuppy', cs: { kind: 'homo', foe: 'body', body: 'mudpuppy', seed: 'skmV13' }, stages: [40, 60], yardM: 300,
+    idea: 'synergy with Tide: mirror match on a Tide body (mudpuppy)' },
+  V14: { design: 'van', body: 'moonlit-hare', cs: { kind: 'homo', foe: 'body', body: 'moonlit-hare', seed: 'skmV14' }, stages: [40, 60], yardM: 300,
+    idea: 'synergy with Nocturnal: mirror match on a Nocturnal 4/4 body (moonlit-hare)' },
+  V15: { design: 'van', body: 'hedgehog-scout', cs: { kind: 'homo', foe: 'body', body: 'hedgehog-scout', seed: 'skmV15' }, stages: [40, 60], yardM: 300,
+    idea: 'synergy with Thorns: mirror match on a Thorns 1/6 body (hedgehog-scout)' },
+  R2: { design: 'own', yard: 'pool', cs: { kind: 'rand', k: 2, seed: 'skmR2' }, stages: [60], yardM: 200, idea: 'bench slot of 2 copies (a light presence) in a random Maps 0-20 deck' },
+  R3: { design: 'own', yard: 'pool', cs: { kind: 'rand', k: 12, seed: 'skmR3' }, stages: [40], yardM: 200, idea: 'bench slot of 12 copies (the deck\'s core) in a random Maps 0-20 deck' },
+  H2: { design: 'own', yard: 'own', cs: { kind: 'homo', foe: 'random', bramble: 15, seed: 'skmH2' }, stages: [24, 32], idea: 'the carrier x20 with vs without the skill, random Maps 0-20 decks, road brambles (15 Health)' },
+  V16: { design: 'van', body: BODY1, cs: { kind: 'homo', foe: 'body', body: BODY1, level: 0, seed: 'skmV16' }, stages: [40, 60], yardM: 300,
+    idea: 'mirror match at Level 0 (Maps 0-5 play there)' },
 };
 // the real decks (PRO / BPRO of Maps 0-20) and the card that holds or gets the skill
 let PRO = null;
@@ -236,6 +250,14 @@ const PLAN = {
   V6: ['win', 'margin', 'logit'],
   V8: ['win', 'margin', 'logit', 'early', 'late'],
   D1: ['margin', 'win', 'dealt', 'yH', 'early', 'late'],
+  V12: ['win', 'margin', 'logit', 'vsRanged', 'vsMelee', 'vsFlyers', 'vsGround', 'early', 'late'],
+  V13: ['win', 'margin', 'logit'],
+  V14: ['win', 'margin', 'logit'],
+  V15: ['win', 'margin', 'logit'],
+  R2: ['win', 'margin', 'logit'],
+  R3: ['win', 'margin', 'logit', 'vsRanged', 'vsMelee'],
+  H2: ['win', 'margin', 'logit', 'yA', 'yH', 'early', 'late'],
+  V16: ['win', 'margin', 'logit'],
 };
 const ALL_EST = {}; ESTS.concat(MORE, OPP).forEach(e => ALL_EST[e.k] = e);
 ALL_EST.ladder = { k: 'ladder', est: { metric: 'win', yard: 'ladder' }, name: 'stat-equivalence ladder', idea: 'the Health that matches the skill: least-squares line through +0 / +2 / +4 Health on the bare carrier' };
@@ -246,7 +268,7 @@ Object.keys(PLAN).forEach(eid => {
     REG.push({ id: eid + '-' + k, exp: eid, primary: j === 0, name: eid + ' ' + e.name, idea: E.idea + '; ' + e.idea,
       async run(s, o) {
         const sim = o.sim; let M = o.M || E.stages[0], res, D;
-        const stages = this.primary ? E.stages : [o.M || E.stages[E.stages.length - 1]];
+        const stages = this.primary ? (o.stages || E.stages) : [o.M || E.stages[E.stages.length - 1]];
         for (const st of stages) { M = st; D = await playDesign(sim, E, s, M); if (D.skip) return { worth: null, ci: null, games: 0, M, note: D.skip }; res = estimate(sim.gm, D.X, D.pairs, D.yard, e.est);
           if (this.primary && res && res.worth != null && res.ci < 0.1 * Math.abs(res.worth)) break; }
         if (!res) return { worth: null, ci: null, games: D.games, carrier: D.carrier, M, note: 'too few fights after the filter' };
@@ -273,6 +295,13 @@ REG.push({ id: 'O-robust', exp: null, name: 'history: robust mono test 2026-10-2
     const rows = J.rows.filter(r => { const m = /^mono:(\{.*\})$/.exec(r.key); if (!m) return false; try { return Object.keys(JSON.parse(m[1]))[0] === s; } catch (e) { return false; } });
     if (!rows.length) return { worth: null }; const n = carrierN(o.U, s), nv = r => { const v = Object.values(JSON.parse(r.key.slice(5)))[0]; return typeof v === 'number' ? v : 1; };
     const r = rows.slice().sort((a, b) => Math.abs(nv(a) - n) - Math.abs(nv(b) - n))[0]; return { worth: r.worth, ci: r.netSE != null ? 1.96 * r.netSE : null, games: r.n }; } });
+// the skill ladder of BAL23 (2026-11-08): 7-8 bodies from hitter to wall at a fixed budget, 400 paired fights a variant, 15-Health brambles
+const nearestN = (pts, n) => pts.slice().sort((a, b) => Math.abs((typeof a.n === 'number' ? a.n : 1) - n) - Math.abs((typeof b.n === 'number' ? b.n : 1) - n))[0];
+[['L1', 'best'], ['L1', 'mean'], ['L5', 'best'], ['L5', 'mean']].forEach(([lv, k]) => REG.push({ id: 'O-ladder-' + lv + k, exp: null, name: 'history: skill ladder ' + lv + ' ' + k,
+  idea: 'BAL23 skill ladder (2026-11-08) at ' + lv + ': ' + (k === 'best' ? 'the worth on the best body shape (a quadratic through worth against Attack share)' : 'the worth averaged over the 7-8 body shapes') + ', 3A + H points',
+  run(s, o) { const J = readJ('skill-ladder/summary-2026-11-07.json'); if (!J) return { worth: null }; const e = J.skills.find(x => x.key === s); if (!e) return { worth: null };
+    const pts = e.points.filter(p => p[lv] && p[lv][k] && p[lv][k].m != null); if (!pts.length) return { worth: null }; const p = nearestN(pts, carrierN(o.U, s)), v = p[lv][k];
+    return { worth: v.m, ci: v.hi != null ? (v.hi - v.lo) / 2 : null, games: J.games || 0 }; } }));
 // the SKILL2 / pipeline canon measures (what today's prices came from)
 REG.push({ id: 'O-canon', exp: null, name: 'pipeline canon measures', idea: 'the SKILL2 / pipeline measure (tools/skill_canon) at the number nearest the carriers\'; the source of most of today\'s prices',
   run(s, o) { const J = readJ('pipeline/measures.json'); if (!J) return { worth: null }; const n = carrierN(o.U, s);
@@ -348,4 +377,17 @@ function workbookRows(U, col) { const f = path.join(ROOT, 'docs', 'balance', 'sk
 ['basic', 'advanced', 'power'].forEach(col => REG.push(crossMethod('O-workbook-' + col, 'workbook ' + col + ' (2026-11-07)', 'the 2026-11-07 workbook\'s per-card ' + col + ' figure on bare stat points and skill terms (ridge)', U => {
   const rows = workbookRows(U, col); return rows && rows.length > 30 ? ridgeWorth(rows, 2) : null; })));
 
-module.exports = { REG, EXPS, PLAN, carrierOf, playDesign, estimate, METRICS, FILTERS };
+// the price of the skill on the card a sim row measured it on (cap-1 left side with minus without, Level 1): the van design's body given the
+// skill, the carrier without it, or the deck card given it; today's skill price is the mean over every carrier, this is the row's own
+function rowPrice(U, methodId, s, carrier) {
+  const m = REG.find(x => x.id === methodId), gm = U.gm; if (!m || !m.exp || !carrier) return null; const E = EXPS[m.exp];
+  const x1 = v => L.budgetOf(L.printedDef(gm, v), 1).x1, src = carrierOf(U, s, 1)[0];
+  try {
+    if (E.design === 'van') return x1(Object.assign({ base: E.body }, S.addOf(gm, src, s))) - x1({ base: E.body });
+    const card = String(carrier).split('@')[0];
+    if (E.design === 'deck' && E.mode === 'add') return x1(Object.assign({ base: card }, S.addOf(gm, src, s))) - x1({ base: card });
+    return S.priceOn(gm, card, s, 1);
+  } catch (e) { return null; }
+}
+
+module.exports = { REG, EXPS, PLAN, carrierOf, playDesign, estimate, METRICS, FILTERS, rowPrice };
