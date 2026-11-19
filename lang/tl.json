@@ -4682,5 +4682,7 @@
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "Isang trigger na Bawat Turn na may presyo: binabayaran lang ang Kahoy kapag tumama ito. Kumikilos ang mga unit ayon sa ayos ng upkeep, kaya ang Tibagan na unang kumilos ay makapagpapakain sa Pandayan.",
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "Isang trigger na Bawat Turn: patay habang Naghihintay, Stunned, Frozen o Tulog. Walang bakanteng puwesto, walang lalabas.",
  "Deliver": "Ihatid",
- "Every Turn": "Bawat Turn"
+ "Every Turn": "Bawat Turn",
+ "Learns a skill at Level {n}": "Matututo ng skill sa Level {n}",
+ "Not unlocked yet": "Hindi pa na-unlock"
 }

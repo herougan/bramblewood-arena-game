@@ -4682,5 +4682,7 @@
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "带代价的每回合触发：只有真正触发时才支付木材。单位按维持阶段的顺序行动，所以先行动的采石可以供给冶炼。",
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "每回合触发：等待、眩晕、冻结或睡眠时无效。没有空格就不生成。",
  "Deliver": "送达",
- "Every Turn": "每回合"
+ "Every Turn": "每回合",
+ "Learns a skill at Level {n}": "在 {n} 级学会一项技能",
+ "Not unlocked yet": "尚未解锁"
 }

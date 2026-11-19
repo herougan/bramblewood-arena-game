@@ -4684,5 +4684,7 @@
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "விலையுடன் கூடிய ஒவ்வொரு திருப்பத் தூண்டி: அது செயல்படும்போது மட்டுமே மரம் செலுத்தப்படும். அலகுகள் பராமரிப்பு வரிசையில் செயல்படும், எனவே முதலில் செயல்படும் கல்குவாரி ஒரு உருக்காலைக்கு ஊட்டலாம்.",
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "ஒவ்வொரு திருப்பத் தூண்டி: காத்திருக்கும்போது, மயங்கும்போது, உறைந்தபோது, உறங்கும்போது செயல்படாது. காலியிடம் இல்லையெனில் எதுவும் பிறக்காது.",
  "Deliver": "வழங்கு",
- "Every Turn": "ஒவ்வொரு திருப்பம்"
+ "Every Turn": "ஒவ்வொரு திருப்பம்",
+ "Learns a skill at Level {n}": "நிலை {n}-இல் ஒரு திறனைக் கற்கும்",
+ "Not unlocked yet": "இன்னும் திறக்கப்படவில்லை"
 }

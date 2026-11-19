@@ -4684,5 +4684,7 @@
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "대가가 있는 매 턴 트리거: 실제로 발동할 때만 목재를 냅니다. 유닛은 유지 단계 순서로 행동하므로, 먼저 행동하는 채석이 제련소에 공급할 수 있습니다.",
  "An Every Turn trigger: off while it is Waiting, Stunned, Frozen or Asleep. No free slot left, no spawn.": "매 턴 트리거: 대기, 기절, 빙결, 수면 중에는 꺼져요. 빈칸이 없으면 아무것도 안 나와요.",
  "Deliver": "전달",
- "Every Turn": "매 턴"
+ "Every Turn": "매 턴",
+ "Learns a skill at Level {n}": "Lv {n}에 스킬을 배움",
+ "Not unlocked yet": "아직 잠금 해제 전"
 }
