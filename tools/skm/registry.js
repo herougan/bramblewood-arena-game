@@ -278,9 +278,11 @@ async function playNew(sim, E, s, M) {
       return { X, carrier: c, pairs: w.map((o, j) => ({ w: o, c: cc[j] })), yard, games: M };
     }
     // defence: my blockers with no Attack (given the skill) against plain farm-dogs; yardstick +2 / +4 Health on the blocker
-    const X = sim.context(E.cs), ctrl = pacifist(gm, body), withV = mergeV(ctrl, add), h2 = Object.assign({}, ctrl, { dH: 2 }), h4 = Object.assign({}, ctrl, { dH: 4 }), YM = Math.max(M, E.yardM || M);
-    await sim.need(X, [{ v: ctrl }, { v: h2 }, { v: h4 }], YM); await sim.need(X, [{ v: withV }], M);
-    const b = sim.outcomes(X, ctrl, body, YM), yard = [{ kind: 'H', pts: 2, b, u: sim.outcomes(X, h2, body, YM) }, { kind: 'H4', pts: 4, b, u: sim.outcomes(X, h4, body, YM) }];
+    // (+1 Attack on the blocker too, 2026-11-21: Health alone buys few rounds, so a blocker that kills its attackers by a shot read 50-150
+    // points against Health; the pooled yardstick prices it against an average budget point, as the other designs' win estimators do)
+    const X = sim.context(E.cs), ctrl = pacifist(gm, body), withV = mergeV(ctrl, add), h2 = Object.assign({}, ctrl, { dH: 2 }), h4 = Object.assign({}, ctrl, { dH: 4 }), a1 = Object.assign({}, ctrl, { dA: ctrl.dA + 1 }), YM = Math.max(M, E.yardM || M);
+    await sim.need(X, [{ v: ctrl }, { v: h2 }, { v: h4 }, { v: a1 }], YM); await sim.need(X, [{ v: withV }], M);
+    const b = sim.outcomes(X, ctrl, body, YM), yard = [{ kind: 'H', pts: 2, b, u: sim.outcomes(X, h2, body, YM) }, { kind: 'H4', pts: 4, b, u: sim.outcomes(X, h4, body, YM) }, { kind: 'A', pts: AW, b, u: sim.outcomes(X, a1, body, YM) }];
     const w = sim.outcomes(X, withV, body, M), cc = b.slice(0, M);
     return { X, carrier: c, pairs: w.map((o, j) => ({ w: o, c: cc[j] })), yard, games: M };
   }
@@ -409,7 +411,7 @@ const PLAN = {
   R3: ['win', 'margin', 'logit', 'vsRanged', 'vsMelee'],
   D1: ['margin', 'win', 'dealt', 'yH', 'early', 'late'],
   OR: ['rounds', 'roundsAll'],
-  DR: ['lives', 'livesH2'],
+  DR: ['lives', 'livesH2', 'livesAll'],
   DU: ['win', 'margin', 'logit', 'compMedian', 'compMedianMargin'],
   PX: ['margin', 'win', 'logit', 'deckMedian', 'yH', 'yA'],
 };
@@ -419,6 +421,7 @@ const RACE = [
   { k: 'roundsAll', est: { metric: 'quick' }, name: 'rounds to break (both bumps)', idea: 'rounds saved / the rounds a budget point saves, +1 Attack and +2 Health pooled' },
   { k: 'lives', est: { metric: 'last', yard: 'ladder' }, name: 'rounds lived', idea: 'rounds the bramble lives longer / those a Health point buys (a line through +0 / +2 / +4 Health)' },
   { k: 'livesH2', est: { metric: 'last', yard: 'H' }, name: 'rounds lived (+2 Health)', idea: 'rounds the bramble lives longer / those +2 Health buy' },
+  { k: 'livesAll', est: { metric: 'last' }, name: 'rounds lived (both bumps)', idea: 'rounds the bramble lives longer / those a budget point buys, +1 Attack on the blocker and +2 Health pooled' },
   { k: 'compMedian', est: { metric: 'win', group: true }, name: 'median companion', idea: 'each companion\'s own win-rate worth, the median over the companions (the skill beside a typical partner; the spread is in the note)' },
   { k: 'compMedianMargin', est: { metric: 'margin', group: true }, name: 'median companion (margin)', idea: 'each companion\'s own bramble-margin worth, the median over the companions' },
   { k: 'deckMedian', est: { metric: 'margin', group: true }, name: 'median deck', idea: 'each deck\'s own bramble-margin worth, the median over the decks (matchup spread: the skill in its typical deck; the spread is in the note)' },
@@ -442,11 +445,12 @@ Object.keys(PLAN).forEach(eid => {
 });
 
 // OD (SKM3): the two races added, each at the fights its primary stopped at (read from its result lines; the games come from the cache)
-REG.push({ id: 'OD-sum', exp: 'OD', primary: true, name: 'OD offence + defence', idea: EXPS.OD.idea + '; OR-rounds + DR-lives, the intervals added in quadrature',
+// (each half priced by the pooled yardstick, +1 Attack and +2 Health, so both halves are in the same average budget point)
+REG.push({ id: 'OD-sum', exp: 'OD', primary: true, name: 'OD offence + defence', idea: EXPS.OD.idea + '; OR-roundsAll + DR-livesAll (each against the pooled +1 Attack / +2 Health yardstick), the intervals added in quadrature',
   async run(s, o) { const fp = L.fingerprint(), Mof = id => { const f = path.join(BAL, 'skm', 'results', id + '.jsonl'); if (!fs.existsSync(f)) return null; let M = null;
       fs.readFileSync(f, 'utf8').split('\n').filter(Boolean).forEach(l => { try { const r = JSON.parse(l); if (r.fp === fp && r.skill === s && r.M) M = r.M; } catch (e) { /* a torn line */ } }); return M; };
     const parts = [];
-    for (const [eid, k] of [['OR', 'rounds'], ['DR', 'lives']]) { const M = Mof(eid + '-' + k); if (!M) return { worth: null, games: 0, note: 'run ' + eid + ' first' };
+    for (const [eid, k, prim] of [['OR', 'roundsAll', 'rounds'], ['DR', 'livesAll', 'lives']]) { const M = Mof(eid + '-' + prim); if (!M) return { worth: null, games: 0, note: 'run ' + eid + ' first' };
       const D = await playDesign(o.sim, EXPS[eid], s, M); if (D.skip) return { worth: null, games: 0, note: D.skip };
       const r = estimate(o.sim.gm, D.X, D.pairs, D.yard, ALL_EST[k].est); if (!r || r.worth == null) return { worth: null, games: 0, note: eid + ': no estimate' }; parts.push(Object.assign({ M }, r)); }
     return { worth: parts[0].worth + parts[1].worth, ci: Math.sqrt(parts[0].ci ** 2 + parts[1].ci ** 2), games: 0, carrier: carrierOf(o.U, s, 1)[0], M: parts[0].M + parts[1].M,
