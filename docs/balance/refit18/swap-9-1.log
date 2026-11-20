@@ -1,0 +1,30 @@
+9-1 target 90 start {"crocodile-ambusher":4,"horseshoe-crab":2,"proboscis-monkey":2,"fiddler-crab-swarm":1,"electric-ray":3,"anhinga-spearbird":4} 80 (60 games, seed 171300)
+-1 crocodile-ambusher +1 electric-ray                68.3 {"crocodile-ambusher":3,"horseshoe-crab":2,"proboscis-monkey":2,"fiddler-crab-swarm":1,"electric-ray":4,"anhinga-spearbird":4}
+-1 crocodile-ambusher +1 horseshoe-crab              78.3 {"crocodile-ambusher":3,"horseshoe-crab":3,"proboscis-monkey":2,"fiddler-crab-swarm":1,"electric-ray":3,"anhinga-spearbird":4}
+-2 crocodile-ambusher +2 horseshoe-crab              68.3 {"crocodile-ambusher":2,"horseshoe-crab":4,"proboscis-monkey":2,"fiddler-crab-swarm":1,"electric-ray":3,"anhinga-spearbird":4}
+-1 crocodile-ambusher +1 proboscis-monkey            76.7 {"crocodile-ambusher":3,"horseshoe-crab":2,"proboscis-monkey":3,"fiddler-crab-swarm":1,"electric-ray":3,"anhinga-spearbird":4}
+-2 crocodile-ambusher +2 proboscis-monkey            78.3 {"crocodile-ambusher":2,"horseshoe-crab":2,"proboscis-monkey":4,"fiddler-crab-swarm":1,"electric-ray":3,"anhinga-spearbird":4}
+-1 horseshoe-crab +1 electric-ray                    73.3 {"crocodile-ambusher":4,"horseshoe-crab":1,"proboscis-monkey":2,"fiddler-crab-swarm":1,"electric-ray":4,"anhinga-spearbird":4}
+-2 horseshoe-crab +2 mangrove-monitor                76.7 {"crocodile-ambusher":4,"proboscis-monkey":2,"fiddler-crab-swarm":1,"electric-ray":3,"anhinga-spearbird":4,"mangrove-monitor":2}
+-1 horseshoe-crab +1 proboscis-monkey                76.7 {"crocodile-ambusher":4,"horseshoe-crab":1,"proboscis-monkey":3,"fiddler-crab-swarm":1,"electric-ray":3,"anhinga-spearbird":4}
+-2 horseshoe-crab +2 proboscis-monkey                81.7 {"crocodile-ambusher":4,"proboscis-monkey":4,"fiddler-crab-swarm":1,"electric-ray":3,"anhinga-spearbird":4}
+-1 proboscis-monkey +1 electric-ray                  70 {"crocodile-ambusher":4,"horseshoe-crab":2,"proboscis-monkey":1,"fiddler-crab-swarm":1,"electric-ray":4,"anhinga-spearbird":4}
+-1 proboscis-monkey +1 horseshoe-crab                76.7 {"crocodile-ambusher":4,"horseshoe-crab":3,"proboscis-monkey":1,"fiddler-crab-swarm":1,"electric-ray":3,"anhinga-spearbird":4}
+-2 proboscis-monkey +2 horseshoe-crab                83.3 {"crocodile-ambusher":4,"horseshoe-crab":4,"fiddler-crab-swarm":1,"electric-ray":3,"anhinga-spearbird":4}
+-2 proboscis-monkey +2 mangrove-monitor              68.3 {"crocodile-ambusher":4,"horseshoe-crab":2,"fiddler-crab-swarm":1,"electric-ray":3,"anhinga-spearbird":4,"mangrove-monitor":2}
+-1 fiddler-crab-swarm +1 alley-cat                   81.7 {"crocodile-ambusher":4,"horseshoe-crab":2,"proboscis-monkey":2,"electric-ray":3,"anhinga-spearbird":4,"alley-cat":1}
+-1 fiddler-crab-swarm +1 electric-ray                73.3 {"crocodile-ambusher":4,"horseshoe-crab":2,"proboscis-monkey":2,"electric-ray":4,"anhinga-spearbird":4}
+-1 fiddler-crab-swarm +1 horseshoe-crab              83.3 {"crocodile-ambusher":4,"horseshoe-crab":3,"proboscis-monkey":2,"electric-ray":3,"anhinga-spearbird":4}
+-1 fiddler-crab-swarm +1 mangrove-monitor            81.7 {"crocodile-ambusher":4,"horseshoe-crab":2,"proboscis-monkey":2,"electric-ray":3,"anhinga-spearbird":4,"mangrove-monitor":1}
+-1 fiddler-crab-swarm +1 nutria-reedcutter           83.3 {"crocodile-ambusher":4,"horseshoe-crab":2,"proboscis-monkey":2,"electric-ray":3,"anhinga-spearbird":4,"nutria-reedcutter":1}
+-1 fiddler-crab-swarm +1 proboscis-monkey            83.3 {"crocodile-ambusher":4,"horseshoe-crab":2,"proboscis-monkey":3,"electric-ray":3,"anhinga-spearbird":4}
+-1 electric-ray +1 horseshoe-crab                    88.3 {"crocodile-ambusher":4,"horseshoe-crab":3,"proboscis-monkey":2,"fiddler-crab-swarm":1,"electric-ray":2,"anhinga-spearbird":4}
+-2 electric-ray +2 horseshoe-crab                    91.7 {"crocodile-ambusher":4,"horseshoe-crab":4,"proboscis-monkey":2,"fiddler-crab-swarm":1,"electric-ray":1,"anhinga-spearbird":4}
+-1 electric-ray +1 proboscis-monkey                  90 {"crocodile-ambusher":4,"horseshoe-crab":2,"proboscis-monkey":3,"fiddler-crab-swarm":1,"electric-ray":2,"anhinga-spearbird":4}
+-2 electric-ray +2 proboscis-monkey                  88.3 {"crocodile-ambusher":4,"horseshoe-crab":2,"proboscis-monkey":4,"fiddler-crab-swarm":1,"electric-ray":1,"anhinga-spearbird":4}
+-1 anhinga-spearbird +1 electric-ray                 78.3 {"crocodile-ambusher":4,"horseshoe-crab":2,"proboscis-monkey":2,"fiddler-crab-swarm":1,"electric-ray":4,"anhinga-spearbird":3}
+-1 anhinga-spearbird +1 horseshoe-crab               83.3 {"crocodile-ambusher":4,"horseshoe-crab":3,"proboscis-monkey":2,"fiddler-crab-swarm":1,"electric-ray":3,"anhinga-spearbird":3}
+-2 anhinga-spearbird +2 horseshoe-crab               71.7 {"crocodile-ambusher":4,"horseshoe-crab":4,"proboscis-monkey":2,"fiddler-crab-swarm":1,"electric-ray":3,"anhinga-spearbird":2}
+-1 anhinga-spearbird +1 proboscis-monkey             86.7 {"crocodile-ambusher":4,"horseshoe-crab":2,"proboscis-monkey":3,"fiddler-crab-swarm":1,"electric-ray":3,"anhinga-spearbird":3}
+-2 anhinga-spearbird +2 proboscis-monkey             78.3 {"crocodile-ambusher":4,"horseshoe-crab":2,"proboscis-monkey":4,"fiddler-crab-swarm":1,"electric-ray":3,"anhinga-spearbird":2}
+blocked: [["N different cards (N-N)",32],["map: mk usage mangrove-mudskipper N>N",11],["fiddler-crab-swarm xN",10],["anhinga-spearbird xN over N",9],["crocodile-ambusher xN over N",9],["alley-cat xN",5],["nutria-reedcutter xN",5],["electric-ray xN over N",4]]

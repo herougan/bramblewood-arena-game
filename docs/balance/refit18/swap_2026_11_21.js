@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 // 2026-11-21 (package REFIT18): REFIT17's swap scan, targets from refit17/skirmish-pass-refit17-road-s9100.jsonl, decks from refit18/acc.jsonl;
-// DONE=<log> skips decks that log already holds (resume after a 30-minute cut). Was: REFIT15's swap scan (docs/balance/refit15/swap_2026_11_20.js) narrowed for the slow Maps 10-17 fights: only the
+// DONE=<log> skips decks that log already holds (resume after a 30-minute cut); IGNORE=<regex> drops a problem the live deck already has and
+// no pool card can clear (20-4: the restlessDead boon, no Undead card in its pool). Was: REFIT15's swap scan (docs/balance/refit15/swap_2026_11_20.js) narrowed for the slow Maps 10-17 fights: only the
 // listed out-cards (k = 1 .. kmax copies, kept cards' kept copies never) for the listed in-cards ('all' = the whole pool), legal decks only
 // (problemsFull, leaders kept, refit18/acc.jsonl's decks in place), at G games on seed S; targets from the before file
 // (refit17/skirmish-pass-refit17-road-s9100.jsonl). A start deck may be given (two-step swaps).
-//   [KMIN=k] [SHIELD=s] [DONE=log] node docs/balance/refit18/swap_2026_11_21.js CODE games seed kmax outs|all ins|all ['<start deck json>']
+//   [KMIN=k] [SHIELD=s] [DONE=log] [IGNORE=re] node docs/balance/refit18/swap_2026_11_21.js CODE games seed kmax outs|all ins|all ['<start deck json>']
 'use strict';
 const fs = require('fs'), path = require('path'), ROOT = path.resolve(__dirname, '..', '..', '..');
 const X = require(path.join(ROOT, 'tools', 'legal1', 'lib_legal_2026_11_15.js')), G = X.G;
@@ -20,7 +21,7 @@ console.log(code, 'target', T, 'start', JSON.stringify(d0), win(d0), `(${N} game
 const why = {}, seen = new Set(); if (process.env.DONE && fs.existsSync(process.env.DONE)) fs.readFileSync(process.env.DONE, 'utf8').split('\n').forEach(l => { const j = l.indexOf(' {'); if (/^-[0-9]/.test(l) && j > 0) seen.add(l.slice(j + 1).trim()); });
 for (const a of O) for (const b of I) { if (b === a || !d0[a]) continue;
   for (let k = +(process.env.KMIN || 1); k <= Math.min(KM, d0[a] - keepN(a)); k++) { const d = Object.assign({}, d0, { [b]: (d0[b] || 0) + k }); if (d0[a] === k) delete d[a]; else d[a] = d0[a] - k;
-    const p = X.problemsFull(code, d, fx).concat(leadersOf(d) === lead0 ? [] : ['leaders change']);
+    const p = X.problemsFull(code, d, fx).filter(s => !(process.env.IGNORE && new RegExp(process.env.IGNORE).test(s))).concat(leadersOf(d) === lead0 ? [] : ['leaders change']);
     if (p.length) { p.forEach(s => { const w = s.replace(/[0-9]+/g, 'N'); why[w] = (why[w] || 0) + 1; }); continue; }
     if (seen.has(JSON.stringify(d))) continue;
     console.log(`-${k} ${a} +${k} ${b}`.padEnd(52), win(d), JSON.stringify(d)); } }
