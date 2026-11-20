@@ -1,0 +1,47 @@
+8-7 base  7 / 7.8  mean 7.4  (400 games, seeds 121100 / 122100)
+  set=characterId:null+hq=12                                   51 / 54  mean 52.5
+  set=characterId:null+hq=10                                   52.8 / 55.3  mean 54.0
+  set=characterId:null+hq=14                                   41 / 47  mean 44.0
+  hq=6                                                         33.8 / 37.3  mean 35.5
+  hq=4                                                         36 / 42.8  mean 39.4
+  hq=2                                                         37 / 43.3  mean 40.1
+8-7 base  7 / 7.8  mean 7.4  (400 games, seeds 121100 / 122100)
+  set=characterId:null+hq=8                                    53.5 / 56.3  mean 54.9
+  set=characterId:null+hq=6                                    66 / 72  mean 69.0
+17-4 base  50.2 / 54.8  mean 52.5  (400 games, seeds 121100 / 122100)
+  hq=16                                                        71.3 / 75  mean 73.2
+  hq=12                                                        78.8 / 81  mean 79.9
+  hq=20                                                        62.5 / 71.8  mean 67.2
+18-4 base  91.8 / 89.8  mean 90.8  (400 games, seeds 121100 / 122100)
+  rules={"boon":"sandVeil","sandstorm":true}                   66.5 / 64.3  mean 65.4
+  rules={"boon":"sandVeil"}                                    50.7 / 50.7  mean 50.7
+18-7 base  72.8 / 72  mean 72.4  (400 games, seeds 121100 / 122100)
+  rules={"field":"heatwave","heatLevel":2}                     56.8 / 54.5  mean 55.6
+  rules={"field":"heatwave","heatLevel":3}                     55.5 / 54  mean 54.8
+  rules={"sandstorm":true,"field":"heatwave","heatLevel":3}    68.8 / 74.3  mean 71.5
+  set=brambleHealth:30                                         74 / 72.5  mean 73.2
+  set=brambleHealth:60                                         74.5 / 73  mean 73.8
+18-A-7 base  96 / 96.5  mean 96.2  (400 games, seeds 121100 / 122100)
+  out=dune-jackal:1,roadrunner-courier:2,barrel-cactus:1+add=antlion-pit:4 94.8 / 97.5  mean 96.2
+  out=dune-jackal:1,roadrunner-courier:2,barrel-cactus:1+add=caustic-scorpion:4 96 / 94.8  mean 95.4
+  out=dune-jackal:1,roadrunner-courier:1+add=dust-devil-kestrel:2 91.3 / 89.5  mean 90.4
+  out=dune-jackal:1,roadrunner-courier:2,barrel-cactus:1+add=stonedrop-vulture:4 45.5 / 41.5  mean 43.5
+  out=dune-jackal:1,roadrunner-courier:2+add=obsidian-scorpion:3 94.5 / 96.5  mean 95.5
+  out=dune-jackal:1,roadrunner-courier:2+add=frillneck-duelist:3 97 / 97  mean 97.0
+  out=dune-jackal:1,roadrunner-courier:2,barrel-cactus:1+add=armadillo-guard:4 95.5 / 97.5  mean 96.5
+  out=dune-jackal:1,roadrunner-courier:2,barrel-cactus:1+add=meerkat-sentry:4 91.5 / 94  mean 92.8
+18-A-7 base  96 / 96.5  mean 96.2  (400 games, seeds 121100 / 122100)
+  out=dune-jackal:1+add=stonedrop-vulture:1                    90.3 / 89.3  mean 89.8
+  out=dune-jackal:1,roadrunner-courier:1+add=stonedrop-vulture:2 79 / 69.3  mean 74.2
+  out=dune-jackal:1,roadrunner-courier:2+add=dust-devil-kestrel:2,stonedrop-vulture:1 81.8 / 77.3  mean 79.5
+  out=dune-jackal:1,roadrunner-courier:2,barrel-cactus:1+add=dust-devil-kestrel:2,stonedrop-vulture:2 65.8 / 62.3  mean 64.0
+  out=dune-jackal:1,roadrunner-courier:2,barrel-cactus:3+add=meerkat-sentry:4,dust-devil-kestrel:2 90.5 / 91.5  mean 91.0
+18-A-7 base  96 / 96.5  mean 96.2  (400 games, seeds 121100 / 122100)
+  out=dune-jackal:1,roadrunner-courier:2+add=stonedrop-vulture:3 61.8 / 58.3  mean 60.0
+# REF_DECK = Map 8 reference with Muskrat Lodgekeeper x4 -> Worker Ant x4 (report only); live 8-7 = REFIT13's no-Mine hqHp 8
+8-7 base  71.5 / 74.8  mean 73.2  (400 games, seeds 121100 / 122100)
+  set=characterId:"collapsed-mine"+hq=none                     17.3 / 18  mean 17.6
+  set=characterId:"collapsed-mine"+hq=8                        40.5 / 38.5  mean 39.5
+  set=characterId:"collapsed-mine"+hq=4                        60.5 / 65  mean 62.8
+  hq=14                                                        57 / 59.8  mean 58.4
+  hq=20                                                        45.8 / 53  mean 49.4
