@@ -4,6 +4,19 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**REFIT18-2. Enemy level for four fights that are too easy** · Decide · Balance · asked 2026-11-21
+- No legal swap or Shield fixes them; a higher enemy level does. 13-8: level 3 → 4 reads 38 (target 40). 20-4: 3.9 → 5 reads 69 (67). Side 10-A-3: 3 → 3.5 reads 69.5 (70). 20-9 (58 vs 50, within 10) instead takes Shield 60 → 90, reading 53.5.
+  - a) All four as listed
+  - b) Only 13-8 and 20-4 (the main fights 10+ off)
+  - c) Leave
+- **Default:** a
+
+**REFIT18-1. Main fight 5-2 is too hard** · Decide · Balance · asked 2026-11-21
+- Reads 73 against 84. Every legal swap makes it harder and Shield is 0. Its Health is already lowered; cutting it again, 14 → 9, reads 85. That goes further under the 60% floor.
+  - a) Health 9, under the floor (85)
+  - b) Leave
+- **Default:** b
+
 **SKM4-1. 57 combat skills priced outside their measured range** · Decide · Balance · asked 2026-11-21
 - Re-measured at 1,000 fights: 57 of 58 flags hold (24 too cheap, 33 too dear; Wave cleared). Biggest: too cheap Fortify armor 1 (worth 9.1, price 3.0), Ally-played grant (4.7 / 0); too dear Evolute (-3.6 / 3.0), Swift (4.5 / 9.5), Nursing 2 (4.6 / 10), Venom Master (0.1 / 5.1), Twin Shot 2 (8.5 / 13.3), Offspring (0.4 / 6.1, also in SKM2-1). Table: docs/balance/pipeline/flags-2026-11-21.md.
   - a) Re-price the 10 biggest, then list cards that fall out of budget (no stat changes)
@@ -76,9 +89,9 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
   - b) Leave Map 1 easy
 - **Default:** a
 
-**REFIT14-1. Four more Pale Desert fights are too easy (88-99)** · Decide · Balance · asked 2026-11-21
-- 18-A-3, A-4, A-5 and A-6 read 88-99 against targets 69-77. No swap, Shield or Health change moves them. Stonedrop Vulture (from REFIT13-2 a) does: A-3 66 (target 71), A-4 78.5 (77), A-5 65 (73), A-6 63 (69).
-  - a) Use Vulture there too (x2 each, x3 on A-6)
+**REFIT14-1. Six Pale Desert fights are too easy (main 18-2, 18-3; side A-3 to A-6)** · Decide · Balance · asked 2026-11-21
+- 18-A-3, A-4, A-5 and A-6 read 88-99 against targets 69-77. No swap, Shield or Health change moves them. Stonedrop Vulture (from REFIT13-2 a) does: A-3 66 (target 71), A-4 78.5 (77), A-5 65 (73), A-6 63 (69). REFIT18: main fights 18-2 (96 vs 84) and 18-3 (94.5 vs 78) have the same cause. One Vulture for a Roadrunner Courier reads 18-2 at 88; one for the Worker Ant reads 18-3 at 77.
+  - a) Use Vulture on all six (x1 on 18-2 and 18-3; x2 on A-3 to A-5, x3 on A-6)
   - b) Leave them easy
 - **Default:** a
 
