@@ -4,6 +4,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 
 ## 2026-11-20 (package REFIT17: side-road fights of Maps 1-20 that sat 10+ off)
 - Side fights, toward the road curve (leaders, first-clear cards, sizes kept; no Health cuts). Confirm seeds 161100 / 162100 (400 games), mean before -> after (target): Shield only: 10-A-5 Shield 0 -> 13, 66.9 -> 40.5 (40); 5-A-4 Shield 0 -> the rule's 20, 60.0 -> 44.4 (40); 11-A-4 Shield 0 -> the rule's 23, 54.0 -> 40.6 (40); 2-A-3 Shield 3 -> 0, 68.5 -> 73.2 (78). One pool swap: 1-A-2 62.6 -> 77.0 (80), 7-A-1 74.7 -> 90.8 (90), 1-A-5 29.8 -> 38.0 (40), 20-B-3 73.4 -> 60.5 (60), 2-B-3 71.8 -> 57.6 (60), 2-A-5 54.4 -> 66.3 (66); 10-A-3 Shield 0 -> the rule's 6 plus a swap, 87.0 -> 78.8 (70).
+- Seed 9100 road (Maps 0-20, 400 games): only these 11 moved; side road rows 55/58/11 -> 64/68/9 of 85 (in band / within 10 / beyond 20), main unchanged 112/124/2. 10-A-3 reads 83 there (target 70).
 - No legal fix (owner options measured): 20-A-4, 5-A-3, 2-A-4, 2-B-1, 1-A-1. Files: `docs/balance/refit17/`.
 
 ## 2026-11-20 (package REFIT16: the early-bramble lead read; Maps 10-17 fights 10-20 off)
