@@ -4,6 +4,37 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**REFIT17-1. Side boss 20-A-4 is too easy** · Decide · Balance · asked 2026-11-21
+- Reads 64 against a target of 35.5. Every legal swap, Shield change or enemy level leaves it at 64 or easier. A 4th Obsidian Scorpion (over the rare cap) gives 60.5; nothing measured reaches 35.5.
+  - a) Lower the 20-A-4 target to about 60
+  - b) Allow a 4th Obsidian Scorpion (60.5)
+  - c) Leave
+- **Default:** a
+
+**REFIT17-2. Side fight 5-A-3 is too easy** · Decide · Balance · asked 2026-11-21
+- Reads 72 against 60. Shield is already at the rule and every legal swap makes it easier. Shield 26 (twice the rule) plus enemy level 4 reads 58, in band.
+  - a) Shield 26 + enemy level 4 (58)
+  - b) Leave
+- **Default:** a
+
+**REFIT17-3. Side fight 2-A-4 is too hard** · Decide · Balance · asked 2026-11-21
+- Reads 54 against 72. Every swap makes it harder. A 21st lowered-Health fight, Health 15 → 9 (the 60% floor), reads 72, in band.
+  - a) Raise the limit to 21 and cut Health to 9 (72)
+  - b) Leave
+- **Default:** a
+
+**REFIT17-4. Side fight 2-B-1 is too hard** · Decide · Balance · asked 2026-11-21
+- Reads 76 against 90. No swap or Shield change helps. Its Health is already lowered; cutting it again, 7 → 4, reads 82, in band. This goes under the 60% floor.
+  - a) Health 4, under the floor (82)
+  - b) Leave
+- **Default:** b
+
+**REFIT17-5. Side fight 1-A-1 is too hard** · Decide · Balance · asked 2026-11-21
+- Reads 79 against 90. No swap, Health or enemy level change helps. Letting the deck go under the 10-card side floor, to 8 cards (2 Ant Scout out), reads 87.5, in band.
+  - a) 8-card deck, under the side floor (87.5)
+  - b) Leave
+- **Default:** a
+
 **REFIT16-1. Map 17 fights are too hard (17-4, 17-6, 17-7)** · Decide · Balance · asked 2026-11-21
 - Deck rules block almost every swap and Shield is 0. Enemy level 3.36 → 3 reads 17-4 76 (target 75), 17-6 61 (65), 17-7 46 (60). 17-7 needs level 2.5 plus Health 11 (a 21st lowered-Health fight) to read 59.
   - a) Map 17 enemy level 3, and 17-7 level 2.5 + Health 11
