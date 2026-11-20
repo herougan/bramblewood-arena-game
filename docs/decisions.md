@@ -4,6 +4,12 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**REFIT13-5. Cut two base Healths below the 60% floor?** · Decide · Balance · asked 2026-11-21
+- The test rule keeps a fight's lower Health at 60%+ of its bramble's own; past it needs your OK (as with HPCUT1). Within the floor: 8-7 reads 42 (target 60), 17-4 reads 67 (target 75). Below it: 8-7 Health 8 reads 55, 17-4 Health 16 reads 73.
+  - a) Allow both cuts as owner exceptions
+  - b) Keep the floor
+- **Default:** a
+
 **SKM2-1. Re-price 11 skills the re-measure confirmed** · Decide · Balance · asked 2026-11-21
 - At 1,000 fights, four methods agree. Cheap: Diurnal 1.5 (reads ~2.8), Pack 3.3 (~6+), Sleep Powder 2.5 (~4), Poison Barbs 2.4 (~4.5), Poison Powder 4.8 (~6.3), Dive's drawback -1.7 (~-0.3). Dear: Keen Sense 2.0 (~0.2), Parasite 1.0 (~-1.8), Pulverise 1.5 (~0.3), Overwhelm 1.1 (~0.5), Offspring 6.1 (~0.6). Flying, Evasive, Corrode, Trident, Repair not confirmed: keep.
   - a) Re-price all 11, then list cards that fall out of budget (no stat changes without you)
