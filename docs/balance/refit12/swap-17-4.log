@@ -1,0 +1,15 @@
+17-4 target 75 start {"glacier-yak":4,"ice-crevasse-wolf":2,"ringed-seal":4,"snow-ermine":4,"arctic-tern":4,"warhorse-charger":1} 45 (60 games, seed 311300)
+-1 warhorse-charger +1 elderhorn-monarch             55 {"glacier-yak":4,"ice-crevasse-wolf":2,"ringed-seal":4,"snow-ermine":4,"arctic-tern":4,"elderhorn-monarch":1}
+-4 ringed-seal +4 harbor-seal                        50 {"glacier-yak":4,"ice-crevasse-wolf":2,"snow-ermine":4,"arctic-tern":4,"warhorse-charger":1,"harbor-seal":4}
+-1 arctic-tern +1 ice-crevasse-wolf                  48.3 {"glacier-yak":4,"ice-crevasse-wolf":3,"ringed-seal":4,"snow-ermine":4,"arctic-tern":3,"warhorse-charger":1}
+-1 warhorse-charger +1 pinecone-sapper               46.7 {"glacier-yak":4,"ice-crevasse-wolf":2,"ringed-seal":4,"snow-ermine":4,"arctic-tern":4,"pinecone-sapper":1}
+-1 glacier-yak +1 ice-crevasse-wolf                  45 {"glacier-yak":3,"ice-crevasse-wolf":3,"ringed-seal":4,"snow-ermine":4,"arctic-tern":4,"warhorse-charger":1}
+-1 warhorse-charger +1 briarback-hedgehog            41.7 {"glacier-yak":4,"ice-crevasse-wolf":2,"ringed-seal":4,"snow-ermine":4,"arctic-tern":4,"briarback-hedgehog":1}
+-1 warhorse-charger +1 boreal-elk                    40 {"glacier-yak":4,"ice-crevasse-wolf":2,"ringed-seal":4,"snow-ermine":4,"arctic-tern":4,"boreal-elk":1}
+-1 warhorse-charger +1 cataphract-destrier           38.3 {"glacier-yak":4,"ice-crevasse-wolf":2,"ringed-seal":4,"snow-ermine":4,"arctic-tern":4,"cataphract-destrier":1}
+-1 ringed-seal +1 ice-crevasse-wolf                  36.7 {"glacier-yak":4,"ice-crevasse-wolf":3,"ringed-seal":3,"snow-ermine":4,"arctic-tern":4,"warhorse-charger":1}
+-1 snow-ermine +1 ice-crevasse-wolf                  36.7 {"glacier-yak":4,"ice-crevasse-wolf":3,"ringed-seal":4,"snow-ermine":3,"arctic-tern":4,"warhorse-charger":1}
+-1 warhorse-charger +1 snowshoe-hare                 36.7 {"glacier-yak":4,"ice-crevasse-wolf":2,"ringed-seal":4,"snow-ermine":4,"arctic-tern":4,"snowshoe-hare":1}
+-1 warhorse-charger +1 cone-cutter-squirrel          35 {"glacier-yak":4,"ice-crevasse-wolf":2,"ringed-seal":4,"snow-ermine":4,"arctic-tern":4,"cone-cutter-squirrel":1}
+-1 warhorse-charger +1 ice-crevasse-wolf             26.7 {"glacier-yak":4,"ice-crevasse-wolf":3,"ringed-seal":4,"snow-ermine":4,"arctic-tern":4}
+blocked: [["N different cards (N-N)",104],["map: N-N family cataphract-destrier+warhorse-charger",18],["map: N-N family harbor-seal+ringed-seal",18],["warhorse-charger xN",18],["arctic-tern xN over N",15],["ringed-seal xN over N",15],["snow-ermine xN over N",15],["glacier-yak xN over N",15],["boreal-elk xN",13],["briarback-hedgehog xN",13],["cataphract-destrier xN",13],["cone-cutter-squirrel xN",13]]

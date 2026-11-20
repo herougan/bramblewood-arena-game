@@ -1,0 +1,37 @@
+18-A-7 target 64.3 start {"barrel-cactus":3,"dune-jackal":1,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":4,"horned-lizard":3} 100 (60 games, seed 311300)
+-3 sand-widow +3 dune-jackal                         93.3 {"barrel-cactus":3,"dune-jackal":4,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":1,"horned-lizard":3}
+-1 barrel-cactus +1 horned-lizard                    95 {"barrel-cactus":2,"dune-jackal":1,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":4,"horned-lizard":4}
+-3 barrel-cactus +3 pale-oryx                        95 {"dune-jackal":1,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":4,"horned-lizard":3,"pale-oryx":3}
+-1 dune-jackal +1 roadrunner-courier                 95 {"barrel-cactus":3,"quicksand-queen":2,"roadrunner-courier":3,"sand-widow":4,"horned-lizard":3}
+-1 quicksand-queen +1 roadrunner-courier             95 {"barrel-cactus":3,"dune-jackal":1,"quicksand-queen":1,"roadrunner-courier":3,"sand-widow":4,"horned-lizard":3}
+-2 sand-widow +2 dune-jackal                         95 {"barrel-cactus":3,"dune-jackal":3,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":2,"horned-lizard":3}
+-3 barrel-cactus +3 dune-jackal                      96.7 {"dune-jackal":4,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":4,"horned-lizard":3}
+-1 barrel-cactus +1 roadrunner-courier               96.7 {"barrel-cactus":2,"dune-jackal":1,"quicksand-queen":2,"roadrunner-courier":3,"sand-widow":4,"horned-lizard":3}
+-1 quicksand-queen +1 horned-lizard                  96.7 {"barrel-cactus":3,"dune-jackal":1,"quicksand-queen":1,"roadrunner-courier":2,"sand-widow":4,"horned-lizard":4}
+-4 sand-widow +4 dromedary                           96.7 {"barrel-cactus":3,"dune-jackal":1,"quicksand-queen":2,"roadrunner-courier":2,"horned-lizard":3,"dromedary":4}
+-1 horned-lizard +1 dune-jackal                      96.7 {"barrel-cactus":3,"dune-jackal":2,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":4,"horned-lizard":2}
+-2 horned-lizard +2 dune-jackal                      96.7 {"barrel-cactus":3,"dune-jackal":3,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":4,"horned-lizard":1}
+-3 barrel-cactus +3 dromedary                        98.3 {"dune-jackal":1,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":4,"horned-lizard":3,"dromedary":3}
+-2 barrel-cactus +2 dune-jackal                      98.3 {"barrel-cactus":1,"dune-jackal":3,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":4,"horned-lizard":3}
+-2 barrel-cactus +2 roadrunner-courier               98.3 {"barrel-cactus":1,"dune-jackal":1,"quicksand-queen":2,"roadrunner-courier":4,"sand-widow":4,"horned-lizard":3}
+-1 dune-jackal +1 dromedary                          98.3 {"barrel-cactus":3,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":4,"horned-lizard":3,"dromedary":1}
+-1 dune-jackal +1 horned-lizard                      98.3 {"barrel-cactus":3,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":4,"horned-lizard":4}
+-1 quicksand-queen +1 dune-jackal                    98.3 {"barrel-cactus":3,"dune-jackal":2,"quicksand-queen":1,"roadrunner-courier":2,"sand-widow":4,"horned-lizard":3}
+-2 roadrunner-courier +2 dromedary                   98.3 {"barrel-cactus":3,"dune-jackal":1,"quicksand-queen":2,"sand-widow":4,"horned-lizard":3,"dromedary":2}
+-1 roadrunner-courier +1 dune-jackal                 98.3 {"barrel-cactus":3,"dune-jackal":2,"quicksand-queen":2,"roadrunner-courier":1,"sand-widow":4,"horned-lizard":3}
+-2 roadrunner-courier +2 dune-jackal                 98.3 {"barrel-cactus":3,"dune-jackal":3,"quicksand-queen":2,"sand-widow":4,"horned-lizard":3}
+-2 roadrunner-courier +2 pale-oryx                   98.3 {"barrel-cactus":3,"dune-jackal":1,"quicksand-queen":2,"sand-widow":4,"horned-lizard":3,"pale-oryx":2}
+-1 sand-widow +1 horned-lizard                       98.3 {"barrel-cactus":3,"dune-jackal":1,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":3,"horned-lizard":4}
+-4 sand-widow +4 pale-oryx                           98.3 {"barrel-cactus":3,"dune-jackal":1,"quicksand-queen":2,"roadrunner-courier":2,"horned-lizard":3,"pale-oryx":4}
+-3 horned-lizard +3 pale-oryx                        98.3 {"barrel-cactus":3,"dune-jackal":1,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":4,"pale-oryx":3}
+-1 barrel-cactus +1 dune-jackal                      100 {"barrel-cactus":2,"dune-jackal":2,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":4,"horned-lizard":3}
+-1 dune-jackal +1 pale-oryx                          100 {"barrel-cactus":3,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":4,"horned-lizard":3,"pale-oryx":1}
+-1 roadrunner-courier +1 horned-lizard               100 {"barrel-cactus":3,"dune-jackal":1,"quicksand-queen":2,"roadrunner-courier":1,"sand-widow":4,"horned-lizard":4}
+-1 sand-widow +1 dune-jackal                         100 {"barrel-cactus":3,"dune-jackal":2,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":3,"horned-lizard":3}
+-1 sand-widow +1 roadrunner-courier                  100 {"barrel-cactus":3,"dune-jackal":1,"quicksand-queen":2,"roadrunner-courier":3,"sand-widow":3,"horned-lizard":3}
+-2 sand-widow +2 roadrunner-courier                  100 {"barrel-cactus":3,"dune-jackal":1,"quicksand-queen":2,"roadrunner-courier":4,"sand-widow":2,"horned-lizard":3}
+-3 horned-lizard +3 dromedary                        100 {"barrel-cactus":3,"dune-jackal":1,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":4,"dromedary":3}
+-3 horned-lizard +3 dune-jackal                      100 {"barrel-cactus":3,"dune-jackal":4,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":4}
+-1 horned-lizard +1 roadrunner-courier               100 {"barrel-cactus":3,"dune-jackal":1,"quicksand-queen":2,"roadrunner-courier":3,"sand-widow":4,"horned-lizard":2}
+-2 horned-lizard +2 roadrunner-courier               100 {"barrel-cactus":3,"dune-jackal":1,"quicksand-queen":2,"roadrunner-courier":4,"sand-widow":4,"horned-lizard":1}
+blocked: [["N different cards (N-N)",18],["quicksand-queen xN over N",13],["barrel-cactus xN over N",12],["sand-widow xN over N",11],["horned-lizard xN over N",7],["kept card quicksand-queen xN (needs N)",7],["the showcase leader quicksand-queen would become barrel-cactus",7],["leaders change",7],["roadrunner-courier xN over N",4],["dune-jackal xN over N",1]]

@@ -1,0 +1,12 @@
+18-7 base {} 71 (200 games, seed 331300)
+  rules=none                               54
+  add=sandstorm-roc:4                      83.5
+  add=meerkat-sentry:4                     56.5
+8-7 base {"shield":0} 8 (200 games, seed 331300)
+  rules=none                               8
+18-4 base {"hqHp":82} 91.5 (200 games, seed 331300)
+  rules=none                               46
+  add=sandstorm-roc:4                      92
+18-A-7 base {} 96.5 (200 games, seed 331300)
+  rules=none                               94.5
+  add=horned-lizard:1,dromedary:3          97

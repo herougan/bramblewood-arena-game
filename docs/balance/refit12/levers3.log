@@ -1,0 +1,11 @@
+8-7 base {"shield":0} 8 (200 games, seed 331300)
+  set=kind:"skirmish"                      8.5
+18-7 base {} 71 (200 games, seed 331300)
+  rules={"sandstorm":true}                 72.5
+  rules={"field":"heatwave","heatLevel":2} 50.5
+18-4 base {"hqHp":82} 91.5 (200 games, seed 331300)
+  rules={"boon":"sandVeil"}                46
+  rules={"sandstorm":"blind"}              91.5
+  rules={"boon":"sandVeil","sandstorm":true} 63
+18-A-7 base {} 96.5 (200 games, seed 331300)
+  set=kind:"elite"                         89
