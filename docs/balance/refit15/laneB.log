@@ -1,0 +1,45 @@
+START 2-2 15:16:18
+2-2 target 80 (72-88) size 20 start {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"conch-crawler":4,"duck-paddler":1,"limpet-clinger":4} problems []
+start {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"conch-crawler":4,"duck-paddler":1,"limpet-clinger":4} 57.5
+round 1: cur 54.2/57.5; 21 legal, 21 read + 6 predicted (of 39); top: -1 duck-paddler +1 hedgerow-shrew 62.5/61.9 | -1 conch-crawler +1 open-ocean-hermit-crab 66.7/55.6 | -1 duck-paddler +1 open-ocean-hermit-crab 66.7/55.6
+round 2: cur 62.5/61.9; 21 legal, 21 read + 6 predicted (of 41); top: -1 conch-crawler +1 open-ocean-hermit-crab 62.5/58.8 | -1 hedgerow-shrew +1 open-ocean-hermit-crab 66.7/55.6 | -1 limpet-clinger +1 open-ocean-hermit-crab 62.5/53.1
+no nearer move
+RESULT 2-2 {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"conch-crawler":4,"limpet-clinger":4,"hedgerow-shrew":1} 61.9 {} moves: -1 duck-paddler +1 hedgerow-shrew problems: []
+START 2-3 15:18:29
+2-3 target 70 (62-78) size 17 start {"duck-paddler":1,"oystercatcher":3,"pincushion-urchin":4,"salvager-hermit-crab":4,"open-ocean-hermit-crab":1,"conch-crawler":4} problems []
+start {"duck-paddler":1,"oystercatcher":3,"pincushion-urchin":4,"salvager-hermit-crab":4,"open-ocean-hermit-crab":1,"conch-crawler":4} 60
+round 1: cur 50/60; 40 legal, 40 read + 6 predicted (of 25); top: -1 open-ocean-hermit-crab +1 puddle-skimmer 70.8/72.5 | -1 pincushion-urchin -1 open-ocean-hermit-crab +1 oystercatcher +1 limpet-clinger 70.8/76.9 | -4 salvager-hermit-crab +4 limpet-clinger 66.7/59.4
+RESULT 2-3 {"duck-paddler":1,"oystercatcher":3,"pincushion-urchin":4,"salvager-hermit-crab":4,"conch-crawler":4,"puddle-skimmer":1} 72.5 {} moves: -1 open-ocean-hermit-crab +1 puddle-skimmer problems: []
+START 3-5 15:20:25
+3-5 target 66 (58-74) size 19 start {"golden-eagle-diver":3,"peregrine-stooper":1,"kittiwake-flock":4,"beachcomber-sanderling":2,"limpet-clinger":1,"fiddler-crab-swarm":4,"cormorant":4} problems []
+start {"golden-eagle-diver":3,"peregrine-stooper":1,"kittiwake-flock":4,"beachcomber-sanderling":2,"limpet-clinger":1,"fiddler-crab-swarm":4,"cormorant":4} 45.6
+round 1: cur 58.3/45.6; 60 legal, 50 read + 6 predicted (of 42); top: -4 kittiwake-flock +4 feral-tomcat 66.7/52.5 | -4 kittiwake-flock -1 beachcomber-sanderling +4 feral-tomcat +1 golden-eagle-diver 66.7/51.9 | -2 golden-eagle-diver +2 peregrine-stooper 62.5/47.5
+round 2: cur 66.7/52.5; 65 legal, 10 read + 6 predicted (of 21); top: -1 golden-eagle-diver -1 limpet-clinger +1 beachcomber-sanderling +1 pika-hoarder 66.7/57.5 | -4 feral-tomcat +4 pika-hoarder 66.7/55.6 | -1 golden-eagle-diver +1 beachcomber-sanderling 66.7/53.8
+round 3: cur 66.7/57.5; 91 legal, 22 read + 6 predicted (of 24); top: -1 golden-eagle-diver -3 beachcomber-sanderling +1 pika-hoarder +3 kittiwake-flock 66.7/62.5 | -3 cormorant +3 pika-hoarder 66.7/71.3 | -3 beachcomber-sanderling +1 chipmunk-cavalry +2 pika-hoarder 66.7/50
+round 4: cur 66.7/62.5; 87 legal, 10 read + 6 predicted (of 7); top: -1 feral-tomcat +1 kittiwake-flock 66.7/62.5 | -2 feral-tomcat +2 pika-hoarder 66.7/61.9 | -1 feral-tomcat +1 pika-hoarder 66.7/61.3
+no nearer move
+RESULT 3-5 {"golden-eagle-diver":1,"peregrine-stooper":1,"fiddler-crab-swarm":4,"cormorant":4,"feral-tomcat":4,"pika-hoarder":2,"kittiwake-flock":3} 62.5 {} moves: -4 kittiwake-flock +4 feral-tomcat ; -1 golden-eagle-diver -1 limpet-clinger +1 beachcomber-sanderling +1 pika-hoarder ; -1 golden-eagle-diver -3 beachcomber-sanderling +1 pika-hoarder +3 kittiwake-flock problems: []
+START 3-4 15:24:49
+3-4 target 72 (64-80) size 14 start {"fiddler-crab-swarm":4,"gannet-nestweaver":2,"peregrine-stooper":1,"hawk-arrowkeeper":4,"peak-condor":1,"chipmunk-skirmisher":2} problems []
+start {"fiddler-crab-swarm":4,"gannet-nestweaver":2,"peregrine-stooper":1,"hawk-arrowkeeper":4,"peak-condor":1,"chipmunk-skirmisher":2} 56.9
+round 1: cur 75/56.9; 85 legal, 50 read + 6 predicted (of 37); top: -2 chipmunk-skirmisher +2 gannet-nestweaver 70.8/68.1 | -1 chipmunk-skirmisher +1 gannet-nestweaver 70.8/58.8 | -1 hawk-arrowkeeper +1 peregrine-stooper 70.8/50.6
+round 2: cur 70.8/68.1; 126 legal, 50 read + 6 predicted (of 21); top: -3 fiddler-crab-swarm +3 beachcomber-sanderling 70.8/59.4 | -1 gannet-nestweaver +1 chipmunk-skirmisher 70.8/58.8 | -4 fiddler-crab-swarm +4 pika-hoarder 70.8/46.9
+no nearer move
+RESULT 3-4 {"fiddler-crab-swarm":4,"gannet-nestweaver":4,"peregrine-stooper":1,"hawk-arrowkeeper":4,"peak-condor":1} 68.1 {} moves: -2 chipmunk-skirmisher +2 gannet-nestweaver problems: []
+START 0-3 15:28:37
+0-3 target 60 (52-68) size 20 start {"chipmunk-forager":3,"farm-dog":4,"house-cat":4,"worker-ant":2,"bee-forager":4,"pond-trout":3} problems []
+start {"chipmunk-forager":3,"farm-dog":4,"house-cat":4,"worker-ant":2,"bee-forager":4,"pond-trout":3} 55.6
+round 1: cur 58.3/55.6; 56 legal, 44 read + 6 predicted (of 40); top: -2 worker-ant +2 ant-scout 58.3/61.3 | -4 bee-forager +4 ant-scout 58.3/65.6 | -1 worker-ant +1 pond-trout 58.3/52.5
+RESULT 0-3 {"chipmunk-forager":3,"farm-dog":4,"house-cat":4,"bee-forager":4,"pond-trout":3,"ant-scout":2} 61.3 {} moves: -2 worker-ant +2 ant-scout problems: []
+START 7-2 15:29:30
+7-2 target 82.5 (74.5-90.5) size 17 start {"amber-cicada":4,"cypress-root-lurker":1,"fungus-gnat-cloud":2,"leopard-slug":4,"planarian-splitter":2,"puffball-bombardier":4} problems []
+start {"amber-cicada":4,"cypress-root-lurker":1,"fungus-gnat-cloud":2,"leopard-slug":4,"planarian-splitter":2,"puffball-bombardier":4} 75.6
+round 1: cur 75/75.6; 37 legal, 37 read + 6 predicted (of 34); top: -1 fungus-gnat-cloud +1 planarian-splitter 83.3/78.1 | -1 cypress-root-lurker +1 hawthorn-shieldbug 83.3/74.4 | -1 planarian-splitter +1 fungus-gnat-cloud 83.3/72.5
+round 2: cur 83.3/78.1; 38 legal, 38 read + 6 predicted (of 46); top: -1 fungus-gnat-cloud +1 sleepless-shrew 83.3/80.6 | -1 cypress-root-lurker +1 rot-swollen-carcass 83.3/76.9 | -1 cypress-root-lurker +1 sleepless-shrew 83.3/74.4
+RESULT 7-2 {"amber-cicada":4,"cypress-root-lurker":1,"leopard-slug":4,"planarian-splitter":3,"puffball-bombardier":4,"sleepless-shrew":1} 80.6 {} moves: -1 fungus-gnat-cloud +1 planarian-splitter ; -1 fungus-gnat-cloud +1 sleepless-shrew problems: []
+START 7-3 15:31:36
+7-3 target 75 (67-83) size 15 start {"cypress-root-lurker":1,"fungus-gnat-cloud":4,"hawthorn-shieldbug":1,"leopard-slug":2,"puffball-bombardier":4,"amber-cicada":3} problems []
+start {"cypress-root-lurker":1,"fungus-gnat-cloud":4,"hawthorn-shieldbug":1,"leopard-slug":2,"puffball-bombardier":4,"amber-cicada":3} 65.6
+round 1: cur 58.3/65.6; 52 legal, 32 read + 6 predicted (of 36); top: -1 puffball-bombardier -1 cypress-root-lurker +1 amber-cicada +1 earthworm 75/74.4 | -2 fungus-gnat-cloud +2 hawthorn-shieldbug 75/76.3 | -2 fungus-gnat-cloud +2 leopard-slug 75/70
+RESULT 7-3 {"fungus-gnat-cloud":4,"hawthorn-shieldbug":1,"leopard-slug":2,"puffball-bombardier":3,"amber-cicada":4,"earthworm":1} 74.4 {} moves: -1 puffball-bombardier -1 cypress-root-lurker +1 amber-cicada +1 earthworm problems: []
+LANE DONE 15:32:47
