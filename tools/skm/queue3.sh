@@ -12,6 +12,8 @@ STEPS="${*:-C5 OR DR OD DU PX H2 R2 R3 E11 E12 E13 E14 E15 E16}"
 for s in $STEPS; do
   case "$s" in
     E1[1-6]) nice -n 10 node tools/skm/run.js --methods "$s-*" --stages 40 || exit $? ;;
+    refine-H2) nice -n 10 node tools/skm/run.js --methods 'H2-*' --refine 64 || exit $? ;; # the stabilising pass (a step name: refine-<design>)
+    refine-PX) nice -n 10 node tools/skm/run.js --methods 'PX-*' --refine 48 || exit $? ;;
     *) nice -n 10 node tools/skm/run.js --methods "$s-*" || exit $? ;;
   esac
 done
