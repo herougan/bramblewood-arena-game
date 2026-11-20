@@ -1,0 +1,32 @@
+2-A-4 base  55.3 / 52.3  mean 53.8  (400 games, seeds 161100 / 162100)
+  out=lodge-engineer:1+add=duck-paddler:1                      44.3 / 40  mean 42.1
+  out=lodge-engineer:1+add=raft-spider:1                       49.8 / 49  mean 49.4
+  out=water-shrew:1+add=raft-spider:1                          53 / 52  mean 52.5
+  out=lodge-engineer:1,water-shrew:1+add=duck-paddler:1,raft-spider:1 42.8 / 40.5  mean 41.6
+1-A-2 base  64.8 / 60.5  mean 62.6  (400 games, seeds 161100 / 162100)
+  out=meadow-rabbit:2+add=chipmunk-cavalry:2                   78.3 / 75.8  mean 77.0
+  out=meadow-rabbit:2+add=dormouse:2                           71.8 / 73.3  mean 72.5
+  out=meadow-rabbit:1+add=dormouse:1                           68 / 65.3  mean 66.7
+  out=meadow-rabbit:1+add=chipmunk-cavalry:1                   71.8 / 68  mean 69.9
+7-A-1 base  71.8 / 77.5  mean 74.7  (400 games, seeds 161100 / 162100)
+  out=puffball-bombardier:2+add=earthworm:2                    90.5 / 91.8  mean 91.2
+  out=puffball-bombardier:2+add=rot-swollen-carcass:2          90 / 91.5  mean 90.8
+  out=fungus-gnat-cloud:2+add=rot-swollen-carcass:2            89.5 / 88.3  mean 88.9
+2-B-1 base  74 / 78  mean 76.0  (400 games, seeds 161100 / 162100)
+  out=pincushion-urchin:2+add=gull-thief:2                     67.5 / 71.8  mean 69.7
+  out=pincushion-urchin:1+add=gull-thief:1                     73.8 / 73.5  mean 73.7
+  out=gull-thief:1+add=trash-panda-trickster:1                 77.3 / 79.5  mean 78.4
+1-A-1 base  78.8 / 79.5  mean 79.2  (400 games, seeds 161100 / 162100)
+  out=ant-scout:1+add=dormouse:1                               74.5 / 74.5  mean 74.5
+  out=cottontail:1+add=dormouse:1                              77.3 / 78.8  mean 78.0
+  out=ant-scout:1,cottontail:1+add=dormouse:2                  74.3 / 75.5  mean 74.9
+2-A-5 base  58.3 / 50.5  mean 54.4  (400 games, seeds 161100 / 162100)
+  out=raft-spider:1+add=water-shrew:1                          77.8 / 75.8  mean 76.8
+  out=raft-spider:1+add=pond-algae:1                           78.3 / 73.8  mean 76.0
+  out=raft-spider:1+add=lodge-engineer:1                       72.8 / 75.3  mean 74.0
+1-A-5 base  31.5 / 28  mean 29.8  (400 games, seeds 161100 / 162100)
+  out=robin-redbreast:2+add=puddle-skimmer:2                   45 / 47.3  mean 46.1
+  out=robin-redbreast:1+add=puddle-skimmer:1                   38 / 36  mean 37.0
+  out=robin-redbreast:2+add=lucky-hopper:2                     48.3 / 47.8  mean 48.0
+  out=robin-redbreast:1+add=lucky-hopper:1                     39.3 / 36.8  mean 38.0
+CONFIRM1 DONE
