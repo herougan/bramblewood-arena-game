@@ -128,3 +128,6 @@
   out=chipmunk-cavalry:1                                       81.8 / 83.3  mean 82.5
   out=ant-scout:2                                              87.3 / 87.8  mean 87.5
   set=enemyLevel:0                                             78.8 / 79.5  mean 79.2
+20-A-4 base  62 / 65.5  mean 63.8  (400 games, seeds 161100 / 162100)
+  out=honey-badger-fury:1+add=obsidian-scorpion:1              59.8 / 61.3  mean 60.5
+  out=honey-badger-fury:2+add=obsidian-scorpion:1,the-contradiction:1 67 / 69  mean 68.0
