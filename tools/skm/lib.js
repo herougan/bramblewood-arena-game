@@ -126,7 +126,8 @@ function makeGame(gm, X) {
     if (X.kind === 'homo') mine = L.slotMine(gm, defs, v, X.level, 20);
     else mine = Object.assign(L.slotMine(gm, defs, v, X.level, X.k), O.mineFor(gm, defs, R, X.level));
     const seed = (fnv(X.seed + '|game|' + i) + 2654435761) >>> 0;
-    let rules = X.fieldList[fx.f].rules, road = null, opp = null, oppCastle = castle;
+    // cs.foeBramble (SKM3, 2026-11-20): the foe's bramble Health alone (the defence race: a foe that cannot fall, so the score is survival only)
+    let rules = X.fieldList[fx.f].rules, road = null, opp = null, oppCastle = X.foeBramble ? Object.assign({}, castle, { health: X.foeBramble }) : castle;
     if (fx.road) { road = roadSetup(fx); rules = road.rules; }
     else if (fx.pro) { opp = O.mineFor(gm, defs, fx.pro.deck, X.level); if (X.fields !== 'neutral') rules = fx.pro.rules; }
     else if (X.foeV) opp = L.slotMine(gm, defs, X.foeV, X.level, 20); // the stat-equivalence foe: 20 copies of the body with a stat bump

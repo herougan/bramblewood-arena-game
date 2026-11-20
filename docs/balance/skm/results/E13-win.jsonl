@@ -1,0 +1,106 @@
+{"method":"E13-win","skill":"T:onAttack>drawCard","worth":-0.441,"ci":0.235,"games":200,"price":0,"carrier":"worker-ant","M":40,"n":5,"fp":"39b94d26f526","t":"2026-11-20T16:33:14.751Z"}
+{"method":"E13-win","skill":"T:onAttack>gain","worth":0.033,"ci":0.399,"games":80,"price":0.89,"carrier":"gull-thief","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:33:15.682Z"}
+{"method":"E13-win","skill":"T:onAttacked>gain","worth":0.033,"ci":0.399,"games":120,"price":1.05,"carrier":"driftwood-crab","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:33:17.541Z"}
+{"method":"E13-win","skill":"T:onDeath>damage","worth":0.571,"ci":0.615,"games":80,"price":1.19,"carrier":"sulfur-cinder-moth","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:33:19.247Z"}
+{"method":"E13-win","skill":"T:onHealed>gain","worth":0.033,"ci":0.399,"games":80,"price":1,"carrier":"gannet-nestweaver","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:33:20.664Z"}
+{"method":"E13-win","skill":"T:onReady>damage","worth":2.231,"ci":0.846,"games":80,"price":4.48,"carrier":"great-horned-owl","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:33:22.109Z"}
+{"method":"E13-win","skill":"T:onSpawn>gain","worth":0.033,"ci":0.399,"games":160,"price":4.26,"carrier":"cone-cutter-squirrel","M":40,"n":4,"fp":"39b94d26f526","t":"2026-11-20T16:33:25.100Z"}
+{"method":"E13-win","skill":"T:onSpawn>stun","worth":0.033,"ci":0.399,"games":120,"price":1.95,"carrier":"ash-cloud-condor","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:33:26.445Z"}
+{"method":"E13-win","skill":"ambush","worth":1.188,"ci":0.642,"games":80,"price":1.9,"carrier":"adder-ambusher","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:33:27.895Z"}
+{"method":"E13-win","skill":"armor","worth":4.583,"ci":0.83,"games":120,"price":3.13,"carrier":"horseshoe-crab","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:33:30.815Z"}
+{"method":"E13-win","skill":"arrow","worth":11.333,"ci":1.921,"games":120,"price":1.893,"carrier":"chipmunk-skirmisher","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:33:33.076Z"}
+{"method":"E13-win","skill":"avalanche","worth":60,"ci":null,"games":160,"price":9.25,"carrier":"ibex-rockcaller","M":40,"n":4,"note":"censored: the skill side still wins at the largest bump (at least this)","fp":"39b94d26f526","t":"2026-11-20T16:33:34.849Z"}
+{"method":"E13-win","skill":"bleed","worth":2.727,"ci":0.98,"games":80,"price":3.963,"carrier":"bog-leech","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:33:36.317Z"}
+{"method":"E13-win","skill":"bloomCopy","worth":0.25,"ci":0.483,"games":160,"price":6.247,"carrier":"pond-algae","M":40,"n":4,"fp":"39b94d26f526","t":"2026-11-20T16:33:38.218Z"}
+{"method":"E13-win","skill":"bludgeon","worth":60,"ci":null,"games":200,"price":3.95,"carrier":"ironclaw-fiddler","M":40,"n":5,"note":"censored: the skill side still wins at the largest bump (at least this)","fp":"39b94d26f526","t":"2026-11-20T16:33:43.001Z"}
+{"method":"E13-win","skill":"bounty","worth":0.033,"ci":0.399,"games":120,"price":1.8,"carrier":"pack-mule","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:33:44.857Z"}
+{"method":"E13-win","skill":"broodkeeper","worth":0.033,"ci":0.399,"games":120,"price":3,"carrier":"wolf-spider-mother","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:33:46.529Z"}
+{"method":"E13-win","skill":"bulldoze","worth":0.208,"ci":0.416,"games":120,"price":2.23,"carrier":"bison-bulldozer","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:33:48.766Z"}
+{"method":"E13-win","skill":"bulwark","worth":60,"ci":null,"games":160,"price":7.42,"carrier":"ancient-sloth-titan","M":40,"n":4,"note":"censored: the skill side still wins at the largest bump (at least this)","fp":"39b94d26f526","t":"2026-11-20T16:33:52.199Z"}
+{"method":"E13-win","skill":"carnage","worth":1.042,"ci":0.495,"games":80,"price":1.68,"carrier":"dust-hyena","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:33:53.089Z"}
+{"method":"E13-win","skill":"carrion","worth":2.05,"ci":0.379,"games":80,"price":2.68,"carrier":"corpse-flower-beetle","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:33:53.924Z"}
+{"method":"E13-win","skill":"corrode","worth":0.75,"ci":0.34,"games":120,"price":2.41,"carrier":"leopard-slug","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:33:55.545Z"}
+{"method":"E13-win","skill":"crabClaws","worth":-1.051,"ci":0.619,"games":120,"price":0.1,"carrier":"driftwood-crab","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:33:57.254Z"}
+{"method":"E13-win","skill":"crepuscular","worth":60,"ci":null,"games":200,"price":3.96,"carrier":"nightjar-drifter","M":40,"n":5,"note":"censored: the skill side still wins at the largest bump (at least this)","fp":"39b94d26f526","t":"2026-11-20T16:34:01.389Z"}
+{"method":"E13-win","skill":"cure","worth":0.033,"ci":0.399,"games":80,"price":0.5,"carrier":"marsh-mallow-hare","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:34:02.852Z"}
+{"method":"E13-win","skill":"daunt","worth":60,"ci":null,"games":200,"price":2.613,"carrier":"reef-shark","M":40,"n":5,"note":"censored: the skill side still wins at the largest bump (at least this)","fp":"39b94d26f526","t":"2026-11-20T16:34:06.515Z"}
+{"method":"E13-win","skill":"delivery","worth":0.033,"ci":0.399,"games":160,"price":4.52,"carrier":"beaver-lumberjack","M":40,"n":4,"fp":"39b94d26f526","t":"2026-11-20T16:34:09.359Z"}
+{"method":"E13-win","skill":"diurnal","worth":-0.033,"ci":0.399,"games":120,"price":1.519,"carrier":"sunbittern-strider","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:34:11.068Z"}
+{"method":"E13-win","skill":"dive","worth":0.033,"ci":0.399,"games":160,"price":-1.7,"carrier":"harbor-seal","M":40,"n":4,"fp":"39b94d26f526","t":"2026-11-20T16:34:13.656Z"}
+{"method":"E13-win","skill":"dry","worth":0.321,"ci":0.318,"games":160,"price":4,"carrier":"sandstorm-roc","M":40,"n":4,"fp":"39b94d26f526","t":"2026-11-20T16:34:15.736Z"}
+{"method":"E13-win","skill":"dynamite","worth":0.543,"ci":0.224,"games":80,"price":1.1,"carrier":"mouse-sapper","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:34:16.895Z"}
+{"method":"E13-win","skill":"electricity","worth":2.136,"ci":0.338,"games":80,"price":4.5,"carrier":"electric-ray","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:34:18.015Z"}
+{"method":"E13-win","skill":"embolden","worth":1.731,"ci":0.361,"games":120,"price":3.59,"carrier":"meerkat-sentry","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:34:19.796Z"}
+{"method":"E13-win","skill":"enfeeble","worth":0.033,"ci":0.399,"games":120,"price":2.5,"carrier":"booming-bittern","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:34:21.589Z"}
+{"method":"E13-win","skill":"evasive","worth":-0.038,"ci":0.459,"games":160,"price":1.72,"carrier":"rabbit-kit","M":40,"n":4,"fp":"39b94d26f526","t":"2026-11-20T16:34:23.521Z"}
+{"method":"E13-win","skill":"exploit","worth":1.722,"ci":0.525,"games":120,"price":4.2,"carrier":"stoat-cutthroat","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:34:25.067Z"}
+{"method":"E13-win","skill":"expose","worth":0.094,"ci":0.351,"games":80,"price":0.18,"carrier":"roadrunner-courier","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:34:26.162Z"}
+{"method":"E13-win","skill":"flying","worth":-0.25,"ci":0.34,"games":160,"price":2.206,"carrier":"bee-sentry","M":40,"n":4,"fp":"39b94d26f526","t":"2026-11-20T16:34:28.047Z"}
+{"method":"E13-win","skill":"foraging","worth":3.333,"ci":1.021,"games":120,"price":1.68,"carrier":"dormouse","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:34:29.465Z"}
+{"method":"E13-win","skill":"forestry","worth":0.033,"ci":0.399,"games":160,"price":6.617,"carrier":"muskrat-reedgatherer","M":40,"n":4,"fp":"39b94d26f526","t":"2026-11-20T16:34:31.279Z"}
+{"method":"E13-win","skill":"fork","worth":-1.52,"ci":0.349,"games":240,"price":4.95,"carrier":"grass-snake","M":40,"n":6,"fp":"39b94d26f526","t":"2026-11-20T16:34:34.125Z"}
+{"method":"E13-win","skill":"freeze","worth":-0.156,"ci":0.327,"games":160,"price":2.88,"carrier":"glacier-yak","M":40,"n":4,"fp":"39b94d26f526","t":"2026-11-20T16:34:36.120Z"}
+{"method":"E13-win","skill":"frostbite","worth":0.333,"ci":0.296,"games":80,"price":0.19,"carrier":"mountain-hare","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:34:37.053Z"}
+{"method":"E13-win","skill":"guardian","worth":0.033,"ci":0.399,"games":80,"price":0,"carrier":"chipmunk-cavalry","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:34:37.943Z"}
+{"method":"E13-win","skill":"harbinger","worth":12.75,"ci":1.441,"games":120,"price":6.5,"carrier":"tasmanian-devil","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:34:40.003Z"}
+{"method":"E13-win","skill":"harden","worth":0.15,"ci":0.532,"games":120,"price":2.11,"carrier":"sworn-shieldbearer","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:34:41.985Z"}
+{"method":"E13-win","skill":"herald","worth":0.033,"ci":0.399,"games":120,"price":1.5,"carrier":"hoopoe-herald","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:34:43.332Z"}
+{"method":"E13-win","skill":"herbalist","worth":0.033,"ci":0.399,"games":80,"price":0.23,"carrier":"hedgehog-herbalist","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:34:44.467Z"}
+{"method":"E13-win","skill":"illuminate","worth":0.156,"ci":0.327,"games":80,"price":0.81,"carrier":"glow-worm","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:34:45.392Z"}
+{"method":"E13-win","skill":"immunity","worth":0.233,"ci":0.321,"games":80,"price":0.3,"carrier":"hedgehog-herbalist","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:34:46.142Z"}
+{"method":"E13-win","skill":"inspiring","worth":60,"ci":null,"games":200,"price":4.445,"carrier":"cricket-drummer","M":40,"n":5,"note":"censored: the skill side still wins at the largest bump (at least this)","fp":"39b94d26f526","t":"2026-11-20T16:34:47.743Z"}
+{"method":"E13-win","skill":"keenSense","worth":0.156,"ci":0.327,"games":120,"price":2.02,"carrier":"cave-olm","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:34:48.995Z"}
+{"method":"E13-win","skill":"lastStand","worth":2,"ci":0.637,"games":120,"price":0.45,"carrier":"honey-badger-fury","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:34:50.448Z"}
+{"method":"E13-win","skill":"loneWolf","worth":60,"ci":null,"games":160,"price":7.36,"carrier":"taiga-lynx","M":40,"n":4,"note":"censored: the skill side still wins at the largest bump (at least this)","fp":"39b94d26f526","t":"2026-11-20T16:34:51.921Z"}
+{"method":"E13-win","skill":"loyal","worth":0.033,"ci":0.399,"games":80,"price":0.93,"carrier":"sworn-shieldbearer","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:34:52.923Z"}
+{"method":"E13-win","skill":"meiosis","worth":5.75,"ci":1.449,"games":120,"price":4.55,"carrier":"planarian-splitter","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:34:55.593Z"}
+{"method":"E13-win","skill":"mighty","worth":2.65,"ci":0.422,"games":120,"price":4.79,"carrier":"acacia-giraffe","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:34:57.260Z"}
+{"method":"E13-win","skill":"nocturnal","worth":4.8,"ci":1.033,"games":120,"price":2.171,"carrier":"moonlit-hare","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:34:58.686Z"}
+{"method":"E13-win","skill":"nursing","worth":13,"ci":2.263,"games":160,"price":5,"carrier":"newt-doctor","M":40,"n":4,"fp":"39b94d26f526","t":"2026-11-20T16:35:02.569Z"}
+{"method":"E13-win","skill":"offspring","worth":0.409,"ci":0.39,"games":120,"price":6.08,"carrier":"polar-bear","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:35:04.167Z"}
+{"method":"E13-win","skill":"onDeathSpawn","worth":60,"ci":null,"games":200,"price":4.35,"carrier":"millipede-hauler","M":40,"n":5,"note":"censored: the skill side still wins at the largest bump (at least this)","fp":"39b94d26f526","t":"2026-11-20T16:35:07.729Z"}
+{"method":"E13-win","skill":"overwhelm","worth":0.033,"ci":0.399,"games":80,"price":1.05,"carrier":"warhorse-charger","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:35:08.788Z"}
+{"method":"E13-win","skill":"pack","worth":60,"ci":null,"games":200,"price":3.25,"carrier":"meerkat-sentry","M":40,"n":5,"note":"censored: the skill side still wins at the largest bump (at least this)","fp":"39b94d26f526","t":"2026-11-20T16:35:10.326Z"}
+{"method":"E13-win","skill":"packLeader","worth":0.115,"ci":0.423,"games":80,"price":0,"carrier":"dhole-matriarch","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:35:12.298Z"}
+{"method":"E13-win","skill":"paralysisPowder","worth":0.431,"ci":0.122,"games":120,"price":3.34,"carrier":"apollo-butterfly","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:35:15.047Z"}
+{"method":"E13-win","skill":"parasite","worth":-2.886,"ci":0.659,"games":160,"price":1,"carrier":"lamprey","M":40,"n":4,"fp":"39b94d26f526","t":"2026-11-20T16:35:16.663Z"}
+{"method":"E13-win","skill":"pierce","worth":0.033,"ci":0.399,"games":80,"price":0.327,"carrier":"redwood-woodpecker","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:35:17.631Z"}
+{"method":"E13-win","skill":"pitchfork","worth":-0.923,"ci":0.293,"games":200,"price":4,"carrier":"village-miller","M":40,"n":5,"fp":"39b94d26f526","t":"2026-11-20T16:35:20.257Z"}
+{"method":"E13-win","skill":"poison","worth":2.316,"ci":0.441,"games":80,"price":3.88,"carrier":"gallery-orb-weaver","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:35:21.502Z"}
+{"method":"E13-win","skill":"poisonBarbs","worth":2.474,"ci":0.496,"games":120,"price":2.4,"carrier":"clownfish-scout","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:35:22.938Z"}
+{"method":"E13-win","skill":"poisonPowder","worth":4.088,"ci":0.213,"games":120,"price":4.8,"carrier":"fungus-gnat-cloud","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:35:25.002Z"}
+{"method":"E13-win","skill":"pounce","worth":14,"ci":7.846,"games":160,"price":3.883,"carrier":"giant-cave-huntsman","M":40,"n":4,"fp":"39b94d26f526","t":"2026-11-20T16:35:27.059Z"}
+{"method":"E13-win","skill":"pulverise","worth":0.033,"ci":0.399,"games":120,"price":1.53,"carrier":"walrus-icebreaker","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:35:28.497Z"}
+{"method":"E13-win","skill":"purblind","worth":-2.694,"ci":0.317,"games":80,"price":-6.3,"carrier":"star-nosed-mole","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:35:29.623Z"}
+{"method":"E13-win","skill":"rage","worth":0.938,"ci":0.727,"games":120,"price":3.01,"carrier":"the-contradiction","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:35:31.842Z"}
+{"method":"E13-win","skill":"rainrunner","worth":0.033,"ci":0.399,"games":160,"price":4,"carrier":"puddle-skimmer","M":40,"n":4,"fp":"39b94d26f526","t":"2026-11-20T16:35:33.835Z"}
+{"method":"E13-win","skill":"reach","worth":-1.372,"ci":0.456,"games":160,"price":1,"carrier":"upside-down-bat","M":40,"n":4,"fp":"39b94d26f526","t":"2026-11-20T16:35:35.969Z"}
+{"method":"E13-win","skill":"recoil","worth":-4.057,"ci":0.11,"games":120,"price":-3.944,"carrier":"grindstone-boar","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:35:37.152Z"}
+{"method":"E13-win","skill":"repair","worth":60,"ci":null,"games":200,"price":2.97,"carrier":"beaver-feller","M":40,"n":5,"note":"censored: the skill side still wins at the largest bump (at least this)","fp":"39b94d26f526","t":"2026-11-20T16:35:40.143Z"}
+{"method":"E13-win","skill":"salvage","worth":0.033,"ci":0.399,"games":80,"price":0.75,"carrier":"salvager-hermit-crab","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:35:41.166Z"}
+{"method":"E13-win","skill":"sap","worth":5.727,"ci":0.873,"games":160,"price":2.3,"carrier":"lamprey","M":40,"n":4,"fp":"39b94d26f526","t":"2026-11-20T16:35:43.596Z"}
+{"method":"E13-win","skill":"scare","worth":2.933,"ci":0.799,"games":80,"price":3.02,"carrier":"booming-bittern","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:35:44.737Z"}
+{"method":"E13-win","skill":"shield","worth":3.045,"ci":0.332,"games":120,"price":4.93,"carrier":"armadillo-guard","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:35:47.270Z"}
+{"method":"E13-win","skill":"siege","worth":11,"ci":16.739,"games":200,"price":1.427,"carrier":"hollow-belly-rat","M":40,"n":5,"fp":"39b94d26f526","t":"2026-11-20T16:35:49.292Z"}
+{"method":"E13-win","skill":"sleepPowder","worth":0.415,"ci":0.115,"games":120,"price":2.5,"carrier":"amber-cicada","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:35:52.066Z"}
+{"method":"E13-win","skill":"slow","worth":-0.5,"ci":0.233,"games":80,"price":-0.655,"carrier":"slow-worm","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:35:53.023Z"}
+{"method":"E13-win","skill":"smokeBomb","worth":0.409,"ci":0.39,"games":120,"price":2,"carrier":"smoke-raccoon","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:35:55.515Z"}
+{"method":"E13-win","skill":"snipe","worth":4.35,"ci":0.446,"games":120,"price":2,"carrier":"spitting-cobra","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:35:57.344Z"}
+{"method":"E13-win","skill":"speed","worth":0.519,"ci":0.127,"games":160,"price":5.929,"carrier":"jackrabbit-sprinter","M":40,"n":4,"fp":"39b94d26f526","t":"2026-11-20T16:35:59.742Z"}
+{"method":"E13-win","skill":"stealth","worth":60,"ci":null,"games":160,"price":6.88,"carrier":"cunning-vixen","M":40,"n":4,"note":"censored: the skill side still wins at the largest bump (at least this)","fp":"39b94d26f526","t":"2026-11-20T16:36:01.977Z"}
+{"method":"E13-win","skill":"storm","worth":0.409,"ci":0.39,"games":120,"price":1.8,"carrier":"gale-swift","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:36:03.700Z"}
+{"method":"E13-win","skill":"strangle","worth":2.35,"ci":0.507,"games":80,"price":4.663,"carrier":"constrictor-coil","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:36:05.044Z"}
+{"method":"E13-win","skill":"sturdy","worth":0.036,"ci":0.427,"games":120,"price":2.81,"carrier":"woodland-caribou","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:36:07.057Z"}
+{"method":"E13-win","skill":"swarm","worth":0.033,"ci":0.399,"games":120,"price":3.13,"carrier":"ant-scout","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:36:08.222Z"}
+{"method":"E13-win","skill":"sweep","worth":1.132,"ci":0.282,"games":120,"price":5.46,"carrier":"elderhorn-monarch","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:36:09.721Z"}
+{"method":"E13-win","skill":"taunt","worth":1.929,"ci":0.588,"games":120,"price":0.4,"carrier":"proboscis-monkey","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:36:12.219Z"}
+{"method":"E13-win","skill":"thorns","worth":null,"ci":null,"games":0,"price":4.426,"M":40,"note":"the body already has this skill","fp":"39b94d26f526","t":"2026-11-20T16:36:12.219Z"}
+{"method":"E13-win","skill":"tide","worth":0.25,"ci":0.483,"games":80,"price":0.64,"carrier":"puffin-diver","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:36:13.303Z"}
+{"method":"E13-win","skill":"tornado","worth":1.2,"ci":0.744,"games":80,"price":1.17,"carrier":"dust-devil-kestrel","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:36:14.606Z"}
+{"method":"E13-win","skill":"trap","worth":2.889,"ci":1.302,"games":80,"price":3.36,"carrier":"antlion-pit","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:36:15.551Z"}
+{"method":"E13-win","skill":"trident","worth":-1.056,"ci":0.669,"games":200,"price":2.28,"carrier":"mangrove-monitor","M":40,"n":5,"fp":"39b94d26f526","t":"2026-11-20T16:36:17.921Z"}
+{"method":"E13-win","skill":"twinShot","worth":15.864,"ci":1.223,"games":120,"price":13.26,"carrier":"eyrie-warden","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:36:19.509Z"}
+{"method":"E13-win","skill":"twinStrike","worth":15,"ci":8.866,"games":120,"price":7.75,"carrier":"bramblewood-lynx","M":40,"n":3,"fp":"39b94d26f526","t":"2026-11-20T16:36:20.701Z"}
+{"method":"E13-win","skill":"wakeful","worth":0.206,"ci":0.29,"games":80,"price":0.5,"carrier":"sleepless-shrew","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:36:21.636Z"}
+{"method":"E13-win","skill":"wave","worth":1.455,"ci":0.797,"games":80,"price":2.15,"carrier":"coral-current-eel","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:36:22.646Z"}
+{"method":"E13-win","skill":"web","worth":0.033,"ci":0.399,"games":80,"price":0.97,"carrier":"glow-worm","M":40,"n":2,"fp":"39b94d26f526","t":"2026-11-20T16:36:23.731Z"}
