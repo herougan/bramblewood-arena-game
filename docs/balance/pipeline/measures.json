@@ -10432,65 +10432,65 @@
    "cards": [
     "triumvirate"
    ],
-   "fights": 200,
+   "fights": 1000,
    "converged": true,
    "stages": [
     {
-     "fights": 200,
-     "m": 0,
+     "fights": 1000,
+     "m": 0.0036,
      "lo": 0,
-     "hi": 0
+     "hi": 0.012
     }
    ],
-   "fingerprint": "c0e5f8bc4e35",
+   "fingerprint": "b53829426b33",
    "canonRate": {
-    "m": 0.0296,
-    "lo": 0.0249,
-    "hi": 0.0341
+    "m": 0.0315,
+    "lo": 0.029,
+    "hi": 0.0335
    },
    "statRate": {
-    "m": 0.0352,
-    "lo": 0.0277,
-    "hi": 0.0433
+    "m": 0.0334,
+    "lo": 0.0292,
+    "hi": 0.0371
    },
    "kappa": {
-    "m": 1.1888,
-    "lo": 0.9618,
-    "hi": 1.4704
+    "m": 1.0596,
+    "lo": 0.9535,
+    "hi": 1.1793
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": 0.0092,
+    "gain": 0.0052,
     "worthStat": {
-     "m": 0.2604,
-     "lo": -0.2258,
-     "hi": 0.627
+     "m": 0.1549,
+     "lo": -0.1202,
+     "hi": 0.3679
     }
    },
    "test": {
     "effects": {
      "dictator": true
     },
-    "gain": 0,
+    "gain": 0.0002,
     "worth": {
-     "m": 0,
+     "m": 0.0053,
      "lo": 0,
-     "hi": 0
+     "hi": 0.0168
     },
     "worthRuler": {
-     "m": 0,
+     "m": 0.0036,
      "lo": 0,
-     "hi": 0
+     "hi": 0.012
     },
     "worthStat": {
-     "m": 0,
+     "m": 0.005,
      "lo": 0,
-     "hi": 0
+     "hi": 0.0166
     },
     "price": 0,
-    "net": 0,
+    "net": 0.0036,
     "verdict": "within its interval",
     "between": [
      "-",
@@ -10498,8 +10498,8 @@
     ]
    },
    "statBase": 19,
-   "measuredAt": "2026-11-20T18:28:25.430Z",
-   "seconds": 20
+   "measuredAt": "2026-11-20T23:10:00.377Z",
+   "seconds": 104
   },
   "global|drought": {
    "key": "drought",
