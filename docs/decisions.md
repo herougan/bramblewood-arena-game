@@ -4,6 +4,13 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**REFIT16-1. Map 17 fights are too hard (17-4, 17-6, 17-7)** · Decide · Balance · asked 2026-11-21
+- Deck rules block almost every swap and Shield is 0. Enemy level 3.36 → 3 reads 17-4 76 (target 75), 17-6 61 (65), 17-7 46 (60). 17-7 needs level 2.5 plus Health 11 (a 21st lowered-Health fight) to read 59.
+  - a) Map 17 enemy level 3, and 17-7 level 2.5 + Health 11
+  - b) Map 17 enemy level 3 only
+  - c) Leave
+- **Default:** a
+
 **REFIT15-1. 2-2 Gull Gang is too hard (57 vs 80)** · Decide · Balance · asked 2026-11-21
 - No swap or Shield change helps. All 20 lowered-Health slots are used, so a Health cut needs the limit raised to 21. Bramble Health 15 → 9 (the floor) reads 63; 15 → 6 reads 70.
   - a) Raise the limit to 21 and cut to 6
@@ -19,9 +26,9 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 - **Default:** a
 
 **REFIT15-3. Map 1 fights are too easy (96 vs 80-85)** · Decide · Balance · asked 2026-11-21
-- 1-2, 1-3 and 1-4 stay at 93+ whatever the deck, Shield or level. The likely cause is the early-bramble lead (your call EB): on Maps 0-1 your bramble gets the enemy's Health and Shield +3. Not measured yet.
-  - a) Measure Map 1 without the lead, then decide
-  - b) Keep the lead; leave Map 1 easy
+- 1-2, 1-3 and 1-4 stay at 94-96 whatever the deck, Shield or level. Measured: the early-bramble lead (EB) never applies here, because your Bramble's 15 Health is already above every enemy's Health + Shield + 3. Setting your Bramble to the enemy's Health + Shield (no 15 floor) on these three fights reads 82 / 82 / 80, in band.
+  - a) Use enemy Health + Shield for your Bramble on 1-2, 1-3, 1-4
+  - b) Leave Map 1 easy
 - **Default:** a
 
 **REFIT14-1. Four more Pale Desert fights are too easy (88-99)** · Decide · Balance · asked 2026-11-21
