@@ -4,6 +4,13 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**SKM3-1. Raise the price of Corrode and Trident** · Decide · Balance · asked 2026-11-21
+- Both read cheap on most of 234 skill measures. The pipeline's values sit outside today's prices: Corrode 2.41 → about 2.9, Trident 2.28 → about 2.8. 10 of 14 measure kinds on today's game agree. Flying and Evasive also read cheap, but only when a whole deck flies, so SKM3 suggests keeping them. Harden reads about 3.0 against 2.11 and is being re-measured first.
+  - a) Raise Corrode to 2.9 and Trident to 2.8
+  - b) Re-measure once more first
+  - c) Leave
+- **Default:** a
+
 **REFIT17-1. Side boss 20-A-4 is too easy** · Decide · Balance · asked 2026-11-21
 - Reads 64 against a target of 35.5. Every legal swap, Shield change or enemy level leaves it at 64 or easier. A 4th Obsidian Scorpion (over the rare cap) gives 60.5; nothing measured reaches 35.5.
   - a) Lower the 20-A-4 target to about 60
