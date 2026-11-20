@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-21 (package SKM3: more ways to measure a skill; measurement only)
+- Skill registry (`tools/skm/`): SKM1's unfinished designs played on today's game (C5, H2, R2, R3, E11-E16, a refine pass on H2 and PX) and 5 new designs: the offence race (OR: rounds to break a line of blockers with no Attack), the defence race (DR: rounds a line with no Attack survives against a foe that cannot fall), their sum (OD), the duo (DU: the skill beside 6 companion skills) and removal across up to 4 PRO decks (PX, with the median deck as a matchup-spread reading). 217 -> 234 methods registered. Summary with cheap / fair / dear verdicts and changes since SKM1 / SKM2: `docs/balance/skm/summary-2026-11-21.md`. No price, card or engine change.
+
 ## 2026-11-20 (package REFIT16: the early-bramble lead read; Maps 10-17 fights 10-20 off)
 - Road fights, toward the road curve (leaders, first-clear cards, sizes kept; no Health cuts): 10-9 Shield 0 -> 4, 11-10 Shield 5 -> 0, 11-9 one Stonedrop Vulture for an Apollo Butterfly, 13-8 the Slow-worm for an Amber Cicada. Fresh seeds 151100 / 152100 (400 games), mean before -> after (target): 10-9 50.2 -> 40.9 (40), 11-10 28.6 -> 39.1 (40), 11-9 53.8 -> 59.4 (60), 13-8 57.2 -> 47.6 (40). Seed 9100 road (Maps 0-20, 400 games): only these four moved (10-9 41.5, 11-9 59, 11-10 40.5, 13-8 50.5); main 109/121/2 -> 112/124/2 (in band / within 10 / beyond 20), side unchanged 51/55/11 of 81.
 - The early-bramble lead (EB, +3 on Maps 0-1) changes nothing in play: your Bramble's own 15 Health is already above every Map 0-1 enemy's Health + Shield + 3 (at most 15), so lead on, off or +1 read the same. No legal fix: 17-4, 17-6, 17-7 (Map 17 decks allow only 1 copy of a carried card, so few swaps are legal). Files: `docs/balance/refit16/`.
