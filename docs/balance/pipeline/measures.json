@@ -19261,74 +19261,74 @@
     "otter-angler",
     "anhinga-spearbird"
    ],
-   "fights": 1000,
+   "fights": 200,
    "converged": true,
    "stages": [
     {
-     "fights": 1000,
-     "m": 2.8143,
-     "lo": 2.4715,
-     "hi": 2.925
+     "fights": 200,
+     "m": 2.7452,
+     "lo": 2.2067,
+     "hi": 3.0605
     }
    ],
-   "fingerprint": "6926772d4855",
+   "fingerprint": "c0e5f8bc4e35",
    "canonRate": {
-    "m": 0.0315,
-    "lo": 0.0285,
-    "hi": 0.0336
+    "m": 0.0296,
+    "lo": 0.0249,
+    "hi": 0.0341
    },
    "statRate": {
-    "m": 0.0334,
-    "lo": 0.0296,
-    "hi": 0.0368
+    "m": 0.0352,
+    "lo": 0.0277,
+    "hi": 0.0433
    },
    "kappa": {
-    "m": 1.0596,
-    "lo": 0.9595,
-    "hi": 1.1755
+    "m": 1.1888,
+    "lo": 0.9618,
+    "hi": 1.4704
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": 0.0053,
+    "gain": 0.0092,
     "worthStat": {
-     "m": 0.1599,
-     "lo": -0.0887,
-     "hi": 0.382
+     "m": 0.2604,
+     "lo": -0.2258,
+     "hi": 0.627
     }
    },
    "test": {
     "effects": {
      "trident": true
     },
-    "gain": 0.0836,
+    "gain": 0.075,
     "worth": {
-     "m": 2.6553,
-     "lo": 2.3463,
-     "hi": 2.9643
+     "m": 2.5323,
+     "lo": 1.9746,
+     "hi": 3.1972
     },
     "worthRuler": {
-     "m": 2.8143,
-     "lo": 2.4715,
-     "hi": 2.925
+     "m": 2.7452,
+     "lo": 2.2067,
+     "hi": 3.0605
     },
     "worthStat": {
-     "m": 2.5059,
-     "lo": 2.1374,
-     "hi": 2.8787
+     "m": 2.1302,
+     "lo": 1.4783,
+     "hi": 2.8671
     },
     "price": 2.28,
-    "net": 0.5343,
-    "verdict": "under-priced",
+    "net": 0.4652,
+    "verdict": "within its interval",
     "between": [
      "armor 1 (2.33)",
      "poison 1 (2.72)"
     ]
    },
    "statBase": 19,
-   "measuredAt": "2026-11-20T03:14:38.855Z",
-   "seconds": 298
+   "measuredAt": "2026-11-20T17:20:39.173Z",
+   "seconds": 21
   },
   "global|tsunami=2": {
    "key": "tsunami=2",
@@ -22604,74 +22604,74 @@
     "leopard-slug",
     "hawthorn-shieldbug"
    ],
-   "fights": 1000,
+   "fights": 200,
    "converged": true,
    "stages": [
     {
-     "fights": 1000,
-     "m": 2.9041,
-     "lo": 2.7414,
-     "hi": 2.9617
+     "fights": 200,
+     "m": 2.9155,
+     "lo": 2.6533,
+     "hi": 3.605
     }
    ],
-   "fingerprint": "6926772d4855",
+   "fingerprint": "c0e5f8bc4e35",
    "canonRate": {
-    "m": 0.0315,
-    "lo": 0.0285,
-    "hi": 0.0336
+    "m": 0.0296,
+    "lo": 0.0249,
+    "hi": 0.0341
    },
    "statRate": {
-    "m": 0.0334,
-    "lo": 0.0296,
-    "hi": 0.0368
+    "m": 0.0352,
+    "lo": 0.0277,
+    "hi": 0.0433
    },
    "kappa": {
-    "m": 1.0596,
-    "lo": 0.9595,
-    "hi": 1.1755
+    "m": 1.1888,
+    "lo": 0.9618,
+    "hi": 1.4704
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": 0.0053,
+    "gain": 0.0092,
     "worthStat": {
-     "m": 0.1599,
-     "lo": -0.0887,
-     "hi": 0.382
+     "m": 0.2604,
+     "lo": -0.2258,
+     "hi": 0.627
     }
    },
    "test": {
     "effects": {
      "corrode": 1
     },
-    "gain": 0.0886,
+    "gain": 0.0862,
     "worth": {
-     "m": 2.8141,
-     "lo": 2.63,
-     "hi": 3.0551
+     "m": 2.9122,
+     "lo": 2.4934,
+     "hi": 3.4518
     },
     "worthRuler": {
-     "m": 2.9041,
-     "lo": 2.7414,
-     "hi": 2.9617
+     "m": 2.9155,
+     "lo": 2.6533,
+     "hi": 3.605
     },
     "worthStat": {
-     "m": 2.6558,
-     "lo": 2.3639,
-     "hi": 3.0379
+     "m": 2.4497,
+     "lo": 1.9208,
+     "hi": 3.1275
     },
     "price": 2.41,
-    "net": 0.4941,
+    "net": 0.5055,
     "verdict": "under-priced",
     "between": [
-     "poison 1 (2.72)",
-     "bleed 1 (2.89)"
+     "regen 2 (2.9)",
+     "pounce 2 (2.96)"
     ]
    },
    "statBase": 19,
-   "measuredAt": "2026-11-20T03:09:40.498Z",
-   "seconds": 319
+   "measuredAt": "2026-11-20T17:20:18.532Z",
+   "seconds": 20
   },
   "global|pack=1": {
    "key": "pack=1",
@@ -23653,6 +23653,88 @@
    "statBase": 19,
    "measuredAt": "2026-11-20T04:47:48.132Z",
    "seconds": 196
+  },
+  "global|harden=1": {
+   "key": "harden=1",
+   "ctx": "global",
+   "bramble": 15,
+   "id": "harden",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 2,
+   "cards": [
+    "sworn-shieldbearer",
+    "ladybird-guard"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.8272,
+     "lo": 2.2907,
+     "hi": 3.666
+    }
+   ],
+   "fingerprint": "c0e5f8bc4e35",
+   "canonRate": {
+    "m": 0.0296,
+    "lo": 0.0249,
+    "hi": 0.0341
+   },
+   "statRate": {
+    "m": 0.0352,
+    "lo": 0.0277,
+    "hi": 0.0433
+   },
+   "kappa": {
+    "m": 1.1888,
+    "lo": 0.9618,
+    "hi": 1.4704
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0092,
+    "worthStat": {
+     "m": 0.2604,
+     "lo": -0.2258,
+     "hi": 0.627
+    }
+   },
+   "test": {
+    "effects": {
+     "harden": 1
+    },
+    "gain": 0.0804,
+    "worth": {
+     "m": 2.7152,
+     "lo": 2.0861,
+     "hi": 3.5019
+    },
+    "worthRuler": {
+     "m": 2.8272,
+     "lo": 2.2907,
+     "hi": 3.666
+    },
+    "worthStat": {
+     "m": 2.284,
+     "lo": 1.5875,
+     "hi": 3.2453
+    },
+    "price": 2.11,
+    "net": 0.7172,
+    "verdict": "under-priced",
+    "between": [
+     "armor 1 (2.33)",
+     "poison 1 (2.72)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-20T17:19:58.257Z",
+   "seconds": 282
   }
  }
 }
