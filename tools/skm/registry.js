@@ -97,6 +97,19 @@ const EXPS = {
   H2: { design: 'own', yard: 'own', cs: { kind: 'homo', foe: 'random', bramble: 15, seed: 'skmH2' }, stages: [24, 32], idea: 'the carrier x20 with vs without the skill, random Maps 0-20 decks, road brambles (15 Health)' },
   V16: { design: 'van', body: BODY1, cs: { kind: 'homo', foe: 'body', body: BODY1, level: 0, seed: 'skmV16' }, stages: [40, 60], yardM: 300,
     idea: 'mirror match at Level 0 (Maps 0-5 play there)' },
+  // round 3 (package SKM3, 2026-11-20): new kinds. The races split a skill into its halves: a one-sided fight where only one side can hurt
+  // the other, scored in rounds (tempo / survival turns), not in wins.
+  OR: { design: 'race', race: 'off', body: BODY1, cs: { kind: 'homo', foe: 'bodyV', body: BODY1, seed: 'skmOR' }, stages: [40, 80], yardM: 300,
+    idea: 'offence race (tempo): 20 farm-dogs given the skill against 20 farm-dogs with no Attack (they only block); rounds to break the bramble, priced by +1 Attack' },
+  DR: { design: 'race', race: 'def', body: BODY1, cs: { kind: 'homo', foe: 'body', body: BODY1, seed: 'skmDR' }, stages: [40, 80], yardM: 300,
+    idea: 'defence race (survival turns): 20 farm-dogs with no Attack given the skill against 20 plain farm-dogs; rounds the bramble lives, priced by +2 / +4 Health' },
+  OD: { design: 'race2', body: BODY1, idea: 'offence + defence: the offence race\'s and the defence race\'s worths added (the skill\'s two halves, measured apart)' },
+  // duo (the standard test's duo mode, 2026-10-21): the skill on top of a companion skill, both sides carrying the companion; one context per
+  // companion, the worth pooled over them (the skill's worth averaged over the skills it will sit beside)
+  DU: { design: 'duo', body: BODY1, comps: ['armor', 'poison', 'thorns', 'pierce', 'rage', 'sweep'], cs: { kind: 'homo', foe: 'bodyV', body: BODY1, seed: 'skmDU' }, stages: [12, 24], yardM: 120,
+    idea: 'duo: 20 farm-dogs with a companion skill and the skill vs 20 farm-dogs with the companion only, over 6 companions (Armor, Poison, Thorns, Pierce, Rage, Sweep)' },
+  // removal across the PRO decks (owner idea, SKM3 brief): DK reads the one deck with most copies; here up to 4 decks, one carrier each
+  PX: { design: 'prowide', np: 4, cs: { kind: 'pro', seed: 'skmPX' }, stages: [24], idea: 'removal across the PRO decks: up to 4 Maps 0-20 PRO / BPRO decks that field a carrier (most copies first, one deck each), with vs without the skill on that card, against the map\'s PRO / BPRO decks' },
 };
 // the real decks (PRO / BPRO of Maps 0-20) and the card that holds or gets the skill
 let PRO = null;
@@ -127,6 +140,9 @@ const METRICS = {
   surv: (o, X) => o.s === 0 ? Math.min(1, o.r / 20) : 1, // survival: rounds lived in a loss, a win or draw counts as surviving
   speed: (o, X) => o.s === 1 ? 1 - Math.min(o.r, 30) / 30 : 0, // tempo: a win scores more the sooner it comes
   strict: (o, X) => o.s === 1 ? 1 : 0, // a draw counts as a loss
+  // the races (SKM3, 2026-11-20): rounds, capped at 40 (sudden death from round 20 ends nearly every game well before)
+  quick: (o, X) => -Math.min(o.s === 1 ? o.r : 40, 40), // offence race: fewer rounds to break the bramble is better; no win = the cap
+  last: (o, X) => o.s === 0 ? Math.min(o.r, 40) : 40, // defence race: rounds my bramble lives; a draw or a win counts as the cap
 };
 const RANGED = ['arrow', 'archer', 'twinShot', 'snipe', 'fork', 'trident', 'avalanche'];
 function share(gm, deck, keys) { let n = 0, t = 0; Object.keys(deck || {}).forEach(id => { const e = (gm.D[id] && gm.D[id].effects) || {}; t += deck[id]; if (keys.some(k => e[k] != null)) n += deck[id]; }); return t ? n / t : 0; }
@@ -196,6 +212,7 @@ async function sharedYard(sim, X, bodies, M) {
 }
 // the items, pairs and yardstick of design E for skill s at M fights (plays what is missing)
 async function playDesign(sim, E, s, M) {
+  if (E.design === 'race' || E.design === 'duo' || E.design === 'prowide') return playNew(sim, E, s, M);
   const U = S.universe(sim.gm), gm = sim.gm, cs = csFor(U, E, s);
   if (!cs) return { skip: 'no real deck holds a carrier of this skill' };
   const X = sim.context(cs);
@@ -230,6 +247,74 @@ async function playDesign(sim, E, s, M) {
   }
   const w = sim.outcomes(X, withV, c, M), o = sim.outcomes(X, without, c, M);
   return { X, carrier: c, pairs: w.map((x, j) => ({ w: x, c: o[j] })), yard, games: M * items.length };
+}
+
+// ---------------------------------------------------------------- round 3 designs (package SKM3, 2026-11-20)
+const mergeV = (a, b) => { const o = Object.assign({}, a, b); if (a.add && b.add) o.add = Object.assign({}, a.add, b.add); if (a.addTrig && b.addTrig) o.addTrig = a.addTrig.concat(b.addTrig); return o; };
+const pacifist = (gm, body) => ({ base: body, dA: -(gm.D[body].attack || 0) });
+// the (deck, card) plans of the PRO-wide removal: every Maps 0-20 PRO / BPRO deck holding a carrier, most copies first, one card a deck
+function proPairs(U, s, np) {
+  const all = []; proDecks(U).forEach(p => Object.keys(p.deck).forEach(id => { if (U.skills[s].carriers.includes(id)) all.push({ deck: p, card: id, k: p.deck[id], map: p.map }); }));
+  all.sort((a, b) => b.k - a.k || a.map - b.map || (a.deck.id < b.deck.id ? -1 : 1));
+  const out = [], used = new Set(); all.forEach(d => { if (out.length < np && !used.has(d.deck.id)) { out.push(d); used.add(d.deck.id); } }); return out;
+}
+// groups (one per context) merged into one sample: pairs concatenated, each yardstick kind's fights concatenated
+function mergeGroups(groups) {
+  const kinds = [...new Set([].concat(...groups.map(g => g.yard.map(y => y.kind))))];
+  return { pairs: [].concat(...groups.map(g => g.pairs)), yard: kinds.map(k => { const e = groups.map(g => g.yard.find(y => y.kind === k)).filter(Boolean); return { kind: k, pts: e[0].pts, b: [].concat(...e.map(y => y.b)), u: [].concat(...e.map(y => y.u)) }; }) };
+}
+async function playNew(sim, E, s, M) {
+  const U = S.universe(sim.gm), gm = sim.gm, c = carrierOf(U, s, 1)[0], body = E.body;
+  if (E.design === 'race') {
+    if (S.SK.skillsOf(gm, gm.D[body]).includes(s)) return { skip: 'the body already has this skill' };
+    const add = S.addOf(gm, c, s);
+    if (E.race === 'off') { // my farm-dogs (given the skill) against blockers with no Attack; yardstick +1 Attack (+2 Health kept for the record)
+      const X = sim.context(Object.assign({}, E.cs, { foeV: pacifist(gm, body) })), withV = Object.assign({ base: body }, add), ctrl = { base: body };
+      const yard = await sharedYard(sim, X, [body], Math.max(M, E.yardM || M));
+      await sim.need(X, [{ v: withV }, { v: ctrl }], M);
+      const w = sim.outcomes(X, withV, body, M), cc = sim.outcomes(X, ctrl, body, M);
+      return { X, carrier: c, pairs: w.map((o, j) => ({ w: o, c: cc[j] })), yard, games: M };
+    }
+    // defence: my blockers with no Attack (given the skill) against plain farm-dogs; yardstick +2 / +4 Health on the blocker
+    const X = sim.context(E.cs), ctrl = pacifist(gm, body), withV = mergeV(ctrl, add), h2 = Object.assign({}, ctrl, { dH: 2 }), h4 = Object.assign({}, ctrl, { dH: 4 }), YM = Math.max(M, E.yardM || M);
+    await sim.need(X, [{ v: ctrl }, { v: h2 }, { v: h4 }], YM); await sim.need(X, [{ v: withV }], M);
+    const b = sim.outcomes(X, ctrl, body, YM), yard = [{ kind: 'H', pts: 2, b, u: sim.outcomes(X, h2, body, YM) }, { kind: 'H4', pts: 4, b, u: sim.outcomes(X, h4, body, YM) }];
+    const w = sim.outcomes(X, withV, body, M), cc = b.slice(0, M);
+    return { X, carrier: c, pairs: w.map((o, j) => ({ w: o, c: cc[j] })), yard, games: M };
+  }
+  if (E.design === 'duo') { // per companion: (body + companion + skill) vs (body + companion), the foe carrying the companion too
+    if (S.SK.skillsOf(gm, gm.D[body]).includes(s)) return { skip: 'the body already has this skill' };
+    const add = S.addOf(gm, c, s), groups = []; let games = 0;
+    for (const comp of E.comps) {
+      if (comp === s || !U.skills[comp]) continue; const cadd = S.addOf(gm, carrierOf(U, comp, 1)[0], comp);
+      if (add.add && Object.keys(add.add).some(k => k in cadd.add)) continue; // the skill shares a key with the companion
+      const ctrl = Object.assign({ base: body }, cadd), withV = mergeV(ctrl, add), X = sim.context(Object.assign({}, E.cs, { foeV: ctrl }));
+      const bs = bumps(ctrl), YM = Math.max(M, E.yardM || M);
+      await sim.need(X, [{ v: ctrl }].concat(bs.map(x => ({ v: x.v }))), YM); await sim.need(X, [{ v: withV }], M); games += M;
+      const b = sim.outcomes(X, ctrl, body, YM), w = sim.outcomes(X, withV, body, M);
+      groups.push({ X, comp, pairs: w.map((o, j) => ({ w: o, c: b[j] })), yard: bs.map(x => ({ kind: x.kind, pts: x.pts, b, u: sim.outcomes(X, x.v, body, YM) })) });
+    }
+    if (!groups.length) return { skip: 'no companion fits' };
+    const m = mergeGroups(groups); return { X: groups[0].X, carrier: c, pairs: m.pairs, yard: m.yard, games, groups };
+  }
+  // prowide: per deck, the deck's copies of the card with vs without the skill; own +1 Attack / +2 Health bumps
+  const plans = proPairs(U, s, E.np); if (!plans.length) return { skip: 'no real deck holds a carrier of this skill' };
+  const groups = []; let games = 0;
+  for (const d of plans) {
+    const rest = Object.assign({}, d.deck.deck); delete rest[d.card];
+    const X = sim.context(Object.assign({}, E.cs, { scope: 'map:' + d.map, k: d.k, rest, deckId: d.deck.id })), cc = d.card;
+    const withV = { base: cc }, without = S.withoutV(cc, s), bs = bumps(without), items = [{ v: withV, card: cc }, { v: without, card: cc }].concat(bs.map(b => ({ v: b.v, card: cc })));
+    await sim.need(X, items, M); games += M * items.length;
+    const base = sim.outcomes(X, without, cc, M), w = sim.outcomes(X, withV, cc, M);
+    groups.push({ X, carrier: cc + '@' + d.deck.id, pairs: w.map((x, j) => ({ w: x, c: base[j] })), yard: bs.map(b => ({ kind: b.kind, pts: b.pts, b: base, u: sim.outcomes(X, b.v, cc, M) })) });
+  }
+  const m = mergeGroups(groups); return { X: groups[0].X, carrier: groups.map(g => g.carrier).join('+'), pairs: m.pairs, yard: m.yard, games, groups };
+}
+// the median over a design's groups (companions / decks) of each group's own estimate: the worth in the typical context, not the pooled one
+function groupMedian(gm, D, est) {
+  if (!D.groups || D.groups.length < 2) return null; const ws = D.groups.map(g => estimate(gm, g.X, g.pairs, g.yard, est)).filter(r => r && r.worth != null && isFinite(r.worth)).map(r => r.worth);
+  if (ws.length < 2) return null; const m = S.median(ws), sd = S.meanSE(ws).se * Math.sqrt(ws.length);
+  return { worth: m, ci: 1.96 * 1.2533 * sd / Math.sqrt(ws.length), n: ws.length, note: 'spread (min..max over ' + ws.length + '): ' + Math.min(...ws).toFixed(2) + '..' + Math.max(...ws).toFixed(2) };
 }
 
 // ---------------------------------------------------------------- the stat-equivalence search
@@ -321,8 +406,22 @@ const PLAN = {
   R2: ['win', 'margin', 'logit'],
   R3: ['win', 'margin', 'logit', 'vsRanged', 'vsMelee'],
   D1: ['margin', 'win', 'dealt', 'yH', 'early', 'late'],
+  OR: ['rounds', 'roundsAll'],
+  DR: ['lives', 'livesH2'],
+  DU: ['win', 'margin', 'logit', 'compMedian', 'compMedianMargin'],
+  PX: ['margin', 'win', 'logit', 'deckMedian', 'yH', 'yA'],
 };
-const ALL_EST = {}; ESTS.concat(MORE, OPP).forEach(e => ALL_EST[e.k] = e);
+// round 3 estimators (SKM3, 2026-11-20): the races' rounds and the median over a design's contexts (matchup spread)
+const RACE = [
+  { k: 'rounds', est: { metric: 'quick', yard: 'A' }, name: 'rounds to break', idea: 'rounds saved / the rounds +1 Attack saves (3 points)' },
+  { k: 'roundsAll', est: { metric: 'quick' }, name: 'rounds to break (both bumps)', idea: 'rounds saved / the rounds a budget point saves, +1 Attack and +2 Health pooled' },
+  { k: 'lives', est: { metric: 'last', yard: 'ladder' }, name: 'rounds lived', idea: 'rounds the bramble lives longer / those a Health point buys (a line through +0 / +2 / +4 Health)' },
+  { k: 'livesH2', est: { metric: 'last', yard: 'H' }, name: 'rounds lived (+2 Health)', idea: 'rounds the bramble lives longer / those +2 Health buy' },
+  { k: 'compMedian', est: { metric: 'win', group: true }, name: 'median companion', idea: 'each companion\'s own win-rate worth, the median over the companions (the skill beside a typical partner; the spread is in the note)' },
+  { k: 'compMedianMargin', est: { metric: 'margin', group: true }, name: 'median companion (margin)', idea: 'each companion\'s own bramble-margin worth, the median over the companions' },
+  { k: 'deckMedian', est: { metric: 'margin', group: true }, name: 'median deck', idea: 'each deck\'s own bramble-margin worth, the median over the decks (matchup spread: the skill in its typical deck; the spread is in the note)' },
+];
+const ALL_EST = {}; ESTS.concat(MORE, OPP, RACE).forEach(e => ALL_EST[e.k] = e);
 ALL_EST.ladder = { k: 'ladder', est: { metric: 'win', yard: 'ladder' }, name: 'stat-equivalence ladder', idea: 'the Health that matches the skill: least-squares line through +0 / +2 / +4 Health on the bare carrier' };
 Object.keys(PLAN).forEach(eid => {
   const E = EXPS[eid];
@@ -332,13 +431,24 @@ Object.keys(PLAN).forEach(eid => {
       async run(s, o) {
         const sim = o.sim; let M = o.M || E.stages[0], res, D;
         const stages = this.primary ? (o.stages || E.stages) : [o.M || E.stages[E.stages.length - 1]];
-        for (const st of stages) { M = st; D = await playDesign(sim, E, s, M); if (D.skip) return { worth: null, ci: null, games: 0, M, note: D.skip }; res = estimate(sim.gm, D.X, D.pairs, D.yard, e.est);
+        for (const st of stages) { M = st; D = await playDesign(sim, E, s, M); if (D.skip) return { worth: null, ci: null, games: 0, M, note: D.skip }; res = e.est.group ? groupMedian(sim.gm, D, e.est) : estimate(sim.gm, D.X, D.pairs, D.yard, e.est);
           if (this.primary && res && res.worth != null && res.ci < 0.1 * Math.abs(res.worth)) break; }
         if (!res) return { worth: null, ci: null, games: D.games, carrier: D.carrier, M, note: 'too few fights after the filter' };
         return { worth: res.worth, ci: res.ci, games: D.games, carrier: D.carrier, M, n: res.n, note: res.note };
       } });
   });
 });
+
+// OD (SKM3): the two races added, each at the fights its primary stopped at (read from its result lines; the games come from the cache)
+REG.push({ id: 'OD-sum', exp: 'OD', primary: true, name: 'OD offence + defence', idea: EXPS.OD.idea + '; OR-rounds + DR-lives, the intervals added in quadrature',
+  async run(s, o) { const fp = L.fingerprint(), Mof = id => { const f = path.join(BAL, 'skm', 'results', id + '.jsonl'); if (!fs.existsSync(f)) return null; let M = null;
+      fs.readFileSync(f, 'utf8').split('\n').filter(Boolean).forEach(l => { try { const r = JSON.parse(l); if (r.fp === fp && r.skill === s && r.M) M = r.M; } catch (e) { /* a torn line */ } }); return M; };
+    const parts = [];
+    for (const [eid, k] of [['OR', 'rounds'], ['DR', 'lives']]) { const M = Mof(eid + '-' + k); if (!M) return { worth: null, games: 0, note: 'run ' + eid + ' first' };
+      const D = await playDesign(o.sim, EXPS[eid], s, M); if (D.skip) return { worth: null, games: 0, note: D.skip };
+      const r = estimate(o.sim.gm, D.X, D.pairs, D.yard, ALL_EST[k].est); if (!r || r.worth == null) return { worth: null, games: 0, note: eid + ': no estimate' }; parts.push(Object.assign({ M }, r)); }
+    return { worth: parts[0].worth + parts[1].worth, ci: Math.sqrt(parts[0].ci ** 2 + parts[1].ci ** 2), games: 0, carrier: carrierOf(o.U, s, 1)[0], M: parts[0].M + parts[1].M,
+      note: 'offence ' + parts[0].worth.toFixed(2) + ', defence ' + parts[1].worth.toFixed(2) }; } });
 
 const EQEST = [{ k: 'win', name: 'even-fight point', idea: 'h* by interpolation between the bracketing probes' },
   { k: 'margin', name: 'even-margin point', idea: 'h* where the mean bramble margin crosses 0' }, { k: 'fit', name: 'line through probes', idea: 'h* from a least-squares line through every probe\'s fights' }];
@@ -460,6 +570,10 @@ function rowPrice(U, methodId, s, carrier) {
   const x1 = v => L.budgetOf(L.printedDef(gm, v), 1).x1, src = carrierOf(U, s, 1)[0];
   try {
     if (E.design === 'eq' && E.ownBody) return S.priceOn(gm, String(carrier).split('@')[0], s, 1);
+    // SKM3: the races and the duo price the skill on the farm-dog body (the defence race's blocker has no Attack: the Attack-free price would
+    // differ only for skills priced on Attack); the PRO-wide removal = the mean of its decks' cards' prices
+    if (E.design === 'race' || E.design === 'race2' || E.design === 'duo') return x1(Object.assign({ base: E.body }, S.addOf(gm, src, s))) - x1({ base: E.body });
+    if (E.design === 'prowide') { const ps = String(carrier).split('+').map(x => S.priceOn(gm, x.split('@')[0], s, 1)); return ps.reduce((a, b) => a + b, 0) / ps.length; }
     if (E.design === 'van' || E.design === 'eq' || E.design === 'rr') return x1(Object.assign({ base: E.body }, S.addOf(gm, src, s))) - x1({ base: E.body });
     const card = String(carrier).split('@')[0];
     if (E.design === 'deck' && E.mode === 'add') return x1(Object.assign({ base: card }, S.addOf(gm, src, s))) - x1({ base: card });
