@@ -37,9 +37,7 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'x-carnage': U('x-carnage', {carnage:2}, {health:500, wait:9}),
   'x-tally':   U('x-tally', {tally:2}, {health:500, wait:9}),
   'x-almanac': U('x-almanac', {almanac:3}, {health:500, wait:9}),
-  'x-onsl':    U('x-onsl', {onslaught:3}, {health:500, wait:9}),
   'x-riled':   U('x-riled', {riled:3}, {health:500, wait:9}),
-  'x-hit5':    U('x-hit5', {}, {attack:5, health:500}),
   'x-weak':    U('x-weak', {}, {health:1, wait:9}),
 });
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
@@ -127,14 +125,12 @@ const on = c=> String(c._en5On || '').split(',');
 { const {e, P} = mk(10); P[1].deck = Array(12).fill('x-dummy'); e.draw(P[1], 3, 'A', {}, []); const a = put(e, P, 1, 'x-almanac', 0);
   e.syncPhaseStats(P, so, []); const off = !on(a).includes('almanac'); for(let k = 0; k < 3; k++) e.draw(P[1], 1, 'A', {}, []); e.syncPhaseStats(P, so, []);
   ok(off && on(a).includes('almanac') && P[1].drawnAfterOpening === 3, `6: Almanac 3: off after the opening hand, on after 3 more draws (${P[1].drawnAfterOpening})`); }
-{ const {e, P} = mk(11); put(e, P, 1, 'x-hit5', 0); const o = put(e, P, 1, 'x-onsl', 1); put(e, P, 2, 'x-dummy', 3);
-  round(e, P, 1); const hq = P[2].hq.hp; e.roundStart(P, 2, so, {}, []);
-  ok(on(o).includes('onslaught') && P[1]._siegeLast >= 3, `6: Onslaught 3: on the round after your side dealt 5 to the enemy bramble (last ${P[1]._siegeLast}, bramble ${hq})`); }
+// (Onslaught's bramble-damage form was removed by SKIN3, 2026-11-20; its new rule is tested in tests/skin3-2026-11-20.js)
 { const {e, P} = mk(12); const r = put(e, P, 1, 'x-riled', 0); e.roundStart(P, 1, so, {}, []); e.debugDamage(P, so, r.uid, 4, {}, []); const before = on(r).includes('riled');
   e.roundStart(P, 2, so, {}, []); const mid = on(r).includes('riled'); e.roundStart(P, 3, so, {}, []);
   ok(!before && mid && !on(r).includes('riled'), `6: Riled 3: on the round after it took 4, off the round after that (${before}/${mid}/${on(r).includes('riled')})`); }
-ok(['tally', 'almanac', 'onslaught', 'riled'].every(k=> SK[k] && SK[k].theoretical && SK[k + 'Grant'] && SK[k + 'Grant'].value === 0) && (()=>{ const have = cards.filter(c=> byId[c.id].effects && ['tally', 'almanac', 'onslaught', 'riled'].some(k=> byId[c.id].effects[k]) /* ENG39: Tally is Carnage {who: foes} */).map(c=> c.id), was = ['bison-bulldozer', 'boreal-elk', 'cone-cutter-squirrel', 'raven-scout'];
-  return have.every(id=> was.includes(id)) && was.every(id=> have.includes(id) || redesigned(id)); })() /* 2026-11-18 (TESTFIX): the redesign took Riled, Almanac and Tally (SKAUD1: into Carnage) off their carriers */, '6: the four counters priced (theoretical), one carrier each since CONTENT12 (ENG22-1 a, 2026-11-06)');
+ok(['tally', 'almanac', 'riled'].every(k=> SK[k] && SK[k].theoretical && SK[k + 'Grant'] && SK[k + 'Grant'].value === 0) && (()=>{ const have = cards.filter(c=> byId[c.id].effects && ['tally', 'almanac', 'riled'].some(k=> byId[c.id].effects[k]) /* ENG39: Tally is Carnage {who: foes} */).map(c=> c.id), was = ['boreal-elk', 'cone-cutter-squirrel', 'raven-scout'] /* SKIN3 (2026-11-20): Onslaught's old form and its Bison carrier removed */;
+  return have.every(id=> was.includes(id)) && was.every(id=> have.includes(id) || redesigned(id)); })() /* 2026-11-18 (TESTFIX): the redesign took Riled, Almanac and Tally (SKAUD1: into Carnage) off their carriers */, '6: the three counters priced (theoretical), one carrier each since CONTENT12 (ENG22-1 a, 2026-11-06)');
 ok(/the card must 'see'/.test(JSON.stringify(SK.carnage)), '6: Carnage\'s price note says its uptime needs a re-measure');
 
 // ---- 7. UI17-3 ----------------------------------------------------------------------------------------------------------

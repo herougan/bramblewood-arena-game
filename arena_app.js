@@ -1014,7 +1014,7 @@ const PASSIVE_DEFS = [
   {key:'rockSolid', category:'passive', label:'Rock-solid', kind:'boolean', desc:()=>`+2/+2 for every Stone you hold.`},
   {key:'ironWill', category:'passive', label:'Iron-will', kind:'boolean', desc:()=>`+3/+3 for every Metal you hold.`},
   // 2026-10-21 (package CX2): Loyal – {…} / Usurper – {…} have rows of their own (a save used to drop the braces), twins of the stat form.
-  {key:'loyal', category:'passive', label:'Loyal', kind:'twoNumber', placeholders:['Attack','Health'], desc:(v, n, e)=>{ const [a, h] = phaseVals(v); const g = e && e.loyalGrant ? grantText(e.loyalGrant) : ''; return `While one of your leaders is on the battlefield: +${a}/+${h}${g ? ' and ' + g : ''}.`; },
+  {key:'loyal', category:'passive', label:'Loyal', kind:'twoNumber', placeholders:['Attack','Health'], desc:(v, n, e)=>{ const [a, h] = phaseVals(v); const g = e && e.loyalGrant ? grantText(e.loyalGrant) : ''; return `While an ally leader is on the battlefield: +${a}/+${h}${g ? ' and ' + g : ''}.`; }, // SKIN3 (2026-11-20): owner sheet wording
     get:e=> e.loyal ? phaseVals(e.loyal) : undefined, apply:(e, vals)=>{ const a = Number(vals && vals[0])||0, h = Number(vals && vals[1])||0; if(a || h) e.loyal = [a, h]; }},
   {key:'loyalGrant', category:'passive', label:'Loyal', kind:'grant', placeholder:'armor 1', desc:v=> TX('ui.sk-loyal-grant', {skills: grantText(parseGrantText(v)) || TX('ui.cx-nothing')}),
     get:e=> e.loyalGrant ? grantToText(e.loyalGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length) e.loyalGrant = g; }},
@@ -1023,7 +1023,7 @@ const PASSIVE_DEFS = [
   {key:'usurperGrant', category:'passive', label:'Usurper', kind:'grant', placeholder:'frenzy', desc:v=> TX('ui.sk-usurper-grant', {skills: grantText(parseGrantText(v)) || TX('ui.cx-nothing')}),
     get:e=> e.usurperGrant ? grantToText(e.usurperGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length) e.usurperGrant = g; }},
   {key:'sacrifice', category:'passive', label:'Sacrifice', kind:'number', min:0, desc:v=>`Play a Dark Summon card onto this unit: this unit perishes, and the new card costs ${v} less (Darkness first, then Lumber).`},
-  {key:'scare', category:'passive', label:'Scare', kind:'number', min:0, desc:v=>`Anything attacking this card hits for ${v} less.`},
+  {key:'scare', category:'passive', label:'Scare', kind:'number', min:0, desc:v=> TX('ui.sk-scare', {n: numOr(v, 1)}), codexNote:TX('ui.sk-scare-codex')}, // SKIN3 (2026-11-20): its attackers are Scared
   // Ecclesia (2026-10-10, D23). Prayer value = Prayer N on your board + cards in your Removal Zone.
   // 2026-10-19 (package E, owner: "prayer cards give prayer per turn and it gets added as tokens onto it"): Prayer N = N Prayer tokens
   // on the unit at the start of each of your turns; your Prayer = the tokens on your units on the field; they go when the unit does.
@@ -2081,11 +2081,11 @@ PASSIVE_DEFS.push(
 const THR_TX = {requiem:{name:()=> TX('ui.skn-e10-requiem'), line:o=> TX('ui.sk-e10-requiem', {n: o.n, skills: o.skills})}, dirge:{name:()=> TX('ui.skn-e10-dirge'), line:o=> TX('ui.sk-e10-dirge', {n: o.n, skills: o.skills})},
   // ENG22 (2026-11-03, owner 21:13): Carnage sees the deaths (its line), and four counters in the same form (on no card; decision ENG22-1)
   tally:{name:()=> TX('ui.skn-e10-tally'), line:o=> TX('ui.sk-e10-tally', {n: o.n, skills: o.skills})}, almanac:{name:()=> TX('ui.skn-e10-almanac'), line:o=> TX('ui.sk-e10-almanac', {n: o.n, skills: o.skills})},
-  onslaught:{name:()=> TX('ui.skn-e10-onslaught'), line:o=> TX('ui.sk-e10-onslaught', {n: o.n, skills: o.skills})}, riled:{name:()=> TX('ui.skn-e10-riled'), line:o=> TX('ui.sk-e10-riled', {n: o.n, skills: o.skills})},
+  riled:{name:()=> TX('ui.skn-e10-riled'), line:o=> TX('ui.sk-e10-riled', {n: o.n, skills: o.skills})},
   carnage:{name:()=> TX('ui.skn-e10-carnage'), line:o=> TX('ui.sk-e10-carnage', {n: o.n, skills: o.skills})}, muster:{name:()=> TX('ui.skn-e10-muster'), line:o=> TX('ui.sk-e10-muster', {n: o.n, skills: o.skills})},
   beset:{name:()=> TX('ui.skn-e10-beset'), line:o=> TX('ui.sk-e10-beset', {n: o.n, skills: o.skills})}, throng:{name:()=> TX('ui.skn-e10-throng'), line:o=> TX('ui.sk-e10-throng', {n: o.n, skills: o.skills})}};
 const THR_APP = {requiem:{n:5, ico:'⚰️'}, dirge:{n:3, ico:'🎻'}, carnage:{n:3, ico:'🥩'}, muster:{n:6, ico:'🏴'}, beset:{n:6, ico:'🆘'}, throng:{n:10, ico:'🐜🐜'},
-  tally:{n:3, ico:'🪦🪦'}, almanac:{n:4, ico:'📖'}, onslaught:{n:3, ico:'🏹🏰'}, riled:{n:3, ico:'😤'} /* ENG22 */}; // icons no other skill uses
+  tally:{n:3, ico:'🪦🪦'}, almanac:{n:4, ico:'📖'}, riled:{n:3, ico:'😤'} /* ENG22 */}; // icons no other skill uses
 function thrNApp(k, e){ const v = e && e[k]; return (v === true || v == null || !(Number(v) > 0)) ? THR_APP[k].n : Math.round(Number(v)); }
 function thrGrantApp(k, e){ const g = e && e[k + 'Grant']; return g && typeof g === 'object' && Object.keys(g).length ? g : {attack: 2, health: 2}; }
 Object.keys(THR_APP).forEach(k=>{ EN5_STATE_KEYS[k] = {tx: 'e10-' + k, ico: THR_APP[k].ico}; EN5_STATE_DEFAULT_APP[k] = {attack: 2, health: 2}; SKILL_ICON[k] = THR_APP[k].ico; SKILL_ICON[k + 'Grant'] = THR_APP[k].ico;
@@ -2209,6 +2209,9 @@ ACTION_DEFS.push(
   {key:'harden', label:TX('ui.act-harden'), fields:['amount','who','sub'], whoOptions:['ally','self'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-harden-desc')},
   {key:'embolden', label:TX('ui.act-embolden'), fields:['amount','who','sub'], whoOptions:['ally','self'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-embolden-desc')});
 Object.assign(SKILL_ICON, {harden:'🗻', embolden:'💪'}); // neither shared with another skill
+// SKIN3 (2026-11-20, owner sheet row 464; rule in bramblewood-engine.js onslaughtAfterAllyAttack): Onslaught N, +N/+0 for each ally swing while Ready. On no card.
+PASSIVE_DEFS.push({key:'onslaught', category:'passive', label:TX('ui.skn-onslaught'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-onslaught', {n: numOr(v, 1)}), codexNote:TX('ui.sk-onslaught-codex')});
+Object.assign(SKILL_ICON, {onslaught:'📈'});
 // ==== ENG51 (2026-11-18, owner 11-17 17:32: "Archer Fish's Water Bolt is in Map 21+"; rule in bramblewood-engine.js BOLT_ELEMENTS, price in
 // canonical/skill-costs.json): Water Bolt N, a bolt (Speed 2, one skill with the other bolts) of N water damage; water damage leaves Wet counters.
 PASSIVE_DEFS.push({key:'waterBolt', category:'evergreen', label:TX('ui.skn-water-bolt'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-water-bolt', {n: numOr(v, 1)}), codexNote:TX('ui.sk-water-bolt-codex')});
@@ -3305,7 +3308,7 @@ const SKILL_TEXT = {
   heavyMetal: ()=> `Whenever you gain Stone or Metal, gain 1 more.`,
   timber: ()=> `+1/+1 for each Lumber you hold.`, rockSolid: ()=> `+2/+2 for each Stone you hold.`, ironWill: ()=> `+3/+3 for each Metal you hold.`,
   sacrifice: v=> `A Dark Summon played onto it costs ${v} less, and this unit perishes.`,
-  scare: v=> `Attacks against it deal ${v} less damage.`,
+  scare: v=> TX('ui.sk-scare', {n: numOr(v, 1)}), // SKIN3 (2026-11-20)
   prayer: v=> TX('ui.prayer-text', {n: numOr(v, 1)}), // 2026-10-19 (package E): Prayer tokens
   relic: ()=> TX('ui.relic-text'), // 2026-10-19 (package E)
   worship: ()=> `+1 Attack for every 3 Prayer you have.`,
@@ -3460,7 +3463,7 @@ Object.assign(SKILL_TEXT, {
   dry: ()=> `Takes half fire damage, and Scorching days can't touch it.`,
   landslide: v=> `When it dies, deal ${numOr(v, 1)} damage to the enemy facing it and the enemies beside that one (not Flying).`,
   natureForce: v=> `Your Elementals get +${numOr(v, 1)}/+${numOr(v, 1)}.`,
-  loyal: (v, n, e)=> { const [a, h] = phaseVals(v); const g = e && e.loyalGrant ? grantText(e.loyalGrant) : ''; return `While one of your leaders is on the field: +${a}/+${h}${g ? ' and ' + g : ''}.`; },
+  loyal: (v, n, e)=> { const [a, h] = phaseVals(v); const g = e && e.loyalGrant ? grantText(e.loyalGrant) : ''; return `While an ally leader is on the field: +${a}/+${h}${g ? ' and ' + g : ''}.`; }, // SKIN3 (2026-11-20)
   usurper: (v, n, e)=> { const [a, h] = phaseVals(v); const g = e && e.usurperGrant ? grantText(e.usurperGrant) : ''; return `While the enemy leader is on the field: +${a}/+${h}${g ? ' and ' + g : ''}.`; },
   esprit: (v, n, e)=> { const [a, h] = phaseVals(v); return `+${a}/+${h} whenever ${espritWhoOf(v, e) === 'any' ? 'another unit of yours' : 'another of your Kin'} enters play.`; }, // Kin / Any (2026-10-18)
   explode: v=> { const t = Array.isArray(v) ? Number(v[0])||0 : 0, d = Array.isArray(v) ? Number(v[1])||0 : 0; return t || d ? TX('ui.sk-explode', {t, s: t === 1 ? '' : 's', d}) /* 2026-10-18 (package D): terse */ : `After its timer runs down it explodes once, hitting the enemy facing it (or the bramble).`; },
@@ -7391,6 +7394,7 @@ function sk1LogText(ev, nm){
   if(ev.kind === 'vulnHit') return {cls:'', text:TX('ui.log-vuln-hit', {name: nm(ev.targetDefId), n: ev.amount||0})};
   if(ev.kind === 'enfeeble') return {cls:'', text:TX('ui.log-enfeeble', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount||1})};
   if(ev.kind === 'feebleHit') return {cls:'', text:TX('ui.log-feeble-hit', {name: nm(ev.targetDefId), n: ev.amount||0})}; // (a fight saved before FOCUS2: tokens)
+  if(ev.kind === 'scared') return {cls:'', text:TX('ui.skin3-log-scared', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount||1})}; // SKIN3 (2026-11-20)
   if(ev.kind === 'harden' || ev.kind === 'embolden') return {cls:'', text:TX('ui.focus2-log-' + ev.kind, {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount||1})}; // FOCUS2 (2026-11-20)
   if(ev.kind === 'grant') return {cls:'gold', text:TX('ui.log-grant', {att: nm(ev.attDefId), name: nm(ev.targetDefId), skill: (ev.skills || []).map(k=> (PASSIVE_DEFS.find(p=> p.key === k) || {}).label || k).join(', ')})};
   if(ev.kind === 'poisonPulse') return {cls:'poison', text:TX('ui.log-poison-pulse', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})};
@@ -7409,7 +7413,7 @@ function sk1Vfx(ev){
   // ENG23 (2026-11-04): Feed's +Attack on each unit, the fast-forward tokens as they are granted and spent, Skitter, the Aimed Bolt
   if(ev.type === 'feed'){ (ev.uids || []).forEach(u=>{ const r = rcOf(u); if(r) r.atk = (r.atk||0) + (ev.attack||0); fl(boardCardEl(u), `🍖 +${ev.attack||0}⚔`, 'buff'); refresh(u); }); try{ const h = hqTileEl(ev.side); if(h) floatText(h, `🍖 +${ev.repair||0}❤`, 'heal'); }catch(e){} snd('healTone'); return; }
   if(ev.type === 'fastForward'){ const r = rcOf(ev.uid); if(r) r.ffCounters = 0; refresh(ev.uid); return; }
-  if(ev.type === 'statusEnd' && ['feeble', 'hardened', 'emboldened'].includes(ev.status)){ const r = rcOf(ev.uid); if(r) r[ev.status] = 0; refresh(ev.uid); return; } // FOCUS2 (2026-11-20)
+  if(ev.type === 'statusEnd' && ['feeble', 'hardened', 'emboldened', 'scared' /* SKIN3 */].includes(ev.status)){ const r = rcOf(ev.uid); if(r) r[ev.status] = 0; refresh(ev.uid); return; } // FOCUS2 (2026-11-20)
   if(ev.type !== 'statusFx') return;
   const rc = rcOf(ev.targetUid), el = boardCardEl(ev.targetUid);
   if(ev.kind === 'grantFastForward'){ if(rc) rc.ffCounters = (rc.ffCounters||0) + (ev.amount||1); fl(el, `⏩ +${ev.amount||1}`, 'quick'); refresh(ev.targetUid); return; }
@@ -7424,6 +7428,7 @@ function sk1Vfx(ev){
   if(ev.kind === 'enfeeble'){ if(rc) rc.feeble = Math.max(rc.feeble||0, ev.amount||1) /* FOCUS2 (2026-11-20): rounds, refreshed */; fl(el, TX('ui.float-feeble'), 'debuff'); snd('enfeebleTone'); refresh(ev.targetUid); return; }
   // FOCUS2 (2026-11-20): Harden's Sturdy / Embolden's Mighty on an ally: its rounds, a float and a sound; statusEnd clears them (below)
   if(ev.kind === 'harden' || ev.kind === 'embolden'){ const f = ev.kind === 'harden' ? 'hardened' : 'emboldened'; if(rc) rc[f] = Math.max(rc[f]||0, ev.amount||1); fl(el, TX('ui.focus2-float-' + ev.kind), 'buff'); snd(ev.kind === 'harden' ? 'shieldTone' : 'rallyTone'); refresh(ev.targetUid); return; }
+  if(ev.kind === 'scared'){ if(rc) rc.scared = Math.max(rc.scared||0, ev.amount||1); fl(el, TX('ui.skin3-float-scared', {n: ev.amount||1}), 'debuff'); snd('enfeebleTone'); refresh(ev.targetUid); return; } // SKIN3 (2026-11-20)
   if(ev.kind === 'feebleHit'){ if(rc) rc.feeble = ev.amount||0; fl(el, '🪶 ×½', 'debuff'); snd('feebleTick'); refresh(ev.targetUid); return; }
   if(ev.kind === 'grant'){ fl(el, `🎁 ${(ev.skills || []).map(k=> (PASSIVE_DEFS.find(p=> p.key === k) || {}).label || k).join(', ')}`, 'buff'); snd('rallyTone'); return; }
   if(ev.kind === 'punish'){ fl(el, TX('ui.float-punish'), 'debuff'); snd('ambushTone'); return; }
@@ -7438,6 +7443,7 @@ function sk1StatusBadges(c, badges){
   if(c.exploit > 0) badges.push(`<span class="abadge exploit" title="${escapeAttr(TX('ui.exploit-tip', {n: c.exploit, s: c.exploit === 1 ? '' : 's'}))}">🩻${c.exploit}</span>`);
   if(c.vulnerable > 0) badges.push(`<span class="abadge exploit vulnerable" title="${escapeAttr(TX('ui.vulnerable-tip', {n: c.vulnerable, s: c.vulnerable === 1 ? '' : 's'}))}">💔${c.vulnerable}</span>`); // ENG50 (2026-11-17)
   if(c.feeble > 0) badges.push(`<span class="abadge exploit feeble" title="${escapeAttr(TX('ui.feeble-tip', {n: c.feeble, s: c.feeble === 1 ? '' : 's'}))}">🪶${c.feeble}</span>`); // ENG50; FOCUS2: rounds
+  if(c.scared > 0) badges.push(`<span class="abadge exploit scared" title="${escapeAttr(TX('ui.skin3-scared-tip', {n: c.scared}))}">😱${c.scared}</span>`); // SKIN3 (2026-11-20)
   if(c.hardened > 0) badges.push(`<span class="abadge hardened" title="${escapeAttr(TX('ui.focus2-hardened-tip', {n: c.hardened}))}">🗻${c.hardened}</span>`); // FOCUS2 (2026-11-20)
   if(c.emboldened > 0) badges.push(`<span class="abadge emboldened" title="${escapeAttr(TX('ui.focus2-emboldened-tip', {n: c.emboldened}))}">💪${c.emboldened}</span>`); // FOCUS2
   const a = c.sk1Atk || 0; if(a > 0) badges.push(`<span class="abadge formation" title="${escapeAttr(TX('ui.aura-formation-tip', {n: a}))}">🔗+${a}</span>`);
@@ -10187,7 +10193,7 @@ CHIP_FALLBACK_SKILLS.push('dropRoll', 'glean', 'lumberFeast'); // Package ENG20 
 CHIP_FALLBACK_SKILLS.push('king', 'tribute'); // Package TR (2026-10-21): 👑, 🪙
 // ENG25 (2026-11-05, owner #7): every state skill gets its chip on the card face (lit while on, zeitLitNow); + Immortal, Hydra, Tribe Delivery
 const ENG25_STATE_CHIPS = new Set(['timbered', 'bedrock', 'forged', 'lastStand', 'plenty', 'scarcity', 'foePlenty', 'foeScarcity', 'heat', 'frost', 'rain', 'storm', 'fog', 'salt', 'drought', 'season',
-  'requiem', 'dirge', 'carnage', 'muster', 'beset', 'throng', 'tally', 'almanac', 'onslaught', 'riled', 'liege']);
+  'requiem', 'dirge', 'carnage', 'muster', 'beset', 'throng', 'tally', 'almanac', 'riled', 'liege']);
 ENG25_STATE_CHIPS.forEach(k=>{ if(!CHIP_FALLBACK_SKILLS.includes(k)) CHIP_FALLBACK_SKILLS.push(k); }); CHIP_FALLBACK_SKILLS.push('immortal', 'hydra'); // 2026-11-07 (package UI30, owner 09:47 #7: "Tribe Delivery's context pip: one 📦 only"): Tribe Delivery left this list; its 📦 is the Delivery pip (UI23 #33), which drew a second one beside it
 ENG25_STATE_CHIPS.add('loyal'); ENG25_STATE_CHIPS.add('usurper'); // their own chips (abilityBadges) light the same way
 // 2026-10-30 (coordinator; owner 21:35: "When the Sun's active, Diurnal symbol becomes highlighted, like tide. When it's night, nocturnal symbol gets

@@ -2,6 +2,7 @@
 # 2026-11-14 (package SKR1, recording only): the owner's skill ranking (docs/owner-input/skills-ranking-2026-11-14.xlsx, sheet "Skills",
 # column J "Comments", owner 11-14 22:53) as data, and the redesign worklist of the Maps 0-20 cards.
 #   python3 tools/skill_ranking.py --from-xlsx   read the sheet once -> docs/skill-ranking.json (the canonical record)
+#   python3 tools/skill_ranking.py --from-1120   fold the owner's 11-20 sheet into it (SKIN3, 2026-11-20; run once)
 #   python3 tools/skill_ranking.py               docs/skill-ranking.json + canonical/cards.json -> docs/skill-ranking.md and
 #                                                docs/balance/skr1/cards-2026-11-14.json
 # Maps 0-20 cards = the BAL25 scope (docs/balance/bal25/card-power.json rows), live only (no token / test / pool / unattainable).
@@ -14,7 +15,7 @@ J = os.path.join(ROOT, 'docs', 'skill-ranking.json')
 XLSX = os.path.join(ROOT, 'docs', 'owner-input', 'skills-ranking-2026-11-14.xlsx')
 TAGS = ['GOD', 'MAGIC', 'EVO', 'KINGDOM', 'WEP']
 ORDER = ['1', '1A', '2', '2A', '3', '4', '5', '6', '7', '8']  # best to worst
-RANK_RE = re.compile(r'^(\d+A?|S|GOD|MAGIC|MAG|EVO|KINGDOM|WEP)\b\s*(.*)$', re.S)
+RANK_RE = re.compile(r'^(\d+A?|S|GOD|MAGIC|MAG|EVO|KINGDOM|WEP|Remove)\b\s*(.*)$', re.S)  # + Remove (SKIN3, owner 11-20)
 
 
 def parse(cell):
@@ -43,6 +44,43 @@ def from_xlsx():
     json.dump({'about': 'Owner ranking of the skills, 2026-11-14 22:53 (docs/owner-input/skills-ranking-2026-11-14.xlsx, sheet Skills, column J). rank: 1, 1A, 2, 2A, 3..8, S, tags GOD / MAGIC (MAG) / EVO / KINGDOM / WEP, "note" = a note only, "" = blank (not important or a duplicate: cut). note = the owner text after the rank, brackets kept. written = the cell as typed. idea = an owner idea for a new skill (no key); noKey = another row without a key.',
                'skills': out}, open(J, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     print('wrote', J, len(out))
+
+
+def from_1120():
+    """2026-11-20 (package SKIN3): the owner's 11-20 sheet (docs/owner-input/skills-2026-11-20.xlsx) against 11-14b, matched by (name, key):
+    a changed column J "II" sets pass2 (+ pass2Note, writtenII), a changed column K "Comments" sets rank / note / written; new rows are added
+    as ideas (design = the owner's words: Delivery note, else tooltip, else codex). changed1120 lists what moved."""
+    import openpyxl
+    rows = lambda f: [r for r in openpyxl.load_workbook(os.path.join(ROOT, 'docs', 'owner-input', f), read_only=True)['Skills'].iter_rows(values_only=True) if any(v is not None for v in r)][1:]
+    old = {}
+    for r in rows('skills-ranking-2026-11-14b.xlsx'): old.setdefault((r[0], r[1] or ''), r)
+    d = json.load(open(J, encoding='utf-8')); sk = d['skills']
+    by = {}
+    for s in sk: by.setdefault((s['name'], s['key'] or ''), s)
+    typed = lambda v: v if v is None or isinstance(v, str) else str(v)
+    seen = set()
+    for r in rows('skills-2026-11-20.xlsx'):
+        k = (r[0], r[1] or '')
+        if k in seen: continue
+        seen.add(k); o = old.get(k)
+        if o is None:
+            rank, note = parse(r[10]); p2, p2n = parse(r[9])
+            e = {'name': r[0], 'key': r[1] or '', 'rank': rank, 'note': note, 'written': typed(r[10]), 'delivery': r[2] or '', 'category': r[5] or '', 'type': r[6] or '',
+                 'idea': True, 'pass2': p2 if p2 != 'note' else '', 'design': r[4] or r[8] or (r[11] if len(r) > 11 else None) or '', 'addedIn': '11-20'}
+            if p2n: e['pass2Note'] = p2n
+            sk.append(e); continue
+        s = by.get(k) or (k[1] and next((x for x in sk if x["key"] == k[1]), None))  # a renamed row (Delivery resource -> Delivery) by its key
+        if s is None: continue
+        ch = []
+        if typed(r[9]) != typed(o[9]):
+            p2, p2n = parse(r[9]); s['pass2'] = p2; s['writtenII'] = typed(r[9]); ch.append('II')
+            if p2n: s['pass2Note'] = p2n
+        if typed(r[10]) != typed(o[10]):
+            s['rank'], s['note'] = parse(r[10]); s['written'] = typed(r[10]); ch.append('Comments')
+        if ch: s['changed1120'] = ch
+    d['about'] += ' 2026-11-20 (SKIN3): the owner\'s 11-20 sheet (docs/owner-input/skills-2026-11-20.xlsx, owner 11-20 00:01): a changed column J "II" sets pass2 (now 1-7, S or Remove; pass2Note = its text, writtenII = as typed), a changed column K "Comments" sets rank / note / written; changed1120 lists which; rows new on the sheet are ideas (addedIn 11-20, design = the owner\'s words).'
+    json.dump(d, open(J, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    print('wrote', J, len(sk), sum(1 for s in sk if s.get('changed1120')), 'changed', sum(1 for s in sk if s.get('addedIn') == '11-20'), 'new')
 
 
 def card_keys(c, fkey):
@@ -88,7 +126,7 @@ def build():
                'cards': rows, 'bucketCounts': bucket, 'cutSkillCardCounts': cutc.most_common(), 'keysMissingFromSheet': missing},
               open(os.path.join(ROOT, 'docs', 'balance', 'skr1', 'cards-2026-11-14.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 
-    L = ['# Skill ranking (owner, 2026-11-14 22:53)', '',
+    L = ['# Skill ranking (owner, 2026-11-14 22:53; updated from the 11-20 sheet)', '',
          '**What the ranks mean (owner, 11-14 23:04):** 1-3 are the skills likely to go in the game (some 3s may be skipped). 4 are context-based power-ups (a few may be picked). 5-7 are very unsure (win-mores, very unique effects; a few may be picked). S are special skills for one-off boss units. GOD, MAGIC, EVO, KINGDOM and WEP belong to later worlds, not Maps 0-20. Blank: not important or a duplicate.', '',
          'Generated by `python3 tools/skill_ranking.py` from `docs/skill-ranking.json` (the canonical record) and `canonical/cards.json`. Package SKR1: recording only; no card, engine or text was changed.',
          'Ranks: 1 = most important to the owner ... 8 = least; A = a variant; S, GOD, MAGIC, EVO, KINGDOM, WEP are tags the owner wrote; blank = not important or a duplicate (cut).', '']
@@ -97,11 +135,12 @@ def build():
     for x in sk:
         if x.get('pass2'): p2.setdefault(x['pass2'], []).append(x['name'])
     if p2:
-        L += ['## Second pass (owner, 11-14 23:26, column J "II"): the named skills for the game', '']
+        L += ['## Second pass (owner, column J "II": 11-14 23:26, updated 11-20 00:01): the named skills for the game; Remove = take it out', '']
         for k in sorted(p2): L += ['- **%s** (%d): %s' % (k, len(p2[k]), ', '.join(p2[k]))]
-        L += ['']
+        ch = [x for x in sk if x.get('changed1120')]
+        L += ['', '**Changed on the 11-20 sheet** (%d): %s' % (len(ch), ', '.join('%s (%s)' % (x['name'], '/'.join(x['changed1120'])) for x in ch)), '']
     L += ['## Counts per rank (%d rows)' % len(sk), '', '| Rank | Rows |', '|---|---|']
-    names_order = ORDER + ['S'] + TAGS + ['note', '']
+    names_order = ORDER + ['S'] + TAGS + ['Remove', 'note', '']
     for r in names_order: L.append('| %s | %d |' % (r or '(blank, cut)', cnt.get(r, 0)))
     L += ['', '## Skills per rank', '']
     for r in names_order:
@@ -135,4 +174,4 @@ def build():
 
 
 if __name__ == '__main__':
-    from_xlsx() if '--from-xlsx' in sys.argv else build()
+    from_xlsx() if '--from-xlsx' in sys.argv else from_1120() if '--from-1120' in sys.argv else build()

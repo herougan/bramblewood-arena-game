@@ -1,5 +1,5 @@
 {
- "about": "Owner ranking of the skills, 2026-11-14 22:53 (docs/owner-input/skills-ranking-2026-11-14.xlsx, sheet Skills, column J). rank: 1, 1A, 2, 2A, 3..8, S, tags GOD / MAGIC (MAG) / EVO / KINGDOM / WEP, \"note\" = a note only, \"\" = blank (not important or a duplicate: cut). note = the owner text after the rank, brackets kept. written = the cell as typed. idea = an owner idea for a new skill (no key); noKey = another row without a key. pass2: the owner's second pass, column J \"II\" of docs/owner-input/skills-ranking-2026-11-14b.xlsx (11-14 23:26): 1, 2, 3 or blank. written2: column K where it changed from the first pass.",
+ "about": "Owner ranking of the skills, 2026-11-14 22:53 (docs/owner-input/skills-ranking-2026-11-14.xlsx, sheet Skills, column J). rank: 1, 1A, 2, 2A, 3..8, S, tags GOD / MAGIC (MAG) / EVO / KINGDOM / WEP, \"note\" = a note only, \"\" = blank (not important or a duplicate: cut). note = the owner text after the rank, brackets kept. written = the cell as typed. idea = an owner idea for a new skill (no key); noKey = another row without a key. pass2: the owner's second pass, column J \"II\" of docs/owner-input/skills-ranking-2026-11-14b.xlsx (11-14 23:26): 1, 2, 3 or blank. written2: column K where it changed from the first pass. 2026-11-20 (SKIN3): the owner's 11-20 sheet (docs/owner-input/skills-2026-11-20.xlsx, owner 11-20 00:01): a changed column J \"II\" sets pass2 (now 1-7, S or Remove; pass2Note = its text, writtenII = as typed), a changed column K \"Comments\" sets rank / note / written; changed1120 lists which; rows new on the sheet are ideas (addedIn 11-20, design = the owner's words).",
  "skills": [
   {
    "name": "Absolute Zero",
@@ -428,8 +428,12 @@
    "delivery": "none",
    "category": "passive",
    "type": "boolean",
-   "pass2": "",
-   "written2": "2"
+   "pass2": "7",
+   "written2": "2",
+   "writtenII": "7.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Bola",
@@ -509,8 +513,13 @@
    "delivery": "none",
    "category": "passive",
    "type": "number",
-   "pass2": "2",
-   "written2": "5"
+   "pass2": "4",
+   "written2": "5",
+   "writtenII": "4 (I don't really like the name)",
+   "pass2Note": "(I don't really like the name)",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Build",
@@ -526,13 +535,16 @@
   {
    "name": "Bulldoze",
    "key": "bulldoze",
-   "rank": "",
+   "rank": "6",
    "note": "",
-   "written": null,
+   "written": "6.0",
    "delivery": "none",
    "category": "passive",
    "type": "number",
-   "pass2": ""
+   "pass2": "",
+   "changed1120": [
+    "Comments"
+   ]
   },
   {
    "name": "Bulwark",
@@ -872,7 +884,11 @@
    "delivery": "none",
    "category": "passive",
    "type": "number",
-   "pass2": ""
+   "pass2": "1",
+   "writtenII": "1.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Darksight",
@@ -895,7 +911,11 @@
    "delivery": "none",
    "category": "passive",
    "type": "number",
-   "pass2": ""
+   "pass2": "6",
+   "writtenII": "6.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Deadly Poison",
@@ -951,7 +971,11 @@
    "delivery": "none",
    "category": "passive",
    "type": "select",
-   "pass2": ""
+   "pass2": "5",
+   "writtenII": "5.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Delivery, every turn",
@@ -1202,7 +1226,11 @@
    "delivery": "none",
    "category": "passive",
    "type": "twoNumber",
-   "pass2": ""
+   "pass2": "3",
+   "writtenII": "3.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Earthquake",
@@ -1224,18 +1252,25 @@
    "delivery": "ranged",
    "category": "passive",
    "type": "number",
-   "pass2": ""
+   "pass2": "2",
+   "writtenII": "2.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Encore",
    "key": "encore",
-   "rank": "",
+   "rank": "S",
    "note": "",
-   "written": null,
+   "written": "S",
    "delivery": "melee",
    "category": "passive",
    "type": "text",
-   "pass2": ""
+   "pass2": "",
+   "changed1120": [
+    "Comments"
+   ]
   },
   {
    "name": "Esprit",
@@ -1246,7 +1281,11 @@
    "delivery": "none",
    "category": "passive",
    "type": "twoNumber",
-   "pass2": ""
+   "pass2": "4",
+   "writtenII": "4.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Evasive",
@@ -1337,8 +1376,12 @@
    "delivery": "none",
    "category": "passive",
    "type": "number",
-   "pass2": "3",
-   "written2": "6"
+   "pass2": "4",
+   "written2": "6",
+   "writtenII": "4.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Fast Forward",
@@ -1383,7 +1426,11 @@
    "delivery": "none",
    "category": "passive",
    "type": "boolean",
-   "pass2": ""
+   "pass2": "4",
+   "writtenII": "4.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Field Breaker",
@@ -1685,7 +1732,11 @@
    "delivery": "none",
    "category": "passive",
    "type": "boolean",
-   "pass2": ""
+   "pass2": "6",
+   "writtenII": "6.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Frenzy",
@@ -1993,8 +2044,12 @@
    "delivery": "none",
    "category": "passive",
    "type": "number",
-   "pass2": "2",
-   "written2": "5"
+   "pass2": "4",
+   "written2": "5",
+   "writtenII": "4.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Hibernate",
@@ -2098,7 +2153,11 @@
    "delivery": "none",
    "category": "passive",
    "type": "boolean",
-   "pass2": ""
+   "pass2": "2",
+   "writtenII": "2.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Immolation",
@@ -2336,8 +2395,12 @@
    "delivery": "none",
    "category": "passive",
    "type": "twoNumber",
-   "pass2": "2",
-   "written2": "4"
+   "pass2": "4",
+   "written2": "4",
+   "writtenII": "4.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Last Stand",
@@ -2427,8 +2490,12 @@
    "delivery": "none",
    "category": "passive",
    "type": "twoNumber",
-   "pass2": "2",
-   "written2": "4"
+   "pass2": "4",
+   "written2": "4",
+   "writtenII": "4.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Loyal",
@@ -2439,8 +2506,12 @@
    "delivery": "none",
    "category": "passive",
    "type": "twoNumber",
-   "pass2": "",
-   "written2": "3"
+   "pass2": "3",
+   "written2": "3",
+   "writtenII": "3.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Loyal",
@@ -2608,8 +2679,12 @@
    "delivery": "none",
    "category": "passive",
    "type": "number",
-   "pass2": "3",
-   "written2": "7"
+   "pass2": "4",
+   "written2": "7",
+   "writtenII": "4.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Momentum",
@@ -2780,7 +2855,11 @@
    "delivery": "none",
    "category": "passive",
    "type": "number",
-   "pass2": ""
+   "pass2": "1",
+   "writtenII": "1.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Octolash",
@@ -2791,8 +2870,12 @@
    "delivery": "melee",
    "category": "passive",
    "type": "boolean",
-   "pass2": "3",
-   "written2": "7"
+   "pass2": "5",
+   "written2": "7",
+   "writtenII": "5.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Offspring",
@@ -2803,7 +2886,11 @@
    "delivery": "none",
    "category": "passive",
    "type": "number",
-   "pass2": ""
+   "pass2": "6",
+   "writtenII": "6.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Onslaught",
@@ -2814,18 +2901,25 @@
    "delivery": "none",
    "category": "passive",
    "type": "number",
-   "pass2": ""
+   "pass2": "Remove",
+   "writtenII": "Remove",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Onslaught",
    "key": "onslaughtGrant",
-   "rank": "",
+   "rank": "Remove",
    "note": "",
-   "written": null,
+   "written": "Remove",
    "delivery": "none",
    "category": "passive",
    "type": "grant",
-   "pass2": ""
+   "pass2": "",
+   "changed1120": [
+    "Comments"
+   ]
   },
   {
    "name": "Pack",
@@ -2883,8 +2977,12 @@
    "delivery": "none",
    "category": "passive",
    "type": "number",
-   "pass2": "",
-   "written2": "7"
+   "pass2": "5",
+   "written2": "7",
+   "writtenII": "5.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Pearl Bed",
@@ -2917,8 +3015,12 @@
    "delivery": "none",
    "category": "passive",
    "type": "number",
-   "pass2": "",
-   "written2": "5"
+   "pass2": "7",
+   "written2": "5",
+   "writtenII": "7.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Petrify",
@@ -2941,8 +3043,13 @@
    "delivery": "none",
    "category": "passive",
    "type": "number",
-   "pass2": "",
-   "written2": "5"
+   "pass2": "3",
+   "written2": "5",
+   "writtenII": "3 (I think this steals items only)",
+   "pass2Note": "(I think this steals items only)",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Pierce",
@@ -3159,8 +3266,12 @@
    "delivery": "none",
    "category": "passive",
    "type": "boolean",
-   "pass2": "",
-   "written2": "5"
+   "pass2": "7",
+   "written2": "5",
+   "writtenII": "7.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Puncture",
@@ -3171,8 +3282,12 @@
    "delivery": "none",
    "category": "passive",
    "type": "number",
-   "pass2": "",
-   "written2": "5"
+   "pass2": "7",
+   "written2": "5",
+   "writtenII": "7.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Purblind",
@@ -3289,13 +3404,18 @@
   {
    "name": "Rainrunner",
    "key": "rainrunner",
-   "rank": "",
+   "rank": "4",
    "note": "",
-   "written": null,
+   "written": "4.0",
    "delivery": "none",
    "category": "passive",
    "type": "number",
-   "pass2": ""
+   "pass2": "3",
+   "writtenII": "3.0",
+   "changed1120": [
+    "II",
+    "Comments"
+   ]
   },
   {
    "name": "Rainrunner",
@@ -3341,8 +3461,12 @@
    "delivery": "ranged",
    "category": "passive",
    "type": "boolean",
-   "pass2": "",
-   "written2": "3"
+   "pass2": "3",
+   "written2": "3",
+   "writtenII": "3.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Rebuild",
@@ -3445,7 +3569,11 @@
    "delivery": "none",
    "category": "passive",
    "type": "number",
-   "pass2": ""
+   "pass2": "2",
+   "writtenII": "2.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Requiem",
@@ -3934,8 +4062,12 @@
    "delivery": "none",
    "category": "passive",
    "type": "number",
-   "pass2": "",
-   "written2": "R"
+   "pass2": "5",
+   "written2": "R",
+   "writtenII": "5.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Smoke Bomb",
@@ -4016,7 +4148,11 @@
    "delivery": "none",
    "category": "passive",
    "type": "cardCount",
-   "pass2": ""
+   "pass2": "5",
+   "writtenII": "5.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Speed",
@@ -4119,8 +4255,12 @@
    "delivery": "melee",
    "category": "passive",
    "type": "boolean",
-   "pass2": "",
-   "written2": "3"
+   "pass2": "2",
+   "written2": "3",
+   "writtenII": "2.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Stem",
@@ -4176,7 +4316,11 @@
    "delivery": "none",
    "category": "passive",
    "type": "number",
-   "pass2": ""
+   "pass2": "5",
+   "writtenII": "5.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Stop, Drop and Roll",
@@ -4403,8 +4547,12 @@
    "delivery": "none",
    "category": "passive",
    "type": "boolean",
-   "pass2": "",
-   "written2": "7"
+   "pass2": "6",
+   "written2": "7",
+   "writtenII": "6.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Thorns",
@@ -4800,8 +4948,12 @@
    "delivery": "none",
    "category": "passive",
    "type": "selectNumber",
-   "pass2": "",
-   "written2": "3"
+   "pass2": "2",
+   "written2": "3",
+   "writtenII": "2.0",
+   "changed1120": [
+    "II"
+   ]
   },
   {
    "name": "Weaken",
@@ -5102,6 +5254,272 @@
    "written": "5",
    "pass2": "",
    "addedIn": "11-14b"
+  },
+  {
+   "name": "Pillage",
+   "key": "",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true,
+   "pass2": "3",
+   "design": "Steals one (1) random resource.",
+   "addedIn": "11-20"
+  },
+  {
+   "name": "Broodmother",
+   "key": "",
+   "rank": "S",
+   "note": "",
+   "written": "S",
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true,
+   "pass2": "",
+   "design": "Increases strength of ally Swarm by +1/1.",
+   "addedIn": "11-20"
+  },
+  {
+   "name": "Metallurgy",
+   "key": "",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true,
+   "pass2": "",
+   "design": "All resource related",
+   "addedIn": "11-20"
+  },
+  {
+   "name": "Masonry",
+   "key": "",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true,
+   "pass2": "",
+   "design": "All resource related",
+   "addedIn": "11-20"
+  },
+  {
+   "name": "Refining",
+   "key": "",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true,
+   "pass2": "",
+   "design": "All resource related",
+   "addedIn": "11-20"
+  },
+  {
+   "name": "Mining",
+   "key": "",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true,
+   "pass2": "",
+   "design": "All resource related",
+   "addedIn": "11-20"
+  },
+  {
+   "name": "Forestry",
+   "key": "",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true,
+   "pass2": "",
+   "design": "All resource related",
+   "addedIn": "11-20"
+  },
+  {
+   "name": "{Status} Powder",
+   "key": "",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true,
+   "pass2": "",
+   "design": "Status: Paralysis, Toxic, Sleep",
+   "addedIn": "11-20"
+  },
+  {
+   "name": "Sap",
+   "key": "",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true,
+   "pass2": "",
+   "design": "Leech (Drain) + steal Attack",
+   "addedIn": "11-20"
+  },
+  {
+   "name": "Mistwalker",
+   "key": "",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true,
+   "pass2": "",
+   "design": "",
+   "addedIn": "11-20"
+  },
+  {
+   "name": "Resonance {Magic Skill} {Action}",
+   "key": "",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true,
+   "pass2": "",
+   "design": "Apply {Action} upon {Magic Skill} being used.",
+   "addedIn": "11-20"
+  },
+  {
+   "name": "Emerge/Emergence",
+   "key": "",
+   "rank": "GOD",
+   "note": "",
+   "written": "GOD",
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true,
+   "pass2": "",
+   "design": "",
+   "addedIn": "11-20"
+  },
+  {
+   "name": "Awakening",
+   "key": "",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true,
+   "pass2": "",
+   "design": "As \"things\" happen, awakening counters decrease, until it becomes ready. Becoming ready also triggers Awaken - {}. Things include \"Damage dealt to it, Damage dealt to any bramble, turn start\" etc. Awakening counters replace \"Wait\". Can go up to >10.",
+   "addedIn": "11-20"
+  },
+  {
+   "name": "Ingress",
+   "key": "",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true,
+   "pass2": "",
+   "design": "Unit gains {+0/1} upon any creature played.",
+   "addedIn": "11-20"
+  },
+  {
+   "name": "Onslaught",
+   "key": "",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true,
+   "pass2": "",
+   "design": "Unit gains {+1/0} upon ally creature attacks. (When ready only)",
+   "addedIn": "11-20"
+  },
+  {
+   "name": "Warcry",
+   "key": "",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true,
+   "pass2": "",
+   "design": "(If ready) All ally units gain N attack during this turn.",
+   "addedIn": "11-20"
+  },
+  {
+   "name": "Backlash",
+   "key": "",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true,
+   "pass2": "",
+   "design": "Counterattack: {}",
+   "addedIn": "11-20"
+  },
+  {
+   "name": "Adversity",
+   "key": "",
+   "rank": "",
+   "note": "",
+   "written": null,
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true,
+   "pass2": "",
+   "design": "Unit gains {+0/1} whenever an allied creature is attacked.",
+   "addedIn": "11-20"
+  },
+  {
+   "name": "Vengence",
+   "key": "",
+   "rank": "GOD",
+   "note": "/MAGIC",
+   "written": "GOD/MAGIC",
+   "delivery": "",
+   "category": "",
+   "type": "",
+   "idea": true,
+   "pass2": "",
+   "design": "Unit comes back to life and gains {Skills} when it dies, but vengence is permanently deactivated.",
+   "addedIn": "11-20"
   }
  ]
 }

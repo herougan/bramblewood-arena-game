@@ -2061,3 +2061,30 @@ Display only; keys, rules and prices unchanged. **Delivery { Resource xN }** is 
 - **Harden N** (new, Ladybird Guard, Sworn Shieldbearer): on play and each round start, a random ally beside it is **Sturdy** for N rounds (takes half). Look: `statusFx harden`: 🗻 Sturdy float, `shieldTone`, 🗻 badge with the rounds; `statusEnd hardened`.
 - **Embolden N** (new, Meerkat Sentry): the same with **Mighty** (deals double; none under Quiet Contemplation). Look: `statusFx embolden`: 💪 Mighty float, `rallyTone`, 💪 badge; `statusEnd emboldened`.
 - Embrittle N (Fragile, DEC20) is the fourth. Actions: Harden / Embolden {ally, itself, all} N rounds, Enfeeble N rounds.
+
+## Scared and the new Onslaught (2026-11-20, package SKIN3, owner Skills sheet 11-20)
+- **Scare N** (key `scare`; Yeti, Booming Bittern): a unit that hits it is **Scared N** for that round and the next: every hit and swing it makes is N less (the bramble too); the biggest N counts, not stacked; Supreme is never Scared. Was: hits on the Scare unit were N less. Look: `statusFx scared`: 😱 Scared -N float, `enfeebleTone`, 😱 badge with N; `statusEnd scared`; the hit's number keeps the Scare mark.
+- **Onslaught N** (key `onslaught`, new rule, on no card): while Ready, +N/+0 for the fight each time another creature on its side swings. Look: the stat buff (`namedBuff`, keyword `onslaught`). The old Onslaught (bramble damage last round – {…}) is removed.
+
+## Designed, not built (owner 11-20)
+The owner's new rows on the 11-20 Skills sheet (rows 452-468, plus Pillage row 73 and Broodmother row 260). Recorded only: new skills arrive past Map 40 (RP rules). Rank = the sheet's II (or Comments) value. Onslaught (row 464) is built (above); Warcry's "(If ready) All ally units gain N attack during this turn" (row 465) is an open owner question beside the current Warcry.
+
+Already in the game under these or other names (skipped):
+- **Forestry**: the built `forestry` (every turn while Ready: gain N Lumber).
+- **Mining**, **Masonry**, **Refining**: the built `mining` (Metal), `masonry` (2 Lumber into 1 Stone) and `refining` (Smelter: Lumber and Stone into Metal). The sheet only says "All resource related".
+- **{Status} Powder** (Paralysis, Toxic, Sleep): the built Powder family (`sleepPowder`, `poisonPowder`, `paralysisPowder`; POWDER1 / ENG50).
+- **Sap** ("Leech (Drain) + steal Attack"): Leech is key `sap`; the steal-Attack half is Render's Daunt counters (`render`).
+- **Mistwalker**: the built Mistwalker – {…} (key `fog`, DEC20-SKILLS).
+
+| Skill (owner's words) | Key | Delivery / trigger | Rank | Engine work |
+|---|---|---|---|---|
+| Pillage: "Steals one (1) random resource." | `pillage` | melee / its swing lands | 3 | A Plunder kind (`plunder` {res: random}): pick a random resource the foe holds. |
+| Broodmother: "Increases strength of ally Swarm by +1/1." | `broodmother` | none / aura | S | An aura in the stat sync: +1/+1 on your Swarm units while it lives (as Formation's chip). |
+| Metallurgy: "All resource related" | `metallurgy` | none | (blank) | A placeholder key exists ("Metal tier only") with no rule: needs the owner's rule first. |
+| Resonance {Magic Skill} {Action}: "Apply {Action} upon {Magic Skill} being used." | `resonance` | by the action / a new hook | (blank) | A list of magic skills and an On Magic Skill trigger fired when one is used; then {Action} through runCustomTriggers. |
+| Emergence (Emerge) | `emergence` | - | GOD | No rule on the sheet: needs the owner's design (later worlds). |
+| Awakening: "As things happen, awakening counters decrease, until it becomes ready. Becoming ready also triggers Awaken – {}. ... Awakening counters replace Wait. Can go up to >10." | `awakening` | none / On Awaken | (blank) | Counters in place of Wait, ticked by damage dealt to it, damage to any bramble and round start (applyDamage, damageHQ, roundStart); at 0 Ready plus a new On Awaken hook. |
+| Ingress: "Unit gains {+0/1} upon any creature played." | `ingress` | none / On Ally Played + On Enemy Played | (blank) | A keyword trigger pair (as Kin Rally): Buff self +0/+N on either side's play. |
+| Adversity: "Unit gains {+0/1} whenever an allied creature is attacked." | `adversity` | none / a new On Ally Attacked hook | (blank) | Fire On Ally Attacked on its side's units where On Attacked fires; Buff self +0/+N. |
+| Backlash: "Counterattack: {}" | `backlash` | by the action / On Attacked | (blank) | A name for On Attacked – {…} (the trigger exists); a keyword form like Sacrifice – {…}. |
+| Vengence: "Unit comes back to life and gains {Skills} when it dies, but vengence is permanently deactivated." | `vengeance` | none / On Death | GOD/MAGIC | Revive once (ENG9's Revive) plus Grant {skills} to the risen unit; once a fight. |
