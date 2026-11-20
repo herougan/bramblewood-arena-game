@@ -4,6 +4,18 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**REFIT14-1. Four more Pale Desert fights are too easy (88-99)** · Decide · Balance · asked 2026-11-21
+- 18-A-3, A-4, A-5 and A-6 read 88-99 against targets 69-77. No swap, Shield or Health change moves them. Stonedrop Vulture (from REFIT13-2 a) does: A-3 66 (target 71), A-4 78.5 (77), A-5 65 (73), A-6 63 (69).
+  - a) Use Vulture there too (x2 each, x3 on A-6)
+  - b) Leave them easy
+- **Default:** a
+
+**REFIT14-2. 18-A-9 The Quicksand Queen is too easy (56 vs 40)** · Decide · Balance · asked 2026-11-21
+- No legal lever moves it. Its enemy level went from 4 to 3 in SIDE2-4 e; back at level 4 it reads 39.5.
+  - a) Enemy level back to 4
+  - b) Leave it at 56
+- **Default:** a
+
 **REFIT13-5. Cut two base Healths below the 60% floor?** · Decide · Balance · asked 2026-11-21
 - The test rule keeps a fight's lower Health at 60%+ of its bramble's own; past it needs your OK (as with HPCUT1). Within the floor: 8-7 reads 42 (target 60), 17-4 reads 67 (target 75). Below it: 8-7 Health 8 reads 55, 17-4 Health 16 reads 73.
   - a) Allow both cuts as owner exceptions
