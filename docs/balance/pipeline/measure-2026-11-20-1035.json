@@ -1,0 +1,243 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-20T02:35:58.732Z",
+ "finished": "2026-11-20T04:13:31.334Z",
+ "durationSec": 5852.6,
+ "args": [
+  "--only-file",
+  "docs/balance/skm/confirm-items-2026-11-21.json",
+  "--fights",
+  "1000",
+  "--minutes",
+  "95"
+ ],
+ "head": "bcac9bfa",
+ "inputs": {
+  "context": "global",
+  "bramble": 15,
+  "fingerprint": "6926772d4855",
+  "stages": [
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "flying",
+   "diurnal",
+   "diurnal=1",
+   "diurnal=2",
+   "evasive",
+   "corrode=1",
+   "trident",
+   "pack=1",
+   "sleepPowder=1",
+   "poisonBarbs=1",
+   "poisonBarbs=2",
+   "poisonPowder=1",
+   "poisonPowder=2",
+   "dive=2",
+   "keenSense",
+   "keenSense={\"sees\":\"dark\"}",
+   "parasite",
+   "pulverise",
+   "overwhelm",
+   "offspring=1",
+   "repair=2"
+  ]
+ },
+ "counts": {
+  "items": 21,
+  "measured": 21,
+  "reused": 0,
+  "stopped early": 0,
+  "fights saved": 0,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "flying",
+   "field": "worth",
+   "old": "-",
+   "new": "2.9482 [2.8776, 3.4445] at 1000 fights, price on carriers 3.61"
+  },
+  {
+   "id": "diurnal",
+   "field": "worth",
+   "old": "-",
+   "new": "1.762 [1.465, 2.0924] at 1000 fights, price on carriers 1.14"
+  },
+  {
+   "id": "diurnal=1",
+   "field": "worth",
+   "old": "-",
+   "new": "1.7766 [1.4823, 2.1182] at 1000 fights, price on carriers 1.14"
+  },
+  {
+   "id": "diurnal=2",
+   "field": "worth",
+   "old": "-",
+   "new": "3.1104 [2.9172, 3.5873] at 1000 fights, price on carriers 2.28"
+  },
+  {
+   "id": "evasive",
+   "field": "worth",
+   "old": "-",
+   "new": "3.5595 [2.9587, 4.154] at 1000 fights, price on carriers 3.42"
+  },
+  {
+   "id": "corrode=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.9041 [2.7414, 2.9617] at 1000 fights, price on carriers 2.41"
+  },
+  {
+   "id": "trident",
+   "field": "worth",
+   "old": "2.2775",
+   "new": "2.8143 [2.4715, 2.925] at 1000 fights, price on carriers 2.28"
+  },
+  {
+   "id": "pack=1",
+   "field": "worth",
+   "old": "-",
+   "new": "4.3631 [3.9874, 4.6093] at 1000 fights, price on carriers 3.25"
+  },
+  {
+   "id": "sleepPowder=1",
+   "field": "worth",
+   "old": "-",
+   "new": "4.4233 [4.1747, 4.7059] at 1000 fights, price on carriers 2.5"
+  },
+  {
+   "id": "poisonBarbs=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.9001 [2.7228, 2.943] at 1000 fights, price on carriers 1.6"
+  },
+  {
+   "id": "poisonBarbs=2",
+   "field": "worth",
+   "old": "-",
+   "new": "6.1161 [5.7151, 7.0661] at 1000 fights, price on carriers 3.2"
+  },
+  {
+   "id": "poisonPowder=1",
+   "field": "worth",
+   "old": "-",
+   "new": "4.2212 [3.732, 4.3945] at 1000 fights, price on carriers 3.2"
+  },
+  {
+   "id": "poisonPowder=2",
+   "field": "worth",
+   "old": "-",
+   "new": "7.6092 [7.1475, 8.6108] at 1000 fights, price on carriers 6.4"
+  },
+  {
+   "id": "dive=2",
+   "field": "worth",
+   "old": "0",
+   "new": "0 [0, 0] at 1000 fights, price on carriers -1.7"
+  },
+  {
+   "id": "keenSense",
+   "field": "worth",
+   "old": "0.6559",
+   "new": "0.2699 [0.1708, 0.4184] at 1000 fights, price on carriers 0.66"
+  },
+  {
+   "id": "keenSense={\"sees\":\"dark\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "0.1811 [0.1014, 0.2907] at 1000 fights, price on carriers 3"
+  },
+  {
+   "id": "parasite",
+   "field": "worth",
+   "old": "-5.3048",
+   "new": "-2.6618 [-3.4955, -2.1321] at 1000 fights, price on carriers 1"
+  },
+  {
+   "id": "pulverise",
+   "field": "worth",
+   "old": "-",
+   "new": "0.2593 [0.1895, 0.3576] at 1000 fights, price on carriers 1.53"
+  },
+  {
+   "id": "overwhelm",
+   "field": "worth",
+   "old": "0.5247",
+   "new": "0.3232 [0.2286, 0.4441] at 1000 fights, price on carriers 1.05"
+  },
+  {
+   "id": "offspring=1",
+   "field": "worth",
+   "old": "-",
+   "new": "0.4013 [0.2492, 0.5807] at 1000 fights, price on carriers 6.08"
+  },
+  {
+   "id": "repair=2",
+   "field": "worth",
+   "old": "-",
+   "new": "2.4081 [2.1302, 2.6587] at 1000 fights, price on carriers 2.97"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "pack=1",
+   "why": "under-priced: worth 4.3631 against 3.25 on the carriers"
+  },
+  {
+   "id": "sleepPowder=1",
+   "why": "under-priced: worth 4.4233 against 2.5 on the carriers"
+  },
+  {
+   "id": "poisonBarbs=1",
+   "why": "under-priced: worth 2.9001 against 1.6 on the carriers"
+  },
+  {
+   "id": "poisonBarbs=2",
+   "why": "under-priced: worth 6.1161 against 3.2 on the carriers"
+  },
+  {
+   "id": "poisonPowder=1",
+   "why": "under-priced: worth 4.2212 against 3.2 on the carriers"
+  },
+  {
+   "id": "poisonPowder=2",
+   "why": "under-priced: worth 7.6092 against 6.4 on the carriers"
+  },
+  {
+   "id": "dive=2",
+   "why": "under-priced: worth 0 against -1.7 on the carriers"
+  },
+  {
+   "id": "keenSense={\"sees\":\"dark\"}",
+   "why": "over-priced: worth 0.1811 against 3 on the carriers"
+  },
+  {
+   "id": "parasite",
+   "why": "over-priced: worth -2.6618 against 1 on the carriers"
+  },
+  {
+   "id": "pulverise",
+   "why": "over-priced: worth 0.2593 against 1.53 on the carriers"
+  },
+  {
+   "id": "offspring=1",
+   "why": "over-priced: worth 0.4013 against 6.08 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 21
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-20-1035.json"
+}
