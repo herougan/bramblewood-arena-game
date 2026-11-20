@@ -1,0 +1,933 @@
+{
+ "about": "Package SKM2 (2026-11-21): SKM1's flagged combat skills re-measured. Values in budget points at the skill's Maps 0-20 price, each divided by its method's exchange rate. tools/skm/confirm.js. Measurement only: no price, constant or card changed.",
+ "generated": "2026-11-20T04:49:19.112Z",
+ "fingerprint": "6926772d4855",
+ "rule": "a method reads cheap / dear when 25%+ of max(1, |price|) off the price and its 95% interval excludes the price; confirmed = the pipeline and 2+ of the other three agree with the flag, none against",
+ "rhoWithPipeline": {
+  "equivalence": 0.65,
+  "carrier20": 0.68,
+  "roundRobin": 0.84
+ },
+ "rhoNote": "Spearman over the skills both read, of (value - price) / max(1, |price|)",
+ "scales": {
+  "pipeline": 1,
+  "E1": 1.24,
+  "E2": 0.91,
+  "H1": 0.94,
+  "RR": 1.14
+ },
+ "skills": [
+  {
+   "skill": "flying",
+   "price": 2.21,
+   "flag": "cheap",
+   "pipeline": {
+    "worth": 1.8,
+    "ci": 0.17,
+    "items": [
+     {
+      "key": "flying",
+      "worth": 2.95,
+      "lo": 2.88,
+      "hi": 3.44,
+      "rowPrice": 3.61,
+      "fights": 1000
+     }
+    ]
+   },
+   "equivalence": {
+    "worth": 4.8,
+    "ci": 0.2,
+    "E1": {
+     "worth": 4.42,
+     "ci": 0.22,
+     "M": 200,
+     "censored": false
+    },
+    "E2": {
+     "worth": 5.18,
+     "ci": 0.34,
+     "M": 200,
+     "censored": false
+    }
+   },
+   "carrier20": {
+    "worth": 7.08,
+    "ci": 8.64,
+    "M": 200
+   },
+   "roundRobin": {
+    "worth": 3.53,
+    "ci": 0.18,
+    "M": 40,
+    "anchored": 2.91
+   },
+   "equivalenceMethod": "E1-win, E2-win",
+   "verdicts": {
+    "pipeline": "ok",
+    "equivalence": "cheap",
+    "carrier20": "ok",
+    "roundRobin": "cheap"
+   },
+   "verdict": "not confirmed",
+   "why": "pipeline reads within 25% or its interval"
+  },
+  {
+   "skill": "diurnal",
+   "price": 1.52,
+   "flag": "cheap",
+   "pipeline": {
+    "worth": 2.26,
+    "ci": 0.21,
+    "items": [
+     {
+      "key": "diurnal",
+      "worth": 1.76,
+      "lo": 1.47,
+      "hi": 2.09,
+      "rowPrice": 1.14,
+      "fights": 1000
+     },
+     {
+      "key": "diurnal=1",
+      "worth": 1.78,
+      "lo": 1.48,
+      "hi": 2.12,
+      "rowPrice": 1.14,
+      "fights": 1000
+     },
+     {
+      "key": "diurnal=2",
+      "worth": 3.11,
+      "lo": 2.92,
+      "hi": 3.59,
+      "rowPrice": 2.28,
+      "fights": 1000
+     }
+    ]
+   },
+   "equivalence": {
+    "worth": 3.13,
+    "ci": 0.31,
+    "E1": {
+     "worth": 3,
+     "ci": 0.38,
+     "M": 200,
+     "censored": false
+    },
+    "E2": {
+     "worth": 3.26,
+     "ci": 0.48,
+     "M": 200,
+     "censored": false
+    }
+   },
+   "carrier20": {
+    "worth": 3.44,
+    "ci": 1.02,
+    "M": 200
+   },
+   "roundRobin": {
+    "worth": 2.85,
+    "ci": 0.27,
+    "M": 40,
+    "anchored": 0.21
+   },
+   "equivalenceMethod": "E1-win, E2-win",
+   "verdicts": {
+    "pipeline": "cheap",
+    "equivalence": "cheap",
+    "carrier20": "cheap",
+    "roundRobin": "cheap"
+   },
+   "verdict": "confirmed cheap",
+   "why": null
+  },
+  {
+   "skill": "evasive",
+   "price": 1.72,
+   "flag": "cheap",
+   "pipeline": {
+    "worth": 1.79,
+    "ci": 0.3,
+    "items": [
+     {
+      "key": "evasive",
+      "worth": 3.56,
+      "lo": 2.96,
+      "hi": 4.15,
+      "rowPrice": 3.42,
+      "fights": 1000
+     }
+    ]
+   },
+   "equivalence": {
+    "worth": 4.01,
+    "ci": 0.15,
+    "E1": {
+     "worth": 3.61,
+     "ci": 0.15,
+     "M": 200,
+     "censored": false
+    },
+    "E2": {
+     "worth": 4.41,
+     "ci": 0.25,
+     "M": 200,
+     "censored": false
+    }
+   },
+   "carrier20": {
+    "worth": 1.54,
+    "ci": 0.85,
+    "M": 200
+   },
+   "roundRobin": {
+    "worth": 3.13,
+    "ci": 0.14,
+    "M": 40,
+    "anchored": 2.89
+   },
+   "equivalenceMethod": "E1-win, E2-win",
+   "verdicts": {
+    "pipeline": "ok",
+    "equivalence": "cheap",
+    "carrier20": "ok",
+    "roundRobin": "cheap"
+   },
+   "verdict": "not confirmed",
+   "why": "pipeline reads within 25% or its interval"
+  },
+  {
+   "skill": "corrode",
+   "price": 2.41,
+   "flag": "cheap",
+   "pipeline": {
+    "worth": 2.9,
+    "ci": 0.11,
+    "items": [
+     {
+      "key": "corrode=1",
+      "worth": 2.9,
+      "lo": 2.74,
+      "hi": 2.96,
+      "rowPrice": 2.41,
+      "fights": 1000
+     }
+    ]
+   },
+   "equivalence": {
+    "worth": 5.06,
+    "ci": 0.45,
+    "E1": {
+     "worth": 48.39,
+     "ci": null,
+     "M": 200,
+     "censored": true
+    },
+    "E2": {
+     "worth": 5.06,
+     "ci": 0.45,
+     "M": 200,
+     "censored": false
+    }
+   },
+   "carrier20": {
+    "worth": 4.86,
+    "ci": 0.89,
+    "M": 200
+   },
+   "roundRobin": {
+    "worth": 4.22,
+    "ci": 0.2,
+    "M": 40,
+    "anchored": 3.37
+   },
+   "equivalenceMethod": "E1-win, E2-win",
+   "verdicts": {
+    "pipeline": "ok",
+    "equivalence": "cheap",
+    "carrier20": "cheap",
+    "roundRobin": "cheap"
+   },
+   "verdict": "not confirmed",
+   "why": "pipeline reads within 25% or its interval"
+  },
+  {
+   "skill": "trident",
+   "price": 2.28,
+   "flag": "cheap",
+   "pipeline": {
+    "worth": 2.81,
+    "ci": 0.23,
+    "items": [
+     {
+      "key": "trident",
+      "worth": 2.81,
+      "lo": 2.47,
+      "hi": 2.93,
+      "rowPrice": 2.28,
+      "fights": 1000
+     }
+    ]
+   },
+   "equivalence": {
+    "worth": 3.67,
+    "ci": 0.33,
+    "E1": {
+     "worth": 2.96,
+     "ci": 0.22,
+     "M": 200,
+     "censored": false
+    },
+    "E2": {
+     "worth": 4.38,
+     "ci": 0.63,
+     "M": 200,
+     "censored": false
+    }
+   },
+   "carrier20": {
+    "worth": 5.42,
+    "ci": 1.31,
+    "M": 200
+   },
+   "roundRobin": {
+    "worth": 2.76,
+    "ci": 0.17,
+    "M": 40,
+    "anchored": 0.74
+   },
+   "equivalenceMethod": "E1-win, E2-win",
+   "verdicts": {
+    "pipeline": "ok",
+    "equivalence": "cheap",
+    "carrier20": "cheap",
+    "roundRobin": "ok"
+   },
+   "verdict": "not confirmed",
+   "why": "pipeline reads within 25% or its interval"
+  },
+  {
+   "skill": "pack",
+   "price": 3.25,
+   "flag": "cheap",
+   "pipeline": {
+    "worth": 4.36,
+    "ci": 0.31,
+    "items": [
+     {
+      "key": "pack=1",
+      "worth": 4.36,
+      "lo": 3.99,
+      "hi": 4.61,
+      "rowPrice": 3.25,
+      "fights": 1000
+     }
+    ]
+   },
+   "equivalence": {
+    "worth": 9.03,
+    "ci": 0.68,
+    "E1": {
+     "worth": 48.39,
+     "ci": null,
+     "M": 200,
+     "censored": true
+    },
+    "E2": {
+     "worth": 9.03,
+     "ci": 0.68,
+     "M": 200,
+     "censored": false
+    }
+   },
+   "carrier20": {
+    "worth": 6.89,
+    "ci": 1.23,
+    "M": 200
+   },
+   "roundRobin": {
+    "worth": 9.5,
+    "ci": 0.29,
+    "M": 40,
+    "anchored": 13.87
+   },
+   "equivalenceMethod": "E1-win, E2-win",
+   "verdicts": {
+    "pipeline": "cheap",
+    "equivalence": "cheap",
+    "carrier20": "cheap",
+    "roundRobin": "cheap"
+   },
+   "verdict": "confirmed cheap",
+   "why": null
+  },
+  {
+   "skill": "sleepPowder",
+   "price": 2.5,
+   "flag": "cheap",
+   "pipeline": {
+    "worth": 4.42,
+    "ci": 0.27,
+    "items": [
+     {
+      "key": "sleepPowder=1",
+      "worth": 4.42,
+      "lo": 4.17,
+      "hi": 4.71,
+      "rowPrice": 2.5,
+      "fights": 1000
+     }
+    ]
+   },
+   "equivalence": {
+    "worth": 5.23,
+    "ci": 0.22,
+    "E1": {
+     "worth": 4.78,
+     "ci": 0.3,
+     "M": 200,
+     "censored": false
+    },
+    "E2": {
+     "worth": 5.68,
+     "ci": 0.33,
+     "M": 200,
+     "censored": false
+    }
+   },
+   "carrier20": {
+    "worth": 2.37,
+    "ci": 1.29,
+    "M": 200
+   },
+   "roundRobin": {
+    "worth": 3.41,
+    "ci": 0.16,
+    "M": 40,
+    "anchored": 2.02
+   },
+   "equivalenceMethod": "E1-win, E2-win",
+   "verdicts": {
+    "pipeline": "cheap",
+    "equivalence": "cheap",
+    "carrier20": "ok",
+    "roundRobin": "cheap"
+   },
+   "verdict": "confirmed cheap",
+   "why": null
+  },
+  {
+   "skill": "poisonBarbs",
+   "price": 2.4,
+   "flag": "cheap",
+   "pipeline": {
+    "worth": 4.47,
+    "ci": 0.27,
+    "items": [
+     {
+      "key": "poisonBarbs=1",
+      "worth": 2.9,
+      "lo": 2.72,
+      "hi": 2.94,
+      "rowPrice": 1.6,
+      "fights": 1000
+     },
+     {
+      "key": "poisonBarbs=2",
+      "worth": 6.12,
+      "lo": 5.72,
+      "hi": 7.07,
+      "rowPrice": 3.2,
+      "fights": 1000
+     }
+    ]
+   },
+   "equivalence": {
+    "worth": 4.47,
+    "ci": 0.33,
+    "E1": {
+     "worth": 4.32,
+     "ci": 0.27,
+     "M": 200,
+     "censored": false
+    },
+    "E2": {
+     "worth": 4.61,
+     "ci": 0.61,
+     "M": 200,
+     "censored": false
+    }
+   },
+   "carrier20": {
+    "worth": 4.31,
+    "ci": 1.04,
+    "M": 200
+   },
+   "roundRobin": {
+    "worth": 6.11,
+    "ci": 0.27,
+    "M": 40,
+    "anchored": 6.4
+   },
+   "equivalenceMethod": "E1-win, E2-win",
+   "verdicts": {
+    "pipeline": "cheap",
+    "equivalence": "cheap",
+    "carrier20": "cheap",
+    "roundRobin": "cheap"
+   },
+   "verdict": "confirmed cheap",
+   "why": null
+  },
+  {
+   "skill": "poisonPowder",
+   "price": 4.8,
+   "flag": "cheap",
+   "pipeline": {
+    "worth": 6.02,
+    "ci": 0.37,
+    "items": [
+     {
+      "key": "poisonPowder=1",
+      "worth": 4.22,
+      "lo": 3.73,
+      "hi": 4.39,
+      "rowPrice": 3.2,
+      "fights": 1000
+     },
+     {
+      "key": "poisonPowder=2",
+      "worth": 7.61,
+      "lo": 7.15,
+      "hi": 8.61,
+      "rowPrice": 6.4,
+      "fights": 1000
+     }
+    ]
+   },
+   "equivalence": {
+    "worth": 6.76,
+    "ci": 0.28,
+    "E1": {
+     "worth": 5.2,
+     "ci": 0.18,
+     "M": 200,
+     "censored": false
+    },
+    "E2": {
+     "worth": 8.33,
+     "ci": 0.53,
+     "M": 200,
+     "censored": false
+    }
+   },
+   "carrier20": {
+    "worth": 7.46,
+    "ci": 1.64,
+    "M": 200
+   },
+   "roundRobin": {
+    "worth": 5.92,
+    "ci": 0.25,
+    "M": 40,
+    "anchored": 5.11
+   },
+   "equivalenceMethod": "E1-win, E2-win",
+   "verdicts": {
+    "pipeline": "cheap",
+    "equivalence": "cheap",
+    "carrier20": "cheap",
+    "roundRobin": "ok"
+   },
+   "verdict": "confirmed cheap",
+   "why": null
+  },
+  {
+   "skill": "dive",
+   "price": -1.7,
+   "flag": "cheap",
+   "pipeline": {
+    "worth": -0.81,
+    "ci": 0.34,
+    "items": [
+     {
+      "key": "skm2:tide+dive=2 less skm2:tide",
+      "worth": -0.81,
+      "lo": -1.15,
+      "hi": -0.46,
+      "rowPrice": -1.7,
+      "fights": 1000
+     }
+    ]
+   },
+   "equivalence": {
+    "worth": -0.1,
+    "ci": 0.14,
+    "E11": {
+     "worth": -0.1,
+     "ci": 0.14,
+     "M": 200,
+     "censored": false
+    },
+    "E2": null
+   },
+   "carrier20": {
+    "worth": 0.2,
+    "ci": 0.33,
+    "M": 200
+   },
+   "roundRobin": {
+    "note": "Dive is inactive on a farm-dog"
+   },
+   "equivalenceMethod": "E11-win",
+   "verdicts": {
+    "pipeline": "cheap",
+    "equivalence": "cheap",
+    "carrier20": "cheap",
+    "roundRobin": null
+   },
+   "verdict": "confirmed cheap",
+   "why": null
+  },
+  {
+   "skill": "keenSense",
+   "price": 2.02,
+   "flag": "dear",
+   "pipeline": {
+    "worth": 0.47,
+    "ci": 0.19,
+    "items": [
+     {
+      "key": "keenSense",
+      "worth": 0.27,
+      "lo": 0.17,
+      "hi": 0.42,
+      "rowPrice": 0.66,
+      "fights": 1000
+     },
+     {
+      "key": "keenSense={\"sees\":\"dark\"}",
+      "worth": 0.18,
+      "lo": 0.1,
+      "hi": 0.29,
+      "rowPrice": 3,
+      "fights": 1000
+     }
+    ]
+   },
+   "equivalence": {
+    "worth": 0.3,
+    "ci": 0.16,
+    "E1": {
+     "worth": 0.36,
+     "ci": 0.19,
+     "M": 200,
+     "censored": false
+    },
+    "E2": {
+     "worth": 0.25,
+     "ci": 0.26,
+     "M": 200,
+     "censored": false
+    }
+   },
+   "carrier20": {
+    "worth": 0,
+    "ci": 0,
+    "M": 200
+   },
+   "roundRobin": {
+    "worth": 0.03,
+    "ci": 0.16,
+    "M": 40,
+    "anchored": -2.89
+   },
+   "equivalenceMethod": "E1-win, E2-win",
+   "verdicts": {
+    "pipeline": "dear",
+    "equivalence": "dear",
+    "carrier20": "dear",
+    "roundRobin": "dear"
+   },
+   "verdict": "confirmed dear",
+   "why": null
+  },
+  {
+   "skill": "parasite",
+   "price": 1,
+   "flag": "dear",
+   "pipeline": {
+    "worth": -2.66,
+    "ci": 0.68,
+    "items": [
+     {
+      "key": "parasite",
+      "worth": -2.66,
+      "lo": -3.5,
+      "hi": -2.13,
+      "rowPrice": 1,
+      "fights": 1000
+     }
+    ]
+   },
+   "equivalence": {
+    "worth": -1.78,
+    "ci": 0.1,
+    "E1": {
+     "worth": -1.58,
+     "ci": 0.13,
+     "M": 200,
+     "censored": false
+    },
+    "E2": {
+     "worth": -1.97,
+     "ci": 0.14,
+     "M": 200,
+     "censored": false
+    }
+   },
+   "carrier20": {
+    "worth": -0.63,
+    "ci": 0.5,
+    "M": 200
+   },
+   "roundRobin": {
+    "worth": -2.04,
+    "ci": 0.34,
+    "M": 40,
+    "anchored": -8.14
+   },
+   "equivalenceMethod": "E1-win, E2-win",
+   "verdicts": {
+    "pipeline": "dear",
+    "equivalence": "dear",
+    "carrier20": "dear",
+    "roundRobin": "dear"
+   },
+   "verdict": "confirmed dear",
+   "why": null
+  },
+  {
+   "skill": "pulverise",
+   "price": 1.53,
+   "flag": "dear",
+   "pipeline": {
+    "worth": 0.26,
+    "ci": 0.08,
+    "items": [
+     {
+      "key": "pulverise",
+      "worth": 0.26,
+      "lo": 0.19,
+      "hi": 0.36,
+      "rowPrice": 1.53,
+      "fights": 1000
+     }
+    ]
+   },
+   "equivalence": {
+    "worth": 0.22,
+    "ci": 0.26,
+    "E1": {
+     "worth": 0.35,
+     "ci": 0.26,
+     "M": 200,
+     "censored": false
+    },
+    "E2": {
+     "worth": 0.08,
+     "ci": 0.44,
+     "M": 200,
+     "censored": false
+    }
+   },
+   "carrier20": {
+    "worth": 0.76,
+    "ci": 0.83,
+    "M": 200
+   },
+   "roundRobin": {
+    "worth": -0.14,
+    "ci": 0.26,
+    "M": 40,
+    "anchored": -4.5
+   },
+   "equivalenceMethod": "E1-win, E2-win",
+   "verdicts": {
+    "pipeline": "dear",
+    "equivalence": "dear",
+    "carrier20": "ok",
+    "roundRobin": "dear"
+   },
+   "verdict": "confirmed dear",
+   "why": null
+  },
+  {
+   "skill": "overwhelm",
+   "price": 1.05,
+   "flag": "dear",
+   "pipeline": {
+    "worth": 0.32,
+    "ci": 0.11,
+    "items": [
+     {
+      "key": "overwhelm",
+      "worth": 0.32,
+      "lo": 0.23,
+      "hi": 0.44,
+      "rowPrice": 1.05,
+      "fights": 1000
+     }
+    ]
+   },
+   "equivalence": {
+    "worth": 0.76,
+    "ci": 0.14,
+    "E1": {
+     "worth": 0.62,
+     "ci": 0.15,
+     "M": 200,
+     "censored": false
+    },
+    "E2": {
+     "worth": 0.9,
+     "ci": 0.23,
+     "M": 200,
+     "censored": false
+    }
+   },
+   "carrier20": {
+    "worth": 0.86,
+    "ci": 0.61,
+    "M": 200
+   },
+   "roundRobin": {
+    "worth": 0.15,
+    "ci": 0.22,
+    "M": 40,
+    "anchored": -4.01
+   },
+   "equivalenceMethod": "E1-win, E2-win",
+   "verdicts": {
+    "pipeline": "dear",
+    "equivalence": "dear",
+    "carrier20": "ok",
+    "roundRobin": "dear"
+   },
+   "verdict": "confirmed dear",
+   "why": null
+  },
+  {
+   "skill": "offspring",
+   "price": 6.08,
+   "flag": "dear",
+   "pipeline": {
+    "worth": 0.4,
+    "ci": 0.17,
+    "items": [
+     {
+      "key": "offspring=1",
+      "worth": 0.4,
+      "lo": 0.25,
+      "hi": 0.58,
+      "rowPrice": 6.08,
+      "fights": 1000
+     }
+    ]
+   },
+   "equivalence": {
+    "worth": 1.25,
+    "ci": 0.21,
+    "E1": {
+     "worth": 1.4,
+     "ci": 0.16,
+     "M": 200,
+     "censored": false
+    },
+    "E2": {
+     "worth": 1.11,
+     "ci": 0.4,
+     "M": 200,
+     "censored": false
+    }
+   },
+   "carrier20": {
+    "worth": 0.08,
+    "ci": 0.11,
+    "M": 200
+   },
+   "roundRobin": {
+    "worth": 0.55,
+    "ci": 0.34,
+    "M": 40,
+    "anchored": -5.14
+   },
+   "equivalenceMethod": "E1-win, E2-win",
+   "verdicts": {
+    "pipeline": "dear",
+    "equivalence": "dear",
+    "carrier20": "dear",
+    "roundRobin": "dear"
+   },
+   "verdict": "confirmed dear",
+   "why": null
+  },
+  {
+   "skill": "repair",
+   "price": 2.97,
+   "flag": "dear",
+   "pipeline": {
+    "worth": 2.41,
+    "ci": 0.26,
+    "items": [
+     {
+      "key": "repair=2",
+      "worth": 2.41,
+      "lo": 2.13,
+      "hi": 2.66,
+      "rowPrice": 2.97,
+      "fights": 1000
+     }
+    ]
+   },
+   "equivalence": {
+    "worth": 1.62,
+    "ci": 0.06,
+    "E1": {
+     "worth": 1.59,
+     "ci": 0.09,
+     "M": 200,
+     "censored": false
+    },
+    "E2": {
+     "worth": 1.64,
+     "ci": 0.08,
+     "M": 200,
+     "censored": false
+    }
+   },
+   "carrier20": {
+    "worth": 1.17,
+    "ci": 0.42,
+    "M": 200
+   },
+   "roundRobin": {
+    "worth": 1.24,
+    "ci": 0.18,
+    "M": 40,
+    "anchored": -1.75
+   },
+   "equivalenceMethod": "E1-win, E2-win",
+   "verdicts": {
+    "pipeline": "ok",
+    "equivalence": "dear",
+    "carrier20": "dear",
+    "roundRobin": "dear"
+   },
+   "verdict": "not confirmed",
+   "why": "pipeline reads within 25% or its interval"
+  }
+ ]
+}

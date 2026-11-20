@@ -101,3 +101,19 @@
 {"method":"H1-close","skill":"wakeful","worth":null,"ci":null,"games":160,"price":0.5,"carrier":"sleepless-shrew","M":32,"note":"too few fights after the filter","fp":"8b6f2a672f5f","t":"2026-11-19T17:55:25.213Z"}
 {"method":"H1-close","skill":"wave","worth":1.667,"ci":3.99,"games":160,"price":2.15,"carrier":"coral-current-eel","M":32,"n":8,"fp":"8b6f2a672f5f","t":"2026-11-19T17:55:25.213Z"}
 {"method":"H1-close","skill":"web","worth":null,"ci":null,"games":160,"price":0.97,"carrier":"glow-worm","M":32,"note":"too few fights after the filter","fp":"8b6f2a672f5f","t":"2026-11-19T17:55:25.213Z"}
+{"method":"H1-close","skill":"flying","worth":null,"ci":null,"games":1000,"price":2.206,"carrier":"bee-sentry","M":200,"note":"too few fights after the filter","fp":"6926772d4855","t":"2026-11-20T04:40:08.460Z"}
+{"method":"H1-close","skill":"diurnal","worth":3.056,"ci":2.1,"games":1000,"price":1.519,"carrier":"sunbittern-strider","M":200,"n":31,"fp":"6926772d4855","t":"2026-11-20T04:40:08.461Z"}
+{"method":"H1-close","skill":"evasive","worth":1.071,"ci":1.135,"games":1000,"price":1.72,"carrier":"rabbit-kit","M":200,"n":33,"fp":"6926772d4855","t":"2026-11-20T04:40:08.461Z"}
+{"method":"H1-close","skill":"corrode","worth":2.955,"ci":0.917,"games":1000,"price":2.41,"carrier":"leopard-slug","M":200,"n":16,"fp":"6926772d4855","t":"2026-11-20T04:40:08.462Z"}
+{"method":"H1-close","skill":"trident","worth":2.917,"ci":2.238,"games":1000,"price":2.28,"carrier":"mangrove-monitor","M":200,"n":31,"fp":"6926772d4855","t":"2026-11-20T04:40:08.463Z"}
+{"method":"H1-close","skill":"pack","worth":3.5,"ci":1.761,"games":1000,"price":3.25,"carrier":"meerkat-sentry","M":200,"n":14,"fp":"6926772d4855","t":"2026-11-20T04:40:08.464Z"}
+{"method":"H1-close","skill":"sleepPowder","worth":null,"ci":null,"games":1000,"price":2.5,"carrier":"amber-cicada","M":200,"note":"too few fights after the filter","fp":"6926772d4855","t":"2026-11-20T04:40:08.470Z"}
+{"method":"H1-close","skill":"poisonBarbs","worth":2.778,"ci":1.325,"games":1000,"price":2.4,"carrier":"clownfish-scout","M":200,"n":27,"fp":"6926772d4855","t":"2026-11-20T04:40:08.471Z"}
+{"method":"H1-close","skill":"poisonPowder","worth":3.214,"ci":1.729,"games":1000,"price":4.8,"carrier":"fungus-gnat-cloud","M":200,"n":13,"fp":"6926772d4855","t":"2026-11-20T04:40:08.472Z"}
+{"method":"H1-close","skill":"dive","worth":0.455,"ci":2.11,"games":1000,"price":-1.7,"carrier":"harbor-seal","M":200,"n":9,"fp":"6926772d4855","t":"2026-11-20T04:40:08.473Z"}
+{"method":"H1-close","skill":"keenSense","worth":0,"ci":0,"games":1000,"price":2.02,"carrier":"cave-olm","M":200,"n":16,"fp":"6926772d4855","t":"2026-11-20T04:40:08.473Z"}
+{"method":"H1-close","skill":"parasite","worth":-1.667,"ci":1.572,"games":1000,"price":1,"carrier":"lamprey","M":200,"n":23,"fp":"6926772d4855","t":"2026-11-20T04:40:08.474Z"}
+{"method":"H1-close","skill":"pulverise","worth":0.667,"ci":1.012,"games":1000,"price":1.53,"carrier":"walrus-icebreaker","M":200,"n":30,"fp":"6926772d4855","t":"2026-11-20T04:40:08.475Z"}
+{"method":"H1-close","skill":"overwhelm","worth":2.5,"ci":2.223,"games":1000,"price":1.05,"carrier":"warhorse-charger","M":200,"n":18,"fp":"6926772d4855","t":"2026-11-20T04:40:08.476Z"}
+{"method":"H1-close","skill":"offspring","worth":0.185,"ci":0.372,"games":1000,"price":6.08,"carrier":"polar-bear","M":200,"n":33,"fp":"6926772d4855","t":"2026-11-20T04:40:08.477Z"}
+{"method":"H1-close","skill":"repair","worth":2.024,"ci":1.449,"games":1000,"price":2.97,"carrier":"beaver-feller","M":200,"n":27,"fp":"6926772d4855","t":"2026-11-20T04:40:08.478Z"}

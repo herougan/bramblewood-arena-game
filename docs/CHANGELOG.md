@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-21 (package SKM2: SKM1's skill flags re-measured; nothing applied)
+- 11 of SKM1's 16 flagged combat skills confirmed. Each was checked by the pipeline measure at 1,000 fights, the stat-equivalence searches (200 fights a probe), the carrier x20 test (200 fights) and a new round robin. Under-priced: diurnal, pack, sleepPowder, poisonBarbs, poisonPowder, Dive's drawback (about -0.8, not -1.7). Over-priced: keenSense, parasite, pulverise, overwhelm, offspring. Not confirmed: flying, evasive (only mirror matches read them cheap), corrode, trident, repair (the pipeline leans the flagged way, under the 25% bar). `docs/balance/skm/confirm-2026-11-21.md`.
+- New kind of measurement in the registry: the round robin (`RR-*`, 5 estimators, 217 methods registered). Each skill, 5 canon anchors and 6 stat bumps on equal farm-dog bodies; every pair plays every other; Bradley-Terry strength in stat points. `tools/skm/run.js --stages`; `tools/skm/confirm.js`.
+
 ## 2026-11-20 SKIN3
 - Scare N: a unit that hits it is Scared N for that round and the next (every hit and swing N less, the bramble too; biggest N counts; not Supreme). Was: hits on it were N less. Price 2.52 -> 3.02 a point (x1.2, 4-round rule): Yeti 98.3 -> 99.8%, Booming Bittern 93.7 -> 95.9% (unattainable: White Dragon, Lurking Dread, Ashmantle Fiend, Whale Shark +1.4 to +3.4; Frillneck Duelist at Level 3 91.9 -> 93.4%). Fights with these cards change.
 - Onslaught: the old rule (bramble damage last round – {…}) and its braces removed (owner "Remove"); Bison Bulldozer lost its Level 3 Onslaught 3 (skills only; 93.6% at Level 1 unchanged, Level 3 93.1 -> 87.4%). New Onslaught N (owner row 464): while Ready, +N/+0 for each other creature's swing on its side; 6.8 a point, on no card.
