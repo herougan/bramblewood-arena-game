@@ -4,10 +4,10 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 
 ## Waiting on you
 
-**SKM3-1. Raise the price of Corrode and Trident** · Decide · Balance · asked 2026-11-21
-- Both read cheap on most of 234 skill measures. The pipeline's values sit outside today's prices: Corrode 2.41 → about 2.9, Trident 2.28 → about 2.8. 10 of 14 measure kinds on today's game agree. Flying and Evasive also read cheap, but only when a whole deck flies, so SKM3 suggests keeping them. Harden reads about 3.0 against 2.11 and is being re-measured first.
-  - a) Raise Corrode to 2.9 and Trident to 2.8
-  - b) Re-measure once more first
+**SKM3-1. Raise the price of Corrode and Harden (and maybe Trident)** · Decide · Balance · asked 2026-11-21
+- Pipeline re-measure, 200 fights each. Corrode is worth 2.92 (range 2.65-3.61) against its price of 2.41. Harden is worth 2.83 (2.29-3.67) against 2.11. Both ranges sit above today's price. Trident is worth 2.75 (2.21-3.06) against 2.28; its range includes today's price, so it is likely, not certain. Most of SKM3's 234 measures agree. Flying and Evasive read cheap only when a whole deck flies: keep them.
+  - a) Corrode 2.9 and Harden 2.8
+  - b) Those two plus Trident 2.75
   - c) Leave
 - **Default:** a
 
