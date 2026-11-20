@@ -1,0 +1,24 @@
+18-4 target 62 start {"ant-scout":1,"armadillo-guard":5,"barrel-cactus":2,"dust-devil-kestrel":2,"horned-lizard":4,"sandstorm-roc":4} 96.7 (60 games, seed 311300)
+-2 barrel-cactus +2 meerkat-sentry                   85 {"ant-scout":1,"armadillo-guard":5,"dust-devil-kestrel":2,"horned-lizard":4,"sandstorm-roc":4,"meerkat-sentry":2}
+-5 armadillo-guard +5 meerkat-sentry                 86.7 {"ant-scout":1,"barrel-cactus":2,"dust-devil-kestrel":2,"horned-lizard":4,"sandstorm-roc":4,"meerkat-sentry":5}
+-1 armadillo-guard +1 sandstorm-roc                  90 {"ant-scout":1,"armadillo-guard":4,"barrel-cactus":2,"dust-devil-kestrel":2,"horned-lizard":4,"sandstorm-roc":5}
+-4 sandstorm-roc +4 meerkat-sentry                   90 {"ant-scout":1,"armadillo-guard":5,"barrel-cactus":2,"dust-devil-kestrel":2,"horned-lizard":4,"meerkat-sentry":4}
+-4 horned-lizard +4 meerkat-sentry                   91.7 {"ant-scout":1,"armadillo-guard":5,"barrel-cactus":2,"dust-devil-kestrel":2,"sandstorm-roc":4,"meerkat-sentry":4}
+-1 armadillo-guard +1 barrel-cactus                  93.3 {"ant-scout":1,"armadillo-guard":4,"barrel-cactus":3,"dust-devil-kestrel":2,"horned-lizard":4,"sandstorm-roc":4}
+-5 armadillo-guard +5 sand-widow                     95 {"ant-scout":1,"barrel-cactus":2,"dust-devil-kestrel":2,"horned-lizard":4,"sandstorm-roc":4,"sand-widow":5}
+-2 barrel-cactus +2 caustic-scorpion                 95 {"ant-scout":1,"armadillo-guard":5,"dust-devil-kestrel":2,"horned-lizard":4,"sandstorm-roc":4,"caustic-scorpion":2}
+-1 dust-devil-kestrel +1 sandstorm-roc               95 {"ant-scout":1,"armadillo-guard":5,"barrel-cactus":2,"dust-devil-kestrel":1,"horned-lizard":4,"sandstorm-roc":5}
+-1 horned-lizard +1 sandstorm-roc                    95 {"ant-scout":1,"armadillo-guard":5,"barrel-cactus":2,"dust-devil-kestrel":2,"horned-lizard":3,"sandstorm-roc":5}
+-4 horned-lizard +4 sunbittern-strider               95 {"ant-scout":1,"armadillo-guard":5,"barrel-cactus":2,"dust-devil-kestrel":2,"sandstorm-roc":4,"sunbittern-strider":4}
+-1 barrel-cactus +1 sandstorm-roc                    96.7 {"ant-scout":1,"armadillo-guard":5,"barrel-cactus":1,"dust-devil-kestrel":2,"horned-lizard":4,"sandstorm-roc":5}
+-2 barrel-cactus +2 sunbittern-strider               96.7 {"ant-scout":1,"armadillo-guard":5,"dust-devil-kestrel":2,"horned-lizard":4,"sandstorm-roc":4,"sunbittern-strider":2}
+-4 horned-lizard +4 caustic-scorpion                 96.7 {"ant-scout":1,"armadillo-guard":5,"barrel-cactus":2,"dust-devil-kestrel":2,"sandstorm-roc":4,"caustic-scorpion":4}
+-4 horned-lizard +4 sand-widow                       96.7 {"ant-scout":1,"armadillo-guard":5,"barrel-cactus":2,"dust-devil-kestrel":2,"sandstorm-roc":4,"sand-widow":4}
+-4 sandstorm-roc +4 caustic-scorpion                 96.7 {"ant-scout":1,"armadillo-guard":5,"barrel-cactus":2,"dust-devil-kestrel":2,"horned-lizard":4,"caustic-scorpion":4}
+-4 sandstorm-roc +4 sunbittern-strider               96.7 {"ant-scout":1,"armadillo-guard":5,"barrel-cactus":2,"dust-devil-kestrel":2,"horned-lizard":4,"sunbittern-strider":4}
+-2 barrel-cactus +2 sand-widow                       98.3 {"ant-scout":1,"armadillo-guard":5,"dust-devil-kestrel":2,"horned-lizard":4,"sandstorm-roc":4,"sand-widow":2}
+-1 dust-devil-kestrel +1 barrel-cactus               98.3 {"ant-scout":1,"armadillo-guard":5,"barrel-cactus":3,"dust-devil-kestrel":1,"horned-lizard":4,"sandstorm-roc":4}
+-1 horned-lizard +1 barrel-cactus                    98.3 {"ant-scout":1,"armadillo-guard":5,"barrel-cactus":3,"dust-devil-kestrel":2,"horned-lizard":3,"sandstorm-roc":4}
+-1 sandstorm-roc +1 barrel-cactus                    98.3 {"ant-scout":1,"armadillo-guard":5,"barrel-cactus":3,"dust-devil-kestrel":2,"horned-lizard":4,"sandstorm-roc":3}
+-4 sandstorm-roc +4 sand-widow                       100 {"ant-scout":1,"armadillo-guard":5,"barrel-cactus":2,"dust-devil-kestrel":2,"horned-lizard":4,"sand-widow":4}
+blocked: [["N different cards (N-N)",168],["map: md mix costN N/N",19],["kept card dust-devil-kestrel xN (needs N)",19],["the showcase leader dust-devil-kestrel would become barrel-cactus",19],["leaders change",19],["map: md usage dune-jackal N>N",18],["map: md usage mouse-sapper N>N",18],["map: md usage roadrunner-courier N>N",18],["ant-scout xN",17],["map: N-N family ant-scout+worker-ant",17],["dust-devil-kestrel xN over N",16],["horned-lizard xN over N",14]]

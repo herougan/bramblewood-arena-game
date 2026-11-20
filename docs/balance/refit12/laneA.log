@@ -1,0 +1,22 @@
+START 8-7 08:27:58
+8-7 target 60 (52-68) size 14 start {"blind-cave-fish":4,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4,"corpse-flower-beetle":1,"sulfur-cinder-moth":2} problems []
+start {"blind-cave-fish":4,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4,"corpse-flower-beetle":1,"sulfur-cinder-moth":2} 9.4
+round 1: cur 16.7/9.4; 23 legal, 23 read + 6 predicted (of 43); top: -2 blind-cave-fish +2 sulfur-cinder-moth 16.7/9.4 | -1 corpse-flower-beetle -1 blind-cave-fish +2 sulfur-cinder-moth 20.8/8.8 | -2 blind-cave-fish -1 corpse-flower-beetle +2 sulfur-cinder-moth +1 glow-worm 20.8/6.3
+no nearer move
+RESULT 8-7 {"blind-cave-fish":4,"giant-cave-huntsman":1,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":4,"corpse-flower-beetle":1,"sulfur-cinder-moth":2} 9.4 {} moves:  problems: []
+START 17-4 08:30:29
+17-4 target 75 (67-83) size 19 start {"glacier-yak":4,"ice-crevasse-wolf":2,"ringed-seal":4,"snow-ermine":4,"arctic-tern":4,"warhorse-charger":1} problems []
+start {"glacier-yak":4,"ice-crevasse-wolf":2,"ringed-seal":4,"snow-ermine":4,"arctic-tern":4,"warhorse-charger":1} 43.8
+round 1: cur 45.8/43.8; 13 legal, 13 read + 6 predicted (of 38); top: -4 ringed-seal -1 warhorse-charger +4 harbor-seal +1 elderhorn-monarch 62.5/46.9 | -4 ringed-seal -1 snow-ermine +4 harbor-seal +1 ice-crevasse-wolf 50/38.8 | -4 ringed-seal -1 warhorse-charger +4 harbor-seal +1 pinecone-sapper 50/36.3
+round 2: cur 62.5/46.9; 13 legal, 13 read + 6 predicted (of 38); top: -1 snow-ermine +1 ice-crevasse-wolf 66.7/49.4 | -1 elderhorn-monarch +1 briarback-hedgehog 58.3/40 | -1 elderhorn-monarch +1 snowshoe-hare 54.2/36.9
+round 3: cur 66.7/49.4; 13 legal, 13 read + 6 predicted (of 38); top: -1 ice-crevasse-wolf +1 snow-ermine 62.5/46.9 | -4 harbor-seal +4 ringed-seal 66.7/45 | -4 harbor-seal -1 glacier-yak +4 ringed-seal +1 snow-ermine 58.3/40
+no nearer move
+RESULT 17-4 {"glacier-yak":4,"ice-crevasse-wolf":3,"snow-ermine":3,"arctic-tern":4,"harbor-seal":4,"elderhorn-monarch":1} 49.4 {} moves: -4 ringed-seal -1 warhorse-charger +4 harbor-seal +1 elderhorn-monarch ; -1 snow-ermine +1 ice-crevasse-wolf problems: []
+START 18-A-7 08:41:54
+18-A-7 target 64.3 (56.3-72.3) size 15 side (min 11) start {"barrel-cactus":3,"dune-jackal":1,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":4,"horned-lizard":3} problems []
+start {"barrel-cactus":3,"dune-jackal":1,"quicksand-queen":2,"roadrunner-courier":2,"sand-widow":4,"horned-lizard":3} 96.3
+round 1: cur 100/96.3; 35 legal, 35 read + 6 predicted (of 40); top: -1 barrel-cactus -1 quicksand-queen +1 horned-lizard +1 roadrunner-courier 83.3/93.1 | -1 barrel-cactus +1 horned-lizard 87.5/95 | -1 barrel-cactus -4 sand-widow +1 horned-lizard +4 pale-oryx 87.5/98.1
+round 2: cur 83.3/93.1; 34 legal, 34 read + 6 predicted (of 40); top: -1 sand-widow +1 quicksand-queen 83.3/93.8 | -1 sand-widow +1 roadrunner-courier 83.3/93.8 | -1 sand-widow +1 dune-jackal 83.3/96.3
+no nearer move
+RESULT 18-A-7 {"barrel-cactus":2,"dune-jackal":1,"quicksand-queen":1,"roadrunner-courier":3,"sand-widow":4,"horned-lizard":4} 93.1 {} moves: -1 barrel-cactus -1 quicksand-queen +1 horned-lizard +1 roadrunner-courier problems: []
+LANE DONE 08:50:08

@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-20 (package REFIT12: worst main-road fights, pool swaps)
+- Road decks (swaps only from the map pool; leaders, first-clear cards, sizes kept): 17-4 Lynx Ambush -4 Ringed Seal -1 Snow Ermine -1 Warhorse Charger +4 Harbor Seal +1 Ice Crevasse Wolf +1 Elderhorn Monarch; 18-4 Sandstorm -4 Sandstorm Roc -1 Armadillo Guard -1 Horned Lizard +5 Meerkat Sentry +1 Barrel Cactus. Fresh seeds 121100 / 122100: 17-4 42.5 / 45.8 -> 50.2 / 54.8, 18-4 95.5 / 96.3 -> 91.8 / 89.8. Seed 9100, 400 games, before -> after (target): 17-4 45 -> 48.5 (75), 18-4 94.5 -> 89.8 (62); no other fight moved (local measure = GitHub run 44644602489 row for row). Main still 100/110/5 (in band / within 10 / beyond 20), side 55/58/11.
+- No legal swap gets 8-7, 18-7 or 18-A-7 within 10 (8-7's whole swap space reads 0-15%, 18-7 61-79%, 18-A-7 88-97%); the levers that do move them wait on owner calls (rules, bramble, castle; reads in `docs/balance/refit12/levers*.log`). Each kept move closed its gap by 2+ points on the mean of fresh seeds 121100 / 122100. Files: `docs/balance/refit12/`.
+
 ## 2026-11-20 SKIN3
 - Scare N: a unit that hits it is Scared N for that round and the next (every hit and swing N less, the bramble too; biggest N counts; not Supreme). Was: hits on it were N less. Price 2.52 -> 3.02 a point (x1.2, 4-round rule): Yeti 98.3 -> 99.8%, Booming Bittern 93.7 -> 95.9% (unattainable: White Dragon, Lurking Dread, Ashmantle Fiend, Whale Shark +1.4 to +3.4; Frillneck Duelist at Level 3 91.9 -> 93.4%). Fights with these cards change.
 - Onslaught: the old rule (bramble damage last round – {…}) and its braces removed (owner "Remove"); Bison Bulldozer lost its Level 3 Onslaught 3 (skills only; 93.6% at Level 1 unchanged, Level 3 93.1 -> 87.4%). New Onslaught N (owner row 464): while Ready, +N/+0 for each other creature's swing on its side; 6.8 a point, on no card.

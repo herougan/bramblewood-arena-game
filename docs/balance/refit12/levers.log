@@ -1,0 +1,23 @@
+8-7 base {"shield":0} 8 (200 games, seed 331300)
+  hq=16                                    13
+  hq=12                                    22
+  hq=8                                     26.5
+  out=stalactite-golem:2                   8.5
+  out=stalactite-golem:4                   6.5
+17-4 base {"shield":0,"hqHp":34} 49.5 (200 games, seed 331300)
+  hq=24                                    60.5
+  hq=16                                    71.5
+  out=glacier-yak:2                        52
+  out=glacier-yak:4                        50
+18-4 base {"hqHp":82} 91.5 (200 games, seed 331300)
+  shield=14                                92
+  shield=18                                91.5
+  shield=24                                91.5
+18-7 base {} 71 (200 games, seed 331300)
+  shield=24                                72
+  shield=30                                73
+  shield=36                                71
+18-A-7 base {} 96.5 (200 games, seed 331300)
+  shield=16                                97
+  shield=22                                96.5
+  shield=28                                95

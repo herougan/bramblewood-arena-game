@@ -1,0 +1,15 @@
+17-4 target 75 start {"glacier-yak":4,"ice-crevasse-wolf":3,"snow-ermine":3,"arctic-tern":4,"harbor-seal":4,"elderhorn-monarch":1} 61.7 (60 games, seed 311300)
+-1 ice-crevasse-wolf +1 snow-ermine                  61.7 {"glacier-yak":4,"ice-crevasse-wolf":2,"snow-ermine":4,"arctic-tern":4,"harbor-seal":4,"elderhorn-monarch":1}
+-1 glacier-yak +1 snow-ermine                        58.3 {"glacier-yak":3,"ice-crevasse-wolf":3,"snow-ermine":4,"arctic-tern":4,"harbor-seal":4,"elderhorn-monarch":1}
+-1 arctic-tern +1 snow-ermine                        58.3 {"glacier-yak":4,"ice-crevasse-wolf":3,"snow-ermine":4,"arctic-tern":3,"harbor-seal":4,"elderhorn-monarch":1}
+-4 harbor-seal +4 ringed-seal                        55 {"glacier-yak":4,"ice-crevasse-wolf":3,"snow-ermine":3,"arctic-tern":4,"elderhorn-monarch":1,"ringed-seal":4}
+-1 harbor-seal +1 snow-ermine                        50 {"glacier-yak":4,"ice-crevasse-wolf":3,"snow-ermine":4,"arctic-tern":4,"harbor-seal":3,"elderhorn-monarch":1}
+-1 elderhorn-monarch +1 boreal-elk                   45 {"glacier-yak":4,"ice-crevasse-wolf":3,"snow-ermine":3,"arctic-tern":4,"harbor-seal":4,"boreal-elk":1}
+-1 elderhorn-monarch +1 warhorse-charger             45 {"glacier-yak":4,"ice-crevasse-wolf":3,"snow-ermine":3,"arctic-tern":4,"harbor-seal":4,"warhorse-charger":1}
+-1 elderhorn-monarch +1 briarback-hedgehog           43.3 {"glacier-yak":4,"ice-crevasse-wolf":3,"snow-ermine":3,"arctic-tern":4,"harbor-seal":4,"briarback-hedgehog":1}
+-1 elderhorn-monarch +1 cataphract-destrier          43.3 {"glacier-yak":4,"ice-crevasse-wolf":3,"snow-ermine":3,"arctic-tern":4,"harbor-seal":4,"cataphract-destrier":1}
+-1 elderhorn-monarch +1 pinecone-sapper              43.3 {"glacier-yak":4,"ice-crevasse-wolf":3,"snow-ermine":3,"arctic-tern":4,"harbor-seal":4,"pinecone-sapper":1}
+-1 elderhorn-monarch +1 snowshoe-hare                40 {"glacier-yak":4,"ice-crevasse-wolf":3,"snow-ermine":3,"arctic-tern":4,"harbor-seal":4,"snowshoe-hare":1}
+-1 elderhorn-monarch +1 snow-ermine                  38.3 {"glacier-yak":4,"ice-crevasse-wolf":3,"snow-ermine":4,"arctic-tern":4,"harbor-seal":4}
+-1 elderhorn-monarch +1 cone-cutter-squirrel         31.7 {"glacier-yak":4,"ice-crevasse-wolf":3,"snow-ermine":3,"arctic-tern":4,"harbor-seal":4,"cone-cutter-squirrel":1}
+blocked: [["N different cards (N-N)",104],["map: N-N family boreal-elk+elderhorn-monarch",18],["elderhorn-monarch xN",18],["map: N-N family harbor-seal+ringed-seal",18],["ice-crevasse-wolf xN over N",16],["arctic-tern xN over N",15],["harbor-seal xN over N",15],["glacier-yak xN over N",15],["boreal-elk xN",13],["briarback-hedgehog xN",13],["cataphract-destrier xN",13],["cone-cutter-squirrel xN",13]]
