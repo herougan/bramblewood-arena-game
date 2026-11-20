@@ -15393,6 +15393,12 @@ html[data-fx="none"] .map-node.is-lair-final:not(.done), html[data-fx="none"] .f
 .uiq2-legend span{display:inline-block; padding:0 6px; border-radius:6px; border:1px solid var(--surface-border); color:var(--ink);}
 .uiq2-legend .is-new{border-color:#c62828; background:color-mix(in srgb, #c62828 28%, var(--bg));} .uiq2-legend .is-have{border-color:#2e8b57; background:color-mix(in srgb, #2e9e5b 28%, var(--bg));}
 .uiq2-legend .is-sugg{border-color:#2f6fd0; background:color-mix(in srgb, #3b7de0 24%, var(--bg));} .uiq2-legend .is-carried{background:color-mix(in srgb, #8a8f99 16%, var(--bg));}
+/* 2026-11-20 (UIQ2b): pills wrap to a second line instead of being cut; the legend is a compact 4-across row (2x2 on a phone) */
+.ui19-sk[data-eng35-key] .ui19-sk-main{white-space:normal; overflow:visible; text-overflow:clip;}
+.ui19-sk[data-eng35-key] .ui19-sk-main .ui35-pill, .ui19-sk[data-eng35-key] .ui19-sk-main .ui28-sug, .ui19-sk[data-eng35-key] .ui19-sk-main .ui30-sugg, .ui19-sk[data-eng35-key] .ui19-sk-main .ui19-new{display:inline-block; margin-top:1px;}
+.uiq2-legend{display:grid; grid-template-columns:repeat(4, auto); justify-content:start; font-size:10px; line-height:1.4;}
+.uiq2-legend span{padding:0 5px; white-space:nowrap;}
+@media (max-width:560px){ .uiq2-legend{grid-template-columns:1fr 1fr; font-size:9.5px;} .uiq2-legend span{padding:0 4px; white-space:normal;} }
 .pk1-mc-overlay .ui19-sk .ui19-new.is-minor{background:var(--ink-muted); color:var(--bg); box-shadow:none;}
 .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-counter, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-counter.is-intro{border-color:#2f6fd0; background:color-mix(in srgb, #3b7de0 24%, var(--bg));}
 .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-rec, .pk1-mc-overlay .ui19-sk-list .ui19-sk.ui30-sugg-tile, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-sugg{border-color:#2f6fd0; border-style:solid; background:color-mix(in srgb, #3b7de0 24%, var(--bg));}

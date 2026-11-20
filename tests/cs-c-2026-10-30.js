@@ -83,7 +83,7 @@ const D = {id: 'otter-centurion', name: 'Otter Centurion'};
 
 // --- 4. the hover popover
 { const f = fnSrc('fullCardHTML'), z = fnSrc('wireRewardZoom');
-  ok(/size:'full', extraClass:'card-pop-visual-tile'/.test(f), '4. the popover\'s card is the Full card (CS-1)');
+  ok(/size:'full', (noQ:true \/\* UIQ1 \*\/, )?extraClass:'card-pop-visual-tile'/.test(f), '4. the popover\'s card is the Full card (CS-1)');
   ok(/opts\.line \? `<div class="cp-line">\$\{escapeHtml\(opts\.line\)\}<\/div>`/.test(f) && /\.dataset\.popLine/.test(app), '4. a caller\'s extra line (data-pop-line), escaped');
   ok(/cardPopTextHTML\(d\); z\.classList\.add\('cp-sheet'\)/.test(z) && /abilityListHTML\(lines\)/.test(fnSrc('cardPopTextHTML')), '4. the gallery popover: the Full card plus its skills and flavour');
   ok(/el\.dataset\.zoomWhy/.test(z) && /cnp-rw-above/.test(z), '4. the Map cards reason still rides in it, and it still sits above a modal');

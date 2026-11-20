@@ -8,6 +8,7 @@ ok(/\.ui19-sk\.is-have\{border-color:#2e8b57/.test(tpl), 'have + recommended til
 ok(/\.ui19-sk\.is-focus\{outline:/.test(tpl) && !/\.ui19-sk\.is-focus\{border-color:#c62828/.test(tpl), 'focus is an outline, no longer red');
 ok(!/is-intro' : ''\}" data-ui19-skill/.test(app) && /introPill/.test(app), 'Intro is a pill, not a tile class');
 ok(/class="uiq2-legend"/.test(app), 'a legend sits above the tiles');
+ok(/UIQ2b[^\n]*\n\.ui19-sk\[data-eng35-key\] \.ui19-sk-main\{white-space:normal/.test(tpl) && /\.uiq2-legend\{display:grid/.test(tpl), 'UIQ2b: pills wrap, legend is a compact grid');
 const T = fs.readFileSync(path.join(ROOT, 'bramblewood-texts.js'), 'utf8');
 ok(['leg-new', 'leg-have', 'leg-sugg', 'leg-carried', 'pill-intro', 'pill-focus'].every(k=> T.includes('"ui.uiq2-' + k + '"')), 'the legend and pill texts exist');
 
