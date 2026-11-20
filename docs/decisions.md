@@ -4,6 +4,50 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**SKM2-1. Re-price 11 skills the re-measure confirmed** · Decide · Balance · asked 2026-11-21
+- At 1,000 fights, four methods agree. Cheap: Diurnal 1.5 (reads ~2.8), Pack 3.3 (~6+), Sleep Powder 2.5 (~4), Poison Barbs 2.4 (~4.5), Poison Powder 4.8 (~6.3), Dive's drawback -1.7 (~-0.3). Dear: Keen Sense 2.0 (~0.2), Parasite 1.0 (~-1.8), Pulverise 1.5 (~0.3), Overwhelm 1.1 (~0.5), Offspring 6.1 (~0.6). Flying, Evasive, Corrode, Trident, Repair not confirmed: keep.
+  - a) Re-price all 11, then list cards that fall out of budget (no stat changes without you)
+  - b) Only the big three: Offspring, Pack, Parasite
+  - c) Keep prices
+- **Default:** a
+
+**REFIT13-1. Map 8's reference deck holds 4 off-map cards** · Decide · Balance · asked 2026-11-21
+- Every Map 8 fight reads 8-17 under target. Map 8's reference deck carries 4 Muskrat Lodgekeepers (Tide, no skill on Map 8); simulated players carry Worker Ants. Swapping them lifts the 8 fights from 57 to 72 on average, 7 of 8 within 9 of target. 8-7 would then get its Collapsed Mine back (Health 4, reads 62.8 vs 60).
+  - a) Swap to Worker Ant x4 and restore 8-7's Mine
+  - b) Keep the deck (8-7 stays without the Mine)
+- **Default:** a
+
+**REFIT13-2. 18-A-7 Oryx Crossing is too easy (97 vs 64)** · Decide · Balance · asked 2026-11-21
+- No swap, Shield or rule change moves it. Adding a card to the Pale Desert pool does.
+  - a) Add Stonedrop Vulture (Uncommon 11/11 Flying), 3 copies: 60
+  - b) Vulture x2 + Dust-devil Kestrel x2: 64 (Kestrel is 18-7's reward)
+  - c) Leave it easy
+- **Default:** a
+
+**REFIT13-3. 18-4 Sandstorm: keep the blinding storm?** · Decide · Balance · asked 2026-11-21
+- Your call C4 made 18-4's storm blind. It reads 89.8 vs target 62. A normal Sandstorm with the Sand Veil boon kept reads 65.4.
+  - a) Keep blind (too easy)
+  - b) Normal Sandstorm
+- **Default:** a
+
+**REFIT13-4. 18-7 Sand Widow Queen is too easy (72.5 vs 40)** · Decide · Balance · asked 2026-11-21
+- Swaps, Shield and bramble Health don't move it. Removing the sandstorm (heatwave kept) reads 55.6, still 15 off.
+  - a) Remove the sandstorm, then re-fit the deck
+  - b) Leave it
+- **Default:** a
+
+**SKM1-1. How to price economy and partner skills** · Decide · Balance · asked 2026-11-21
+- Forestry, Rainrunner, Dry, Bloom Copy, Broodkeeper, Bounty, Herald, Loyal, Salvage and the Deliver triggers read about 0 in all 132 fight designs: plain fights can't see their value. Today they're priced by the 4-round rule.
+  - a) Keep the 4-round prices and mark them 'not fight-measured'
+  - b) Build a design whose decks pay Lumber and hold their tribe, then re-price
+- **Default:** a
+
+**SKM1-2. Which evidence can change a skill price** · Decide · Balance · asked 2026-11-21
+- Of 152 measured methods, the stat-equivalence searches and the carrier x20 test agree best with each other (rank agreement 0.84-0.88). Card-contribution regressions, deckopt pick rate and workbook power agree least (under 0.4).
+  - a) Price changes need the equivalence search plus carrier x20 to agree
+  - b) Keep using every method's average
+- **Default:** a
+
 **REFIT11-1. New skill carriers read too strong** · Decide · Balance · asked 2026-11-20
 - Road runs say three FOCUS2 carriers cost CPU-side fights more than their price: Sworn Shieldbearer (Harden 2.11) cost Map 15 fights 9-18 points, Meerkat Sentry (Embolden 3.59) cost Map 14 fights 3-19, Booming Bittern (Enfeeble 2.5) cost Map 6 fights 4-10. REFIT11 re-fitted the fights around them, so the road is back in band either way.
   - a) Keep prices; the re-fits cover it
