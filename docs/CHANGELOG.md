@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-21 (package REFIT18: Maps 0-20 main fights 10+ off that no open decision covers)
+- Road fights, toward the road curve (leaders, first-clear cards, sizes kept; no Health cuts). Confirm seeds 161100 / 162100 (400 games), mean before -> after (target): 9-1 one Electric Ray for a Proboscis Monkey, 83.5 -> 90.8 (90); 5-6 one Marsh-mallow Hare for a Raft Spider, 70.7 -> 60.4 (60); 18-6 Shield 0 -> the rule's 27, 74.5 -> 69.9 (60; every legal swap reads easier).
+- Seed 9100 road (Maps 0-20, 400 games): only these three moved (9-1 79.5 -> 89.3, 5-6 70 -> 60, 18-6 71.8 -> 68.5); main 112/124/2 -> 114/126/2 (in band / within 10 / beyond 20), side road unchanged 64/68/9 of 85.
+- No legal fix (owner options measured): 5-2, 13-8, 18-2, 18-3, 20-4, 20-9, side 10-A-3. 20-4's restlessDead boon is off for every deck (no Undead card in its pool), the live one included. Files: `docs/balance/refit18/`.
+
 ## 2026-11-21 (package TESTFIX2: the 4 new release-8 CI failures)
 
 - Effects Lab: the `bwArtFail` fallback now sits above the first style block, so a tile's `onerror` can no longer fire before it exists (lab-errors pageerror at load). reward-screens B4, mapfx1 and mk B@1366 pass locally and read as CI load/environment flakes; no code change.
