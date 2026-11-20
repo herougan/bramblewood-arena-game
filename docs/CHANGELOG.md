@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-20 (package REFIT14: 17-8 and the Pale Desert)
+- 17-8 The Walrus Icebreaker: bramble Health 19 -> 11 (hqHp 22, the 60% floor). Fresh seeds 131100 / 132100 (400 games): 21.8 / 20.3 -> 34.8 / 36.3 (target 40); seed 9100: 19 -> 35. No pool swap moved it and its Shield was already 0. Seed 9100 road (Maps 0-20): only 17-8 moved against REFIT13's measure, besides TESTFIX's 8-7 / 17-4 and the kept 18-4 storm. Main 100/111/3 -> 101/112/2 (in band / within 10 / beyond 20); side unchanged 55/58/11.
+- Not applied: 18-A-3, 18-A-4, 18-A-5, 18-A-6, 18-A-9 stay too easy. Swaps don't move them (18-A-3's and 18-A-6's whole legal spaces read 85+), their Shield is at or above the rule, and lower Health only makes them easier. Stonedrop Vulture (REFIT13-2) or 18-A-9 back at enemy level 4 would fix them (owner calls). Files: `docs/balance/refit14/`.
+
 ## 2026-11-20 (package REFIT13: fight-setting levers for REFIT12's stuck fights)
 - 8-7 The Roost Above: the Collapsed Mine bramble (+3 starting Gold) out, so Map 8's own Lantern Warren defends, and bramble Health 8 (the Mine kept reads 40% at best). 17-4 Lynx Ambush: bramble Health 34 -> 16. Fresh seeds 121100 / 122100 (400 games), mean before -> after (target): 8-7 7.4 -> 54.9 (60), 17-4 52.5 -> 73.2 (75). Seed 9100, 400 games: 8-7 8 -> 56.8, 17-4 48.5 -> 70.8. 18-4 keeps the blinding Sandstorm (owner call C4); a normal storm would read 65.4 (target 62), offered as decision REFIT13-3. Main 100/110/5 -> 102/112/3 (GitHub run 44677680574). Then TESTFIX: the 60% Health floor (level-curve check 3) put 8-7 at hqHp 16 (reads 42) and 17-4 at hqHp 20 (reads 67.2); the deeper cuts are decision REFIT13-5.
 - Not applied: 18-7 (no lever lands within 10: heatwave only 55.6, target 40), 18-A-7 (needs a pool addition: Stonedrop Vulture x2 reads 74.2, x3 60.0, with Dust-devil Kestrel x2 64.0, target 64.3). Map 8's reference deck holds 4 Muskrat Lodgekeepers (Tide, no Tide on Map 8) and no Worker Ant; Worker Ant x4 for them lifts every Map 8 fight 12-17 points (report only). Files: `docs/balance/refit13/`.

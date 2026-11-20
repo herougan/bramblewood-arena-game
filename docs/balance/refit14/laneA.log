@@ -1,0 +1,16 @@
+START 18-A-9 14:22:39
+18-A-9 target 40 (30-49) size 16 side (min 12) start {"barrel-cactus":3,"dune-jackal":3,"horned-lizard":4,"quicksand-queen":2,"sand-widow":4} problems []
+start {"barrel-cactus":3,"dune-jackal":3,"horned-lizard":4,"quicksand-queen":2,"sand-widow":4} 66.3
+round 1: cur 50/66.3; 34 legal, 34 read + 6 predicted (of 43); top: -2 horned-lizard +1 dune-jackal +1 pale-oryx 37.5/56.3 | -1 quicksand-queen +1 dune-jackal 41.7/66.3 | -1 horned-lizard +1 dune-jackal 45.8/66.3
+round 2: cur 37.5/56.3; 35 legal, 35 read + 6 predicted (of 48); top: -1 pale-oryx +1 dromedary 45.8/51.9 | -1 pale-oryx +1 horned-lizard 45.8/66.3 | -2 barrel-cactus +2 dromedary 50/72.5
+round 3: cur 45.8/51.9; 35 legal, 35 read + 6 predicted (of 41); top: -1 dromedary +1 pale-oryx 37.5/56.3 | -1 dromedary +1 horned-lizard 45.8/66.3 | -1 dromedary -2 barrel-cactus +1 pale-oryx +2 dromedary 50/72.5
+no nearer move
+RESULT 18-A-9 {"barrel-cactus":3,"dune-jackal":4,"horned-lizard":2,"quicksand-queen":2,"sand-widow":4,"dromedary":1} 51.9 {} moves: -2 horned-lizard +1 dune-jackal +1 pale-oryx ; -1 pale-oryx +1 dromedary problems: []
+START 18-A-3 14:27:25
+18-A-3 target 71.4 (63.4-79.4) size 15 side (min 11) start {"dune-jackal":4,"dust-devil-kestrel":2,"pale-oryx":3,"roadrunner-courier":4,"dromedary":2} problems []
+start {"dune-jackal":4,"dust-devil-kestrel":2,"pale-oryx":3,"roadrunner-courier":4,"dromedary":2} 95.6
+round 1: cur 91.7/95.6; 19 legal, 19 read + 6 predicted (of 30); top: -1 roadrunner-courier +1 dune-jackal 87.5/91.9 | -1 dromedary +1 pale-oryx 83.3/92.5 | -2 roadrunner-courier +2 dromedary 87.5/94.4
+round 2: cur 87.5/91.9; 17 legal, 17 read + 6 predicted (of 25); top: -1 roadrunner-courier +1 pale-oryx 87.5/91.3 | -1 pale-oryx +1 dromedary 83.3/92.5 | -1 roadrunner-courier +1 dromedary 87.5/92.5
+no nearer move
+RESULT 18-A-3 {"dune-jackal":5,"dust-devil-kestrel":2,"pale-oryx":3,"roadrunner-courier":3,"dromedary":2} 91.9 {} moves: -1 roadrunner-courier +1 dune-jackal problems: []
+LANE DONE 14:28:24

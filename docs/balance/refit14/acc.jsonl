@@ -1,0 +1,4 @@
+{"key":"18-A-5","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":88.1,"seed2":302300,"games":160},"moves":[]}
+{"key":"18-A-4","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":98.8,"seed2":302300,"games":160},"moves":[]}
+{"key":"18-A-9","deck":{"barrel-cactus":3,"dune-jackal":4,"horned-lizard":2,"quicksand-queen":2,"sand-widow":4,"dromedary":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":51.9,"seed2":302300,"games":160},"moves":["-2 horned-lizard +1 dune-jackal +1 pale-oryx","-1 pale-oryx +1 dromedary"]}
+{"key":"18-A-3","deck":{"dune-jackal":5,"dust-devil-kestrel":2,"pale-oryx":3,"roadrunner-courier":3,"dromedary":2},"shieldOverride":null,"hqHp":null,"tune":{"w2":91.9,"seed2":302300,"games":160},"moves":["-1 roadrunner-courier +1 dune-jackal"]}

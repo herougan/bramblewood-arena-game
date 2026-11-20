@@ -1,0 +1,29 @@
+18-A-5 target 72.9 start {"barrel-cactus":3,"dromedary":1,"roadrunner-courier":4,"sand-widow":3,"horned-lizard":4} 95 (60 games, seed 311300)
+-2 sand-widow +2 dromedary                           88.3 {"barrel-cactus":3,"dromedary":3,"roadrunner-courier":4,"sand-widow":1,"horned-lizard":4}
+-2 barrel-cactus +2 dromedary                        90 {"barrel-cactus":1,"dromedary":3,"roadrunner-courier":4,"sand-widow":3,"horned-lizard":4}
+-1 barrel-cactus +1 pale-oryx                        90 {"barrel-cactus":2,"dromedary":1,"roadrunner-courier":4,"sand-widow":3,"horned-lizard":4,"pale-oryx":1}
+-1 barrel-cactus +1 sand-widow                       90 {"barrel-cactus":2,"dromedary":1,"roadrunner-courier":4,"sand-widow":4,"horned-lizard":4}
+-1 roadrunner-courier +1 sand-widow                  90 {"barrel-cactus":3,"dromedary":1,"roadrunner-courier":3,"sand-widow":4,"horned-lizard":4}
+-1 sand-widow +1 dromedary                           90 {"barrel-cactus":3,"dromedary":2,"roadrunner-courier":4,"sand-widow":2,"horned-lizard":4}
+-1 barrel-cactus +1 dromedary                        91.7 {"barrel-cactus":2,"dromedary":2,"roadrunner-courier":4,"sand-widow":3,"horned-lizard":4}
+-1 horned-lizard +1 sand-widow                       91.7 {"barrel-cactus":3,"dromedary":1,"roadrunner-courier":4,"sand-widow":4,"horned-lizard":3}
+-3 barrel-cactus +3 pale-oryx                        93.3 {"dromedary":1,"roadrunner-courier":4,"sand-widow":3,"horned-lizard":4,"pale-oryx":3}
+-1 roadrunner-courier +1 dromedary                   93.3 {"barrel-cactus":3,"dromedary":2,"roadrunner-courier":3,"sand-widow":3,"horned-lizard":4}
+-2 roadrunner-courier +2 dromedary                   93.3 {"barrel-cactus":3,"dromedary":3,"roadrunner-courier":2,"sand-widow":3,"horned-lizard":4}
+-3 roadrunner-courier +3 dromedary                   93.3 {"barrel-cactus":3,"dromedary":4,"roadrunner-courier":1,"sand-widow":3,"horned-lizard":4}
+-3 roadrunner-courier +3 pale-oryx                   93.3 {"barrel-cactus":3,"dromedary":1,"roadrunner-courier":1,"sand-widow":3,"horned-lizard":4,"pale-oryx":3}
+-1 sand-widow +1 pale-oryx                           93.3 {"barrel-cactus":3,"dromedary":1,"roadrunner-courier":4,"sand-widow":2,"horned-lizard":4,"pale-oryx":1}
+-2 horned-lizard +2 dromedary                        93.3 {"barrel-cactus":3,"dromedary":3,"roadrunner-courier":4,"sand-widow":3,"horned-lizard":2}
+-1 roadrunner-courier +1 pale-oryx                   95 {"barrel-cactus":3,"dromedary":1,"roadrunner-courier":3,"sand-widow":3,"horned-lizard":4,"pale-oryx":1}
+-4 roadrunner-courier +4 pale-oryx                   95 {"barrel-cactus":3,"dromedary":1,"sand-widow":3,"horned-lizard":4,"pale-oryx":4}
+-2 sand-widow +2 pale-oryx                           95 {"barrel-cactus":3,"dromedary":1,"roadrunner-courier":4,"sand-widow":1,"horned-lizard":4,"pale-oryx":2}
+-1 horned-lizard +1 dromedary                        95 {"barrel-cactus":3,"dromedary":2,"roadrunner-courier":4,"sand-widow":3,"horned-lizard":3}
+-2 barrel-cactus +2 pale-oryx                        96.7 {"barrel-cactus":1,"dromedary":1,"roadrunner-courier":4,"sand-widow":3,"horned-lizard":4,"pale-oryx":2}
+-2 roadrunner-courier +2 pale-oryx                   96.7 {"barrel-cactus":3,"dromedary":1,"roadrunner-courier":2,"sand-widow":3,"horned-lizard":4,"pale-oryx":2}
+-1 horned-lizard +1 pale-oryx                        96.7 {"barrel-cactus":3,"dromedary":1,"roadrunner-courier":4,"sand-widow":3,"horned-lizard":3,"pale-oryx":1}
+-2 horned-lizard +2 pale-oryx                        96.7 {"barrel-cactus":3,"dromedary":1,"roadrunner-courier":4,"sand-widow":3,"horned-lizard":2,"pale-oryx":2}
+-3 sand-widow +3 pale-oryx                           98.3 {"barrel-cactus":3,"dromedary":1,"roadrunner-courier":4,"horned-lizard":4,"pale-oryx":3}
+-3 horned-lizard +3 pale-oryx                        98.3 {"barrel-cactus":3,"dromedary":1,"roadrunner-courier":4,"sand-widow":3,"horned-lizard":1,"pale-oryx":3}
+-3 horned-lizard +3 dromedary                        100 {"barrel-cactus":3,"dromedary":4,"roadrunner-courier":4,"sand-widow":3,"horned-lizard":1}
+-4 horned-lizard +4 pale-oryx                        100 {"barrel-cactus":3,"dromedary":1,"roadrunner-courier":4,"sand-widow":3,"pale-oryx":4}
+blocked: [["N different cards (N-N)",20],["map: mpd usage dune-jackal N>N",15],["barrel-cactus xN over N",12],["horned-lizard xN over N",11],["roadrunner-courier xN over N",11],["sand-widow xN over N",8],["kept card dromedary xN (needs N)",6],["the showcase leader dromedary would become barrel-cactus",6],["leaders change",6],["dromedary xN over N",2]]

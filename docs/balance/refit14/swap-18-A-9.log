@@ -1,0 +1,36 @@
+18-A-9 target 40 start {"barrel-cactus":3,"dune-jackal":3,"horned-lizard":4,"quicksand-queen":2,"sand-widow":4} 65 (60 games, seed 311300)
+-1 dune-jackal +1 dromedary                          58.3 {"barrel-cactus":3,"dune-jackal":2,"horned-lizard":4,"quicksand-queen":2,"sand-widow":4,"dromedary":1}
+-1 dune-jackal +1 pale-oryx                          60 {"barrel-cactus":3,"dune-jackal":2,"horned-lizard":4,"quicksand-queen":2,"sand-widow":4,"pale-oryx":1}
+-1 barrel-cactus +1 dromedary                        61.7 {"barrel-cactus":2,"dune-jackal":3,"horned-lizard":4,"quicksand-queen":2,"sand-widow":4,"dromedary":1}
+-1 horned-lizard +1 dromedary                        61.7 {"barrel-cactus":3,"dune-jackal":3,"horned-lizard":3,"quicksand-queen":2,"sand-widow":4,"dromedary":1}
+-1 quicksand-queen +1 pale-oryx                      61.7 {"barrel-cactus":3,"dune-jackal":3,"horned-lizard":4,"quicksand-queen":1,"sand-widow":4,"pale-oryx":1}
+-1 sand-widow +1 dune-jackal                         61.7 {"barrel-cactus":3,"dune-jackal":4,"horned-lizard":4,"quicksand-queen":2,"sand-widow":3}
+-1 barrel-cactus +1 dune-jackal                      63.3 {"barrel-cactus":2,"dune-jackal":4,"horned-lizard":4,"quicksand-queen":2,"sand-widow":4}
+-1 quicksand-queen +1 dune-jackal                    63.3 {"barrel-cactus":3,"dune-jackal":4,"horned-lizard":4,"quicksand-queen":1,"sand-widow":4}
+-1 horned-lizard +1 pale-oryx                        65 {"barrel-cactus":3,"dune-jackal":3,"horned-lizard":3,"quicksand-queen":2,"sand-widow":4,"pale-oryx":1}
+-1 quicksand-queen +1 dromedary                      65 {"barrel-cactus":3,"dune-jackal":3,"horned-lizard":4,"quicksand-queen":1,"sand-widow":4,"dromedary":1}
+-1 sand-widow +1 pale-oryx                           65 {"barrel-cactus":3,"dune-jackal":3,"horned-lizard":4,"quicksand-queen":2,"sand-widow":3,"pale-oryx":1}
+-3 dune-jackal +3 pale-oryx                          66.7 {"barrel-cactus":3,"horned-lizard":4,"quicksand-queen":2,"sand-widow":4,"pale-oryx":3}
+-1 sand-widow +1 dromedary                           66.7 {"barrel-cactus":3,"dune-jackal":3,"horned-lizard":4,"quicksand-queen":2,"sand-widow":3,"dromedary":1}
+-3 sand-widow +3 dromedary                           68.3 {"barrel-cactus":3,"dune-jackal":3,"horned-lizard":4,"quicksand-queen":2,"sand-widow":1,"dromedary":3}
+-1 barrel-cactus +1 pale-oryx                        70 {"barrel-cactus":2,"dune-jackal":3,"horned-lizard":4,"quicksand-queen":2,"sand-widow":4,"pale-oryx":1}
+-2 dune-jackal +2 pale-oryx                          70 {"barrel-cactus":3,"dune-jackal":1,"horned-lizard":4,"quicksand-queen":2,"sand-widow":4,"pale-oryx":2}
+-4 horned-lizard +4 dromedary                        70 {"barrel-cactus":3,"dune-jackal":3,"quicksand-queen":2,"sand-widow":4,"dromedary":4}
+-1 horned-lizard +1 dune-jackal                      70 {"barrel-cactus":3,"dune-jackal":4,"horned-lizard":3,"quicksand-queen":2,"sand-widow":4}
+-3 horned-lizard +3 dromedary                        71.7 {"barrel-cactus":3,"dune-jackal":3,"horned-lizard":1,"quicksand-queen":2,"sand-widow":4,"dromedary":3}
+-2 horned-lizard +2 pale-oryx                        71.7 {"barrel-cactus":3,"dune-jackal":3,"horned-lizard":2,"quicksand-queen":2,"sand-widow":4,"pale-oryx":2}
+-2 sand-widow +2 pale-oryx                           71.7 {"barrel-cactus":3,"dune-jackal":3,"horned-lizard":4,"quicksand-queen":2,"sand-widow":2,"pale-oryx":2}
+-2 barrel-cactus +2 dromedary                        73.3 {"barrel-cactus":1,"dune-jackal":3,"horned-lizard":4,"quicksand-queen":2,"sand-widow":4,"dromedary":2}
+-2 dune-jackal +2 dromedary                          73.3 {"barrel-cactus":3,"dune-jackal":1,"horned-lizard":4,"quicksand-queen":2,"sand-widow":4,"dromedary":2}
+-3 dune-jackal +3 dromedary                          73.3 {"barrel-cactus":3,"horned-lizard":4,"quicksand-queen":2,"sand-widow":4,"dromedary":3}
+-3 horned-lizard +3 pale-oryx                        73.3 {"barrel-cactus":3,"dune-jackal":3,"horned-lizard":1,"quicksand-queen":2,"sand-widow":4,"pale-oryx":3}
+-2 sand-widow +2 dromedary                           73.3 {"barrel-cactus":3,"dune-jackal":3,"horned-lizard":4,"quicksand-queen":2,"sand-widow":2,"dromedary":2}
+-4 sand-widow +4 dromedary                           75 {"barrel-cactus":3,"dune-jackal":3,"horned-lizard":4,"quicksand-queen":2,"dromedary":4}
+-2 barrel-cactus +2 pale-oryx                        76.7 {"barrel-cactus":1,"dune-jackal":3,"horned-lizard":4,"quicksand-queen":2,"sand-widow":4,"pale-oryx":2}
+-3 sand-widow +3 pale-oryx                           76.7 {"barrel-cactus":3,"dune-jackal":3,"horned-lizard":4,"quicksand-queen":2,"sand-widow":1,"pale-oryx":3}
+-3 barrel-cactus +3 pale-oryx                        78.3 {"dune-jackal":3,"horned-lizard":4,"quicksand-queen":2,"sand-widow":4,"pale-oryx":3}
+-2 horned-lizard +2 dromedary                        78.3 {"barrel-cactus":3,"dune-jackal":3,"horned-lizard":2,"quicksand-queen":2,"sand-widow":4,"dromedary":2}
+-4 horned-lizard +4 pale-oryx                        78.3 {"barrel-cactus":3,"dune-jackal":3,"quicksand-queen":2,"sand-widow":4,"pale-oryx":4}
+-4 sand-widow +4 pale-oryx                           78.3 {"barrel-cactus":3,"dune-jackal":3,"horned-lizard":4,"quicksand-queen":2,"pale-oryx":4}
+-3 barrel-cactus +3 dromedary                        81.7 {"dune-jackal":3,"horned-lizard":4,"quicksand-queen":2,"sand-widow":4,"dromedary":3}
+blocked: [["N different cards (N-N)",20],["map: mpd usage roadrunner-courier N>N",16],["quicksand-queen xN over N",14],["barrel-cactus xN over N",13],["horned-lizard xN over N",12],["sand-widow xN over N",12],["dune-jackal xN over N",9],["kept card quicksand-queen xN (needs N)",7],["the showcase leader quicksand-queen would become barrel-cactus",7],["leaders change",7]]
