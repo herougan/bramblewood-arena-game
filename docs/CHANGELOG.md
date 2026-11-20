@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-20 (package REFIT16: the early-bramble lead read; Maps 10-17 fights 10-20 off)
+- Road fights, toward the road curve (leaders, first-clear cards, sizes kept; no Health cuts): 10-9 Shield 0 -> 4, 11-10 Shield 5 -> 0, 11-9 one Stonedrop Vulture for an Apollo Butterfly, 13-8 the Slow-worm for an Amber Cicada. Fresh seeds 151100 / 152100 (400 games), mean before -> after (target): 10-9 50.2 -> 40.9 (40), 11-10 28.6 -> 39.1 (40), 11-9 53.8 -> 59.4 (60), 13-8 57.2 -> 47.6 (40). Seed 9100 road (Maps 0-20, 400 games): only these four moved (10-9 41.5, 11-9 59, 11-10 40.5, 13-8 50.5); main 109/121/2 -> 112/124/2 (in band / within 10 / beyond 20), side unchanged 51/55/11 of 81.
+- The early-bramble lead (EB, +3 on Maps 0-1) changes nothing in play: your Bramble's own 15 Health is already above every Map 0-1 enemy's Health + Shield + 3 (at most 15), so lead on, off or +1 read the same. No legal fix: 17-4, 17-6, 17-7 (Map 17 decks allow only 1 copy of a carried card, so few swaps are legal). Files: `docs/balance/refit16/`.
+
 ## 2026-11-20 (package REFIT15: Maps 0-9 fights 10-20 off)
 - Road decks, pool swaps only (leaders, first-clear cards, sizes kept): 0-3, 2-3, 3-4, 3-5, 4-1, 5-2, 7-2, 7-3, 9-1. Castles: 3-4 Shield 2 -> 0; 4-1 bramble 10 -> 7 (the 60% floor, already a lowered-Health fight); 5-5 and 9-4 bramble 15 -> 9 (the floor; lowered-Health fights now 20 of 20). Fresh seeds 141100 / 142100 (400 games), mean before -> after (target): 5-2 67 -> 75.9 (84), 3-5 51.3 -> 59.5 (66), 0-3 50.8 -> 57.6 (60), 4-1 74.2 -> 82.2 (90), 3-4 56.9 -> 64.5 (72), 5-5 52 -> 64 (66), 9-1 79.7 -> 85 (90), 7-2 73.9 -> 81 (82.5), 2-3 55.9 -> 68.2 (70), 9-4 53.1 -> 62.5 (62), 7-3 68.7 -> 76 (75). Seed 9100 road (Maps 0-20, 400 games): main 101/112/2 -> 109/121/2 (in band / within 10 / beyond 20), side unchanged 55/58/11.
 - No legal fix: 2-2, 4-3 (too hard), 1-2, 1-3, 1-4 (too easy; neither a Shield above the rule nor enemy level 1-2 brings them under 91). Files: `docs/balance/refit15/`.

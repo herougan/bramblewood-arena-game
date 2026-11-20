@@ -1,0 +1,3 @@
+17-7 target 60 start {"glacier-yak":4,"polar-bear":1,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":4,"ringed-seal":4} 38.3 (60 games, seed 161300)
+-4 ringed-seal +4 harbor-seal                        43.3 {"glacier-yak":4,"polar-bear":1,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":4,"harbor-seal":4}
+blocked: [["N different cards (N-N)",32],["boreal-elk xN",8],["map: N-N family boreal-elk+elderhorn-monarch",8],["briarback-hedgehog xN",8],["cataphract-destrier xN",8],["map: N-N family cataphract-destrier+warhorse-charger",8],["cone-cutter-squirrel xN",8],["elderhorn-monarch xN",8],["pinecone-sapper xN",8],["polar-bear xN over N",8],["snowshoe-hare xN",8],["warhorse-charger xN",8]]

@@ -1,0 +1,20 @@
+17-7 target 60 start {"glacier-yak":4,"polar-bear":1,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":4,"ringed-seal":4} 38.3 (60 games, seed 161300)
+-1 glacier-yak +1 polar-bear                         26.7 {"glacier-yak":3,"polar-bear":2,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":4,"ringed-seal":4}
+-1 ringed-seal +1 polar-bear                         28.3 {"glacier-yak":4,"polar-bear":2,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":4,"ringed-seal":3}
+-1 arctic-tern +1 polar-bear                         30 {"glacier-yak":4,"polar-bear":2,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":3,"ringed-seal":4}
+-1 snow-ermine +1 polar-bear                         26.7 {"glacier-yak":4,"polar-bear":2,"warhorse-charger":1,"elderhorn-monarch":1,"snow-ermine":3,"arctic-tern":4,"ringed-seal":4}
+-1 warhorse-charger +1 briarback-hedgehog            46.7 {"glacier-yak":4,"polar-bear":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":4,"ringed-seal":4,"briarback-hedgehog":1}
+-1 warhorse-charger +1 cataphract-destrier           36.7 {"glacier-yak":4,"polar-bear":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":4,"ringed-seal":4,"cataphract-destrier":1}
+-1 warhorse-charger +1 cone-cutter-squirrel          25 {"glacier-yak":4,"polar-bear":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":4,"ringed-seal":4,"cone-cutter-squirrel":1}
+-1 warhorse-charger +1 ice-crevasse-wolf             43.3 {"glacier-yak":4,"polar-bear":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":4,"ringed-seal":4,"ice-crevasse-wolf":1}
+-1 warhorse-charger +1 pinecone-sapper               30 {"glacier-yak":4,"polar-bear":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":4,"ringed-seal":4,"pinecone-sapper":1}
+-1 warhorse-charger +1 polar-bear                    25 {"glacier-yak":4,"polar-bear":2,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":4,"ringed-seal":4}
+-1 warhorse-charger +1 snowshoe-hare                 30 {"glacier-yak":4,"polar-bear":1,"elderhorn-monarch":1,"snow-ermine":4,"arctic-tern":4,"ringed-seal":4,"snowshoe-hare":1}
+-1 elderhorn-monarch +1 boreal-elk                   33.3 {"glacier-yak":4,"polar-bear":1,"warhorse-charger":1,"snow-ermine":4,"arctic-tern":4,"ringed-seal":4,"boreal-elk":1}
+-1 elderhorn-monarch +1 briarback-hedgehog           31.7 {"glacier-yak":4,"polar-bear":1,"warhorse-charger":1,"snow-ermine":4,"arctic-tern":4,"ringed-seal":4,"briarback-hedgehog":1}
+-1 elderhorn-monarch +1 cone-cutter-squirrel         21.7 {"glacier-yak":4,"polar-bear":1,"warhorse-charger":1,"snow-ermine":4,"arctic-tern":4,"ringed-seal":4,"cone-cutter-squirrel":1}
+-1 elderhorn-monarch +1 ice-crevasse-wolf            26.7 {"glacier-yak":4,"polar-bear":1,"warhorse-charger":1,"snow-ermine":4,"arctic-tern":4,"ringed-seal":4,"ice-crevasse-wolf":1}
+-1 elderhorn-monarch +1 pinecone-sapper              25 {"glacier-yak":4,"polar-bear":1,"warhorse-charger":1,"snow-ermine":4,"arctic-tern":4,"ringed-seal":4,"pinecone-sapper":1}
+-1 elderhorn-monarch +1 polar-bear                   21.7 {"glacier-yak":4,"polar-bear":2,"warhorse-charger":1,"snow-ermine":4,"arctic-tern":4,"ringed-seal":4}
+-1 elderhorn-monarch +1 snowshoe-hare                20 {"glacier-yak":4,"polar-bear":1,"warhorse-charger":1,"snow-ermine":4,"arctic-tern":4,"ringed-seal":4,"snowshoe-hare":1}
+blocked: [["N different cards (N-N)",64],["map: N-N family harbor-seal+ringed-seal",10],["map: N-N family boreal-elk+elderhorn-monarch",9],["map: N-N family cataphract-destrier+warhorse-charger",9],["elderhorn-monarch xN",9],["warhorse-charger xN",9],["arctic-tern xN over N",8],["ringed-seal xN over N",8],["snow-ermine xN over N",8],["glacier-yak xN over N",8],["boreal-elk xN",4],["briarback-hedgehog xN",4]]

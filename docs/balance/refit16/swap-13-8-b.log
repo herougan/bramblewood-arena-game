@@ -1,0 +1,15 @@
+13-8 target 40 start {"beaver-feller":4,"bramblewood-lynx":2,"monarch-wingblade":3,"owl-nightwatch":4,"redwood-woodpecker":1,"tasmanian-devil":4,"amber-cicada":1} 40 (60 games, seed 161300)
+-1 beaver-feller +1 bramblewood-lynx                 33.3 {"beaver-feller":3,"bramblewood-lynx":3,"monarch-wingblade":3,"owl-nightwatch":4,"redwood-woodpecker":1,"tasmanian-devil":4,"amber-cicada":1}
+-1 beaver-feller +1 redwood-woodpecker               40 {"beaver-feller":3,"bramblewood-lynx":2,"monarch-wingblade":3,"owl-nightwatch":4,"redwood-woodpecker":2,"tasmanian-devil":4,"amber-cicada":1}
+-2 beaver-feller +2 redwood-woodpecker               45 {"beaver-feller":2,"bramblewood-lynx":2,"monarch-wingblade":3,"owl-nightwatch":4,"redwood-woodpecker":3,"tasmanian-devil":4,"amber-cicada":1}
+-1 owl-nightwatch +1 bramblewood-lynx                43.3 {"beaver-feller":4,"bramblewood-lynx":3,"monarch-wingblade":3,"owl-nightwatch":3,"redwood-woodpecker":1,"tasmanian-devil":4,"amber-cicada":1}
+-1 owl-nightwatch +1 redwood-woodpecker              41.7 {"beaver-feller":4,"bramblewood-lynx":2,"monarch-wingblade":3,"owl-nightwatch":3,"redwood-woodpecker":2,"tasmanian-devil":4,"amber-cicada":1}
+-2 owl-nightwatch +2 redwood-woodpecker              45 {"beaver-feller":4,"bramblewood-lynx":2,"monarch-wingblade":3,"owl-nightwatch":2,"redwood-woodpecker":3,"tasmanian-devil":4,"amber-cicada":1}
+-1 tasmanian-devil +1 bramblewood-lynx               40 {"beaver-feller":4,"bramblewood-lynx":3,"monarch-wingblade":3,"owl-nightwatch":4,"redwood-woodpecker":1,"tasmanian-devil":3,"amber-cicada":1}
+-1 tasmanian-devil +1 redwood-woodpecker             38.3 {"beaver-feller":4,"bramblewood-lynx":2,"monarch-wingblade":3,"owl-nightwatch":4,"redwood-woodpecker":2,"tasmanian-devil":3,"amber-cicada":1}
+-2 tasmanian-devil +2 redwood-woodpecker             41.7 {"beaver-feller":4,"bramblewood-lynx":2,"monarch-wingblade":3,"owl-nightwatch":4,"redwood-woodpecker":3,"tasmanian-devil":2,"amber-cicada":1}
+-1 monarch-wingblade +1 bramblewood-lynx             45 {"beaver-feller":4,"bramblewood-lynx":3,"monarch-wingblade":2,"owl-nightwatch":4,"redwood-woodpecker":1,"tasmanian-devil":4,"amber-cicada":1}
+-1 monarch-wingblade +1 redwood-woodpecker           38.3 {"beaver-feller":4,"bramblewood-lynx":2,"monarch-wingblade":2,"owl-nightwatch":4,"redwood-woodpecker":2,"tasmanian-devil":4,"amber-cicada":1}
+-2 monarch-wingblade +2 redwood-woodpecker           58.3 {"beaver-feller":4,"bramblewood-lynx":2,"monarch-wingblade":1,"owl-nightwatch":4,"redwood-woodpecker":3,"tasmanian-devil":4,"amber-cicada":1}
+-1 bramblewood-lynx +1 redwood-woodpecker            45 {"beaver-feller":4,"bramblewood-lynx":1,"monarch-wingblade":3,"owl-nightwatch":4,"redwood-woodpecker":2,"tasmanian-devil":4,"amber-cicada":1}
+blocked: [["N different cards (N-N)",90],["amber-cicada xN",9],["map: N-N family bramblewood-lynx+feral-tomcat",9],["leaders change",9],["monarch-wingblade xN over N",7],["owl-nightwatch xN over N",7],["tasmanian-devil xN over N",7],["beaver-feller xN over N",7],["anhinga-spearbird xN",4],["bramblewood-lynx xN over N",4],["feral-tomcat xN",4],["grass-snake xN",4]]
