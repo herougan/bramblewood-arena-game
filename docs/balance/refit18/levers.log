@@ -1,0 +1,58 @@
+13-8 base  50.2 / 53.8  mean 52.0  (400 games, seeds 161100 / 162100)
+  out=beaver-feller:1+add=bramblewood-lynx:1                   51.8 / 51  mean 51.4
+  out=monarch-wingblade:1+add=bramblewood-lynx:1               52.3 / 55  mean 53.6
+  out=owl-nightwatch:1+add=bramblewood-lynx:1                  50.7 / 51.5  mean 51.1
+9-1 base  83.8 / 83.3  mean 83.5  (400 games, seeds 161100 / 162100)
+  out=electric-ray:1+add=proboscis-monkey:1                    89.3 / 92.3  mean 90.8
+  out=electric-ray:1+add=horseshoe-crab:1                      89.3 / 92.3  mean 90.8
+  out=electric-ray:2+add=horseshoe-crab:2                      95.3 / 96  mean 95.7
+  out=electric-ray:2+add=proboscis-monkey:2                    96.5 / 95.8  mean 96.2
+5-6 base  69.8 / 71.5  mean 70.7  (400 games, seeds 161100 / 162100)
+  shield=4                                                     64 / 69.5  mean 66.8
+  shield=8                                                     60.8 / 65  mean 62.9
+  out=bog-leech:2+add=swamp-alligator:2                        55.8 / 57.5  mean 56.6
+  out=nutria-reedcutter:2+add=mosquito-cloud:2                 63.5 / 68.3  mean 65.9
+  out=marsh-mallow-hare:1+add=raft-spider:1                    62 / 58.8  mean 60.4
+5-2 base  73.5 / 72  mean 72.8  (400 games, seeds 161100 / 162100)
+  out=constrictor-coil:1+add=fire-ant-raft:1                   68.5 / 67.5  mean 68.0
+  out=nutria-reedcutter:2+add=muskrat-reedgatherer:2           68.5 / 63.3  mean 65.9
+  out=muskrat-reedgatherer:1+add=raft-spider:1                 69.3 / 68  mean 68.7
+18-6 base  74 / 75  mean 74.5  (400 games, seeds 161100 / 162100)
+  shield=9                                                     71.5 / 71.8  mean 71.7
+  shield=18                                                    69.3 / 72.5  mean 70.9
+  shield=27                                                    69 / 70.8  mean 69.9
+  out=ice-crevasse-wolf:1+add=sunbittern-strider:1             79.5 / 78  mean 78.8
+20-9 base  59 / 57.8  mean 58.4  (400 games, seeds 161100 / 162100)
+  out=obsidian-scorpion:1+add=crocodile-ambusher:1             64 / 64.5  mean 64.2
+18-2 base  96.8 / 96  mean 96.4  (400 games, seeds 161100 / 162100)
+  out=caustic-scorpion:2+add=horned-lizard:2                   97.3 / 95  mean 96.2
+  out=caustic-scorpion:2,sunbittern-strider:1+add=horned-lizard:3 96.8 / 95.3  mean 96.0
+  out=caustic-scorpion:2,roadrunner-courier:1+add=horned-lizard:3 96.8 / 94.5  mean 95.7
+18-3 base  94.8 / 94.3  mean 94.5  (400 games, seeds 161100 / 162100)
+  out=worker-ant:1,mouse-sapper:1+add=sandstorm-roc:1,ice-crevasse-wolf:1 93.8 / 93.5  mean 93.7
+  out=barrel-cactus:1,worker-ant:1+add=antlion-pit:1,sandstorm-roc:1 94.3 / 95  mean 94.7
+  out=worker-ant:1+add=sandstorm-roc:1                         92.8 / 92  mean 92.4
+  out=barrel-cactus:1+add=antlion-pit:1                        96 / 94.5  mean 95.2
+13-8 base  50.2 / 53.8  mean 52.0  (400 games, seeds 161100 / 162100)
+  shield=36                                                    47.8 / 49.3  mean 48.5
+  shield=46                                                    45.8 / 47.3  mean 46.5
+  set=enemyLevel:3.5                                           45 / 43.8  mean 44.4
+  set=enemyLevel:4                                             37.3 / 39.3  mean 38.3
+20-4 base  84 / 81.8  mean 82.9  (400 games, seeds 161100 / 162100)
+  shield=30                                                    81 / 80.5  mean 80.8
+  shield=40                                                    79.5 / 77.5  mean 78.5
+  set=enemyLevel:4.5                                           77.8 / 74  mean 75.9
+  set=enemyLevel:5                                             70 / 68.3  mean 69.2
+5-2 base  73.5 / 72  mean 72.8  (400 games, seeds 161100 / 162100)
+  hq=11                                                        81 / 78.5  mean 79.8
+  hq=9                                                         86 / 83.5  mean 84.8
+  hq=7                                                         90.8 / 89  mean 89.9
+20-9 base  59 / 57.8  mean 58.4  (400 games, seeds 161100 / 162100)
+  shield=75                                                    56.3 / 56  mean 56.1
+  shield=90                                                    55 / 52  mean 53.5
+  set=enemyLevel:4.3                                           69.3 / 69.5  mean 69.4
+10-A-3 base  75.8 / 81.8  mean 78.8  (400 games, seeds 161100 / 162100)
+  shield=16                                                    71.8 / 81  mean 76.4
+  shield=22                                                    70 / 79.5  mean 74.8
+  set=enemyLevel:3.5                                           66.5 / 72.5  mean 69.5
+  set=enemyLevel:4                                             55 / 58.8  mean 56.9

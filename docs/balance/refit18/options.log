@@ -1,0 +1,23 @@
+13-8 base  50.2 / 53.8  mean 52.0  (400 games, seeds 161100 / 162100)
+  shield=36                                                    47.8 / 49.3  mean 48.5
+  shield=46                                                    45.8 / 47.3  mean 46.5
+  set=enemyLevel:3.5                                           45 / 43.8  mean 44.4
+  set=enemyLevel:4                                             37.3 / 39.3  mean 38.3
+20-4 base  84 / 81.8  mean 82.9  (400 games, seeds 161100 / 162100)
+  shield=30                                                    81 / 80.5  mean 80.8
+  shield=40                                                    79.5 / 77.5  mean 78.5
+  set=enemyLevel:4.5                                           77.8 / 74  mean 75.9
+  set=enemyLevel:5                                             70 / 68.3  mean 69.2
+5-2 base  73.5 / 72  mean 72.8  (400 games, seeds 161100 / 162100)
+  hq=11                                                        81 / 78.5  mean 79.8
+  hq=9                                                         86 / 83.5  mean 84.8
+  hq=7                                                         90.8 / 89  mean 89.9
+20-9 base  59 / 57.8  mean 58.4  (400 games, seeds 161100 / 162100)
+  shield=75                                                    56.3 / 56  mean 56.1
+  shield=90                                                    55 / 52  mean 53.5
+  set=enemyLevel:4.3                                           69.3 / 69.5  mean 69.4
+10-A-3 base  75.8 / 81.8  mean 78.8  (400 games, seeds 161100 / 162100)
+  shield=16                                                    71.8 / 81  mean 76.4
+  shield=22                                                    70 / 79.5  mean 74.8
+  set=enemyLevel:3.5                                           66.5 / 72.5  mean 69.5
+  set=enemyLevel:4                                             55 / 58.8  mean 56.9
