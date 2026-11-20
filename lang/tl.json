@@ -3044,7 +3044,6 @@
  "While it lives, your units' attacks, shots and skills can't miss or be dodged.": "Habang buhay ito, hindi sasablay o maiiwasan ang mga atake, tira at skill ng iyong mga unit.",
  "While it rains it has {skills}, and it can't be blocked.": "Habang umuulan, may {skills} ito at hindi ito mahaharangan.",
  "While it rains: {skills}.": "Habang umuulan: {skills}.",
- "While one of your leaders is on the battlefield, it has {skills}.": "Habang nasa larangan ang isa sa iyong mga pinuno, may {skills} ito.",
  "While Ready, every upkeep it gives {n} Creativity counter(s) to a random other unit on your side. Creativity has no effect yet.": "Habang Handa, tuwing upkeep ay nagbibigay ito ng {n} Creativity counter sa isang random na ibang unit sa panig mo. Wala pang epekto ang Creativity.",
  "While Ready, every upkeep: shoots {n} cold damage at the foe facing it (or nearest), and it Freezes.": "Habang Handa, bawat upkeep: pumapana ng {n} pinsalang lamig sa kaharap na kaaway (o sa pinakamalapit), at nagyeyelo ito.",
  "While Ready, every upkeep: {n} acid damage and 1 Corrode to the foe facing it (or nearest).": "Habang Handa, bawat upkeep: {n} pinsalang asido at 1 Kalawang sa kaharap na kaaway (o sa pinakamalapit).",
@@ -3827,7 +3826,6 @@
  "Almanac": "Almanake",
  "While you have drawn {n} or more cards this fight (after your opening hand): {skills}.": "Habang nakabunot ka na ng {n} o higit pang card sa labang ito (pagkatapos ng unang kamay): {skills}.",
  "Onslaught": "Daluyong",
- "While your side dealt {n} or more damage to the enemy bramble last round: {skills}.": "Habang nakapagdulot ang panig mo ng {n} o higit pang pinsala sa kaaway na dawag noong nakaraang round: {skills}.",
  "Riled": "Nagngingitngit",
  "While it took {n} or more damage last round: {skills}.": "Habang tumanggap ito ng {n} o higit pang pinsala noong nakaraang round: {skills}.",
  "Taunts the enemies around it (facing it, or one column to either side): their swings, arrows and shots hit it, even ones that would hit the bramble. Stealth slips past; a Volley is not pulled.": "Hinahamon ang mga kaaway sa paligid nito (kaharap, o isang column sa magkabilang gilid): ang mga hampas, palaso at tira nila ay tatama rito, kahit ang tatama sana sa dawag. Nakalulusot ang Stealth; hindi nahihila ang Volley.",
@@ -4733,5 +4731,13 @@
  "{att} makes {name} Sturdy ({n}).": "Ginawang Matibay ni {att} si {name} ({n}).",
  "{att} makes {name} Mighty ({n}).": "Ginawang Makapangyarihan ni {att} si {name} ({n}).",
  "Sturdy": "Matibay",
- "Mighty": "Makapangyarihan"
+ "Mighty": "Makapangyarihan",
+ "A unit that hits it is Scared: it attacks for {n} less.": "Ang tumama rito ay Takot: {n} na mas mahina ang atake.",
+ "Lasts this round and the next, on every hit and swing it makes (the bramble too). Several Scares don't add up: the biggest counts. Supreme ignores it.": "Tatagal ngayong round at sa susunod, sa bawat tama at atake (pati sa bramble). Hindi nagpapatong: ang pinakamalakas ang bilang. Hindi tumatalab sa Supreme.",
+ "While Ready: +{n}/+0 each time another ally attacks.": "Kapag Handa: +{n}/+0 tuwing umaatake ang ibang kakampi.",
+ "The Attack stays for the fight. Each swing of another creature on your side counts; not while it waits, is stunned, frozen or asleep.": "Mananatili ang Atake buong laban. Bilang ang bawat atake ng ibang nilalang sa panig mo; hindi habang naghihintay, stunned, nagyeyelo o tulog.",
+ "{att} scares {name}: its attacks deal {n} less.": "Tinakot ng {att} si {name}: {n} na mas mahina ang mga atake nito.",
+ "Scared -{n}": "Takot -{n}",
+ "Scared: attacks for {n} less": "Takot: {n} na mas mahina ang atake",
+ "While an ally leader is on the battlefield, it has {skills}.": "Habang nasa larangan ang isang kakampi na pinuno, may {skills} ito."
 }

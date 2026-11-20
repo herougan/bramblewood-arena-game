@@ -1178,7 +1178,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // 2026-10-17 (user: "Some skirmishes near vents have 'Hazardous Gas' field effect. Since poison is already used, think of something else."):
   // rules.sulphurFumes N (default 1): from round 2, at the start of every round every unit that doesn't resist fire, isn't Dry and isn't
   // Flying is Choking for that round: −N Attack on everything it deals (never below 0). No poison, no damage: just a weaker round.
-  function chokeOf(card){ return ((card && rules.sulphurFumes && card.chokeRound === turnNo) ? (card.chokeN || 1) : 0) + majestyCut(card); } // + Majesty (ENG19)
+  function chokeOf(card){ return ((card && rules.sulphurFumes && card.chokeRound === turnNo) ? (card.chokeN || 1) : 0) + majestyCut(card) + scaredOf(card); } // + Majesty (ENG19); + Scared (SKIN3)
+  // SKIN3 (2026-11-20, owner sheet: "Units with Scared attack for N less"): a unit that hits a Scare N unit is Scared N for that round and the
+  // next (c.scaredUntil, as Daunt's until); the biggest N counts, not stacked. Rides on chokeOf: every swing (a unit, the bramble) and every hit.
+  function scaredOf(card){ return card && card.scared > 0 && card.scaredUntil >= combatNo ? card.scared : 0; }
+  function scareAttacker(att, n, by){ const was = scaredOf(att); att.scared = Math.max(was, n); att.scaredUntil = combatNo + 1;
+    if(was < n && recordEvents && shieldEvents){ const pid = ownerPidOfCard(att), sd = shieldSideOf ? shieldSideOf(pid) : (pid === 1 ? 'A' : 'B');
+      shieldEvents.push({type:'statusFx', kind:'scared', side:sd, attUid:by.uid, attDefId:by.defId, targetSide:sd, targetUid:att.uid, targetDefId:att.defId, amount:att.scared}); } }
   // Majesty N (ENG19, 2026-11-02, owner 22:15 #13: "New skill Majesty (also for dragons)"; decision ENG19-1, option a, on no card yet): while a
   // Ready Majesty unit stands, the enemy units facing it (its column and the columns either side of it) swing at -N Attack, never below 0.
   // Several Majesty units do not stack on one foe: the biggest N counts. It rides on chokeOf, so it cuts every swing the way the Sulphur
@@ -1632,7 +1638,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     try{ watchScan(players, sideOf, stats, events); }catch(e){} return r; }
   function roundStartInner(players, round, sideOf, stats, events){
     curPlayers = players; turnNo += 1;
-    thrRoundMark(players); // ENG22 (2026-11-03): Onslaught / Riled read last round
+    thrRoundMark(players); // ENG22 (2026-11-03): Riled reads last round
     rollWind(players, sideOf, events);
     en20CrossSync(players, sideOf, events); // ENG20-4 (2026-11-02): the Crosswind's +0/N comes and goes with the gust
     if(RESERVE_ROWS) advanceReserves(players, sideOf, stats, events); // the rows behind step up first (2026-10-12)
@@ -2967,12 +2973,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // more counters in the same form (on no card; decision ENG22-1 for carriers and names):
   //   Tally N (3)    enemy units that died this fight (Carnage's old rule)
   //   Almanac N (4)  cards you have drawn this fight after your opening hand (pl.drawnAfterOpening, draw)
-  //   Onslaught N (3) damage your side dealt to the enemy bramble last round (pl._siegeLast, thrRoundMark)
+  //   (Onslaught N, bramble damage last round: removed by SKIN3, 2026-11-20; the key is the new Onslaught, runOnAttackPost)
   //   Riled N (3)    damage this unit took last round (c._riledLast, thrRoundMark; applyDamage keeps c._dmgAmt for the round)
-  const THR_DEFAULT_N = {requiem: 5, dirge: 3, carnage: 3, muster: 6, beset: 6, throng: 10, tally: 3, almanac: 4, onslaught: 3, riled: 3};
-  // At a round's start (roundStartInner, right after the round counter moves on): last round's bramble damage and each unit's damage taken.
+  const THR_DEFAULT_N = {requiem: 5, dirge: 3, carnage: 3, muster: 6, beset: 6, throng: 10, tally: 3, almanac: 4, riled: 3};
+  // At a round's start (roundStartInner, right after the round counter moves on): each unit's damage taken last round.
   function thrRoundMark(players){ [1, 2].forEach(pid=>{ const pl = players && players[pid]; if(!pl) return;
-    pl._siegeLast = (pl.castleDealt||0) - (pl._siegeMark||0); pl._siegeMark = pl.castleDealt||0;
     rowsUnitsOf(pl).forEach(c=>{ if(c && !c.gap) c._riledLast = c._dmgTurn === turnNo - 1 ? (c._dmgAmt||0) : 0; }); }); }
   // A unit died (the death sweep, not a Structure or a cage): every living Carnage unit on the other side saw it.
   function thrSeeDeath(players, deadPl){ const foe = players && deadPl && players[otherId(deadPl.id)]; if(!foe) return;
@@ -2986,7 +2991,6 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     carnage: {grant:'carnageGrant', dflt:{attack: 2, health: 2}, on: (pl, foe, e, c)=> ((c && c.carnageSeen) || 0) >= thrN(e, 'carnage')}, // ENG22: the deaths it saw
     tally:   {grant:'tallyGrant',   dflt:{attack: 2, health: 2}, on: (pl, foe, e)=> thrDied(foe) >= thrN(e, 'tally')}, // ENG22: Carnage's old rule
     almanac: {grant:'almanacGrant', dflt:{attack: 2, health: 2}, on: (pl, foe, e)=> ((pl && pl.drawnAfterOpening) || 0) >= thrN(e, 'almanac')}, // ENG22
-    onslaught: {grant:'onslaughtGrant', dflt:{attack: 2, health: 2}, on: (pl, foe, e)=> ((pl && pl._siegeLast) || 0) >= thrN(e, 'onslaught')}, // ENG22
     riled:   {grant:'riledGrant',   dflt:{attack: 2, health: 2}, on: (pl, foe, e, c)=> ((c && c._riledLast) || 0) >= thrN(e, 'riled')}, // ENG22
     muster:  {grant:'musterGrant',  dflt:{attack: 2, health: 2}, on: (pl, foe, e)=> thrUnits(pl) >= thrN(e, 'muster')},
     beset:   {grant:'besetGrant',   dflt:{attack: 2, health: 2}, on: (pl, foe, e)=> thrUnits(foe) >= thrN(e, 'beset')},
@@ -3071,8 +3075,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(c._condBase){ let g = null; try{ g = c._condKey ? JSON.parse(c._condKey) : null; }catch(e){} c.defId = c._condBase; deriveDef(c, patch); c._condBase = c.defId; if(g) deriveDef(c, g); }
     else deriveDef(c, patch);
   }
-  const IRR_NOT_SKILLS = new Set(['archerStyle' /* BX 2026-10-21: a look */, 'resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'crepuscularDay', 'crepuscularNight' /* ENG23 */, 'espritHp', 'espritWho', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'kinglyGrant' /* TR */, 'timberedGrant', 'bedrockGrant', 'forgedGrant', 'lastStandGrant' /* EN5 (2026-10-24) */, 'plentyGrant', 'scarcityGrant', 'foePlentyGrant', 'foeScarcityGrant', 'heatGrant', 'frostGrant', 'rainGrant', 'stormGrant', 'fogGrant', 'saltGrant', 'droughtGrant', 'seasonGrant', 'requiemGrant', 'dirgeGrant', 'carnageGrant', 'musterGrant', 'besetGrant', 'throngGrant' /* ENG10 */, 'tallyGrant', 'almanacGrant', 'onslaughtGrant', 'riledGrant', 'deliveryRes' /* ENG22 */, 'tribeDeliveryRes' /* ENG25 */, 'hoardRes' /* ENG40 */, 'arrowBramble', 'fireArrowBramble', 'fireBoltBramble' /* EN6 (2026-10-24) */, 'arrowPoison', 'arrowBleed', 'fireArrowPoison', 'fireArrowBleed', 'fireBoltPoison', 'fireBoltBleed', 'diveUses' /* EN7 (2026-10-24) */, 'triggers', 'level', 'baseLevel']);
-  const IRR_COMPANION = {nocturnal:['nocturnalHp', 'nocturnalGrant'], diurnal:['diurnalHp', 'diurnalGrant'], tide:['tideGrant'], fullMoon:['fullMoonGrant'], crepuscular:['crepuscularHp', 'crepuscularGrant', 'crepuscularDay', 'crepuscularNight' /* ENG23 */], rainrunner:['rainrunnerGrant'] /* CX2 */, king:['kinglyGrant'] /* TR */, esprit:['espritHp', 'espritWho'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN'], timbered:['timberedGrant'], bedrock:['bedrockGrant'], forged:['forgedGrant'], lastStand:['lastStandGrant'] /* EN5 */, plenty:['plentyGrant'], scarcity:['scarcityGrant'], foePlenty:['foePlentyGrant'], foeScarcity:['foeScarcityGrant'], heat:['heatGrant'], frost:['frostGrant'], rain:['rainGrant'], storm:['stormGrant'], fog:['fogGrant'], salt:['saltGrant'], drought:['droughtGrant'], season:['seasonGrant'], requiem:['requiemGrant'], dirge:['dirgeGrant'], carnage:['carnageGrant'], muster:['musterGrant'], beset:['besetGrant'], throng:['throngGrant'] /* ENG10 */, tally:['tallyGrant'], almanac:['almanacGrant'], onslaught:['onslaughtGrant'], riled:['riledGrant'], delivery:['deliveryRes'], tribeDelivery:['tribeDeliveryRes'] /* ENG25 */, hoard:['hoardRes'] /* ENG40 */, deliveryEvery:['deliveryRes'] /* ENG22 */, arrow:['arrowBramble', 'arrowPoison', 'arrowBleed'], fireArrow:['fireArrowBramble', 'fireArrowPoison', 'fireArrowBleed'], fireBolt:['fireBoltBramble', 'fireBoltPoison', 'fireBoltBleed'] /* EN6; + EN7's – poison / – bleed */, dive:['diveUses'] /* EN7 */};
+  const IRR_NOT_SKILLS = new Set(['archerStyle' /* BX 2026-10-21: a look */, 'resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'crepuscularDay', 'crepuscularNight' /* ENG23 */, 'espritHp', 'espritWho', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'kinglyGrant' /* TR */, 'timberedGrant', 'bedrockGrant', 'forgedGrant', 'lastStandGrant' /* EN5 (2026-10-24) */, 'plentyGrant', 'scarcityGrant', 'foePlentyGrant', 'foeScarcityGrant', 'heatGrant', 'frostGrant', 'rainGrant', 'stormGrant', 'fogGrant', 'saltGrant', 'droughtGrant', 'seasonGrant', 'requiemGrant', 'dirgeGrant', 'carnageGrant', 'musterGrant', 'besetGrant', 'throngGrant' /* ENG10 */, 'tallyGrant', 'almanacGrant', 'riledGrant', 'deliveryRes' /* ENG22 */, 'tribeDeliveryRes' /* ENG25 */, 'hoardRes' /* ENG40 */, 'arrowBramble', 'fireArrowBramble', 'fireBoltBramble' /* EN6 (2026-10-24) */, 'arrowPoison', 'arrowBleed', 'fireArrowPoison', 'fireArrowBleed', 'fireBoltPoison', 'fireBoltBleed', 'diveUses' /* EN7 (2026-10-24) */, 'triggers', 'level', 'baseLevel']);
+  const IRR_COMPANION = {nocturnal:['nocturnalHp', 'nocturnalGrant'], diurnal:['diurnalHp', 'diurnalGrant'], tide:['tideGrant'], fullMoon:['fullMoonGrant'], crepuscular:['crepuscularHp', 'crepuscularGrant', 'crepuscularDay', 'crepuscularNight' /* ENG23 */], rainrunner:['rainrunnerGrant'] /* CX2 */, king:['kinglyGrant'] /* TR */, esprit:['espritHp', 'espritWho'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN'], timbered:['timberedGrant'], bedrock:['bedrockGrant'], forged:['forgedGrant'], lastStand:['lastStandGrant'] /* EN5 */, plenty:['plentyGrant'], scarcity:['scarcityGrant'], foePlenty:['foePlentyGrant'], foeScarcity:['foeScarcityGrant'], heat:['heatGrant'], frost:['frostGrant'], rain:['rainGrant'], storm:['stormGrant'], fog:['fogGrant'], salt:['saltGrant'], drought:['droughtGrant'], season:['seasonGrant'], requiem:['requiemGrant'], dirge:['dirgeGrant'], carnage:['carnageGrant'], muster:['musterGrant'], beset:['besetGrant'], throng:['throngGrant'] /* ENG10 */, tally:['tallyGrant'], almanac:['almanacGrant'], riled:['riledGrant'], delivery:['deliveryRes'], tribeDelivery:['tribeDeliveryRes'] /* ENG25 */, hoard:['hoardRes'] /* ENG40 */, deliveryEvery:['deliveryRes'] /* ENG22 */, arrow:['arrowBramble', 'arrowPoison', 'arrowBleed'], fireArrow:['fireArrowBramble', 'fireArrowPoison', 'fireArrowBleed'], fireBolt:['fireBoltBramble', 'fireBoltPoison', 'fireBoltBleed'] /* EN6; + EN7's – poison / – bleed */, dive:['diveUses'] /* EN7 */};
   function irrAbilities(c){
     const e = effectsOf(c), out = [];
     Object.keys(e).forEach(k=>{ if(IRR_NOT_SKILLS.has(k)) return; const v = e[k]; if(v === false || v == null || v === 0 || v === '' || (Array.isArray(v) && !v.length)) return; out.push({key:k}); });
@@ -3463,11 +3467,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     amt += wetShockBonus(targetCard, dmgType); // Wet (2026-10-17): +1 lightning damage per Wet counter (wetCountOf)
     // Siege N (2026-10-19, package SK1, owner 21:36: Demolition renamed Siege): +N on Structures (sk1SiegeN: Siege, or an old Demolisher).
     { const sgN = sk1SiegeN(attDef); if(sgN > 0){ const tdD = CARD_DEFS[targetCard.defId]; if(tdD && txIsA(tdD, 'Structure')) amt += sgN; } } // 2026-10-21 (package TX)
-    // Scare N (2026-10-10, Devilry): anything attacking this card hits for N less (never below 0). Unlike Intimidate,
-    // it only weakens attacks aimed at this card.
     const supremeAtt = !!(attDef && attDef.effects && attDef.effects.supreme); // Supreme (2026-10-14): crushes Scare, Armor and shells
     const mods = []; // 2026-10-22 (package DN): why this hit's number changed, for the floating number's mark (display only, no math)
-    { const tdS = CARD_DEFS[targetCard.defId]; const sc = tdS && tdS.effects && Number(tdS.effects.scare); if(attCard && sc > 0 && !supremeAtt){ amt = Math.max(0, amt - sc); mods.push('scare'); } }
+    { const sc = Number(effectsOf(targetCard).scare); if(attCard && sc > 0 && !supremeAtt) scareAttacker(attCard, sc, targetCard); if(scaredOf(attCard) > 0) mods.push('scare'); } // SKIN3: Scare makes the attacker Scared (its cut is in chokeOf below)
     // Exposed (2026-10-15, user: "I like expose. It should give a debuff 'exposed'. This unit takes +1 damage and attacks on this unit
     // don't miss."): c.exposed is how many Expose counters it has (Expose N gives N). Each hit it takes uses one up (before Armor,
     // so Armor still mitigates it); dodgeCheck / combatHitLands / the Blind and dark rolls stop the misses.
@@ -8377,7 +8379,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function runOnAttackPost(players, sideOf, a, attDef, stats, events){
     eng37ShellAfterAttack(a.att); // ENG37 (2026-11-08): Shell (after attacking): its Armor once its swing is done
     const prev = onAttackPhase; onAttackPhase = a.att.hp > 0 ? 'post' : 'postDead';
-    try{ runCustomTriggers(players, sideOf, a.attId, a.att, attDef, 'onAttack', stats, events); } finally { onAttackPhase = prev; } }
+    try{ runCustomTriggers(players, sideOf, a.attId, a.att, attDef, 'onAttack', stats, events); } finally { onAttackPhase = prev; }
+    onslaughtAfterAllyAttack(players, sideOf, a, events); }
+  // SKIN3 (2026-11-20, owner sheet row 464: "Unit gains {+1/0} upon ally creature attacks. (When ready only)"): Onslaught N, each time another
+  // creature on its side takes its swing, every Ready Onslaught unit there gains +N Attack for the fight. On no card.
+  function onslaughtAfterAllyAttack(players, sideOf, a, events){ const pl = players[a.attId]; if(!pl || isStructureCard(a.att)) return;
+    allBoardCards(pl).forEach(c=>{ if(!c || c === a.att || c.gap || !(c.hp > 0)) return; const n = numN(effectsOf(c).onslaught, 1); if(!(n > 0)) return;
+      if(c.wait > 0 || c.stunned || c.frozen > 0 || dozing(c)) return;
+      c.atk += n; if(recordEvents && events) events.push({type:'namedBuff', side:sideOf(a.attId), attDefId:a.att.defId, attUid:a.att.uid, targetDefId:c.defId, targetUid:c.uid, amount:n, amount2:0, keyword:'onslaught'}); }); }
   function runCustomTriggers(players, sideOf, playerId, boardCard, def, hook, stats, events, extra){
     if(hook === 'onAttacked') en4ShoreUp(players, sideOf, boardCard, events); // EN4 (2026-10-23): Shore Up
     const trigs = trigsOf(def); if(!trigs.length) return; // 2026-10-19 (package GI): + the Kin Rally / Pack Howl keywords' own triggers
@@ -9898,7 +9907,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // live unit's statuses before a step that can end them, pushStatusEnds() then logs one {type:'statusEnd', status} per status
   // that went from on to off. noteWoke() logs a sleeper woken by damage (the line that wakes it calls it). No rule changes.
   const STATUS_END_KEYS = ['poison','bleed','decay','frozen','asleep','paralyzed','stunned','staggered','blind','tipsy','confused','shocked','corrode','exposed','wither','irradiation','smoke','scar','petrified','bound','invincible','invisible','webbed','brittle','silenced','stymied','exhaust','grounded','stench']; /* + Package SK3 (2026-10-19) */ // + W2 (2026-10-16); + Webbed (2026-10-17); + Brittle (2026-10-19, GI)
-  STATUS_END_KEYS.push('exploit', 'tangled', 'pinDown' /* Bola's Pin (ENG14, 2026-10-30) */, 'feeble', 'hardened', 'emboldened' /* FOCUS2 (2026-11-20) */); // + Tangled (ENG9, 2026-10-26) // Exploit tokens (2026-10-19, package SK1): the board hears when the last one is used
+  STATUS_END_KEYS.push('exploit', 'tangled', 'pinDown' /* Bola's Pin (ENG14, 2026-10-30) */, 'feeble', 'hardened', 'emboldened' /* FOCUS2 (2026-11-20) */, 'scared' /* SKIN3 (2026-11-20) */); // + Tangled (ENG9, 2026-10-26) // Exploit tokens (2026-10-19, package SK1): the board hears when the last one is used
   const statusOn = (c, k)=> k === 'daunt' ? !!(c.daunts && c.daunts.length) : (c[k] === true || c[k] > 0);
   function statusSnap(players){
     if(!recordEvents) return null;
@@ -10479,6 +10488,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(c.shocked>0){ if(c._shockedJustSet) c._shockedJustSet=false; else c.shocked -= 1; }
       if(c.corrode>0){ if(c._corrodeJustSet) c._corrodeJustSet=false; else c.corrode -= 1; }
       if(c.daunts && c.daunts.length) c.daunts = c.daunts.filter(x=> x.until > combatNo);
+      if(c.scared > 0 && !(c.scaredUntil > combatNo)) c.scared = 0; // SKIN3 (2026-11-20): Scared, same until as Daunt
       // (EN8 2026-10-25 took a Daunt counter off at each round's end; ENG9 2026-10-26, owner EN8-11: no longer, only a damage action does)
       if(c.staggered>0){ if(c._staggeredJustSet) c._staggeredJustSet=false; else c.staggered -= 1; }
       // Bugfix (2026-09-19, found via a status-effect audit): Stun had no "_justSet" guard, unlike

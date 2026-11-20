@@ -3042,7 +3042,6 @@
  "While it lives, your units' attacks, shots and skills can't miss or be dodged.": "これが生きている間、味方の攻撃・射撃・スキルは外れず、回避されない。",
  "While it rains it has {skills}, and it can't be blocked.": "雨の間は{skills}を持ち、ブロックされない。",
  "While it rains: {skills}.": "雨が降っている間：{skills}。",
- "While one of your leaders is on the battlefield, it has {skills}.": "味方のリーダーが戦場にいる間、{skills}を持つ。",
  "While Ready, every upkeep it gives {n} Creativity counter(s) to a random other unit on your side. Creativity has no effect yet.": "準備OKの間、アップキープごとに味方の別のユニット1体にランダムで創造性カウンターを{n}個与えます。創造性にはまだ効果がありません。",
  "While Ready, every upkeep: shoots {n} cold damage at the foe facing it (or nearest), and it Freezes.": "準備OKの間、毎アップキープ：正面（または最寄り）の敵に {n} の冷気ダメージを射り、凍結させる。",
  "While Ready, every upkeep: {n} acid damage and 1 Corrode to the foe facing it (or nearest).": "準備OKの間、毎アップキープ：正面（または最寄り）の敵に {n} の酸ダメージと腐食 1。",
@@ -3826,7 +3825,6 @@
  "Almanac": "暦",
  "While you have drawn {n} or more cards this fight (after your opening hand): {skills}.": "この戦いで（初手の後に）カードを{n}枚以上引いている間：{skills}。",
  "Onslaught": "猛攻",
- "While your side dealt {n} or more damage to the enemy bramble last round: {skills}.": "前のラウンドに味方が敵のいばらに{n}以上のダメージを与えている間：{skills}。",
  "Riled": "逆上",
  "While it took {n} or more damage last round: {skills}.": "前のラウンドに{n}以上のダメージを受けている間：{skills}。",
  "Taunts the enemies around it (facing it, or one column to either side): their swings, arrows and shots hit it, even ones that would hit the bramble. Stealth slips past; a Volley is not pulled.": "周りの敵（正面か左右1列）を挑発する：その攻撃・矢・射撃はこれに当たる（いばらを狙うものも）。ステルスはすり抜け、一斉射撃は引き寄せない。",
@@ -4733,5 +4731,13 @@
  "{att} makes {name} Sturdy ({n}).": "{att}が{name}を頑丈にする（{n}）。",
  "{att} makes {name} Mighty ({n}).": "{att}が{name}を怪力にする（{n}）。",
  "Sturdy": "頑丈",
- "Mighty": "怪力"
+ "Mighty": "怪力",
+ "A unit that hits it is Scared: it attacks for {n} less.": "これに当てたユニットは怯え状態：攻撃が{n}減る。",
+ "Lasts this round and the next, on every hit and swing it makes (the bramble too). Several Scares don't add up: the biggest counts. Supreme ignores it.": "このラウンドと次のラウンド、すべての命中と攻撃に効く（イバラにも）。重複しない：最大のものが有効。至高には効かない。",
+ "While Ready: +{n}/+0 each time another ally attacks.": "準備OKの間：他の味方が攻撃するたび+{n}/+0。",
+ "The Attack stays for the fight. Each swing of another creature on your side counts; not while it waits, is stunned, frozen or asleep.": "攻撃力は戦闘中ずっと残る。味方の他のクリーチャーの攻撃ごとに数える。待機・スタン・凍結・睡眠中は数えない。",
+ "{att} scares {name}: its attacks deal {n} less.": "{att}が{name}を怯えさせた：攻撃が{n}減る。",
+ "Scared -{n}": "怯え -{n}",
+ "Scared: attacks for {n} less": "怯え：攻撃が{n}減る",
+ "While an ally leader is on the battlefield, it has {skills}.": "味方のリーダーが戦場にいる間、{skills}を持つ。"
 }

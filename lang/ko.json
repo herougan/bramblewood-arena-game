@@ -3045,7 +3045,6 @@
  "While it lives, your units' attacks, shots and skills can't miss or be dodged.": "살아 있는 동안 아군의 공격, 사격, 스킬은 빗나가거나 회피되지 않아요.",
  "While it rains it has {skills}, and it can't be blocked.": "비가 오는 동안 {skills}을(를) 가지며 막을 수 없다.",
  "While it rains: {skills}.": "비가 오는 동안: {skills}.",
- "While one of your leaders is on the battlefield, it has {skills}.": "아군 지도자가 전장에 있는 동안 {skills}을(를) 가진다.",
  "While Ready, every upkeep it gives {n} Creativity counter(s) to a random other unit on your side. Creativity has no effect yet.": "준비 상태인 동안 매 유지 단계마다 아군의 다른 무작위 유닛에게 창의력 카운터 {n}개를 줘요. 창의력은 아직 효과가 없어요.",
  "While Ready, every upkeep: shoots {n} cold damage at the foe facing it (or nearest), and it Freezes.": "가능한 동안 매 유지 단계: 마주한(또는 가장 가까운) 적에게 냉기 피해 {n}을(를) 쏘고 빙결시킨다.",
  "While Ready, every upkeep: {n} acid damage and 1 Corrode to the foe facing it (or nearest).": "가능한 동안 매 유지 단계: 마주한(또는 가장 가까운) 적에게 산성 피해 {n}과 부식 1.",
@@ -3829,7 +3828,6 @@
  "Almanac": "책력",
  "While you have drawn {n} or more cards this fight (after your opening hand): {skills}.": "이번 전투에서(시작 패 이후) 카드를 {n}장 이상 뽑은 동안: {skills}.",
  "Onslaught": "맹공",
- "While your side dealt {n} or more damage to the enemy bramble last round: {skills}.": "지난 라운드에 내 편이 적 덤불에 {n} 이상의 피해를 준 동안: {skills}.",
  "Riled": "격분",
  "While it took {n} or more damage last round: {skills}.": "지난 라운드에 {n} 이상의 피해를 받은 동안: {skills}.",
  "Taunts the enemies around it (facing it, or one column to either side): their swings, arrows and shots hit it, even ones that would hit the bramble. Stealth slips past; a Volley is not pulled.": "주변의 적(정면, 또는 양옆 한 칸)을 도발합니다: 그들의 공격, 화살, 사격이 이 유닛에 맞습니다. 덤불을 노리던 것도요. 은신은 빠져나가고, 일제 사격은 끌려오지 않습니다.",
@@ -4735,5 +4733,13 @@
  "{att} makes {name} Sturdy ({n}).": "{att}이(가) {name}을(를) 튼튼하게 해요 ({n}).",
  "{att} makes {name} Mighty ({n}).": "{att}이(가) {name}을(를) 강력하게 해요 ({n}).",
  "Sturdy": "튼튼",
- "Mighty": "강력"
+ "Mighty": "강력",
+ "A unit that hits it is Scared: it attacks for {n} less.": "이 유닛을 맞힌 유닛은 공포 상태: 공격이 {n} 줄어든다.",
+ "Lasts this round and the next, on every hit and swing it makes (the bramble too). Several Scares don't add up: the biggest counts. Supreme ignores it.": "이번 라운드와 다음 라운드 동안 모든 타격과 공격에 적용된다(가시덤불 포함). 중첩되지 않음: 가장 큰 값만 적용. 지고(Supreme)는 무시한다.",
+ "While Ready: +{n}/+0 each time another ally attacks.": "가능 상태일 때: 다른 아군이 공격할 때마다 +{n}/+0.",
+ "The Attack stays for the fight. Each swing of another creature on your side counts; not while it waits, is stunned, frozen or asleep.": "공격력은 전투 내내 유지된다. 내 편 다른 생물의 공격마다 센다. 대기, 기절, 빙결, 수면 중에는 세지 않는다.",
+ "{att} scares {name}: its attacks deal {n} less.": "{att}이(가) {name}을(를) 겁먹게 했다: 공격이 {n} 줄어든다.",
+ "Scared -{n}": "공포 -{n}",
+ "Scared: attacks for {n} less": "공포: 공격이 {n} 줄어든다",
+ "While an ally leader is on the battlefield, it has {skills}.": "아군 지도자가 전장에 있는 동안 {skills}을(를) 가진다."
 }

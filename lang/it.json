@@ -3045,7 +3045,6 @@
  "While it lives, your units' attacks, shots and skills can't miss or be dodged.": "Finché vive, attacchi, tiri e abilità delle tue unità non mancano e non possono essere schivati.",
  "While it rains it has {skills}, and it can't be blocked.": "Finché piove ha {skills} e non può essere bloccato.",
  "While it rains: {skills}.": "Finché piove: {skills}.",
- "While one of your leaders is on the battlefield, it has {skills}.": "Finché uno dei tuoi capi è sul campo di battaglia, ha {skills}.",
  "While Ready, every upkeep it gives {n} Creativity counter(s) to a random other unit on your side. Creativity has no effect yet.": "Finché è pronta, a ogni mantenimento dà {n} segnalino/i Creatività a un’altra unità alleata a caso. La Creatività non ha ancora effetto.",
  "While Ready, every upkeep: shoots {n} cold damage at the foe facing it (or nearest), and it Freezes.": "Finché è Pronta, a ogni mantenimento: tira {n} danni da freddo al nemico di fronte (o al più vicino), e lo congela.",
  "While Ready, every upkeep: {n} acid damage and 1 Corrode to the foe facing it (or nearest).": "Finché è Pronta, a ogni mantenimento: {n} danni da acido e 1 Corrosione al nemico di fronte (o al più vicino).",
@@ -3828,7 +3827,6 @@
  "Almanac": "Almanacco",
  "While you have drawn {n} or more cards this fight (after your opening hand): {skills}.": "Finché hai pescato {n} o più carte in questo scontro (dopo la mano iniziale): {skills}.",
  "Onslaught": "Assalto",
- "While your side dealt {n} or more damage to the enemy bramble last round: {skills}.": "Finché la tua parte ha inflitto {n} o più danni al rovo nemico nel round precedente: {skills}.",
  "Riled": "Irritato",
  "While it took {n} or more damage last round: {skills}.": "Finché ha subito {n} o più danni nel round precedente: {skills}.",
  "Taunts the enemies around it (facing it, or one column to either side): their swings, arrows and shots hit it, even ones that would hit the bramble. Stealth slips past; a Volley is not pulled.": "Provoca i nemici intorno (di fronte, o a una colonna per lato): i loro colpi, frecce e tiri colpiscono lui, anche quelli diretti al rovo. La Furtività passa oltre; una Raffica non viene attirata.",
@@ -4734,5 +4732,13 @@
  "{att} makes {name} Sturdy ({n}).": "{att} rende {name} Robusto ({n}).",
  "{att} makes {name} Mighty ({n}).": "{att} rende {name} Possente ({n}).",
  "Sturdy": "Robusto",
- "Mighty": "Possente"
+ "Mighty": "Possente",
+ "A unit that hits it is Scared: it attacks for {n} less.": "Chi la colpisce diventa Spaventato: attacca per {n} in meno.",
+ "Lasts this round and the next, on every hit and swing it makes (the bramble too). Several Scares don't add up: the biggest counts. Supreme ignores it.": "Dura questo round e il successivo, su ogni colpo e attacco (anche il rovo). Non si somma: conta il più forte. Supremo lo ignora.",
+ "While Ready: +{n}/+0 each time another ally attacks.": "Se Pronto: +{n}/+0 ogni volta che un altro alleato attacca.",
+ "The Attack stays for the fight. Each swing of another creature on your side counts; not while it waits, is stunned, frozen or asleep.": "L'Attacco resta per tutto lo scontro. Conta ogni colpo di un'altra creatura del tuo lato; non mentre attende, è stordita, congelata o addormentata.",
+ "{att} scares {name}: its attacks deal {n} less.": "{att} spaventa {name}: i suoi attacchi fanno {n} in meno.",
+ "Scared -{n}": "Spaventato -{n}",
+ "Scared: attacks for {n} less": "Spaventato: attacca per {n} in meno",
+ "While an ally leader is on the battlefield, it has {skills}.": "Finché un capo alleato è sul campo di battaglia, ha {skills}."
 }

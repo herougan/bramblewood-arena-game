@@ -3045,7 +3045,6 @@
  "While it lives, your units' attacks, shots and skills can't miss or be dodged.": "Enquanto viver, os ataques, disparos e habilidades das tuas unidades não falham nem podem ser esquivados.",
  "While it rains it has {skills}, and it can't be blocked.": "Enquanto chove tem {skills} e não pode ser bloqueado.",
  "While it rains: {skills}.": "Enquanto chover: {skills}.",
- "While one of your leaders is on the battlefield, it has {skills}.": "Enquanto um dos teus líderes estiver no campo de batalha, tem {skills}.",
  "While Ready, every upkeep it gives {n} Creativity counter(s) to a random other unit on your side. Creativity has no effect yet.": "Enquanto está pronta, em cada manutenção dá {n} marcador(es) de Criatividade a outra unidade aliada ao acaso. A Criatividade ainda não tem efeito.",
  "While Ready, every upkeep: shoots {n} cold damage at the foe facing it (or nearest), and it Freezes.": "Enquanto Pronta, em cada manutenção: dispara {n} de dano de frio ao inimigo à frente (ou o mais próximo), e congela-o.",
  "While Ready, every upkeep: {n} acid damage and 1 Corrode to the foe facing it (or nearest).": "Enquanto Pronta, em cada manutenção: {n} de dano de ácido e 1 Corrosão ao inimigo à frente (ou o mais próximo).",
@@ -3828,7 +3827,6 @@
  "Almanac": "Almanaque",
  "While you have drawn {n} or more cards this fight (after your opening hand): {skills}.": "Enquanto tiveres comprado {n} ou mais cartas neste combate (depois da mão inicial): {skills}.",
  "Onslaught": "Investida",
- "While your side dealt {n} or more damage to the enemy bramble last round: {skills}.": "Enquanto o teu lado tiver causado {n} ou mais de dano ao silvado inimigo na ronda anterior: {skills}.",
  "Riled": "Irritado",
  "While it took {n} or more damage last round: {skills}.": "Enquanto tiver sofrido {n} ou mais de dano na ronda anterior: {skills}.",
  "Taunts the enemies around it (facing it, or one column to either side): their swings, arrows and shots hit it, even ones that would hit the bramble. Stealth slips past; a Volley is not pulled.": "Provoca os inimigos à sua volta (de frente, ou a uma coluna de cada lado): os golpes, flechas e tiros deles acertam-no, mesmo os que iriam ao silvado. A Furtividade escapa; uma Saraivada não é atraída.",
@@ -4734,5 +4732,13 @@
  "{att} makes {name} Sturdy ({n}).": "{att} deixa {name} Robusto ({n}).",
  "{att} makes {name} Mighty ({n}).": "{att} deixa {name} Poderoso ({n}).",
  "Sturdy": "Robusto",
- "Mighty": "Poderoso"
+ "Mighty": "Poderoso",
+ "A unit that hits it is Scared: it attacks for {n} less.": "Quem a atinge fica Assustado: ataca com {n} a menos.",
+ "Lasts this round and the next, on every hit and swing it makes (the bramble too). Several Scares don't add up: the biggest counts. Supreme ignores it.": "Dura esta ronda e a seguinte, em cada golpe e ataque (o silvado também). Não acumula: conta o maior. Supremo ignora-o.",
+ "While Ready: +{n}/+0 each time another ally attacks.": "Se Pronto: +{n}/+0 sempre que outro aliado ataca.",
+ "The Attack stays for the fight. Each swing of another creature on your side counts; not while it waits, is stunned, frozen or asleep.": "O Ataque fica para o combate. Conta cada golpe de outra criatura do teu lado; não enquanto espera, está atordoada, congelada ou a dormir.",
+ "{att} scares {name}: its attacks deal {n} less.": "{att} assusta {name}: os seus ataques causam {n} a menos.",
+ "Scared -{n}": "Assustado -{n}",
+ "Scared: attacks for {n} less": "Assustado: ataca com {n} a menos",
+ "While an ally leader is on the battlefield, it has {skills}.": "Enquanto um líder aliado estiver no campo de batalha, tem {skills}."
 }

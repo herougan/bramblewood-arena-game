@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-20 SKIN3
+- Scare N: a unit that hits it is Scared N for that round and the next (every hit and swing N less, the bramble too; biggest N counts; not Supreme). Was: hits on it were N less. Price 2.52 -> 3.02 a point (x1.2, 4-round rule): Yeti 98.3 -> 99.8%, Booming Bittern 93.7 -> 95.9% (unattainable: White Dragon, Lurking Dread, Ashmantle Fiend, Whale Shark +1.4 to +3.4; Frillneck Duelist at Level 3 91.9 -> 93.4%). Fights with these cards change.
+- Onslaught: the old rule (bramble damage last round – {…}) and its braces removed (owner "Remove"); Bison Bulldozer lost its Level 3 Onslaught 3 (skills only; 93.6% at Level 1 unchanged, Level 3 93.1 -> 87.4%). New Onslaught N (owner row 464): while Ready, +N/+0 for each other creature's swing on its side; 6.8 a point, on no card.
+- Loyal reads "While an ally leader is on the field" (Codex: battlefield). Ranking record (`docs/skill-ranking.json`, `tools/skill_ranking.py --from-1120`): the 11-20 II / Comments values (38 rows) and 19 new rows. The 17 new designs are in `docs/effects-catalogue.md` ("Designed, not built"). Test `skin3-2026-11-20`.
+
 ## 2026-11-20 (package UIQ2b: Skills on these cards, no cut pills, compact legend)
 - Map card editor: pills on a skill tile wrap to a second line instead of being cut ("NE..."); the colour legend is one row of four at desktop, 2x2 on a phone.
 ## 2026-11-20 (package REFIT11: FOCUS2 carrier fights re-fitted)

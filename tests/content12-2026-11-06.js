@@ -45,7 +45,7 @@ const twins = Object.values(seen).filter(v=> v.length > 1); ok(!twins.length, 'n
 
 // 3. carriers, each in band
 const CARRY = {'horseshoe-crab': 'relict', 'nautilus-drifter': 'relict', 'leafcutter-gardener': 'meld', 'coral-polyp-colony': 'meld', 'hedgehog-herbalist': 'immunity',
-  'venomlord-serpent': 'immunity', 'poison-dart-croaker': 'sequestration', 'raven-scout': 'tally', 'cone-cutter-squirrel': 'almanac', 'bison-bulldozer': 'onslaught', 'boreal-elk': 'riled',
+  'venomlord-serpent': 'immunity', 'poison-dart-croaker': 'sequestration', 'raven-scout': 'tally', 'cone-cutter-squirrel': 'almanac', /* bison-bulldozer: Onslaught removed (SKIN3, 2026-11-20) */ 'boreal-elk': 'riled',
   'dormouse': 'nocturnal', 'torch': 'illuminate', 'meadow-frog': 'tide', 'caiman-hatchling': 'ambush', 'pike-lancer': 'pierce', 'dolphin-knight': 'sonar', 'irradiated-glow-wyrm': 'irradiated', 'mangrove-mudskipper': 'skitter'};
 Object.entries(CARRY).forEach(([id, k])=>{ ok(by[id] && (by[id].effects[k] != null || redesigned(id)) /* 2026-11-18 (TESTFIX): the redesign re-set its skills (OWN-1117-3) */, `${id} carries ${k}`); ok(inBand(id), `${id} in band`); });
 { const AT10 = require('./lib/redesign.js').skillsAt10; // 2026-11-19 (TESTFIX6): LVL10, the Colony's Meld from Level 3

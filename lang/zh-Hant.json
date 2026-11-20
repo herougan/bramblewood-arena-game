@@ -3042,7 +3042,6 @@
  "While it lives, your units' attacks, shots and skills can't miss or be dodged.": "牠在場時，你方單位的攻擊、射擊和技能不會落空，也無法被閃避。",
  "While it rains it has {skills}, and it can't be blocked.": "下雨時擁有{skills}，且無法被阻擋。",
  "While it rains: {skills}.": "下雨時：{skills}。",
- "While one of your leaders is on the battlefield, it has {skills}.": "當你的一名首領在戰場上時，擁有{skills}。",
  "While Ready, every upkeep it gives {n} Creativity counter(s) to a random other unit on your side. Creativity has no effect yet.": "處於可行動狀態時，每個維持階段給己方另一個隨機單位 {n} 個創意指示物。創意目前還沒有效果。",
  "While Ready, every upkeep: shoots {n} cold damage at the foe facing it (or nearest), and it Freezes.": "可進行期間，每個維持階段：向正對（或最近）的敵人射出 {n} 點冰冷傷害，並使其冰凍。",
  "While Ready, every upkeep: {n} acid damage and 1 Corrode to the foe facing it (or nearest).": "可進行期間，每個維持階段：對正對（或最近）的敵人造成 {n} 點酸蝕傷害和 1 層腐蝕。",
@@ -3826,7 +3825,6 @@
  "Almanac": "曆書",
  "While you have drawn {n} or more cards this fight (after your opening hand): {skills}.": "只要你本場（起手之後）已抽 {n} 張或更多牌：{skills}。",
  "Onslaught": "猛攻",
- "While your side dealt {n} or more damage to the enemy bramble last round: {skills}.": "只要你方上回合對敵方荊棘叢造成 {n} 點或更多傷害：{skills}。",
  "Riled": "激怒",
  "While it took {n} or more damage last round: {skills}.": "只要它上回合受到 {n} 點或更多傷害：{skills}。",
  "Taunts the enemies around it (facing it, or one column to either side): their swings, arrows and shots hit it, even ones that would hit the bramble. Stealth slips past; a Volley is not pulled.": "嘲諷它周圍的敵人（正對它，或左右各一列）：他們的攻擊、箭矢和射擊都會打向它，連本要打荊棘叢的也是。潛行可繞過；齊射不會被吸引。",
@@ -4733,5 +4731,13 @@
  "{att} makes {name} Sturdy ({n}).": "{att}使{name}堅固（{n}）。",
  "{att} makes {name} Mighty ({n}).": "{att}使{name}強力（{n}）。",
  "Sturdy": "堅固",
- "Mighty": "強力"
+ "Mighty": "強力",
+ "A unit that hits it is Scared: it attacks for {n} less.": "擊中它的單位陷入驚恐：攻擊減少 {n}。",
+ "Lasts this round and the next, on every hit and swing it makes (the bramble too). Several Scares don't add up: the biggest counts. Supreme ignores it.": "持續本回合和下一回合，影響它的每次命中和攻擊（包括荊棘）。不疊加：取最大值。至高無視它。",
+ "While Ready: +{n}/+0 each time another ally attacks.": "可進行時：每當另一名友軍攻擊，+{n}/+0。",
+ "The Attack stays for the fight. Each swing of another creature on your side counts; not while it waits, is stunned, frozen or asleep.": "攻擊力加成持續整場戰鬥。己方其他生物每次攻擊都計入；等待、暈眩、冰凍或睡著時不計。",
+ "{att} scares {name}: its attacks deal {n} less.": "{att} 嚇住了 {name}：其攻擊減少 {n}。",
+ "Scared -{n}": "驚恐 -{n}",
+ "Scared: attacks for {n} less": "驚恐：攻擊減少 {n}",
+ "While an ally leader is on the battlefield, it has {skills}.": "當友方首領在戰場上時，擁有{skills}。"
 }

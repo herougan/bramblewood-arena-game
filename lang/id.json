@@ -3045,7 +3045,6 @@
  "While it lives, your units' attacks, shots and skills can't miss or be dodged.": "Selama ia hidup, serangan, tembakan, dan skill unitmu tak bisa meleset atau dihindari.",
  "While it rains it has {skills}, and it can't be blocked.": "Selama hujan ia punya {skills} dan tidak bisa dihadang.",
  "While it rains: {skills}.": "Selama hujan: {skills}.",
- "While one of your leaders is on the battlefield, it has {skills}.": "Selama salah satu pemimpinmu ada di medan perang, ia punya {skills}.",
  "While Ready, every upkeep it gives {n} Creativity counter(s) to a random other unit on your side. Creativity has no effect yet.": "Selama Siap, setiap fase pemeliharaan ia memberi {n} penanda Kreativitas ke satu unit lain acak di pihakmu. Kreativitas belum berefek.",
  "While Ready, every upkeep: shoots {n} cold damage at the foe facing it (or nearest), and it Freezes.": "Selama Siap, tiap giliran perawatan: menembak {n} kerusakan dingin ke musuh di hadapannya (atau terdekat), dan membekukannya.",
  "While Ready, every upkeep: {n} acid damage and 1 Corrode to the foe facing it (or nearest).": "Selama Siap, tiap giliran perawatan: {n} kerusakan asam dan 1 Korosi ke musuh di hadapannya (atau terdekat).",
@@ -3828,7 +3827,6 @@
  "Almanac": "Almanak",
  "While you have drawn {n} or more cards this fight (after your opening hand): {skills}.": "Selama kamu sudah menarik {n} kartu atau lebih dalam pertarungan ini (setelah tangan awal): {skills}.",
  "Onslaught": "Gempuran",
- "While your side dealt {n} or more damage to the enemy bramble last round: {skills}.": "Selama pihakmu memberi {n} kerusakan atau lebih ke semak musuh pada ronde lalu: {skills}.",
  "Riled": "Terusik",
  "While it took {n} or more damage last round: {skills}.": "Selama ia menerima {n} kerusakan atau lebih pada ronde lalu: {skills}.",
  "Taunts the enemies around it (facing it, or one column to either side): their swings, arrows and shots hit it, even ones that would hit the bramble. Stealth slips past; a Volley is not pulled.": "Memancing musuh di sekitarnya (di depannya, atau satu kolom di kiri-kanan): ayunan, panah dan tembakan mereka mengenainya, bahkan yang akan mengenai semak. Siluman lolos; Rentetan tidak tertarik.",
@@ -4734,5 +4732,13 @@
  "{att} makes {name} Sturdy ({n}).": "{att} membuat {name} Kokoh ({n}).",
  "{att} makes {name} Mighty ({n}).": "{att} membuat {name} Perkasa ({n}).",
  "Sturdy": "Kokoh",
- "Mighty": "Perkasa"
+ "Mighty": "Perkasa",
+ "A unit that hits it is Scared: it attacks for {n} less.": "Unit yang mengenainya jadi Ketakutan: serangannya {n} lebih lemah.",
+ "Lasts this round and the next, on every hit and swing it makes (the bramble too). Several Scares don't add up: the biggest counts. Supreme ignores it.": "Berlaku ronde ini dan berikutnya, pada tiap pukulan dan serangan (semak juga). Tidak bertumpuk: yang terbesar dihitung. Supreme mengabaikannya.",
+ "While Ready: +{n}/+0 each time another ally attacks.": "Saat Siap: +{n}/+0 tiap kali sekutu lain menyerang.",
+ "The Attack stays for the fight. Each swing of another creature on your side counts; not while it waits, is stunned, frozen or asleep.": "Serangan bertahan sepanjang laga. Tiap serangan makhluk lain di pihakmu dihitung; tidak saat menunggu, pingsan, beku, atau tidur.",
+ "{att} scares {name}: its attacks deal {n} less.": "{att} menakuti {name}: serangannya {n} lebih lemah.",
+ "Scared -{n}": "Ketakutan -{n}",
+ "Scared: attacks for {n} less": "Ketakutan: serangan {n} lebih lemah",
+ "While an ally leader is on the battlefield, it has {skills}.": "Selama pemimpin sekutu ada di medan perang, ia punya {skills}."
 }

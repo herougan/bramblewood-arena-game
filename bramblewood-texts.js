@@ -2101,7 +2101,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.cx-night": "Night",
   "ui.cx-nothing": "nothing",
   "ui.sk-rainrunner-grant": "While it rains it has {skills}, and it can't be blocked.",
-  "ui.sk-loyal-grant": "While one of your leaders is on the battlefield, it has {skills}.",
+  "ui.sk-loyal-grant": "While an ally leader is on the battlefield, it has {skills}.",
   "ui.sk-usurper-grant": "While the opposing leader is on the battlefield, it has {skills}.",
   "ui.skn-transform": "Transform",
   "ui.sk-transform": "The first time {when} holds, it gains {gain} for the rest of the fight.",
@@ -3262,8 +3262,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-e10-tally": "While {n} or more enemy units have died this fight: {skills}.",
   "ui.skn-e10-almanac": "Almanac",
   "ui.sk-e10-almanac": "While you have drawn {n} or more cards this fight (after your opening hand): {skills}.",
-  "ui.skn-e10-onslaught": "Onslaught",
-  "ui.sk-e10-onslaught": "While your side dealt {n} or more damage to the enemy bramble last round: {skills}.",
   "ui.skn-e10-riled": "Riled",
   "ui.sk-e10-riled": "While it took {n} or more damage last round: {skills}.",
   "ui.e22-taunt": "Taunts the enemies around it (facing it, or one column to either side): their swings, arrows and shots hit it, even ones that would hit the bramble. Stealth slips past; a Volley is not pulled.",
@@ -3906,7 +3904,15 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.focus2-float-harden": "🗻 Sturdy",
   "ui.focus2-float-embolden": "💪 Mighty",
   "ui.focus2-st-sturdy": "Sturdy",
-  "ui.focus2-st-mighty": "Mighty"
+  "ui.focus2-st-mighty": "Mighty",
+  "ui.sk-scare": "A unit that hits it is Scared: it attacks for {n} less.",
+  "ui.sk-scare-codex": "Lasts this round and the next, on every hit and swing it makes (the bramble too). Several Scares don't add up: the biggest counts. Supreme ignores it.",
+  "ui.skn-onslaught": "Onslaught",
+  "ui.sk-onslaught": "While Ready: +{n}/+0 each time another ally attacks.",
+  "ui.sk-onslaught-codex": "The Attack stays for the fight. Each swing of another creature on your side counts; not while it waits, is stunned, frozen or asleep.",
+  "ui.skin3-log-scared": "😱 {att} scares {name}: its attacks deal {n} less.",
+  "ui.skin3-float-scared": "😱 Scared -{n}",
+  "ui.skin3-scared-tip": "Scared: attacks for {n} less"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

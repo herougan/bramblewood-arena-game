@@ -797,28 +797,6 @@
    },
    "about": "Threshold skill: v = N (default 4); gives = the braces (default +2/+2) while the count is N or more."
   },
-  "onslaught": {
-   "params": {
-    "gives": "onslaughtGrant"
-   },
-   "default": "+2/+2 at 3+ damage your side dealt the enemy bramble last round",
-   "number": 3,
-   "stat": {
-    "v": 3,
-    "gives": {
-     "attack": 3,
-     "health": 1
-    }
-   },
-   "ability": {
-    "v": 3,
-    "gives": {
-     "evasive": true,
-     "thorns": 1
-    }
-   },
-   "about": "Threshold skill: v = N (default 3); gives = the braces (default +2/+2) while the count is N or more."
-  },
   "riled": {
    "params": {
     "gives": "riledGrant"
