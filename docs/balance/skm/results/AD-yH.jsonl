@@ -1,0 +1,103 @@
+{"method":"AD-yH","skill":"T:onAttack>drawCard","worth":0.333,"ci":1.765,"games":160,"price":0,"carrier":"bee-sentry@0-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.039Z"}
+{"method":"AD-yH","skill":"T:onAttack>gain","worth":1,"ci":4.187,"games":160,"price":0.89,"carrier":"cricket-drummer@2-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.039Z"}
+{"method":"AD-yH","skill":"T:onAttacked>gain","worth":1,"ci":4.187,"games":160,"price":1.05,"carrier":"cricket-drummer@2-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.039Z"}
+{"method":"AD-yH","skill":"T:onDeath>damage","worth":1,"ci":1.332,"games":160,"price":1.19,"carrier":"fungus-gnat-cloud@8-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.039Z"}
+{"method":"AD-yH","skill":"T:onHealed>gain","worth":0,"ci":0,"games":160,"price":1,"carrier":"driftwood-crab@3-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.039Z"}
+{"method":"AD-yH","skill":"T:onReady>damage","worth":null,"ci":null,"games":160,"price":4.48,"carrier":"kittiwake-flock@11-PRO-1","M":40,"n":40,"note":"yardstick not positive","fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.040Z"}
+{"method":"AD-yH","skill":"T:onSpawn>gain","worth":-6,"ci":23.67,"games":160,"price":4.26,"carrier":"alpine-marmot@16-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.040Z"}
+{"method":"AD-yH","skill":"T:onSpawn>stun","worth":1.143,"ci":3.041,"games":160,"price":1.95,"carrier":"basalt-boar@20-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.040Z"}
+{"method":"AD-yH","skill":"ambush","worth":null,"ci":null,"games":160,"price":1.9,"carrier":"camouflage-frog@6-PRO-1","M":40,"n":40,"note":"yardstick not positive","fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.040Z"}
+{"method":"AD-yH","skill":"armor","worth":9,"ci":22.497,"games":160,"price":3.13,"carrier":"cricket-drummer@2-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.040Z"}
+{"method":"AD-yH","skill":"arrow","worth":22,"ci":98.207,"games":160,"price":1.893,"carrier":"driftwood-crab@3-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.041Z"}
+{"method":"AD-yH","skill":"avalanche","worth":null,"ci":null,"games":160,"price":9.25,"carrier":"kittiwake-flock@11-PRO-1","M":40,"n":40,"note":"yardstick not positive","fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.041Z"}
+{"method":"AD-yH","skill":"bleed","worth":2,"ci":2.311,"games":160,"price":3.963,"carrier":"bee-sentry@0-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.041Z"}
+{"method":"AD-yH","skill":"bloomCopy","worth":3.2,"ci":3.331,"games":160,"price":6.247,"carrier":"drowned-matriarch@4-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.041Z"}
+{"method":"AD-yH","skill":"bludgeon","worth":2.5,"ci":2.076,"games":160,"price":3.95,"carrier":"alley-cat@9-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.042Z"}
+{"method":"AD-yH","skill":"bounty","worth":2.857,"ci":4.308,"games":160,"price":1.8,"carrier":"basalt-boar@20-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.042Z"}
+{"method":"AD-yH","skill":"broodkeeper","worth":-0.5,"ci":2.317,"games":160,"price":3,"carrier":"fungus-gnat-cloud@7-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.042Z"}
+{"method":"AD-yH","skill":"bulldoze","worth":1.333,"ci":2.342,"games":160,"price":2.23,"carrier":"alley-cat@12-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.042Z"}
+{"method":"AD-yH","skill":"bulwark","worth":5.143,"ci":6.904,"games":160,"price":7.42,"carrier":"basalt-boar@20-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.042Z"}
+{"method":"AD-yH","skill":"carnage","worth":2,"ci":5.544,"games":160,"price":1.68,"carrier":"alpine-marmot@14-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.043Z"}
+{"method":"AD-yH","skill":"carrion","worth":2.5,"ci":4.466,"games":160,"price":2.68,"carrier":"fungus-gnat-cloud@7-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.043Z"}
+{"method":"AD-yH","skill":"corrode","worth":4,"ci":6.182,"games":160,"price":2.41,"carrier":"fungus-gnat-cloud@7-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.043Z"}
+{"method":"AD-yH","skill":"crabClaws","worth":-1,"ci":6.417,"games":160,"price":0.1,"carrier":"cricket-drummer@2-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.043Z"}
+{"method":"AD-yH","skill":"crepuscular","worth":null,"ci":null,"games":160,"price":3.96,"carrier":"balloon-archer@18-PRO-1","M":40,"n":40,"note":"yardstick not positive","fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.043Z"}
+{"method":"AD-yH","skill":"cure","worth":1,"ci":1.332,"games":160,"price":0.5,"carrier":"driftwood-crab@5-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.044Z"}
+{"method":"AD-yH","skill":"daunt","worth":4,"ci":19.367,"games":160,"price":2.613,"carrier":"driftwood-crab@3-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.044Z"}
+{"method":"AD-yH","skill":"delivery","worth":8,"ci":37.494,"games":160,"price":4.52,"carrier":"driftwood-crab@3-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.044Z"}
+{"method":"AD-yH","skill":"diurnal","worth":2,"ci":2.633,"games":160,"price":1.519,"carrier":"chipmunk-cavalry@1-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.044Z"}
+{"method":"AD-yH","skill":"dive","worth":null,"ci":null,"games":160,"price":-1.7,"carrier":"alley-cat@17-PRO-1","M":40,"n":40,"note":"yardstick not positive","fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.044Z"}
+{"method":"AD-yH","skill":"dry","worth":null,"ci":null,"games":160,"price":4,"carrier":"balloon-archer@18-PRO-1","M":40,"n":40,"note":"yardstick not positive","fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.045Z"}
+{"method":"AD-yH","skill":"dynamite","worth":0.667,"ci":3.042,"games":160,"price":1.1,"carrier":"alley-cat@12-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.045Z"}
+{"method":"AD-yH","skill":"electricity","worth":2,"ci":2.034,"games":160,"price":4.5,"carrier":"alley-cat@9-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.045Z"}
+{"method":"AD-yH","skill":"evasive","worth":2.667,"ci":2.602,"games":160,"price":1.72,"carrier":"bee-sentry@0-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.045Z"}
+{"method":"AD-yH","skill":"exploit","worth":4,"ci":9.561,"games":160,"price":4.2,"carrier":"alpine-marmot@14-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.045Z"}
+{"method":"AD-yH","skill":"expose","worth":null,"ci":null,"games":160,"price":0.18,"carrier":"balloon-archer@18-PRO-1","M":40,"n":40,"note":"yardstick not positive","fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.046Z"}
+{"method":"AD-yH","skill":"flying","worth":5.5,"ci":7.041,"games":160,"price":2.206,"carrier":"farm-dog@0-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.046Z"}
+{"method":"AD-yH","skill":"foraging","worth":0.286,"ci":1.285,"games":160,"price":1.68,"carrier":"chipmunk-cavalry@1-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.047Z"}
+{"method":"AD-yH","skill":"forestry","worth":1.333,"ci":1.856,"games":160,"price":6.617,"carrier":"bee-sentry@0-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.047Z"}
+{"method":"AD-yH","skill":"fork","worth":3,"ci":8.888,"games":160,"price":4.95,"carrier":"duck-paddler@4-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.047Z"}
+{"method":"AD-yH","skill":"freeze","worth":null,"ci":null,"games":160,"price":2.88,"carrier":"alley-cat@17-PRO-1","M":40,"n":40,"note":"yardstick not positive","fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.047Z"}
+{"method":"AD-yH","skill":"frostbite","worth":null,"ci":null,"games":160,"price":0.19,"carrier":"kittiwake-flock@11-PRO-1","M":40,"n":40,"note":"yardstick not positive","fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.048Z"}
+{"method":"AD-yH","skill":"guardian","worth":-2,"ci":12.523,"games":160,"price":0,"carrier":"pond-trout@1-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.048Z"}
+{"method":"AD-yH","skill":"harbinger","worth":2,"ci":14.828,"games":160,"price":6.5,"carrier":"badger-lumberjack@13-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.048Z"}
+{"method":"AD-yH","skill":"herald","worth":2,"ci":5.544,"games":160,"price":1.5,"carrier":"alpine-marmot@14-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.049Z"}
+{"method":"AD-yH","skill":"herbalist","worth":1.333,"ci":1.856,"games":160,"price":0.23,"carrier":"driftwood-crab@5-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.049Z"}
+{"method":"AD-yH","skill":"illuminate","worth":1,"ci":1.877,"games":160,"price":0.51,"carrier":"fungus-gnat-cloud@8-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.049Z"}
+{"method":"AD-yH","skill":"immunity","worth":1.667,"ci":2.084,"games":160,"price":0.3,"carrier":"driftwood-crab@5-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.049Z"}
+{"method":"AD-yH","skill":"inspiring","worth":-0.286,"ci":1.285,"games":160,"price":4.445,"carrier":"chipmunk-cavalry@1-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.050Z"}
+{"method":"AD-yH","skill":"keenSense","worth":1,"ci":1.332,"games":160,"price":2.02,"carrier":"fungus-gnat-cloud@8-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.050Z"}
+{"method":"AD-yH","skill":"lastStand","worth":null,"ci":null,"games":160,"price":0.45,"carrier":"armadillo-guard@19-PRO-1","M":40,"n":40,"note":"yardstick not positive","fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.050Z"}
+{"method":"AD-yH","skill":"loneWolf","worth":8,"ci":28.407,"games":160,"price":7.36,"carrier":"alpine-marmot@16-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.050Z"}
+{"method":"AD-yH","skill":"loyal","worth":0,"ci":0,"games":160,"price":0.93,"carrier":"balloon-archer@15-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.051Z"}
+{"method":"AD-yH","skill":"meiosis","worth":2.4,"ci":2.681,"games":160,"price":4.55,"carrier":"drowned-matriarch@4-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.051Z"}
+{"method":"AD-yH","skill":"mighty","worth":8,"ci":17.395,"games":160,"price":4.79,"carrier":"alpine-marmot@14-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.051Z"}
+{"method":"AD-yH","skill":"nocturnal","worth":0.286,"ci":1.285,"games":160,"price":2.171,"carrier":"chipmunk-cavalry@1-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.051Z"}
+{"method":"AD-yH","skill":"nursing","worth":3.333,"ci":3.08,"games":160,"price":5,"carrier":"bee-sentry@0-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.051Z"}
+{"method":"AD-yH","skill":"offspring","worth":null,"ci":null,"games":160,"price":6.08,"carrier":"alley-cat@17-PRO-1","M":40,"n":40,"note":"yardstick not positive","fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.052Z"}
+{"method":"AD-yH","skill":"onDeathSpawn","worth":8.5,"ci":12.035,"games":160,"price":4.35,"carrier":"fungus-gnat-cloud@7-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.052Z"}
+{"method":"AD-yH","skill":"overwhelm","worth":0,"ci":0,"games":160,"price":1.05,"carrier":"balloon-archer@15-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.052Z"}
+{"method":"AD-yH","skill":"pack","worth":6,"ci":13.492,"games":160,"price":3.25,"carrier":"alpine-marmot@14-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.052Z"}
+{"method":"AD-yH","skill":"packLeader","worth":0,"ci":9.724,"games":160,"price":0,"carrier":"alpine-marmot@16-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.053Z"}
+{"method":"AD-yH","skill":"paralysisPowder","worth":null,"ci":null,"games":160,"price":3.34,"carrier":"kittiwake-flock@11-PRO-1","M":40,"n":40,"note":"yardstick not positive","fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.053Z"}
+{"method":"AD-yH","skill":"parasite","worth":null,"ci":null,"games":160,"price":1,"carrier":"camouflage-frog@6-PRO-1","M":40,"n":40,"note":"yardstick not positive","fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.053Z"}
+{"method":"AD-yH","skill":"pierce","worth":2,"ci":6.819,"games":160,"price":0.327,"carrier":"cricket-drummer@2-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.053Z"}
+{"method":"AD-yH","skill":"pitchfork","worth":2.5,"ci":4.107,"games":160,"price":4,"carrier":"balloon-archer@15-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.053Z"}
+{"method":"AD-yH","skill":"poison","worth":2,"ci":2.311,"games":160,"price":3.88,"carrier":"driftwood-crab@5-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.054Z"}
+{"method":"AD-yH","skill":"poisonBarbs","worth":0,"ci":3.97,"games":160,"price":2.4,"carrier":"cricket-drummer@2-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.054Z"}
+{"method":"AD-yH","skill":"poisonPowder","worth":5,"ci":15.343,"games":160,"price":4.8,"carrier":"gannet-nestweaver@7-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.054Z"}
+{"method":"AD-yH","skill":"pounce","worth":12,"ci":54.462,"games":160,"price":3.883,"carrier":"driftwood-crab@3-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.054Z"}
+{"method":"AD-yH","skill":"pulverise","worth":null,"ci":null,"games":160,"price":1.53,"carrier":"alley-cat@17-PRO-1","M":40,"n":40,"note":"yardstick not positive","fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.055Z"}
+{"method":"AD-yH","skill":"purblind","worth":0.333,"ci":0.699,"games":160,"price":-6.3,"carrier":"fungus-gnat-cloud@8-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.055Z"}
+{"method":"AD-yH","skill":"rage","worth":3.429,"ci":4.634,"games":160,"price":3.01,"carrier":"basalt-boar@20-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.055Z"}
+{"method":"AD-yH","skill":"rainrunner","worth":0.286,"ci":1.285,"games":160,"price":4,"carrier":"chipmunk-cavalry@1-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.055Z"}
+{"method":"AD-yH","skill":"reach","worth":-6,"ci":22.299,"games":160,"price":1,"carrier":"alpine-marmot@16-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.055Z"}
+{"method":"AD-yH","skill":"recoil","worth":-4,"ci":5.645,"games":160,"price":-3.944,"carrier":"alley-cat@12-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.056Z"}
+{"method":"AD-yH","skill":"repair","worth":0.286,"ci":1.285,"games":160,"price":2.97,"carrier":"chipmunk-cavalry@1-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.056Z"}
+{"method":"AD-yH","skill":"salvage","worth":1,"ci":4.187,"games":160,"price":0.75,"carrier":"cricket-drummer@2-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.056Z"}
+{"method":"AD-yH","skill":"sap","worth":null,"ci":null,"games":160,"price":2.3,"carrier":"camouflage-frog@6-PRO-1","M":40,"n":40,"note":"yardstick not positive","fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.056Z"}
+{"method":"AD-yH","skill":"scare","worth":null,"ci":null,"games":160,"price":2.52,"carrier":"camouflage-frog@6-PRO-1","M":40,"n":40,"note":"yardstick not positive","fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.056Z"}
+{"method":"AD-yH","skill":"shield","worth":null,"ci":null,"games":160,"price":4.93,"carrier":"balloon-archer@18-PRO-1","M":40,"n":40,"note":"yardstick not positive","fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.057Z"}
+{"method":"AD-yH","skill":"siege","worth":1.333,"ci":2.342,"games":160,"price":1.427,"carrier":"alley-cat@12-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.057Z"}
+{"method":"AD-yH","skill":"sleepPowder","worth":4,"ci":6.182,"games":160,"price":2.5,"carrier":"fungus-gnat-cloud@7-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.057Z"}
+{"method":"AD-yH","skill":"slow","worth":-0.8,"ci":1.703,"games":160,"price":-0.655,"carrier":"drowned-matriarch@4-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.057Z"}
+{"method":"AD-yH","skill":"smokeBomb","worth":null,"ci":null,"games":160,"price":2,"carrier":"armadillo-guard@19-PRO-1","M":40,"n":40,"note":"yardstick not positive","fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.058Z"}
+{"method":"AD-yH","skill":"snipe","worth":0,"ci":5.614,"games":160,"price":2,"carrier":"alpine-marmot@14-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.058Z"}
+{"method":"AD-yH","skill":"speed","worth":3.143,"ci":2.956,"games":160,"price":5.929,"carrier":"chipmunk-cavalry@1-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.058Z"}
+{"method":"AD-yH","skill":"stealth","worth":1.333,"ci":2.998,"games":160,"price":6.88,"carrier":"alley-cat@12-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.058Z"}
+{"method":"AD-yH","skill":"storm","worth":0,"ci":0,"games":160,"price":1.8,"carrier":"balloon-archer@15-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.059Z"}
+{"method":"AD-yH","skill":"strangle","worth":2.667,"ci":2.602,"games":160,"price":4.663,"carrier":"driftwood-crab@5-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.059Z"}
+{"method":"AD-yH","skill":"sturdy","worth":8,"ci":28.407,"games":160,"price":2.81,"carrier":"alpine-marmot@16-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.059Z"}
+{"method":"AD-yH","skill":"swarm","worth":3.667,"ci":3.316,"games":160,"price":3.13,"carrier":"bee-sentry@0-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.059Z"}
+{"method":"AD-yH","skill":"sweep","worth":2.444,"ci":2.696,"games":160,"price":5.46,"carrier":"clownfish-scout@10-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.059Z"}
+{"method":"AD-yH","skill":"taunt","worth":1,"ci":1.332,"games":160,"price":0.4,"carrier":"alley-cat@9-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.060Z"}
+{"method":"AD-yH","skill":"thorns","worth":2.286,"ci":2.443,"games":160,"price":4.426,"carrier":"chipmunk-cavalry@1-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.060Z"}
+{"method":"AD-yH","skill":"tide","worth":2,"ci":6.819,"games":160,"price":0.64,"carrier":"cricket-drummer@2-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.061Z"}
+{"method":"AD-yH","skill":"tornado","worth":null,"ci":null,"games":160,"price":1.17,"carrier":"balloon-archer@18-PRO-1","M":40,"n":40,"note":"yardstick not positive","fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.061Z"}
+{"method":"AD-yH","skill":"trap","worth":null,"ci":null,"games":160,"price":3.36,"carrier":"balloon-archer@18-PRO-1","M":40,"n":40,"note":"yardstick not positive","fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.061Z"}
+{"method":"AD-yH","skill":"trident","worth":2.25,"ci":2.167,"games":160,"price":2.28,"carrier":"alley-cat@9-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.062Z"}
+{"method":"AD-yH","skill":"twinShot","worth":null,"ci":null,"games":160,"price":13.26,"carrier":"kittiwake-flock@11-PRO-1","M":40,"n":40,"note":"yardstick not positive","fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.062Z"}
+{"method":"AD-yH","skill":"twinStrike","worth":2,"ci":2.493,"games":160,"price":7.75,"carrier":"driftwood-crab@5-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.062Z"}
+{"method":"AD-yH","skill":"wakeful","worth":0,"ci":3.97,"games":160,"price":0.5,"carrier":"fungus-gnat-cloud@7-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.062Z"}
+{"method":"AD-yH","skill":"wave","worth":3.556,"ci":3.546,"games":160,"price":2.15,"carrier":"clownfish-scout@10-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.062Z"}
+{"method":"AD-yH","skill":"web","worth":0,"ci":0,"games":160,"price":0.97,"carrier":"fungus-gnat-cloud@8-PRO-1","M":40,"n":40,"fp":"8b6f2a672f5f","t":"2026-11-19T19:33:43.063Z"}
