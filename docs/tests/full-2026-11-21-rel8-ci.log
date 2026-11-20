@@ -1,0 +1,1012 @@
+  fetch-depth: 0
+  repository: herougan/bramblewood-arena-game
+  token: ***
+  ssh-strict: true
+  ssh-user: git
+  persist-credentials: true
+  clean: true
+  sparse-checkout-cone-mode: true
+  fetch-tags: false
+  show-progress: true
+  lfs: false
+  submodules: false
+  set-safe-directory: true
+  allow-unsafe-pr-checkout: false
+  SHARDS: 8
+  origin/main
+  node-version: 22
+  always-auth: false
+  check-latest: false
+  token: ***
+  SHARDS: 8
+  python-version: 3.13
+  check-latest: false
+  token: ***
+  update-environment: true
+  allow-prereleases: false
+  freethreaded: false
+  SHARDS: 8
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  libgl1-mesa-dri libglx-mesa0 mesa-libgallium xfonts-encodings xfonts-utils
+  fonts-ipafont-mincho fonts-tlwg-loma
+  fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+  fonts-wqy-zenhei xfonts-cyrillic xfonts-encodings xfonts-scalable
+  xfonts-utils
+  libgbm1 libgl1-mesa-dri libglx-mesa0 mesa-libgallium
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+  name: tests-smoke
+  path: tests/out/ci.log
+  if-no-files-found: ignore
+  compression-level: 6
+  overwrite: false
+  include-hidden-files: false
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+  fetch-depth: 0
+  repository: herougan/bramblewood-arena-game
+  token: ***
+  ssh-strict: true
+  ssh-user: git
+  persist-credentials: true
+  clean: true
+  sparse-checkout-cone-mode: true
+  fetch-tags: false
+  show-progress: true
+  lfs: false
+  submodules: false
+  set-safe-directory: true
+  allow-unsafe-pr-checkout: false
+  SHARDS: 8
+  origin/main
+  node-version: 22
+  always-auth: false
+  check-latest: false
+  token: ***
+  SHARDS: 8
+  python-version: 3.13
+  check-latest: false
+  token: ***
+  update-environment: true
+  allow-prereleases: false
+  freethreaded: false
+  SHARDS: 8
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  libgl1-mesa-dri libglx-mesa0 mesa-libgallium xfonts-encodings xfonts-utils
+  fonts-ipafont-mincho fonts-tlwg-loma
+  fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+  fonts-wqy-zenhei xfonts-cyrillic xfonts-encodings xfonts-scalable
+  xfonts-utils
+  libgbm1 libgl1-mesa-dri libglx-mesa0 mesa-libgallium
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+✗ eb-2026-10-23 (exit 1, 1.3s) — last lines:
+  ✗ 4. 1-5's badger-lumberjack is in Map 1's pool (or waits for the deck rebuild)
+  eb-2026-10-23: 1 of 206 checks FAILED
+✗ bal14-2026-11-03 (exit 1, 6.8s) — last lines:
+  ✗ every in-play skill item measured at bramble 15 (118 of 212; left: speed={"kind":"swift"}, forestry=1, recoil=1, foraging=1, arrow={"v":1,"type":"fire","form":"bolt"})
+    ✗ every progression deck card at its map's level (0/1 worker-ant Lv 1; 0/2 worker-ant Lv 1; 0/3 worker-ant Lv 1; 0/4 worker-ant Lv 1)
+  bal14-2026-11-03: 2 of 21 failed
+✗ fix6-2026-11-02 (exit 1, 2.0s) — last lines:
+  FAIL 4-5 is led by its own leader, not the Drowned Matriarch (drowned-matriarch)
+  FAIL Tower epic pool: the-contradiction is superrare
+  FAIL Tower heroic pool: fire-drake-hatchling is superrare
+  fix6-2026-11-02: 70/73 passed
+✗ content12-2026-11-06 (exit 1, 1.4s) — last lines:
+  ✗ venomlord-serpent in band
+  content12: 119 passed, 1 failed
+✗ pvp1-2026-11-06 (exit 1, 1.5s) — last lines:
+    ✗ pvp1-05: mangrove-manatee is not an in-play card
+    ✗ pvp1-05: talon-archer is not an in-play card
+    ✗ pvp1-06: leader fire-drake-hatchling is not a valid leader
+    ✗ pvp1-06: cinder-stoker is not an in-play card
+    ✗ pvp1-06: magma-wraith is not an in-play card
+    ✗ pvp1-08: pyrenean-desman is not an in-play card
+    ✗ pvp1-09: leader fire-drake-hatchling is not a valid leader
+    ✗ pvp1-09: thorny-devil is not an in-play card
+    ✗ pvp1-11: truffle-piglet is not an in-play card
+    ✗ pvp1-12: grave-grin-hyena is not an in-play card
+    ✗ pvp1-14: snow-owl-sentinel is not an in-play card
+    ✗ pvp1-16: thorny-devil is not an in-play card
+    ✗ pvp1-17: colossal-squid is not an in-play card
+    ✗ pvp1-18: grave-grin-hyena is not an in-play card
+    ✗ pvp1-19: lone-grey-wolf is not an in-play card
+    ✗ pvp1-21: truffle-piglet is not an in-play card
+    ✗ pvp1-23: ant-hill is not an in-play card
+    ✗ pvp1-24: thorny-devil is not an in-play card
+    ✗ pvp1-27: box-turtle is not an in-play card
+    ✗ pvp1-27: fennec-fox is not an in-play card
+    ✗ pvp1-28: mangrove-manatee is not an in-play card
+    ✗ pvp1-29: leader fire-drake-hatchling is not a valid leader
+  26 problems
+    ✗ pvp1 check: decks legal, varied, baked
+  pvp1: 35 passed, 1 failed
+✗ content16-2026-11-07 (exit 1, 1.5s) — last lines:
+    ✗ 2. cape-buffalo-bulwark has a source
+    ✗ 2. bar-headed-goose-leader has a source
+    ✗ 2. caddisfly-casemaker has a source
+    ✗ 2. opossum-faker has a source
+    ✗ 2. strangler-fig-sapling has a source
+    ✗ 2. pearl-mussel-anchorer has a source
+    ✗ 2. mole-cricket-megaphone has a source
+    ✗ 2. praying-mantis-striker has a source
+    ✗ 2. secretary-bird-stomper has a source
+    ✗ 2. spitfire-sawfly-grubs has a source
+    ✗ 2. rinkhals-spitter has a source
+    ✗ 2. soft-shell-crab-newmoult has a source
+    ✗ 3. bear-cub (a skirmish reward) is not added to silver
+    ✗ 3. clover-butterfly (a skirmish reward) is not added to bronze
+    ✗ 3. ladybird-guard (a skirmish reward) is not added to bronze
+    ✗ 4. bronze: peat-cutter-vole fits the budget at Map 0
+    ✗ 4. silver: gravel-mole fits the budget at Map 8
+    ✗ 4. gold: termite-forager fits the budget at Map 14
+    ✗ 4. sworn-shieldbearer is achievement-only under the proposal
+    ✗ 4. magpie-collector is achievement-only under the proposal
+    ✗ 4. grindstone-boar is achievement-only under the proposal
+    ✗ 4. arctic-tern is achievement-only under the proposal
+    ✗ 5. a fresh run gives the same sources today (re-run tools/content16_pack_plan_2026_11_07.js)
+    ✗ 5. a fresh run gives the same proposed sources
+  content16-2026-11-07: 5464/5493 checks passed
+✗ bal7-2026-10-28 (exit 1, 61.3s) — last lines:
+    ✗ M3 every card out of play carries the flag (LISTFIX1; yeti, poison-dart-croaker, quill-volley, snow-owl-sentinel, mangrove-kingfisher, shimmerwing-stag, fen-mink, grave-grin-hyena, talon-archer, magma-wraith, thorny-devil, fennec-fox, lone-grey-wolf, bramble-hoglet, colossal-squid, lyrebird-mimic, razorbill, pyrenean-desman, truffle-piglet, mangrove-manatee, great-barracuda)
+    ✗ K14 every covered fight follows the rule (260 fights; breaking: 14-1 14-3 14-4 14-6 15-1 15-4 19-2 21-1 21-2 21-3 21-4 21-5 21-6 22-8 23-5 1-A-1 1-A-2 1-A-3 1-A-4 1-A-5 2-A-1 2-A-2 2-A-3 2-A-4 2-A-6 2-A-7 19-A-2 19-A-3 19-A-4 19-A-5 19-A-6 19-A-7 19-A-8 19-A-9 19-A-10 7-A-2 7-A-4 14-A-1 14-A-2 14-A-3 14-A-5 20-A-3 20-A-4 20-A-5 20-A-6 20-B-3 20-B-4 11-A-4 17-A-1 17-A-2 17-A-3 17-A-4 0-B-1 0-B-2 0-B-3 0-B-4)
+  
+  bal7: 24/26 passed
+tests: 51 passed, 7 failed, 0 skipped (passed before on identical inputs) · 377s · slowest: e5det-2026-11-16 240s, nv-2026-10-19 64s, ed-2026-10-21 62s
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+  name: tests-shard-6
+  path: tests/out/ci.log
+  if-no-files-found: ignore
+  compression-level: 6
+  overwrite: false
+  include-hidden-files: false
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+  fetch-depth: 0
+  repository: herougan/bramblewood-arena-game
+  token: ***
+  ssh-strict: true
+  ssh-user: git
+  persist-credentials: true
+  clean: true
+  sparse-checkout-cone-mode: true
+  fetch-tags: false
+  show-progress: true
+  lfs: false
+  submodules: false
+  set-safe-directory: true
+  allow-unsafe-pr-checkout: false
+  SHARDS: 8
+  origin/main
+  node-version: 22
+  always-auth: false
+  check-latest: false
+  token: ***
+  SHARDS: 8
+  python-version: 3.13
+  check-latest: false
+  token: ***
+  update-environment: true
+  allow-prereleases: false
+  freethreaded: false
+  SHARDS: 8
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  libgl1-mesa-dri libglx-mesa0 mesa-libgallium xfonts-encodings xfonts-utils
+  fonts-ipafont-mincho fonts-tlwg-loma
+  fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+  fonts-wqy-zenhei xfonts-cyrillic xfonts-encodings xfonts-scalable
+  xfonts-utils
+  libgbm1 libgl1-mesa-dri libglx-mesa0 mesa-libgallium
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+✗ bf5-2026-10-21 (exit 1, 0.8s) — last lines:
+  ✗ 3. Soldier Ant: 3/8, no skill, Wait 1 (the owner's 11-18 edit, FOLD7)
+    ✗ 4. every live card fits the halved budget at Level 1, or is a listed owner call: ant-warrior 2/6 x1 15.01 N 14.09; war-hound 3/15 x1 24 N 23.32; armored-mastiff 5/22 x1 37 N 34.47; alley-cat 1/3 x1 16.64 N 14.32; trapdoor-spider 4/7 x1 21.72 N 20.22; tunnel-wyrm 4/16 x1 28 N 26.69
+    ✗ 4. the re-derived cards sit over 60% of N: puddle-changeling, hedge-changeling, ashbone-ghoul, harbor-seal, pincushion-urchin
+  bf5-2026-10-21: 31 passed, 3 failed
+✗ bx-2026-10-21 (exit 1, 1.4s) — last lines:
+  ✗ the budget helper: 69.5% of N, Otter Kit 81.0%
+  bx-2026-10-21: 1 of 73 failed
+✗ budget2-2026-10-31 (exit 1, 2.3s) — last lines:
+  ✗ 2. every re-fit card carries its new stats and its note, inside its band at its start level and Level 1 (T-1 / T-2 cards at Level 0 too): beaver-lumberjack, bramble-sprout, chipmunk-skirmisher, sandfish, spitting-spider, squires-mount
+    ✗ 2. no in-play card outside its band but those outside before BUDGET2 or held: bramble-sprout, chipmunk-skirmisher, venomlord-serpent, chipmunk-forager, beaver-lumberjack, inside-out-hedgehog
+  budget2-2026-10-31: 31/33 checks passed
+tests: 56 passed, 3 failed, 0 skipped (passed before on identical inputs) · 100s · slowest: ux-2026-10-19 50s, ux6-2026-11-16 35s, ui24-2026-11-07 29s
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+  name: tests-shard-1
+  path: tests/out/ci.log
+  if-no-files-found: ignore
+  compression-level: 6
+  overwrite: false
+  include-hidden-files: false
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+  fetch-depth: 0
+  repository: herougan/bramblewood-arena-game
+  token: ***
+  ssh-strict: true
+  ssh-user: git
+  persist-credentials: true
+  clean: true
+  sparse-checkout-cone-mode: true
+  fetch-tags: false
+  show-progress: true
+  lfs: false
+  submodules: false
+  set-safe-directory: true
+  allow-unsafe-pr-checkout: false
+  SHARDS: 8
+  origin/main
+  node-version: 22
+  always-auth: false
+  check-latest: false
+  token: ***
+  SHARDS: 8
+  python-version: 3.13
+  check-latest: false
+  token: ***
+  update-environment: true
+  allow-prereleases: false
+  freethreaded: false
+  SHARDS: 8
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  libgl1-mesa-dri libglx-mesa0 mesa-libgallium xfonts-encodings xfonts-utils
+  fonts-ipafont-mincho fonts-tlwg-loma
+  fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+  fonts-wqy-zenhei xfonts-cyrillic xfonts-encodings xfonts-scalable
+  xfonts-utils
+  libgbm1 libgl1-mesa-dri libglx-mesa0 mesa-libgallium
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+✗ keywords-2026-10-15w3 (exit 1, 0.4s) — last lines:
+  ✗ tower floor 44: harder than the floor below
+    ✗ tower floor 46: harder than the floor below
+    ✗ tower floor 47: harder than the floor below
+    ✗ tower floor 48: harder than the floor below
+    ✗ tower floor 49: harder than the floor below
+    ✗ tower: every floor within 20 of its battle rating (worst 170); 2026-10-18: the 10-17 Lumber swap trades one card, so a floor can land a little further off
+  keywords-2026-10-15w3: 6 failure(s)
+✗ pale-desert-2026-10-19 (exit 1, 4.9s) — last lines:
+  ✗ 4. sandfish fits the stat budget (2A+H+S 20.64 < N 19.87, A*H+S 30.67 < 68.87)
+    ✗ 5. 18-A-1: the stored measure is current (re-run with --measure after changing the fight, its cards or the reference deck)
+    ✗ 5. 18-A-1 (skirmish): 100.0% over 120 games, target 90% (82-98), a listed honest gap
+    ✗ 5. 18-A-2: the stored measure is current (re-run with --measure after changing the fight, its cards or the reference deck)
+    ✗ 5. 18-A-2 (skirmish): 100.0% over 120 games, target 86% (78-94), a listed honest gap
+    ✗ 5. 18-A-3: the stored measure is current (re-run with --measure after changing the fight, its cards or the reference deck)
+    ✗ 5. 18-A-3 (skirmish): 100.0% over 120 games, target 81% (73-89), a listed honest gap
+    ✗ 5. 18-A-4: the stored measure is current (re-run with --measure after changing the fight, its cards or the reference deck)
+    ✗ 5. 18-A-4 (skirmish): 100.0% over 120 games, target 77% (69-85), a listed honest gap
+    ✗ 5. 18-A-5: the stored measure is current (re-run with --measure after changing the fight, its cards or the reference deck)
+    ✗ 5. 18-A-5 (skirmish): 99.2% over 120 games, target 73% (65-81), a listed honest gap
+    ✗ 5. 18-A-6: the stored measure is current (re-run with --measure after changing the fight, its cards or the reference deck)
+    ✗ 5. 18-A-6 (skirmish): 100.0% over 120 games, target 69% (61-77), a listed honest gap
+    ✗ 5. 18-A-7: the stored measure is current (re-run with --measure after changing the fight, its cards or the reference deck)
+    ✗ 5. 18-A-7 (skirmish): 92.5% over 120 games, target 64% (56-72), a listed honest gap
+    ✗ 5. 18-A-8: the stored measure is current (re-run with --measure after changing the fight, its cards or the reference deck)
+    ✗ 5. 18-A-8 (elite): 90.0% over 120 games, target 60% (52-68), a listed honest gap
+    ✗ 5. 18-A-9: the stored measure is current (re-run with --measure after changing the fight, its cards or the reference deck)
+    ✗ 5. 18-A-9 (boss): 83.3% over 120 games, target 40% (30-49), a listed honest gap
+    ✗ 5. 18-A-9 live (30 games): 57% vs stored 83%
+  pale-desert-2026-10-19: 20 of 196 failed
+✗ thematic-2026-10-19 (exit 1, 2.1s) — last lines:
+  ✗ 1. rock-pool-starfish: made for a pack, in the basic pack pool (tier 1)
+    ✗ 3. rarity caps and copy limits: T-2 fields dynamite-packrat (uncommon) over the Map 0 skirmish cap; T-2 fields caustic-scorpion (uncommon) over the Map 0 skirmish cap; T-2 fields rockslide-ram (uncommon) over the Map 0 skirmish cap; T-3 fields badger-berserker (rare) over the Map 0 skirmish cap; T-3 fields thornwood-palisade (rare) over the Map 0 skirmish cap; T-4 fields rockslide-ram (uncommon) over the Map 0 elite cap
+    ✗ 4. no off-theme card in any of 260 fights: 3-1 fiddler-crab-swarm/feral-tomcat; 3-3 feral-tomcat; 3-4 fiddler-crab-swarm; 3-5 fiddler-crab-swarm/feral-tomcat; 3-6 feral-tomcat
+    ✗ 6. the measure played the decks the game has now: 0-1,0-2,0-3,0-4,1-1,1-2,1-3,1-4
+  thematic-2026-10-19: 4 of 597 failed
+✗ easter-eggs-2026-10-19 (exit 1, 0.6s) — last lines:
+  ✗ tobasco-drakon fits budget v3 (x1 25 < N 22.21, x2 39.25 < 86.05)
+  easter-eggs: 342 checks, 1 failure(s)
+✗ rewards-pass-2026-10-21 (exit 1, 3.0s) — last lines:
+  ✗ 1/3. the 64 Otter and Hummingbird cards are faction rewards, Base (starter) or a listed exception: anvilwhisker-otter (skirmish)
+    ✗ 6. The Canopy: one unique reward at most (jaguar-stalker,kinkajou-lurker,hercules-beetle)
+    ✗ 6. Volcano Lair: one unique reward at most (fire-drake-hatchling,caldera-wyrm)
+  rewards-pass-2026-10-21: 3 of 163 checks failed
+✗ lead-2026-10-23 (exit 1, 3.5s) — last lines:
+  ✗ 5-2: a tuned Map 5 skirmish keeps at most one leader, from its deck (BAL19-1)
+    ✗ 7-2: a tuned Map 7 skirmish keeps at most one leader, from its deck (BAL19-1)
+    ✗ 7-3: a tuned Map 7 skirmish keeps at most one leader, from its deck (BAL19-1)
+    ✗ 7-4: a tuned Map 7 skirmish keeps at most one leader, from its deck (BAL19-1)
+    ✗ 7-5: an explicit leaders override names cards of its deck (dung-beetle)
+    ✗ 14-2: a tuned Map 14 skirmish keeps at most one leader, from its deck (BAL19-1)
+    ✗ 15-4: a tuned Map 15 skirmish keeps at most one leader, from its deck (BAL19-1)
+    ✗ 18-2: a tuned Map 18 skirmish keeps at most one leader, from its deck (BAL19-1)
+    ✗ 20-1: a tuned Map 20 skirmish keeps at most one leader, from its deck (BAL19-1)
+    ✗ 2-A-5: an explicit leaders override names cards of its deck (marsh-harrier)
+    ✗ 17-A-3: a tuned Map 17 skirmish keeps at most one leader, from its deck (BAL19-1)
+    ✗ 20-1 (skirmish): its showcase leader is not shown (SK)
+  lead-2026-10-23: 647/659 checks passed
+✗ df3-2026-10-24 (exit 1, 6.9s) — last lines:
+  ✗ 3. 13-4: its deck turns wildRage on (0/14)
+    ✗ 3. 20-4: its deck turns restlessDead on (0/20)
+  df3-2026-10-24: 960/962 checks passed
+✗ reward-screens-2026-10-19 (exit 1, 124.9s) — last lines:
+  ✗ B4. an elite win keeps the gold card ({"noCard":true,"match":true,"over":false,"resolving":false})
+  reward-screens-2026-10-19: 129/130 passed
+✗ ui29-2026-11-07 (exit 1, 19.6s) — last lines:
+  ✗ @1366 pack4: every card has its source tag (30/43; 2026-11-19: Pack 4 holds 13 cards the 11-07 plan never listed, so they carry no tag)
+    ✗ @1366 pack4: 43 cards today (2026-11-19: the lists moved on since the plan counted 36)
+    ✗ @390 pack4: every card has its source tag (30/43; 2026-11-19: Pack 4 holds 13 cards the 11-07 plan never listed, so they carry no tag)
+    ✗ @390 pack4: 43 cards today (2026-11-19: the lists moved on since the plan counted 36)
+  ui29: 1093/1097 ok
+✗ lab-errors-2026-11-12 (exit 1, 54.8s) — last lines:
+  lab-errors: 1971 Lab plays, 1 with errors
+    x load | pageerror: bwArtFail is not defined (+61 more)
+tests: 48 passed, 10 failed, 0 skipped (passed before on identical inputs) · 268s · slowest: reward-screens-2026-10-19 125s, fx14-2026-11-17 79s, lab-errors-2026-11-12 55s
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+  name: tests-shard-3
+  path: tests/out/ci.log
+  if-no-files-found: ignore
+  compression-level: 6
+  overwrite: false
+  include-hidden-files: false
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+  fetch-depth: 0
+  repository: herougan/bramblewood-arena-game
+  token: ***
+  ssh-strict: true
+  ssh-user: git
+  persist-credentials: true
+  clean: true
+  sparse-checkout-cone-mode: true
+  fetch-tags: false
+  show-progress: true
+  lfs: false
+  submodules: false
+  set-safe-directory: true
+  allow-unsafe-pr-checkout: false
+  SHARDS: 8
+  origin/main
+  node-version: 22
+  always-auth: false
+  check-latest: false
+  token: ***
+  SHARDS: 8
+  python-version: 3.13
+  check-latest: false
+  token: ***
+  update-environment: true
+  allow-prereleases: false
+  freethreaded: false
+  SHARDS: 8
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  libgl1-mesa-dri libglx-mesa0 mesa-libgallium xfonts-encodings xfonts-utils
+  fonts-ipafont-mincho fonts-tlwg-loma
+  fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+  fonts-wqy-zenhei xfonts-cyrillic xfonts-encodings xfonts-scalable
+  xfonts-utils
+  libgbm1 libgl1-mesa-dri libglx-mesa0 mesa-libgallium
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+✗ prayer-2026-10-19 (exit 1, 0.8s) — last lines:
+  ✗ 6. every Ecclesia card fits budget v3 (over: friar-badger)
+  prayer-2026-10-19: 1 failure(s)
+✗ bal3-2026-10-24 (exit 1, 1.6s) — last lines:
+  ✗ 5. the road decks keep the rules: 13-4 boon wildRage off; 20-4 boon restlessDead off; 21-3 8 different cards
+  bal3-2026-10-24: 35/36 passed, 1 failed
+✗ pro-2026-10-23 (exit 1, 35.7s) — last lines:
+  ✗ 1. 21-BPRO-3: leaders ["pika-hoarder"] (the map rule: ["eyrie-warden"])
+    ✗ 1. 23-PRO-1: leaders ["tide-spirit"] (the map rule: ["badger-berserker"])
+  pro: 2/2741 FAILED
+✗ bal21-2026-11-07 (exit 1, 2.2s) — last lines:
+  ✗ no deck holds a late-priced card before its map: node ml:15-1, node ml:15-4, node ml:15-5, node ml:15-7, node mt:16-2, node mt:16-3, node mt:16-5, node mt:16-6, node mt:16-7, node muc:11-UC-34, node muc:11-UC-35, node muc:11-UC-36, node muc:11-UC-40, node muc:11-UC-41, node muc:11-UC-42
+  bal21-2026-11-07: 6083/6084 checks passed
+✗ side1-2026-11-12 (exit 1, 1.6s) — last lines:
+  ✗ 6. card power: every card in play on the 11-12 lists has a row (hedgehog-scout, lotus-frog, electric-ray, spitting-cobra, bar-headed-goose-leader)
+  side1-2026-11-12: 1 of 48 failed
+tests: 53 passed, 5 failed, 0 skipped (passed before on identical inputs) · 216s · slowest: ui2-2026-10-29 164s, two-player 38s, pro-2026-10-23 36s
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+  name: tests-shard-4
+  path: tests/out/ci.log
+  if-no-files-found: ignore
+  compression-level: 6
+  overwrite: false
+  include-hidden-files: false
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+  fetch-depth: 0
+  repository: herougan/bramblewood-arena-game
+  token: ***
+  ssh-strict: true
+  ssh-user: git
+  persist-credentials: true
+  clean: true
+  sparse-checkout-cone-mode: true
+  fetch-tags: false
+  show-progress: true
+  lfs: false
+  submodules: false
+  set-safe-directory: true
+  allow-unsafe-pr-checkout: false
+  SHARDS: 8
+  origin/main
+  node-version: 22
+  always-auth: false
+  check-latest: false
+  token: ***
+  SHARDS: 8
+  python-version: 3.13
+  check-latest: false
+  token: ***
+  update-environment: true
+  allow-prereleases: false
+  freethreaded: false
+  SHARDS: 8
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  libgl1-mesa-dri libglx-mesa0 mesa-libgallium xfonts-encodings xfonts-utils
+  fonts-ipafont-mincho fonts-tlwg-loma
+  fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+  fonts-wqy-zenhei xfonts-cyrillic xfonts-encodings xfonts-scalable
+  xfonts-utils
+  libgbm1 libgl1-mesa-dri libglx-mesa0 mesa-libgallium
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+✗ winrate-panel-2026-10-19 (exit 1, 29.0s) — last lines:
+  419 fights on every map checked, slowest map muc 2324 ms, 21 s so far
+    Maps 8 and 12: Map 0's deck at Lv 0 wins 40%, m24's (Map 24 deck) at Lv 4.62 86%
+    ✗ Map 23: the report's deck is the game's deck
+  FAIL 1 of 974
+✗ content2-2026-10-24 (exit 1, 1.7s) — last lines:
+  · termite-forager: budget not checked, unplaced
+    · talus-pika: budget not checked, unplaced
+    · dune-packrat: budget not checked, unplaced
+    · gravel-mole: budget not checked, unplaced
+    · bog-shrew: budget not checked, unplaced
+    · gnawed-matriarch: budget not checked, unplaced
+    ✗ every new card is on its budget, placed (where THEME2 lists it) or awaiting (over budget nutria-reedcutter 103%)
+    ✗ gannet-nestweaver gathers Lumber
+    ✗ N21-2: Gannet Nestweavers fight on Gannet Cliffs, the Hawk Arrowkeepers are out of 3-1 and 3-3
+  content2-2026-10-24: 3 of 212 checks FAILED
+✗ bal9-2026-11-02 (exit 1, 10.7s) — last lines:
+    ✗ JJ21 no in-play card outside the band but the listed ones (re-fit: 17; listed (not changed): 26 -> (check: no file); DEC1 holds: venomlord-serpent, raccoon-nightcrew, chipmunk-forager, inside-out-hedgehog, irradiated-axolotl, meerkat-wayfarer, newt-doctor, harbor-seal, pika-hoarder, slow-worm, pond-algae, nutria-reedcutter, salvager-hermit-crab, granite-ox-golem, matamata, fruit-bat, glow-worm)
+    ✗ JJ7 21 maps x 5 decks rebuilt (tag ref6r): 20 cards, a leader and a bramble, no cut card, the map's level (0/1: worker-ant Lv 1 (map level 0); 0/2: worker-ant Lv 1 (map level 0); 0/3: worker-ant Lv 1 (map level 0); 0/4: worker-ant Lv 1 (map level 0); 0/5: worker-ant Lv 1 (map level 0); 1/4: worker-ant Lv 1 (map level 0))
+  bal9-2026-11-02: 27/29 checks passed
+tests: 56 passed, 3 failed, 0 skipped (passed before on identical inputs) · 456s · slowest: console1-2026-11-19 228s, card-matrix 114s, game-texts 86s
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+  name: tests-shard-2
+  path: tests/out/ci.log
+  if-no-files-found: ignore
+  compression-level: 6
+  overwrite: false
+  include-hidden-files: false
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+  fetch-depth: 0
+  repository: herougan/bramblewood-arena-game
+  token: ***
+  ssh-strict: true
+  ssh-user: git
+  persist-credentials: true
+  clean: true
+  sparse-checkout-cone-mode: true
+  fetch-tags: false
+  show-progress: true
+  lfs: false
+  submodules: false
+  set-safe-directory: true
+  allow-unsafe-pr-checkout: false
+  SHARDS: 8
+  origin/main
+  node-version: 22
+  always-auth: false
+  check-latest: false
+  token: ***
+  SHARDS: 8
+  python-version: 3.13
+  check-latest: false
+  token: ***
+  update-environment: true
+  allow-prereleases: false
+  freethreaded: false
+  SHARDS: 8
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  libgl1-mesa-dri libglx-mesa0 mesa-libgallium xfonts-encodings xfonts-utils
+  fonts-ipafont-mincho fonts-tlwg-loma
+  fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+  fonts-wqy-zenhei xfonts-cyrillic xfonts-encodings xfonts-scalable
+  xfonts-utils
+  libgbm1 libgl1-mesa-dri libglx-mesa0 mesa-libgallium
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+✗ road-rarity-2026-10-16 (exit 1, 1.4s) — last lines:
+  ✗ 2. 20-A-4 (dungeon, Map 20) fields ashmantle-fiend (unique), cap epic
+    ✗ 2. 21-1: 1/16 Rare or better (Maps 21-40 want a quarter)
+    ✗ 2. 21-2: 2/19 Rare or better (Maps 21-40 want a quarter)
+    ✗ 2. 21-3: 3/16 Rare or better (Maps 21-40 want a quarter)
+    ✗ 2. 22-2: 3/18 Rare or better (Maps 21-40 want a quarter)
+    ✗ 2. 22-3: 2/16 Rare or better (Maps 21-40 want a quarter)
+    ✗ 2. 22-4: 4/20 Rare or better (Maps 21-40 want a quarter)
+    ✗ 2. 22-5: 2/15 Rare or better (Maps 21-40 want a quarter)
+    ✗ 2. 24-1: 2/10 Rare or better (Maps 21-40 want a quarter)
+  road-rarity-2026-10-16: 9 failed
+✗ ref5-2026-10-30 (exit 1, 2.6s) — last lines:
+  ✗ 3. the saved Map 6 collection is what the walk gives today
+  ref5-2026-10-30: 19/20 checks passed
+✗ mapfx1-2026-10-31 (exit 1, 1.4s) — last lines:
+  ✗ MAP_FX_SPOTS equals tools/map_fx_spots_2026_10_31.py (re-run it and paste after changing a painter)
+  mapfx1-2026-10-31: 39/40 ok
+✗ bal12-2026-11-02 (exit 1, 1.6s) — last lines:
+    ✗ no in-play card outside the band but the held and listed ones (re-fit: 14; held (no fit within the rule): 3; listed (not ours to change): 26; DEC1 holds: raccoon-nightcrew, chipmunk-forager, inside-out-hedgehog, irradiated-axolotl, meerkat-wayfarer, newt-doctor, harbor-seal, slow-worm, pond-algae, nutria-reedcutter, salvager-hermit-crab, matamata, fruit-bat, glow-worm)
+  
+  24/25 passed
+✗ bal25-2026-11-07 (exit 1, 1.4s) — last lines:
+  ✗ Maps 0-20 rows are the tool's scope, extra rows outside it (bramble-hoglet, colossal-squid, fen-mink, fennec-fox, grave-grin-hyena)
+    ✗ scope recorded
+    ✗ card data untouched: the report's rarity is the card's
+    ✗ advanced pass complete, top 40%
+    ✗ every card outside the pool scores at most the pool's lowest
+    advanced median 18.1 (top-40% pool of 166)
+  bal25: 45/50 checks passed
+tests: 53 passed, 5 failed, 0 skipped (passed before on identical inputs) · 512s · slowest: pr-2026-10-23 480s, opt-2026-10-23 84s, ui33-2026-11-07 54s
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+  name: tests-shard-8
+  path: tests/out/ci.log
+  if-no-files-found: ignore
+  compression-level: 6
+  overwrite: false
+  include-hidden-files: false
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+  fetch-depth: 0
+  repository: herougan/bramblewood-arena-game
+  token: ***
+  ssh-strict: true
+  ssh-user: git
+  persist-credentials: true
+  clean: true
+  sparse-checkout-cone-mode: true
+  fetch-tags: false
+  show-progress: true
+  lfs: false
+  submodules: false
+  set-safe-directory: true
+  allow-unsafe-pr-checkout: false
+  SHARDS: 8
+  origin/main
+  node-version: 22
+  always-auth: false
+  check-latest: false
+  token: ***
+  SHARDS: 8
+  python-version: 3.13
+  check-latest: false
+  token: ***
+  update-environment: true
+  allow-prereleases: false
+  freethreaded: false
+  SHARDS: 8
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  libgl1-mesa-dri libglx-mesa0 mesa-libgallium xfonts-encodings xfonts-utils
+  fonts-ipafont-mincho fonts-tlwg-loma
+  fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+  fonts-wqy-zenhei xfonts-cyrillic xfonts-encodings xfonts-scalable
+  xfonts-utils
+  libgbm1 libgl1-mesa-dri libglx-mesa0 mesa-libgallium
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+✗ gi-2026-10-19 (exit 1, 1.0s) — last lines:
+  ✗ no other card has a new skill yet (but the redesign's)
+    ✗ glasswing-moth: inside budget v3 (2A+H+S 18.59 / N 12.92, A*H+S 21.27 / 29.12)
+    ✗ frostmoon-howler: inside budget v3 (2A+H+S 21.5 / N 19.05, A*H+S 27.56 / 53.81)
+    ✗ weathervane-swift: inside budget v3 (2A+H+S 26 / N 22.21, A*H+S 51 / 86.05)
+  gi-2026-10-19: 4 of 721 checks FAILED
+✗ deck1-2026-10-30 (exit 1, 2.2s) — last lines:
+  ✗ m8: at least 10 copies from the map's list
+    ✗ m4: at least 10 copies from the map's list
+  deck1: 239/241 checks passed
+✗ bal13-2026-11-02 (exit 1, 1.8s) — last lines:
+  ✗ no deck holds a late-priced card before its map: node ml:15-1, node ml:15-4, node ml:15-5, node ml:15-7, node mt:16-2, node mt:16-3, node mt:16-5, node mt:16-6, node mt:16-7, node muc:11-UC-34, node muc:11-UC-35, node muc:11-UC-36, node muc:11-UC-40, node muc:11-UC-41, node muc:11-UC-42
+  bal13: 780/781 checks passed
+✗ lvl10-2026-11-18 (exit 1, 1.7s) — last lines:
+  ✗ 2. every level 2-10 inside both caps at N(L) (a card over at Level 1 no worse): yeti L10 63.72/63.61
+    ✗ 4. statsAtLevel = base stats + the deltas up to L: pika-hoarder
+  /home/runner/work/bramblewood-arena-game/bramblewood-arena-game/tests/lvl10-2026-11-18.js:64
+  ok(moved.every(c=> Object.keys(c.levelSkills).every(L=> +L >= 2 && +L <= 10)), '5. every moved skill arrives at Level 2-10');
+                            ^
+  
+  TypeError: Cannot convert undefined or null to object
+      at Function.keys (<anonymous>)
+      at /home/runner/work/bramblewood-arena-game/bramblewood-arena-game/tests/lvl10-2026-11-18.js:64:27
+      at Array.every (<anonymous>)
+      at Object.<anonymous> (/home/runner/work/bramblewood-arena-game/bramblewood-arena-game/tests/lvl10-2026-11-18.js:64:10)
+      at Module._compile (node:internal/modules/cjs/loader:1781:14)
+      at Object..js (node:internal/modules/cjs/loader:1913:10)
+      at Module.load (node:internal/modules/cjs/loader:1505:32)
+      at Function._load (node:internal/modules/cjs/loader:1309:12)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:254:19)
+      at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)
+  
+  Node.js v22.23.5
+tests: 54 passed, 4 failed, 0 skipped (passed before on identical inputs) · 88s · slowest: ui51-2026-11-13 58s, uifx3-2026-11-13 45s, skill-combos-2026-10-19 6s
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+  name: tests-shard-7
+  path: tests/out/ci.log
+  if-no-files-found: ignore
+  compression-level: 6
+  overwrite: false
+  include-hidden-files: false
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+  fetch-depth: 0
+  repository: herougan/bramblewood-arena-game
+  token: ***
+  ssh-strict: true
+  ssh-user: git
+  persist-credentials: true
+  clean: true
+  sparse-checkout-cone-mode: true
+  fetch-tags: false
+  show-progress: true
+  lfs: false
+  submodules: false
+  set-safe-directory: true
+  allow-unsafe-pr-checkout: false
+  SHARDS: 8
+  origin/main
+  node-version: 22
+  always-auth: false
+  check-latest: false
+  token: ***
+  SHARDS: 8
+  python-version: 3.13
+  check-latest: false
+  token: ***
+  update-environment: true
+  allow-prereleases: false
+  freethreaded: false
+  SHARDS: 8
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  libgl1-mesa-dri libglx-mesa0 mesa-libgallium xfonts-encodings xfonts-utils
+  fonts-ipafont-mincho fonts-tlwg-loma
+  fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+  fonts-wqy-zenhei xfonts-cyrillic xfonts-encodings xfonts-scalable
+  xfonts-utils
+  libgbm1 libgl1-mesa-dri libglx-mesa0 mesa-libgallium
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+✗ card-pool-2026-10-19 (exit 1, 1.9s) — last lines:
+  ✗ 1. owner: sea snakes, Poison (or Venomous) and Tide (Swimmer = Tide)
+    ✗ 2. stag-beetle: rare within the Map 1 skirmish cap (common)
+    ✗ 2. slow-worm: inside budget v3 (2A+H+S 17 < N 16.72, A·H+S 24 < 48.77) or on the post-balance queue
+    ✗ 2. sanderling: queued for the post-balance step and still over (the queue is current)
+    ✗ 2. sanderling: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written, or a later dated budget step)
+    ✗ 2. old-sturgeon: its measured win rate is in the uncommon band (75%)
+    ✗ 2. roseate-spoonbill: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written, or a later dated budget step)
+    ✗ 2. greater-siren: rare within the Map 6 skirmish cap (uncommon)
+    ✗ 2. cave-pseudoscorpion: queued for the post-balance step and still over (the queue is current)
+    ✗ 2. wallcreeper: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written, or a later dated budget step)
+    ✗ 2. garden-tiger-moth: queued for the post-balance step and still over (the queue is current)
+    · budget: 3 unplaced (out of play, not checked): truffle-piglet, lionfish, great-barracuda; 0 pending step 3: 
+    ✗ 3. (TH) each placed card has a source matching its slot (or package RP moved it on) and no pool fields
+  card-pool-2026-10-19: 731/743 checks passed
+✗ unit-themes-2026-10-19 (exit 1, 1.6s) — last lines:
+    ✗ 4. dire-bog-leech body fills about 0.8 of N (2A+H 15, N 18.1)
+    ✗ 4. dire-owl-sentinel body fills about 0.8 of N (2A+H 28, N 30.49)
+    ✗ 4. dire-boreal-elk base body is inside budget v3 (2A+H 32 < N 30.18)
+    ✗ 4. dire-boreal-elk body fills about 0.8 of N (2A+H 32, N 30.18)
+    ✗ 4. elder-upside-down-bat body fills about 0.8 of N (2A+H 23, N 24.54)
+    ✗ 4. dire-arctic-tern body fills about 0.8 of N (2A+H 19, N 23.32)
+    ✗ 4. elder-ashwing-ptarmigan body fills about 0.8 of N (2A+H 28, N 29.57)
+    ✗ 4. dire-glacier-yak body fills about 0.8 of N (2A+H 28, N 34.96)
+    ✗ 4. elder-ice-crevasse-wolf body fills about 0.8 of N (2A+H 28, N 34.17)
+    ✗ 4. dire-elderhorn-monarch body fills about 0.8 of N (2A+H 42, N 50.6)
+    ✗ 4. elder-war-panther body fills about 0.8 of N (2A+H 43, N 47.04)
+    ✗ 4. dire-fire-salamander body fills about 0.8 of N (2A+H 26, N 27.11)
+    ✗ 4. elder-cinder-stoker body fills about 0.8 of N (2A+H 19, N 23.32)
+    ✗ 4. dire-obsidian-scorpion base body is inside budget v3 (2A+H 29 < N 28.34)
+    ✗ 4. dire-obsidian-scorpion body fills about 0.8 of N (2A+H 29, N 28.34)
+    ✗ 4. dire-ember-tetra body fills about 0.8 of N (2A+H 21, N 23.32)
+    ✗ 4. dire-firefly-swarm body fills about 0.8 of N (2A+H 26, N 27.11)
+    ✗ 4. elder-ash-moth body fills about 0.8 of N (2A+H 23, N 27.11)
+    ✗ 4. dire-ember-jackal body fills about 0.8 of N (2A+H 22, N 24.36)
+    ✗ 4. dire-ember-centipede body fills about 0.8 of N (2A+H 22, N 22.09)
+    ✗ 4. dire-pall-wraith body fills about 0.8 of N (2A+H 24, N 28.34)
+    ✗ 4. elder-obsidian-lich base body is inside budget v3 (2A+H 41 < N 39.38)
+    ✗ 4. elder-obsidian-lich body fills about 0.8 of N (2A+H 41, N 39.38)
+    ✗ 4b. the non-player units are listed: each raid part's elder is its deck's biggest card (3/4)
+  unit-themes: 13909/14398 passed
+✗ mk-2026-10-23 (exit 1, 111.9s) — last lines:
+  ✗ B@1366 Map 5: won, the results are up
+    ✗ browser part crashed: page.click: Timeout 30000ms exceeded.
+  Call log:
+    - waiting for locator('#wlQuitBtn')
+✗ skir1-2026-11-11 (exit 1, 3.2s) — last lines:
+  ✗ 14-1: K14 (tasmanian-devil x4)
+    ✗ 14-3: K14 (tasmanian-devil x4)
+    ✗ 14-4: K14 (tasmanian-devil x4)
+    ✗ 14-6: K14 (tasmanian-devil x4)
+    ✗ 15-1: K14 (bramblewood-lynx x3)
+    ✗ 15-4: K14 (bramblewood-lynx x3)
+    ✗ 19-2: K14 (pinecone-sapper x4)
+    ✗ m1: its decks show 0 cost1 card(s) (the pools hold 2; minimum 4)
+    ✗ m1: its decks show 3 wait1 card(s) (the pools hold 5; minimum 4)
+    ✗ m1: its decks show 1 status card(s) (the pools hold 2; minimum 2)
+    ✗ mw: its decks show 0 plain card(s) (the pools hold 2; minimum 2)
+    ✗ mh: its decks show 0 plain card(s) (the pools hold 1; minimum 2)
+    ✗ mt: its decks show 0 plain card(s) (the pools hold 1; minimum 2)
+    ✗ m11: its decks show 1 cost0 card(s) (the pools hold 2; minimum 3)
+    ✗ my: hoopoe-herald in 5 of 5 fights besides the ones that keep it (at most 4)
+  skir1: 5672 passed, 15 failed
+tests: 54 passed, 4 failed, 0 skipped (passed before on identical inputs) · 202s · slowest: mk-2026-10-23 112s, st-2026-10-22 59s, edit1-2026-11-05 41s
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+  name: tests-shard-5
+  path: tests/out/ci.log
+  if-no-files-found: ignore
+  compression-level: 6
+  overwrite: false
+  include-hidden-files: false
+  SHARDS: 8
+  pythonLocation: /opt/hostedtoolcache/Python/3.13.18/x64
+  PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib/pkgconfig
+  Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.18/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.18/x64/lib
+  NODE_PATH: /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules
+  PLAYWRIGHT_BROWSERS_PATH: /opt/pw-browsers
+  pattern: tests-*
+  path: res
+  merge-multiple: false
+  repository: herougan/bramblewood-arena-game
+  run-id: 44757538915
+  SHARDS: 8
+  echo "## Tests (${GITHUB_REF_NAME} @ ${GITHUB_SHA::7})"
+  echo "| part | result | failed |"
+  echo "|---|---|---|"
+  for p in smoke $(seq -f 'shard-%g' 1 "$SHARDS"); do
+    d=res/tests-$p
+    line=$(grep -E '^(smoke|tests): ' "$d/ci.log" 2>/dev/null | tail -1 | sed 's/ (passed before.*//; s/ ·.*//' || true)
+    fails=$(paste -sd, "$d/failures.txt" 2>/dev/null | sed 's/,/, /g' || true)
+    echo "| $p | ${line:-no result (skipped, cancelled, timed out or crashed)} | ${fails} |"
+  done
+  all=$(cat res/*/failures.txt 2>/dev/null | sort -u)
+  echo
+  if [ -n "$all" ]; then echo "**Failed ($(echo "$all" | wc -l)):** $(echo "$all" | paste -sd, | sed 's/,/, /g')"; else echo "**No failing test reported.**"; fi
+  SHARDS: 8
