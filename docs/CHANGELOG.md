@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-21 (package TESTFIX2: the 4 new release-8 CI failures)
+
+- Effects Lab: the `bwArtFail` fallback now sits above the first style block, so a tile's `onerror` can no longer fire before it exists (lab-errors pageerror at load). reward-screens B4, mapfx1 and mk B@1366 pass locally and read as CI load/environment flakes; no code change.
+
 ## 2026-11-20 (package REFIT16: the early-bramble lead read; Maps 10-17 fights 10-20 off)
 - Road fights, toward the road curve (leaders, first-clear cards, sizes kept; no Health cuts): 10-9 Shield 0 -> 4, 11-10 Shield 5 -> 0, 11-9 one Stonedrop Vulture for an Apollo Butterfly, 13-8 the Slow-worm for an Amber Cicada. Fresh seeds 151100 / 152100 (400 games), mean before -> after (target): 10-9 50.2 -> 40.9 (40), 11-10 28.6 -> 39.1 (40), 11-9 53.8 -> 59.4 (60), 13-8 57.2 -> 47.6 (40). Seed 9100 road (Maps 0-20, 400 games): only these four moved (10-9 41.5, 11-9 59, 11-10 40.5, 13-8 50.5); main 109/121/2 -> 112/124/2 (in band / within 10 / beyond 20), side unchanged 51/55/11 of 81.
 - The early-bramble lead (EB, +3 on Maps 0-1) changes nothing in play: your Bramble's own 15 Health is already above every Map 0-1 enemy's Health + Shield + 3 (at most 15), so lead on, off or +1 read the same. No legal fix: 17-4, 17-6, 17-7 (Map 17 decks allow only 1 copy of a carried card, so few swaps are legal). Files: `docs/balance/refit16/`.
