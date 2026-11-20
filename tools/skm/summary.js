@@ -82,7 +82,7 @@ function main() {
   const P20 = rj('summary-2026-11-20.json'), C21 = rj('confirm-2026-11-21.json');
   const v20 = new Map(((P20 && P20.skills) || []).map(r => [r.skill, r.flag === 'under-priced' ? 'cheap' : r.flag === 'over-priced' ? 'dear' : 'fair']));
   const c21 = new Map(((C21 && C21.skills) || []).map(r => [r.skill, /confirmed cheap/.test(r.verdict) ? 'cheap' : /confirmed dear/.test(r.verdict) ? 'dear' : 'not confirmed (' + r.flag + ')']));
-  rows.forEach(r => { const t = tv.get(r.skill); r.verdictToday = t ? t.verdict : null; r.kindsToday = t ? t.kinds : 0; r.consensusToday = t ? t.consensus : null;
+  rows.forEach(r => { const t = tv.get(r.skill); r.verdictToday = t ? t.verdict : null; r.kindsToday = t ? t.kinds : 0; r.kindsSidesToday = t ? t.kindsSides : null;r.consensusToday = t ? t.consensus : null;
     r.verdict1120 = v20.has(r.skill) ? v20.get(r.skill) : 'not measured'; r.confirm1121 = c21.get(r.skill) || null;
     r.changed1120 = r.verdict1120 !== r.verdict; r.changed1121 = r.confirm1121 != null && r.confirm1121 !== r.verdict; });
   const mrows = methods.map(id => { const f = famOf(id), xs = [], ys = [], ps = [], circ = !A.voting(id);
