@@ -56,3 +56,21 @@
   shield=22                                                    70 / 79.5  mean 74.8
   set=enemyLevel:3.5                                           66.5 / 72.5  mean 69.5
   set=enemyLevel:4                                             55 / 58.8  mean 56.9
+18-2 base  96.8 / 96  mean 96.4  (400 games, seeds 161100 / 162100)
+  set=enemyLevel:4                                             96.8 / 96  mean 96.4
+  set=enemyLevel:4.5                                           96.8 / 96  mean 96.4
+  shield=36                                                    95.8 / 94.3  mean 95.0
+  out=roadrunner-courier:2+add=stonedrop-vulture:2             74.5 / 71.8  mean 73.2
+  out=roadrunner-courier:3+add=stonedrop-vulture:3             53.5 / 54.5  mean 54.0
+18-3 base  94.8 / 94.3  mean 94.5  (400 games, seeds 161100 / 162100)
+  set=enemyLevel:4                                             94.8 / 94.3  mean 94.5
+  set=enemyLevel:4.5                                           94.8 / 94.3  mean 94.5
+  shield=36                                                    93.5 / 93.8  mean 93.7
+  out=armadillo-guard:2+add=stonedrop-vulture:2                60.5 / 58.8  mean 59.6
+  out=armadillo-guard:3+add=stonedrop-vulture:3                41.8 / 37  mean 39.4
+18-2 base  96.8 / 96  mean 96.4  (400 games, seeds 161100 / 162100)
+  out=roadrunner-courier:1+add=stonedrop-vulture:1             88.3 / 87.5  mean 87.9
+  out=caustic-scorpion:1+add=stonedrop-vulture:1               89.5 / 85.8  mean 87.7
+18-3 base  94.8 / 94.3  mean 94.5  (400 games, seeds 161100 / 162100)
+  out=armadillo-guard:1+add=stonedrop-vulture:1                80.8 / 80.5  mean 80.7
+  out=worker-ant:1+add=stonedrop-vulture:1                     79 / 74.8  mean 76.9
