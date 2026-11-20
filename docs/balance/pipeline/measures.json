@@ -163,10 +163,9 @@
    "class": "keyword",
    "kind": "measure",
    "n": 1,
-   "nCards": 3,
+   "nCards": 2,
    "cards": [
     "petal-fletcher",
-    "gatling-hog",
     "eagle-owl-quartermaster"
    ],
    "fights": 200,
@@ -174,69 +173,69 @@
    "stages": [
     {
      "fights": 200,
-     "m": 4.2583,
-     "lo": 3.6795,
-     "hi": 4.7569
+     "m": 4.1329,
+     "lo": 2.9771,
+     "hi": 4.5039
     }
    ],
-   "fingerprint": "64700feee054",
+   "fingerprint": "c0e5f8bc4e35",
    "canonRate": {
-    "m": 0.032,
-    "lo": 0.0273,
-    "hi": 0.0371
+    "m": 0.0296,
+    "lo": 0.0249,
+    "hi": 0.0341
    },
    "statRate": {
-    "m": 0.0308,
-    "lo": 0.025,
-    "hi": 0.0375
+    "m": 0.0352,
+    "lo": 0.0277,
+    "hi": 0.0433
    },
    "kappa": {
-    "m": 0.9641,
-    "lo": 0.7933,
-    "hi": 1.1385
+    "m": 1.1888,
+    "lo": 0.9618,
+    "hi": 1.4704
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": 0.0058,
+    "gain": 0.0092,
     "worthStat": {
-     "m": 0.1892,
-     "lo": -0.3034,
-     "hi": 0.5556
+     "m": 0.2604,
+     "lo": -0.2258,
+     "hi": 0.627
     }
    },
    "test": {
     "effects": {
      "arrow": 1
     },
-    "gain": 0.1358,
+    "gain": 0.1067,
     "worth": {
-     "m": 4.2472,
-     "lo": 3.8066,
-     "hi": 4.816
+     "m": 3.6015,
+     "lo": 3.1589,
+     "hi": 4.1677
     },
     "worthRuler": {
-     "m": 4.2583,
-     "lo": 3.6795,
-     "hi": 4.7569
+     "m": 4.1329,
+     "lo": 2.9771,
+     "hi": 4.5039
     },
     "worthStat": {
-     "m": 4.4054,
-     "lo": 3.7193,
-     "hi": 5.4154
+     "m": 3.0296,
+     "lo": 2.3736,
+     "hi": 3.9344
     },
-    "price": 4.43,
-    "net": -0.1717,
+    "price": 4.26,
+    "net": -0.1271,
     "verdict": "within its interval",
     "between": [
-     "fork (3.89)",
-     "poison 2 (4.69)"
+     "rage (3.01)",
+     "armor 2 (3.7)"
     ]
    },
-   "statBase": 21.33,
-   "measuredAt": "2026-11-02T14:12:12.604Z",
-   "seconds": 186
+   "statBase": 19,
+   "measuredAt": "2026-11-20T17:21:36.512Z",
+   "seconds": 35
   },
   "global|arrow=1+fletcher=1": {
    "key": "arrow=1+fletcher=1",
@@ -255,36 +254,36 @@
    "stages": [
     {
      "fights": 200,
-     "m": 7.4447,
-     "lo": 6.6407,
-     "hi": 8.3616
+     "m": 7.5641,
+     "lo": 6.6555,
+     "hi": 8.966
     }
    ],
-   "fingerprint": "64700feee054",
+   "fingerprint": "c0e5f8bc4e35",
    "canonRate": {
-    "m": 0.032,
-    "lo": 0.0273,
-    "hi": 0.0371
+    "m": 0.0296,
+    "lo": 0.0249,
+    "hi": 0.0341
    },
    "statRate": {
-    "m": 0.0308,
-    "lo": 0.025,
-    "hi": 0.0375
+    "m": 0.0352,
+    "lo": 0.0277,
+    "hi": 0.0433
    },
    "kappa": {
-    "m": 0.9641,
-    "lo": 0.7933,
-    "hi": 1.1385
+    "m": 1.1888,
+    "lo": 0.9618,
+    "hi": 1.4704
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": 0.0058,
+    "gain": 0.0092,
     "worthStat": {
-     "m": 0.1892,
-     "lo": -0.3034,
-     "hi": 0.5556
+     "m": 0.2604,
+     "lo": -0.2258,
+     "hi": 0.627
     }
    },
    "test": {
@@ -292,33 +291,33 @@
      "arrow": 1,
      "fletcher": 1
     },
-    "gain": 0.2462,
+    "gain": 0.2117,
     "worth": {
-     "m": 7.6996,
-     "lo": 6.8523,
-     "hi": 8.745
+     "m": 7.1468,
+     "lo": 6.2926,
+     "hi": 8.2132
     },
     "worthRuler": {
-     "m": 7.4447,
-     "lo": 6.6407,
-     "hi": 8.3616
+     "m": 7.5641,
+     "lo": 6.6555,
+     "hi": 8.966
     },
     "worthStat": {
-     "m": 7.9865,
-     "lo": 6.5114,
-     "hi": 10.0187
+     "m": 6.0118,
+     "lo": 4.7254,
+     "hi": 7.9077
     },
-    "price": 6.65,
-    "net": 0.7947,
+    "price": 7.45,
+    "net": 0.1141,
     "verdict": "within its interval",
     "between": [
      "onReadyGold 1 (6.65)",
      "-"
     ]
    },
-   "statBase": 21.33,
-   "measuredAt": "2026-11-02T14:14:21.552Z",
-   "seconds": 129
+   "statBase": 19,
+   "measuredAt": "2026-11-20T17:21:56.107Z",
+   "seconds": 20
   },
   "global|brood=1": {
    "key": "brood=1",
@@ -666,31 +665,31 @@
      "hi": 0
     }
    ],
-   "fingerprint": "69c00163b4c0",
+   "fingerprint": "c0e5f8bc4e35",
    "canonRate": {
-    "m": 0.0323,
-    "lo": 0.0255,
-    "hi": 0.0362
+    "m": 0.0296,
+    "lo": 0.0249,
+    "hi": 0.0341
    },
    "statRate": {
-    "m": 0.031,
-    "lo": 0.0235,
-    "hi": 0.0392
+    "m": 0.0352,
+    "lo": 0.0277,
+    "hi": 0.0433
    },
    "kappa": {
-    "m": 0.9602,
-    "lo": 0.765,
-    "hi": 1.2189
+    "m": 1.1888,
+    "lo": 0.9618,
+    "hi": 1.4704
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": -0.0025,
+    "gain": 0.0092,
     "worthStat": {
-     "m": -0.0805,
-     "lo": -0.7529,
-     "hi": 0.4142
+     "m": 0.2604,
+     "lo": -0.2258,
+     "hi": 0.627
     }
    },
    "test": {
@@ -718,12 +717,12 @@
     "verdict": "over-priced",
     "between": [
      "-",
-     "quick (2.23)"
+     "shell 2 (0.57)"
     ]
    },
-   "statBase": 18.17,
-   "measuredAt": "2026-11-02T18:45:47.696Z",
-   "seconds": 373
+   "statBase": 19,
+   "measuredAt": "2026-11-20T17:21:56.373Z",
+   "seconds": 0
   },
   "global|remember=1+T:onDeath>exileSelf": {
    "key": "remember=1+T:onDeath>exileSelf",
@@ -742,36 +741,36 @@
    "stages": [
     {
      "fights": 200,
-     "m": 4.5467,
-     "lo": 3.5062,
-     "hi": 6.1087
+     "m": 3.8912,
+     "lo": 2.862,
+     "hi": 4.5248
     }
    ],
-   "fingerprint": "69c00163b4c0",
+   "fingerprint": "c0e5f8bc4e35",
    "canonRate": {
-    "m": 0.0323,
-    "lo": 0.0255,
-    "hi": 0.0362
+    "m": 0.0296,
+    "lo": 0.0249,
+    "hi": 0.0341
    },
    "statRate": {
-    "m": 0.031,
-    "lo": 0.0235,
-    "hi": 0.0392
+    "m": 0.0352,
+    "lo": 0.0277,
+    "hi": 0.0433
    },
    "kappa": {
-    "m": 0.9602,
-    "lo": 0.765,
-    "hi": 1.2189
+    "m": 1.1888,
+    "lo": 0.9618,
+    "hi": 1.4704
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": -0.0025,
+    "gain": 0.0092,
     "worthStat": {
-     "m": -0.0805,
-     "lo": -0.7529,
-     "hi": 0.4142
+     "m": 0.2604,
+     "lo": -0.2258,
+     "hi": 0.627
     }
    },
    "test": {
@@ -784,33 +783,33 @@
       }
      ]
     },
-    "gain": 0.1358,
+    "gain": 0.1033,
     "worth": {
-     "m": 4.2016,
-     "lo": 3.6824,
-     "hi": 5.1567
+     "m": 3.489,
+     "lo": 2.8198,
+     "hi": 4.3578
     },
     "worthRuler": {
-     "m": 4.5467,
-     "lo": 3.5062,
-     "hi": 6.1087
+     "m": 3.8912,
+     "lo": 2.862,
+     "hi": 4.5248
     },
     "worthStat": {
-     "m": 4.3758,
-     "lo": 3.1242,
-     "hi": 6.3443
+     "m": 2.9349,
+     "lo": 2.0559,
+     "hi": 4.1769
     },
-    "price": 4.84,
-    "net": -0.2933,
-    "verdict": "within its interval",
+    "price": 4.55,
+    "net": -0.6588,
+    "verdict": "over-priced",
     "between": [
-     "fork (3.89)",
-     "poison 2 (4.69)"
+     "rage (3.01)",
+     "armor 2 (3.7)"
     ]
    },
-   "statBase": 18.17,
-   "measuredAt": "2026-11-02T18:46:19.589Z",
-   "seconds": 32
+   "statBase": 19,
+   "measuredAt": "2026-11-20T17:22:17.800Z",
+   "seconds": 21
   },
   "global|remember=2+T:onDeath>exileSelf": {
    "key": "remember=2+T:onDeath>exileSelf",
