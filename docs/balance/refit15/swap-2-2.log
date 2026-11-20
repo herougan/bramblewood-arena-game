@@ -1,0 +1,23 @@
+2-2 target 80 start {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"conch-crawler":4,"duck-paddler":1,"limpet-clinger":4} 53.3 (60 games, seed 411300)
+-4 conch-crawler +4 pincushion-urchin                61.7 {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"duck-paddler":1,"limpet-clinger":4,"pincushion-urchin":4}
+-4 conch-crawler +4 oystercatcher                    58.3 {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"duck-paddler":1,"limpet-clinger":4,"oystercatcher":4}
+-1 duck-paddler +1 pincushion-urchin                 58.3 {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"conch-crawler":4,"limpet-clinger":4,"pincushion-urchin":1}
+-1 duck-paddler +1 puddle-skimmer                    58.3 {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"conch-crawler":4,"limpet-clinger":4,"puddle-skimmer":1}
+-1 duck-paddler +1 hedgerow-shrew                    56.7 {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"conch-crawler":4,"limpet-clinger":4,"hedgerow-shrew":1}
+-1 duck-paddler +1 moonlit-hare                      55 {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"conch-crawler":4,"limpet-clinger":4,"moonlit-hare":1}
+-1 rock-pool-starfish +1 open-ocean-hermit-crab      53.3 {"open-ocean-hermit-crab":4,"rock-pool-starfish":3,"salvager-hermit-crab":4,"conch-crawler":4,"duck-paddler":1,"limpet-clinger":4}
+-4 salvager-hermit-crab +4 pincushion-urchin         53.3 {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"conch-crawler":4,"duck-paddler":1,"limpet-clinger":4,"pincushion-urchin":4}
+-4 conch-crawler +4 gull-thief                       53.3 {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"duck-paddler":1,"limpet-clinger":4,"gull-thief":4}
+-1 conch-crawler +1 open-ocean-hermit-crab           53.3 {"open-ocean-hermit-crab":4,"rock-pool-starfish":4,"salvager-hermit-crab":4,"conch-crawler":3,"duck-paddler":1,"limpet-clinger":4}
+-1 duck-paddler +1 open-ocean-hermit-crab            53.3 {"open-ocean-hermit-crab":4,"rock-pool-starfish":4,"salvager-hermit-crab":4,"conch-crawler":4,"limpet-clinger":4}
+-1 duck-paddler +1 oystercatcher                     53.3 {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"conch-crawler":4,"limpet-clinger":4,"oystercatcher":1}
+-4 salvager-hermit-crab +4 oystercatcher             51.7 {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"conch-crawler":4,"duck-paddler":1,"limpet-clinger":4,"oystercatcher":4}
+-1 limpet-clinger +1 open-ocean-hermit-crab          51.7 {"open-ocean-hermit-crab":4,"rock-pool-starfish":4,"salvager-hermit-crab":4,"conch-crawler":4,"duck-paddler":1,"limpet-clinger":3}
+-1 salvager-hermit-crab +1 open-ocean-hermit-crab    48.3 {"open-ocean-hermit-crab":4,"rock-pool-starfish":4,"salvager-hermit-crab":3,"conch-crawler":4,"duck-paddler":1,"limpet-clinger":4}
+-1 duck-paddler +1 gull-thief                        46.7 {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"conch-crawler":4,"limpet-clinger":4,"gull-thief":1}
+-4 salvager-hermit-crab +4 gull-thief                41.7 {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"conch-crawler":4,"duck-paddler":1,"limpet-clinger":4,"gull-thief":4}
+-1 duck-paddler +1 robin-redbreast                   36.7 {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"conch-crawler":4,"limpet-clinger":4,"robin-redbreast":1}
+-4 limpet-clinger +4 gull-thief                      36.7 {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"conch-crawler":4,"duck-paddler":1,"gull-thief":4}
+-4 limpet-clinger +4 oystercatcher                   36.7 {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"conch-crawler":4,"duck-paddler":1,"oystercatcher":4}
+-4 limpet-clinger +4 pincushion-urchin               35 {"open-ocean-hermit-crab":3,"rock-pool-starfish":4,"salvager-hermit-crab":4,"conch-crawler":4,"duck-paddler":1,"pincushion-urchin":4}
+blocked: [["N different cards (N-N)",98],["kept card rock-pool-starfish xN (needs N)",24],["duck-paddler xN",19],["conch-crawler xN over N",16],["limpet-clinger xN over N",16],["rock-pool-starfish xN over N",16],["salvager-hermit-crab xN over N",16],["hedgerow-shrew xN",14],["moonlit-hare xN",14],["puddle-skimmer xN",14],["robin-redbreast xN",14],["kept card open-ocean-hermit-crab xN (needs N)",12]]

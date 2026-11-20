@@ -1,0 +1,32 @@
+1-2 target 80 start {"chipmunk-cavalry":3,"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"house-cat":1,"meadow-rabbit":4} 100 (60 games, seed 411300)
+-4 dormouse +4 bee-knight                            95 {"chipmunk-cavalry":3,"cricket-drummer":4,"hedgerow-shrew":4,"house-cat":1,"meadow-rabbit":4,"bee-knight":4}
+-4 dormouse +4 bramble-sprout                        95 {"chipmunk-cavalry":3,"cricket-drummer":4,"hedgerow-shrew":4,"house-cat":1,"meadow-rabbit":4,"bramble-sprout":4}
+-4 hedgerow-shrew +4 bee-knight                      95 {"chipmunk-cavalry":3,"cricket-drummer":4,"dormouse":4,"house-cat":1,"meadow-rabbit":4,"bee-knight":4}
+-4 hedgerow-shrew +4 bramble-sprout                  95 {"chipmunk-cavalry":3,"cricket-drummer":4,"dormouse":4,"house-cat":1,"meadow-rabbit":4,"bramble-sprout":4}
+-3 chipmunk-cavalry +3 bee-knight                    96.7 {"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"house-cat":1,"meadow-rabbit":4,"bee-knight":3}
+-3 chipmunk-cavalry +3 jackrabbit-sprinter           96.7 {"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"house-cat":1,"meadow-rabbit":4,"jackrabbit-sprinter":3}
+-1 cricket-drummer +1 chipmunk-cavalry               96.7 {"chipmunk-cavalry":4,"cricket-drummer":3,"dormouse":4,"hedgerow-shrew":4,"house-cat":1,"meadow-rabbit":4}
+-1 dormouse +1 chipmunk-cavalry                      96.7 {"chipmunk-cavalry":4,"cricket-drummer":4,"dormouse":3,"hedgerow-shrew":4,"house-cat":1,"meadow-rabbit":4}
+-1 hedgerow-shrew +1 chipmunk-cavalry                96.7 {"chipmunk-cavalry":4,"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":3,"house-cat":1,"meadow-rabbit":4}
+-3 chipmunk-cavalry +3 bramble-sprout                98.3 {"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"house-cat":1,"meadow-rabbit":4,"bramble-sprout":3}
+-3 chipmunk-cavalry +3 terrier-pup                   98.3 {"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"house-cat":1,"meadow-rabbit":4,"terrier-pup":3}
+-4 dormouse +4 jackrabbit-sprinter                   98.3 {"chipmunk-cavalry":3,"cricket-drummer":4,"hedgerow-shrew":4,"house-cat":1,"meadow-rabbit":4,"jackrabbit-sprinter":4}
+-4 dormouse +4 terrier-pup                           98.3 {"chipmunk-cavalry":3,"cricket-drummer":4,"hedgerow-shrew":4,"house-cat":1,"meadow-rabbit":4,"terrier-pup":4}
+-4 hedgerow-shrew +4 jackrabbit-sprinter             98.3 {"chipmunk-cavalry":3,"cricket-drummer":4,"dormouse":4,"house-cat":1,"meadow-rabbit":4,"jackrabbit-sprinter":4}
+-4 hedgerow-shrew +4 terrier-pup                     98.3 {"chipmunk-cavalry":3,"cricket-drummer":4,"dormouse":4,"house-cat":1,"meadow-rabbit":4,"terrier-pup":4}
+-1 house-cat +1 chipmunk-cavalry                     98.3 {"chipmunk-cavalry":4,"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"meadow-rabbit":4}
+-1 house-cat +1 jackrabbit-sprinter                  98.3 {"chipmunk-cavalry":3,"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"meadow-rabbit":4,"jackrabbit-sprinter":1}
+-4 meadow-rabbit +4 bramble-sprout                   98.3 {"chipmunk-cavalry":3,"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"house-cat":1,"bramble-sprout":4}
+-1 meadow-rabbit +1 chipmunk-cavalry                 98.3 {"chipmunk-cavalry":4,"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"house-cat":1,"meadow-rabbit":3}
+-4 meadow-rabbit +4 terrier-pup                      98.3 {"chipmunk-cavalry":3,"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"house-cat":1,"terrier-pup":4}
+-1 house-cat +1 ant-scout                            100 {"chipmunk-cavalry":3,"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"meadow-rabbit":4,"ant-scout":1}
+-1 house-cat +1 bee-knight                           100 {"chipmunk-cavalry":3,"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"meadow-rabbit":4,"bee-knight":1}
+-1 house-cat +1 bramble-sprout                       100 {"chipmunk-cavalry":3,"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"meadow-rabbit":4,"bramble-sprout":1}
+-1 house-cat +1 cottontail                           100 {"chipmunk-cavalry":3,"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"meadow-rabbit":4,"cottontail":1}
+-1 house-cat +1 duck-paddler                         100 {"chipmunk-cavalry":3,"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"meadow-rabbit":4,"duck-paddler":1}
+-1 house-cat +1 honey-bee                            100 {"chipmunk-cavalry":3,"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"meadow-rabbit":4,"honey-bee":1}
+-1 house-cat +1 soldier-ant                          100 {"chipmunk-cavalry":3,"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"meadow-rabbit":4,"soldier-ant":1}
+-1 house-cat +1 terrier-pup                          100 {"chipmunk-cavalry":3,"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"meadow-rabbit":4,"terrier-pup":1}
+-4 meadow-rabbit +4 bee-knight                       100 {"chipmunk-cavalry":3,"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"house-cat":1,"bee-knight":4}
+-4 meadow-rabbit +4 jackrabbit-sprinter              100 {"chipmunk-cavalry":3,"cricket-drummer":4,"dormouse":4,"hedgerow-shrew":4,"house-cat":1,"jackrabbit-sprinter":4}
+blocked: [["N different cards (N-N)",126],["house-cat xN",19],["cricket-drummer xN over N",16],["dormouse xN over N",16],["hedgerow-shrew xN over N",16],["meadow-rabbit xN over N",16],["ant-scout xN",14],["cottontail xN",14],["duck-paddler xN",14],["honey-bee xN",14],["soldier-ant xN",14],["kept card cricket-drummer xN (needs N)",14]]

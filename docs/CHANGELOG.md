@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-20 (package REFIT15: Maps 0-9 fights 10-20 off)
+- Road decks, pool swaps only (leaders, first-clear cards, sizes kept): 0-3, 2-3, 3-4, 3-5, 4-1, 5-2, 7-2, 7-3, 9-1. Castles: 3-4 Shield 2 -> 0; 4-1 bramble 10 -> 7 (the 60% floor, already a lowered-Health fight); 5-5 and 9-4 bramble 15 -> 9 (the floor; lowered-Health fights now 20 of 20). Fresh seeds 141100 / 142100 (400 games), mean before -> after (target): 5-2 67 -> 75.9 (84), 3-5 51.3 -> 59.5 (66), 0-3 50.8 -> 57.6 (60), 4-1 74.2 -> 82.2 (90), 3-4 56.9 -> 64.5 (72), 5-5 52 -> 64 (66), 9-1 79.7 -> 85 (90), 7-2 73.9 -> 81 (82.5), 2-3 55.9 -> 68.2 (70), 9-4 53.1 -> 62.5 (62), 7-3 68.7 -> 76 (75). Seed 9100 road (Maps 0-20, 400 games): main 101/112/2 -> 109/121/2 (in band / within 10 / beyond 20), side unchanged 55/58/11.
+- No legal fix: 2-2, 4-3 (too hard), 1-2, 1-3, 1-4 (too easy; neither a Shield above the rule nor enemy level 1-2 brings them under 91). Files: `docs/balance/refit15/`.
+
 ## 2026-11-20 (package REFIT14: 17-8 and the Pale Desert)
 - 17-8 The Walrus Icebreaker: bramble Health 19 -> 11 (hqHp 22, the 60% floor). Fresh seeds 131100 / 132100 (400 games): 21.8 / 20.3 -> 34.8 / 36.3 (target 40); seed 9100: 19 -> 35. No pool swap moved it and its Shield was already 0. Seed 9100 road (Maps 0-20): only 17-8 moved against REFIT13's measure, besides TESTFIX's 8-7 / 17-4 and the kept 18-4 storm. Main 100/111/3 -> 101/112/2 (in band / within 10 / beyond 20); side unchanged 55/58/11.
 - Not applied: 18-A-3, 18-A-4, 18-A-5, 18-A-6, 18-A-9 stay too easy. Swaps don't move them (18-A-3's and 18-A-6's whole legal spaces read 85+), their Shield is at or above the rule, and lower Health only makes them easier. Stonedrop Vulture (REFIT13-2) or 18-A-9 back at enemy level 4 would fix them (owner calls). Files: `docs/balance/refit14/`.
