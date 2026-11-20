@@ -101,8 +101,10 @@ const EXPS = {
   // the other, scored in rounds (tempo / survival turns), not in wins.
   OR: { design: 'race', race: 'off', body: BODY1, cs: { kind: 'homo', foe: 'bodyV', body: BODY1, seed: 'skmOR' }, stages: [40, 80], yardM: 300,
     idea: 'offence race (tempo): 20 farm-dogs given the skill against 20 farm-dogs with no Attack (they only block); rounds to break the bramble, priced by +1 Attack' },
-  DR: { design: 'race', race: 'def', body: BODY1, cs: { kind: 'homo', foe: 'body', body: BODY1, seed: 'skmDR' }, stages: [40, 80], yardM: 300,
-    idea: 'defence race (survival turns): 20 farm-dogs with no Attack given the skill against 20 plain farm-dogs; rounds the bramble lives, priced by +2 / +4 Health' },
+  // DR's foe bramble cannot fall (999 Health; 2026-11-20: at 30 a blocker with a shot or an Attack aura won outright and every such game sat
+  // at the cap, so the skills that hurt by another way than Attack read 20-30x their price): the score is survival only
+  DR: { design: 'race', race: 'def', body: BODY1, cs: { kind: 'homo', foe: 'body', body: BODY1, foeBramble: 999, seed: 'skmDR2' }, stages: [40, 80], yardM: 300,
+    idea: 'defence race (survival turns): 20 farm-dogs with no Attack given the skill against 20 plain farm-dogs whose bramble cannot fall; rounds my bramble lives, priced by +2 / +4 Health' },
   OD: { design: 'race2', body: BODY1, idea: 'offence + defence: the offence race\'s and the defence race\'s worths added (the skill\'s two halves, measured apart)' },
   // duo (the standard test's duo mode, 2026-10-21): the skill on top of a companion skill, both sides carrying the companion; one context per
   // companion, the worth pooled over them (the skill's worth averaged over the skills it will sit beside)
