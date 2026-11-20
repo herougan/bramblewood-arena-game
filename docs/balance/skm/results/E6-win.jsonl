@@ -90,3 +90,14 @@
 {"method":"E6-win","skill":"sturdy","worth":2.905,"ci":0.4,"games":160,"price":2.81,"carrier":"woodland-caribou","M":80,"n":2,"fp":"8b6f2a672f5f","t":"2026-11-20T02:02:45.775Z"}
 {"method":"E6-win","skill":"swarm","worth":9.125,"ci":0.337,"games":160,"price":3.13,"carrier":"ant-scout","M":40,"n":4,"fp":"8b6f2a672f5f","t":"2026-11-20T02:02:51.013Z"}
 {"method":"E6-win","skill":"sweep","worth":8.273,"ci":0.774,"games":120,"price":5.46,"carrier":"elderhorn-monarch","M":40,"n":3,"fp":"8b6f2a672f5f","t":"2026-11-20T02:02:56.843Z"}
+{"method":"E6-win","skill":"taunt","worth":-0.365,"ci":0.073,"games":160,"price":0.4,"carrier":"proboscis-monkey","M":80,"n":2,"fp":"8b6f2a672f5f","t":"2026-11-20T02:03:43.901Z"}
+{"method":"E6-win","skill":"thorns","worth":6.5,"ci":0,"games":120,"price":4.426,"carrier":"bramble-sprout","M":40,"n":3,"fp":"8b6f2a672f5f","t":"2026-11-20T02:03:52.041Z"}
+{"method":"E6-win","skill":"tide","worth":0,"ci":0.221,"games":240,"price":0.64,"carrier":"puffin-diver","M":80,"n":3,"fp":"8b6f2a672f5f","t":"2026-11-20T02:04:09.684Z"}
+{"method":"E6-win","skill":"tornado","worth":2.152,"ci":0.164,"games":80,"price":1.17,"carrier":"dust-devil-kestrel","M":40,"n":2,"fp":"8b6f2a672f5f","t":"2026-11-20T02:04:16.030Z"}
+{"method":"E6-win","skill":"trap","worth":2.4,"ci":0.428,"games":160,"price":3.36,"carrier":"antlion-pit","M":80,"n":2,"fp":"8b6f2a672f5f","t":"2026-11-20T02:04:26.472Z"}
+{"method":"E6-win","skill":"trident","worth":9,"ci":0.362,"games":160,"price":2.28,"carrier":"mangrove-monitor","M":40,"n":4,"fp":"8b6f2a672f5f","t":"2026-11-20T02:04:37.565Z"}
+{"method":"E6-win","skill":"twinShot","worth":8.857,"ci":0.587,"games":120,"price":13.26,"carrier":"eyrie-warden","M":40,"n":3,"fp":"8b6f2a672f5f","t":"2026-11-20T02:04:47.915Z"}
+{"method":"E6-win","skill":"twinStrike","worth":10.571,"ci":0.308,"games":120,"price":7.75,"carrier":"bramblewood-lynx","M":40,"n":3,"fp":"8b6f2a672f5f","t":"2026-11-20T02:04:56.878Z"}
+{"method":"E6-win","skill":"wakeful","worth":0,"ci":0.221,"games":240,"price":0.5,"carrier":"sleepless-shrew","M":80,"n":3,"fp":"8b6f2a672f5f","t":"2026-11-20T02:05:17.175Z"}
+{"method":"E6-win","skill":"wave","worth":4.692,"ci":0.353,"games":120,"price":2.15,"carrier":"coral-current-eel","M":40,"n":3,"fp":"8b6f2a672f5f","t":"2026-11-20T02:05:25.482Z"}
+{"method":"E6-win","skill":"web","worth":0,"ci":0.221,"games":240,"price":0.97,"carrier":"glow-worm","M":80,"n":3,"fp":"8b6f2a672f5f","t":"2026-11-20T02:05:47.385Z"}
