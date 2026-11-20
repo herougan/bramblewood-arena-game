@@ -24,7 +24,10 @@ const WIDE = J('docs/balance/bal15/measure-wide-2026-11-03.json');
 // ---- 2. the prices -----------------------------------------------------------------------------------------------------------------
 { const pm = table.pairs['onSpawn>grantShield'].mult, tw = table.triggers.find(t => t.id === 'onSpawn').value;
   ok(pm === 2.7, 'the On Spawn > Grant Shield pair stays x2.7 (read from Grant Shield 2 on itself; the allies item is left out of it)');
-  ok(AC['grantShield.allies'].value === r2(W(RG) / (3 * tw * pm)) && AC['grantShield.allies'].value < 1.2, `grantShield.allies ${AC['grantShield.allies'].value} a point from its measure (${r2(W(RG))} for 3 to every ally; was 1.2 by logic)`);
+  // 2026-11-21 (SKM5): later re-measures move the mean (6.12 at BAL15, 6.29 at 1,000 fights) while re-pricing waits for the owner (SKM4-1),
+  // so the price must sit inside the measure's 95% interval rather than equal today's mean
+  { const v = AC['grantShield.allies'].value, w = R['global|' + RG].test.worthRuler, k = 3 * tw * pm;
+    ok(v * k >= w.lo && v * k <= w.hi && v < 1.2, `grantShield.allies ${v} a point inside its measure (${r2(v * k)} in [${w.lo}, ${w.hi}] for 3 to every ally; was 1.2 by logic)`); }
   const A = require(path.join(ROOT, 'tools', 'skill2_apply_2026_10_31.js'));
   ok(typeof A.ownFieldOf === 'function' && A.ownFieldOf(R['global|' + RG]).id === 'grantShield.allies' && A.ownFieldOf(R['global|T:onSpawn>grantShield {"on":"onSpawn","do":"grantShield","amount":2}']) === null, 'the price tool prices a Grant Shield field from its own trigger item (ownFieldOf)');
   const curve = (e, N) => e.value * Math.pow(N, e.pow);

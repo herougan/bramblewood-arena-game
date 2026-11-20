@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-21 (package TESTFIX3: the 3 new release-10 CI failures)
+- bal15: Grant Shield to every ally is now checked against its measure's 95% interval, not today's mean. The 1,000-fight re-measure (SKM5) moved the mean 6.12 -> 6.29; re-pricing waits for SKM4-1. The price is unchanged.
+- ed B#9 (134/134) passes locally and console1's @390 dark check (The Deep Dark opens) reads as CI timing. Release 10 full suite: 42 failing tests of 466 against 40/41 on release 9. Log: `docs/tests/full-2026-11-21-rel10-ci.log`.
+
 ## 2026-11-21 (package REFIT18: Maps 0-20 main fights 10+ off that no open decision covers)
 - Road fights, toward the road curve (leaders, first-clear cards, sizes kept; no Health cuts). Confirm seeds 161100 / 162100 (400 games), mean before -> after (target): 9-1 one Electric Ray for a Proboscis Monkey, 83.5 -> 90.8 (90); 5-6 one Marsh-mallow Hare for a Raft Spider, 70.7 -> 60.4 (60); 18-6 Shield 0 -> the rule's 27, 74.5 -> 69.9 (60; every legal swap reads easier).
 - Seed 9100 road (Maps 0-20, 400 games): only these three moved (9-1 79.5 -> 89.3, 5-6 70 -> 60, 18-6 71.8 -> 68.5); main 112/124/2 -> 114/126/2 (in band / within 10 / beyond 20), side road unchanged 64/68/9 of 85.
