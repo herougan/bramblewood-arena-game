@@ -5,6 +5,10 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 ## 2026-11-21 (package TESTFIX2: the 4 new release-8 CI failures)
 
 - Effects Lab: the `bwArtFail` fallback now sits above the first style block, so a tile's `onerror` can no longer fire before it exists (lab-errors pageerror at load). reward-screens B4, mapfx1 and mk B@1366 pass locally and read as CI load/environment flakes; no code change.
+## 2026-11-20 (package REFIT17: side-road fights of Maps 1-20 that sat 10+ off)
+- Side fights, toward the road curve (leaders, first-clear cards, sizes kept; no Health cuts). Confirm seeds 161100 / 162100 (400 games), mean before -> after (target): Shield only: 10-A-5 Shield 0 -> 13, 66.9 -> 40.5 (40); 5-A-4 Shield 0 -> the rule's 20, 60.0 -> 44.4 (40); 11-A-4 Shield 0 -> the rule's 23, 54.0 -> 40.6 (40); 2-A-3 Shield 3 -> 0, 68.5 -> 73.2 (78). One pool swap: 1-A-2 62.6 -> 77.0 (80), 7-A-1 74.7 -> 90.8 (90), 1-A-5 29.8 -> 38.0 (40), 20-B-3 73.4 -> 60.5 (60), 2-B-3 71.8 -> 57.6 (60), 2-A-5 54.4 -> 66.3 (66); 10-A-3 Shield 0 -> the rule's 6 plus a swap, 87.0 -> 78.8 (70).
+- Seed 9100 road (Maps 0-20, 400 games): only these 11 moved; side road rows 55/58/11 -> 64/68/9 of 85 (in band / within 10 / beyond 20), main unchanged 112/124/2. 10-A-3 reads 83 there (target 70).
+- No legal fix (owner options measured): 20-A-4, 5-A-3, 2-A-4, 2-B-1, 1-A-1. Files: `docs/balance/refit17/`.
 
 ## 2026-11-20 (package REFIT16: the early-bramble lead read; Maps 10-17 fights 10-20 off)
 - Road fights, toward the road curve (leaders, first-clear cards, sizes kept; no Health cuts): 10-9 Shield 0 -> 4, 11-10 Shield 5 -> 0, 11-9 one Stonedrop Vulture for an Apollo Butterfly, 13-8 the Slow-worm for an Amber Cicada. Fresh seeds 151100 / 152100 (400 games), mean before -> after (target): 10-9 50.2 -> 40.9 (40), 11-10 28.6 -> 39.1 (40), 11-9 53.8 -> 59.4 (60), 13-8 57.2 -> 47.6 (40). Seed 9100 road (Maps 0-20, 400 games): only these four moved (10-9 41.5, 11-9 59, 11-10 40.5, 13-8 50.5); main 109/121/2 -> 112/124/2 (in band / within 10 / beyond 20), side unchanged 51/55/11 of 81.

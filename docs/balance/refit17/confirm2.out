@@ -1,0 +1,26 @@
+20-B-3 base  71.8 / 75  mean 73.4  (400 games, seeds 161100 / 162100)
+  out=vampire-roost:1+add=ur-elk:1                             60.3 / 60.8  mean 60.5
+  out=basalt-boar:1+add=ur-elk:1                               62.5 / 65  mean 63.8
+  out=basalt-boar:2+add=ur-elk:2                               49 / 50.7  mean 49.9
+  out=vampire-roost:2+add=cataphract-destrier:2                55.8 / 55.3  mean 55.5
+  out=vampire-roost:1,basalt-boar:1+add=ur-elk:2               49.3 / 48.8  mean 49.0
+5-A-3 base  71.3 / 72.3  mean 71.8  (400 games, seeds 161100 / 162100)
+  out=bog-leech:1+add=nutria-reedcutter:1                      76.8 / 75.5  mean 76.2
+  out=muskrat-reedgatherer:1+add=constrictor-coil:1            76 / 73.8  mean 74.9
+  out=bog-leech:1,muskrat-reedgatherer:1+add=nutria-reedcutter:1,constrictor-coil:1 77.3 / 79.5  mean 78.4
+10-A-3 base  86.3 / 87.8  mean 87.0  (400 games, seeds 161100 / 162100)
+  shield=11+out=reef-shark:1+add=orca-vanguard:1               84.8 / 85.5  mean 85.2
+  shield=11+out=blue-ringed-octopus:1+add=giant-clam:1         75.8 / 81.8  mean 78.8
+  shield=11+out=riptide-eel:1+add=orca-vanguard:1              87.5 / 88  mean 87.8
+2-B-3 base  68.8 / 74.8  mean 71.8  (400 games, seeds 161100 / 162100)
+  out=limpet-clinger:2+add=raccoon-nightcrew:2                 55.3 / 60  mean 57.6
+  out=limpet-clinger:1+add=gull-thief:1                        66 / 65  mean 65.5
+  out=open-ocean-hermit-crab:2+add=raccoon-nightcrew:2         51.5 / 52.5  mean 52.0
+  out=limpet-clinger:2+add=raccoon-nightcrew:1,gull-thief:1    54.8 / 53.8  mean 54.3
+2-A-3 base  67.8 / 69.3  mean 68.5  (400 games, seeds 161100 / 162100)
+  shield=0+out=pond-algae:1+add=beaver-lumberjack:1            63.8 / 63  mean 63.4
+  shield=0+out=beaver-lumberjack:1+add=water-shrew:1           86 / 84  mean 85.0
+10-A-5 base  67 / 66.8  mean 66.9  (400 games, seeds 161100 / 162100)
+  shield=24                                                    40.5 / 43.5  mean 42.0
+  shield=26                                                    38.3 / 42.8  mean 40.5
+CONFIRM2 DONE

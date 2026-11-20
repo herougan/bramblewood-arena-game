@@ -1,0 +1,21 @@
+1-A-1 target 90 start {"ant-scout":2,"cottontail":2,"dormouse":1,"bee-forager":2,"chipmunk-cavalry":3} 80 (60 games, seed 171300)
+-1 ant-scout +1 chipmunk-cavalry                     78.3 {"ant-scout":1,"cottontail":2,"dormouse":1,"bee-forager":2,"chipmunk-cavalry":4}
+-1 ant-scout +1 dormouse                             86.7 {"ant-scout":1,"cottontail":2,"dormouse":2,"bee-forager":2,"chipmunk-cavalry":3}
+-1 ant-scout +1 meadow-rabbit                        68.3 {"ant-scout":1,"cottontail":2,"dormouse":1,"bee-forager":2,"chipmunk-cavalry":3,"meadow-rabbit":1}
+-2 ant-scout +2 meadow-rabbit                        51.7 {"cottontail":2,"dormouse":1,"bee-forager":2,"chipmunk-cavalry":3,"meadow-rabbit":2}
+-1 cottontail +1 chipmunk-cavalry                    80 {"ant-scout":2,"cottontail":1,"dormouse":1,"bee-forager":2,"chipmunk-cavalry":4}
+-1 cottontail +1 dormouse                            85 {"ant-scout":2,"cottontail":1,"dormouse":2,"bee-forager":2,"chipmunk-cavalry":3}
+-1 cottontail +1 meadow-rabbit                       71.7 {"ant-scout":2,"cottontail":1,"dormouse":1,"bee-forager":2,"chipmunk-cavalry":3,"meadow-rabbit":1}
+-2 cottontail +2 meadow-rabbit                       75 {"ant-scout":2,"dormouse":1,"bee-forager":2,"chipmunk-cavalry":3,"meadow-rabbit":2}
+-1 dormouse +1 meadow-rabbit                         61.7 {"ant-scout":2,"cottontail":2,"bee-forager":2,"chipmunk-cavalry":3,"meadow-rabbit":1}
+-1 bee-forager +1 chipmunk-cavalry                   75 {"ant-scout":2,"cottontail":2,"dormouse":1,"bee-forager":1,"chipmunk-cavalry":4}
+-1 bee-forager +1 dormouse                           73.3 {"ant-scout":2,"cottontail":2,"dormouse":2,"bee-forager":1,"chipmunk-cavalry":3}
+-2 bee-forager +2 honey-bee                          61.7 {"ant-scout":2,"cottontail":2,"dormouse":1,"chipmunk-cavalry":3,"honey-bee":2}
+-1 bee-forager +1 meadow-rabbit                      66.7 {"ant-scout":2,"cottontail":2,"dormouse":1,"bee-forager":1,"chipmunk-cavalry":3,"meadow-rabbit":1}
+-2 bee-forager +2 meadow-rabbit                      50 {"ant-scout":2,"cottontail":2,"dormouse":1,"chipmunk-cavalry":3,"meadow-rabbit":2}
+-1 chipmunk-cavalry +1 dormouse                      75 {"ant-scout":2,"cottontail":2,"dormouse":2,"bee-forager":2,"chipmunk-cavalry":2}
+-2 chipmunk-cavalry +2 dormouse                      80 {"ant-scout":2,"cottontail":2,"dormouse":3,"bee-forager":2,"chipmunk-cavalry":1}
+-1 chipmunk-cavalry +1 meadow-rabbit                 76.7 {"ant-scout":2,"cottontail":2,"dormouse":1,"bee-forager":2,"chipmunk-cavalry":2,"meadow-rabbit":1}
+-2 chipmunk-cavalry +2 meadow-rabbit                 76.7 {"ant-scout":2,"cottontail":2,"dormouse":1,"bee-forager":2,"chipmunk-cavalry":1,"meadow-rabbit":2}
+-3 chipmunk-cavalry +3 meadow-rabbit                 68.3 {"ant-scout":2,"cottontail":2,"dormouse":1,"bee-forager":2,"meadow-rabbit":3}
+blocked: [["N different cards (N-N)",20],["N non-unique copies",16],["map: N-A-N family bee-forager+honey-bee",9],["bee-forager xN",8],["cottontail xN",8],["ant-scout xN",8],["chipmunk-cavalry xN over N",3],["ant-scout xN over N",1],["bee-forager xN over N",1],["cottontail xN over N",1],["honey-bee xN",1]]

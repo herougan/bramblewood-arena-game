@@ -1,0 +1,23 @@
+2-B-3 target 60 start {"driftwood-crab":4,"limpet-clinger":3,"open-ocean-hermit-crab":4,"pincushion-urchin":1,"raccoon-nightcrew":1} 61.7 (60 games, seed 171300)
+-1 driftwood-crab +1 gull-thief                      66.7 {"driftwood-crab":3,"limpet-clinger":3,"open-ocean-hermit-crab":4,"pincushion-urchin":1,"raccoon-nightcrew":1,"gull-thief":1}
+-2 driftwood-crab +2 gull-thief                      60 {"driftwood-crab":2,"limpet-clinger":3,"open-ocean-hermit-crab":4,"pincushion-urchin":1,"raccoon-nightcrew":1,"gull-thief":2}
+-1 driftwood-crab +1 limpet-clinger                  71.7 {"driftwood-crab":3,"limpet-clinger":4,"open-ocean-hermit-crab":4,"pincushion-urchin":1,"raccoon-nightcrew":1}
+-1 driftwood-crab +1 pincushion-urchin               80 {"driftwood-crab":3,"limpet-clinger":3,"open-ocean-hermit-crab":4,"pincushion-urchin":2,"raccoon-nightcrew":1}
+-2 driftwood-crab +2 pincushion-urchin               73.3 {"driftwood-crab":2,"limpet-clinger":3,"open-ocean-hermit-crab":4,"pincushion-urchin":3,"raccoon-nightcrew":1}
+-1 driftwood-crab +1 raccoon-nightcrew               63.3 {"driftwood-crab":3,"limpet-clinger":3,"open-ocean-hermit-crab":4,"pincushion-urchin":1,"raccoon-nightcrew":2}
+-2 driftwood-crab +2 raccoon-nightcrew               61.7 {"driftwood-crab":2,"limpet-clinger":3,"open-ocean-hermit-crab":4,"pincushion-urchin":1,"raccoon-nightcrew":3}
+-1 limpet-clinger +1 gull-thief                      51.7 {"driftwood-crab":4,"limpet-clinger":2,"open-ocean-hermit-crab":4,"pincushion-urchin":1,"raccoon-nightcrew":1,"gull-thief":1}
+-2 limpet-clinger +2 gull-thief                      53.3 {"driftwood-crab":4,"limpet-clinger":1,"open-ocean-hermit-crab":4,"pincushion-urchin":1,"raccoon-nightcrew":1,"gull-thief":2}
+-1 limpet-clinger +1 pincushion-urchin               70 {"driftwood-crab":4,"limpet-clinger":2,"open-ocean-hermit-crab":4,"pincushion-urchin":2,"raccoon-nightcrew":1}
+-2 limpet-clinger +2 pincushion-urchin               63.3 {"driftwood-crab":4,"limpet-clinger":1,"open-ocean-hermit-crab":4,"pincushion-urchin":3,"raccoon-nightcrew":1}
+-1 limpet-clinger +1 raccoon-nightcrew               60 {"driftwood-crab":4,"limpet-clinger":2,"open-ocean-hermit-crab":4,"pincushion-urchin":1,"raccoon-nightcrew":2}
+-2 limpet-clinger +2 raccoon-nightcrew               48.3 {"driftwood-crab":4,"limpet-clinger":1,"open-ocean-hermit-crab":4,"pincushion-urchin":1,"raccoon-nightcrew":3}
+-1 open-ocean-hermit-crab +1 gull-thief              61.7 {"driftwood-crab":4,"limpet-clinger":3,"open-ocean-hermit-crab":3,"pincushion-urchin":1,"raccoon-nightcrew":1,"gull-thief":1}
+-2 open-ocean-hermit-crab +2 gull-thief              61.7 {"driftwood-crab":4,"limpet-clinger":3,"open-ocean-hermit-crab":2,"pincushion-urchin":1,"raccoon-nightcrew":1,"gull-thief":2}
+-1 open-ocean-hermit-crab +1 limpet-clinger          68.3 {"driftwood-crab":4,"limpet-clinger":4,"open-ocean-hermit-crab":3,"pincushion-urchin":1,"raccoon-nightcrew":1}
+-1 open-ocean-hermit-crab +1 pincushion-urchin       65 {"driftwood-crab":4,"limpet-clinger":3,"open-ocean-hermit-crab":3,"pincushion-urchin":2,"raccoon-nightcrew":1}
+-2 open-ocean-hermit-crab +2 pincushion-urchin       73.3 {"driftwood-crab":4,"limpet-clinger":3,"open-ocean-hermit-crab":2,"pincushion-urchin":3,"raccoon-nightcrew":1}
+-1 open-ocean-hermit-crab +1 raccoon-nightcrew       55 {"driftwood-crab":4,"limpet-clinger":3,"open-ocean-hermit-crab":3,"pincushion-urchin":1,"raccoon-nightcrew":2}
+-2 open-ocean-hermit-crab +2 raccoon-nightcrew       51.7 {"driftwood-crab":4,"limpet-clinger":3,"open-ocean-hermit-crab":2,"pincushion-urchin":1,"raccoon-nightcrew":3}
+-1 pincushion-urchin +1 gull-thief                   60 {"driftwood-crab":4,"limpet-clinger":3,"open-ocean-hermit-crab":4,"raccoon-nightcrew":1,"gull-thief":1}
+blocked: [["N different cards (N-N)",8],["map: N-B-N family raccoon-nightcrew+trash-panda-trickster",7],["open-ocean-hermit-crab xN over N",6],["driftwood-crab xN over N",6],["map: mg mix costN N/N",6],["limpet-clinger xN over N",2]]

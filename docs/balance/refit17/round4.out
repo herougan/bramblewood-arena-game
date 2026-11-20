@@ -1,0 +1,16 @@
+20-A-4 base  62 / 65.5  mean 63.8  (400 games, seeds 161100 / 162100)
+  out=honey-badger-fury:2                                      77.5 / 75.5  mean 76.5
+  set=enemyLevel:3.5                                           89.5 / 91.3  mean 90.4
+  set=enemyLevel:3                                             91.8 / 92.3  mean 92.0
+5-A-3 base  71.3 / 72.3  mean 71.8  (400 games, seeds 161100 / 162100)
+  set=brambleHealth:20                                         69 / 70.3  mean 69.7
+  set=brambleHealth:25                                         68.5 / 68.5  mean 68.5
+  shield=26+set=enemyLevel:4                                   60 / 56.5  mean 58.2
+2-B-1 base  74 / 78  mean 76.0  (400 games, seeds 161100 / 162100)
+  hq=8                                                         81.3 / 83.5  mean 82.4
+  hq=6                                                         86.8 / 84  mean 85.4
+1-A-1 base  78.8 / 79.5  mean 79.2  (400 games, seeds 161100 / 162100)
+  out=chipmunk-cavalry:1                                       81.8 / 83.3  mean 82.5
+  out=ant-scout:2                                              87.3 / 87.8  mean 87.5
+  set=enemyLevel:0                                             78.8 / 79.5  mean 79.2
+ROUND4 DONE

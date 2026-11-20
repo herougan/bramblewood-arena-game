@@ -1,0 +1,29 @@
+2-A-5 base  58.3 / 50.5  mean 54.4  (400 games, seeds 161100 / 162100)
+  out=raft-spider:1+add=muskrat-reedgatherer:1                 66.8 / 65.8  mean 66.3
+  out=raft-spider:1+add=beaver-lumberjack:1                    60.8 / 62.8  mean 61.8
+10-A-3 base  86.3 / 87.8  mean 87.0  (400 games, seeds 161100 / 162100)
+  shield=11+out=blue-ringed-octopus:1,reef-shark:1+add=giant-clam:1,orca-vanguard:1 78.3 / 82.3  mean 80.3
+  shield=11+out=blue-ringed-octopus:1,riptide-eel:1+add=giant-clam:1,orca-vanguard:1 82.8 / 83.8  mean 83.3
+2-A-3 base  67.8 / 69.3  mean 68.5  (400 games, seeds 161100 / 162100)
+  shield=2+out=beaver-lumberjack:1+add=water-shrew:1           85.8 / 83.3  mean 84.5
+  shield=4+out=beaver-lumberjack:1+add=water-shrew:1           84.5 / 82  mean 83.2
+20-A-4 base  62 / 65.5  mean 63.8  (400 games, seeds 161100 / 162100)
+  out=honey-badger-fury:1+add=brimstone-hound:1                62.5 / 66  mean 64.2
+  out=honey-badger-fury:1+add=brimstone-hound:1+shield=50      60.8 / 65.3  mean 63.0
+  out=honey-badger-fury:1+add=brimstone-hound:1+shield=70      60.5 / 64  mean 62.2
+  set=enemyLevel:4.5                                           80.5 / 81.5  mean 81.0
+5-A-3 base  71.3 / 72.3  mean 71.8  (400 games, seeds 161100 / 162100)
+  shield=20                                                    70.8 / 71  mean 70.9
+  shield=26                                                    68.5 / 71  mean 69.8
+  set=enemyLevel:3.5                                           69.5 / 69  mean 69.2
+2-B-1 base  74 / 78  mean 76.0  (400 games, seeds 161100 / 162100)
+  out=limpet-clinger:3                                         70 / 70  mean 70.0
+  hq=10                                                        79.5 / 81.3  mean 80.4
+1-A-1 base  78.8 / 79.5  mean 79.2  (400 games, seeds 161100 / 162100)
+  hq=18                                                        79.8 / 78.8  mean 79.3
+  hq=16                                                        80.8 / 79  mean 79.9
+  set=enemyLevel:2                                             78.8 / 79.5  mean 79.2
+2-A-4 base  55.3 / 52.3  mean 53.8  (400 games, seeds 161100 / 162100)
+  hq=22                                                        68.3 / 62.8  mean 65.5
+  hq=18                                                        73.5 / 70  mean 71.8
+ROUND3 DONE
