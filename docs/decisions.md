@@ -4,13 +4,12 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 
 ## Waiting on you
 
-**SKM4-1. 58 combat skills priced outside their measured range** · Decide · Balance · asked 2026-11-21
-- A full pipeline measure (209 skills, 200 fights each) flags 78 prices; 58 are combat skills a fight can judge. Biggest: too cheap Fortify armor 1 (worth 9.2, price 3.0), fire bolt 1 and 2 (6.4 / 2.5, 8.6 / 5.0), Ally-played grant (4.7 / 0); too dear Evolute (-3.5 / 3.0), Swift (4.5 / 9.5), Nursing 2 (4.6 / 10), Venom Master (0.1 / 5.1), Twin Shot 2 (8.8 / 13.3). Full table: docs/balance/pipeline/flags-2026-11-21.md.
+**SKM4-1. 57 combat skills priced outside their measured range** · Decide · Balance · asked 2026-11-21
+- Re-measured at 1,000 fights: 57 of 58 flags hold (24 too cheap, 33 too dear; Wave cleared). Biggest: too cheap Fortify armor 1 (worth 9.1, price 3.0), Ally-played grant (4.7 / 0); too dear Evolute (-3.6 / 3.0), Swift (4.5 / 9.5), Nursing 2 (4.6 / 10), Venom Master (0.1 / 5.1), Twin Shot 2 (8.5 / 13.3), Offspring (0.4 / 6.1, also in SKM2-1). Table: docs/balance/pipeline/flags-2026-11-21.md.
   - a) Re-price the 10 biggest, then list cards that fall out of budget (no stat changes)
-  - b) Re-price all 58 the same way
-  - c) Re-measure at 1,000 fights first
-  - d) Leave
-- **Default:** c
+  - b) Re-price all 57 the same way
+  - c) Leave
+- **Default:** a
 
 **SKM3-1. Raise the price of Corrode and Harden (and maybe Trident)** · Decide · Balance · asked 2026-11-21
 - Pipeline re-measure, 200 fights each. Corrode is worth 2.92 (range 2.65-3.61) against its price of 2.41. Harden is worth 2.83 (2.29-3.67) against 2.11. Both ranges sit above today's price. Trident is worth 2.75 (2.21-3.06) against 2.28; its range includes today's price, so it is likely, not certain. Most of SKM3's 234 measures agree. Flying and Evasive read cheap only when a whole deck flies: keep them.
