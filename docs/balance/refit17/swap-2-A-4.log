@@ -1,0 +1,33 @@
+2-A-4 target 72 start {"shoal-shark":1,"water-shrew":2,"old-sturgeon":4,"lodge-engineer":2,"raft-spider":1} 40 (60 games, seed 171300)
+-1 water-shrew +1 beaver-lumberjack                  36.7 {"shoal-shark":1,"water-shrew":1,"old-sturgeon":4,"lodge-engineer":2,"raft-spider":1,"beaver-lumberjack":1}
+-2 water-shrew +2 beaver-lumberjack                  23.3 {"shoal-shark":1,"old-sturgeon":4,"lodge-engineer":2,"raft-spider":1,"beaver-lumberjack":2}
+-1 water-shrew +1 duck-paddler                       40 {"shoal-shark":1,"water-shrew":1,"old-sturgeon":4,"lodge-engineer":2,"raft-spider":1,"duck-paddler":1}
+-2 water-shrew +2 duck-paddler                       31.7 {"shoal-shark":1,"old-sturgeon":4,"lodge-engineer":2,"raft-spider":1,"duck-paddler":2}
+-1 water-shrew +1 lodge-engineer                     46.7 {"shoal-shark":1,"water-shrew":1,"old-sturgeon":4,"lodge-engineer":3,"raft-spider":1}
+-1 water-shrew +1 muskrat-reedgatherer               30 {"shoal-shark":1,"water-shrew":1,"old-sturgeon":4,"lodge-engineer":2,"raft-spider":1,"muskrat-reedgatherer":1}
+-2 water-shrew +2 muskrat-reedgatherer               18.3 {"shoal-shark":1,"old-sturgeon":4,"lodge-engineer":2,"raft-spider":1,"muskrat-reedgatherer":2}
+-1 water-shrew +1 raft-spider                        46.7 {"shoal-shark":1,"water-shrew":1,"old-sturgeon":4,"lodge-engineer":2,"raft-spider":2}
+-1 water-shrew +1 shoal-shark                        41.7 {"shoal-shark":2,"water-shrew":1,"old-sturgeon":4,"lodge-engineer":2,"raft-spider":1}
+-1 old-sturgeon +1 beaver-lumberjack                 23.3 {"shoal-shark":1,"water-shrew":2,"old-sturgeon":3,"lodge-engineer":2,"raft-spider":1,"beaver-lumberjack":1}
+-2 old-sturgeon +2 beaver-lumberjack                 11.7 {"shoal-shark":1,"water-shrew":2,"old-sturgeon":2,"lodge-engineer":2,"raft-spider":1,"beaver-lumberjack":2}
+-1 old-sturgeon +1 duck-paddler                      31.7 {"shoal-shark":1,"water-shrew":2,"old-sturgeon":3,"lodge-engineer":2,"raft-spider":1,"duck-paddler":1}
+-2 old-sturgeon +2 duck-paddler                      15 {"shoal-shark":1,"water-shrew":2,"old-sturgeon":2,"lodge-engineer":2,"raft-spider":1,"duck-paddler":2}
+-1 old-sturgeon +1 lodge-engineer                    45 {"shoal-shark":1,"water-shrew":2,"old-sturgeon":3,"lodge-engineer":3,"raft-spider":1}
+-2 old-sturgeon +2 lodge-engineer                    45 {"shoal-shark":1,"water-shrew":2,"old-sturgeon":2,"lodge-engineer":4,"raft-spider":1}
+-1 old-sturgeon +1 muskrat-reedgatherer              20 {"shoal-shark":1,"water-shrew":2,"old-sturgeon":3,"lodge-engineer":2,"raft-spider":1,"muskrat-reedgatherer":1}
+-2 old-sturgeon +2 muskrat-reedgatherer              15 {"shoal-shark":1,"water-shrew":2,"old-sturgeon":2,"lodge-engineer":2,"raft-spider":1,"muskrat-reedgatherer":2}
+-1 old-sturgeon +1 raft-spider                       30 {"shoal-shark":1,"water-shrew":2,"old-sturgeon":3,"lodge-engineer":2,"raft-spider":2}
+-1 old-sturgeon +1 shoal-shark                       30 {"shoal-shark":2,"water-shrew":2,"old-sturgeon":3,"lodge-engineer":2,"raft-spider":1}
+-2 old-sturgeon +2 shoal-shark                       23.3 {"shoal-shark":3,"water-shrew":2,"old-sturgeon":2,"lodge-engineer":2,"raft-spider":1}
+-1 lodge-engineer +1 beaver-lumberjack               40 {"shoal-shark":1,"water-shrew":2,"old-sturgeon":4,"lodge-engineer":1,"raft-spider":1,"beaver-lumberjack":1}
+-2 lodge-engineer +2 beaver-lumberjack               36.7 {"shoal-shark":1,"water-shrew":2,"old-sturgeon":4,"raft-spider":1,"beaver-lumberjack":2}
+-1 lodge-engineer +1 duck-paddler                    50 {"shoal-shark":1,"water-shrew":2,"old-sturgeon":4,"lodge-engineer":1,"raft-spider":1,"duck-paddler":1}
+-2 lodge-engineer +2 duck-paddler                    40 {"shoal-shark":1,"water-shrew":2,"old-sturgeon":4,"raft-spider":1,"duck-paddler":2}
+-1 lodge-engineer +1 muskrat-reedgatherer            38.3 {"shoal-shark":1,"water-shrew":2,"old-sturgeon":4,"lodge-engineer":1,"raft-spider":1,"muskrat-reedgatherer":1}
+-2 lodge-engineer +2 muskrat-reedgatherer            33.3 {"shoal-shark":1,"water-shrew":2,"old-sturgeon":4,"raft-spider":1,"muskrat-reedgatherer":2}
+-1 lodge-engineer +1 raft-spider                     48.3 {"shoal-shark":1,"water-shrew":2,"old-sturgeon":4,"lodge-engineer":1,"raft-spider":2}
+-1 lodge-engineer +1 shoal-shark                     45 {"shoal-shark":2,"water-shrew":2,"old-sturgeon":4,"lodge-engineer":1,"raft-spider":1}
+-1 raft-spider +1 beaver-lumberjack                  36.7 {"shoal-shark":1,"water-shrew":2,"old-sturgeon":4,"lodge-engineer":2,"beaver-lumberjack":1}
+-1 raft-spider +1 duck-paddler                       38.3 {"shoal-shark":1,"water-shrew":2,"old-sturgeon":4,"lodge-engineer":2,"duck-paddler":1}
+-1 raft-spider +1 muskrat-reedgatherer               36.7 {"shoal-shark":1,"water-shrew":2,"old-sturgeon":4,"lodge-engineer":2,"muskrat-reedgatherer":1}
+blocked: [["N different cards (N-N)",12],["map: mp usage pond-algae N>N",7],["old-sturgeon xN over N",5],["water-shrew xN",5],["raft-spider xN",3]]

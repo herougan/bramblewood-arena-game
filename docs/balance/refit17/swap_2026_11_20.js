@@ -12,7 +12,7 @@ const d0 = dj ? JSON.parse(dj) : n.deck;
 const T = fs.readFileSync(path.join(__dirname, '../refit16/skirmish-pass-refit16-road-s9100.jsonl'), 'utf8').trim().split('\n').map(JSON.parse).find(x => x.key === code).target;
 const fx = {}; const pa = path.join(__dirname, 'acc.jsonl'); if (fs.existsSync(pa)) fs.readFileSync(pa, 'utf8').trim().split('\n').filter(Boolean).map(JSON.parse).forEach(x => { if (x.deck && x.key !== code) fx[x.key] = x.deck; });
 const leadersOf = d => { const nn = Object.assign({}, n, { deck: d }); G.NODE_MAP_HINT.set(nn, m.id); return JSON.stringify(G.skirmishLeadersOf(nn, m.id) || []); }, lead0 = leadersOf(n.deck);
-const win = d => { const nn = Object.assign({}, n, { deck: d }); if (process.env.SHIELD) nn.shieldOverride = +process.env.SHIELD; // REFIT17: scan at a Shield lever G.NODE_MAP_HINT.set(nn, m.id); return Math.round(G.simulateReferenceFight(m.id, nn, N, { seed0: SEED }).win * 1000) / 10; };
+const win = d => { const nn = Object.assign({}, n, { deck: d }); if (process.env.SHIELD) nn.shieldOverride = +process.env.SHIELD; /* REFIT17: scan at a Shield lever */ G.NODE_MAP_HINT.set(nn, m.id); return Math.round(G.simulateReferenceFight(m.id, nn, N, { seed0: SEED }).win * 1000) / 10; };
 const keepN = id => { const k = [...f.keep].find(x => (Array.isArray(x) ? x[0] : x) === id); return k ? (Array.isArray(k) ? k[1] : 1) : 0; };
 const O = outs === 'all' ? Object.keys(d0) : outs.split(','), I = ins === 'all' ? f.pool : ins.split(',');
 console.log(code, 'target', T, 'start', JSON.stringify(d0), win(d0), `(${N} games, seed ${SEED})`);

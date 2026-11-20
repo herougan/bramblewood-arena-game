@@ -1,0 +1,23 @@
+10-A-3 target 70 start {"blue-ringed-octopus":2,"mantis-shrimp":1,"riptide-eel":4,"reef-shark":1,"giant-clam":3} 88.3 (60 games, seed 171300)
+-1 blue-ringed-octopus +1 giant-clam                 78.3 {"blue-ringed-octopus":1,"mantis-shrimp":1,"riptide-eel":4,"reef-shark":1,"giant-clam":4}
+-1 blue-ringed-octopus +1 mantis-shrimp              88.3 {"blue-ringed-octopus":1,"mantis-shrimp":2,"riptide-eel":4,"reef-shark":1,"giant-clam":3}
+-1 blue-ringed-octopus +1 orca-vanguard              88.3 {"blue-ringed-octopus":1,"mantis-shrimp":1,"riptide-eel":4,"reef-shark":1,"giant-clam":3,"orca-vanguard":1}
+-2 blue-ringed-octopus +2 orca-vanguard              93.3 {"mantis-shrimp":1,"riptide-eel":4,"reef-shark":1,"giant-clam":3,"orca-vanguard":2}
+-1 blue-ringed-octopus +1 reef-shark                 95 {"blue-ringed-octopus":1,"mantis-shrimp":1,"riptide-eel":4,"reef-shark":2,"giant-clam":3}
+-1 riptide-eel +1 blue-ringed-octopus                93.3 {"blue-ringed-octopus":3,"mantis-shrimp":1,"riptide-eel":3,"reef-shark":1,"giant-clam":3}
+-1 riptide-eel +1 giant-clam                         80 {"blue-ringed-octopus":2,"mantis-shrimp":1,"riptide-eel":3,"reef-shark":1,"giant-clam":4}
+-1 riptide-eel +1 mantis-shrimp                      90 {"blue-ringed-octopus":2,"mantis-shrimp":2,"riptide-eel":3,"reef-shark":1,"giant-clam":3}
+-2 riptide-eel +2 mantis-shrimp                      96.7 {"blue-ringed-octopus":2,"mantis-shrimp":3,"riptide-eel":2,"reef-shark":1,"giant-clam":3}
+-1 riptide-eel +1 orca-vanguard                      78.3 {"blue-ringed-octopus":2,"mantis-shrimp":1,"riptide-eel":3,"reef-shark":1,"giant-clam":3,"orca-vanguard":1}
+-2 riptide-eel +2 orca-vanguard                      93.3 {"blue-ringed-octopus":2,"mantis-shrimp":1,"riptide-eel":2,"reef-shark":1,"giant-clam":3,"orca-vanguard":2}
+-1 riptide-eel +1 reef-shark                         86.7 {"blue-ringed-octopus":2,"mantis-shrimp":1,"riptide-eel":3,"reef-shark":2,"giant-clam":3}
+-2 riptide-eel +2 reef-shark                         91.7 {"blue-ringed-octopus":2,"mantis-shrimp":1,"riptide-eel":2,"reef-shark":3,"giant-clam":3}
+-1 reef-shark +1 orca-vanguard                       75 {"blue-ringed-octopus":2,"mantis-shrimp":1,"riptide-eel":4,"giant-clam":3,"orca-vanguard":1}
+-1 giant-clam +1 blue-ringed-octopus                 83.3 {"blue-ringed-octopus":3,"mantis-shrimp":1,"riptide-eel":4,"reef-shark":1,"giant-clam":2}
+-1 giant-clam +1 mantis-shrimp                       85 {"blue-ringed-octopus":2,"mantis-shrimp":2,"riptide-eel":4,"reef-shark":1,"giant-clam":2}
+-2 giant-clam +2 mantis-shrimp                       85 {"blue-ringed-octopus":2,"mantis-shrimp":3,"riptide-eel":4,"reef-shark":1,"giant-clam":1}
+-1 giant-clam +1 orca-vanguard                       86.7 {"blue-ringed-octopus":2,"mantis-shrimp":1,"riptide-eel":4,"reef-shark":1,"giant-clam":2,"orca-vanguard":1}
+-2 giant-clam +2 orca-vanguard                       96.7 {"blue-ringed-octopus":2,"mantis-shrimp":1,"riptide-eel":4,"reef-shark":1,"giant-clam":1,"orca-vanguard":2}
+-1 giant-clam +1 reef-shark                          88.3 {"blue-ringed-octopus":2,"mantis-shrimp":1,"riptide-eel":4,"reef-shark":2,"giant-clam":2}
+-2 giant-clam +2 reef-shark                          88.3 {"blue-ringed-octopus":2,"mantis-shrimp":1,"riptide-eel":4,"reef-shark":3,"giant-clam":1}
+blocked: [["N different cards (N-N)",8],["map: N-A-N family coral-current-eel+riptide-eel",7],["map: mj usage sea-turtle-elder N>N",7],["riptide-eel xN over N",5],["giant-clam xN over N",2],["blue-ringed-octopus xN over N",2]]

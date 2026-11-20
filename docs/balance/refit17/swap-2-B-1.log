@@ -1,0 +1,30 @@
+2-B-1 target 90 start {"gallery-orb-weaver":1,"gull-thief":1,"limpet-clinger":4,"open-ocean-hermit-crab":4,"pincushion-urchin":3} 80 (60 games, seed 171300)
+-1 gull-thief +1 raccoon-nightcrew                   75 {"gallery-orb-weaver":1,"limpet-clinger":4,"open-ocean-hermit-crab":4,"pincushion-urchin":3,"raccoon-nightcrew":1}
+-1 gull-thief +1 trash-panda-trickster               80 {"gallery-orb-weaver":1,"limpet-clinger":4,"open-ocean-hermit-crab":4,"pincushion-urchin":3,"trash-panda-trickster":1}
+-1 limpet-clinger +1 gallery-orb-weaver              56.7 {"gallery-orb-weaver":2,"gull-thief":1,"limpet-clinger":3,"open-ocean-hermit-crab":4,"pincushion-urchin":3}
+-2 limpet-clinger +2 gallery-orb-weaver              60 {"gallery-orb-weaver":3,"gull-thief":1,"limpet-clinger":2,"open-ocean-hermit-crab":4,"pincushion-urchin":3}
+-1 limpet-clinger +1 gull-thief                      68.3 {"gallery-orb-weaver":1,"gull-thief":2,"limpet-clinger":3,"open-ocean-hermit-crab":4,"pincushion-urchin":3}
+-2 limpet-clinger +2 gull-thief                      71.7 {"gallery-orb-weaver":1,"gull-thief":3,"limpet-clinger":2,"open-ocean-hermit-crab":4,"pincushion-urchin":3}
+-1 limpet-clinger +1 pincushion-urchin               80 {"gallery-orb-weaver":1,"gull-thief":1,"limpet-clinger":3,"open-ocean-hermit-crab":4,"pincushion-urchin":4}
+-1 limpet-clinger +1 raccoon-nightcrew               71.7 {"gallery-orb-weaver":1,"gull-thief":1,"limpet-clinger":3,"open-ocean-hermit-crab":4,"pincushion-urchin":3,"raccoon-nightcrew":1}
+-2 limpet-clinger +2 raccoon-nightcrew               63.3 {"gallery-orb-weaver":1,"gull-thief":1,"limpet-clinger":2,"open-ocean-hermit-crab":4,"pincushion-urchin":3,"raccoon-nightcrew":2}
+-1 limpet-clinger +1 trash-panda-trickster           76.7 {"gallery-orb-weaver":1,"gull-thief":1,"limpet-clinger":3,"open-ocean-hermit-crab":4,"pincushion-urchin":3,"trash-panda-trickster":1}
+-2 limpet-clinger +2 trash-panda-trickster           73.3 {"gallery-orb-weaver":1,"gull-thief":1,"limpet-clinger":2,"open-ocean-hermit-crab":4,"pincushion-urchin":3,"trash-panda-trickster":2}
+-1 open-ocean-hermit-crab +1 gallery-orb-weaver      60 {"gallery-orb-weaver":2,"gull-thief":1,"limpet-clinger":4,"open-ocean-hermit-crab":3,"pincushion-urchin":3}
+-2 open-ocean-hermit-crab +2 gallery-orb-weaver      56.7 {"gallery-orb-weaver":3,"gull-thief":1,"limpet-clinger":4,"open-ocean-hermit-crab":2,"pincushion-urchin":3}
+-1 open-ocean-hermit-crab +1 gull-thief              75 {"gallery-orb-weaver":1,"gull-thief":2,"limpet-clinger":4,"open-ocean-hermit-crab":3,"pincushion-urchin":3}
+-2 open-ocean-hermit-crab +2 gull-thief              73.3 {"gallery-orb-weaver":1,"gull-thief":3,"limpet-clinger":4,"open-ocean-hermit-crab":2,"pincushion-urchin":3}
+-1 open-ocean-hermit-crab +1 pincushion-urchin       78.3 {"gallery-orb-weaver":1,"gull-thief":1,"limpet-clinger":4,"open-ocean-hermit-crab":3,"pincushion-urchin":4}
+-1 open-ocean-hermit-crab +1 raccoon-nightcrew       63.3 {"gallery-orb-weaver":1,"gull-thief":1,"limpet-clinger":4,"open-ocean-hermit-crab":3,"pincushion-urchin":3,"raccoon-nightcrew":1}
+-2 open-ocean-hermit-crab +2 raccoon-nightcrew       60 {"gallery-orb-weaver":1,"gull-thief":1,"limpet-clinger":4,"open-ocean-hermit-crab":2,"pincushion-urchin":3,"raccoon-nightcrew":2}
+-1 open-ocean-hermit-crab +1 trash-panda-trickster   71.7 {"gallery-orb-weaver":1,"gull-thief":1,"limpet-clinger":4,"open-ocean-hermit-crab":3,"pincushion-urchin":3,"trash-panda-trickster":1}
+-2 open-ocean-hermit-crab +2 trash-panda-trickster   71.7 {"gallery-orb-weaver":1,"gull-thief":1,"limpet-clinger":4,"open-ocean-hermit-crab":2,"pincushion-urchin":3,"trash-panda-trickster":2}
+-1 pincushion-urchin +1 gallery-orb-weaver           66.7 {"gallery-orb-weaver":2,"gull-thief":1,"limpet-clinger":4,"open-ocean-hermit-crab":4,"pincushion-urchin":2}
+-2 pincushion-urchin +2 gallery-orb-weaver           61.7 {"gallery-orb-weaver":3,"gull-thief":1,"limpet-clinger":4,"open-ocean-hermit-crab":4,"pincushion-urchin":1}
+-1 pincushion-urchin +1 gull-thief                   78.3 {"gallery-orb-weaver":1,"gull-thief":2,"limpet-clinger":4,"open-ocean-hermit-crab":4,"pincushion-urchin":2}
+-2 pincushion-urchin +2 gull-thief                   86.7 {"gallery-orb-weaver":1,"gull-thief":3,"limpet-clinger":4,"open-ocean-hermit-crab":4,"pincushion-urchin":1}
+-1 pincushion-urchin +1 raccoon-nightcrew            70 {"gallery-orb-weaver":1,"gull-thief":1,"limpet-clinger":4,"open-ocean-hermit-crab":4,"pincushion-urchin":2,"raccoon-nightcrew":1}
+-2 pincushion-urchin +2 raccoon-nightcrew            61.7 {"gallery-orb-weaver":1,"gull-thief":1,"limpet-clinger":4,"open-ocean-hermit-crab":4,"pincushion-urchin":1,"raccoon-nightcrew":2}
+-1 pincushion-urchin +1 trash-panda-trickster        71.7 {"gallery-orb-weaver":1,"gull-thief":1,"limpet-clinger":4,"open-ocean-hermit-crab":4,"pincushion-urchin":2,"trash-panda-trickster":1}
+-2 pincushion-urchin +2 trash-panda-trickster        73.3 {"gallery-orb-weaver":1,"gull-thief":1,"limpet-clinger":4,"open-ocean-hermit-crab":4,"pincushion-urchin":1,"trash-panda-trickster":2}
+blocked: [["limpet-clinger xN over N",5],["open-ocean-hermit-crab xN over N",5],["N different cards (N-N)",4],["pincushion-urchin xN over N",2]]

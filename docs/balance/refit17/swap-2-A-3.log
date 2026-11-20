@@ -1,0 +1,16 @@
+2-A-3 target 78 start {"beaver-lumberjack":1,"duck-paddler":2,"lodge-engineer":4,"old-sturgeon":4,"pond-algae":2,"water-shrew":1} 71.7 (60 games, seed 171300)
+-1 beaver-lumberjack +1 muskrat-reedgatherer         71.7 {"duck-paddler":2,"lodge-engineer":4,"old-sturgeon":4,"pond-algae":2,"water-shrew":1,"muskrat-reedgatherer":1}
+-1 beaver-lumberjack +1 raft-spider                  78.3 {"duck-paddler":2,"lodge-engineer":4,"old-sturgeon":4,"pond-algae":2,"water-shrew":1,"raft-spider":1}
+-1 beaver-lumberjack +1 water-shrew                  91.7 {"duck-paddler":2,"lodge-engineer":4,"old-sturgeon":4,"pond-algae":2,"water-shrew":2}
+-1 duck-paddler +1 beaver-lumberjack                 61.7 {"beaver-lumberjack":2,"duck-paddler":1,"lodge-engineer":4,"old-sturgeon":4,"pond-algae":2,"water-shrew":1}
+-2 duck-paddler +2 muskrat-reedgatherer              46.7 {"beaver-lumberjack":1,"lodge-engineer":4,"old-sturgeon":4,"pond-algae":2,"water-shrew":1,"muskrat-reedgatherer":2}
+-2 duck-paddler +2 raft-spider                       56.7 {"beaver-lumberjack":1,"lodge-engineer":4,"old-sturgeon":4,"pond-algae":2,"water-shrew":1,"raft-spider":2}
+-1 duck-paddler +1 water-shrew                       78.3 {"beaver-lumberjack":1,"duck-paddler":1,"lodge-engineer":4,"old-sturgeon":4,"pond-algae":2,"water-shrew":2}
+-1 pond-algae +1 beaver-lumberjack                   80 {"beaver-lumberjack":2,"duck-paddler":2,"lodge-engineer":4,"old-sturgeon":4,"pond-algae":1,"water-shrew":1}
+-2 pond-algae +2 muskrat-reedgatherer                40 {"beaver-lumberjack":1,"duck-paddler":2,"lodge-engineer":4,"old-sturgeon":4,"water-shrew":1,"muskrat-reedgatherer":2}
+-2 pond-algae +2 raft-spider                         50 {"beaver-lumberjack":1,"duck-paddler":2,"lodge-engineer":4,"old-sturgeon":4,"water-shrew":1,"raft-spider":2}
+-1 pond-algae +1 water-shrew                         68.3 {"beaver-lumberjack":1,"duck-paddler":2,"lodge-engineer":4,"old-sturgeon":4,"pond-algae":1,"water-shrew":2}
+-1 water-shrew +1 beaver-lumberjack                  73.3 {"beaver-lumberjack":2,"duck-paddler":2,"lodge-engineer":4,"old-sturgeon":4,"pond-algae":2}
+-1 water-shrew +1 muskrat-reedgatherer               55 {"beaver-lumberjack":1,"duck-paddler":2,"lodge-engineer":4,"old-sturgeon":4,"pond-algae":2,"muskrat-reedgatherer":1}
+-1 water-shrew +1 raft-spider                        61.7 {"beaver-lumberjack":1,"duck-paddler":2,"lodge-engineer":4,"old-sturgeon":4,"pond-algae":2,"raft-spider":1}
+blocked: [["N non-unique copies",24],["N different cards (N-N)",12],["duck-paddler xN",8],["lodge-engineer xN over N",8],["old-sturgeon xN over N",8],["pond-algae xN",8],["beaver-lumberjack xN",4],["water-shrew xN",4]]
