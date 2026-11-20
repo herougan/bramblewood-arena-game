@@ -4,6 +4,45 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**REFIT11-1. New skill carriers read too strong** · Decide · Balance · asked 2026-11-20
+- Road runs say three FOCUS2 carriers cost CPU-side fights more than their price: Sworn Shieldbearer (Harden 2.11) cost Map 15 fights 9-18 points, Meerkat Sentry (Embolden 3.59) cost Map 14 fights 3-19, Booming Bittern (Enfeeble 2.5) cost Map 6 fights 4-10. REFIT11 re-fitted the fights around them, so the road is back in band either way.
+  - a) Keep prices; the re-fits cover it
+  - b) Raise Harden and Embolden prices and trim the two cards (Bittern stays)
+  - c) Raise all three
+- **Default:** a
+
+**REFIT11-2. 6-3 Toad Chorus stays too hard** · Decide · Balance · asked 2026-11-20
+- 6-3 sits at 67.5 against a target of 80. Its other pool cards are capped at 1 copy and the deck already has 6 distinct cards, so none of the 10 legal decks does better.
+  - a) Allow 2 copies of one pool card
+  - b) Remove Booming Bittern from 6-3
+  - c) Lower the target to 70
+- **Default:** a
+
+**FOCUS2-1. Enfeeble's price** · Decide · Balance · asked 2026-11-20
+- Enfeeble N now makes the target Feeble (deals half) for N rounds. Priced 2.5; Embrittle (Fragile) is 4. Raising Enfeeble to 4 puts Tsetse Drainer over budget (99.7% today).
+  - a) Keep 2.5
+  - b) 4, like Embrittle, and trim Tsetse Drainer
+- **Default:** a
+
+**FOCUS2-2. Bleed cards left on Map 5** · Decide · Lists · asked 2026-11-20
+- Bleed moved to Map 6. On Map 5's list, Alley Cat has no other reason to be there; Mosquito Cloud is also on Map 6's list. Swamp Alligator stays (the swamp's namesake).
+  - a) No Alley Cat on Map 5
+  - b) No Alley Cat and Mosquito Cloud
+  - c) Keep both
+- **Default:** a
+
+**FOCUS2-3. Bog Leech: Bleed 1 to Leech?** · Decide · Cards · asked 2026-11-20
+- Bog Leech carries Bleed 1. With Leech now Map 5's focus, giving it Leech instead makes it the map's obvious leech. It is also a Suggested pick for Map 6 (Bleed).
+  - a) Swap to Leech (Map 5)
+  - b) Keep Bleed (Map 6)
+- **Default:** b
+
+**REFIT10-1. 19-A-7 Basalt Vanguard stays too hard** · Decide · Balance · asked 2026-11-20
+- After Malachite Golem replaced Granite Ox Golem, 19-A-7 wins 37% against a target of 67.5. No legal 16-card deck reaches the band (1104 read). A 12-card deck reads 62.5% (one seed).
+  - a) Shrink it to 12 cards
+  - b) Leave it hard until a weaker card joins the Basalt Foundry list
+- **Default:** a
+
 **DEC20-1. Glasswing Moth over budget after Embrittle** · Decide · Balance · asked 2026-11-20
 - Embrittle now makes the target Fragile (takes x2) for N rounds, so it costs 4.59 instead of 0.2. Glasswing Moth (Embrittle 2) goes from 110% to 144% of its budget. Illuminate's new reveal moves Glow-worm to 112%.
   - a) Trim Glasswing Moth's stats to 100% (Claude picks)
