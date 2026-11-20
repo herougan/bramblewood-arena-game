@@ -460,11 +460,86 @@ function rowPrice(U, methodId, s, carrier) {
   const x1 = v => L.budgetOf(L.printedDef(gm, v), 1).x1, src = carrierOf(U, s, 1)[0];
   try {
     if (E.design === 'eq' && E.ownBody) return S.priceOn(gm, String(carrier).split('@')[0], s, 1);
-    if (E.design === 'van' || E.design === 'eq') return x1(Object.assign({ base: E.body }, S.addOf(gm, src, s))) - x1({ base: E.body });
+    if (E.design === 'van' || E.design === 'eq' || E.design === 'rr') return x1(Object.assign({ base: E.body }, S.addOf(gm, src, s))) - x1({ base: E.body });
     const card = String(carrier).split('@')[0];
     if (E.design === 'deck' && E.mode === 'add') return x1(Object.assign({ base: card }, S.addOf(gm, src, s))) - x1({ base: card });
     return S.priceOn(gm, card, s, 1);
   } catch (e) { return null; }
 }
 
-module.exports = { REG, EXPS, PLAN, carrierOf, playDesign, estimate, METRICS, FILTERS, rowPrice };
+// ---------------------------------------------------------------- round robin (package SKM2, 2026-11-21): a new kind
+// Every entrant is 20 farm-dogs: given a skill (copied from its carrier, as E1), given a canon anchor (the pipeline's trusted prices), or
+// bumped by stats (+0, +2 / +4 / +8 Health, +1 / +2 Attack: the yardstick). Each pair plays M fights (seats alternate, map fields), so the
+// skills meet each other on equal bodies as well as the yardstick. A Bradley-Terry fit gives each entrant a strength; the stat entrants' line
+// (strength on budget points) turns a strength into points. The anchored reading uses only the skill-vs-skill games, priced by the anchors.
+// Intervals: 300 bootstrap resamples of each pair's games. Entrants are fixed (the SKM2 confirm list); other skills get no reading.
+const RRX = { body: BODY1, M: 40, seed: 'skmRR', boot: 300,
+  skills: ['flying', 'diurnal', 'evasive', 'corrode', 'trident', 'pack', 'sleepPowder', 'poisonBarbs', 'poisonPowder', 'dive', 'keenSense', 'parasite', 'pulverise', 'overwhelm', 'offspring', 'repair'],
+  anchors: [['armor', 1], ['poison', 1], ['regen', 2], ['sweep', 2], ['fork', true]],
+  ladder: [['+0', {}, 0], ['+2H', { dH: 2 }, 2], ['+4H', { dH: 4 }, 4], ['+8H', { dH: 8 }, 8], ['+1A', { dA: 1 }, AW], ['+2A', { dA: 2 }, 2 * AW]] };
+EXPS.RR = { design: 'rr', body: BODY1, idea: 'round robin on equal bodies: 20 farm-dogs given each skill, a canon anchor or a stat bump, every pair against every other' };
+function rrEntrants(U) {
+  const gm = U.gm, x1 = v => L.budgetOf(L.printedDef(gm, v), 1).x1, b0 = x1({ base: RRX.body }), out = [];
+  RRX.skills.filter(s => U.skills[s]).forEach(s => { const v = Object.assign({ base: RRX.body }, S.addOf(gm, carrierOf(U, s, 1)[0], s)); out.push({ id: s, kind: 'skill', v, price: x1(v) - b0 }); });
+  RRX.anchors.forEach(([k, n]) => { const v = { base: RRX.body, add: { [k]: n } }; out.push({ id: 'anchor:' + k, kind: 'anchor', v, price: x1(v) - b0 }); });
+  RRX.ladder.forEach(([id, d, pts]) => out.push({ id: 'stat' + id, kind: 'stat', v: Object.assign({ base: RRX.body }, d), pts }));
+  return out;
+}
+// Bradley-Terry by the MM algorithm on a score matrix (W[i][j] = i's points against j, N[i][j] = games; half a win and half a loss of prior a pair)
+function btFit(W, N, use) {
+  const n = W.length, p = new Array(n).fill(1), on = (i, j) => i !== j && N[i][j] > 0 && use(i, j);
+  for (let it = 0; it < 500; it++) { let delta = 0;
+    for (let i = 0; i < n; i++) { let w = 0, d = 0; for (let j = 0; j < n; j++) if (on(i, j)) { w += W[i][j] + 0.5; d += (N[i][j] + 1) / (p[i] + p[j]); } if (d > 0) { const q = w / d; delta = Math.max(delta, Math.abs(Math.log(q / p[i]))); p[i] = q; } }
+    const g = Math.exp(p.reduce((t, x) => t + Math.log(x), 0) / n); for (let i = 0; i < n; i++) p[i] /= g; if (delta < 1e-7) break; }
+  return p.map(Math.log);
+}
+const lsq = (xs, ys) => { const n = xs.length, mx = xs.reduce((a, b) => a + b, 0) / n, my = ys.reduce((a, b) => a + b, 0) / n; let sxy = 0, sxx = 0; xs.forEach((x, i) => { sxy += (x - mx) * (ys[i] - my); sxx += (x - mx) ** 2; }); const b = sxy / sxx; return { a: my - b * mx, b }; };
+// the readings of every entrant from one set of pair outcomes (G[i][j] = i's outcomes against j, from i's side)
+function rrRead(E, G, bramble) {
+  const n = E.length, W = [], N = [], MG = [], st = [], an = [];
+  E.forEach((e, i) => { (e.kind === 'stat' ? st : e.kind === 'anchor' ? an : []).push(i); W.push(new Array(n).fill(0)); N.push(new Array(n).fill(0)); MG.push(new Array(n).fill(0)); });
+  for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) { const o = G[i][j]; if (!o) continue; o.forEach(x => { W[i][j] += x.s; N[i][j]++; MG[i][j] += (x.hm - x.hf) / bramble; }); }
+  const out = {}, pts = st.map(i => E[i].pts);
+  const th = btFit(W, N, () => true), lt = lsq(pts, st.map(i => th[i]));
+  const avg = M => E.map((_, i) => { let s = 0, c = 0; for (let j = 0; j < n; j++) if (N[i][j]) { s += M[i][j] / N[i][j]; c++; } return s / c; });
+  const sc = avg(W), mg = avg(MG), ls = lsq(pts, st.map(i => sc[i])), lm = lsq(pts, st.map(i => mg[i]));
+  // the skill-vs-skill games only (skills and anchors; no stat entrant), priced by the anchors' line through their prices
+  const sk = i => E[i].kind !== 'stat', tv = btFit(W, N, (i, j) => sk(i) && sk(j)), la = lsq(an.map(i => E[i].price), an.map(i => tv[i]));
+  E.forEach((e, i) => { if (e.kind === 'stat') return;
+    // against the stat entrants only: a logistic line of the score on the foe's points (h* where it crosses 1/2), a light prior on each probe
+    let c = 0, d = 0.3; for (let k = 0; k < 50; k++) { let g0 = 0, g1 = 0, h00 = 0, h01 = 0, h11 = 0;
+      st.forEach(j => { const y = (W[i][j] + 0.5) / (N[i][j] + 1), m = N[i][j] + 1, x = E[j].pts, pr = 1 / (1 + Math.exp(-(c - d * x))), w = m * pr * (1 - pr); g0 += m * (y - pr); g1 += -m * (y - pr) * x; h00 += w; h01 += -w * x; h11 += w * x * x; });
+      const det = h00 * h11 - h01 * h01; if (!(Math.abs(det) > 1e-12)) break; const dc = (h11 * g0 - h01 * g1) / det, dd = (h00 * g1 - h01 * g0) / det; c += dc; d += dd; if (Math.abs(dc) + Math.abs(dd) < 1e-9) break; }
+    out[e.id] = { bt: lt.b > 0 ? (th[i] - lt.a) / lt.b : null, score: ls.b > 0 ? (sc[i] - ls.a) / ls.b : null, margin: lm.b > 0 ? (mg[i] - lm.a) / lm.b : null,
+      vsStats: d > 0 ? c / d : null, anchored: la.b > 0 ? (tv[i] - la.a) / la.b : null, theta: th[i], meanScore: sc[i] }; });
+  return { out, slope: lt.b, anchorSlope: la.b };
+}
+const RRMEMO = new Map();
+async function playRR(sim, M) {
+  const key = M; if (RRMEMO.has(key)) return RRMEMO.get(key);
+  const U = S.universe(sim.gm), E = rrEntrants(U), n = E.length, pairs = [];
+  for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) pairs.push([i, j]);
+  const ctxOf = j => sim.context({ kind: 'homo', foe: 'bodyV', body: RRX.body, seed: RRX.seed, foeV: E[j].v });
+  for (let a = 0; a < pairs.length; a += 12) await Promise.all(pairs.slice(a, a + 12).map(([i, j]) => sim.need(ctxOf(j), [{ v: E[i].v }], M)));
+  const G = E.map(() => new Array(n).fill(null)); let bramble = 30;
+  pairs.forEach(([i, j]) => { const X = ctxOf(j), o = sim.outcomes(X, E[i].v, RRX.body, M); bramble = X.bramble; G[i][j] = o; G[j][i] = o.map(x => ({ i: x.i, s: 1 - x.s, r: x.r, hm: x.hf, hf: x.hm })); });
+  const R = rrRead(E, G, bramble), rng = S.O.mulberry(S.fnv('skmRR|boot')), boots = [];
+  for (let b = 0; b < RRX.boot; b++) { const Gb = E.map(() => new Array(n).fill(null));
+    pairs.forEach(([i, j]) => { const o = G[i][j], r = o.map(() => o[Math.floor(rng.next() * o.length)]); Gb[i][j] = r; Gb[j][i] = r.map(x => ({ s: 1 - x.s, hm: x.hf, hf: x.hm })); });
+    boots.push(rrRead(E, Gb, bramble).out); }
+  const res = { E, R, boots, games: pairs.length * M, pairs: pairs.length, M, G };
+  RRMEMO.set(key, res); return res;
+}
+const RREST = [{ k: 'bt', name: 'Bradley-Terry strength', idea: 'the Bradley-Terry strength over every pair, in points by the stat entrants\' line' },
+  { k: 'score', name: 'mean score', idea: 'the mean score against every other entrant, in points by the stat entrants\' line' },
+  { k: 'margin', name: 'mean margin', idea: 'the mean bramble margin against every other entrant, in points by the stat entrants\' line' },
+  { k: 'vsStats', name: 'stat probes', idea: 'only the games against the six stat entrants: a logistic line through them, h* where the score crosses 1/2' },
+  { k: 'anchored', name: 'anchored', idea: 'only the skill-vs-skill games (no stat entrant): Bradley-Terry strength priced by the line through the canon anchors\' prices' }];
+RREST.forEach((e, j) => REG.push({ id: 'RR-' + e.k, exp: 'RR', primary: j === 0, name: 'RR ' + e.name, idea: EXPS.RR.idea + '; ' + e.idea,
+  async run(s, o) { const M = o.M || (o.stages && o.stages[0]) || RRX.M;
+    if (!RRX.skills.includes(s)) return { worth: null, M, games: 0, note: 'not an entrant of the round robin' };
+    const P = await playRR(o.sim, M), r = P.R.out[s]; if (!r || r[e.k] == null) return { worth: null, M, games: P.games, note: 'no reading' };
+    const bs = P.boots.map(b => b[s] && b[s][e.k]).filter(x => x != null && isFinite(x)), sd = S.meanSE(bs).se * Math.sqrt(bs.length);
+    return { worth: r[e.k], ci: 1.96 * sd, games: j === 0 ? Math.round(P.games / RRX.skills.length) : 0, carrier: carrierOf(S.universe(o.sim.gm), s, 1)[0], M, n: P.pairs }; } }));
+
+module.exports = { REG, EXPS, PLAN, carrierOf, playDesign, estimate, METRICS, FILTERS, rowPrice, RRX, playRR };
