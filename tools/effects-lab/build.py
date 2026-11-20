@@ -419,6 +419,8 @@ FRAME_VARS = ':root{' + ''.join(_frvars) + '}'
 html = f'''<!doctype html>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bramblewood Effects Lab</title>
 <link rel="stylesheet" href="fonts/fonts.css">
+<script>/* 2026-11-16 (coordinator): captured card tiles call bwArtFail on a missing picture; the Lab has no art retry, so just show the fallback (lab-errors failed on a fresh capture). 2026-11-21 (TESTFIX2): moved above the first <style> so it exists before any tile's onerror can fire (CI: pageerror at load) */
+if(typeof bwArtFail!=='function'){{ window.bwArtFail=function(img){{ img.style.display='none'; var f=img.nextElementSibling; if(f) f.style.display='flex'; }}; }}</script>
 <style>{gamecss}</style>
 <style id="bwCardFrames">{FRAME_VARS}</style>
 <style>{page_css}</style>
@@ -768,8 +770,6 @@ const MATERIA_KINDS = [{{id:'ember', icon:'🔥', name:'Ember'}}, {{id:'tide', i
 {fx}
 </script>
 <script>window.TREAT_CARDS = {TREAT_JSON};</script>
-<script>/* 2026-11-16 (coordinator): captured card tiles call bwArtFail on a missing picture; the Lab has no art retry, so just show the fallback (lab-errors failed on a fresh capture) */
-if(typeof bwArtFail!=='function'){{ window.bwArtFail=function(img){{ img.style.display='none'; var f=img.nextElementSibling; if(f) f.style.display='flex'; }}; }}</script>
 <script src="effects-lab.js"></script>
 <script>
 // 2026-10-15: Effects catalogue. The game's unit effects and the six effect batches (FX.A … FX.F), then the inventory,
