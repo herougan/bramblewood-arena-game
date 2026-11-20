@@ -4,6 +4,26 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**REFIT15-1. 2-2 Gull Gang is too hard (57 vs 80)** · Decide · Balance · asked 2026-11-21
+- No swap or Shield change helps. All 20 lowered-Health slots are used, so a Health cut needs the limit raised to 21. Bramble Health 15 → 9 (the floor) reads 63; 15 → 6 reads 70.
+  - a) Raise the limit to 21 and cut to 6
+  - b) Raise the limit and cut to 9 (the floor)
+  - c) Leave it
+- **Default:** a
+
+**REFIT15-2. 4-3 Cetacean Pod is too hard (51 vs 70)** · Decide · Balance · asked 2026-11-21
+- It is already below the floor by your call HPCUT1, and Shield is 0. Bramble Health 5 → 3 reads 62 (in band); 5 → 2 reads 69.
+  - a) Health 3
+  - b) Health 2
+  - c) Leave it at 5
+- **Default:** a
+
+**REFIT15-3. Map 1 fights are too easy (96 vs 80-85)** · Decide · Balance · asked 2026-11-21
+- 1-2, 1-3 and 1-4 stay at 93+ whatever the deck, Shield or level. The likely cause is the early-bramble lead (your call EB): on Maps 0-1 your bramble gets the enemy's Health and Shield +3. Not measured yet.
+  - a) Measure Map 1 without the lead, then decide
+  - b) Keep the lead; leave Map 1 easy
+- **Default:** a
+
 **REFIT14-1. Four more Pale Desert fights are too easy (88-99)** · Decide · Balance · asked 2026-11-21
 - 18-A-3, A-4, A-5 and A-6 read 88-99 against targets 69-77. No swap, Shield or Health change moves them. Stonedrop Vulture (from REFIT13-2 a) does: A-3 66 (target 71), A-4 78.5 (77), A-5 65 (73), A-6 63 (69).
   - a) Use Vulture there too (x2 each, x3 on A-6)
