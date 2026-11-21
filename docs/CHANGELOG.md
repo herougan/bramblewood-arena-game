@@ -17,6 +17,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - BSWEEP: the 32 skills measured again at bramble 5 and 30 (`--ctx-tag`); 26 read the same at all three, 20 keep their verdict. Harbinger and Paralysis Powder gain worth in longer fights, Pounce 1 and Dynamite 3 lose it.
 - BSWEEP2: the other 95 Maps 1-20 skills at bramble 5 and 30. All 127: 101 read the same at all three. Long fights raise weapons, Harbinger and Paralysis Powder; short fights raise Stealth (16.7 at 5, 3.0 at 30), Pounce and bramble arrows. Table: `node tools/pipeline/bsweep_report.js`.
 - CARRIER: the 127 skills on high-Attack vs high-Health carriers. 93 body-blind; ranged and siege skills are worth more on walls, Armor, Bulwark, Sturdy, Swift and death spawns on hard hitters. Decision CARRIER-1. Table: `node tools/pipeline/carrier_report.js`.
+- LEVEL: the 127 skills at Level 3 and 5 as well as 1. 119 read the same; Attack scalers (Stealth 6.9 -> 10.5, Mighty) gain on bigger bodies, fixed damage (Pounce, the Arrows) loses. Table: `node tools/pipeline/level_report.js`. Next: AI (the basic and smartest CPU).
 - COPIES: the 127 skills with 2 and 12 copies of the carrier instead of 6. 119 read the same per copy; Pack 1 and Swarm gain with copies, Avalanche, Twin Shot 2, the Worker Ant death spawn, Forestry and Draw on Attack lose. Table: `node tools/pipeline/copies_report.js`.
 - SKM5: every combat skill now has a 1,000-fight reading; 3 new dear flags folded into SKM4-1.
 
