@@ -17,10 +17,10 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
   - b) Leave
 - **Default:** b
 
-**SKM4-1. 57 combat skills priced outside their measured range** · Decide · Balance · asked 2026-11-21
-- Re-measured at 1,000 fights: 57 of 58 flags hold (24 too cheap, 33 too dear; Wave cleared). Biggest: too cheap Fortify armor 1 (worth 9.1, price 3.0), Ally-played grant (4.7 / 0); too dear Evolute (-3.6 / 3.0), Swift (4.5 / 9.5), Nursing 2 (4.6 / 10), Venom Master (0.1 / 5.1), Twin Shot 2 (8.5 / 13.3), Offspring (0.4 / 6.1, also in SKM2-1). Table: docs/balance/pipeline/flags-2026-11-21.md.
+**SKM4-1. 60 combat skills priced outside their measured range** · Decide · Balance · asked 2026-11-21
+- Every combat skill now measured at 1,000 fights: 60 flags (24 too cheap, 36 too dear). Biggest: too cheap Fortify armor 1 (worth 9.1, price 3.0), Ally-played grant (4.7 / 0); too dear Evolute (-3.6 / 3.0), Swift (4.5 / 9.5), Nursing 2 (4.6 / 10), Venom Master (0.1 / 5.1), Twin Shot 2 (8.5 / 13.3), Offspring (0.4 / 6.1, also in SKM2-1). New: On Ready damage 4, Ice Arrow 1, Volley 1 slightly dear. Table: docs/balance/pipeline/flags-2026-11-21.md.
   - a) Re-price the 10 biggest, then list cards that fall out of budget (no stat changes)
-  - b) Re-price all 57 the same way
+  - b) Re-price all 60 the same way
   - c) Leave
 - **Default:** a
 

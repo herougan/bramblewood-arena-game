@@ -1,0 +1,405 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-20T23:08:14.836Z",
+ "finished": "2026-11-21T00:10:06.809Z",
+ "durationSec": 3712,
+ "args": [
+  "--only-file",
+  "docs/balance/pipeline/state/skm5-keys.json",
+  "--fights",
+  "1000",
+  "--force",
+  "--minutes",
+  "105",
+  "--wait"
+ ],
+ "head": "e921af9fe",
+ "inputs": {
+  "context": "global",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "dictator",
+   "electricity=1",
+   "embolden=1",
+   "esprit=1",
+   "esprit=2",
+   "esprit={\"v\":1,\"hp\":1}",
+   "esprit={\"v\":2,\"hp\":2}",
+   "fencing",
+   "festering",
+   "freeze={\"chance\":40,\"duration\":2}",
+   "frenzy",
+   "heavyMetal",
+   "helmet",
+   "iceArrow=1",
+   "kinRally=1",
+   "loneWolf=[1,1]",
+   "loyal=[1,3]",
+   "loyal={\"v\":[1,2],\"gives\":{\"armor\":1}}",
+   "loyal={\"v\":[1,3],\"gives\":{\"armor\":1}}",
+   "loyal={\"v\":[2,1],\"gives\":{\"quick\":true}}",
+   "meiosis=1",
+   "overwhelm",
+   "pierce",
+   "pounce=5",
+   "pounce=6",
+   "puncture=2",
+   "rampart",
+   "regen=1",
+   "renewal",
+   "salvage=1",
+   "sap",
+   "scare=1",
+   "shell=4",
+   "siege=3",
+   "snipe=2",
+   "strangle=2",
+   "strangle={\"v\":1,\"hold\":\"bind\"}",
+   "sweep=3",
+   "sweep=4",
+   "sweep=5",
+   "thanatosis",
+   "thorns=3",
+   "tornado=1",
+   "trap=5",
+   "trap=6",
+   "tsunami=2",
+   "volley=1",
+   "wakeful",
+   "web=1"
+  ]
+ },
+ "counts": {
+  "items": 49,
+  "measured": 49,
+  "reused": 0,
+  "stopped early": 0,
+  "fights saved": 0,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "dictator",
+   "field": "worth",
+   "old": "0",
+   "new": "0.0036 [0, 0.012] at 1000 fights, price on carriers 0"
+  },
+  {
+   "id": "electricity=1",
+   "field": "worth",
+   "old": "2.802",
+   "new": "2.8904 [2.5571, 2.9373] at 1000 fights, price on carriers 3"
+  },
+  {
+   "id": "embolden=1",
+   "field": "worth",
+   "old": "4.5583",
+   "new": "4.5354 [4.351, 4.9351] at 1000 fights, price on carriers 3.59"
+  },
+  {
+   "id": "esprit=1",
+   "field": "worth",
+   "old": "2.7642",
+   "new": "2.4081 [2.1714, 2.6313] at 1000 fights, price on carriers 2.27"
+  },
+  {
+   "id": "esprit=2",
+   "field": "worth",
+   "old": "4.3116",
+   "new": "3.9202 [3.3795, 4.274] at 1000 fights, price on carriers 3.37"
+  },
+  {
+   "id": "esprit={\"v\":1,\"hp\":1}",
+   "field": "worth",
+   "old": "4.2856",
+   "new": "3.3091 [2.9393, 3.9604] at 1000 fights, price on carriers 3.37"
+  },
+  {
+   "id": "esprit={\"v\":2,\"hp\":2}",
+   "field": "worth",
+   "old": "5.7774",
+   "new": "5.1594 [4.6881, 6.6289] at 1000 fights, price on carriers 5.57"
+  },
+  {
+   "id": "fencing",
+   "field": "worth",
+   "old": "0.057",
+   "new": "0.0852 [0.0244, 0.1465] at 1000 fights, price on carriers 0"
+  },
+  {
+   "id": "festering",
+   "field": "worth",
+   "old": "0",
+   "new": "0.0071 [-0.0781, 0.0923] at 1000 fights, price on carriers 0"
+  },
+  {
+   "id": "freeze={\"chance\":40,\"duration\":2}",
+   "field": "worth",
+   "old": "2.8462",
+   "new": "2.6568 [2.4128, 2.9026] at 1000 fights, price on carriers 2.88"
+  },
+  {
+   "id": "frenzy",
+   "field": "worth",
+   "old": "0.418",
+   "new": "0.396 [0.2969, 0.5284] at 1000 fights, price on carriers 0.75"
+  },
+  {
+   "id": "heavyMetal",
+   "field": "worth",
+   "old": "0",
+   "new": "0.0036 [0, 0.012] at 1000 fights, price on carriers 0"
+  },
+  {
+   "id": "helmet",
+   "field": "worth",
+   "old": "-0.057",
+   "new": "0.1527 [0.0721, 0.2402] at 1000 fights, price on carriers 0.28"
+  },
+  {
+   "id": "iceArrow=1",
+   "field": "worth",
+   "old": "5.2417",
+   "new": "5.2488 [4.7153, 6.2636] at 1000 fights, price on carriers 6.57"
+  },
+  {
+   "id": "kinRally=1",
+   "field": "worth",
+   "old": "2.9338",
+   "new": "2.8908 [2.6283, 2.931] at 1000 fights, price on carriers 3.19"
+  },
+  {
+   "id": "loneWolf=[1,1]",
+   "field": "worth",
+   "old": "7.5078",
+   "new": "7.7892 [7.3657, 8.7864] at 1000 fights, price on carriers 7.36"
+  },
+  {
+   "id": "loyal=[1,3]",
+   "field": "worth",
+   "old": "0",
+   "new": "0.0036 [0, 0.012] at 1000 fights, price on carriers 0"
+  },
+  {
+   "id": "loyal={\"v\":[1,2],\"gives\":{\"armor\":1}}",
+   "field": "worth",
+   "old": "-0.0475",
+   "new": "0.0142 [-0.1129, 0.1455] at 1000 fights, price on carriers 0.93"
+  },
+  {
+   "id": "loyal={\"v\":[1,3],\"gives\":{\"armor\":1}}",
+   "field": "worth",
+   "old": "-0.0475",
+   "new": "0.0142 [-0.1129, 0.1455] at 1000 fights, price on carriers 0.93"
+  },
+  {
+   "id": "loyal={\"v\":[2,1],\"gives\":{\"quick\":true}}",
+   "field": "worth",
+   "old": "-0.0475",
+   "new": "0.0142 [-0.1129, 0.1455] at 1000 fights, price on carriers 0.89"
+  },
+  {
+   "id": "meiosis=1",
+   "field": "worth",
+   "old": "4.409",
+   "new": "4.569 [4.47, 5.0042] at 1000 fights, price on carriers 4.55"
+  },
+  {
+   "id": "overwhelm",
+   "field": "worth",
+   "old": "0.4275",
+   "new": "0.3267 [0.2322, 0.4451] at 1000 fights, price on carriers 1.05"
+  },
+  {
+   "id": "pierce",
+   "field": "worth",
+   "old": "0.209",
+   "new": "0.1705 [0.11, 0.2408] at 1000 fights, price on carriers 0.23"
+  },
+  {
+   "id": "pounce=5",
+   "field": "worth",
+   "old": "7.0013",
+   "new": "6.995 [6.5248, 8.0421] at 1000 fights, price on carriers 6.34"
+  },
+  {
+   "id": "pounce=6",
+   "field": "worth",
+   "old": "8.0565",
+   "new": "7.8448 [7.3487, 8.8982] at 1000 fights, price on carriers 7.38"
+  },
+  {
+   "id": "puncture=2",
+   "field": "worth",
+   "old": "6.9732",
+   "new": "7.1882 [6.7456, 8.1818] at 1000 fights, price on carriers 7.1"
+  },
+  {
+   "id": "rampart",
+   "field": "worth",
+   "old": "0.3135",
+   "new": "0.3143 [0.1853, 0.4552] at 1000 fights, price on carriers 0.49"
+  },
+  {
+   "id": "regen=1",
+   "field": "worth",
+   "old": "2.23",
+   "new": "2.2834 [2.0345, 2.4741] at 1000 fights, price on carriers 2.3"
+  },
+  {
+   "id": "renewal",
+   "field": "worth",
+   "old": "0.038",
+   "new": "0.0497 [0.0202, 0.0822] at 1000 fights, price on carriers 0.23"
+  },
+  {
+   "id": "salvage=1",
+   "field": "worth",
+   "old": "-0.0095",
+   "new": "0.0089 [-0.0137, 0.0328] at 1000 fights, price on carriers 0.75"
+  },
+  {
+   "id": "sap",
+   "field": "worth",
+   "old": "2.3718",
+   "new": "2.5295 [2.3515, 2.7302] at 1000 fights, price on carriers 2.3"
+  },
+  {
+   "id": "scare=1",
+   "field": "worth",
+   "old": "2.5529",
+   "new": "2.8264 [2.6414, 2.9163] at 1000 fights, price on carriers 3.02"
+  },
+  {
+   "id": "shell=4",
+   "field": "worth",
+   "old": "1.2053",
+   "new": "1.1051 [0.9602, 1.3528] at 1000 fights, price on carriers 0.87"
+  },
+  {
+   "id": "siege=3",
+   "field": "worth",
+   "old": "2.7326",
+   "new": "2.6053 [2.381, 2.8244] at 1000 fights, price on carriers 2.14"
+  },
+  {
+   "id": "snipe=2",
+   "field": "worth",
+   "old": "1.043",
+   "new": "1.3345 [1.005, 1.7621] at 1000 fights, price on carriers 2"
+  },
+  {
+   "id": "strangle=2",
+   "field": "worth",
+   "old": "6.1572",
+   "new": "6.0128 [5.6386, 6.944] at 1000 fights, price on carriers 5.57"
+  },
+  {
+   "id": "strangle={\"v\":1,\"hold\":\"bind\"}",
+   "field": "worth",
+   "old": "2.7263",
+   "new": "2.5265 [2.2883, 2.7893] at 1000 fights, price on carriers 2.48"
+  },
+  {
+   "id": "sweep=3",
+   "field": "worth",
+   "old": "6.6215",
+   "new": "6.8229 [6.3734, 7.8275] at 1000 fights, price on carriers 6.22"
+  },
+  {
+   "id": "sweep=4",
+   "field": "worth",
+   "old": "7.339",
+   "new": "7.6462 [7.1956, 8.7082] at 1000 fights, price on carriers 7.19"
+  },
+  {
+   "id": "sweep=5",
+   "field": "worth",
+   "old": "8.0143",
+   "new": "8.2022 [7.7423, 9.2864] at 1000 fights, price on carriers 8.04"
+  },
+  {
+   "id": "thanatosis",
+   "field": "worth",
+   "old": "1.6499",
+   "new": "1.6767 [1.4092, 1.9766] at 1000 fights, price on carriers 2"
+  },
+  {
+   "id": "thorns=3",
+   "field": "worth",
+   "old": "6.6778",
+   "new": "6.905 [6.5059, 7.8782] at 1000 fights, price on carriers 6.63"
+  },
+  {
+   "id": "tornado=1",
+   "field": "worth",
+   "old": "1.105",
+   "new": "1.0796 [0.57, 1.5774] at 1000 fights, price on carriers 1.17"
+  },
+  {
+   "id": "trap=5",
+   "field": "worth",
+   "old": "2.7578",
+   "new": "2.7961 [2.5064, 2.9168] at 1000 fights, price on carriers 2.98"
+  },
+  {
+   "id": "trap=6",
+   "field": "worth",
+   "old": "2.8335",
+   "new": "2.9346 [2.8377, 3.2485] at 1000 fights, price on carriers 3.74"
+  },
+  {
+   "id": "tsunami=2",
+   "field": "worth",
+   "old": "9.1538",
+   "new": "9.0202 [8.4523, 10.1966] at 1000 fights, price on carriers 8.34"
+  },
+  {
+   "id": "volley=1",
+   "field": "worth",
+   "old": "5.5652",
+   "new": "5.7693 [4.885, 6.7467] at 1000 fights, price on carriers 6.79"
+  },
+  {
+   "id": "wakeful",
+   "field": "worth",
+   "old": "0.019",
+   "new": "0.0462 [-0.0036, 0.1023] at 1000 fights, price on carriers 0.5"
+  },
+  {
+   "id": "web=1",
+   "field": "worth",
+   "old": "0.133",
+   "new": "0.1065 [0.0238, 0.1872] at 1000 fights, price on carriers 0.97"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "iceArrow=1",
+   "why": "over-priced: worth 5.2488 against 6.57 on the carriers"
+  },
+  {
+   "id": "volley=1",
+   "why": "over-priced: worth 5.7693 against 6.79 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 49
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-0708.json"
+}
