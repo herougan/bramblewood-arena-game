@@ -47,7 +47,8 @@ async function step(args, S) {
   // 2026-11-02 (package BAL12, owner BAL11-2 a): the brambles' Health of the measure (config.json measure.bramble, the road's 15; --bramble H);
   // a stored result counts as done only at the same Health, and the SKILL2 measures (30) are not reused at another
   const bramble = args.bramble != null ? +args.bramble : (cfg.bramble || 30);
-  const ctx = args.map != null ? 'map' + args.map : 'global', cacheDir = args['cache-dir'] || path.join(P.ROOT, 'tests', 'out', 'skill2-cache');
+  // 2026-11-21 (BSWEEP): --ctx-tag T stores results under '<ctx>@T|<key>' (e.g. another bramble Health) so they never replace the priced ones
+  const ctx = (args.map != null ? 'map' + args.map : 'global') + (args['ctx-tag'] ? '@' + args['ctx-tag'] : ''), cacheDir = args['cache-dir'] || path.join(P.ROOT, 'tests', 'out', 'skill2-cache');
   const fp = L.fingerprint(), plan = SM.buildPlan(), items = itemsFor(plan, args), store = P.readJson(STORE, { _about: 'SPEED1 pipeline measures (tools/pipeline/measure.js): key "<ctx>|<plan key>"', results: {} });
   const skill2 = ctx === 'global' ? P.readJson(SM.OUT, { results: {} }).results : {};
   S.inputs = { context: ctx, bramble, fingerprint: fp, stages, cacheDir: path.relative(P.ROOT, cacheDir), maxFights: maxF, items: items.map(i => i.key) };
