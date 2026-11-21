@@ -1,0 +1,1125 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T22:22:14.124Z",
+ "finished": "2026-11-21T23:39:37.950Z",
+ "durationSec": 4643.8,
+ "args": [
+  "--bramble",
+  "15",
+  "--seed",
+  "tools2",
+  "--ctx-tag",
+  "seed2",
+  "--only-file",
+  "docs/balance/pipeline/state/carrier-keys.json",
+  "--minutes",
+  "110",
+  "--wait"
+ ],
+ "head": "e502a2199",
+ "inputs": {
+  "context": "global@seed2",
+  "bramble": 15,
+  "fingerprint": "009258c9581e",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "speed={\"kind\":\"swift\"}",
+   "swarm=[\"Ants\"]",
+   "rainrunner=2",
+   "poisonBarbs=2",
+   "delivery=1",
+   "T:onHealed>gain {\"do\":\"gain\",\"on\":\"onHealed\",\"amount\":1,\"resource\":\"lumber\"}",
+   "pounce=1",
+   "nursing=1",
+   "cure=1",
+   "herbalist=1",
+   "immunity",
+   "enfeeble=1",
+   "parasite",
+   "sleepPowder=1",
+   "broodkeeper=1",
+   "swarm=[\"Arachnid\"]",
+   "keenSense={\"sees\":\"dark\"}",
+   "T:onDeath>damage {\"do\":\"damage\",\"on\":\"onDeath\",\"sub\":\"adjacent\",\"who\":\"enemy\",\"amount\":2,\"dmgType\":\"heat\"}",
+   "daunt={\"v\":1,\"lasts\":\"lasting\"}",
+   "paralysisPowder=1",
+   "twinShot=2",
+   "dynamite=3",
+   "harbinger=1",
+   "exploit=2",
+   "herald=1",
+   "harden=1",
+   "loyal={\"v\":[1,3],\"gives\":{\"armor\":1}}",
+   "T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2}",
+   "loneWolf=[1,1]",
+   "offspring=1",
+   "shield=3",
+   "arrow={\"v\":1,\"type\":\"fire\"}",
+   "guardian",
+   "thorns=2",
+   "thorns=1",
+   "foraging=1",
+   "repair=2",
+   "tide",
+   "crabClaws",
+   "inspiring=2",
+   "pierce=2",
+   "T:onAttack>gain {\"do\":\"gain\",\"on\":\"onAttack\",\"amount\":1,\"resource\":\"lumber\"}",
+   "T:onAttacked>gain {\"do\":\"gain\",\"on\":\"onAttacked\",\"amount\":1,\"resource\":\"lumber\"}",
+   "salvage=1",
+   "pounce=3",
+   "arrow=2",
+   "tide=2",
+   "arrow=3",
+   "arrow={\"v\":2,\"bramble\":true}",
+   "daunt=2",
+   "meiosis=1",
+   "tide=3",
+   "forestry=1",
+   "twinStrike",
+   "strangle=1",
+   "bleed=3",
+   "tide={\"gives\":{\"flood\":{\"attack\":2,\"health\":2,\"evasive\":true},\"ebb\":{\"armor\":2}}}",
+   "ambush=3",
+   "sap",
+   "scare=1",
+   "strangle=2",
+   "carrion=2",
+   "corrode=1",
+   "onDeathSpawn={\"defId\":\"maggot-swarmling\",\"count\":3}",
+   "onDeathSpawn={\"defId\":\"worker-ant\",\"count\":3}",
+   "poisonPowder=1",
+   "poisonPowder=2",
+   "wakeful",
+   "illuminate",
+   "keenSense",
+   "purblind",
+   "web=1",
+   "trident",
+   "taunt",
+   "bludgeon",
+   "electricity=1",
+   "electricity=2",
+   "swarm",
+   "armor=3",
+   "poisonBarbs=1",
+   "wave",
+   "delivery={\"v\":1,\"res\":\"pearl\"}",
+   "sweep=3",
+   "arrow=1",
+   "arrow=1+fletcher=1",
+   "frostbite=1",
+   "pierce=3",
+   "T:onReady>damage {\"on\":\"onReady\",\"do\":\"damage\",\"amount\":4,\"dmgType\":\"physical\"}",
+   "arrow={\"v\":3,\"swings\":\"never\",\"style\":\"drop\"}",
+   "avalanche=1",
+   "stealth",
+   "recoil=1",
+   "bulldoze=1",
+   "siege=1",
+   "thorns=3",
+   "mighty",
+   "embolden=1",
+   "pack=1",
+   "snipe=2",
+   "ambush=2",
+   "pitchfork",
+   "overwhelm",
+   "pounce=6",
+   "siege=3",
+   "storm",
+   "reach",
+   "sturdy",
+   "packLeader",
+   "dive=2",
+   "freeze={\"chance\":40,\"duration\":2}",
+   "pulverise",
+   "dry",
+   "expose=2",
+   "T:onAttack>drawCard {\"do\":\"drawCard\",\"on\":\"onAttack\",\"count\":1}",
+   "arrow={\"v\":1,\"type\":\"acid\",\"form\":\"bolt\"}",
+   "tornado=1",
+   "trap=5",
+   "trap=6",
+   "lastStand",
+   "recoil=2",
+   "smokeBomb",
+   "bounty=1",
+   "arrow={\"v\":1,\"type\":\"fire\",\"form\":\"bolt\"}",
+   "T:onSpawn>stun {\"on\":\"onSpawn\",\"do\":\"stun\",\"who\":\"enemy\",\"sub\":\"adjacent\"}",
+   "arrow={\"v\":2,\"type\":\"fire\",\"form\":\"bolt\"}",
+   "bulwark=2",
+   "onDeathSpawn={\"defId\":\"bat-swarmling\",\"count\":2}"
+  ]
+ },
+ "counts": {
+  "items": 127,
+  "measured": 127,
+  "reused": 0,
+  "stopped early": 120,
+  "fights saved": 91300,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "speed={\"kind\":\"swift\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "2.8333 [2.6175, 3.6145] at 200 fights, price on carriers 9.5"
+  },
+  {
+   "id": "swarm=[\"Ants\"]",
+   "field": "worth",
+   "old": "-",
+   "new": "0.2228 [0.1184, 0.3983] at 200 fights, price on carriers 3.13"
+  },
+  {
+   "id": "rainrunner=2",
+   "field": "worth",
+   "old": "-",
+   "new": "0.1834 [0.0243, 0.3743] at 200 fights, price on carriers 4"
+  },
+  {
+   "id": "poisonBarbs=2",
+   "field": "worth",
+   "old": "-",
+   "new": "5.5938 [4.4295, 6.7596] at 200 fights, price on carriers 3.2"
+  },
+  {
+   "id": "delivery=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.8244 [2.5313, 3.6762] at 200 fights, price on carriers 5.25"
+  },
+  {
+   "id": "T:onHealed>gain {\"do\":\"gain\",\"on\":\"onHealed\",\"amount\":1,\"resource\":\"lumber\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "0.0524 [-0.0253, 0.1701] at 200 fights, price on carriers 1"
+  },
+  {
+   "id": "pounce=1",
+   "field": "worth",
+   "old": "-",
+   "new": "1.5155 [0.9705, 2.0947] at 1000 fights, price on carriers 1.66"
+  },
+  {
+   "id": "nursing=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.7671 [2.5326, 3.2286] at 200 fights, price on carriers 5"
+  },
+  {
+   "id": "cure=1",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 0.5"
+  },
+  {
+   "id": "herbalist=1",
+   "field": "worth",
+   "old": "-",
+   "new": "0.0262 [0, 0.0679] at 200 fights, price on carriers 0.23"
+  },
+  {
+   "id": "immunity",
+   "field": "worth",
+   "old": "-",
+   "new": "0.1048 [-0.0456, 0.2927] at 200 fights, price on carriers 0.3"
+  },
+  {
+   "id": "enfeeble=1",
+   "field": "worth",
+   "old": "-",
+   "new": "1.9214 [1.3646, 2.3265] at 700 fights, price on carriers 2.5"
+  },
+  {
+   "id": "parasite",
+   "field": "worth",
+   "old": "-",
+   "new": "-1.9988 [-2.6234, -1.5381] at 700 fights, price on carriers 1"
+  },
+  {
+   "id": "sleepPowder=1",
+   "field": "worth",
+   "old": "-",
+   "new": "4.6438 [3.6614, 5.601] at 200 fights, price on carriers 2.5"
+  },
+  {
+   "id": "broodkeeper=1",
+   "field": "worth",
+   "old": "-",
+   "new": "0.1048 [0.0228, 0.2452] at 200 fights, price on carriers 3"
+  },
+  {
+   "id": "swarm=[\"Arachnid\"]",
+   "field": "worth",
+   "old": "-",
+   "new": "0.1179 [0.0359, 0.2335] at 200 fights, price on carriers 3.13"
+  },
+  {
+   "id": "keenSense={\"sees\":\"dark\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "0.249 [0.1026, 0.4644] at 200 fights, price on carriers 3"
+  },
+  {
+   "id": "T:onDeath>damage {\"do\":\"damage\",\"on\":\"onDeath\",\"sub\":\"adjacent\",\"who\":\"enemy\",\"amount\":2,\"dmgType\":\"heat\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "1.0288 [0.5564, 1.526] at 700 fights, price on carriers 1.19"
+  },
+  {
+   "id": "daunt={\"v\":1,\"lasts\":\"lasting\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "2.8685 [2.6976, 3.6389] at 200 fights, price on carriers 2.64"
+  },
+  {
+   "id": "paralysisPowder=1",
+   "field": "worth",
+   "old": "-",
+   "new": "5.7611 [4.6865, 6.967] at 200 fights, price on carriers 3.34"
+  },
+  {
+   "id": "twinShot=2",
+   "field": "worth",
+   "old": "-",
+   "new": "8.1454 [7.155, 9.4054] at 200 fights, price on carriers 13.26"
+  },
+  {
+   "id": "dynamite=3",
+   "field": "worth",
+   "old": "-",
+   "new": "2.6965 [2.2762, 2.9348] at 400 fights, price on carriers 1.1"
+  },
+  {
+   "id": "harbinger=1",
+   "field": "worth",
+   "old": "-",
+   "new": "4.9636 [4.0807, 6.65] at 200 fights, price on carriers 6.5"
+  },
+  {
+   "id": "exploit=2",
+   "field": "worth",
+   "old": "-",
+   "new": "1.9321 [1.228, 2.3916] at 400 fights, price on carriers 4.2"
+  },
+  {
+   "id": "herald=1",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 1.5"
+  },
+  {
+   "id": "harden=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.6877 [2.2547, 2.9228] at 400 fights, price on carriers 2.11"
+  },
+  {
+   "id": "loyal={\"v\":[1,3],\"gives\":{\"armor\":1}}",
+   "field": "worth",
+   "old": "-",
+   "new": "-0.0328 [-0.3145, 0.2266] at 200 fights, price on carriers 0.93"
+  },
+  {
+   "id": "T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2}",
+   "field": "worth",
+   "old": "-",
+   "new": "4.81 [4.2263, 5.9228] at 400 fights, price on carriers 4.24"
+  },
+  {
+   "id": "loneWolf=[1,1]",
+   "field": "worth",
+   "old": "-",
+   "new": "8.0478 [7.1746, 9.2908] at 200 fights, price on carriers 7.36"
+  },
+  {
+   "id": "offspring=1",
+   "field": "worth",
+   "old": "-",
+   "new": "0.3014 [0.0142, 0.6219] at 200 fights, price on carriers 6.08"
+  },
+  {
+   "id": "shield=3",
+   "field": "worth",
+   "old": "-",
+   "new": "2.6702 [2.3595, 2.9548] at 200 fights, price on carriers 4.93"
+  },
+  {
+   "id": "arrow={\"v\":1,\"type\":\"fire\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "5.789 [4.7991, 7.028] at 200 fights, price on carriers 6.56"
+  },
+  {
+   "id": "guardian",
+   "field": "worth",
+   "old": "-",
+   "new": "-0.4128 [-1.0173, -0.0373] at 200 fights, price on carriers 0"
+  },
+  {
+   "id": "thorns=2",
+   "field": "worth",
+   "old": "-",
+   "new": "4.9942 [3.9373, 6.1267] at 200 fights, price on carriers 5.08"
+  },
+  {
+   "id": "thorns=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.7627 [2.5149, 3.1296] at 200 fights, price on carriers 3.22"
+  },
+  {
+   "id": "foraging=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.1307 [1.4102, 2.4744] at 400 fights, price on carriers 1.68"
+  },
+  {
+   "id": "repair=2",
+   "field": "worth",
+   "old": "-",
+   "new": "2.6966 [2.4407, 3.0294] at 200 fights, price on carriers 2.97"
+  },
+  {
+   "id": "tide",
+   "field": "worth",
+   "old": "-",
+   "new": "0.2359 [0.0864, 0.4258] at 200 fights, price on carriers 0.5"
+  },
+  {
+   "id": "crabClaws",
+   "field": "worth",
+   "old": "-",
+   "new": "-0.0852 [-0.6117, 0.3103] at 200 fights, price on carriers 0.1"
+  },
+  {
+   "id": "inspiring=2",
+   "field": "worth",
+   "old": "-",
+   "new": "6.3188 [5.2404, 7.6399] at 200 fights, price on carriers 5.9"
+  },
+  {
+   "id": "pierce=2",
+   "field": "worth",
+   "old": "-",
+   "new": "0.1441 [0.032, 0.2951] at 200 fights, price on carriers 0.3"
+  },
+  {
+   "id": "T:onAttack>gain {\"do\":\"gain\",\"on\":\"onAttack\",\"amount\":1,\"resource\":\"lumber\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "4.325 [3.2332, 5.0418] at 200 fights, price on carriers 1.35"
+  },
+  {
+   "id": "T:onAttacked>gain {\"do\":\"gain\",\"on\":\"onAttacked\",\"amount\":1,\"resource\":\"lumber\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "2.8553 [2.6038, 3.7765] at 200 fights, price on carriers 1.9"
+  },
+  {
+   "id": "salvage=1",
+   "field": "worth",
+   "old": "-",
+   "new": "0.0131 [0, 0.0501] at 200 fights, price on carriers 0.75"
+  },
+  {
+   "id": "pounce=3",
+   "field": "worth",
+   "old": "-",
+   "new": "4.8721 [3.9276, 6.0393] at 200 fights, price on carriers 4.15"
+  },
+  {
+   "id": "arrow=2",
+   "field": "worth",
+   "old": "-",
+   "new": "6.3607 [5.437, 7.6103] at 200 fights, price on carriers 7.01"
+  },
+  {
+   "id": "tide=2",
+   "field": "worth",
+   "old": "-",
+   "new": "0.3538 [0.1754, 0.736] at 200 fights, price on carriers 0.93"
+  },
+  {
+   "id": "arrow=3",
+   "field": "worth",
+   "old": "-",
+   "new": "8.0618 [7.0201, 9.3343] at 200 fights, price on carriers 9.39"
+  },
+  {
+   "id": "arrow={\"v\":2,\"bramble\":true}",
+   "field": "worth",
+   "old": "-",
+   "new": "8.006 [6.8555, 9.4462] at 200 fights, price on carriers 6.31"
+  },
+  {
+   "id": "daunt=2",
+   "field": "worth",
+   "old": "-",
+   "new": "2.7936 [2.5878, 3.2509] at 200 fights, price on carriers 2.56"
+  },
+  {
+   "id": "meiosis=1",
+   "field": "worth",
+   "old": "-",
+   "new": "5.2078 [4.1876, 6.205] at 200 fights, price on carriers 4.55"
+  },
+  {
+   "id": "tide=3",
+   "field": "worth",
+   "old": "-",
+   "new": "0.4667 [0.2814, 1.0186] at 400 fights, price on carriers 1.34"
+  },
+  {
+   "id": "forestry=1",
+   "field": "worth",
+   "old": "-",
+   "new": "5.4825 [4.1662, 6.65] at 200 fights, price on carriers 6.65"
+  },
+  {
+   "id": "twinStrike",
+   "field": "worth",
+   "old": "-",
+   "new": "6.7092 [5.7217, 7.8827] at 200 fights, price on carriers 7.75"
+  },
+  {
+   "id": "strangle=1",
+   "field": "worth",
+   "old": "-",
+   "new": "3.031 [2.8242, 4.0013] at 200 fights, price on carriers 4.21"
+  },
+  {
+   "id": "bleed=3",
+   "field": "worth",
+   "old": "-",
+   "new": "6.2909 [5.3517, 7.3616] at 200 fights, price on carriers 6.61"
+  },
+  {
+   "id": "tide={\"gives\":{\"flood\":{\"attack\":2,\"health\":2,\"evasive\":true},\"ebb\":{\"armor\":2}}}",
+   "field": "worth",
+   "old": "-",
+   "new": "0.4533 [0.2165, 1.1694] at 400 fights, price on carriers 4.68"
+  },
+  {
+   "id": "ambush=3",
+   "field": "worth",
+   "old": "-",
+   "new": "2.7187 [2.462, 3.0954] at 200 fights, price on carriers 2.38"
+  },
+  {
+   "id": "sap",
+   "field": "worth",
+   "old": "-",
+   "new": "2.701 [2.4234, 2.9933] at 200 fights, price on carriers 2.3"
+  },
+  {
+   "id": "scare=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.7671 [2.5941, 3.2331] at 200 fights, price on carriers 3.02"
+  },
+  {
+   "id": "strangle=2",
+   "field": "worth",
+   "old": "-",
+   "new": "5.538 [4.4007, 6.6988] at 200 fights, price on carriers 5.57"
+  },
+  {
+   "id": "carrion=2",
+   "field": "worth",
+   "old": "-",
+   "new": "2.5735 [2.2677, 2.8666] at 200 fights, price on carriers 2.68"
+  },
+  {
+   "id": "corrode=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.6878 [2.4514, 2.9478] at 200 fights, price on carriers 2.41"
+  },
+  {
+   "id": "onDeathSpawn={\"defId\":\"maggot-swarmling\",\"count\":3}",
+   "field": "worth",
+   "old": "-",
+   "new": "4.3604 [3.36, 5.0236] at 200 fights, price on carriers 4.35"
+  },
+  {
+   "id": "onDeathSpawn={\"defId\":\"worker-ant\",\"count\":3}",
+   "field": "worth",
+   "old": "-",
+   "new": "7.4901 [6.6041, 8.7487] at 200 fights, price on carriers 4.35"
+  },
+  {
+   "id": "poisonPowder=1",
+   "field": "worth",
+   "old": "-",
+   "new": "3.0681 [2.8298, 4.083] at 200 fights, price on carriers 3.2"
+  },
+  {
+   "id": "poisonPowder=2",
+   "field": "worth",
+   "old": "-",
+   "new": "7.0718 [6.1571, 8.2946] at 200 fights, price on carriers 6.4"
+  },
+  {
+   "id": "wakeful",
+   "field": "worth",
+   "old": "-",
+   "new": "-0.0262 [-0.156, 0.0803] at 200 fights, price on carriers 0.5"
+  },
+  {
+   "id": "illuminate",
+   "field": "worth",
+   "old": "-",
+   "new": "0.2752 [0.0928, 0.5392] at 200 fights, price on carriers 0.81"
+  },
+  {
+   "id": "keenSense",
+   "field": "worth",
+   "old": "-",
+   "new": "0.2752 [0.1036, 0.525] at 200 fights, price on carriers 0.66"
+  },
+  {
+   "id": "purblind",
+   "field": "worth",
+   "old": "-",
+   "new": "-2.1538 [-2.7468, -1.746] at 700 fights, price on carriers -5.7"
+  },
+  {
+   "id": "web=1",
+   "field": "worth",
+   "old": "-",
+   "new": "0.1441 [0.0335, 0.2665] at 200 fights, price on carriers 0.97"
+  },
+  {
+   "id": "trident",
+   "field": "worth",
+   "old": "-",
+   "new": "2.6746 [2.0587, 2.9463] at 200 fights, price on carriers 2.28"
+  },
+  {
+   "id": "taunt",
+   "field": "worth",
+   "old": "-",
+   "new": "-0.4128 [-1.0725, 0.0434] at 200 fights, price on carriers 0.4"
+  },
+  {
+   "id": "bludgeon",
+   "field": "worth",
+   "old": "-",
+   "new": "4.2033 [2.9782, 4.9514] at 200 fights, price on carriers 3.95"
+  },
+  {
+   "id": "electricity=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.7275 [2.3874, 3.0787] at 200 fights, price on carriers 3"
+  },
+  {
+   "id": "electricity=2",
+   "field": "worth",
+   "old": "-",
+   "new": "4.6083 [3.5807, 5.5841] at 200 fights, price on carriers 6"
+  },
+  {
+   "id": "swarm",
+   "field": "worth",
+   "old": "-",
+   "new": "2.939 [2.8051, 3.914] at 200 fights, price on carriers 3.13"
+  },
+  {
+   "id": "armor=3",
+   "field": "worth",
+   "old": "-",
+   "new": "5.6495 [4.6634, 6.9238] at 200 fights, price on carriers 4.85"
+  },
+  {
+   "id": "poisonBarbs=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.6308 [2.2737, 2.9057] at 200 fights, price on carriers 1.6"
+  },
+  {
+   "id": "wave",
+   "field": "worth",
+   "old": "-",
+   "new": "2.4495 [1.5596, 2.8292] at 200 fights, price on carriers 2.15"
+  },
+  {
+   "id": "delivery={\"v\":1,\"res\":\"pearl\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "3.3654 [2.7646, 4.5889] at 200 fights, price on carriers 3.69"
+  },
+  {
+   "id": "sweep=3",
+   "field": "worth",
+   "old": "-",
+   "new": "7.0578 [6.3374, 8.2583] at 200 fights, price on carriers 6.22"
+  },
+  {
+   "id": "arrow=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.8906 [2.759, 3.7474] at 200 fights, price on carriers 4.26"
+  },
+  {
+   "id": "arrow=1+fletcher=1",
+   "field": "worth",
+   "old": "-",
+   "new": "7.6156 [6.3431, 9.0896] at 200 fights, price on carriers 7.45"
+  },
+  {
+   "id": "frostbite=1",
+   "field": "worth",
+   "old": "-",
+   "new": "0.0262 [0, 0.0855] at 200 fights, price on carriers 0.19"
+  },
+  {
+   "id": "pierce=3",
+   "field": "worth",
+   "old": "-",
+   "new": "0.1441 [0.032, 0.2951] at 200 fights, price on carriers 0.34"
+  },
+  {
+   "id": "T:onReady>damage {\"on\":\"onReady\",\"do\":\"damage\",\"amount\":4,\"dmgType\":\"physical\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "2.8421 [2.6085, 3.6161] at 200 fights, price on carriers 4.48"
+  },
+  {
+   "id": "arrow={\"v\":3,\"swings\":\"never\",\"style\":\"drop\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "1.1072 [0.5009, 1.942] at 1000 fights, price on carriers -4.9"
+  },
+  {
+   "id": "avalanche=1",
+   "field": "worth",
+   "old": "-",
+   "new": "8.257 [7.1806, 9.6746] at 200 fights, price on carriers 9.25"
+  },
+  {
+   "id": "stealth",
+   "field": "worth",
+   "old": "-",
+   "new": "6.3188 [5.1209, 7.684] at 200 fights, price on carriers 6.88"
+  },
+  {
+   "id": "recoil=1",
+   "field": "worth",
+   "old": "-",
+   "new": "-1.5367 [-2.1241, -1.1728] at 400 fights, price on carriers -3.46"
+  },
+  {
+   "id": "bulldoze=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.6658 [2.3858, 2.9256] at 200 fights, price on carriers 2.23"
+  },
+  {
+   "id": "siege=1",
+   "field": "worth",
+   "old": "-",
+   "new": "0.6977 [0.4622, 1.3668] at 400 fights, price on carriers 1.07"
+  },
+  {
+   "id": "thorns=3",
+   "field": "worth",
+   "old": "-",
+   "new": "6.6256 [5.7473, 7.8612] at 200 fights, price on carriers 6.63"
+  },
+  {
+   "id": "mighty",
+   "field": "worth",
+   "old": "-",
+   "new": "4.4135 [3.5236, 5.0031] at 200 fights, price on carriers 4.79"
+  },
+  {
+   "id": "embolden=1",
+   "field": "worth",
+   "old": "-",
+   "new": "3.9752 [2.9104, 4.7721] at 200 fights, price on carriers 3.59"
+  },
+  {
+   "id": "pack=1",
+   "field": "worth",
+   "old": "-",
+   "new": "4.1881 [3.0273, 4.975] at 200 fights, price on carriers 3.25"
+  },
+  {
+   "id": "snipe=2",
+   "field": "worth",
+   "old": "-",
+   "new": "1.3543 [0.8303, 1.8222] at 1000 fights, price on carriers 2"
+  },
+  {
+   "id": "ambush=2",
+   "field": "worth",
+   "old": "-",
+   "new": "1.3705 [0.955, 1.8919] at 1000 fights, price on carriers 1.42"
+  },
+  {
+   "id": "pitchfork",
+   "field": "worth",
+   "old": "-",
+   "new": "1.0105 [0.492, 1.6934] at 1000 fights, price on carriers 4"
+  },
+  {
+   "id": "overwhelm",
+   "field": "worth",
+   "old": "-",
+   "new": "0.1834 [0.0608, 0.3364] at 200 fights, price on carriers 1.05"
+  },
+  {
+   "id": "pounce=6",
+   "field": "worth",
+   "old": "-",
+   "new": "7.2949 [6.3008, 8.5529] at 200 fights, price on carriers 7.38"
+  },
+  {
+   "id": "siege=3",
+   "field": "worth",
+   "old": "-",
+   "new": "2.7231 [2.4445, 3.0191] at 200 fights, price on carriers 2.14"
+  },
+  {
+   "id": "storm",
+   "field": "worth",
+   "old": "-",
+   "new": "0.5126 [0.3813, 0.9138] at 700 fights, price on carriers 1.8"
+  },
+  {
+   "id": "reach",
+   "field": "worth",
+   "old": "-",
+   "new": "-0.0328 [-0.3755, 0.202] at 200 fights, price on carriers 1"
+  },
+  {
+   "id": "sturdy",
+   "field": "worth",
+   "old": "-",
+   "new": "2.917 [2.8151, 3.7614] at 200 fights, price on carriers 2.81"
+  },
+  {
+   "id": "packLeader",
+   "field": "worth",
+   "old": "-",
+   "new": "-0.2097 [-0.645, 0.114] at 200 fights, price on carriers 0"
+  },
+  {
+   "id": "dive=2",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers -1.7"
+  },
+  {
+   "id": "freeze={\"chance\":40,\"duration\":2}",
+   "field": "worth",
+   "old": "-",
+   "new": "2.7187 [2.378, 3.1153] at 200 fights, price on carriers 2.88"
+  },
+  {
+   "id": "pulverise",
+   "field": "worth",
+   "old": "-",
+   "new": "0.1572 [0.0308, 0.3153] at 200 fights, price on carriers 1.53"
+  },
+  {
+   "id": "dry",
+   "field": "worth",
+   "old": "-",
+   "new": "0.2228 [0.0826, 0.4433] at 200 fights, price on carriers 4"
+  },
+  {
+   "id": "expose=2",
+   "field": "worth",
+   "old": "-",
+   "new": "0.2293 [0.1069, 0.4137] at 200 fights, price on carriers 0.18"
+  },
+  {
+   "id": "T:onAttack>drawCard {\"do\":\"drawCard\",\"on\":\"onAttack\",\"count\":1}",
+   "field": "worth",
+   "old": "-",
+   "new": "4.2338 [2.952, 5.1654] at 200 fights, price on carriers 5.54"
+  },
+  {
+   "id": "arrow={\"v\":1,\"type\":\"acid\",\"form\":\"bolt\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "6.8347 [5.9929, 8.1884] at 200 fights, price on carriers 6.89"
+  },
+  {
+   "id": "tornado=1",
+   "field": "worth",
+   "old": "-",
+   "new": "1.1878 [0.5382, 1.8509] at 1000 fights, price on carriers 1.17"
+  },
+  {
+   "id": "trap=5",
+   "field": "worth",
+   "old": "-",
+   "new": "2.8068 [2.595, 3.502] at 200 fights, price on carriers 2.98"
+  },
+  {
+   "id": "trap=6",
+   "field": "worth",
+   "old": "-",
+   "new": "2.9523 [2.7652, 4.1665] at 200 fights, price on carriers 3.74"
+  },
+  {
+   "id": "lastStand",
+   "field": "worth",
+   "old": "-",
+   "new": "0.1441 [0.0518, 0.285] at 200 fights, price on carriers 0.45"
+  },
+  {
+   "id": "recoil=2",
+   "field": "worth",
+   "old": "-",
+   "new": "-2.4933 [-3.4362, -2.0001] at 400 fights, price on carriers -5.88"
+  },
+  {
+   "id": "smokeBomb",
+   "field": "worth",
+   "old": "-",
+   "new": "0.9837 [0.5096, 1.5178] at 1000 fights, price on carriers 2"
+  },
+  {
+   "id": "bounty=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.6155 [2.047, 2.903] at 400 fights, price on carriers 1.8"
+  },
+  {
+   "id": "arrow={\"v\":1,\"type\":\"fire\",\"form\":\"bolt\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "6.1376 [5.2539, 7.3872] at 200 fights, price on carriers 2.5"
+  },
+  {
+   "id": "T:onSpawn>stun {\"on\":\"onSpawn\",\"do\":\"stun\",\"who\":\"enemy\",\"sub\":\"adjacent\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "2.701 [2.4459, 3.0718] at 200 fights, price on carriers 1.95"
+  },
+  {
+   "id": "arrow={\"v\":2,\"type\":\"fire\",\"form\":\"bolt\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "8.1176 [7.1257, 9.3703] at 200 fights, price on carriers 5"
+  },
+  {
+   "id": "bulwark=2",
+   "field": "worth",
+   "old": "-",
+   "new": "6.3607 [5.434, 7.682] at 200 fights, price on carriers 8.73"
+  },
+  {
+   "id": "onDeathSpawn={\"defId\":\"bat-swarmling\",\"count\":2}",
+   "field": "worth",
+   "old": "-",
+   "new": "3.9752 [2.9516, 4.7701] at 200 fights, price on carriers 4.35"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "speed={\"kind\":\"swift\"}",
+   "why": "over-priced: worth 2.8333 against 9.5 on the carriers"
+  },
+  {
+   "id": "swarm=[\"Ants\"]",
+   "why": "over-priced: worth 0.2228 against 3.13 on the carriers"
+  },
+  {
+   "id": "rainrunner=2",
+   "why": "over-priced: worth 0.1834 against 4 on the carriers"
+  },
+  {
+   "id": "poisonBarbs=2",
+   "why": "under-priced: worth 5.5938 against 3.2 on the carriers"
+  },
+  {
+   "id": "delivery=1",
+   "why": "over-priced: worth 2.8244 against 5.25 on the carriers"
+  },
+  {
+   "id": "nursing=1",
+   "why": "over-priced: worth 2.7671 against 5 on the carriers"
+  },
+  {
+   "id": "parasite",
+   "why": "over-priced: worth -1.9988 against 1 on the carriers"
+  },
+  {
+   "id": "sleepPowder=1",
+   "why": "under-priced: worth 4.6438 against 2.5 on the carriers"
+  },
+  {
+   "id": "broodkeeper=1",
+   "why": "over-priced: worth 0.1048 against 3 on the carriers"
+  },
+  {
+   "id": "swarm=[\"Arachnid\"]",
+   "why": "over-priced: worth 0.1179 against 3.13 on the carriers"
+  },
+  {
+   "id": "keenSense={\"sees\":\"dark\"}",
+   "why": "over-priced: worth 0.249 against 3 on the carriers"
+  },
+  {
+   "id": "paralysisPowder=1",
+   "why": "under-priced: worth 5.7611 against 3.34 on the carriers"
+  },
+  {
+   "id": "twinShot=2",
+   "why": "over-priced: worth 8.1454 against 13.26 on the carriers"
+  },
+  {
+   "id": "dynamite=3",
+   "why": "under-priced: worth 2.6965 against 1.1 on the carriers"
+  },
+  {
+   "id": "exploit=2",
+   "why": "over-priced: worth 1.9321 against 4.2 on the carriers"
+  },
+  {
+   "id": "herald=1",
+   "why": "over-priced: worth 0 against 1.5 on the carriers"
+  },
+  {
+   "id": "offspring=1",
+   "why": "over-priced: worth 0.3014 against 6.08 on the carriers"
+  },
+  {
+   "id": "shield=3",
+   "why": "over-priced: worth 2.6702 against 4.93 on the carriers"
+  },
+  {
+   "id": "T:onAttack>gain {\"do\":\"gain\",\"on\":\"onAttack\",\"amount\":1,\"resource\":\"lumber\"}",
+   "why": "under-priced: worth 4.325 against 1.35 on the carriers"
+  },
+  {
+   "id": "arrow=3",
+   "why": "over-priced: worth 8.0618 against 9.39 on the carriers"
+  },
+  {
+   "id": "arrow={\"v\":2,\"bramble\":true}",
+   "why": "under-priced: worth 8.006 against 6.31 on the carriers"
+  },
+  {
+   "id": "strangle=1",
+   "why": "over-priced: worth 3.031 against 4.21 on the carriers"
+  },
+  {
+   "id": "tide={\"gives\":{\"flood\":{\"attack\":2,\"health\":2,\"evasive\":true},\"ebb\":{\"armor\":2}}}",
+   "why": "over-priced: worth 0.4533 against 4.68 on the carriers"
+  },
+  {
+   "id": "onDeathSpawn={\"defId\":\"worker-ant\",\"count\":3}",
+   "why": "under-priced: worth 7.4901 against 4.35 on the carriers"
+  },
+  {
+   "id": "purblind",
+   "why": "under-priced: worth -2.1538 against -5.7 on the carriers"
+  },
+  {
+   "id": "electricity=2",
+   "why": "over-priced: worth 4.6083 against 6 on the carriers"
+  },
+  {
+   "id": "poisonBarbs=1",
+   "why": "under-priced: worth 2.6308 against 1.6 on the carriers"
+  },
+  {
+   "id": "arrow=1",
+   "why": "over-priced: worth 2.8906 against 4.26 on the carriers"
+  },
+  {
+   "id": "T:onReady>damage {\"on\":\"onReady\",\"do\":\"damage\",\"amount\":4,\"dmgType\":\"physical\"}",
+   "why": "over-priced: worth 2.8421 against 4.48 on the carriers"
+  },
+  {
+   "id": "arrow={\"v\":3,\"swings\":\"never\",\"style\":\"drop\"}",
+   "why": "interval still wide at 1000 fights (se 0.37); measure again with --fights 1000,2000"
+  },
+  {
+   "id": "recoil=1",
+   "why": "under-priced: worth -1.5367 against -3.46 on the carriers"
+  },
+  {
+   "id": "pitchfork",
+   "why": "interval still wide at 1000 fights (se 0.31); measure again with --fights 1000,2000"
+  },
+  {
+   "id": "storm",
+   "why": "over-priced: worth 0.5126 against 1.8 on the carriers"
+  },
+  {
+   "id": "reach",
+   "why": "over-priced: worth -0.0328 against 1 on the carriers"
+  },
+  {
+   "id": "dive=2",
+   "why": "under-priced: worth 0 against -1.7 on the carriers"
+  },
+  {
+   "id": "pulverise",
+   "why": "over-priced: worth 0.1572 against 1.53 on the carriers"
+  },
+  {
+   "id": "dry",
+   "why": "over-priced: worth 0.2228 against 4 on the carriers"
+  },
+  {
+   "id": "T:onAttack>drawCard {\"do\":\"drawCard\",\"on\":\"onAttack\",\"count\":1}",
+   "why": "over-priced: worth 4.2338 against 5.54 on the carriers"
+  },
+  {
+   "id": "tornado=1",
+   "why": "interval still wide at 1000 fights (se 0.33); measure again with --fights 1000,2000"
+  },
+  {
+   "id": "recoil=2",
+   "why": "under-priced: worth -2.4933 against -5.88 on the carriers"
+  },
+  {
+   "id": "smokeBomb",
+   "why": "over-priced: worth 0.9837 against 2 on the carriers"
+  },
+  {
+   "id": "arrow={\"v\":1,\"type\":\"fire\",\"form\":\"bolt\"}",
+   "why": "under-priced: worth 6.1376 against 2.5 on the carriers"
+  },
+  {
+   "id": "arrow={\"v\":2,\"type\":\"fire\",\"form\":\"bolt\"}",
+   "why": "under-priced: worth 8.1176 against 5 on the carriers"
+  },
+  {
+   "id": "bulwark=2",
+   "why": "over-priced: worth 6.3607 against 8.73 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 127
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-22-0622.json"
+}
