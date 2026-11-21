@@ -1,0 +1,76 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T08:32:11.091Z",
+ "finished": "2026-11-21T08:33:48.578Z",
+ "durationSec": 97.5,
+ "args": [
+  "--map",
+  "3",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-confirm-03.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "87",
+  "--fights",
+  "1000",
+  "--force",
+  "--wait"
+ ],
+ "head": "7b384943e",
+ "inputs": {
+  "context": "map3",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "pounce=3",
+   "inspiring=2"
+  ]
+ },
+ "counts": {
+  "items": 2,
+  "measured": 2,
+  "reused": 0,
+  "stopped early": 0,
+  "fights saved": 0,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "pounce=3",
+   "field": "worth",
+   "old": "5.2641",
+   "new": "5.294 [4.9874, 5.6491] at 1000 fights, price on carriers 4.15"
+  },
+  {
+   "id": "inspiring=2",
+   "field": "worth",
+   "old": "7.1426",
+   "new": "6.8816 [6.5795, 7.2002] at 1000 fights, price on carriers 5.9"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "pounce=3",
+   "why": "under-priced: worth 5.294 against 4.15 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 2
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1632.json"
+}

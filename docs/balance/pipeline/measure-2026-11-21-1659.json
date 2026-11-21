@@ -1,0 +1,112 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T08:59:41.345Z",
+ "finished": "2026-11-21T09:05:39.291Z",
+ "durationSec": 357.9,
+ "args": [
+  "--map",
+  "11",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-confirm-11.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "60",
+  "--fights",
+  "1000",
+  "--force",
+  "--wait"
+ ],
+ "head": "7b384943e",
+ "inputs": {
+  "context": "map11",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "pounce=3",
+   "paralysisPowder=1",
+   "T:onReady>damage {\"on\":\"onReady\",\"do\":\"damage\",\"amount\":4,\"dmgType\":\"physical\"}",
+   "arrow=3",
+   "daunt=2",
+   "twinShot=2"
+  ]
+ },
+ "counts": {
+  "items": 6,
+  "measured": 6,
+  "reused": 0,
+  "stopped early": 0,
+  "fights saved": 0,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "pounce=3",
+   "field": "worth",
+   "old": "5.2498",
+   "new": "4.9498 [4.6367, 5.4] at 1000 fights, price on carriers 4.15"
+  },
+  {
+   "id": "paralysisPowder=1",
+   "field": "worth",
+   "old": "4.6737",
+   "new": "4.4611 [4.3304, 4.9066] at 1000 fights, price on carriers 3.34"
+  },
+  {
+   "id": "T:onReady>damage {\"on\":\"onReady\",\"do\":\"damage\",\"amount\":4,\"dmgType\":\"physical\"}",
+   "field": "worth",
+   "old": "3.8987",
+   "new": "4.1633 [3.8157, 4.2303] at 1000 fights, price on carriers 4.48"
+  },
+  {
+   "id": "arrow=3",
+   "field": "worth",
+   "old": "7.7898",
+   "new": "7.6614 [7.3748, 8.1796] at 1000 fights, price on carriers 9.39"
+  },
+  {
+   "id": "daunt=2",
+   "field": "worth",
+   "old": "3.2843",
+   "new": "2.4671 [2.2739, 3.3532] at 1000 fights, price on carriers 2.56"
+  },
+  {
+   "id": "twinShot=2",
+   "field": "worth",
+   "old": "8.7849",
+   "new": "8.3594 [8.051, 8.8768] at 1000 fights, price on carriers 13.26"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "paralysisPowder=1",
+   "why": "under-priced: worth 4.4611 against 3.34 on the carriers"
+  },
+  {
+   "id": "arrow=3",
+   "why": "over-priced: worth 7.6614 against 9.39 on the carriers"
+  },
+  {
+   "id": "twinShot=2",
+   "why": "over-priced: worth 8.3594 against 13.26 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 6
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1659.json"
+}

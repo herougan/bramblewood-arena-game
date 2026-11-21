@@ -1,0 +1,120 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T09:07:09.284Z",
+ "finished": "2026-11-21T09:12:49.277Z",
+ "durationSec": 340,
+ "args": [
+  "--map",
+  "13",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-confirm-13.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "52",
+  "--fights",
+  "1000",
+  "--force",
+  "--wait"
+ ],
+ "head": "7b384943e",
+ "inputs": {
+  "context": "map13",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "pounce=3",
+   "foraging=1",
+   "twinStrike",
+   "harbinger=1",
+   "delivery=1",
+   "repair=2"
+  ]
+ },
+ "counts": {
+  "items": 6,
+  "measured": 6,
+  "reused": 0,
+  "stopped early": 0,
+  "fights saved": 0,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "pounce=3",
+   "field": "worth",
+   "old": "5.301",
+   "new": "5.4544 [5.1985, 5.6644] at 1000 fights, price on carriers 4.15"
+  },
+  {
+   "id": "foraging=1",
+   "field": "worth",
+   "old": "2.3488",
+   "new": "2.2406 [2.0714, 2.4091] at 1000 fights, price on carriers 1.68"
+  },
+  {
+   "id": "twinStrike",
+   "field": "worth",
+   "old": "5.9013",
+   "new": "5.9496 [5.8109, 6.1095] at 1000 fights, price on carriers 7.75"
+  },
+  {
+   "id": "harbinger=1",
+   "field": "worth",
+   "old": "4.5685",
+   "new": "4.7884 [4.2294, 4.968] at 1000 fights, price on carriers 6.5"
+  },
+  {
+   "id": "delivery=1",
+   "field": "worth",
+   "old": "2.6775",
+   "new": "2.8324 [2.7293, 2.9523] at 1000 fights, price on carriers 5.25"
+  },
+  {
+   "id": "repair=2",
+   "field": "worth",
+   "old": "1.5769",
+   "new": "1.5435 [1.371, 1.7162] at 1000 fights, price on carriers 2.97"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "pounce=3",
+   "why": "under-priced: worth 5.4544 against 4.15 on the carriers"
+  },
+  {
+   "id": "twinStrike",
+   "why": "over-priced: worth 5.9496 against 7.75 on the carriers"
+  },
+  {
+   "id": "harbinger=1",
+   "why": "over-priced: worth 4.7884 against 6.5 on the carriers"
+  },
+  {
+   "id": "delivery=1",
+   "why": "over-priced: worth 2.8324 against 5.25 on the carriers"
+  },
+  {
+   "id": "repair=2",
+   "why": "over-priced: worth 1.5435 against 2.97 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 6
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1707.json"
+}

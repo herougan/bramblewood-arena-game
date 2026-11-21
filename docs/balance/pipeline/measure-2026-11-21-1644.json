@@ -1,0 +1,101 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T08:44:28.159Z",
+ "finished": "2026-11-21T08:57:51.066Z",
+ "durationSec": 802.9,
+ "args": [
+  "--map",
+  "9",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-confirm-09.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "75",
+  "--fights",
+  "1000",
+  "--force",
+  "--wait"
+ ],
+ "head": "7b384943e",
+ "inputs": {
+  "context": "map9",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "pounce=3",
+   "twinStrike",
+   "enfeeble=1",
+   "bleed=3",
+   "bludgeon"
+  ]
+ },
+ "counts": {
+  "items": 5,
+  "measured": 5,
+  "reused": 0,
+  "stopped early": 0,
+  "fights saved": 0,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "pounce=3",
+   "field": "worth",
+   "old": "4.6813",
+   "new": "4.7059 [4.4422, 4.8388] at 1000 fights, price on carriers 4.15"
+  },
+  {
+   "id": "twinStrike",
+   "field": "worth",
+   "old": "5.3181",
+   "new": "5.41 [5.2519, 5.5967] at 1000 fights, price on carriers 7.75"
+  },
+  {
+   "id": "enfeeble=1",
+   "field": "worth",
+   "old": "2.2473",
+   "new": "2.1681 [1.8107, 2.2789] at 1000 fights, price on carriers 2.5"
+  },
+  {
+   "id": "bleed=3",
+   "field": "worth",
+   "old": "7.2074",
+   "new": "7.1412 [6.906, 7.5898] at 1000 fights, price on carriers 6.61"
+  },
+  {
+   "id": "bludgeon",
+   "field": "worth",
+   "old": "5.1786",
+   "new": "5.0494 [4.8372, 5.2184] at 1000 fights, price on carriers 3.95"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "twinStrike",
+   "why": "over-priced: worth 5.41 against 7.75 on the carriers"
+  },
+  {
+   "id": "bludgeon",
+   "why": "under-priced: worth 5.0494 against 3.95 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 5
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1644.json"
+}

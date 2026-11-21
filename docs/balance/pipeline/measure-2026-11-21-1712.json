@@ -1,0 +1,105 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T09:12:49.329Z",
+ "finished": "2026-11-21T09:24:15.575Z",
+ "durationSec": 686.2,
+ "args": [
+  "--map",
+  "14",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-confirm-14.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "46",
+  "--fights",
+  "1000",
+  "--force",
+  "--wait"
+ ],
+ "head": "7b384943e",
+ "inputs": {
+  "context": "map14",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "stealth",
+   "thorns=2",
+   "twinStrike",
+   "harbinger=1",
+   "exploit=2"
+  ]
+ },
+ "counts": {
+  "items": 5,
+  "measured": 5,
+  "reused": 0,
+  "stopped early": 0,
+  "fights saved": 0,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "stealth",
+   "field": "worth",
+   "old": "3.7559",
+   "new": "4.1045 [3.9854, 4.4431] at 1000 fights, price on carriers 6.88"
+  },
+  {
+   "id": "thorns=2",
+   "field": "worth",
+   "old": "4.2035",
+   "new": "4.3368 [4.2036, 4.8556] at 1000 fights, price on carriers 5.08"
+  },
+  {
+   "id": "twinStrike",
+   "field": "worth",
+   "old": "6.2249",
+   "new": "7.2024 [5.7681, 7.4368] at 1000 fights, price on carriers 7.75"
+  },
+  {
+   "id": "harbinger=1",
+   "field": "worth",
+   "old": "4.0916",
+   "new": "4.0906 [3.9702, 4.4192] at 1000 fights, price on carriers 6.5"
+  },
+  {
+   "id": "exploit=2",
+   "field": "worth",
+   "old": "2.5976",
+   "new": "2.3974 [2.1289, 2.5713] at 1000 fights, price on carriers 4.2"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "stealth",
+   "why": "over-priced: worth 4.1045 against 6.88 on the carriers"
+  },
+  {
+   "id": "harbinger=1",
+   "why": "over-priced: worth 4.0906 against 6.5 on the carriers"
+  },
+  {
+   "id": "exploit=2",
+   "why": "over-priced: worth 2.3974 against 4.2 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 5
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1712.json"
+}

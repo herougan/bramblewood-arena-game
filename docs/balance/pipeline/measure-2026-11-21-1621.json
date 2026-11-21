@@ -1,0 +1,71 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T08:21:00.641Z",
+ "finished": "2026-11-21T08:22:59.435Z",
+ "durationSec": 118.8,
+ "args": [
+  "--map",
+  "8",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-confirm-08.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "98",
+  "--fights",
+  "1000",
+  "--force",
+  "--wait"
+ ],
+ "head": "7b384943e",
+ "inputs": {
+  "context": "map8",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "corrode=1",
+   "onDeathSpawn={\"defId\":\"maggot-swarmling\",\"count\":3}"
+  ]
+ },
+ "counts": {
+  "items": 2,
+  "measured": 2,
+  "reused": 0,
+  "stopped early": 0,
+  "fights saved": 0,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "corrode=1",
+   "field": "worth",
+   "old": "2.9456",
+   "new": "2.894 [2.6324, 2.938] at 1000 fights, price on carriers 2.41"
+  },
+  {
+   "id": "onDeathSpawn={\"defId\":\"maggot-swarmling\",\"count\":3}",
+   "field": "worth",
+   "old": "5.1038",
+   "new": "5.0911 [4.8414, 5.2762] at 1000 fights, price on carriers 4.35"
+  }
+ ],
+ "flagged": [],
+ "cached": {
+  "hits": 0,
+  "played": 2
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1621.json"
+}

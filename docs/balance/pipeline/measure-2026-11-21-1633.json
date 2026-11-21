@@ -1,0 +1,105 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T08:33:48.647Z",
+ "finished": "2026-11-21T08:37:21.993Z",
+ "durationSec": 213.3,
+ "args": [
+  "--map",
+  "5",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-confirm-05.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "85",
+  "--fights",
+  "1000",
+  "--force",
+  "--wait"
+ ],
+ "head": "7b384943e",
+ "inputs": {
+  "context": "map5",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "forestry=1",
+   "twinStrike",
+   "nursing=1",
+   "cure=1",
+   "herbalist=1"
+  ]
+ },
+ "counts": {
+  "items": 5,
+  "measured": 5,
+  "reused": 0,
+  "stopped early": 0,
+  "fights saved": 0,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "forestry=1",
+   "field": "worth",
+   "old": "5.283",
+   "new": "4.9834 [4.5802, 5.2884] at 1000 fights, price on carriers 6.65"
+  },
+  {
+   "id": "twinStrike",
+   "field": "worth",
+   "old": "5.6369",
+   "new": "6.0011 [5.8222, 6.1718] at 1000 fights, price on carriers 7.75"
+  },
+  {
+   "id": "nursing=1",
+   "field": "worth",
+   "old": "3.5038",
+   "new": "3.4908 [3.1877, 3.7619] at 1000 fights, price on carriers 5"
+  },
+  {
+   "id": "cure=1",
+   "field": "worth",
+   "old": "0.019",
+   "new": "0.0183 [0.0036, 0.0575] at 1000 fights, price on carriers 0.5"
+  },
+  {
+   "id": "herbalist=1",
+   "field": "worth",
+   "old": "0.0443",
+   "new": "0.0548 [0.0357, 0.1548] at 1000 fights, price on carriers 0.23"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "forestry=1",
+   "why": "over-priced: worth 4.9834 against 6.65 on the carriers"
+  },
+  {
+   "id": "twinStrike",
+   "why": "over-priced: worth 6.0011 against 7.75 on the carriers"
+  },
+  {
+   "id": "nursing=1",
+   "why": "over-priced: worth 3.4908 against 5 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 5
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1633.json"
+}

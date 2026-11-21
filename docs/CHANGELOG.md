@@ -5,6 +5,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 ## 2026-11-21 (package MAPCTX: skills measured on their own map)
 - New skill measure: each skill on its own map's pool, fields and level (`tools/pipeline/mapctx.sh`). First pass, Maps 18, 8, 1, 4: 30 of 51 skills read outside their shared measure. Context skills are worth far more at home than their price (Tide 3 on Map 4 7.9 against 1.3). Decision MAPCTX-1. No game change. Doc: `docs/balance/pipeline/mapctx-2026-11-21.md`.
 - Full pass, Maps 1-20: 309 skills on their home map, 178 apart from the shared measure; against price 84 too cheap, 127 too dear. 33 skills are off the same way on every map (e.g. Swift, Delivery 1, Pounce 1). Table: `node tools/pipeline/mapctx_report.js`. MAPCTX-1 updated.
+- Confirm: the 89 close calls replayed at 1,000 fights; 86 kept their verdict, 3 moved into range, none flipped.
 - SKM5: every combat skill now has a 1,000-fight reading; 3 new dear flags folded into SKM4-1.
 
 ## 2026-11-21 (package TESTFIX3: the 3 new release-10 CI failures)

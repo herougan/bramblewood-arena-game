@@ -1,0 +1,94 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T08:39:25.442Z",
+ "finished": "2026-11-21T08:44:28.084Z",
+ "durationSec": 302.6,
+ "args": [
+  "--map",
+  "7",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-confirm-07.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "80",
+  "--fights",
+  "1000",
+  "--force",
+  "--wait"
+ ],
+ "head": "7b384943e",
+ "inputs": {
+  "context": "map7",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "strangle=1",
+   "sleepPowder=1",
+   "onDeathSpawn={\"defId\":\"worker-ant\",\"count\":3}",
+   "poisonPowder=2"
+  ]
+ },
+ "counts": {
+  "items": 4,
+  "measured": 4,
+  "reused": 0,
+  "stopped early": 0,
+  "fights saved": 0,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "strangle=1",
+   "field": "worth",
+   "old": "3.504",
+   "new": "3.1587 [2.8608, 3.6162] at 1000 fights, price on carriers 4.21"
+  },
+  {
+   "id": "sleepPowder=1",
+   "field": "worth",
+   "old": "3.3709",
+   "new": "3.1385 [2.8528, 3.5096] at 1000 fights, price on carriers 2.5"
+  },
+  {
+   "id": "onDeathSpawn={\"defId\":\"worker-ant\",\"count\":3}",
+   "field": "worth",
+   "old": "5.4213",
+   "new": "5.6561 [5.4613, 5.8402] at 1000 fights, price on carriers 4.35"
+  },
+  {
+   "id": "poisonPowder=2",
+   "field": "worth",
+   "old": "5.4668",
+   "new": "5.6764 [5.4911, 5.8384] at 1000 fights, price on carriers 6.4"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "strangle=1",
+   "why": "over-priced: worth 3.1587 against 4.21 on the carriers"
+  },
+  {
+   "id": "onDeathSpawn={\"defId\":\"worker-ant\",\"count\":3}",
+   "why": "under-priced: worth 5.6561 against 4.35 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 4
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1639.json"
+}

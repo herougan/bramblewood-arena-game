@@ -1,0 +1,109 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T09:40:41.442Z",
+ "finished": "2026-11-21T09:45:36.421Z",
+ "durationSec": 295,
+ "args": [
+  "--map",
+  "19",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-confirm-19.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "19",
+  "--fights",
+  "1000",
+  "--force",
+  "--wait"
+ ],
+ "head": "7b384943e",
+ "inputs": {
+  "context": "map19",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "thorns=2",
+   "thorns=1",
+   "arrow={\"v\":1,\"type\":\"fire\"}",
+   "daunt={\"v\":1,\"lasts\":\"lasting\"}",
+   "shield=3"
+  ]
+ },
+ "counts": {
+  "items": 5,
+  "measured": 5,
+  "reused": 0,
+  "stopped early": 0,
+  "fights saved": 0,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "thorns=2",
+   "field": "worth",
+   "old": "4.0031",
+   "new": "4.0145 [3.7528, 4.2722] at 1000 fights, price on carriers 5.08"
+  },
+  {
+   "id": "thorns=1",
+   "field": "worth",
+   "old": "2.7561",
+   "new": "2.4688 [1.5281, 2.7702] at 1000 fights, price on carriers 3.22"
+  },
+  {
+   "id": "arrow={\"v\":1,\"type\":\"fire\"}",
+   "field": "worth",
+   "old": "3.5724",
+   "new": "3.7029 [3.4971, 3.9886] at 1000 fights, price on carriers 6.56"
+  },
+  {
+   "id": "daunt={\"v\":1,\"lasts\":\"lasting\"}",
+   "field": "worth",
+   "old": "3.8002",
+   "new": "3.9801 [3.7513, 4.2067] at 1000 fights, price on carriers 2.64"
+  },
+  {
+   "id": "shield=3",
+   "field": "worth",
+   "old": "2.883",
+   "new": "2.9132 [2.7639, 3.4269] at 1000 fights, price on carriers 4.93"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "thorns=2",
+   "why": "over-priced: worth 4.0145 against 5.08 on the carriers"
+  },
+  {
+   "id": "arrow={\"v\":1,\"type\":\"fire\"}",
+   "why": "over-priced: worth 3.7029 against 6.56 on the carriers"
+  },
+  {
+   "id": "daunt={\"v\":1,\"lasts\":\"lasting\"}",
+   "why": "under-priced: worth 3.9801 against 2.64 on the carriers"
+  },
+  {
+   "id": "shield=3",
+   "why": "over-priced: worth 2.9132 against 4.93 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 5
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1740.json"
+}

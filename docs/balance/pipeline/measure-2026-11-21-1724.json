@@ -1,0 +1,152 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T09:24:15.659Z",
+ "finished": "2026-11-21T09:36:04.271Z",
+ "durationSec": 708.6,
+ "args": [
+  "--map",
+  "15",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-confirm-15.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "35",
+  "--fights",
+  "1000",
+  "--force",
+  "--wait"
+ ],
+ "head": "7b384943e",
+ "inputs": {
+  "context": "map15",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "arrow=1",
+   "arrow=1+fletcher=1",
+   "speed={\"kind\":\"swift\"}",
+   "stealth",
+   "twinStrike",
+   "ambush=2",
+   "harbinger=1",
+   "ambush=3",
+   "harden=1",
+   "pounce=6"
+  ]
+ },
+ "counts": {
+  "items": 10,
+  "measured": 10,
+  "reused": 0,
+  "stopped early": 0,
+  "fights saved": 0,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "arrow=1",
+   "field": "worth",
+   "old": "2.8854",
+   "new": "2.9648 [2.8469, 3.2809] at 1000 fights, price on carriers 4.26"
+  },
+  {
+   "id": "arrow=1+fletcher=1",
+   "field": "worth",
+   "old": "5.7151",
+   "new": "5.9937 [5.1987, 6.2595] at 1000 fights, price on carriers 7.45"
+  },
+  {
+   "id": "speed={\"kind\":\"swift\"}",
+   "field": "worth",
+   "old": "4.8463",
+   "new": "4.7526 [4.5087, 4.9088] at 1000 fights, price on carriers 9.5"
+  },
+  {
+   "id": "stealth",
+   "field": "worth",
+   "old": "5.5774",
+   "new": "6.3632 [5.5889, 6.5692] at 1000 fights, price on carriers 6.88"
+  },
+  {
+   "id": "twinStrike",
+   "field": "worth",
+   "old": "4.8912",
+   "new": "5.2732 [4.8091, 5.4337] at 1000 fights, price on carriers 7.75"
+  },
+  {
+   "id": "ambush=2",
+   "field": "worth",
+   "old": "0.8632",
+   "new": "1.0202 [0.8407, 1.2082] at 1000 fights, price on carriers 1.42"
+  },
+  {
+   "id": "harbinger=1",
+   "field": "worth",
+   "old": "3.9498",
+   "new": "3.6027 [3.4568, 3.911] at 1000 fights, price on carriers 6.5"
+  },
+  {
+   "id": "ambush=3",
+   "field": "worth",
+   "old": "1.3762",
+   "new": "1.6049 [1.4123, 1.8315] at 1000 fights, price on carriers 2.38"
+  },
+  {
+   "id": "harden=1",
+   "field": "worth",
+   "old": "2.9053",
+   "new": "3.002 [2.8468, 3.4635] at 1000 fights, price on carriers 2.11"
+  },
+  {
+   "id": "pounce=6",
+   "field": "worth",
+   "old": "8.3769",
+   "new": "8.5454 [7.7302, 8.8306] at 1000 fights, price on carriers 7.38"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "arrow=1",
+   "why": "over-priced: worth 2.9648 against 4.26 on the carriers"
+  },
+  {
+   "id": "arrow=1+fletcher=1",
+   "why": "over-priced: worth 5.9937 against 7.45 on the carriers"
+  },
+  {
+   "id": "speed={\"kind\":\"swift\"}",
+   "why": "over-priced: worth 4.7526 against 9.5 on the carriers"
+  },
+  {
+   "id": "twinStrike",
+   "why": "over-priced: worth 5.2732 against 7.75 on the carriers"
+  },
+  {
+   "id": "harbinger=1",
+   "why": "over-priced: worth 3.6027 against 6.5 on the carriers"
+  },
+  {
+   "id": "pounce=6",
+   "why": "under-priced: worth 8.5454 against 7.38 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 10
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1724.json"
+}

@@ -1,0 +1,90 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T08:57:51.120Z",
+ "finished": "2026-11-21T08:59:41.292Z",
+ "durationSec": 110.2,
+ "args": [
+  "--map",
+  "10",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-confirm-10.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "61",
+  "--fights",
+  "1000",
+  "--force",
+  "--wait"
+ ],
+ "head": "7b384943e",
+ "inputs": {
+  "context": "map10",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "swarm",
+   "armor=3",
+   "daunt={\"v\":1,\"lasts\":\"lasting\"}",
+   "poisonBarbs=2"
+  ]
+ },
+ "counts": {
+  "items": 4,
+  "measured": 4,
+  "reused": 0,
+  "stopped early": 0,
+  "fights saved": 0,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "swarm",
+   "field": "worth",
+   "old": "3.7405",
+   "new": "3.5613 [3.2463, 4.1424] at 1000 fights, price on carriers 3.13"
+  },
+  {
+   "id": "armor=3",
+   "field": "worth",
+   "old": "3.8032",
+   "new": "3.9031 [3.5196, 4.581] at 1000 fights, price on carriers 4.85"
+  },
+  {
+   "id": "daunt={\"v\":1,\"lasts\":\"lasting\"}",
+   "field": "worth",
+   "old": "3.615",
+   "new": "3.3313 [2.9318, 3.6849] at 1000 fights, price on carriers 2.64"
+  },
+  {
+   "id": "poisonBarbs=2",
+   "field": "worth",
+   "old": "4.4955",
+   "new": "5.2486 [4.1411, 5.7674] at 1000 fights, price on carriers 3.2"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "poisonBarbs=2",
+   "why": "under-priced: worth 5.2486 against 3.2 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 4
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1657.json"
+}

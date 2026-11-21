@@ -1,0 +1,109 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T08:26:21.522Z",
+ "finished": "2026-11-21T08:32:11.029Z",
+ "durationSec": 349.5,
+ "args": [
+  "--map",
+  "17",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-confirm-17.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "93",
+  "--fights",
+  "1000",
+  "--force",
+  "--wait"
+ ],
+ "head": "7b384943e",
+ "inputs": {
+  "context": "map17",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "sturdy",
+   "T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2}",
+   "freeze={\"chance\":40,\"duration\":2}",
+   "loneWolf=[1,1]",
+   "pounce=6"
+  ]
+ },
+ "counts": {
+  "items": 5,
+  "measured": 5,
+  "reused": 0,
+  "stopped early": 0,
+  "fights saved": 0,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "sturdy",
+   "field": "worth",
+   "old": "3.7872",
+   "new": "3.8379 [3.7187, 3.9787] at 1000 fights, price on carriers 2.81"
+  },
+  {
+   "id": "T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2}",
+   "field": "worth",
+   "old": "6.2955",
+   "new": "6.0764 [5.8698, 6.2335] at 1000 fights, price on carriers 4.24"
+  },
+  {
+   "id": "freeze={\"chance\":40,\"duration\":2}",
+   "field": "worth",
+   "old": "3.5306",
+   "new": "3.2491 [2.9297, 3.3988] at 1000 fights, price on carriers 2.88"
+  },
+  {
+   "id": "loneWolf=[1,1]",
+   "field": "worth",
+   "old": "4.3247",
+   "new": "4.4619 [4.3422, 4.6002] at 1000 fights, price on carriers 7.36"
+  },
+  {
+   "id": "pounce=6",
+   "field": "worth",
+   "old": "5.3257",
+   "new": "5.5045 [5.3284, 5.6966] at 1000 fights, price on carriers 7.38"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "sturdy",
+   "why": "under-priced: worth 3.8379 against 2.81 on the carriers"
+  },
+  {
+   "id": "T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2}",
+   "why": "under-priced: worth 6.0764 against 4.24 on the carriers"
+  },
+  {
+   "id": "loneWolf=[1,1]",
+   "why": "over-priced: worth 4.4619 against 7.36 on the carriers"
+  },
+  {
+   "id": "pounce=6",
+   "why": "over-priced: worth 5.5045 against 7.38 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 5
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1626.json"
+}
