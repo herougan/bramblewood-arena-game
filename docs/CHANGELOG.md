@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-22 (package PVPFIX: PvP test decks rebuilt from in-play cards)
+- The 30 PvP test decks in Camp > Simulator (Admin) are rebuilt. The old ones held cards that left the map lists on 11-18 (DATAFIX) and a leader that is no longer valid. Same tool and rules as PVP1 (`node tools/pvp1/pvp1.js build`, then `apply`); `pvp1` and `pvp2` tests pass again.
+
 ## 2026-11-22 (package TESTFIX4: old unit failures)
 - No player-visible change. The release's full run failed the same 38 tests as the run before (nothing new). Four now pass: lvl10, easter-eggs, prayer, gi (cards out of play reported apart like every budget check; the owner's later edits respected: Pika Hoarder's fold, Bison Bulldozer's removed Onslaught, Glacier Wolf Pack's Embrittle). The rest, by cause: `docs/tests/known-fail-2026-11-22.md`.
 
