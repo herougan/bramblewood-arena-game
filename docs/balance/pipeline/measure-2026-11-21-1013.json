@@ -1,0 +1,168 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T02:13:48.764Z",
+ "finished": "2026-11-21T02:21:28.074Z",
+ "durationSec": 459.3,
+ "args": [
+  "--map",
+  "17",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-17.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "110",
+  "--wait"
+ ],
+ "head": "e991170e8",
+ "inputs": {
+  "context": "map17",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "tide",
+   "guardian",
+   "sturdy",
+   "T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2}",
+   "bulldoze=1",
+   "offspring=1",
+   "dive=2",
+   "freeze={\"chance\":40,\"duration\":2}",
+   "loneWolf=[1,1]",
+   "overwhelm",
+   "pounce=6",
+   "pulverise"
+  ]
+ },
+ "counts": {
+  "items": 12,
+  "measured": 11,
+  "reused": 1,
+  "stopped early": 10,
+  "fights saved": 7000,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "guardian",
+   "field": "worth",
+   "old": "-",
+   "new": "-1.4492 [-2.4115, -0.8458] at 1000 fights, price on carriers 0"
+  },
+  {
+   "id": "sturdy",
+   "field": "worth",
+   "old": "-",
+   "new": "3.7872 [3.4763, 4.0625] at 200 fights, price on carriers 2.81"
+  },
+  {
+   "id": "T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2}",
+   "field": "worth",
+   "old": "-",
+   "new": "6.2955 [5.8494, 6.8967] at 200 fights, price on carriers 4.24"
+  },
+  {
+   "id": "bulldoze=1",
+   "field": "worth",
+   "old": "-",
+   "new": "3.369 [2.952, 3.6777] at 200 fights, price on carriers 2.23"
+  },
+  {
+   "id": "offspring=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.4959 [1.5067, 2.8845] at 700 fights, price on carriers 6.08"
+  },
+  {
+   "id": "dive=2",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers -1.7"
+  },
+  {
+   "id": "freeze={\"chance\":40,\"duration\":2}",
+   "field": "worth",
+   "old": "-",
+   "new": "3.5306 [3.2337, 3.9801] at 200 fights, price on carriers 2.88"
+  },
+  {
+   "id": "loneWolf=[1,1]",
+   "field": "worth",
+   "old": "-",
+   "new": "4.3247 [4.0458, 4.7548] at 200 fights, price on carriers 7.36"
+  },
+  {
+   "id": "overwhelm",
+   "field": "worth",
+   "old": "-",
+   "new": "0.7485 [0.37, 1.4332] at 700 fights, price on carriers 1.05"
+  },
+  {
+   "id": "pounce=6",
+   "field": "worth",
+   "old": "-",
+   "new": "5.3257 [4.9344, 5.8183] at 200 fights, price on carriers 7.38"
+  },
+  {
+   "id": "pulverise",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 1.53"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "guardian",
+   "why": "interval still wide at 1000 fights (se 0.4); measure again with --fights 1000,2000"
+  },
+  {
+   "id": "T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2}",
+   "why": "under-priced: worth 6.2955 against 4.24 on the carriers"
+  },
+  {
+   "id": "bulldoze=1",
+   "why": "under-priced: worth 3.369 against 2.23 on the carriers"
+  },
+  {
+   "id": "offspring=1",
+   "why": "over-priced: worth 2.4959 against 6.08 on the carriers"
+  },
+  {
+   "id": "dive=2",
+   "why": "under-priced: worth 0 against -1.7 on the carriers"
+  },
+  {
+   "id": "loneWolf=[1,1]",
+   "why": "over-priced: worth 4.3247 against 7.36 on the carriers"
+  },
+  {
+   "id": "pounce=6",
+   "why": "over-priced: worth 5.3257 against 7.38 on the carriers"
+  },
+  {
+   "id": "pulverise",
+   "why": "over-priced: worth 0 against 1.53 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 1,
+  "played": 11
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1013.json"
+}

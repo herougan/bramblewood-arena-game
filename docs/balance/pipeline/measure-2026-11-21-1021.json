@@ -1,0 +1,152 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T02:21:28.152Z",
+ "finished": "2026-11-21T02:35:16.167Z",
+ "durationSec": 828,
+ "args": [
+  "--map",
+  "2",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-02.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "102",
+  "--wait"
+ ],
+ "head": "f2e2d862b",
+ "inputs": {
+  "context": "map2",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "tide",
+   "crabClaws",
+   "foraging=1",
+   "inspiring=2",
+   "pierce=2",
+   "T:onAttack>gain {\"do\":\"gain\",\"on\":\"onAttack\",\"amount\":1,\"resource\":\"lumber\"}",
+   "T:onAttacked>gain {\"do\":\"gain\",\"on\":\"onAttacked\",\"amount\":1,\"resource\":\"lumber\"}",
+   "poisonBarbs=2",
+   "rainrunner=2",
+   "salvage=1"
+  ]
+ },
+ "counts": {
+  "items": 10,
+  "measured": 10,
+  "reused": 0,
+  "stopped early": 10,
+  "fights saved": 7600,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "tide",
+   "field": "worth",
+   "old": "-",
+   "new": "3.8889 [3.287, 4.1925] at 200 fights, price on carriers 0.5"
+  },
+  {
+   "id": "crabClaws",
+   "field": "worth",
+   "old": "-",
+   "new": "0.0543 [-0.5197, 0.4957] at 200 fights, price on carriers 0.1"
+  },
+  {
+   "id": "foraging=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.8563 [2.5489, 3.3066] at 200 fights, price on carriers 1.68"
+  },
+  {
+   "id": "inspiring=2",
+   "field": "worth",
+   "old": "-",
+   "new": "5.9874 [5.608, 6.43] at 200 fights, price on carriers 5.9"
+  },
+  {
+   "id": "pierce=2",
+   "field": "worth",
+   "old": "-",
+   "new": "1.5265 [1.2081, 2.0036] at 400 fights, price on carriers 0.3"
+  },
+  {
+   "id": "T:onAttack>gain {\"do\":\"gain\",\"on\":\"onAttack\",\"amount\":1,\"resource\":\"lumber\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "1.3506 [1.009, 1.9408] at 400 fights, price on carriers 1.35"
+  },
+  {
+   "id": "T:onAttacked>gain {\"do\":\"gain\",\"on\":\"onAttacked\",\"amount\":1,\"resource\":\"lumber\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "0.8347 [0.4377, 1.5492] at 200 fights, price on carriers 1.9"
+  },
+  {
+   "id": "poisonBarbs=2",
+   "field": "worth",
+   "old": "-",
+   "new": "5.5789 [5.1271, 6.0628] at 200 fights, price on carriers 3.2"
+  },
+  {
+   "id": "rainrunner=2",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 4"
+  },
+  {
+   "id": "salvage=1",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 0.75"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "tide",
+   "why": "under-priced: worth 3.8889 against 0.5 on the carriers"
+  },
+  {
+   "id": "foraging=1",
+   "why": "under-priced: worth 2.8563 against 1.68 on the carriers"
+  },
+  {
+   "id": "pierce=2",
+   "why": "under-priced: worth 1.5265 against 0.3 on the carriers"
+  },
+  {
+   "id": "T:onAttacked>gain {\"do\":\"gain\",\"on\":\"onAttacked\",\"amount\":1,\"resource\":\"lumber\"}",
+   "why": "over-priced: worth 0.8347 against 1.9 on the carriers"
+  },
+  {
+   "id": "poisonBarbs=2",
+   "why": "under-priced: worth 5.5789 against 3.2 on the carriers"
+  },
+  {
+   "id": "rainrunner=2",
+   "why": "over-priced: worth 0 against 4 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 10
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1021.json"
+}

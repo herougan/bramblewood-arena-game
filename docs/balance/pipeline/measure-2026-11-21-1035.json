@@ -1,0 +1,203 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T02:35:16.222Z",
+ "finished": "2026-11-21T03:02:04.483Z",
+ "durationSec": 1608.3,
+ "args": [
+  "--map",
+  "3",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-03.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "88",
+  "--wait"
+ ],
+ "head": "f2e2d862b",
+ "inputs": {
+  "context": "map3",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "tide",
+   "guardian",
+   "speed={\"kind\":\"swift\"}",
+   "pounce=3",
+   "arrow=2",
+   "crabClaws",
+   "foraging=1",
+   "inspiring=2",
+   "T:onAttack>gain {\"do\":\"gain\",\"on\":\"onAttack\",\"amount\":1,\"resource\":\"lumber\"}",
+   "delivery=1",
+   "tide=2",
+   "T:onHealed>gain {\"do\":\"gain\",\"on\":\"onHealed\",\"amount\":1,\"resource\":\"lumber\"}",
+   "arrow=3",
+   "arrow={\"v\":2,\"bramble\":true}",
+   "daunt=2"
+  ]
+ },
+ "counts": {
+  "items": 15,
+  "measured": 15,
+  "reused": 0,
+  "stopped early": 13,
+  "fights saved": 9700,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "tide",
+   "field": "worth",
+   "old": "-",
+   "new": "3.5443 [2.5567, 3.7483] at 200 fights, price on carriers 0.5"
+  },
+  {
+   "id": "guardian",
+   "field": "worth",
+   "old": "-",
+   "new": "-0.2649 [-1.0889, 0.0503] at 400 fights, price on carriers 0"
+  },
+  {
+   "id": "speed={\"kind\":\"swift\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "3.6208 [3.4611, 4.246] at 200 fights, price on carriers 9.5"
+  },
+  {
+   "id": "pounce=3",
+   "field": "worth",
+   "old": "-",
+   "new": "5.2641 [4.2854, 6.108] at 200 fights, price on carriers 4.15"
+  },
+  {
+   "id": "arrow=2",
+   "field": "worth",
+   "old": "-",
+   "new": "7.0844 [6.1047, 7.7737] at 200 fights, price on carriers 7.01"
+  },
+  {
+   "id": "crabClaws",
+   "field": "worth",
+   "old": "-",
+   "new": "-0.2784 [-0.5593, -0.0305] at 700 fights, price on carriers 0.1"
+  },
+  {
+   "id": "foraging=1",
+   "field": "worth",
+   "old": "-",
+   "new": "3.324 [2.2994, 3.5436] at 200 fights, price on carriers 1.68"
+  },
+  {
+   "id": "inspiring=2",
+   "field": "worth",
+   "old": "-",
+   "new": "7.1426 [6.2216, 7.8124] at 200 fights, price on carriers 5.9"
+  },
+  {
+   "id": "T:onAttack>gain {\"do\":\"gain\",\"on\":\"onAttack\",\"amount\":1,\"resource\":\"lumber\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "1.1897 [0.5013, 2.2702] at 1000 fights, price on carriers 1.35"
+  },
+  {
+   "id": "delivery=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.1083 [0.7948, 2.5616] at 1000 fights, price on carriers 5.25"
+  },
+  {
+   "id": "tide=2",
+   "field": "worth",
+   "old": "-",
+   "new": "3.6418 [3.5382, 4.3724] at 200 fights, price on carriers 0.93"
+  },
+  {
+   "id": "T:onHealed>gain {\"do\":\"gain\",\"on\":\"onHealed\",\"amount\":1,\"resource\":\"lumber\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "-0.0422 [-0.1629, 0] at 200 fights, price on carriers 1"
+  },
+  {
+   "id": "arrow=3",
+   "field": "worth",
+   "old": "-",
+   "new": "8.9775 [7.8943, 9.9396] at 200 fights, price on carriers 9.39"
+  },
+  {
+   "id": "arrow={\"v\":2,\"bramble\":true}",
+   "field": "worth",
+   "old": "-",
+   "new": "10.0551 [8.684, 11.3105] at 200 fights, price on carriers 6.31"
+  },
+  {
+   "id": "daunt=2",
+   "field": "worth",
+   "old": "-",
+   "new": "3.2328 [2.2967, 3.5284] at 200 fights, price on carriers 2.56"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "tide",
+   "why": "under-priced: worth 3.5443 against 0.5 on the carriers"
+  },
+  {
+   "id": "speed={\"kind\":\"swift\"}",
+   "why": "over-priced: worth 3.6208 against 9.5 on the carriers"
+  },
+  {
+   "id": "pounce=3",
+   "why": "under-priced: worth 5.2641 against 4.15 on the carriers"
+  },
+  {
+   "id": "foraging=1",
+   "why": "under-priced: worth 3.324 against 1.68 on the carriers"
+  },
+  {
+   "id": "inspiring=2",
+   "why": "under-priced: worth 7.1426 against 5.9 on the carriers"
+  },
+  {
+   "id": "T:onAttack>gain {\"do\":\"gain\",\"on\":\"onAttack\",\"amount\":1,\"resource\":\"lumber\"}",
+   "why": "interval still wide at 1000 fights (se 0.45); measure again with --fights 1000,2000"
+  },
+  {
+   "id": "delivery=1",
+   "why": "interval still wide at 1000 fights (se 0.45); measure again with --fights 1000,2000"
+  },
+  {
+   "id": "tide=2",
+   "why": "under-priced: worth 3.6418 against 0.93 on the carriers"
+  },
+  {
+   "id": "T:onHealed>gain {\"do\":\"gain\",\"on\":\"onHealed\",\"amount\":1,\"resource\":\"lumber\"}",
+   "why": "over-priced: worth -0.0422 against 1 on the carriers"
+  },
+  {
+   "id": "arrow={\"v\":2,\"bramble\":true}",
+   "why": "under-priced: worth 10.0551 against 6.31 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 15
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1035.json"
+}

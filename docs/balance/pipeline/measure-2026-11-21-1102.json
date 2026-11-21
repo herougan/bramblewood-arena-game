@@ -1,0 +1,184 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T03:02:04.593Z",
+ "finished": "2026-11-21T03:20:43.212Z",
+ "durationSec": 1118.6,
+ "args": [
+  "--map",
+  "5",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-05.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "61",
+  "--wait"
+ ],
+ "head": "f2e2d862b",
+ "inputs": {
+  "context": "map5",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "tide",
+   "guardian",
+   "forestry=1",
+   "twinStrike",
+   "nursing=1",
+   "strangle=1",
+   "cure=1",
+   "herbalist=1",
+   "immunity",
+   "swarm=[\"Ants\"]",
+   "bleed=3",
+   "meiosis=1",
+   "tide=3",
+   "tide={\"gives\":{\"flood\":{\"attack\":2,\"health\":2,\"evasive\":true},\"ebb\":{\"armor\":2}}}"
+  ]
+ },
+ "counts": {
+  "items": 14,
+  "measured": 14,
+  "reused": 0,
+  "stopped early": 13,
+  "fights saved": 10400,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "tide",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 0.5"
+  },
+  {
+   "id": "guardian",
+   "field": "worth",
+   "old": "-",
+   "new": "0.1742 [-0.0259, 0.6407] at 200 fights, price on carriers 0"
+  },
+  {
+   "id": "forestry=1",
+   "field": "worth",
+   "old": "-",
+   "new": "5.283 [4.7499, 5.7276] at 200 fights, price on carriers 6.65"
+  },
+  {
+   "id": "twinStrike",
+   "field": "worth",
+   "old": "-",
+   "new": "5.6369 [5.08, 6.0732] at 200 fights, price on carriers 7.75"
+  },
+  {
+   "id": "nursing=1",
+   "field": "worth",
+   "old": "-",
+   "new": "3.5038 [3.0978, 4.91] at 200 fights, price on carriers 5"
+  },
+  {
+   "id": "strangle=1",
+   "field": "worth",
+   "old": "-",
+   "new": "4.8538 [3.6335, 5.0602] at 200 fights, price on carriers 4.21"
+  },
+  {
+   "id": "cure=1",
+   "field": "worth",
+   "old": "-",
+   "new": "0.019 [-0.0168, 0.0989] at 200 fights, price on carriers 0.5"
+  },
+  {
+   "id": "herbalist=1",
+   "field": "worth",
+   "old": "-",
+   "new": "0.0443 [0.0186, 0.1784] at 200 fights, price on carriers 0.23"
+  },
+  {
+   "id": "immunity",
+   "field": "worth",
+   "old": "-",
+   "new": "0.7083 [0.513, 2.3337] at 1000 fights, price on carriers 0.3"
+  },
+  {
+   "id": "swarm=[\"Ants\"]",
+   "field": "worth",
+   "old": "-",
+   "new": "0.171 [0.1053, 0.5524] at 200 fights, price on carriers 3.13"
+  },
+  {
+   "id": "bleed=3",
+   "field": "worth",
+   "old": "-",
+   "new": "6.4133 [6.0333, 6.8757] at 200 fights, price on carriers 6.61"
+  },
+  {
+   "id": "meiosis=1",
+   "field": "worth",
+   "old": "-",
+   "new": "5.1297 [4.5492, 5.3962] at 200 fights, price on carriers 4.55"
+  },
+  {
+   "id": "tide=3",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 1.34"
+  },
+  {
+   "id": "tide={\"gives\":{\"flood\":{\"attack\":2,\"health\":2,\"evasive\":true},\"ebb\":{\"armor\":2}}}",
+   "field": "worth",
+   "old": "-",
+   "new": "0.0697 [-0.0795, 0.3743] at 200 fights, price on carriers 4.68"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "forestry=1",
+   "why": "over-priced: worth 5.283 against 6.65 on the carriers"
+  },
+  {
+   "id": "twinStrike",
+   "why": "over-priced: worth 5.6369 against 7.75 on the carriers"
+  },
+  {
+   "id": "nursing=1",
+   "why": "over-priced: worth 3.5038 against 5 on the carriers"
+  },
+  {
+   "id": "immunity",
+   "why": "interval still wide at 1000 fights (se 0.46); measure again with --fights 1000,2000"
+  },
+  {
+   "id": "swarm=[\"Ants\"]",
+   "why": "over-priced: worth 0.171 against 3.13 on the carriers"
+  },
+  {
+   "id": "tide=3",
+   "why": "over-priced: worth 0 against 1.34 on the carriers"
+  },
+  {
+   "id": "tide={\"gives\":{\"flood\":{\"attack\":2,\"health\":2,\"evasive\":true},\"ebb\":{\"armor\":2}}}",
+   "why": "over-priced: worth 0.0697 against 4.68 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 14
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1102.json"
+}

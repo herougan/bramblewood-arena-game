@@ -1,0 +1,168 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T03:20:43.281Z",
+ "finished": "2026-11-21T03:38:34.002Z",
+ "durationSec": 1070.7,
+ "args": [
+  "--map",
+  "6",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-06.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "43",
+  "--wait"
+ ],
+ "head": "f2e2d862b",
+ "inputs": {
+  "context": "map6",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "tide",
+   "guardian",
+   "nursing=1",
+   "strangle=1",
+   "ambush=3",
+   "enfeeble=1",
+   "herbalist=1",
+   "immunity",
+   "parasite",
+   "swarm=[\"Ants\"]",
+   "bleed=3",
+   "sap",
+   "scare=1",
+   "strangle=2"
+  ]
+ },
+ "counts": {
+  "items": 14,
+  "measured": 14,
+  "reused": 0,
+  "stopped early": 12,
+  "fights saved": 9400,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "tide",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 0.5"
+  },
+  {
+   "id": "guardian",
+   "field": "worth",
+   "old": "-",
+   "new": "-0.0728 [-0.6667, 0.4928] at 200 fights, price on carriers 0"
+  },
+  {
+   "id": "nursing=1",
+   "field": "worth",
+   "old": "-",
+   "new": "3.69 [2.9738, 4.354] at 200 fights, price on carriers 5"
+  },
+  {
+   "id": "strangle=1",
+   "field": "worth",
+   "old": "-",
+   "new": "3.9791 [3.6504, 4.55] at 200 fights, price on carriers 4.21"
+  },
+  {
+   "id": "ambush=3",
+   "field": "worth",
+   "old": "-",
+   "new": "2.3257 [1.85, 3.1064] at 200 fights, price on carriers 2.38"
+  },
+  {
+   "id": "enfeeble=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.258 [1.8076, 2.2906] at 1000 fights, price on carriers 2.5"
+  },
+  {
+   "id": "herbalist=1",
+   "field": "worth",
+   "old": "-",
+   "new": "0.0364 [-0.0389, 0.2154] at 200 fights, price on carriers 0.23"
+  },
+  {
+   "id": "immunity",
+   "field": "worth",
+   "old": "-",
+   "new": "0.464 [0.3325, 1.4] at 400 fights, price on carriers 0.3"
+  },
+  {
+   "id": "parasite",
+   "field": "worth",
+   "old": "-",
+   "new": "-1.5149 [-3.2596, -1.2025] at 1000 fights, price on carriers 1"
+  },
+  {
+   "id": "swarm=[\"Ants\"]",
+   "field": "worth",
+   "old": "-",
+   "new": "0.1577 [0.0931, 0.6222] at 200 fights, price on carriers 3.13"
+  },
+  {
+   "id": "bleed=3",
+   "field": "worth",
+   "old": "-",
+   "new": "6.2347 [5.7789, 6.9255] at 200 fights, price on carriers 6.61"
+  },
+  {
+   "id": "sap",
+   "field": "worth",
+   "old": "-",
+   "new": "2.2996 [1.6937, 2.7527] at 200 fights, price on carriers 2.3"
+  },
+  {
+   "id": "scare=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.6867 [2.4167, 3.2763] at 200 fights, price on carriers 3.02"
+  },
+  {
+   "id": "strangle=2",
+   "field": "worth",
+   "old": "-",
+   "new": "5.1076 [4.8057, 5.4932] at 200 fights, price on carriers 5.57"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "nursing=1",
+   "why": "over-priced: worth 3.69 against 5 on the carriers"
+  },
+  {
+   "id": "parasite",
+   "why": "interval still wide at 1000 fights (se 0.52); measure again with --fights 1000,2000"
+  },
+  {
+   "id": "swarm=[\"Ants\"]",
+   "why": "over-priced: worth 0.1577 against 3.13 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 14
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1120.json"
+}
