@@ -4,6 +4,13 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**MAPCTX-1. Price context skills by the map they live on** · Decide · Balance · asked 2026-11-21
+- Measured on their own map, context skills are worth far more than their price: Tide 3 on Map 4 7.9 (price 1.3), Dry on Map 18 3.9 (shared 0), Illuminate and Keen Sense on Map 8 about 2.3 (price 0.7). Away from home they read 0. On Map 18, Arrow 2 reads 12.7 against price 6.3. Detail: docs/balance/pipeline/mapctx-2026-11-21.md.
+  - a) Price context skills from their home-map measure, then list cards that leave the budget (no stat changes)
+  - b) Measure all Maps 1-20 first, then decide
+  - c) Leave
+- **Default:** b
+
 **REFIT18-2. Enemy level for four fights that are too easy** · Decide · Balance · asked 2026-11-21
 - No legal swap or Shield fixes them; a higher enemy level does. 13-8: level 3 → 4 reads 38 (target 40). 20-4: 3.9 → 5 reads 69 (67). Side 10-A-3: 3 → 3.5 reads 69.5 (70). 20-9 (58 vs 50, within 10) instead takes Shield 60 → 90, reading 53.5.
   - a) All four as listed

@@ -1,0 +1,246 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T00:13:25.927Z",
+ "finished": "2026-11-21T00:51:17.803Z",
+ "durationSec": 2271.9,
+ "args": [
+  "--map",
+  "18",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-18.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "110",
+  "--wait"
+ ],
+ "head": "e991170e8",
+ "inputs": {
+  "context": "map18",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "guardian",
+   "speed={\"kind\":\"swift\"}",
+   "thorns=2",
+   "recoil=1",
+   "thorns=1",
+   "dry",
+   "bulldoze=1",
+   "expose=2",
+   "repair=2",
+   "swarm=[\"Ants\"]",
+   "T:onAttack>drawCard {\"do\":\"drawCard\",\"on\":\"onAttack\",\"count\":1}",
+   "arrow={\"v\":1,\"type\":\"acid\",\"form\":\"bolt\"}",
+   "arrow={\"v\":2,\"bramble\":true}",
+   "dynamite=3",
+   "embolden=1",
+   "pack=1",
+   "shield=3",
+   "tornado=1",
+   "trap=5",
+   "trap=6"
+  ]
+ },
+ "counts": {
+  "items": 20,
+  "measured": 20,
+  "reused": 0,
+  "stopped early": 17,
+  "fights saved": 12400,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "guardian",
+   "field": "worth",
+   "old": "-",
+   "new": "-0.1824 [-0.5953, 0.1121] at 700 fights, price on carriers 0"
+  },
+  {
+   "id": "speed={\"kind\":\"swift\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "3.9606 [3.7255, 4.7489] at 200 fights, price on carriers 9.5"
+  },
+  {
+   "id": "thorns=2",
+   "field": "worth",
+   "old": "-",
+   "new": "3.975 [3.8438, 4.7959] at 200 fights, price on carriers 5.08"
+  },
+  {
+   "id": "recoil=1",
+   "field": "worth",
+   "old": "-",
+   "new": "-1.6423 [-2.3111, -1.2386] at 1000 fights, price on carriers -3.46"
+  },
+  {
+   "id": "thorns=1",
+   "field": "worth",
+   "old": "-",
+   "new": "3.6632 [2.6302, 3.8513] at 200 fights, price on carriers 3.22"
+  },
+  {
+   "id": "dry",
+   "field": "worth",
+   "old": "-",
+   "new": "3.9132 [3.085, 4.2894] at 200 fights, price on carriers 4"
+  },
+  {
+   "id": "bulldoze=1",
+   "field": "worth",
+   "old": "-",
+   "new": "3.6981 [2.6722, 3.9536] at 200 fights, price on carriers 2.23"
+  },
+  {
+   "id": "expose=2",
+   "field": "worth",
+   "old": "-",
+   "new": "0.2418 [0.0433, 0.7407] at 400 fights, price on carriers 0.18"
+  },
+  {
+   "id": "repair=2",
+   "field": "worth",
+   "old": "-",
+   "new": "3.8427 [2.9919, 4.0813] at 200 fights, price on carriers 2.97"
+  },
+  {
+   "id": "swarm=[\"Ants\"]",
+   "field": "worth",
+   "old": "-",
+   "new": "0.3648 [0.2478, 0.691] at 700 fights, price on carriers 3.13"
+  },
+  {
+   "id": "T:onAttack>drawCard {\"do\":\"drawCard\",\"on\":\"onAttack\",\"count\":1}",
+   "field": "worth",
+   "old": "-",
+   "new": "3.7131 [2.3956, 3.9766] at 200 fights, price on carriers 5.54"
+  },
+  {
+   "id": "arrow={\"v\":1,\"type\":\"acid\",\"form\":\"bolt\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "9.9393 [8.8476, 11.8035] at 200 fights, price on carriers 6.89"
+  },
+  {
+   "id": "arrow={\"v\":2,\"bramble\":true}",
+   "field": "worth",
+   "old": "-",
+   "new": "12.6472 [10.8717, 15.541] at 200 fights, price on carriers 6.31"
+  },
+  {
+   "id": "dynamite=3",
+   "field": "worth",
+   "old": "-",
+   "new": "3.1169 [1.8873, 3.7146] at 1000 fights, price on carriers 1.1"
+  },
+  {
+   "id": "embolden=1",
+   "field": "worth",
+   "old": "-",
+   "new": "5.0274 [3.9549, 6.3214] at 200 fights, price on carriers 3.59"
+  },
+  {
+   "id": "pack=1",
+   "field": "worth",
+   "old": "-",
+   "new": "4.2367 [3.8799, 5.3092] at 200 fights, price on carriers 3.25"
+  },
+  {
+   "id": "shield=3",
+   "field": "worth",
+   "old": "-",
+   "new": "3.9104 [3.3186, 4.0788] at 200 fights, price on carriers 4.93"
+  },
+  {
+   "id": "tornado=1",
+   "field": "worth",
+   "old": "-",
+   "new": "1.6184 [0.4491, 2.915] at 1000 fights, price on carriers 1.17"
+  },
+  {
+   "id": "trap=5",
+   "field": "worth",
+   "old": "-",
+   "new": "3.919 [3.4964, 4.1984] at 200 fights, price on carriers 2.98"
+  },
+  {
+   "id": "trap=6",
+   "field": "worth",
+   "old": "-",
+   "new": "3.9649 [3.7665, 4.7657] at 200 fights, price on carriers 3.74"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "speed={\"kind\":\"swift\"}",
+   "why": "over-priced: worth 3.9606 against 9.5 on the carriers"
+  },
+  {
+   "id": "thorns=2",
+   "why": "over-priced: worth 3.975 against 5.08 on the carriers"
+  },
+  {
+   "id": "recoil=1",
+   "why": "under-priced: worth -1.6423 against -3.46 on the carriers"
+  },
+  {
+   "id": "bulldoze=1",
+   "why": "under-priced: worth 3.6981 against 2.23 on the carriers"
+  },
+  {
+   "id": "swarm=[\"Ants\"]",
+   "why": "over-priced: worth 0.3648 against 3.13 on the carriers"
+  },
+  {
+   "id": "T:onAttack>drawCard {\"do\":\"drawCard\",\"on\":\"onAttack\",\"count\":1}",
+   "why": "over-priced: worth 3.7131 against 5.54 on the carriers"
+  },
+  {
+   "id": "arrow={\"v\":1,\"type\":\"acid\",\"form\":\"bolt\"}",
+   "why": "under-priced: worth 9.9393 against 6.89 on the carriers"
+  },
+  {
+   "id": "arrow={\"v\":2,\"bramble\":true}",
+   "why": "under-priced: worth 12.6472 against 6.31 on the carriers"
+  },
+  {
+   "id": "dynamite=3",
+   "why": "under-priced: worth 3.1169 against 1.1 on the carriers"
+  },
+  {
+   "id": "embolden=1",
+   "why": "under-priced: worth 5.0274 against 3.59 on the carriers"
+  },
+  {
+   "id": "shield=3",
+   "why": "over-priced: worth 3.9104 against 4.93 on the carriers"
+  },
+  {
+   "id": "tornado=1",
+   "why": "interval still wide at 1000 fights (se 0.63); measure again with --fights 1000,2000"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 20
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-0813.json"
+}

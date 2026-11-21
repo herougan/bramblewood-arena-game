@@ -1,0 +1,116 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T01:28:52.661Z",
+ "finished": "2026-11-21T01:46:26.022Z",
+ "durationSec": 1053.4,
+ "args": [
+  "--map",
+  "4",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-04.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "34",
+  "--wait"
+ ],
+ "head": "e991170e8",
+ "inputs": {
+  "context": "map4",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "tide",
+   "guardian",
+   "delivery=1",
+   "pounce=1",
+   "meiosis=1",
+   "tide=3"
+  ]
+ },
+ "counts": {
+  "items": 6,
+  "measured": 6,
+  "reused": 0,
+  "stopped early": 5,
+  "fights saved": 4000,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "tide",
+   "field": "worth",
+   "old": "-",
+   "new": "3.7773 [3.6372, 4.2381] at 200 fights, price on carriers 0.5"
+  },
+  {
+   "id": "guardian",
+   "field": "worth",
+   "old": "-",
+   "new": "0.171 [-0.8143, 0.783] at 1000 fights, price on carriers 0"
+  },
+  {
+   "id": "delivery=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.6409 [2.2045, 3.1093] at 200 fights, price on carriers 5.25"
+  },
+  {
+   "id": "pounce=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.2458 [1.7887, 2.7271] at 200 fights, price on carriers 1.66"
+  },
+  {
+   "id": "meiosis=1",
+   "field": "worth",
+   "old": "-",
+   "new": "4.0479 [3.7719, 4.4991] at 200 fights, price on carriers 4.55"
+  },
+  {
+   "id": "tide=3",
+   "field": "worth",
+   "old": "-",
+   "new": "7.931 [7.3408, 9.2451] at 200 fights, price on carriers 1.34"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "tide",
+   "why": "under-priced: worth 3.7773 against 0.5 on the carriers"
+  },
+  {
+   "id": "guardian",
+   "why": "interval still wide at 1000 fights (se 0.41); measure again with --fights 1000,2000"
+  },
+  {
+   "id": "delivery=1",
+   "why": "over-priced: worth 2.6409 against 5.25 on the carriers"
+  },
+  {
+   "id": "tide=3",
+   "why": "under-priced: worth 7.931 against 1.34 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 6
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-0928.json"
+}

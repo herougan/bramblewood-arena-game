@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-21 (package MAPCTX: skills measured on their own map)
+- New skill measure: each skill on its own map's pool, fields and level (`tools/pipeline/mapctx.sh`). First pass, Maps 18, 8, 1, 4: 30 of 51 skills read outside their shared measure. Context skills are worth far more at home than their price (Tide 3 on Map 4 7.9 against 1.3). Decision MAPCTX-1. No game change. Doc: `docs/balance/pipeline/mapctx-2026-11-21.md`.
+- SKM5: every combat skill now has a 1,000-fight reading; 3 new dear flags folded into SKM4-1.
+
 ## 2026-11-21 (package TESTFIX3: the 3 new release-10 CI failures)
 - bal15: Grant Shield to every ally is now checked against its measure's 95% interval, not today's mean. The 1,000-fight re-measure (SKM5) moved the mean 6.12 -> 6.29; re-pricing waits for SKM4-1. The price is unchanged.
 - ed B#9 (134/134) passes locally and console1's @390 dark check (The Deep Dark opens) reads as CI timing. Release 10 full suite: 42 failing tests of 466 against 40/41 on release 9. Log: `docs/tests/full-2026-11-21-rel10-ci.log`.

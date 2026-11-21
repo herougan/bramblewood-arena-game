@@ -1,0 +1,126 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T01:14:13.235Z",
+ "finished": "2026-11-21T01:28:52.600Z",
+ "durationSec": 879.4,
+ "args": [
+  "--map",
+  "1",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-01.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "49",
+  "--wait"
+ ],
+ "head": "e991170e8",
+ "inputs": {
+  "context": "map1",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "guardian",
+   "speed={\"kind\":\"swift\"}",
+   "thorns=2",
+   "thorns=1",
+   "foraging=1",
+   "repair=2",
+   "swarm=[\"Ants\"]",
+   "rainrunner=2"
+  ]
+ },
+ "counts": {
+  "items": 8,
+  "measured": 8,
+  "reused": 0,
+  "stopped early": 7,
+  "fights saved": 5600,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "guardian",
+   "field": "worth",
+   "old": "-",
+   "new": "0.97 [0.5909, 1.2906] at 1000 fights, price on carriers 0"
+  },
+  {
+   "id": "speed={\"kind\":\"swift\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "3.7243 [3.4722, 4.0797] at 200 fights, price on carriers 9.5"
+  },
+  {
+   "id": "thorns=2",
+   "field": "worth",
+   "old": "-",
+   "new": "5.1659 [4.6539, 5.5529] at 200 fights, price on carriers 5.08"
+  },
+  {
+   "id": "thorns=1",
+   "field": "worth",
+   "old": "-",
+   "new": "3.9786 [3.7464, 4.3635] at 200 fights, price on carriers 3.22"
+  },
+  {
+   "id": "foraging=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.5171 [2.028, 2.9411] at 200 fights, price on carriers 1.68"
+  },
+  {
+   "id": "repair=2",
+   "field": "worth",
+   "old": "-",
+   "new": "3.3316 [2.8138, 3.6866] at 200 fights, price on carriers 2.97"
+  },
+  {
+   "id": "swarm=[\"Ants\"]",
+   "field": "worth",
+   "old": "-",
+   "new": "1.5577 [1.1489, 1.9881] at 200 fights, price on carriers 3.13"
+  },
+  {
+   "id": "rainrunner=2",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 4"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "speed={\"kind\":\"swift\"}",
+   "why": "over-priced: worth 3.7243 against 9.5 on the carriers"
+  },
+  {
+   "id": "swarm=[\"Ants\"]",
+   "why": "over-priced: worth 1.5577 against 3.13 on the carriers"
+  },
+  {
+   "id": "rainrunner=2",
+   "why": "over-priced: worth 0 against 4 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 8
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-0914.json"
+}

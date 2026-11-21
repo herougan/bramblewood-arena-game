@@ -1,0 +1,198 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T00:51:17.854Z",
+ "finished": "2026-11-21T01:14:13.177Z",
+ "durationSec": 1375.3,
+ "args": [
+  "--map",
+  "8",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-08.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "72",
+  "--wait"
+ ],
+ "head": "e991170e8",
+ "inputs": {
+  "context": "map8",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "tide",
+   "guardian",
+   "pounce=3",
+   "illuminate",
+   "keenSense={\"sees\":\"dark\"}",
+   "crabClaws",
+   "carrion=2",
+   "corrode=1",
+   "keenSense",
+   "T:onAttacked>gain {\"do\":\"gain\",\"on\":\"onAttacked\",\"amount\":1,\"resource\":\"lumber\"}",
+   "T:onDeath>damage {\"do\":\"damage\",\"on\":\"onDeath\",\"sub\":\"adjacent\",\"who\":\"enemy\",\"amount\":2,\"dmgType\":\"heat\"}",
+   "broodkeeper=1",
+   "onDeathSpawn={\"defId\":\"maggot-swarmling\",\"count\":3}",
+   "purblind",
+   "swarm=[\"Arachnid\"]",
+   "web=1"
+  ]
+ },
+ "counts": {
+  "items": 16,
+  "measured": 16,
+  "reused": 0,
+  "stopped early": 15,
+  "fights saved": 10700,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "tide",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 0.5"
+  },
+  {
+   "id": "guardian",
+   "field": "worth",
+   "old": "-",
+   "new": "-0.3081 [-0.9289, 0.0919] at 200 fights, price on carriers 0"
+  },
+  {
+   "id": "pounce=3",
+   "field": "worth",
+   "old": "-",
+   "new": "4.4176 [3.5869, 4.9] at 200 fights, price on carriers 4.15"
+  },
+  {
+   "id": "illuminate",
+   "field": "worth",
+   "old": "-",
+   "new": "2.3881 [1.8084, 2.7732] at 400 fights, price on carriers 0.81"
+  },
+  {
+   "id": "keenSense={\"sees\":\"dark\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "2.3203 [1.3327, 2.6614] at 400 fights, price on carriers 3"
+  },
+  {
+   "id": "crabClaws",
+   "field": "worth",
+   "old": "-",
+   "new": "0.1078 [-0.3847, 0.6364] at 200 fights, price on carriers 0.1"
+  },
+  {
+   "id": "carrion=2",
+   "field": "worth",
+   "old": "-",
+   "new": "2.4717 [1.9717, 2.8089] at 200 fights, price on carriers 2.68"
+  },
+  {
+   "id": "corrode=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.9456 [2.7221, 3.4742] at 200 fights, price on carriers 2.41"
+  },
+  {
+   "id": "keenSense",
+   "field": "worth",
+   "old": "-",
+   "new": "2.122 [1.3268, 2.3743] at 700 fights, price on carriers 0.66"
+  },
+  {
+   "id": "T:onAttacked>gain {\"do\":\"gain\",\"on\":\"onAttacked\",\"amount\":1,\"resource\":\"lumber\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "4.8351 [3.8929, 5.1402] at 200 fights, price on carriers 1.9"
+  },
+  {
+   "id": "T:onDeath>damage {\"do\":\"damage\",\"on\":\"onDeath\",\"sub\":\"adjacent\",\"who\":\"enemy\",\"amount\":2,\"dmgType\":\"heat\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "2.2865 [1.5023, 2.4991] at 400 fights, price on carriers 1.19"
+  },
+  {
+   "id": "broodkeeper=1",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 3"
+  },
+  {
+   "id": "onDeathSpawn={\"defId\":\"maggot-swarmling\",\"count\":3}",
+   "field": "worth",
+   "old": "-",
+   "new": "5.1038 [4.77, 5.4558] at 200 fights, price on carriers 4.35"
+  },
+  {
+   "id": "purblind",
+   "field": "worth",
+   "old": "-",
+   "new": "-2.4715 [-3.42, -1.8572] at 1000 fights, price on carriers -5.7"
+  },
+  {
+   "id": "swarm=[\"Arachnid\"]",
+   "field": "worth",
+   "old": "-",
+   "new": "0.5268 [0.3592, 1.4] at 400 fights, price on carriers 3.13"
+  },
+  {
+   "id": "web=1",
+   "field": "worth",
+   "old": "-",
+   "new": "0.1849 [-0.0168, 0.4664] at 200 fights, price on carriers 0.97"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "illuminate",
+   "why": "under-priced: worth 2.3881 against 0.81 on the carriers"
+  },
+  {
+   "id": "keenSense",
+   "why": "under-priced: worth 2.122 against 0.66 on the carriers"
+  },
+  {
+   "id": "T:onAttacked>gain {\"do\":\"gain\",\"on\":\"onAttacked\",\"amount\":1,\"resource\":\"lumber\"}",
+   "why": "under-priced: worth 4.8351 against 1.9 on the carriers"
+  },
+  {
+   "id": "T:onDeath>damage {\"do\":\"damage\",\"on\":\"onDeath\",\"sub\":\"adjacent\",\"who\":\"enemy\",\"amount\":2,\"dmgType\":\"heat\"}",
+   "why": "under-priced: worth 2.2865 against 1.19 on the carriers"
+  },
+  {
+   "id": "broodkeeper=1",
+   "why": "over-priced: worth 0 against 3 on the carriers"
+  },
+  {
+   "id": "purblind",
+   "why": "interval still wide at 1000 fights (se 0.4); measure again with --fights 1000,2000"
+  },
+  {
+   "id": "swarm=[\"Arachnid\"]",
+   "why": "over-priced: worth 0.5268 against 3.13 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 16
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-0851.json"
+}
