@@ -1,6 +1,6 @@
 {
  "about": "COPIES: worthRuler with 2 / 6 / 12 copies at bramble 15; move = 12-copy interval above / below the 2-copy one",
- "stable": 58,
+ "stable": 61,
  "rows": [
   {
    "key": "speed={\"kind\":\"swift\"}",
@@ -3025,6 +3025,156 @@
     "ok",
     "dear",
     "dear"
+   ]
+  },
+  {
+   "key": "bounty=1",
+   "price": 1.8,
+   "k2": {
+    "m": 2.3678,
+    "lo": 1.1036,
+    "hi": 2.7208
+   },
+   "k6": {
+    "m": 2.4771,
+    "lo": 2.1475,
+    "hi": 2.8312
+   },
+   "k12": {
+    "m": 2.0057,
+    "lo": 1.3512,
+    "hi": 2.4257
+   },
+   "move": "same",
+   "verdicts": [
+    "ok",
+    "cheap",
+    "ok"
+   ]
+  },
+  {
+   "key": "arrow={\"v\":1,\"type\":\"fire\",\"form\":\"bolt\"}",
+   "price": 2.5,
+   "k2": {
+    "m": 5.155,
+    "lo": 4.2936,
+    "hi": 6.5639
+   },
+   "k6": {
+    "m": 6.6842,
+    "lo": 6.2449,
+    "hi": 7.6699
+   },
+   "k12": {
+    "m": 5.4463,
+    "lo": 5.189,
+    "hi": 6.3763
+   },
+   "move": "same",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "cheap"
+   ]
+  },
+  {
+   "key": "T:onSpawn>stun {\"on\":\"onSpawn\",\"do\":\"stun\",\"who\":\"enemy\",\"sub\":\"adjacent\"}",
+   "price": 1.95,
+   "k2": {
+    "m": 2.4126,
+    "lo": 1.7332,
+    "hi": 2.7225
+   },
+   "k6": {
+    "m": 2.3324,
+    "lo": 2.0257,
+    "hi": 2.5555
+   },
+   "k12": {
+    "m": 1.9511,
+    "lo": 1.5286,
+    "hi": 2.6375
+   },
+   "move": "same",
+   "verdicts": [
+    "ok",
+    "cheap",
+    "ok"
+   ]
+  },
+  {
+   "key": "arrow={\"v\":2,\"type\":\"fire\",\"form\":\"bolt\"}",
+   "price": 5,
+   "k2": {
+    "m": 9.4665,
+    "lo": 7.3091,
+    "hi": 11.1103
+   },
+   "k6": {
+    "m": 8.4823,
+    "lo": 7.9821,
+    "hi": 9.4994
+   },
+   "k12": {
+    "m": 6.3352,
+    "lo": 6.0285,
+    "hi": 7.3253
+   },
+   "move": "same",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "cheap"
+   ]
+  },
+  {
+   "key": "bulwark=2",
+   "price": 8.73,
+   "k2": {
+    "m": 7.4212,
+    "lo": 5.5896,
+    "hi": 9.0152
+   },
+   "k6": {
+    "m": 7.1801,
+    "lo": 6.6639,
+    "hi": 8.1638
+   },
+   "k12": {
+    "m": 5.4093,
+    "lo": 5.0862,
+    "hi": 6.4191
+   },
+   "move": "same",
+   "verdicts": [
+    "ok",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "onDeathSpawn={\"defId\":\"bat-swarmling\",\"count\":2}",
+   "price": 4.35,
+   "k2": {
+    "m": 4.2134,
+    "lo": 2.8886,
+    "hi": 4.9214
+   },
+   "k6": {
+    "m": 3.8912,
+    "lo": 2.9371,
+    "hi": 4.416
+   },
+   "k12": {
+    "m": 4.5148,
+    "lo": 3.3818,
+    "hi": 4.8191
+   },
+   "move": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
    ]
   }
  ]
