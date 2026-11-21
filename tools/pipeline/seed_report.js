@@ -16,7 +16,7 @@ for (const k of keys) {
 const N = rows.length, f = t => rows.filter(r => Math.abs(r.z) > t).length, pc = x => Math.round(100 * x / Math.max(1, N));
 const out = { about: `SEED: worthRuler on seed tools1 (the shared measure) vs ${tag}; |z| > 1.96 should be about 5%, > 1 about 32%`, n: N, over1: f(1), over196: f(1.96),
   meanZ: r2(rows.reduce((s, r) => s + r.z, 0) / Math.max(1, N)), sameVerdict: rows.filter(r => r.verdicts[0] === r.verdicts[1]).length, rows };
-fs.writeFileSync(path.join(D, 'seed-2026-11-22.json'), JSON.stringify(out, null, 1));
+fs.writeFileSync(path.join(D, tag === 'seed2' ? 'seed-2026-11-22.json' : `seed-2026-11-22-${tag}.json`), JSON.stringify(out, null, 1));
 console.log(`${N} skills: |z| > 1 ${out.over1} (${pc(out.over1)}%, honest ~32%), |z| > 1.96 ${out.over196} (${pc(out.over196)}%, honest ~5%), mean z ${out.meanZ}, same verdict ${out.sameVerdict}`);
 rows.filter(r => Math.abs(r.z) > 1.96).sort((x, y) => Math.abs(y.z) - Math.abs(x.z))
   .forEach(r => console.log(`z ${String(r.z).padStart(6)} ${r.key.slice(0, 50).padEnd(50)} first ${r2(r.first.m)}  fresh ${r2(r.fresh.m)}  price ${r.price}  ${r.verdicts.join('>')}`));
