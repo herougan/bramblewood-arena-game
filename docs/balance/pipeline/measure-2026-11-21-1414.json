@@ -1,0 +1,243 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T06:14:05.227Z",
+ "finished": "2026-11-21T06:31:17.080Z",
+ "durationSec": 1031.9,
+ "args": [
+  "--map",
+  "15",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-15.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "66",
+  "--wait"
+ ],
+ "head": "a392278c6",
+ "inputs": {
+  "context": "map15",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "arrow=1",
+   "arrow=1+fletcher=1",
+   "guardian",
+   "speed={\"kind\":\"swift\"}",
+   "stealth",
+   "twinStrike",
+   "ambush=2",
+   "harbinger=1",
+   "ambush=3",
+   "harden=1",
+   "pitchfork",
+   "pounce=1",
+   "exploit=2",
+   "herald=1",
+   "loyal={\"v\":[1,3],\"gives\":{\"armor\":1}}",
+   "overwhelm",
+   "pounce=6",
+   "siege=3",
+   "storm"
+  ]
+ },
+ "counts": {
+  "items": 19,
+  "measured": 19,
+  "reused": 0,
+  "stopped early": 19,
+  "fights saved": 14200,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "arrow=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.8854 [2.7085, 3.5016] at 200 fights, price on carriers 4.26"
+  },
+  {
+   "id": "arrow=1+fletcher=1",
+   "field": "worth",
+   "old": "-",
+   "new": "5.7151 [4.8038, 6.8965] at 200 fights, price on carriers 7.45"
+  },
+  {
+   "id": "guardian",
+   "field": "worth",
+   "old": "-",
+   "new": "-0.9327 [-1.4592, -0.5653] at 700 fights, price on carriers 0"
+  },
+  {
+   "id": "speed={\"kind\":\"swift\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "4.8463 [4.3262, 4.9702] at 200 fights, price on carriers 9.5"
+  },
+  {
+   "id": "stealth",
+   "field": "worth",
+   "old": "-",
+   "new": "5.5774 [4.8005, 6.5571] at 200 fights, price on carriers 6.88"
+  },
+  {
+   "id": "twinStrike",
+   "field": "worth",
+   "old": "-",
+   "new": "4.8912 [4.6646, 5.7445] at 200 fights, price on carriers 7.75"
+  },
+  {
+   "id": "ambush=2",
+   "field": "worth",
+   "old": "-",
+   "new": "0.8632 [0.4487, 1.3844] at 200 fights, price on carriers 1.42"
+  },
+  {
+   "id": "harbinger=1",
+   "field": "worth",
+   "old": "-",
+   "new": "3.9498 [3.3455, 4.51] at 200 fights, price on carriers 6.5"
+  },
+  {
+   "id": "ambush=3",
+   "field": "worth",
+   "old": "-",
+   "new": "1.3762 [0.9424, 2.032] at 200 fights, price on carriers 2.38"
+  },
+  {
+   "id": "harden=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.9053 [2.7258, 3.5271] at 200 fights, price on carriers 2.11"
+  },
+  {
+   "id": "pitchfork",
+   "field": "worth",
+   "old": "-",
+   "new": "0.9999 [0.5235, 1.4503] at 700 fights, price on carriers 4"
+  },
+  {
+   "id": "pounce=1",
+   "field": "worth",
+   "old": "-",
+   "new": "5.5086 [4.8007, 6.3958] at 200 fights, price on carriers 1.66"
+  },
+  {
+   "id": "exploit=2",
+   "field": "worth",
+   "old": "-",
+   "new": "1.4007 [0.9525, 1.8216] at 200 fights, price on carriers 4.2"
+  },
+  {
+   "id": "herald=1",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 1.5"
+  },
+  {
+   "id": "loyal={\"v\":[1,3],\"gives\":{\"armor\":1}}",
+   "field": "worth",
+   "old": "-",
+   "new": "-0.1769 [-0.722, 0.1303] at 200 fights, price on carriers 0.93"
+  },
+  {
+   "id": "overwhelm",
+   "field": "worth",
+   "old": "-",
+   "new": "0.511 [0.2936, 0.8567] at 200 fights, price on carriers 1.05"
+  },
+  {
+   "id": "pounce=6",
+   "field": "worth",
+   "old": "-",
+   "new": "8.3769 [7.5788, 9.6367] at 200 fights, price on carriers 7.38"
+  },
+  {
+   "id": "siege=3",
+   "field": "worth",
+   "old": "-",
+   "new": "2.1092 [1.6969, 2.765] at 200 fights, price on carriers 2.14"
+  },
+  {
+   "id": "storm",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 1.8"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "arrow=1",
+   "why": "over-priced: worth 2.8854 against 4.26 on the carriers"
+  },
+  {
+   "id": "arrow=1+fletcher=1",
+   "why": "over-priced: worth 5.7151 against 7.45 on the carriers"
+  },
+  {
+   "id": "speed={\"kind\":\"swift\"}",
+   "why": "over-priced: worth 4.8463 against 9.5 on the carriers"
+  },
+  {
+   "id": "stealth",
+   "why": "over-priced: worth 5.5774 against 6.88 on the carriers"
+  },
+  {
+   "id": "twinStrike",
+   "why": "over-priced: worth 4.8912 against 7.75 on the carriers"
+  },
+  {
+   "id": "harbinger=1",
+   "why": "over-priced: worth 3.9498 against 6.5 on the carriers"
+  },
+  {
+   "id": "ambush=3",
+   "why": "over-priced: worth 1.3762 against 2.38 on the carriers"
+  },
+  {
+   "id": "pitchfork",
+   "why": "over-priced: worth 0.9999 against 4 on the carriers"
+  },
+  {
+   "id": "pounce=1",
+   "why": "under-priced: worth 5.5086 against 1.66 on the carriers"
+  },
+  {
+   "id": "exploit=2",
+   "why": "over-priced: worth 1.4007 against 4.2 on the carriers"
+  },
+  {
+   "id": "herald=1",
+   "why": "over-priced: worth 0 against 1.5 on the carriers"
+  },
+  {
+   "id": "loyal={\"v\":[1,3],\"gives\":{\"armor\":1}}",
+   "why": "over-priced: worth -0.1769 against 0.93 on the carriers"
+  },
+  {
+   "id": "storm",
+   "why": "over-priced: worth 0 against 1.8 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 19
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1414.json"
+}

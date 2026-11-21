@@ -1,0 +1,190 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T06:31:17.151Z",
+ "finished": "2026-11-21T06:58:11.022Z",
+ "durationSec": 1613.9,
+ "args": [
+  "--map",
+  "16",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-16.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "49",
+  "--wait"
+ ],
+ "head": "a392278c6",
+ "inputs": {
+  "context": "map16",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "tide",
+   "guardian",
+   "reach",
+   "sturdy",
+   "twinStrike",
+   "T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2}",
+   "frostbite=1",
+   "harden=1",
+   "keenSense",
+   "pounce=1",
+   "tide=2",
+   "daunt=2",
+   "loneWolf=[1,1]",
+   "loyal={\"v\":[1,3],\"gives\":{\"armor\":1}}",
+   "packLeader",
+   "siege=3"
+  ]
+ },
+ "counts": {
+  "items": 16,
+  "measured": 16,
+  "reused": 0,
+  "stopped early": 15,
+  "fights saved": 11200,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "tide",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 0.5"
+  },
+  {
+   "id": "guardian",
+   "field": "worth",
+   "old": "-",
+   "new": "-0.4275 [-1.0993, 0.0691] at 400 fights, price on carriers 0"
+  },
+  {
+   "id": "reach",
+   "field": "worth",
+   "old": "-",
+   "new": "0.0317 [-0.551, 0.4862] at 400 fights, price on carriers 1"
+  },
+  {
+   "id": "sturdy",
+   "field": "worth",
+   "old": "-",
+   "new": "2.8333 [2.6956, 3.2134] at 200 fights, price on carriers 2.81"
+  },
+  {
+   "id": "twinStrike",
+   "field": "worth",
+   "old": "-",
+   "new": "5.5196 [5.1389, 5.9039] at 200 fights, price on carriers 7.75"
+  },
+  {
+   "id": "T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2}",
+   "field": "worth",
+   "old": "-",
+   "new": "5.9592 [5.5815, 6.2018] at 200 fights, price on carriers 4.24"
+  },
+  {
+   "id": "frostbite=1",
+   "field": "worth",
+   "old": "-",
+   "new": "4.2489 [3.3929, 4.877] at 200 fights, price on carriers 0.19"
+  },
+  {
+   "id": "harden=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.9092 [2.5355, 3.96] at 200 fights, price on carriers 2.11"
+  },
+  {
+   "id": "keenSense",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 0.66"
+  },
+  {
+   "id": "pounce=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.3899 [2.0403, 2.5692] at 400 fights, price on carriers 1.66"
+  },
+  {
+   "id": "tide=2",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 0.93"
+  },
+  {
+   "id": "daunt=2",
+   "field": "worth",
+   "old": "-",
+   "new": "2.7099 [2.3601, 2.9654] at 200 fights, price on carriers 2.56"
+  },
+  {
+   "id": "loneWolf=[1,1]",
+   "field": "worth",
+   "old": "-",
+   "new": "5.8807 [5.383, 6.5311] at 200 fights, price on carriers 7.36"
+  },
+  {
+   "id": "loyal={\"v\":[1,3],\"gives\":{\"armor\":1}}",
+   "field": "worth",
+   "old": "-",
+   "new": "-0.3642 [-0.931, 0.06] at 400 fights, price on carriers 0.93"
+  },
+  {
+   "id": "packLeader",
+   "field": "worth",
+   "old": "-",
+   "new": "-0.5535 [-1.1189, -0.1849] at 1000 fights, price on carriers 0"
+  },
+  {
+   "id": "siege=3",
+   "field": "worth",
+   "old": "-",
+   "new": "2.8048 [2.6139, 3.2638] at 200 fights, price on carriers 2.14"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "twinStrike",
+   "why": "over-priced: worth 5.5196 against 7.75 on the carriers"
+  },
+  {
+   "id": "T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2}",
+   "why": "under-priced: worth 5.9592 against 4.24 on the carriers"
+  },
+  {
+   "id": "frostbite=1",
+   "why": "under-priced: worth 4.2489 against 0.19 on the carriers"
+  },
+  {
+   "id": "loneWolf=[1,1]",
+   "why": "over-priced: worth 5.8807 against 7.36 on the carriers"
+  },
+  {
+   "id": "loyal={\"v\":[1,3],\"gives\":{\"armor\":1}}",
+   "why": "over-priced: worth -0.3642 against 0.93 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 16
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1431.json"
+}

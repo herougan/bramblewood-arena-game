@@ -1,0 +1,180 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T05:31:04.395Z",
+ "finished": "2026-11-21T05:36:39.786Z",
+ "durationSec": 335.4,
+ "args": [
+  "--map",
+  "12",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-12.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "110",
+  "--wait"
+ ],
+ "head": "a392278c6",
+ "inputs": {
+  "context": "map12",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "guardian",
+   "forestry=1",
+   "pounce=3",
+   "stealth",
+   "thorns=2",
+   "recoil=1",
+   "foraging=1",
+   "bulldoze=1",
+   "frostbite=1",
+   "keenSense",
+   "parasite",
+   "pierce=3",
+   "siege=1",
+   "dynamite=3",
+   "thorns=3",
+   "twinShot=2"
+  ]
+ },
+ "counts": {
+  "items": 16,
+  "measured": 15,
+  "reused": 1,
+  "stopped early": 13,
+  "fights saved": 10200,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "forestry=1",
+   "field": "worth",
+   "old": "-",
+   "new": "6.65 [6.65, 6.65] at 200 fights, price on carriers 6.65"
+  },
+  {
+   "id": "pounce=3",
+   "field": "worth",
+   "old": "-",
+   "new": "4.5651 [4.1121, 5.3156] at 200 fights, price on carriers 4.15"
+  },
+  {
+   "id": "stealth",
+   "field": "worth",
+   "old": "-",
+   "new": "6.8084 [5.786, 7.9362] at 200 fights, price on carriers 6.88"
+  },
+  {
+   "id": "thorns=2",
+   "field": "worth",
+   "old": "-",
+   "new": "4.81 [4.4727, 5.5177] at 200 fights, price on carriers 5.08"
+  },
+  {
+   "id": "recoil=1",
+   "field": "worth",
+   "old": "-",
+   "new": "-5.8213 [-10.3821, -3.8848] at 1000 fights, price on carriers -3.46"
+  },
+  {
+   "id": "foraging=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.23 [1.3217, 2.4973] at 200 fights, price on carriers 1.68"
+  },
+  {
+   "id": "bulldoze=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.89 [2.2833, 2.985] at 200 fights, price on carriers 2.23"
+  },
+  {
+   "id": "frostbite=1",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 0.19"
+  },
+  {
+   "id": "keenSense",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 0.66"
+  },
+  {
+   "id": "parasite",
+   "field": "worth",
+   "old": "-",
+   "new": "-10.2357 [-18.24, -7.0527] at 1000 fights, price on carriers 1"
+  },
+  {
+   "id": "pierce=3",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 0.34"
+  },
+  {
+   "id": "siege=1",
+   "field": "worth",
+   "old": "-",
+   "new": "1.5779 [1.2057, 2.2056] at 400 fights, price on carriers 1.07"
+  },
+  {
+   "id": "dynamite=3",
+   "field": "worth",
+   "old": "-",
+   "new": "3.68 [2.9542, 4.3745] at 200 fights, price on carriers 1.1"
+  },
+  {
+   "id": "thorns=3",
+   "field": "worth",
+   "old": "-",
+   "new": "6.745 [5.9809, 7.7571] at 200 fights, price on carriers 6.63"
+  },
+  {
+   "id": "twinShot=2",
+   "field": "worth",
+   "old": "-",
+   "new": "8.1706 [7.3815, 9.3114] at 200 fights, price on carriers 13.26"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "recoil=1",
+   "why": "interval still wide at 1000 fights (se 1.66); measure again with --fights 1000,2000"
+  },
+  {
+   "id": "parasite",
+   "why": "interval still wide at 1000 fights (se 2.85); measure again with --fights 1000,2000"
+  },
+  {
+   "id": "dynamite=3",
+   "why": "under-priced: worth 3.68 against 1.1 on the carriers"
+  },
+  {
+   "id": "twinShot=2",
+   "why": "over-priced: worth 8.1706 against 13.26 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 1,
+  "played": 15
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1331.json"
+}

@@ -1,0 +1,203 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T05:36:39.851Z",
+ "finished": "2026-11-21T06:03:47.486Z",
+ "durationSec": 1627.6,
+ "args": [
+  "--map",
+  "13",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-13.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "104",
+  "--wait"
+ ],
+ "head": "a392278c6",
+ "inputs": {
+  "context": "map13",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "tide",
+   "guardian",
+   "speed={\"kind\":\"swift\"}",
+   "pounce=3",
+   "stealth",
+   "recoil=1",
+   "foraging=1",
+   "twinStrike",
+   "harbinger=1",
+   "trident",
+   "cure=1",
+   "delivery=1",
+   "pierce=3",
+   "repair=2",
+   "sleepPowder=1"
+  ]
+ },
+ "counts": {
+  "items": 15,
+  "measured": 15,
+  "reused": 0,
+  "stopped early": 13,
+  "fights saved": 10400,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "tide",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 0.5"
+  },
+  {
+   "id": "guardian",
+   "field": "worth",
+   "old": "-",
+   "new": "-1.0978 [-1.5457, -0.76] at 1000 fights, price on carriers 0"
+  },
+  {
+   "id": "speed={\"kind\":\"swift\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "4.3795 [3.653, 4.9813] at 200 fights, price on carriers 9.5"
+  },
+  {
+   "id": "pounce=3",
+   "field": "worth",
+   "old": "-",
+   "new": "5.301 [4.7844, 5.7117] at 200 fights, price on carriers 4.15"
+  },
+  {
+   "id": "stealth",
+   "field": "worth",
+   "old": "-",
+   "new": "3.2824 [2.8211, 4.4697] at 200 fights, price on carriers 6.88"
+  },
+  {
+   "id": "recoil=1",
+   "field": "worth",
+   "old": "-",
+   "new": "-3.9816 [-5.0523, -3.1851] at 1000 fights, price on carriers -3.46"
+  },
+  {
+   "id": "foraging=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.3488 [2.0403, 2.6156] at 200 fights, price on carriers 1.68"
+  },
+  {
+   "id": "twinStrike",
+   "field": "worth",
+   "old": "-",
+   "new": "5.9013 [5.0186, 6.2219] at 200 fights, price on carriers 7.75"
+  },
+  {
+   "id": "harbinger=1",
+   "field": "worth",
+   "old": "-",
+   "new": "4.5685 [3.7938, 5.0588] at 200 fights, price on carriers 6.5"
+  },
+  {
+   "id": "trident",
+   "field": "worth",
+   "old": "-",
+   "new": "3.8022 [3.0889, 4.6335] at 200 fights, price on carriers 2.28"
+  },
+  {
+   "id": "cure=1",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 0.5"
+  },
+  {
+   "id": "delivery=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.6775 [2.3222, 2.918] at 200 fights, price on carriers 5.25"
+  },
+  {
+   "id": "pierce=3",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 0.34"
+  },
+  {
+   "id": "repair=2",
+   "field": "worth",
+   "old": "-",
+   "new": "1.5769 [1.2471, 1.9056] at 200 fights, price on carriers 2.97"
+  },
+  {
+   "id": "sleepPowder=1",
+   "field": "worth",
+   "old": "-",
+   "new": "4.155 [3.3686, 4.7896] at 200 fights, price on carriers 2.5"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "guardian",
+   "why": "over-priced: worth -1.0978 against 0 on the carriers"
+  },
+  {
+   "id": "speed={\"kind\":\"swift\"}",
+   "why": "over-priced: worth 4.3795 against 9.5 on the carriers"
+  },
+  {
+   "id": "pounce=3",
+   "why": "under-priced: worth 5.301 against 4.15 on the carriers"
+  },
+  {
+   "id": "stealth",
+   "why": "over-priced: worth 3.2824 against 6.88 on the carriers"
+  },
+  {
+   "id": "twinStrike",
+   "why": "over-priced: worth 5.9013 against 7.75 on the carriers"
+  },
+  {
+   "id": "harbinger=1",
+   "why": "over-priced: worth 4.5685 against 6.5 on the carriers"
+  },
+  {
+   "id": "trident",
+   "why": "under-priced: worth 3.8022 against 2.28 on the carriers"
+  },
+  {
+   "id": "delivery=1",
+   "why": "over-priced: worth 2.6775 against 5.25 on the carriers"
+  },
+  {
+   "id": "repair=2",
+   "why": "over-priced: worth 1.5769 against 2.97 on the carriers"
+  },
+  {
+   "id": "sleepPowder=1",
+   "why": "under-priced: worth 4.155 against 2.5 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 15
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1336.json"
+}
