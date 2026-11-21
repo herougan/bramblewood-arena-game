@@ -103451,6 +103451,520 @@
    "statBase": 19,
    "measuredAt": "2026-11-21T14:30:33.878Z",
    "seconds": 34
+  },
+  "global@k12|speed={\"kind\":\"swift\"}": {
+   "key": "speed={\"kind\":\"swift\"}",
+   "ctx": "global@k12",
+   "bramble": 15,
+   "id": "speed",
+   "class": "keyword",
+   "kind": "measure",
+   "n": {
+    "kind": "swift"
+   },
+   "nCards": 13,
+   "cards": [
+    "jaguar-stalker",
+    "savanna-cheetah",
+    "dune-jackal",
+    "feral-tomcat",
+    "jackrabbit-sprinter",
+    "fleetfootd",
+    "pride-queen",
+    "ruby-throat-duelist",
+    "frillneck-duelist",
+    "ember-centipede",
+    "pronghorn-racer",
+    "alpine-swift",
+    "beachcomber-sanderling"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 4.8162,
+     "lo": 4.0934,
+     "hi": 5.0508
+    }
+   ],
+   "fingerprint": "009258c9581e",
+   "canonRate": {
+    "m": 0.045,
+    "lo": 0.0384,
+    "hi": 0.0505
+   },
+   "statRate": {
+    "m": 0.0534,
+    "lo": 0.045,
+    "hi": 0.0623
+   },
+   "kappa": {
+    "m": 1.1875,
+    "lo": 1.0206,
+    "hi": 1.4059
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.1248,
+     "lo": -0.1571,
+     "hi": 0.4391
+    }
+   },
+   "test": {
+    "effects": {
+     "speed": {
+      "kind": "swift"
+     }
+    },
+    "gain": 0.1779,
+    "worth": {
+     "m": 3.9537,
+     "lo": 3.5958,
+     "hi": 4.4544
+    },
+    "worthRuler": {
+     "m": 4.8162,
+     "lo": 4.0934,
+     "hi": 5.0508
+    },
+    "worthStat": {
+     "m": 3.3294,
+     "lo": 2.8078,
+     "hi": 3.9745
+    },
+    "price": 9.5,
+    "net": -4.6838,
+    "verdict": "over-priced",
+    "between": [
+     "armor 2 (3.7)",
+     "inspiring 1 (3.96)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-21T14:36:03.840Z",
+   "seconds": 328
+  },
+  "global@k12|swarm=[\"Ants\"]": {
+   "key": "swarm=[\"Ants\"]",
+   "ctx": "global@k12",
+   "bramble": 15,
+   "id": "swarm",
+   "class": "keyword",
+   "kind": "measure",
+   "n": [
+    "Ants"
+   ],
+   "nCards": 2,
+   "cards": [
+    "ant-scout",
+    "fire-ant-raft"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.3281,
+     "lo": 0.2229,
+     "hi": 0.4853
+    }
+   ],
+   "fingerprint": "009258c9581e",
+   "canonRate": {
+    "m": 0.045,
+    "lo": 0.0384,
+    "hi": 0.0505
+   },
+   "statRate": {
+    "m": 0.0534,
+    "lo": 0.045,
+    "hi": 0.0623
+   },
+   "kappa": {
+    "m": 1.1875,
+    "lo": 1.0206,
+    "hi": 1.4059
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.1248,
+     "lo": -0.1571,
+     "hi": 0.4391
+    }
+   },
+   "test": {
+    "effects": {
+     "swarm": [
+      "Ants"
+     ]
+    },
+    "gain": 0.0333,
+    "worth": {
+     "m": 0.7407,
+     "lo": 0.5812,
+     "hi": 0.9405
+    },
+    "worthRuler": {
+     "m": 0.3281,
+     "lo": 0.2229,
+     "hi": 0.4853
+    },
+    "worthStat": {
+     "m": 0.6238,
+     "lo": 0.4476,
+     "hi": 0.8213
+    },
+    "price": 3.13,
+    "net": -2.8019,
+    "verdict": "over-priced",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-21T14:36:24.087Z",
+   "seconds": 20
+  },
+  "global@k12|rainrunner=2": {
+   "key": "rainrunner=2",
+   "ctx": "global@k12",
+   "bramble": 15,
+   "id": "rainrunner",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 1,
+   "cards": [
+    "puddle-skimmer"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.1312,
+     "lo": 0.0487,
+     "hi": 0.2522
+    }
+   ],
+   "fingerprint": "009258c9581e",
+   "canonRate": {
+    "m": 0.045,
+    "lo": 0.0384,
+    "hi": 0.0505
+   },
+   "statRate": {
+    "m": 0.0534,
+    "lo": 0.045,
+    "hi": 0.0623
+   },
+   "kappa": {
+    "m": 1.1875,
+    "lo": 1.0206,
+    "hi": 1.4059
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.1248,
+     "lo": -0.1571,
+     "hi": 0.4391
+    }
+   },
+   "test": {
+    "effects": {
+     "rainrunner": 2
+    },
+    "gain": 0.0133,
+    "worth": {
+     "m": 0.2963,
+     "lo": 0.118,
+     "hi": 0.524
+    },
+    "worthRuler": {
+     "m": 0.1312,
+     "lo": 0.0487,
+     "hi": 0.2522
+    },
+    "worthStat": {
+     "m": 0.2495,
+     "lo": 0.0943,
+     "hi": 0.4316
+    },
+    "price": 4,
+    "net": -3.8688,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-21T14:36:43.372Z",
+   "seconds": 19
+  },
+  "global@k12|poisonBarbs=2": {
+   "key": "poisonBarbs=2",
+   "ctx": "global@k12",
+   "bramble": 15,
+   "id": "poisonBarbs",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 1,
+   "cards": [
+    "pincushion-urchin"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 4.9093,
+     "lo": 4.7322,
+     "hi": 5.7775
+    }
+   ],
+   "fingerprint": "009258c9581e",
+   "canonRate": {
+    "m": 0.045,
+    "lo": 0.0384,
+    "hi": 0.0505
+   },
+   "statRate": {
+    "m": 0.0534,
+    "lo": 0.045,
+    "hi": 0.0623
+   },
+   "kappa": {
+    "m": 1.1875,
+    "lo": 1.0206,
+    "hi": 1.4059
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.1248,
+     "lo": -0.1571,
+     "hi": 0.4391
+    }
+   },
+   "test": {
+    "effects": {
+     "poisonBarbs": 2
+    },
+    "gain": 0.2154,
+    "worth": {
+     "m": 4.787,
+     "lo": 4.5266,
+     "hi": 5.1634
+    },
+    "worthRuler": {
+     "m": 4.9093,
+     "lo": 4.7322,
+     "hi": 5.7775
+    },
+    "worthStat": {
+     "m": 4.0312,
+     "lo": 3.415,
+     "hi": 4.7966
+    },
+    "price": 3.2,
+    "net": 1.7093,
+    "verdict": "under-priced",
+    "between": [
+     "poison 2 (4.75)",
+     "bleed 2 (4.87)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-21T14:37:00.360Z",
+   "seconds": 17
+  },
+  "global@k12|delivery=1": {
+   "key": "delivery=1",
+   "ctx": "global@k12",
+   "bramble": 15,
+   "id": "delivery",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 2,
+   "cards": [
+    "beaver-lumberjack",
+    "pika-hoarder"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.9281,
+     "lo": 2.2535,
+     "hi": 3.6699
+    }
+   ],
+   "fingerprint": "009258c9581e",
+   "canonRate": {
+    "m": 0.045,
+    "lo": 0.0384,
+    "hi": 0.0505
+   },
+   "statRate": {
+    "m": 0.0534,
+    "lo": 0.045,
+    "hi": 0.0623
+   },
+   "kappa": {
+    "m": 1.1875,
+    "lo": 1.0206,
+    "hi": 1.4059
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.1248,
+     "lo": -0.1571,
+     "hi": 0.4391
+    }
+   },
+   "test": {
+    "effects": {
+     "delivery": 1
+    },
+    "gain": 0.1263,
+    "worth": {
+     "m": 2.8056,
+     "lo": 2.4226,
+     "hi": 3.2768
+    },
+    "worthRuler": {
+     "m": 2.9281,
+     "lo": 2.2535,
+     "hi": 3.6699
+    },
+    "worthStat": {
+     "m": 2.3626,
+     "lo": 1.884,
+     "hi": 2.9305
+    },
+    "price": 5.25,
+    "net": -2.3219,
+    "verdict": "over-priced",
+    "between": [
+     "poison 1 (2.72)",
+     "bleed 1 (2.89)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-21T14:37:23.499Z",
+   "seconds": 23
+  },
+  "global@k12|T:onHealed>gain {\"do\":\"gain\",\"on\":\"onHealed\",\"amount\":1,\"resource\":\"lumber\"}": {
+   "key": "T:onHealed>gain {\"do\":\"gain\",\"on\":\"onHealed\",\"amount\":1,\"resource\":\"lumber\"}",
+   "ctx": "global@k12",
+   "bramble": 15,
+   "id": "onHealed>gain",
+   "class": "trigger",
+   "kind": "measure",
+   "nCards": 1,
+   "cards": [
+    "gannet-nestweaver"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": -0.0246,
+     "lo": -0.0706,
+     "hi": 0
+    }
+   ],
+   "fingerprint": "009258c9581e",
+   "canonRate": {
+    "m": 0.045,
+    "lo": 0.0384,
+    "hi": 0.0505
+   },
+   "statRate": {
+    "m": 0.0534,
+    "lo": 0.045,
+    "hi": 0.0623
+   },
+   "kappa": {
+    "m": 1.1875,
+    "lo": 1.0206,
+    "hi": 1.4059
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.1248,
+     "lo": -0.1571,
+     "hi": 0.4391
+    }
+   },
+   "test": {
+    "effects": {
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onHealed",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ]
+    },
+    "gain": -0.0025,
+    "worth": {
+     "m": -0.0556,
+     "lo": -0.1493,
+     "hi": 0
+    },
+    "worthRuler": {
+     "m": -0.0246,
+     "lo": -0.0706,
+     "hi": 0
+    },
+    "worthStat": {
+     "m": -0.0468,
+     "lo": -0.1236,
+     "hi": 0
+    },
+    "price": 1,
+    "net": -1.0246,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-21T14:37:44.445Z",
+   "seconds": 21
   }
  }
 }
