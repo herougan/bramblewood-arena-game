@@ -133126,6 +133126,92 @@
    "statBase": 23.17,
    "measuredAt": "2026-11-21T18:24:04.971Z",
    "seconds": 25
+  },
+  "global@L3|T:onAttack>drawCard {\"do\":\"drawCard\",\"on\":\"onAttack\",\"count\":1}": {
+   "key": "T:onAttack>drawCard {\"do\":\"drawCard\",\"on\":\"onAttack\",\"count\":1}",
+   "ctx": "global@L3",
+   "bramble": 15,
+   "id": "onAttack>drawCard",
+   "class": "trigger",
+   "kind": "measure",
+   "nCards": 1,
+   "cards": [
+    "worker-ant"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 3.5248,
+     "lo": 2.8597,
+     "hi": 4.5655
+    }
+   ],
+   "fingerprint": "009258c9581e",
+   "canonRate": {
+    "m": 0.0295,
+    "lo": 0.0253,
+    "hi": 0.0353
+   },
+   "statRate": {
+    "m": 0.0326,
+    "lo": 0.025,
+    "hi": 0.04
+   },
+   "kappa": {
+    "m": 1.1062,
+    "lo": 0.8828,
+    "hi": 1.3392
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0075,
+    "worthStat": {
+     "m": 0.23,
+     "lo": -0.2939,
+     "hi": 0.6667
+    }
+   },
+   "test": {
+    "effects": {
+     "triggers": [
+      {
+       "do": "drawCard",
+       "on": "onAttack",
+       "count": 1
+      }
+     ]
+    },
+    "gain": 0.1083,
+    "worth": {
+     "m": 3.6756,
+     "lo": 3.0258,
+     "hi": 4.4286
+    },
+    "worthRuler": {
+     "m": 3.5248,
+     "lo": 2.8597,
+     "hi": 4.5655
+    },
+    "worthStat": {
+     "m": 3.3227,
+     "lo": 2.5488,
+     "hi": 4.5418
+    },
+    "price": 5.54,
+    "net": -2.0152,
+    "verdict": "over-priced",
+    "between": [
+     "rage (3.01)",
+     "armor 2 (3.7)"
+    ]
+   },
+   "statBase": 23.17,
+   "measuredAt": "2026-11-21T18:24:29.295Z",
+   "seconds": 24
   }
  }
 }
