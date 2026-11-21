@@ -1,0 +1,86 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "partial",
+ "started": "2026-11-21T05:13:18.527Z",
+ "finished": "2026-11-21T05:30:49.478Z",
+ "durationSec": 1051,
+ "args": [
+  "--map",
+  "12",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-12.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "15",
+  "--wait"
+ ],
+ "head": "f43b56267",
+ "inputs": {
+  "context": "map12",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "guardian",
+   "forestry=1",
+   "pounce=3",
+   "stealth",
+   "thorns=2",
+   "recoil=1",
+   "foraging=1",
+   "bulldoze=1",
+   "frostbite=1",
+   "keenSense",
+   "parasite",
+   "pierce=3",
+   "siege=1",
+   "dynamite=3",
+   "thorns=3",
+   "twinShot=2"
+  ]
+ },
+ "counts": {
+  "items": 16,
+  "measured": 1,
+  "reused": 0,
+  "stopped early": 0,
+  "fights saved": 0,
+  "left (--minutes)": 15
+ },
+ "changed": [
+  {
+   "id": "guardian",
+   "field": "worth",
+   "old": "-",
+   "new": "0.3032 [-0.4487, 0.7931] at 1000 fights, price on carriers 0"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "guardian",
+   "why": "interval still wide at 1000 fights (se 0.32); measure again with --fights 1000,2000"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 1
+ },
+ "notes": [
+  "15 item(s) left: run the same command again"
+ ],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1313.json"
+}

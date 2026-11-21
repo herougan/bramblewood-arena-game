@@ -1,0 +1,220 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T04:41:56.191Z",
+ "finished": "2026-11-21T05:13:18.448Z",
+ "durationSec": 1882.3,
+ "args": [
+  "--map",
+  "11",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-11.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "46",
+  "--wait"
+ ],
+ "head": "f43b56267",
+ "inputs": {
+  "context": "map11",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "arrow=1",
+   "arrow=1+fletcher=1",
+   "guardian",
+   "forestry=1",
+   "pounce=3",
+   "arrow=2",
+   "foraging=1",
+   "delivery=1",
+   "frostbite=1",
+   "paralysisPowder=1",
+   "pierce=3",
+   "T:onHealed>gain {\"do\":\"gain\",\"on\":\"onHealed\",\"amount\":1,\"resource\":\"lumber\"}",
+   "T:onReady>damage {\"on\":\"onReady\",\"do\":\"damage\",\"amount\":4,\"dmgType\":\"physical\"}",
+   "arrow=3",
+   "arrow={\"v\":3,\"swings\":\"never\",\"style\":\"drop\"}",
+   "avalanche=1",
+   "daunt=2",
+   "twinShot=2"
+  ]
+ },
+ "counts": {
+  "items": 18,
+  "measured": 18,
+  "reused": 0,
+  "stopped early": 17,
+  "fights saved": 13400,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "arrow=1",
+   "field": "worth",
+   "old": "-",
+   "new": "3.9696 [3.4565, 4.3602] at 200 fights, price on carriers 4.26"
+  },
+  {
+   "id": "arrow=1+fletcher=1",
+   "field": "worth",
+   "old": "-",
+   "new": "8.1695 [6.8935, 9.315] at 200 fights, price on carriers 7.45"
+  },
+  {
+   "id": "guardian",
+   "field": "worth",
+   "old": "-",
+   "new": "0.028 [-0.4845, 0.4202] at 1000 fights, price on carriers 0"
+  },
+  {
+   "id": "forestry=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.531 [2.2571, 3.502] at 200 fights, price on carriers 6.65"
+  },
+  {
+   "id": "pounce=3",
+   "field": "worth",
+   "old": "-",
+   "new": "5.2498 [4.3632, 6.2094] at 200 fights, price on carriers 4.15"
+  },
+  {
+   "id": "arrow=2",
+   "field": "worth",
+   "old": "-",
+   "new": "6.2056 [5.3111, 7.0608] at 200 fights, price on carriers 7.01"
+  },
+  {
+   "id": "foraging=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.6896 [2.0918, 3.5199] at 200 fights, price on carriers 1.68"
+  },
+  {
+   "id": "delivery=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.5139 [1.7084, 2.9173] at 400 fights, price on carriers 5.25"
+  },
+  {
+   "id": "frostbite=1",
+   "field": "worth",
+   "old": "-",
+   "new": "0 [0, 0] at 200 fights, price on carriers 0.19"
+  },
+  {
+   "id": "paralysisPowder=1",
+   "field": "worth",
+   "old": "-",
+   "new": "4.6737 [4.0709, 5.4955] at 200 fights, price on carriers 3.34"
+  },
+  {
+   "id": "pierce=3",
+   "field": "worth",
+   "old": "-",
+   "new": "0.1835 [-0.0754, 0.7666] at 200 fights, price on carriers 0.34"
+  },
+  {
+   "id": "T:onHealed>gain {\"do\":\"gain\",\"on\":\"onHealed\",\"amount\":1,\"resource\":\"lumber\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "0.0612 [-0.0587, 0.3431] at 200 fights, price on carriers 1"
+  },
+  {
+   "id": "T:onReady>damage {\"on\":\"onReady\",\"do\":\"damage\",\"amount\":4,\"dmgType\":\"physical\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "3.8987 [3.4275, 4.1559] at 200 fights, price on carriers 4.48"
+  },
+  {
+   "id": "arrow=3",
+   "field": "worth",
+   "old": "-",
+   "new": "7.7898 [6.7931, 8.6217] at 200 fights, price on carriers 9.39"
+  },
+  {
+   "id": "arrow={\"v\":3,\"swings\":\"never\",\"style\":\"drop\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "4.0081 [3.5171, 4.4614] at 200 fights, price on carriers -4.9"
+  },
+  {
+   "id": "avalanche=1",
+   "field": "worth",
+   "old": "-",
+   "new": "3.9157 [3.4471, 4.2068] at 200 fights, price on carriers 9.25"
+  },
+  {
+   "id": "daunt=2",
+   "field": "worth",
+   "old": "-",
+   "new": "3.2843 [2.6716, 3.8195] at 200 fights, price on carriers 2.56"
+  },
+  {
+   "id": "twinShot=2",
+   "field": "worth",
+   "old": "-",
+   "new": "8.7849 [7.6627, 9.7772] at 200 fights, price on carriers 13.26"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "forestry=1",
+   "why": "over-priced: worth 2.531 against 6.65 on the carriers"
+  },
+  {
+   "id": "pounce=3",
+   "why": "under-priced: worth 5.2498 against 4.15 on the carriers"
+  },
+  {
+   "id": "foraging=1",
+   "why": "under-priced: worth 2.6896 against 1.68 on the carriers"
+  },
+  {
+   "id": "delivery=1",
+   "why": "over-priced: worth 2.5139 against 5.25 on the carriers"
+  },
+  {
+   "id": "paralysisPowder=1",
+   "why": "under-priced: worth 4.6737 against 3.34 on the carriers"
+  },
+  {
+   "id": "arrow=3",
+   "why": "over-priced: worth 7.7898 against 9.39 on the carriers"
+  },
+  {
+   "id": "arrow={\"v\":3,\"swings\":\"never\",\"style\":\"drop\"}",
+   "why": "under-priced: worth 4.0081 against -4.9 on the carriers"
+  },
+  {
+   "id": "avalanche=1",
+   "why": "over-priced: worth 3.9157 against 9.25 on the carriers"
+  },
+  {
+   "id": "twinShot=2",
+   "why": "over-priced: worth 8.7849 against 13.26 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 18
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1241.json"
+}

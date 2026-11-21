@@ -1,0 +1,201 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T04:16:07.974Z",
+ "finished": "2026-11-21T04:28:17.715Z",
+ "durationSec": 729.7,
+ "args": [
+  "--map",
+  "9",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-09.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "72",
+  "--wait"
+ ],
+ "head": "f43b56267",
+ "inputs": {
+  "context": "map9",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "tide",
+   "guardian",
+   "forestry=1",
+   "pounce=3",
+   "crabClaws",
+   "twinStrike",
+   "trident",
+   "daunt={\"v\":1,\"lasts\":\"lasting\"}",
+   "enfeeble=1",
+   "taunt",
+   "T:onAttacked>gain {\"do\":\"gain\",\"on\":\"onAttacked\",\"amount\":1,\"resource\":\"lumber\"}",
+   "bleed=3",
+   "bludgeon",
+   "electricity=1",
+   "electricity=2",
+   "scare=1",
+   "strangle=2"
+  ]
+ },
+ "counts": {
+  "items": 17,
+  "measured": 17,
+  "reused": 0,
+  "stopped early": 17,
+  "fights saved": 12800,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "tide",
+   "field": "worth",
+   "old": "-",
+   "new": "3.8412 [2.9135, 4.2033] at 200 fights, price on carriers 0.5"
+  },
+  {
+   "id": "guardian",
+   "field": "worth",
+   "old": "-",
+   "new": "0.2435 [-0.2646, 0.8125] at 400 fights, price on carriers 0"
+  },
+  {
+   "id": "forestry=1",
+   "field": "worth",
+   "old": "-",
+   "new": "5.7057 [5.4358, 6.65] at 200 fights, price on carriers 6.65"
+  },
+  {
+   "id": "pounce=3",
+   "field": "worth",
+   "old": "-",
+   "new": "4.6813 [4.2495, 5.0125] at 200 fights, price on carriers 4.15"
+  },
+  {
+   "id": "crabClaws",
+   "field": "worth",
+   "old": "-",
+   "new": "0.155 [-0.2974, 0.5628] at 400 fights, price on carriers 0.1"
+  },
+  {
+   "id": "twinStrike",
+   "field": "worth",
+   "old": "-",
+   "new": "5.3181 [4.8319, 5.9774] at 200 fights, price on carriers 7.75"
+  },
+  {
+   "id": "trident",
+   "field": "worth",
+   "old": "-",
+   "new": "1.9912 [1.1396, 2.3143] at 400 fights, price on carriers 2.28"
+  },
+  {
+   "id": "daunt={\"v\":1,\"lasts\":\"lasting\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "4.2148 [3.4169, 4.4699] at 200 fights, price on carriers 2.64"
+  },
+  {
+   "id": "enfeeble=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.2473 [1.5822, 2.4624] at 200 fights, price on carriers 2.5"
+  },
+  {
+   "id": "taunt",
+   "field": "worth",
+   "old": "-",
+   "new": "0.2988 [-0.1221, 0.8913] at 400 fights, price on carriers 0.4"
+  },
+  {
+   "id": "T:onAttacked>gain {\"do\":\"gain\",\"on\":\"onAttacked\",\"amount\":1,\"resource\":\"lumber\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "4.3659 [3.6157, 4.5772] at 200 fights, price on carriers 1.9"
+  },
+  {
+   "id": "bleed=3",
+   "field": "worth",
+   "old": "-",
+   "new": "7.2074 [6.8841, 8.297] at 200 fights, price on carriers 6.61"
+  },
+  {
+   "id": "bludgeon",
+   "field": "worth",
+   "old": "-",
+   "new": "5.1786 [4.7225, 5.6505] at 200 fights, price on carriers 3.95"
+  },
+  {
+   "id": "electricity=1",
+   "field": "worth",
+   "old": "-",
+   "new": "5.3491 [4.7933, 6.2158] at 200 fights, price on carriers 3"
+  },
+  {
+   "id": "electricity=2",
+   "field": "worth",
+   "old": "-",
+   "new": "6.5032 [5.9732, 7.775] at 200 fights, price on carriers 6"
+  },
+  {
+   "id": "scare=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.8613 [2.6955, 3.41] at 200 fights, price on carriers 3.02"
+  },
+  {
+   "id": "strangle=2",
+   "field": "worth",
+   "old": "-",
+   "new": "5.7212 [5.4467, 6.7821] at 200 fights, price on carriers 5.57"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "tide",
+   "why": "under-priced: worth 3.8412 against 0.5 on the carriers"
+  },
+  {
+   "id": "twinStrike",
+   "why": "over-priced: worth 5.3181 against 7.75 on the carriers"
+  },
+  {
+   "id": "daunt={\"v\":1,\"lasts\":\"lasting\"}",
+   "why": "under-priced: worth 4.2148 against 2.64 on the carriers"
+  },
+  {
+   "id": "T:onAttacked>gain {\"do\":\"gain\",\"on\":\"onAttacked\",\"amount\":1,\"resource\":\"lumber\"}",
+   "why": "under-priced: worth 4.3659 against 1.9 on the carriers"
+  },
+  {
+   "id": "bludgeon",
+   "why": "under-priced: worth 5.1786 against 3.95 on the carriers"
+  },
+  {
+   "id": "electricity=1",
+   "why": "under-priced: worth 5.3491 against 3 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 17
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1216.json"
+}

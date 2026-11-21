@@ -1,0 +1,194 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T03:38:50.786Z",
+ "finished": "2026-11-21T04:16:07.915Z",
+ "durationSec": 2237.1,
+ "args": [
+  "--map",
+  "7",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-07.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "110",
+  "--wait"
+ ],
+ "head": "f43b56267",
+ "inputs": {
+  "context": "map7",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "tide",
+   "guardian",
+   "carrion=2",
+   "strangle=1",
+   "corrode=1",
+   "parasite",
+   "sleepPowder=1",
+   "broodkeeper=1",
+   "meiosis=1",
+   "onDeathSpawn={\"defId\":\"maggot-swarmling\",\"count\":3}",
+   "onDeathSpawn={\"defId\":\"worker-ant\",\"count\":3}",
+   "poisonPowder=1",
+   "poisonPowder=2",
+   "sap",
+   "swarm=[\"Arachnid\"]",
+   "wakeful"
+  ]
+ },
+ "counts": {
+  "items": 16,
+  "measured": 16,
+  "reused": 0,
+  "stopped early": 14,
+  "fights saved": 11000,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "tide",
+   "field": "worth",
+   "old": "-",
+   "new": "-0.06 [-0.2533, 0] at 200 fights, price on carriers 0.5"
+  },
+  {
+   "id": "guardian",
+   "field": "worth",
+   "old": "-",
+   "new": "-1.5338 [-2.1019, -1.0331] at 1000 fights, price on carriers 0"
+  },
+  {
+   "id": "carrion=2",
+   "field": "worth",
+   "old": "-",
+   "new": "2.7017 [2.3247, 2.985] at 200 fights, price on carriers 2.68"
+  },
+  {
+   "id": "strangle=1",
+   "field": "worth",
+   "old": "-",
+   "new": "3.504 [2.9249, 3.8929] at 200 fights, price on carriers 4.21"
+  },
+  {
+   "id": "corrode=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.8575 [2.33, 3.1276] at 200 fights, price on carriers 2.41"
+  },
+  {
+   "id": "parasite",
+   "field": "worth",
+   "old": "-",
+   "new": "-9.2185 [-12.0661, -7.3157] at 1000 fights, price on carriers 1"
+  },
+  {
+   "id": "sleepPowder=1",
+   "field": "worth",
+   "old": "-",
+   "new": "3.3709 [2.894, 3.96] at 200 fights, price on carriers 2.5"
+  },
+  {
+   "id": "broodkeeper=1",
+   "field": "worth",
+   "old": "-",
+   "new": "0.7384 [0.4097, 1.2814] at 400 fights, price on carriers 3"
+  },
+  {
+   "id": "meiosis=1",
+   "field": "worth",
+   "old": "-",
+   "new": "4.5053 [3.9507, 4.8914] at 200 fights, price on carriers 4.55"
+  },
+  {
+   "id": "onDeathSpawn={\"defId\":\"maggot-swarmling\",\"count\":3}",
+   "field": "worth",
+   "old": "-",
+   "new": "4.2808 [3.6807, 4.8709] at 200 fights, price on carriers 4.35"
+  },
+  {
+   "id": "onDeathSpawn={\"defId\":\"worker-ant\",\"count\":3}",
+   "field": "worth",
+   "old": "-",
+   "new": "5.4213 [5.0241, 5.865] at 200 fights, price on carriers 4.35"
+  },
+  {
+   "id": "poisonPowder=1",
+   "field": "worth",
+   "old": "-",
+   "new": "3.5838 [2.9306, 4.13] at 200 fights, price on carriers 3.2"
+  },
+  {
+   "id": "poisonPowder=2",
+   "field": "worth",
+   "old": "-",
+   "new": "5.4668 [5.0511, 5.9042] at 200 fights, price on carriers 6.4"
+  },
+  {
+   "id": "sap",
+   "field": "worth",
+   "old": "-",
+   "new": "2.2578 [1.7495, 2.4923] at 200 fights, price on carriers 2.3"
+  },
+  {
+   "id": "swarm=[\"Arachnid\"]",
+   "field": "worth",
+   "old": "-",
+   "new": "0.27 [0.0713, 0.7123] at 200 fights, price on carriers 3.13"
+  },
+  {
+   "id": "wakeful",
+   "field": "worth",
+   "old": "-",
+   "new": "2.33 [1.7896, 2.9767] at 200 fights, price on carriers 0.5"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "guardian",
+   "why": "over-priced: worth -1.5338 against 0 on the carriers"
+  },
+  {
+   "id": "parasite",
+   "why": "over-priced: worth -9.2185 against 1 on the carriers"
+  },
+  {
+   "id": "broodkeeper=1",
+   "why": "over-priced: worth 0.7384 against 3 on the carriers"
+  },
+  {
+   "id": "onDeathSpawn={\"defId\":\"worker-ant\",\"count\":3}",
+   "why": "under-priced: worth 5.4213 against 4.35 on the carriers"
+  },
+  {
+   "id": "swarm=[\"Arachnid\"]",
+   "why": "over-priced: worth 0.27 against 3.13 on the carriers"
+  },
+  {
+   "id": "wakeful",
+   "why": "under-priced: worth 2.33 against 0.5 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 16
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1138.json"
+}

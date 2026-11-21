@@ -1,0 +1,195 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T04:28:17.781Z",
+ "finished": "2026-11-21T04:41:56.123Z",
+ "durationSec": 818.3,
+ "args": [
+  "--map",
+  "10",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-10.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "60",
+  "--wait"
+ ],
+ "head": "f43b56267",
+ "inputs": {
+  "context": "map10",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "tide",
+   "guardian",
+   "thorns=1",
+   "crabClaws",
+   "swarm",
+   "armor=3",
+   "daunt={\"v\":1,\"lasts\":\"lasting\"}",
+   "poisonBarbs=1",
+   "tide=2",
+   "wave",
+   "bludgeon",
+   "delivery={\"v\":1,\"res\":\"pearl\"}",
+   "electricity=2",
+   "poisonBarbs=2",
+   "sweep=3"
+  ]
+ },
+ "counts": {
+  "items": 15,
+  "measured": 15,
+  "reused": 0,
+  "stopped early": 12,
+  "fights saved": 9200,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "tide",
+   "field": "worth",
+   "old": "-",
+   "new": "4.301 [3.7405, 5.0608] at 200 fights, price on carriers 0.5"
+  },
+  {
+   "id": "guardian",
+   "field": "worth",
+   "old": "-",
+   "new": "0.1023 [-0.7246, 1.1121] at 1000 fights, price on carriers 0"
+  },
+  {
+   "id": "thorns=1",
+   "field": "worth",
+   "old": "-",
+   "new": "3.23 [2.154, 3.806] at 200 fights, price on carriers 3.22"
+  },
+  {
+   "id": "crabClaws",
+   "field": "worth",
+   "old": "-",
+   "new": "-0.6723 [-4.7025, 0.3109] at 1000 fights, price on carriers 0.1"
+  },
+  {
+   "id": "swarm",
+   "field": "worth",
+   "old": "-",
+   "new": "3.7405 [3.3663, 4.6669] at 200 fights, price on carriers 3.13"
+  },
+  {
+   "id": "armor=3",
+   "field": "worth",
+   "old": "-",
+   "new": "3.8032 [3.4019, 4.6665] at 200 fights, price on carriers 4.85"
+  },
+  {
+   "id": "daunt={\"v\":1,\"lasts\":\"lasting\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "3.615 [3.0694, 4.5932] at 200 fights, price on carriers 2.64"
+  },
+  {
+   "id": "poisonBarbs=1",
+   "field": "worth",
+   "old": "-",
+   "new": "3.23 [2.33, 3.7632] at 200 fights, price on carriers 1.6"
+  },
+  {
+   "id": "tide=2",
+   "field": "worth",
+   "old": "-",
+   "new": "8.1429 [5.5016, 9.7506] at 200 fights, price on carriers 0.93"
+  },
+  {
+   "id": "wave",
+   "field": "worth",
+   "old": "-",
+   "new": "1.7967 [0.8474, 3.1621] at 1000 fights, price on carriers 2.15"
+  },
+  {
+   "id": "bludgeon",
+   "field": "worth",
+   "old": "-",
+   "new": "4.0542 [3.452, 5.0418] at 200 fights, price on carriers 3.95"
+  },
+  {
+   "id": "delivery={\"v\":1,\"res\":\"pearl\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "4.083 [3.434, 5.0746] at 400 fights, price on carriers 3.69"
+  },
+  {
+   "id": "electricity=2",
+   "field": "worth",
+   "old": "-",
+   "new": "8.2396 [5.4246, 9.0954] at 400 fights, price on carriers 6"
+  },
+  {
+   "id": "poisonBarbs=2",
+   "field": "worth",
+   "old": "-",
+   "new": "4.4955 [3.8864, 5.1103] at 200 fights, price on carriers 3.2"
+  },
+  {
+   "id": "sweep=3",
+   "field": "worth",
+   "old": "-",
+   "new": "5.2088 [4.072, 6.5002] at 200 fights, price on carriers 6.22"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "tide",
+   "why": "under-priced: worth 4.301 against 0.5 on the carriers"
+  },
+  {
+   "id": "guardian",
+   "why": "interval still wide at 1000 fights (se 0.47); measure again with --fights 1000,2000"
+  },
+  {
+   "id": "crabClaws",
+   "why": "interval still wide at 1000 fights (se 1.28); measure again with --fights 1000,2000"
+  },
+  {
+   "id": "armor=3",
+   "why": "over-priced: worth 3.8032 against 4.85 on the carriers"
+  },
+  {
+   "id": "poisonBarbs=1",
+   "why": "under-priced: worth 3.23 against 1.6 on the carriers"
+  },
+  {
+   "id": "tide=2",
+   "why": "under-priced: worth 8.1429 against 0.93 on the carriers"
+  },
+  {
+   "id": "wave",
+   "why": "interval still wide at 1000 fights (se 0.59); measure again with --fights 1000,2000"
+  },
+  {
+   "id": "poisonBarbs=2",
+   "why": "under-priced: worth 4.4955 against 3.2 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 15
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1228.json"
+}
