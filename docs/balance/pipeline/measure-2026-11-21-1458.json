@@ -1,0 +1,235 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-21T06:58:25.631Z",
+ "finished": "2026-11-21T07:31:27.514Z",
+ "durationSec": 1981.9,
+ "args": [
+  "--map",
+  "19",
+  "--only-file",
+  "docs/balance/pipeline/state/mapctx-19.json",
+  "--carriers",
+  "soldier-ant,glass-golem,blessed-avatar,stable-colt,rivergate-recruit,lucky-hopper",
+  "--minutes",
+  "110",
+  "--wait"
+ ],
+ "head": "188c2835a",
+ "inputs": {
+  "context": "map19",
+  "bramble": 15,
+  "fingerprint": "b53829426b33",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "guardian",
+   "speed={\"kind\":\"swift\"}",
+   "pounce=3",
+   "thorns=2",
+   "recoil=1",
+   "thorns=1",
+   "sturdy",
+   "arrow={\"v\":1,\"type\":\"fire\"}",
+   "daunt={\"v\":1,\"lasts\":\"lasting\"}",
+   "expose=2",
+   "lastStand",
+   "offspring=1",
+   "recoil=2",
+   "T:onDeath>damage {\"do\":\"damage\",\"on\":\"onDeath\",\"sub\":\"adjacent\",\"who\":\"enemy\",\"amount\":2,\"dmgType\":\"heat\"}",
+   "arrow={\"v\":1,\"type\":\"acid\",\"form\":\"bolt\"}",
+   "freeze={\"chance\":40,\"duration\":2}",
+   "pulverise",
+   "shield=3",
+   "smokeBomb"
+  ]
+ },
+ "counts": {
+  "items": 19,
+  "measured": 19,
+  "reused": 0,
+  "stopped early": 13,
+  "fights saved": 10400,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "guardian",
+   "field": "worth",
+   "old": "-",
+   "new": "-1.6912 [-2.44, -0.681] at 1000 fights, price on carriers 0"
+  },
+  {
+   "id": "speed={\"kind\":\"swift\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "4.1342 [3.5946, 4.7751] at 200 fights, price on carriers 9.5"
+  },
+  {
+   "id": "pounce=3",
+   "field": "worth",
+   "old": "-",
+   "new": "4.0293 [3.5257, 4.7869] at 200 fights, price on carriers 4.15"
+  },
+  {
+   "id": "thorns=2",
+   "field": "worth",
+   "old": "-",
+   "new": "4.0031 [3.6267, 4.614] at 200 fights, price on carriers 5.08"
+  },
+  {
+   "id": "recoil=1",
+   "field": "worth",
+   "old": "-",
+   "new": "-4.0384 [-5.1182, -1.9412] at 1000 fights, price on carriers -3.46"
+  },
+  {
+   "id": "thorns=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.7561 [1.6112, 3.0983] at 200 fights, price on carriers 3.22"
+  },
+  {
+   "id": "sturdy",
+   "field": "worth",
+   "old": "-",
+   "new": "2.8618 [2.1864, 3.4175] at 200 fights, price on carriers 2.81"
+  },
+  {
+   "id": "arrow={\"v\":1,\"type\":\"fire\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "3.5724 [3.13, 4.1585] at 200 fights, price on carriers 6.56"
+  },
+  {
+   "id": "daunt={\"v\":1,\"lasts\":\"lasting\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "3.8002 [3.3651, 4.3935] at 200 fights, price on carriers 2.64"
+  },
+  {
+   "id": "expose=2",
+   "field": "worth",
+   "old": "-",
+   "new": "0.152 [0, 0.3875] at 200 fights, price on carriers 0.18"
+  },
+  {
+   "id": "lastStand",
+   "field": "worth",
+   "old": "-",
+   "new": "0.5068 [0.1, 0.892] at 200 fights, price on carriers 0.45"
+  },
+  {
+   "id": "offspring=1",
+   "field": "worth",
+   "old": "-",
+   "new": "1.4945 [0.6607, 2.0329] at 1000 fights, price on carriers 6.08"
+  },
+  {
+   "id": "recoil=2",
+   "field": "worth",
+   "old": "-",
+   "new": "-6.4745 [-8.1545, -3.169] at 1000 fights, price on carriers -5.88"
+  },
+  {
+   "id": "T:onDeath>damage {\"do\":\"damage\",\"on\":\"onDeath\",\"sub\":\"adjacent\",\"who\":\"enemy\",\"amount\":2,\"dmgType\":\"heat\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "2.6831 [1.3641, 2.9163] at 200 fights, price on carriers 1.19"
+  },
+  {
+   "id": "arrow={\"v\":1,\"type\":\"acid\",\"form\":\"bolt\"}",
+   "field": "worth",
+   "old": "-",
+   "new": "6.2232 [5.01, 7.1447] at 200 fights, price on carriers 6.89"
+  },
+  {
+   "id": "freeze={\"chance\":40,\"duration\":2}",
+   "field": "worth",
+   "old": "-",
+   "new": "2.9871 [2.6399, 3.6968] at 200 fights, price on carriers 2.88"
+  },
+  {
+   "id": "pulverise",
+   "field": "worth",
+   "old": "-",
+   "new": "1.3024 [0.6101, 1.7486] at 1000 fights, price on carriers 1.53"
+  },
+  {
+   "id": "shield=3",
+   "field": "worth",
+   "old": "-",
+   "new": "2.883 [2.5, 3.4088] at 200 fights, price on carriers 4.93"
+  },
+  {
+   "id": "smokeBomb",
+   "field": "worth",
+   "old": "-",
+   "new": "1.6303 [0.7986, 2.1567] at 1000 fights, price on carriers 2"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "guardian",
+   "why": "interval still wide at 1000 fights (se 0.45); measure again with --fights 1000,2000"
+  },
+  {
+   "id": "speed={\"kind\":\"swift\"}",
+   "why": "over-priced: worth 4.1342 against 9.5 on the carriers"
+  },
+  {
+   "id": "thorns=2",
+   "why": "over-priced: worth 4.0031 against 5.08 on the carriers"
+  },
+  {
+   "id": "recoil=1",
+   "why": "interval still wide at 1000 fights (se 0.81); measure again with --fights 1000,2000"
+  },
+  {
+   "id": "arrow={\"v\":1,\"type\":\"fire\"}",
+   "why": "over-priced: worth 3.5724 against 6.56 on the carriers"
+  },
+  {
+   "id": "daunt={\"v\":1,\"lasts\":\"lasting\"}",
+   "why": "under-priced: worth 3.8002 against 2.64 on the carriers"
+  },
+  {
+   "id": "offspring=1",
+   "why": "interval still wide at 1000 fights (se 0.35); measure again with --fights 1000,2000"
+  },
+  {
+   "id": "recoil=2",
+   "why": "interval still wide at 1000 fights (se 1.27); measure again with --fights 1000,2000"
+  },
+  {
+   "id": "T:onDeath>damage {\"do\":\"damage\",\"on\":\"onDeath\",\"sub\":\"adjacent\",\"who\":\"enemy\",\"amount\":2,\"dmgType\":\"heat\"}",
+   "why": "under-priced: worth 2.6831 against 1.19 on the carriers"
+  },
+  {
+   "id": "shield=3",
+   "why": "over-priced: worth 2.883 against 4.93 on the carriers"
+  },
+  {
+   "id": "smokeBomb",
+   "why": "interval still wide at 1000 fights (se 0.35); measure again with --fights 1000,2000"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 19
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-21-1458.json"
+}

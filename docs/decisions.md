@@ -5,9 +5,9 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 ## Waiting on you
 
 **MAPCTX-1. Price context skills by the map they live on** · Decide · Balance · asked 2026-11-21
-- Measured on their own map, context skills are worth far more than their price: Tide 3 on Map 4 7.9 (price 1.3), Dry on Map 18 3.9 (shared 0), Illuminate and Keen Sense on Map 8 about 2.3 (price 0.7). Away from home they read 0. On Map 18, Arrow 2 reads 12.7 against price 6.3. Detail: docs/balance/pipeline/mapctx-2026-11-21.md.
-  - a) Price context skills from their home-map measure, then list cards that leave the budget (no stat changes)
-  - b) Measure all Maps 1-20 first, then decide
+- All Maps 1-20 measured (309 skills on their home map). 178 read apart from the shared measure; against price 84 are too cheap, 127 too dear. Context skills swing: Tide is worth about 4 on Maps 2-4, 9, 10 and 0 on nine others. 33 skills are off the same way on every map (Swift 4 vs 9.5, Delivery 2.5 vs 5.25, Pounce 1 up to 5.5 vs 1.7). Parasite reads -10 on Maps 7 and 12. Detail: docs/balance/pipeline/mapctx-2026-11-21.md.
+  - a) Give context skills a home-map price, then list cards that leave the budget (no stat changes)
+  - b) Re-price only the 33 skills that are off on every map (with SKM4-1); context skills keep one price
   - c) Leave
 - **Default:** b
 
