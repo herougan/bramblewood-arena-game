@@ -62,7 +62,8 @@ async function step(args, S) {
     if ((Date.now() - t0) / 60000 > budgetMin) { left++; continue; }
     const s0 = Date.now(), trail = []; let res = null, conv = false, empty = false;
     for (const M of stages) {
-      res = await C.run(Object.assign(L.defaults(), { cmd: 'measure', test: it.test, games: M, cacheDir, workers: 2, quiet: true, bramble, map: args.map != null ? String(args.map) : null, carriers: args.carriers ? String(args.carriers).split(',') : undefined }));
+      res = await C.run(Object.assign(L.defaults(), { cmd: 'measure', test: it.test, games: M, cacheDir, workers: 2, quiet: true, bramble, map: args.map != null ? String(args.map) : null, carriers: args.carriers ? String(args.carriers).split(',') : undefined },
+        args.copies != null ? { k: +args.copies } /* 2026-11-21 (COPIES): the slot's copies (bench default 6); pair with --ctx-tag */ : {}));
       const w = res.test.worthRuler; if (w.m == null) { empty = true; break; } trail.push({ fights: M, m: w.m, lo: w.lo, hi: w.hi }); conv = converged(w, cfg);
       if (conv) break;
     }
