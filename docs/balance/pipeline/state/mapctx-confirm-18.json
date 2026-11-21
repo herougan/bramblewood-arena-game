@@ -1,0 +1,11 @@
+[
+ "thorns=2",
+ "repair=2",
+ "T:onAttack>drawCard {\"do\":\"drawCard\",\"on\":\"onAttack\",\"count\":1}",
+ "arrow={\"v\":1,\"type\":\"acid\",\"form\":\"bolt\"}",
+ "embolden=1",
+ "pack=1",
+ "shield=3",
+ "trap=5",
+ "trap=6"
+]

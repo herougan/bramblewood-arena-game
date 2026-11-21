@@ -1,0 +1,4 @@
+[
+ "corrode=1",
+ "onDeathSpawn={\"defId\":\"maggot-swarmling\",\"count\":3}"
+]

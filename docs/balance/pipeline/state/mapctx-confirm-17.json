@@ -1,0 +1,7 @@
+[
+ "sturdy",
+ "T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2}",
+ "freeze={\"chance\":40,\"duration\":2}",
+ "loneWolf=[1,1]",
+ "pounce=6"
+]

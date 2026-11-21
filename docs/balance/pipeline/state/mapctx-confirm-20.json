@@ -1,0 +1,9 @@
+[
+ "tide",
+ "mighty",
+ "arrow={\"v\":1,\"type\":\"fire\"}",
+ "T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2}",
+ "arrow=3",
+ "arrow={\"v\":2,\"type\":\"fire\",\"form\":\"bolt\"}",
+ "bulwark=2"
+]

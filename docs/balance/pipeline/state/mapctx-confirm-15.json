@@ -1,0 +1,12 @@
+[
+ "arrow=1",
+ "arrow=1+fletcher=1",
+ "speed={\"kind\":\"swift\"}",
+ "stealth",
+ "twinStrike",
+ "ambush=2",
+ "harbinger=1",
+ "ambush=3",
+ "harden=1",
+ "pounce=6"
+]

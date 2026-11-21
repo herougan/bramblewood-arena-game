@@ -1,0 +1,7 @@
+[
+ "twinStrike",
+ "T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2}",
+ "harden=1",
+ "loneWolf=[1,1]",
+ "siege=3"
+]

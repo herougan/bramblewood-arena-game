@@ -1,0 +1,8 @@
+[
+ "pounce=3",
+ "paralysisPowder=1",
+ "T:onReady>damage {\"on\":\"onReady\",\"do\":\"damage\",\"amount\":4,\"dmgType\":\"physical\"}",
+ "arrow=3",
+ "daunt=2",
+ "twinShot=2"
+]
