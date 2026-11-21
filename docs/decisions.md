@@ -4,6 +4,13 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**CARRIER-1. Should a skill's price depend on the card's body?** · Decide · Balance · asked 2026-11-21
+- 34 of 127 skills are worth more on one kind of body. Ranged and siege skills gain 1.5-4 points on high-Health cards (Arrow 2 bramble 9.7 vs 5.3). Armor, Bulwark, Sturdy, Swift and death spawns gain 1.5-4.5 on high-Attack cards (Armor 3 7.3 vs 3.9). Today the budget prices a skill the same on any body; 93 skills need no change. Detail: docs/balance/pipeline/mapctx-2026-11-21.md.
+  - a) Add a body term to the budget for these 34 skills, then list cards that leave the band (no stat changes)
+  - b) Keep prices body-blind; use this as card-design guidance
+  - c) Measure on more carrier sets first
+- **Default:** b
+
 **MAPCTX-1. Price context skills by the map they live on** · Decide · Balance · asked 2026-11-21
 - All Maps 1-20 measured (309 skills on their home map). 194 read apart from the shared measure; against price 81 are too cheap, 127 too dear. Context skills swing: Tide is worth about 4 on Maps 2-4, 9, 10 and 0 on nine others. 32 skills are off the same way on every map (Swift 4 vs 9.5, Delivery 2.5 vs 5.25); 20 of them keep that verdict at bramble 5 and 30 too. Parasite reads -10 on Maps 7 and 12. Detail: docs/balance/pipeline/mapctx-2026-11-21.md.
   - a) Give context skills a home-map price, then list cards that leave the budget (no stat changes)

@@ -8,6 +8,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Confirm: the 89 close calls replayed at 1,000 fights; 86 kept their verdict, 3 moved into range, none flipped.
 - BSWEEP: the 32 skills measured again at bramble 5 and 30 (`--ctx-tag`); 26 read the same at all three, 20 keep their verdict. Harbinger and Paralysis Powder gain worth in longer fights, Pounce 1 and Dynamite 3 lose it.
 - BSWEEP2: the other 95 Maps 1-20 skills at bramble 5 and 30. All 127: 101 read the same at all three. Long fights raise weapons, Harbinger and Paralysis Powder; short fights raise Stealth (16.7 at 5, 3.0 at 30), Pounce and bramble arrows. Table: `node tools/pipeline/bsweep_report.js`.
+- CARRIER: the 127 skills on high-Attack vs high-Health carriers. 93 body-blind; ranged and siege skills are worth more on walls, Armor, Bulwark, Sturdy, Swift and death spawns on hard hitters. Decision CARRIER-1. Table: `node tools/pipeline/carrier_report.js`.
 - SKM5: every combat skill now has a 1,000-fight reading; 3 new dear flags folded into SKM4-1.
 
 ## 2026-11-21 (package TESTFIX3: the 3 new release-10 CI failures)
