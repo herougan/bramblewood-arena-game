@@ -122936,6 +122936,108 @@
    "statBase": 19,
    "measuredAt": "2026-11-21T17:14:28.993Z",
    "seconds": 102
+  },
+  "global@k2|bounty=1": {
+   "key": "bounty=1",
+   "ctx": "global@k2",
+   "bramble": 15,
+   "id": "bounty",
+   "class": "shorthand",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 4,
+   "cards": [
+    "raccoon-bandit",
+    "trash-panda-trickster",
+    "riverside-peddler",
+    "pack-mule"
+   ],
+   "fights": 1000,
+   "converged": false,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.5855,
+     "lo": 0.9969,
+     "hi": 3.71
+    },
+    {
+     "fights": 400,
+     "m": 2.7204,
+     "lo": 1.0443,
+     "hi": 3.0893
+    },
+    {
+     "fights": 700,
+     "m": 2.3886,
+     "lo": 1.0179,
+     "hi": 2.8772
+    },
+    {
+     "fights": 1000,
+     "m": 2.3678,
+     "lo": 1.1036,
+     "hi": 2.7208
+    }
+   ],
+   "fingerprint": "009258c9581e",
+   "canonRate": {
+    "m": 0.0132,
+    "lo": 0.0115,
+    "hi": 0.0145
+   },
+   "statRate": {
+    "m": 0.0139,
+    "lo": 0.0114,
+    "hi": 0.0167
+   },
+   "kappa": {
+    "m": 1.0517,
+    "lo": 0.8821,
+    "hi": 1.2949
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0053,
+    "worthStat": {
+     "m": 0.3832,
+     "lo": -0.145,
+     "hi": 0.7683
+    }
+   },
+   "test": {
+    "effects": {
+     "bounty": 1
+    },
+    "gain": 0.0238,
+    "worth": {
+     "m": 1.801,
+     "lo": 1.2112,
+     "hi": 2.2984
+    },
+    "worthRuler": {
+     "m": 2.3678,
+     "lo": 1.1036,
+     "hi": 2.7208
+    },
+    "worthStat": {
+     "m": 1.7126,
+     "lo": 1.0539,
+     "hi": 2.3032
+    },
+    "price": 1.8,
+    "net": 0.5678,
+    "verdict": "within its interval",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-21T17:16:30.277Z",
+   "seconds": 103
   }
  }
 }
