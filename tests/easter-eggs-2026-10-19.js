@@ -46,7 +46,8 @@ const BANNED = /terraprisma|colossus|protoss|thor\b|moogle|tonberry|pink bean|ta
 ok(LIST.every(id=> !BANNED.test(byId[id].name + ' ' + byId[id].flavor)), 'names and flavour are original (no source game or character named)');
 // budget v3
 { const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), T = SC.make(JSON.parse(read('canonical/skill-costs.json')));
-  LIST.forEach(id=>{ const c = Object.assign({}, byId[id]); if(c.cardType === 'equipment') c.effects = Object.assign({}, c.effects, (c.equip || {}).grant); const b = T.budget(c);
+  const oop = (()=>{ const LB = require(path.join(ROOT, 'tools', 'lib_bramble.js')), LMP = require(path.join(ROOT, 'tools', 'lib_map_pools.js')); return c=> LMP.isOutOfPlay(LB.G, c); })(); /* 2026-11-22 (TESTFIX4): a card out of play is reported apart, as every budget check does (LISTFIX1's isOutOfPlay) */
+  LIST.filter(id=> !oop(byId[id])).forEach(id=>{ const c = Object.assign({}, byId[id]); if(c.cardType === 'equipment') c.effects = Object.assign({}, c.effects, (c.equip || {}).grant); const b = T.budget(c);
     ok(b.ok && !b.missing.length, `${id} fits budget v3 (x1 ${b.x1} < N ${b.N}, x2 ${b.x2} < ${b.N2}${b.missing.length ? '; missing ' + b.missing : ''})`); }); }
 
 // ---- 2. no source can produce one

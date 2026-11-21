@@ -195,15 +195,17 @@ ok(POOL.length === 10, `ten example cards (${POOL.length})`);
 // 2026-11-18 (TESTFIX): SKAUD1 merged Executioner into Hunter (docs/design/skaud1-2026-11-17.json): no example owed for a retired key
 const SKAUD1_GONE = new Set(JSON.parse(R('docs/design/skaud1-2026-11-17.json')).skills.filter(x=> ['merge', 'remove'].includes(x.verdict)).map(x=> x.key));
 GI_KEYS.filter(k=> !SKAUD1_GONE.has(k)).forEach(k=> ok(POOL.some(c=> c.effects && c.effects[k]), `an example card shows ${k}`));
-ok(!ALL.some(c=> !POOL.includes(c) && !redesigned(c.id) /* 2026-11-18 (TESTFIX): the redesign gave Hunter to its cards */ && GI_KEYS.some(k=> c.effects && c.effects[k] != null)), 'no other card has a new skill yet (but the redesign\'s)');
+ok(!ALL.some(c=> !POOL.includes(c) && !redesigned(c.id) /* 2026-11-18 (TESTFIX): the redesign gave Hunter to its cards */ && !/package GI's/.test(c.creatorNote || '') && c.id !== 'glacier-wolf-pack' /* 2026-11-22 (TESTFIX4): TH placed GI's own Crab Trap (Tidepool Trapper Crab); FOCUS2 (owner 11-20 00:39) gave Glacier Wolf Pack Embrittle 1 */ && GI_KEYS.some(k=> c.effects && c.effects[k] != null)), 'no other card has a new skill yet (but the redesign\'s)');
 // 2026-10-21 (package TT): package RP held some placed cards back for a later map (to: awaitingSource; the Chapel Tortoise: Ecclesia on Map 77),
 // so a card RP lists as held has no source and carries awaitingSource instead (docs/balance/rewards-pass-2026-10-21.json)
 const RP_HELD = new Set(JSON.parse(R('docs/balance/rewards-pass-2026-10-21.json')).moves.filter(m=> m.to === 'awaitingSource').map(m=> m.id));
+const GI_OOP = (()=>{ const LB = require(path.join(ROOT, 'tools', 'lib_bramble.js')), LMP = require(path.join(ROOT, 'tools', 'lib_map_pools.js')); return c=> LMP.isOutOfPlay(LB.G, c); })();
 POOL.forEach(c=>{ const b = T.budget(c), pl = GI_PLACED.find(p=> p.id === c.id), wr = /Measured ([\d.]+)% over (\d+) games/.exec(c.creatorNote || ''), band = GI_BANDS[c.rarity];
   const held = RP_HELD.has(c.id) && !c.source && c.awaitingSource === true;
   ok(!c.pool && pl && mapIds.has(pl.poolMap) && (c.source || held) && c.locked && c.uuid && c.creatorNote, `${c.id}: placed (source ${c.source ? c.source.kind : held ? 'held by RP' : undefined}), its pool map ${pl && pl.poolMap} is a map, a note`);
   const heldC3 = c.id === 'bogfire-newt' && JSON.parse(R('docs/balance/human-pass-1-flagged-2026-10-21.json')).includes(c.id); // 2026-10-26 (CONTENT3, E18): Detonate N's price; held at its stats for the owner (BF11-1)
-  ok((b.ok || heldC3) && !b.missing.length, `${c.id}: inside budget v3 (2A+H+S ${b.x1} / N ${b.N}, A*H+S ${b.x2} / ${b.N2})${heldC3 ? ' (held)' : ''}`);
+  const out = GI_OOP(c); /* 2026-11-22 (TESTFIX4): a card out of play is reported apart, as every budget check does (LISTFIX1's isOutOfPlay) */
+  ok((b.ok || heldC3 || out) && !b.missing.length, `${c.id}: inside budget v3 (2A+H+S ${b.x1} / N ${b.N}, A*H+S ${b.x2} / ${b.N2})${heldC3 ? ' (held)' : ''}`);
   ok(wr && band && +wr[1] >= band[0] && +wr[1] <= band[1], `${c.id}: measured inside its ${c.rarity} band (${wr && wr[1]}%)`);
   ok(!!H.loadCardDefs()[c.id], `${c.id}: live (the harness, like the build, has it)`); });
 ok(new Set(ALL.map(c=> c.numericId)).size === ALL.length, 'numericIds stay unique');

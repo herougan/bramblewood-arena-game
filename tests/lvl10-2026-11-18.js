@@ -32,7 +32,9 @@ ok(!shape.length, '1. levelBonus: Levels above the base to 10, whole positive de
 
 // ---- 2. both caps at every level
 const over = [];
-live.forEach(c=>{ const b = GEN.baseLevel(c), r1 = T.budgetAt(c, Math.max(1, b), b), f1 = r1.x1 / r1.N, g1 = r1.x2 / r1.N2;
+const LMP = require(path.join(ROOT, 'tools', 'lib_map_pools.js'));
+// 2026-11-22 (TESTFIX4): a card out of play (on no list, LISTFIX1's isOutOfPlay; Yeti since DATAFIX 11-18) is reported apart like every budget check
+live.filter(c=> !LMP.isOutOfPlay(G, c)).forEach(c=>{ const b = GEN.baseLevel(c), r1 = T.budgetAt(c, Math.max(1, b), b), f1 = r1.x1 / r1.N, g1 = r1.x2 / r1.N2;
   for(let L = Math.max(2, b + 1); L <= 10; L++){ const r = T.budgetAt(c, L, b), r0 = T.budgetAt(Object.assign({}, c, {levelBonus: {}}), L, b); if(r0.x1 > r0.N + 0.01) continue; /* an older levelSkills arrival alone past N (Rootworm Colony's Bloom at 2) */ if(r.x1 > Math.max(r.N, r.N * f1) + 0.01 || r.x2 > Math.max(r.N2, r.N2 * g1) + 0.01) over.push(`${c.id} L${L} ${r.x1}/${r.N}`); } });
 ok(!over.length, '2. every level 2-10 inside both caps at N(L) (a card over at Level 1 no worse): ' + over.slice(0, 6).join('; '));
 ok(report.fillByLevel['10'].mean >= 0.85 && report.fillByLevel['10'].mean <= 1, `2. the Level 10 forms fill N(10) inside the band on average (${report.fillByLevel['10'].mean})`);
@@ -46,7 +48,8 @@ ok(Math.abs(report.realizedSkillShare.D - 0.5) <= 0.06 && Math.abs(report.realiz
 
 // ---- 4. the game reads it
 const bk = byId['bee-knight'], cum = (c, L)=> Object.keys(c.levelBonus || {}).filter(k=> +k > GEN.baseLevel(c) && +k <= L).reduce((t, k)=> ({a: t.a + (c.levelBonus[k].attack || 0), h: t.h + (c.levelBonus[k].health || 0)}), {a: 0, h: 0});
-const statsBad = live.slice(0, 400).filter(c=>{ for(let L = GEN.baseLevel(c) + 1; L <= 10; L++){ const st = G.statsAtLevel(c, L), d = cum(c, L); if(st.attack !== c.attack + d.a || st.health !== c.health + d.h) return true; } return false; }).map(c=> c.id);
+// 2026-11-22 (TESTFIX4): only cards with a levelBonus table; without one the Forge curve applies (project-state; Pika Hoarder since FOLD8 11-19)
+const statsBad = live.slice(0, 400).filter(c=> c.levelBonus).filter(c=>{ for(let L = GEN.baseLevel(c) + 1; L <= 10; L++){ const st = G.statsAtLevel(c, L), d = cum(c, L); if(st.attack !== c.attack + d.a || st.health !== c.health + d.h) return true; } return false; }).map(c=> c.id);
 ok(!statsBad.length, '4. statsAtLevel = base stats + the deltas up to L: ' + statsBad.slice(0, 6).join(', '));
 { const c = live.find(x=> Object.values(x.levelBonus || {}).some(o=> o.skills && typeof Object.values(o.skills)[0] === 'number') && !x.levelSkills);
   const L = +Object.keys(c.levelBonus).find(k=> c.levelBonus[k].skills), k = Object.keys(c.levelBonus[L].skills)[0];
@@ -61,14 +64,17 @@ ok(/BramblewoodBudget\.levelBonusAt\(b, L/.test(app) && /d\.levelBonus \? JSON\.
 // ---- 5. unlocks
 const moved = cards.filter(c=> /LVL10 \(owner 21:22\)/.test(c.creatorNote || ''));
 ok(moved.length === report.unlockCards.all && moved.length > 50, `5. ${moved.length} cards moved skills off Level 1 (the report's ${report.unlockCards.all})`);
-ok(moved.every(c=> Object.keys(c.levelSkills).every(L=> +L >= 2 && +L <= 10)), '5. every moved skill arrives at Level 2-10');
-const late3 = moved.filter(c=> Object.keys(c.levelSkills).length >= 2 && Math.max(...Object.keys(c.levelSkills).map(Number)) < 7).length, third = moved.filter(c=> Object.keys(c.levelSkills).length >= 2).length;
+ok(moved.every(c=> Object.keys(c.levelSkills || {}).every(L=> +L >= 2 && +L <= 10)), '5. every moved skill arrives at Level 2-10'); // 2026-11-22 (TESTFIX4): the owner removed Bison Bulldozer's only moved skill (SKIN3 11-20)
+const late3 = moved.filter(c=> Object.keys(c.levelSkills || {}).length >= 2 && Math.max(...Object.keys(c.levelSkills || {}).map(Number)) < 7).length, third = moved.filter(c=> Object.keys(c.levelSkills || {}).length >= 2).length;
 ok(third <= late3 + 3, `5. a third skill at Level 7+ is rare (${third - late3} of ${third})`);
 ok(moved.every(c=> !GEN.isOwner(Object.assign({}, c, {creatorNote: c.creatorNote.replace(/ 2026-11-18 LVL10.*$/, '')}))), '5. no owner-edited card had a skill moved');
 ok(moved.every(c=> T.budgetAt(c, 1, 1).ok || T.budgetAt(c, 1, 1).x1 / T.budgetAt(c, 1, 1).N <= 1.3), '5. the Level 1 re-fits stay in reach of N(1)');
 
 // ---- 6. idempotent
-{ const out = cp.execFileSync('node', [path.join(ROOT, 'tools', 'lvl10', 'gen_2026_11_18.js'), '--dry'], {encoding: 'utf8'}); ok(/"cards": 0/.test(out), '6. a re-run fills nothing (owner edits are kept)'); }
+{ const out = cp.execFileSync('node', [path.join(ROOT, 'tools', 'lvl10', 'gen_2026_11_18.js'), '--dry'], {encoding: 'utf8'}); // 2026-11-22 (TESTFIX4): FOLD8 (11-19) folded the owner's live Pika Hoarder row without a levelBonus; the generator would fill one, which is the
+  // owner's card to grow, so an owner card with no table may be the only fill
+  const bare = cards.filter(c=> GEN.eligible(c) && !c.levelBonus), m = /"cards": (\d+)/.exec(out);
+  ok(m && +m[1] === bare.length && bare.every(GEN.isOwner), `6. a re-run fills nothing but owner cards with no table (${bare.map(c=> c.id).join(', ') || 'none'})`); }
 
 // ---- 7. the editor
 const keys = ['ui.lvl10-title', 'ui.lvl10-help', 'ui.lvl10-skill', 'ui.lvl10-total', 'ui.lvl10-budget', 'ui.lvl10-clear', 'ui.lvl10-style'];

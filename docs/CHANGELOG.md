@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-22 (package TESTFIX4: old unit failures)
+- No player-visible change. The release's full run failed the same 38 tests as the run before (nothing new). Four now pass: lvl10, easter-eggs, prayer, gi (cards out of play reported apart like every budget check; the owner's later edits respected: Pika Hoarder's fold, Bison Bulldozer's removed Onslaught, Glacier Wolf Pack's Embrittle). The rest, by cause: `docs/tests/known-fail-2026-11-22.md`.
+
 ## 2026-11-21 (package UIQ2: owner 22:03 notes)
 - Card hover: the "?" line now reads "Learns a skill at a higher level" (no level number; 12 languages), and it and the Discard box sit 8px apart like the other blocks.
 - Context pips: no "?" pip any more (a skill not met yet, or one learnt at a higher level); the hover's text lines say both. A unit on the board no longer shows its On Discard trigger (it can never be discarded again).

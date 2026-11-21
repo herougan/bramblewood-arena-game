@@ -172,7 +172,8 @@ const kill = (e, P, c, ev)=>{ c.hp = 0; e.removeDeadCards(P, so, {}, {}, ev || [
   const table = JSON.parse(fs.readFileSync(path.join(H.ROOT, 'canonical', 'skill-costs.json'), 'utf8'));
   const SC = require(path.join(H.ROOT, 'tools', 'skill_costs.js')).make(table);
   const ecc = cards.filter(c=> eng.isEcclesiaDef(c.id));
-  const over = ecc.filter(c=> !SC.budget(c).ok);
+  const oop = (()=>{ const LB = require(path.join(H.ROOT, 'tools', 'lib_bramble.js')), LMP = require(path.join(H.ROOT, 'tools', 'lib_map_pools.js')); return c=> LMP.isOutOfPlay(LB.G, c); })(); /* 2026-11-22 (TESTFIX4): a card out of play is reported apart, as every budget check does (LISTFIX1's isOutOfPlay) */
+  const over = ecc.filter(c=> !SC.budget(c).ok && !oop(c));
   ok(ecc.length >= 14 && !over.length, `6. every Ecclesia card fits budget v3 (over: ${over.map(c=> c.id).join(', ') || 'none'})`);
   const rel = table.skills.find(x=> x.id === 'relic');
   // 2026-10-19 (package TC): canonical/skill-costs.json may carry the applied measured worth (prevValue 2); the Test Lab default stays 2

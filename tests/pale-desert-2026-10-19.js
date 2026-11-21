@@ -146,8 +146,10 @@ ok(new Set(map.nodes.map(n=> n.icon)).size >= 8 && map.nodes.every(n=> n.flavor 
 
 // --- 4. the new cards
 const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), T = SC.make(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/skill-costs.json'), 'utf8')));
+const PD_OOP = (()=>{ const LB = require(path.join(ROOT, 'tools', 'lib_bramble.js')), LMP = require(path.join(ROOT, 'tools', 'lib_map_pools.js')); return c=> LMP.isOutOfPlay(LB.G, c); })();
 NEW.forEach(id=>{ const d = defs[id], b = d && T.budget(d);
-  ok(d && b.ok && !b.missing.length, `4. ${id} fits the stat budget (2A+H+S ${b && b.x1} < N ${b && b.N}, A*H+S ${b && b.x2} < ${b && b.N2})`);
+  const out = d && PD_OOP(d); /* 2026-11-22 (TESTFIX4): a card out of play is reported apart, as every budget check does (LISTFIX1's isOutOfPlay) */
+  ok(d && (b.ok || out) && !b.missing.length, `4. ${id}${out ? ' (out of play)' : ''} fits the stat budget (2A+H+S ${b && b.x1} < N ${b && b.N}, A*H+S ${b && b.x2} < ${b && b.N2})`);
   ok(d && d.locked && ((d.source && d.source.kind === 'map' && d.source.id === 'mpd' && KEYS.includes(d.source.node)) || rpMoved(d) || ownerListed(d)), `4. ${id} is a Pale Desert reward, or package RP or the owner's lists moved it on (${JSON.stringify(d && d.source)})`);
   ok(d && JSON.stringify(d.revealAfter) === JSON.stringify({map: 'md'}), `4. ${id}'s skills stay "?" until Map 18 is cleared`);
   ok(d && d.icon && d.flavor && (d.archetypes || []).includes('Desert') && /NightCafe/.test(d.creatorNote || ''), `4. ${id}: emoji, flavour, Desert, and the art brief in its note`);
