@@ -1,0 +1,1 @@
+["tide", "crabClaws", "foraging=1", "inspiring=2", "pierce=2", "T:onAttack>gain {\"do\":\"gain\",\"on\":\"onAttack\",\"amount\":1,\"resource\":\"lumber\"}", "T:onAttacked>gain {\"do\":\"gain\",\"on\":\"onAttacked\",\"amount\":1,\"resource\":\"lumber\"}", "poisonBarbs=2", "rainrunner=2", "salvage=1"]

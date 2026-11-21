@@ -1,0 +1,1 @@
+["tide", "guardian", "sturdy", "T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2}", "bulldoze=1", "offspring=1", "dive=2", "freeze={\"chance\":40,\"duration\":2}", "loneWolf=[1,1]", "overwhelm", "pounce=6", "pulverise"]

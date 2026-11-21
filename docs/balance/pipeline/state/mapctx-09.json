@@ -1,0 +1,1 @@
+["tide", "guardian", "forestry=1", "pounce=3", "crabClaws", "twinStrike", "trident", "daunt={\"v\":1,\"lasts\":\"lasting\"}", "enfeeble=1", "taunt", "T:onAttacked>gain {\"do\":\"gain\",\"on\":\"onAttacked\",\"amount\":1,\"resource\":\"lumber\"}", "bleed=3", "bludgeon", "electricity=1", "electricity=2", "scare=1", "strangle=2"]
