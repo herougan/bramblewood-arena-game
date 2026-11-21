@@ -4740,5 +4740,6 @@
  "{att} scares {name}: its attacks deal {n} less.": "{att} menakuti {name}: serangannya {n} lebih lemah.",
  "Scared -{n}": "Ketakutan -{n}",
  "Scared: attacks for {n} less": "Ketakutan: serangan {n} lebih lemah",
- "While an ally leader is on the battlefield, it has {skills}.": "Selama pemimpin sekutu ada di medan perang, ia punya {skills}."
+ "While an ally leader is on the battlefield, it has {skills}.": "Selama pemimpin sekutu ada di medan perang, ia punya {skills}.",
+ "Learns a skill at a higher level": "Mempelajari kemampuan di level yang lebih tinggi"
 }

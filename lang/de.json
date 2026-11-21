@@ -4738,5 +4738,6 @@
  "{att} scares {name}: its attacks deal {n} less.": "{att} verängstigt {name}: seine Angriffe machen {n} weniger.",
  "Scared -{n}": "Verängstigt -{n}",
  "Scared: attacks for {n} less": "Verängstigt: greift mit {n} weniger an",
- "While an ally leader is on the battlefield, it has {skills}.": "Solange ein verbündeter Anführer auf dem Schlachtfeld ist, hat sie {skills}."
+ "While an ally leader is on the battlefield, it has {skills}.": "Solange ein verbündeter Anführer auf dem Schlachtfeld ist, hat sie {skills}.",
+ "Learns a skill at a higher level": "Lernt auf einer höheren Stufe eine Fähigkeit"
 }

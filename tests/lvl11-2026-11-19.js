@@ -67,7 +67,7 @@ ok(rs({admin: true}) === '1-11', '4. Admin Mode: every level to 11');
 ok(/fromCodex \? lvl11SliderHTML\(defId, d\) : ''/.test(app) && /querySelector\('#lvl11Range'\)[^\n]*addEventListener\('input'/.test(app), '4. the Codex card view carries the bar; moving it redraws the read-out');
 ok(/function lvl11ReadHTML\(id, L\)\{[\s\S]{0,200}defAtShownLevel\(id, L\)[\s\S]{0,500}eng28LaterSkillsHTML\(d\)/.test(app), '4. the read-out: Attack, Health and skills at that level, later skills as "?"');
 ok(/function eng28LaterSkillsHTML\(d\)\{\s*try\{ const tip = TX\('ui\.lvl11-grows'\)/.test(app), '4. the hover\'s "?" chips read "Will learn another skill as it grows"');
-ok(/if\(!\(bopts && bopts\.live\)\)\{ const q = lvl11GrowsChipHTML\(d\)/.test(app), '4. the card face has one such chip (not on a unit in a fight)');
+ok(!/lvl11GrowsChipHTML/.test(app), '4. no "?" chip on the card face (UIQ2 2026-11-21, owner: no mystery-skill context pip; the hover line says it)');
 ok(/<h3>Abilities<\/h3>\$\{abilityHTML\}\$\{eng28LaterSkillsHTML\(d\)/.test(app), '4. the Codex card view lists them under Abilities');
 ok(/tokenDef: id=> \(typeof liveCards/.test(app), '4. the card editor\'s budget sees the grown token (sbCanon tokenDef)');
 { const rows = new Function('copyBaseDef', 'cardBaseLevel', 'ui18CardSkillKeys', LB.grab('lvl11LaterRows') + '\nreturn lvl11LaterRows;')(()=> null, ()=> 1, d=> Object.keys(d.levelSkills).flatMap(L=> Object.keys(d.levelSkills[L]).map(k=> ({key: k, lvl: +L}))));

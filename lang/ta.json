@@ -4741,5 +4741,6 @@
  "{att} scares {name}: its attacks deal {n} less.": "{att} {name}-ஐ அச்சுறுத்துகிறது: அதன் தாக்குதல்கள் {n} குறைவு.",
  "Scared -{n}": "அச்சம் -{n}",
  "Scared: attacks for {n} less": "அச்சம்: {n} குறைவாகத் தாக்கும்",
- "While an ally leader is on the battlefield, it has {skills}.": "நட்புத் தலைவர் போர்க்களத்தில் இருக்கும்வரை, இதற்கு {skills}."
+ "While an ally leader is on the battlefield, it has {skills}.": "நட்புத் தலைவர் போர்க்களத்தில் இருக்கும்வரை, இதற்கு {skills}.",
+ "Learns a skill at a higher level": "உயர்ந்த நிலையில் ஒரு திறனைக் கற்கும்"
 }

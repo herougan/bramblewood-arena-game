@@ -4739,5 +4739,6 @@
  "{att} scares {name}: its attacks deal {n} less.": "{att}が{name}を怯えさせた：攻撃が{n}減る。",
  "Scared -{n}": "怯え -{n}",
  "Scared: attacks for {n} less": "怯え：攻撃が{n}減る",
- "While an ally leader is on the battlefield, it has {skills}.": "味方のリーダーが戦場にいる間、{skills}を持つ。"
+ "While an ally leader is on the battlefield, it has {skills}.": "味方のリーダーが戦場にいる間、{skills}を持つ。",
+ "Learns a skill at a higher level": "より高いレベルでスキルを覚える"
 }

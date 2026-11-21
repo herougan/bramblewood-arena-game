@@ -4740,5 +4740,6 @@
  "{att} scares {name}: its attacks deal {n} less.": "{att} spaventa {name}: i suoi attacchi fanno {n} in meno.",
  "Scared -{n}": "Spaventato -{n}",
  "Scared: attacks for {n} less": "Spaventato: attacca per {n} in meno",
- "While an ally leader is on the battlefield, it has {skills}.": "Finché un capo alleato è sul campo di battaglia, ha {skills}."
+ "While an ally leader is on the battlefield, it has {skills}.": "Finché un capo alleato è sul campo di battaglia, ha {skills}.",
+ "Learns a skill at a higher level": "Impara un'abilità a un livello superiore"
 }

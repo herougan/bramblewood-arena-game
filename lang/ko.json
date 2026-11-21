@@ -4741,5 +4741,6 @@
  "{att} scares {name}: its attacks deal {n} less.": "{att}이(가) {name}을(를) 겁먹게 했다: 공격이 {n} 줄어든다.",
  "Scared -{n}": "공포 -{n}",
  "Scared: attacks for {n} less": "공포: 공격이 {n} 줄어든다",
- "While an ally leader is on the battlefield, it has {skills}.": "아군 지도자가 전장에 있는 동안 {skills}을(를) 가진다."
+ "While an ally leader is on the battlefield, it has {skills}.": "아군 지도자가 전장에 있는 동안 {skills}을(를) 가진다.",
+ "Learns a skill at a higher level": "더 높은 레벨에서 스킬을 배웁니다"
 }

@@ -4739,5 +4739,6 @@
  "{att} scares {name}: its attacks deal {n} less.": "{att} 嚇住了 {name}：其攻擊減少 {n}。",
  "Scared -{n}": "驚恐 -{n}",
  "Scared: attacks for {n} less": "驚恐：攻擊減少 {n}",
- "While an ally leader is on the battlefield, it has {skills}.": "當友方首領在戰場上時，擁有{skills}。"
+ "While an ally leader is on the battlefield, it has {skills}.": "當友方首領在戰場上時，擁有{skills}。",
+ "Learns a skill at a higher level": "在更高等級時習得技能"
 }

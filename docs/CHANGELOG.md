@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-21 (package UIQ2: owner 22:03 notes)
+- Card hover: the "?" line now reads "Learns a skill at a higher level" (no level number; 12 languages), and it and the Discard box sit 8px apart like the other blocks.
+- Context pips: no "?" pip any more (a skill not met yet, or one learnt at a higher level); the hover's text lines say both. A unit on the board no longer shows its On Discard trigger (it can never be discarded again).
+- Opening the conquest map: the weather layers read their box every ~0.5 s instead of every frame (that read forced a page layout each frame while the map opened), the menu music's reverb is built when the page is idle instead of on the click, and the leader-grant check uses a Set. Measured at 4x CPU throttle with a late-game save: main-thread work in the 2 s after Play about 1,050 -> 730 ms; layout reads from the weather loop about 300 -> 3 ms. On an unthrottled quiet machine the open was already 140-250 ms to the second frame.
+
 ## 2026-11-21 (package MAPCTX: skills measured on their own map)
 - New skill measure: each skill on its own map's pool, fields and level (`tools/pipeline/mapctx.sh`). First pass, Maps 18, 8, 1, 4: 30 of 51 skills read outside their shared measure. Context skills are worth far more at home than their price (Tide 3 on Map 4 7.9 against 1.3). Decision MAPCTX-1. No game change. Doc: `docs/balance/pipeline/mapctx-2026-11-21.md`.
 - Full pass, Maps 1-20: 309 skills on their home map, 178 apart from the shared measure; against price 84 too cheap, 127 too dear. 33 skills are off the same way on every map (e.g. Swift, Delivery 1, Pounce 1). Table: `node tools/pipeline/mapctx_report.js`. MAPCTX-1 updated.

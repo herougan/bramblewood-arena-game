@@ -4739,5 +4739,6 @@
  "{att} scares {name}: its attacks deal {n} less.": "Tinakot ng {att} si {name}: {n} na mas mahina ang mga atake nito.",
  "Scared -{n}": "Takot -{n}",
  "Scared: attacks for {n} less": "Takot: {n} na mas mahina ang atake",
- "While an ally leader is on the battlefield, it has {skills}.": "Habang nasa larangan ang isang kakampi na pinuno, may {skills} ito."
+ "While an ally leader is on the battlefield, it has {skills}.": "Habang nasa larangan ang isang kakampi na pinuno, may {skills} ito.",
+ "Learns a skill at a higher level": "Matututo ng kakayahan sa mas mataas na antas"
 }

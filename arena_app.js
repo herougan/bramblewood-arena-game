@@ -7095,11 +7095,14 @@ const Songbook = (()=>{
   function out(c){
     if(master) return master;
     master = c.createGain(); master.gain.value = 0; master.connect(c.destination);
-    try{
+    // 2026-11-21 (package UIQ2, owner 22:03 #1 "opening the conquest map lags"): the reverb (a 2.2 s impulse; setting a convolver's buffer is
+    // synchronous work on the page) is built when the page is idle, not in the tick that starts the music, which is the click on Play
+    const mk = ()=>{ try{
       const n = Math.floor(c.sampleRate*2.2), b = c.createBuffer(2, n, c.sampleRate);
-      for(let ch=0; ch<2; ch++){ const d = b.getChannelData(ch); let lp = 0; for(let i=0;i<n;i++){ lp = lp*0.8 + (Math.random()*2-1)*0.2; d[i] = lp*Math.pow(1 - i/n, 3); } }
-      verb = c.createConvolver(); verb.buffer = b; const wet = c.createGain(); wet.gain.value = 0.35; verb.connect(wet); wet.connect(master);
-    }catch(e){ verb = null; }
+      for(let ch=0; ch<2; ch++){ const d = b.getChannelData(ch); let lp = 0; for(let i=0;i<n;i++){ lp = lp*0.8 + (Math.random()*2-1)*0.2; const e = 1 - i/n; d[i] = lp*e*e*e; } }
+      const v = c.createConvolver(); v.buffer = b; const wet = c.createGain(); wet.gain.value = 0.35; v.connect(wet); wet.connect(master); verb = v;
+    }catch(e){ verb = null; } };
+    if(typeof requestIdleCallback === 'function') requestIdleCallback(mk, {timeout: 3000}); else setTimeout(mk, 1500);
     return master;
   }
   function noise(c){ if(noiseBuf) return noiseBuf; const n = c.sampleRate, b = c.createBuffer(1, n, c.sampleRate), d = b.getChannelData(0); for(let i=0;i<n;i++) d[i] = Math.random()*2-1; return (noiseBuf = b); }
@@ -7541,15 +7544,15 @@ function eng28HoverDef(d, liveCard){
 // is brown, .skill-q). Admin Mode adds the skill's name and level to the tooltip.
 // LVL11 (2026-11-19, owner 11-18 21:29: "future skills showing up at ? as well. The tooltip is different - it's not that it isn't unlocked, but it says
 // the creature will learn more as it grows"): the chip reads ui.lvl11-grows (was ui.eng28-later, which the Map cards window's named tiles keep);
-// lvl11LaterRows is shared with the card face's one chip (abilityBadges) and the Codex level slider.
+// lvl11LaterRows is shared with the Codex level slider (UIQ2 2026-11-21: the card face's "?" chip is gone).
 function lvl11LaterRows(d){ const b = (typeof copyBaseDef === 'function' && copyBaseDef(d.derivedFrom || d.id)) || d, ls = (b && b.levelSkills) || d.levelSkills; if(!ls) return [];
   const L = Number.isFinite(Number(d.level)) ? Number(d.level) : cardBaseLevel(b); return ui18CardSkillKeys({levelSkills: ls}).filter(x=> x.lvl > L); }
-function lvl11GrowsChipHTML(d){ try{ if(!lvl11LaterRows(d).length) return ''; const t = TX('ui.lvl11-grows'); return `<span class="skill-q eng28-later" title="${escapeAttr(t)}" aria-label="${escapeAttr(t)}">?</span>`; }catch(e){ return ''; } }
 function eng28LaterSkillsHTML(d){
   try{ const tip = TX('ui.lvl11-grows');
     const rows = lvl11LaterRows(d); if(!rows.length) return '';
-    // UIQ1 (2026-11-20, owner 11-20 00:01): one line, the "?" with its text: the next level it learns a skill (the skill stays hidden; Admin Mode names them in the tooltip)
-    const lv = Math.min(...rows.map(x=> x.lvl)), say = TX('ui.uiq1-learns', {n: lv}), t = adminModeEnabled ? `${tip} (${rows.map(x=> `${(skillDefOf(x.key) || {}).label || x.key}, ${TX('ui.codex-skill-lvl', {n: x.lvl})}`).join('; ')})` : tip;
+    // UIQ1 (2026-11-20, owner 11-20 00:01): one line, the "?" with its text (the skill stays hidden; Admin Mode names them in the tooltip)
+    // UIQ2 (2026-11-21, owner 22:03 #2: "don't say which level, just say, learns a skill at a higher level")
+    const say = TX('ui.uiq1-learns'), t = adminModeEnabled ? `${tip} (${rows.map(x=> `${(skillDefOf(x.key) || {}).label || x.key}, ${TX('ui.codex-skill-lvl', {n: x.lvl})}`).join('; ')})` : tip;
     return `<div class="eng28-later-row"><span class="skill-q eng28-later" title="${escapeAttr(t)}" aria-label="${escapeAttr(say)}">?</span><span class="uiq1-q-text">${escapeHtml(say)}</span></div>`;
   }catch(e){ return ''; }
 }
@@ -7619,7 +7622,7 @@ function fullCardHTML(defId, liveCard, opts){
   // 2026-10-30 (package CS-C, owner CS-1 "the hover popover shows the Full card plus text"): the Full card (was 150px)
   // 2026-11-18 (UI60, owner 21:29: "on card hover shows the card's level ... primarily for your deck hover and on the battlefield"): opts.showLevel adds a "Lv N" pill under the card (not in pack reveals or the shop)
   const popLv = opts.showLevel ? (opts.shownLevel != null && isFinite(opts.shownLevel) ? opts.shownLevel : Number.isFinite(Number(visualDef.level)) && visualDef.level > 0 ? visualDef.level : getCardLevel(defId)) : null;
-  const visualHTML = `<div class="card-pop-visual${popLv != null ? ' has-lv' : ''}">${cardTileHTML(Object.assign({}, visualDef, {locked:false}), {size:'full', noQ:true /* UIQ1 */, extraClass:'card-pop-visual-tile' + (opts.lookClass ? ' ' + opts.lookClass : '')})}${popLv != null ? `<div class="levelbadge cp-lv" title="${escapeAttr('Level ' + popLv)}">Lv ${popLv}</div>` : ''}</div>`;
+  const visualHTML = `<div class="card-pop-visual${popLv != null ? ' has-lv' : ''}">${cardTileHTML(Object.assign({}, visualDef, {locked:false}), {size:'full', extraClass:'card-pop-visual-tile' + (opts.lookClass ? ' ' + opts.lookClass : '')})}${popLv != null ? `<div class="levelbadge cp-lv" title="${escapeAttr('Level ' + popLv)}">Lv ${popLv}</div>` : ''}</div>`;
   // CSRE (2026-09-20): same zero-cost/zero-wait hiding rule as the card tile itself — no bare
   // "🪙0" or "⏱0" chip in this stat row, and any Grace/Devilry cost is folded in here too
   // (costBadgeParts) instead of only ever showing gold.
@@ -10047,7 +10050,7 @@ function cardTileHTML(d, opts){
     ${nmHTML(d.name||'', costParts, d.wait) /* UI20 */}
     ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
     ${d.field ? `<div class="stats field-stats" title="${escapeAttr(d.field.title || `Field card: changes the whole battlefield for ${d.field.rounds||3} rounds`)}"><span class="fld">${d.field.label || `🌐 Field · ${d.field.rounds||3} rounds`}</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='spell' ? `<div class="stats field-stats" title="${escapeAttr(spellText(d))}"><span class="fld">✨ Spell</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':(atkElementOf(d) ? `<span class="atk${atkPlateCls(d)}${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}" ${atkElementOf(d) === 'magic' ? ' title="Magic attack"' : ''}><i class="sg">${atkGlyphOf(d)}</i>` : `<span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}"><i class="sg">⚔</i>`)+d.attack+'</span>'}<span class="hp${ui23Unhealth(d)}"><i class="sg">❤</i>${hpBadgeText}</span></div>`}
-    ${abilityBadges(d, {noQ: !!opts.noQ, compact: !!(hand || inMatch), hand: !!hand /* UI5 (2026-10-30, W5) */, live: (opts.live && opts.live.wait!=null) ? {wait: opts.live.wait} : null})}
+    ${abilityBadges(d, {compact: !!(hand || inMatch), hand: !!hand /* UI5 (2026-10-30, W5) */, live: (opts.live && opts.live.wait!=null) ? {wait: opts.live.wait} : null})}
     ${isCastle||hand?'':pitchYieldBadgeHTML(d)}
   </div>`;
 }
@@ -10155,7 +10158,7 @@ function triggerIsOff(t, live, d){ return !!(live && (live.wait>0 || live.stunne
 const SPENT_TRIG_MS = 1600;
 function triggerSpent(t, live, trs){
   if(!live) return false;
-  if(t.on === 'onSpawn') return true;
+  if(t.on === 'onSpawn' || t.on === 'onPitch') return true; // UIQ2 (2026-11-21, owner 22:03 #3): a unit on the board can never be discarded for resources again
   if(t.on === 'onReady') return (live.wait|0) <= 0;
   if(t.once){ const i = trs.filter(x=> x.on === t.on).indexOf(t); return !!(live.firedOnce && live.firedOnce['once:' + t.on + ':' + i]); }
   return false;
@@ -10523,9 +10526,8 @@ function abilityBadges(d, bopts){
     out.push(`<span class="ab-sk${zeitLitNow(k, bopts) ? ' zeit-live' : ''}" data-sk="${k}"${ui7NoNum ? ` title="${ui7Tip}" aria-label="${ui7Tip}"` : ''}>${iconHTML(k, SKILL_ICON[k] || '✦')}${!ui7NoNum && (typeof v === 'number' || /^\d+$/.test(String(v))) ? n1(v) : ''}</span>`); });
   eng28GenericPips(e, out, bopts, n1); // ENG28 (2026-11-07, owner 23:35 #9): every other skill gets its pip by default
   out.push(...triggerBadges(d, bopts && bopts.live).filter(Boolean)); // a spent trigger that has faded is gone, not an empty slot
-  if(d._hiddenSkills) out.push(skillQChipHTML()); // 2026-10-15 (SKILL_REVEAL) // 2026-10-15 (SKILL_REVEAL)
-  if(!(bopts && bopts.live)){ const q = lvl11GrowsChipHTML(d); if(q) out.push(q); } // LVL11 (2026-11-19): it learns another skill as it grows (not on a unit in a fight)
-  if(bopts && bopts.noQ) for(let i = out.length; i--;) if(/class="skill-q/.test(out[i])) out.splice(i, 1); // UIQ1 (2026-11-20, owner 11-20 00:01): no "?" pip on the hover panel's art; its text line says it
+  // UIQ2 (2026-11-21, owner 22:03 #3: "do not show the ? mystery skill as a context pip ... do not show things irrelevant to the battlefield as
+  // context pips"): no "?" pip for a skill not met yet (SKILL_REVEAL) or one learnt at a higher level (LVL11); the hover's text lines say both
   if(!out.length) return '';
   // 2026-10-12 (10:57, user: "Remove the pill completely (fade) together with the contents when theres nothing left inside"):
   // when everything left in the strip is a trigger that is fading out, the strip fades with it.
@@ -11625,7 +11627,7 @@ function codexDetailLevelChipHTML(defId, d0, d){
 // move at most to their highest unlocked level for that card + 1."): the Codex card view's level bar, from the card's base level to (your best copy's level
 // + 1), never past Level 10 (11 once that card is limit-broken). A card you don't own stays at its base level (the next level you could reach is that one),
 // the bar shown but locked. Admin Mode: every level to 11. Below it: Attack, Health and the skills at that level (defAtShownLevel), a skill still to come as
-// the gold "?" (lvl11GrowsChipHTML's tooltip). The big card keeps the Codex level.
+// the gold "?" (ui.lvl11-grows). The big card keeps the Codex level.
 function lvl11SliderRange(id){
   const b = copyBaseDef(id); if(!b || (b.attack == null && b.health == null)) return null;
   const lo = cardBaseLevel(b), top = cardMaxLevel(b) === 10 ? LIMIT_BREAK_LEVEL : cardMaxLevel(b);
@@ -29222,9 +29224,9 @@ function placeConquestHud(){
 // that boss before the leader existed get it the first time they open the map.
 function grantClearedBossLeaders(){
   try{
-    const pr = loadConquestProgress(), defs = getCardDefs();
+    const pr = loadConquestProgress(), defs = getCardDefs(), done = new Set(pr.completed || []); // UIQ2 (2026-11-21): a Set, not includes() per leader, on every map render
     Object.values(defs).forEach(d=>{ const src = d && d.source; if(!src || src.kind !== 'map' || !(d.archetypes||[]).includes('Leader')) return;
-      if((pr.completed||[]).includes(conquestNodeId(src.id, src.node)) && !myUnlockedCardIds.has(d.id) && !(myCardCopies[d.id]||[]).length){ if(loadDialogueFlags()['leaderGrant:' + d.id]) return; setDialogueFlag('leaderGrant:' + d.id, true); // once (2026-10-12: it toasted on every visit when the grant was refused)
+      if(done.has(conquestNodeId(src.id, src.node)) && !myUnlockedCardIds.has(d.id) && !(myCardCopies[d.id]||[]).length){ if(loadDialogueFlags()['leaderGrant:' + d.id]) return; setDialogueFlag('leaderGrant:' + d.id, true); // once (2026-10-12: it toasted on every visit when the grant was refused)
         unlockCardForPlayer(d.id, 'conquestReward'); if(myUnlockedCardIds.has(d.id) || (myCardCopies[d.id]||[]).length) try{ showToast(TX('toast.joins-you-for-beating-that-map', {name: d.name}), 'ok'); }catch(e){} } });
   }catch(e){}
 }

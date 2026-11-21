@@ -343,7 +343,9 @@ function ambience(host, key, opts){
   A.tick = function(dt){
     if(!cv.isConnected){ A.gone += dt; if(A.gone > 3) A.stop(); return; }
     A.gone = 0; if(document.hidden) return;
-    const r = host.getBoundingClientRect(); if(r.width < 4 || r.height < 4 || r.bottom < 0 || r.top > innerHeight) return;
+    // 2026-11-21 (package UIQ2, owner 22:03 #1 "opening the conquest map lags"): the host's box is read every 16th tick (~0.5 s), not every
+    // tick: a read each frame forced a layout of the whole page whenever anything else had touched the DOM (the map's opening above all)
+    if(!A.r || ++A.rn >= 16){ A.r = host.getBoundingClientRect(); A.rn = 0; } const r = A.r; if(r.width < 4 || r.height < 4 || r.bottom < 0 || r.top > innerHeight) return;
     const W = Math.max(2, Math.round(r.width*A.scale)), H = Math.max(2, Math.round(r.height*A.scale));
     if(W !== A.W || H !== A.H){ cv.width = A.W = W; cv.height = A.H = H; }
     A.t += dt;
