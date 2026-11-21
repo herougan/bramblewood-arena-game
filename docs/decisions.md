@@ -5,7 +5,7 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 ## Waiting on you
 
 **MAPCTX-1. Price context skills by the map they live on** · Decide · Balance · asked 2026-11-21
-- All Maps 1-20 measured (309 skills on their home map). 194 read apart from the shared measure; against price 81 are too cheap, 127 too dear (86 of 89 close calls held at 1,000 fights). Context skills swing: Tide is worth about 4 on Maps 2-4, 9, 10 and 0 on nine others. 32 skills are off the same way on every map (Swift 4 vs 9.5, Delivery 2.5 vs 5.25, Pounce 1 up to 5.5 vs 1.7). Parasite reads -10 on Maps 7 and 12. Detail: docs/balance/pipeline/mapctx-2026-11-21.md.
+- All Maps 1-20 measured (309 skills on their home map). 194 read apart from the shared measure; against price 81 are too cheap, 127 too dear. Context skills swing: Tide is worth about 4 on Maps 2-4, 9, 10 and 0 on nine others. 32 skills are off the same way on every map (Swift 4 vs 9.5, Delivery 2.5 vs 5.25); 20 of them keep that verdict at bramble 5 and 30 too. Parasite reads -10 on Maps 7 and 12. Detail: docs/balance/pipeline/mapctx-2026-11-21.md.
   - a) Give context skills a home-map price, then list cards that leave the budget (no stat changes)
   - b) Re-price only the 32 skills that are off on every map (with SKM4-1); context skills keep one price
   - c) Leave
