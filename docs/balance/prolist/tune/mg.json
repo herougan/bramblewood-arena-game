@@ -1,0 +1,223 @@
+{
+ "map": "mg",
+ "generated": "2026-11-22T02:22:31.555Z",
+ "decks": [
+  {
+   "id": "2-B-BPRO-2",
+   "map": "mg",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "gull-thief": 4,
+     "limpet-clinger": 4,
+     "old-shell": 2,
+     "salvager-hermit-crab": 4,
+     "driftwood-crab": 4,
+     "pincushion-urchin": 2
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "gull-thief": 3,
+     "limpet-clinger": 4,
+     "driftwood-crab": 4,
+     "pincushion-urchin": 4,
+     "octopus-tactician": 2,
+     "raccoon-nightcrew": 3
+    },
+    "val": {
+     "v": 0.815,
+     "ref": 0.2,
+     "gap": 0.515
+    },
+    "leaders": [
+     "octopus-tactician"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: old-shell+salvager-hermit-crab -> octopus-tactician",
+     "was": [
+      "old-shell: off the bpro pool",
+      "salvager-hermit-crab: off the bpro pool",
+      "old-shell: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "salvager-hermit-crab: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "old-shell: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)",
+      "salvager-hermit-crab: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.85,
+     "ref": 0.15,
+     "gap": 0.58
+    },
+    {
+     "move": "gull-thief -1 -> raccoon-nightcrew",
+     "v": 0.792,
+     "ref": 0.2,
+     "gap": 0.522,
+     "tried": 24
+    },
+    {
+     "move": "octopus-tactician -2 -> raccoon-nightcrew",
+     "v": 0.767,
+     "ref": 0.225,
+     "gap": 0.497,
+     "tried": 20
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 21
+    }
+   ],
+   "readings": 650,
+   "sec": 98
+  },
+  {
+   "id": "2-B-PRO-2",
+   "map": "mg",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "driftwood-crab": 4,
+     "kittiwake-flock": 4,
+     "old-shell": 1,
+     "rock-pool-starfish": 4,
+     "trash-panda-trickster": 3,
+     "raccoon-nightcrew": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "driftwood-crab": 4,
+     "kittiwake-flock": 4,
+     "rock-pool-starfish": 4,
+     "trash-panda-trickster": 3,
+     "raccoon-nightcrew": 4,
+     "acorn-chipmunk": 1
+    },
+    "val": {
+     "v": 0.263,
+     "ref": 0.263,
+     "gap": 0
+    },
+    "leaders": [
+     "driftwood-crab"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: old-shell -> acorn-chipmunk",
+     "was": [
+      "old-shell: off the pro pool",
+      "old-shell: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.25,
+     "ref": 0.25,
+     "gap": 0
+    }
+   ],
+   "readings": 13,
+   "sec": 7
+  },
+  {
+   "id": "2-B-WPRO-1",
+   "map": "mg",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "limpet-clinger": 4,
+     "octopus-tactician": 4,
+     "old-shell": 4,
+     "pincushion-urchin": 4,
+     "rock-pool-starfish": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "limpet-clinger": 4,
+     "pincushion-urchin": 4,
+     "rock-pool-starfish": 4,
+     "open-ocean-hermit-crab": 4,
+     "driftwood-crab": 4
+    },
+    "val": {
+     "v": 0.8,
+     "ref": 0.8,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: old-shell -> open-ocean-hermit-crab",
+     "was": [
+      "old-shell: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.317,
+     "ref": 0.317,
+     "gap": 0.283
+    },
+    {
+     "move": "octopus-tactician x4 -> driftwood-crab",
+     "v": 0.833,
+     "ref": 0.833,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 33,
+   "sec": 23
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

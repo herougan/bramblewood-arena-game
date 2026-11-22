@@ -1,0 +1,173 @@
+{
+ "map": "mv",
+ "generated": "2026-11-22T02:38:44.330Z",
+ "decks": [
+  {
+   "id": "11-A-BPRO-2",
+   "map": "mv",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "gangrenous-leech": 4,
+     "peak-condor": 4,
+     "eyrie-warden": 3,
+     "the-gannet-queen": 3,
+     "anvil-thrush": 3,
+     "swamp-alligator": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "eyrie-warden": 4,
+     "the-gannet-queen": 3,
+     "anvil-thrush": 3,
+     "chamois-leaper": 3,
+     "peregrine-stooper": 4,
+     "apollo-butterfly": 3
+    },
+    "val": {
+     "v": 0.33,
+     "ref": 0.85,
+     "gap": 0.03
+    },
+    "leaders": [
+     "the-gannet-queen"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: gangrenous-leech x4 -> chamois-leaper",
+     "was": [
+      "gangrenous-leech: off the bpro pool",
+      "swamp-alligator: off the bpro pool",
+      "gangrenous-leech: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "swamp-alligator: not on the map's list (held, not listed)",
+      "gangrenous-leech: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)",
+      "swamp-alligator: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "repair: swamp-alligator x3 -> peregrine-stooper",
+     "was": [
+      "swamp-alligator: off the bpro pool",
+      "swamp-alligator: not on the map's list (held, not listed)",
+      "swamp-alligator: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)",
+      "shares 14 copies with another deck"
+     ]
+    },
+    {
+     "move": "repair: peak-condor x4 -> apollo-butterfly",
+     "was": [
+      "shares 14 copies with another deck"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.375,
+     "ref": 0.825,
+     "gap": 0.195
+    },
+    {
+     "move": "chamois-leaper -1 -> eyrie-warden",
+     "v": 0.3,
+     "ref": 0.7,
+     "gap": 0.03,
+     "tried": 24
+    },
+    {
+     "move": "apollo-butterfly -1 -> peregrine-stooper",
+     "v": 0.242,
+     "ref": 0.7,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 789,
+   "sec": 210
+  },
+  {
+   "id": "11-A-WPRO-1",
+   "map": "mv",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "chamois-leaper": 2,
+     "eagle-owl-quartermaster": 3,
+     "eyrie-warden": 4,
+     "gangrenous-leech": 3,
+     "swamp-alligator": 4,
+     "the-gannet-queen": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "chamois-leaper": 2,
+     "eagle-owl-quartermaster": 3,
+     "eyrie-warden": 4,
+     "the-gannet-queen": 4,
+     "anvil-thrush": 3,
+     "apollo-butterfly": 4
+    },
+    "val": {
+     "v": 0.713,
+     "ref": 0.713,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: gangrenous-leech x3 -> anvil-thrush",
+     "was": [
+      "gangrenous-leech: off the wpro pool",
+      "swamp-alligator: off the wpro pool"
+     ]
+    },
+    {
+     "move": "repair: swamp-alligator -> apollo-butterfly",
+     "was": [
+      "swamp-alligator: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.817,
+     "ref": 0.817,
+     "gap": 0
+    }
+   ],
+   "readings": 21,
+   "sec": 20
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

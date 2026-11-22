@@ -1,0 +1,76 @@
+{
+ "map": "m1",
+ "generated": "2026-11-22T02:12:23.094Z",
+ "decks": [
+  {
+   "id": "0-BPRO-2",
+   "map": "m1",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "ant-scout": 4,
+     "duck-paddler": 3,
+     "farm-dog": 4,
+     "pond-trout": 3,
+     "soldier-ant": 4,
+     "thorn-shrike": 2
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "ant-scout": 4,
+     "duck-paddler": 3,
+     "farm-dog": 4,
+     "pond-trout": 3,
+     "soldier-ant": 4,
+     "honey-bee": 2
+    },
+    "val": {
+     "v": 0.06,
+     "ref": 0.6,
+     "gap": 0.09
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: thorn-shrike -> honey-bee",
+     "was": [
+      "thorn-shrike: off the bpro pool",
+      "thorn-shrike: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "thorn-shrike: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.133,
+     "ref": 0.6,
+     "gap": 0.047
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 335,
+   "sec": 62
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

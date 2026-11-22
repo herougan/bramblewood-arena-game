@@ -1,0 +1,204 @@
+{
+ "map": "m7",
+ "generated": "2026-11-22T02:35:03.226Z",
+ "decks": [
+  {
+   "id": "10-BPRO-1",
+   "map": "m7",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "clownfish-scout": 4,
+     "orca-vanguard": 3,
+     "ironclaw-fiddler": 3,
+     "voltaic-eel": 3,
+     "sea-turtle-elder": 4,
+     "fiddler-crab-swarm": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "clownfish-scout": 4,
+     "ironclaw-fiddler": 3,
+     "voltaic-eel": 3,
+     "sea-turtle-elder": 4,
+     "fiddler-crab-swarm": 3,
+     "conch-crawler": 3
+    },
+    "val": {
+     "v": 0.215,
+     "ref": 0.6,
+     "gap": 0
+    },
+    "leaders": [
+     "ironclaw-fiddler"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: orca-vanguard -> conch-crawler",
+     "was": [
+      "orca-vanguard: off the bpro pool",
+      "orca-vanguard: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "orca-vanguard: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.283,
+     "ref": 0.75,
+     "gap": 0.013
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 345,
+   "sec": 37
+  },
+  {
+   "id": "10-BPRO-2",
+   "map": "m7",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "clownfish-scout": 4,
+     "ironclaw-fiddler": 3,
+     "krill-swarm": 3,
+     "reef-shark": 4,
+     "voltaic-eel": 3,
+     "kraken-spawnling": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "clownfish-scout": 4,
+     "ironclaw-fiddler": 3,
+     "krill-swarm": 3,
+     "reef-shark": 4,
+     "voltaic-eel": 3,
+     "crown-of-thorns-star": 3
+    },
+    "val": {
+     "v": 0.3,
+     "ref": 0.65,
+     "gap": 0
+    },
+    "leaders": [
+     "ironclaw-fiddler"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: kraken-spawnling -> crown-of-thorns-star",
+     "was": [
+      "kraken-spawnling: off the bpro pool",
+      "kraken-spawnling: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "kraken-spawnling: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.258,
+     "ref": 0.625,
+     "gap": 0
+    }
+   ],
+   "readings": 91,
+   "sec": 8
+  },
+  {
+   "id": "10-WPRO-1",
+   "map": "m7",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "coral-current-eel": 1,
+     "moon-jelly": 4,
+     "orca-vanguard": 4,
+     "reef-shark": 4,
+     "sea-turtle-elder": 4,
+     "voltaic-eel": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "coral-current-eel": 1,
+     "moon-jelly": 4,
+     "reef-shark": 4,
+     "sea-turtle-elder": 4,
+     "voltaic-eel": 3,
+     "clownfish-scout": 4
+    },
+    "val": {
+     "v": 0.55,
+     "ref": 0.55,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: orca-vanguard -> clownfish-scout",
+     "was": [
+      "orca-vanguard: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.683,
+     "ref": 0.683,
+     "gap": 0
+    }
+   ],
+   "readings": 12,
+   "sec": 4
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

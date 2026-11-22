@@ -1,0 +1,396 @@
+{
+ "map": "ms",
+ "generated": "2026-11-22T02:33:04.927Z",
+ "decks": [
+  {
+   "id": "5-A-BPRO-1",
+   "map": "ms",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "mudpuppy": 4,
+     "muskrat-reedgatherer": 3,
+     "nutria-reedcutter": 1,
+     "peat-cutter-vole": 4,
+     "swamp-alligator": 4,
+     "bog-leech": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "mudpuppy": 4,
+     "muskrat-reedgatherer": 3,
+     "nutria-reedcutter": 2,
+     "peat-cutter-vole": 4,
+     "swamp-alligator": 4,
+     "cottonmouth-matriarch": 3
+    },
+    "val": {
+     "v": 0.235,
+     "ref": 0.925,
+     "gap": 0.075
+    },
+    "leaders": [
+     "cottonmouth-matriarch"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: bog-leech -> constrictor-coil",
+     "was": [
+      "bog-leech: off the bpro pool",
+      "bog-leech: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "bog-leech: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.2,
+     "ref": 0.85,
+     "gap": 0.14
+    },
+    {
+     "move": "constrictor-coil x4 -> cottonmouth-matriarch",
+     "v": 0.183,
+     "ref": 0.825,
+     "gap": 0.09,
+     "tried": 24
+    },
+    {
+     "move": "muskrat-reedgatherer -1 -> nutria-reedcutter",
+     "v": 0.175,
+     "ref": 0.8,
+     "gap": 0.045,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 832,
+   "sec": 175
+  },
+  {
+   "id": "5-A-BPRO-2",
+   "map": "ms",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "bog-leech": 2,
+     "cypress-root-lurker": 4,
+     "matamata": 4,
+     "mudpuppy": 3,
+     "newt-doctor": 4,
+     "cottonmouth-matriarch": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "cypress-root-lurker": 3,
+     "matamata": 4,
+     "newt-doctor": 4,
+     "cottonmouth-matriarch": 2,
+     "muskrat-reedgatherer": 3,
+     "nutria-reedcutter": 4
+    },
+    "val": {
+     "v": 0.24,
+     "ref": 0.75,
+     "gap": 0
+    },
+    "leaders": [
+     "cottonmouth-matriarch"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: bog-leech -> muskrat-reedgatherer",
+     "was": [
+      "bog-leech: off the bpro pool",
+      "bog-leech: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "bog-leech: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.217,
+     "ref": 0.975,
+     "gap": 0.39
+    },
+    {
+     "move": "mudpuppy x3 -> nutria-reedcutter",
+     "v": 0.2,
+     "ref": 0.95,
+     "gap": 0.34,
+     "tried": 24
+    },
+    {
+     "move": "cypress-root-lurker -1 -> muskrat-reedgatherer",
+     "v": 0.217,
+     "ref": 0.85,
+     "gap": 0.14,
+     "tried": 24
+    },
+    {
+     "move": "cottonmouth-matriarch -1 -> nutria-reedcutter",
+     "v": 0.242,
+     "ref": 0.825,
+     "gap": 0.09,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 1076,
+   "sec": 205
+  },
+  {
+   "id": "5-A-BPRO-3",
+   "map": "ms",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "crocodile-ambusher": 4,
+     "matamata": 3,
+     "newt-doctor": 3,
+     "peat-cutter-vole": 4,
+     "old-snapjaw": 2,
+     "mudpuppy": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "crocodile-ambusher": 4,
+     "matamata": 3,
+     "newt-doctor": 3,
+     "peat-cutter-vole": 4,
+     "mudpuppy": 4,
+     "cottonmouth-matriarch": 2
+    },
+    "val": {
+     "v": 0.24,
+     "ref": 0.725,
+     "gap": 0
+    },
+    "leaders": [
+     "cottonmouth-matriarch"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: old-snapjaw -> cottonmouth-matriarch",
+     "was": [
+      "old-snapjaw: off the bpro pool",
+      "old-snapjaw: not on the map's list (held, not listed)",
+      "old-snapjaw: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.25,
+     "ref": 0.775,
+     "gap": 0
+    }
+   ],
+   "readings": 91,
+   "sec": 23
+  },
+  {
+   "id": "5-A-BPRO-4",
+   "map": "ms",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cypress-root-lurker": 4,
+     "muskrat-reedgatherer": 4,
+     "newt-doctor": 4,
+     "old-snapjaw": 3,
+     "peat-cutter-vole": 4,
+     "hedgehog-herbalist": 1
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "cypress-root-lurker": 4,
+     "muskrat-reedgatherer": 4,
+     "newt-doctor": 2,
+     "peat-cutter-vole": 4,
+     "constrictor-coil": 4,
+     "river-carp": 2
+    },
+    "val": {
+     "v": 0.315,
+     "ref": 0.8,
+     "gap": 0.015
+    },
+    "leaders": [
+     "newt-doctor"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: old-snapjaw+hedgehog-herbalist -> constrictor-coil",
+     "was": [
+      "old-snapjaw: off the bpro pool",
+      "hedgehog-herbalist: off the bpro pool",
+      "old-snapjaw: not on the map's list (held, not listed)",
+      "hedgehog-herbalist: not on the map's list (held, not listed)",
+      "hedgehog-herbalist: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)",
+      "old-snapjaw: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.492,
+     "ref": 0.75,
+     "gap": 0.222
+    },
+    {
+     "move": "newt-doctor -2 -> matamata",
+     "v": 0.208,
+     "ref": 0.825,
+     "gap": 0.09,
+     "tried": 24
+    },
+    {
+     "move": "matamata -2 -> river-carp",
+     "v": 0.333,
+     "ref": 0.775,
+     "gap": 0.063,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 781,
+   "sec": 164
+  },
+  {
+   "id": "5-A-WPRO-1",
+   "map": "ms",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "bog-leech": 4,
+     "constrictor-coil": 4,
+     "crocodile-ambusher": 4,
+     "old-snapjaw": 3,
+     "peat-cutter-vole": 1,
+     "swamp-alligator": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "constrictor-coil": 4,
+     "crocodile-ambusher": 4,
+     "peat-cutter-vole": 4,
+     "swamp-alligator": 4,
+     "cypress-root-lurker": 4
+    },
+    "val": {
+     "v": 1,
+     "ref": 1,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: bog-leech+old-snapjaw -> cypress-root-lurker",
+     "was": [
+      "bog-leech: off the wpro pool",
+      "old-snapjaw: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.983,
+     "ref": 0.983,
+     "gap": 0
+    }
+   ],
+   "readings": 8,
+   "sec": 5
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

@@ -1,0 +1,219 @@
+{
+ "map": "my",
+ "generated": "2026-11-22T02:39:55.720Z",
+ "decks": [
+  {
+   "id": "14-A-BPRO-1",
+   "map": "my",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "bramblewood-macaque": 3,
+     "camouflage-frog": 4,
+     "hoopoe-herald": 3,
+     "jaguar-stalker": 2,
+     "kinkajou-lurker": 4,
+     "canopy-sloth-guardian": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "bramblewood-macaque": 3,
+     "camouflage-frog": 4,
+     "jaguar-stalker": 2,
+     "kinkajou-lurker": 4,
+     "fishing-cat": 3,
+     "amber-cicada": 4
+    },
+    "val": {
+     "v": 0.205,
+     "ref": 0.3,
+     "gap": 0
+    },
+    "leaders": [
+     "fishing-cat"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: hoopoe-herald -> fishing-cat",
+     "was": [
+      "hoopoe-herald: off the bpro pool",
+      "hoopoe-herald: not on the map's list (held, not listed)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.108,
+     "ref": 0.675,
+     "gap": 0.072
+    },
+    {
+     "move": "canopy-sloth-guardian x4 -> amber-cicada",
+     "v": 0.208,
+     "ref": 0.45,
+     "gap": 0,
+     "tried": 17
+    }
+   ],
+   "readings": 235,
+   "sec": 64
+  },
+  {
+   "id": "14-A-BPRO-2",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "repairFailed": [
+    "hoopoe-herald: off the bpro pool",
+    "hoopoe-herald: not on the map's list (held, not listed)"
+   ],
+   "keep": false
+  },
+  {
+   "id": "14-A-WPRO-1",
+   "map": "my",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "amber-cicada": 4,
+     "camouflage-frog": 4,
+     "canopy-sloth-guardian": 4,
+     "fishing-cat": 3,
+     "jaguar-stalker": 3,
+     "pride-queen": 2
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "amber-cicada": 4,
+     "camouflage-frog": 4,
+     "canopy-sloth-guardian": 4,
+     "fishing-cat": 3,
+     "jaguar-stalker": 3,
+     "bramblewood-macaque": 2
+    },
+    "val": {
+     "v": 0.863,
+     "ref": 0.863,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: pride-queen -> bramblewood-macaque",
+     "was": [
+      "pride-queen: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.9,
+     "ref": 0.9,
+     "gap": 0
+    }
+   ],
+   "readings": 6,
+   "sec": 12
+  },
+  {
+   "id": "14-A-WPRO-2",
+   "map": "my",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "amber-cicada": 4,
+     "camouflage-frog": 4,
+     "hoopoe-herald": 4,
+     "mosquito-cloud": 4,
+     "proboscis-monkey": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "amber-cicada": 4,
+     "camouflage-frog": 4,
+     "mosquito-cloud": 4,
+     "proboscis-monkey": 4,
+     "kinkajou-lurker": 4
+    },
+    "val": {
+     "v": 0.813,
+     "ref": 0.813,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: hoopoe-herald -> kinkajou-lurker",
+     "was": [
+      "hoopoe-herald: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.917,
+     "ref": 0.917,
+     "gap": 0
+    }
+   ],
+   "readings": 2,
+   "sec": 7
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

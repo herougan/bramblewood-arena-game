@@ -1,0 +1,129 @@
+{
+ "map": "mf",
+ "generated": "2026-11-22T02:12:25.038Z",
+ "decks": [
+  {
+   "id": "1-BPRO-1",
+   "map": "mf",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "bramble-sprout": 4,
+     "chipmunk-cavalry": 4,
+     "dormouse": 2,
+     "puddle-skimmer": 4,
+     "jackrabbit-sprinter": 4,
+     "duck-paddler": 2
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "bramble-sprout": 4,
+     "chipmunk-cavalry": 4,
+     "dormouse": 4,
+     "puddle-skimmer": 4,
+     "duck-paddler": 4
+    },
+    "val": {
+     "v": 0.225,
+     "ref": 0.775,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: jackrabbit-sprinter -> bramble-sprout",
+     "was": [
+      "jackrabbit-sprinter: off the bpro pool",
+      "jackrabbit-sprinter: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "jackrabbit-sprinter: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.217,
+     "ref": 0.75,
+     "gap": 0
+    }
+   ],
+   "readings": 141,
+   "sec": 53
+  },
+  {
+   "id": "1-WPRO-2",
+   "map": "mf",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "ant-scout": 4,
+     "cottontail": 4,
+     "house-cat": 4,
+     "meadow-rabbit": 4,
+     "puddle-skimmer": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "ant-scout": 4,
+     "house-cat": 4,
+     "meadow-rabbit": 4,
+     "puddle-skimmer": 4,
+     "dormouse": 4
+    },
+    "val": {
+     "v": 0.688,
+     "ref": 0.688,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: cottontail -> dormouse",
+     "was": [
+      "cottontail: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.6,
+     "ref": 0.6,
+     "gap": 0
+    }
+   ],
+   "readings": 11,
+   "sec": 12
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

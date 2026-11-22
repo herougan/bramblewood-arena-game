@@ -1,0 +1,349 @@
+{
+ "map": "mp",
+ "generated": "2026-11-22T02:22:34.725Z",
+ "decks": [
+  {
+   "id": "2-A-BPRO-2",
+   "map": "mp",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "beaver-lumberjack": 4,
+     "duck-paddler": 4,
+     "muskrat-lodgekeeper": 4,
+     "old-shell": 4,
+     "raft-spider": 3,
+     "water-shrew": 1
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "beaver-lumberjack": 4,
+     "muskrat-lodgekeeper": 4,
+     "raft-spider": 3,
+     "water-shrew": 1,
+     "pond-algae": 4,
+     "muskrat-reedgatherer": 4
+    },
+    "val": {
+     "v": 0.21,
+     "ref": 0.15,
+     "gap": 0
+    },
+    "leaders": [
+     "muskrat-lodgekeeper"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: old-shell -> pond-algae",
+     "was": [
+      "old-shell: off the bpro pool",
+      "old-shell: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "old-shell: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.317,
+     "ref": 0.1,
+     "gap": 0.047
+    },
+    {
+     "move": "duck-paddler x4 -> muskrat-reedgatherer",
+     "v": 0.258,
+     "ref": 0.05,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 305,
+   "sec": 105
+  },
+  {
+   "id": "2-A-BPRO-4",
+   "map": "mp",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "beaver-lumberjack": 4,
+     "lodge-engineer": 2,
+     "muskrat-reedgatherer": 4,
+     "old-shell": 4,
+     "riverworks-bastion": 4,
+     "snapstick-turtle": 2
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "lodge-engineer": 2,
+     "muskrat-reedgatherer": 4,
+     "riverworks-bastion": 4,
+     "snapstick-turtle": 3,
+     "old-sturgeon": 3,
+     "pond-algae": 4
+    },
+    "val": {
+     "v": 0.19,
+     "ref": 0.6,
+     "gap": 0
+    },
+    "leaders": [
+     "lodge-engineer"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: old-shell x4 -> duck-paddler",
+     "was": [
+      "old-shell: off the bpro pool",
+      "old-shell: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "old-shell: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "repair: beaver-lumberjack x4 -> old-sturgeon",
+     "was": [
+      "shares 12 copies with another deck",
+      "shares 14 copies with another deck"
+     ]
+    },
+    {
+     "move": "repair: duck-paddler x4 -> pond-algae",
+     "was": [
+      "shares 14 copies with another deck"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.15,
+     "ref": 0.625,
+     "gap": 0.03
+    },
+    {
+     "move": "old-sturgeon -1 -> snapstick-turtle",
+     "v": 0.25,
+     "ref": 0.55,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 505,
+   "sec": 111
+  },
+  {
+   "id": "2-A-PRO-4",
+   "map": "mp",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "alley-cat": 4,
+     "beaver-lumberjack": 4,
+     "conch-crawler": 4,
+     "muskrat-reedgatherer": 2,
+     "old-shell": 4,
+     "platypus-spur": 2
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "alley-cat": 4,
+     "beaver-lumberjack": 4,
+     "conch-crawler": 4,
+     "muskrat-reedgatherer": 2,
+     "platypus-spur": 2,
+     "duck-paddler": 4
+    },
+    "val": {
+     "v": 0.075,
+     "ref": 0.075,
+     "gap": 0
+    },
+    "leaders": [
+     "platypus-spur"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: old-shell -> duck-paddler",
+     "was": [
+      "old-shell: off the pro pool",
+      "under 10 list copies",
+      "old-shell: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.133,
+     "ref": 0.133,
+     "gap": 0
+    }
+   ],
+   "readings": 7,
+   "sec": 6
+  },
+  {
+   "id": "2-A-WPRO-1",
+   "map": "mp",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "muskrat-lodgekeeper": 4,
+     "old-shell": 4,
+     "pond-algae": 4,
+     "riverworks-bastion": 4,
+     "water-shrew": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "muskrat-lodgekeeper": 4,
+     "pond-algae": 4,
+     "riverworks-bastion": 4,
+     "water-shrew": 4,
+     "beaver-lumberjack": 4
+    },
+    "val": {
+     "v": 0.575,
+     "ref": 0.575,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: old-shell -> beaver-lumberjack",
+     "was": [
+      "old-shell: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.6,
+     "ref": 0.6,
+     "gap": 0
+    }
+   ],
+   "readings": 6,
+   "sec": 5
+  },
+  {
+   "id": "2-A-WPRO-2",
+   "map": "mp",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "duck-paddler": 2,
+     "muskrat-lodgekeeper": 4,
+     "old-shell": 2,
+     "old-sturgeon": 4,
+     "riverworks-bastion": 4,
+     "snapstick-turtle": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "duck-paddler": 2,
+     "muskrat-lodgekeeper": 4,
+     "old-sturgeon": 4,
+     "riverworks-bastion": 4,
+     "snapstick-turtle": 4,
+     "pond-algae": 2
+    },
+    "val": {
+     "v": 0.613,
+     "ref": 0.613,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: old-shell -> pond-algae",
+     "was": [
+      "old-shell: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.65,
+     "ref": 0.65,
+     "gap": 0
+    }
+   ],
+   "readings": 8,
+   "sec": 6
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

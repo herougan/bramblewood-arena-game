@@ -1,0 +1,144 @@
+{
+ "map": "mi",
+ "generated": "2026-11-22T02:50:09.053Z",
+ "decks": [
+  {
+   "id": "17-A-BPRO-2",
+   "map": "mi",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cormorant": 4,
+     "dormouse": 4,
+     "wolfsbane-alpha": 2,
+     "ringed-seal": 4,
+     "rock-pool-starfish": 3,
+     "beluga": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "cormorant": 4,
+     "dormouse": 4,
+     "ringed-seal": 4,
+     "rock-pool-starfish": 3,
+     "beluga": 3,
+     "glacier-yak": 2
+    },
+    "val": {
+     "v": 0.275,
+     "ref": 0.8,
+     "gap": 0
+    },
+    "leaders": [
+     "beluga"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: wolfsbane-alpha -> glacier-yak",
+     "was": [
+      "wolfsbane-alpha: off the bpro pool",
+      "wolfsbane-alpha: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "wolfsbane-alpha: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.308,
+     "ref": 0.775,
+     "gap": 0.038
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 385,
+   "sec": 102
+  },
+  {
+   "id": "17-A-BPRO-3",
+   "map": "mi",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "limpet-clinger": 4,
+     "riptide-eel": 4,
+     "rock-pool-starfish": 2,
+     "harbor-seal": 4,
+     "glacier-yak": 4,
+     "ice-crevasse-wolf": 2
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "limpet-clinger": 4,
+     "riptide-eel": 4,
+     "rock-pool-starfish": 2,
+     "glacier-yak": 4,
+     "ice-crevasse-wolf": 2,
+     "ringed-seal": 4
+    },
+    "val": {
+     "v": 0.19,
+     "ref": 0.8,
+     "gap": 0
+    },
+    "leaders": [
+     "ice-crevasse-wolf"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: harbor-seal -> ringed-seal",
+     "was": [
+      "harbor-seal: off the bpro pool",
+      "harbor-seal: not on the map's list (held, not listed)",
+      "harbor-seal: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.192,
+     "ref": 0.775,
+     "gap": 0
+    }
+   ],
+   "readings": 101,
+   "sec": 29
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

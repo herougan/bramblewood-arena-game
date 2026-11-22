@@ -10,7 +10,7 @@
 //   node tools/opt/deck1_2026_10_30.js check                   every PRO deck: the 6/4 rule, 20 cards, the caps, the map rule (exit 1 on a problem)
 //
 // The pool of a map ("from that map's current list, plus the cards a player can hold by then, per the existing PRO rules"):
-//   - the anchor: the map's current list (canonical/map-pools.json: a main map's MAP tier, a side map's own SUBMAP list) + its SPECIAL tier, within
+//   - the anchor: the map's current list (canonical/map-pools.json: a main map's MAP tier, a side map's own SUBMAP list; no SPECIAL since PROLIST 2026-11-22), within
 //     the map's rarity cap, no faction cards (the PRO rules: deckopt mapTruePools' rule). A deck holds at least ANCHOR_MIN (10) of its 20
 //     copies from it, so every PRO deck is the map's deck.
 //   - the held shortlist: cards a player holds by then under the map-true rule (earlier main maps' lists, the plan's owned cards, open side
@@ -45,25 +45,23 @@ function selectMaps(gm, spec) { if (spec != null && /[a-z]/i.test(String(spec)))
 function mapRange(spec) { if (spec == null) return null; const out = new Set(); String(spec).split(',').forEach(p => { const m = /^(\d+)-(\d+)$/.exec(p); if (m) { for (let i = +m[1]; i <= +m[2]; i++) out.add(i); } else out.add(+p); }); return out; }
 const uniq = a => [...new Set(a)];
 
-// the DECK1 pool rule: the anchor (the map's list + SPECIAL) and what a player holds by then, both under the map-true rule
+// the DECK1 pool rule: the anchor (the map's list) and what a player holds by then, both under the map-true rule
+// 2026-11-22 (package PROLIST, owner 09:56: "Do not use cards not in the map list."): the anchor is the list alone (no SPECIAL tier) and the
+// map rule is deckopt's listOnly one (mapTruePools opt.listOnly: a SPECIAL-tier card or a card only in a road fight's deck is in a deck only
+// when a player holds it by then); bpro2 / wpro / skir1 / skwk take their pools from here
 function deck1Pools(gm, map) {
-  const G = gm.G, mt = O.mapTruePools(gm, map, {}, 'map-true'), pe = gm.pools[map.sub ? map.parent : map.id] || {};
-  const list = map.sub ? ownSubList(gm, map) : (pe.cards || []), special = pe.special || [];
-  const anchorAll = uniq(list.concat(special)).filter(id => O.deckable(gm, id));
+  const G = gm.G, mt = O.mapTruePools(gm, map, { listOnly: true }, 'map-true'), pe = gm.pools[map.sub ? map.parent : map.id] || {};
+  const list = map.sub ? ownSubList(gm, map) : (pe.cards || []);
+  const anchorAll = uniq(list).filter(id => O.deckable(gm, id));
   const anchor = anchorAll.filter(id => !mt.rule(id)).sort();
-  // held: the map-true pool of the same map without its road fights' decks (owned by then, earlier main maps' lists, open side maps and,
-  // for a side map, its parent's list), at the map's own rarity cap; a card that is the map's only through a road fight's deck is not in it
-  const mt0 = O.mapTruePools(gm, Object.assign({}, map, { nodes: [] }), { rarityCap: mt.cap }, 'map-true');
+  // held: the map-true pool less the anchor (owned by then, earlier main maps' lists, open side maps and, for a side map, its parent's list),
+  // at the map's own rarity cap; a card that is the map's only through a road fight's deck or its SPECIAL tier is not in it
   // 2026-11-02 (BAL11): not a cut card (on no list: out of play, BAL9 JJ24's rule; tools/lib_map_pools.js isOutOfPlay), so a re-run leaves
   // none for tools/bal9/decks_2026_11_02.js cuts to swap
   const LPx = require('../lib_map_pools.js'), outOfPlay = id => { try { return !!(gm.D[id] && LPx.isOutOfPlay(gm.G, gm.D[id])); } catch (e) { return false; } };
-  const held = mt0.p1.filter(id => !anchor.includes(id) && !outOfPlay(id)).sort();
-  const fightOnly = uniq([].concat(...O.fightsOf(map).map(n => Object.keys(n.deck)))).filter(id => O.deckable(gm, id) && !mt.rule(id) && mt0.rule(id)).sort();
-  // the legality rule is the existing PRO map rule (mapRuleProblems: the map's cards, or obtainable by then, within the cap, no faction
-  // card) with the road fights' decks no longer counting as the map's cards
-  const rule = id => { const w = mt.rule(id); if (w) return w; if (anchor.includes(id) || !mt0.rule(id)) return null;
-    return fightOnly.includes(id) ? 'only in a road fight\'s deck (not on the map\'s list since THEME3, not held by then)' : 'not on the map\'s list and not held by then (' + mt0.rule(id) + ')'; };
-  return { mt, list, anchor, anchorDropped: anchorAll.filter(id => mt.rule(id)).map(id => id + ': ' + mt.rule(id)), held, fightOnly, rule, cap: mt.cap, mapNo: mt.mapNo };
+  const held = mt.p1.filter(id => !anchor.includes(id) && !outOfPlay(id)).sort();
+  const fightOnly = uniq([].concat(...O.fightsOf(map).map(n => Object.keys(n.deck)))).filter(id => O.deckable(gm, id) && /road fight's deck/.test(mt.rule(id) || '')).sort();
+  return { mt, list, anchor, anchorDropped: anchorAll.filter(id => mt.rule(id)).map(id => id + ': ' + mt.rule(id)), held, fightOnly, rule: mt.rule, cap: mt.cap, mapNo: mt.mapNo };
 }
 function deck1Problems(gm, map, deck, pools) {
   const p = pools || deck1Pools(gm, map), out = [];
@@ -102,7 +100,7 @@ function planMap(gm, map, rules, contrib) {
 }
 function readPlan() { return fs.existsSync(PLAN) ? JSON.parse(fs.readFileSync(PLAN, 'utf8')) : { about: null, maps: {} }; }
 function writePlan(j) { fs.writeFileSync(PLAN, JSON.stringify(j, null, 1) + '\n'); }
-const ABOUT = 'Package DECK1 (2026-10-30, owner step 4): per map the pool (anchor = its list + SPECIAL; the held shortlist), its facts, the focuses searched, the decks found and their PRO ids. tools/opt/deck1_2026_10_30.js; report docs/balance/deck1-2026-10-30.md.';
+const ABOUT = 'Package DECK1 (2026-10-30, owner step 4): per map the pool (anchor = its list (no SPECIAL since PROLIST 2026-11-22); the held shortlist), its facts, the focuses searched, the decks found and their PRO ids. tools/opt/deck1_2026_10_30.js; report docs/balance/deck1-2026-10-30.md.';
 
 function outFileOf(gm, map) { return path.join(OUTDIR, `bench-deck-map${String(gm.G.mapNumberOf(map.id)).padStart(2, '0')}-${map.id}-${DATE}.json`); }
 

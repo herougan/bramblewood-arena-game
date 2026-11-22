@@ -1,0 +1,74 @@
+{
+ "map": "m6",
+ "generated": "2026-11-22T02:40:14.975Z",
+ "decks": [
+  {
+   "id": "17-BPRO-3",
+   "map": "m6",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cataphract-destrier": 4,
+     "elderhorn-monarch": 4,
+     "walrus-icebreaker": 2,
+     "wolfsbane-alpha": 2,
+     "glacier-yak": 4,
+     "ringed-seal": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "cataphract-destrier": 4,
+     "elderhorn-monarch": 4,
+     "walrus-icebreaker": 2,
+     "glacier-yak": 4,
+     "ringed-seal": 4,
+     "ice-crevasse-wolf": 2
+    },
+    "val": {
+     "v": 0.185,
+     "ref": 0.75,
+     "gap": 0
+    },
+    "leaders": [
+     "walrus-icebreaker"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: wolfsbane-alpha -> ice-crevasse-wolf",
+     "was": [
+      "wolfsbane-alpha: off the bpro pool",
+      "wolfsbane-alpha: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "wolfsbane-alpha: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.2,
+     "ref": 0.775,
+     "gap": 0
+    }
+   ],
+   "readings": 111,
+   "sec": 24
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

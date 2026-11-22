@@ -1,0 +1,352 @@
+{
+ "map": "m8",
+ "generated": "2026-11-22T02:27:08.161Z",
+ "decks": [
+  {
+   "id": "6-BPRO-1",
+   "map": "m8",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "alligator-gar": 2,
+     "cypress-root-lurker": 4,
+     "heron-hag": 3,
+     "water-shrew": 4,
+     "barrow-leech-bat": 3,
+     "constrictor-coil": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "alligator-gar": 2,
+     "cypress-root-lurker": 4,
+     "water-shrew": 4,
+     "barrow-leech-bat": 3,
+     "constrictor-coil": 4,
+     "booming-bittern": 3
+    },
+    "val": {
+     "v": 0.27,
+     "ref": 0.55,
+     "gap": 0
+    },
+    "leaders": [
+     "alligator-gar"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: heron-hag -> booming-bittern",
+     "was": [
+      "heron-hag: off the bpro pool",
+      "heron-hag: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "heron-hag: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.225,
+     "ref": 0.425,
+     "gap": 0
+    }
+   ],
+   "readings": 61,
+   "sec": 12
+  },
+  {
+   "id": "6-BPRO-2",
+   "map": "m8",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cypress-root-lurker": 4,
+     "mosquito-cloud": 4,
+     "water-shrew": 4,
+     "venomlord-serpent": 4,
+     "camouflage-frog": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "cypress-root-lurker": 4,
+     "mosquito-cloud": 3,
+     "water-shrew": 4,
+     "camouflage-frog": 4,
+     "lamprey": 4,
+     "constrictor-coil": 1
+    },
+    "val": {
+     "v": 0.31,
+     "ref": 0.3,
+     "gap": 0.01
+    },
+    "leaders": [
+     "constrictor-coil"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: venomlord-serpent -> lamprey",
+     "was": [
+      "venomlord-serpent: off the bpro pool",
+      "venomlord-serpent: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "venomlord-serpent: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.333,
+     "ref": 0.45,
+     "gap": 0.063
+    },
+    {
+     "move": "mosquito-cloud -1 -> constrictor-coil",
+     "v": 0.225,
+     "ref": 0.325,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 315,
+   "sec": 47
+  },
+  {
+   "id": "6-BPRO-3",
+   "map": "m8",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cypress-root-lurker": 2,
+     "heron-hag": 3,
+     "newt-doctor": 4,
+     "pond-algae": 4,
+     "venomlord-serpent": 4,
+     "barrow-leech-bat": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "cypress-root-lurker": 2,
+     "newt-doctor": 4,
+     "barrow-leech-bat": 3,
+     "booming-bittern": 3,
+     "lamprey": 4,
+     "crocodile-ambusher": 4
+    },
+    "val": {
+     "v": 0.295,
+     "ref": 0.45,
+     "gap": 0
+    },
+    "leaders": [
+     "barrow-leech-bat"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: heron-hag x3 -> booming-bittern",
+     "was": [
+      "heron-hag: off the bpro pool",
+      "venomlord-serpent: off the bpro pool",
+      "heron-hag: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "venomlord-serpent: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "heron-hag: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)",
+      "venomlord-serpent: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "repair: venomlord-serpent -> lamprey",
+     "was": [
+      "venomlord-serpent: off the bpro pool",
+      "venomlord-serpent: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "venomlord-serpent: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.367,
+     "ref": 0.275,
+     "gap": 0.097
+    },
+    {
+     "move": "pond-algae x4 -> crocodile-ambusher",
+     "v": 0.25,
+     "ref": 0.4,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 485,
+   "sec": 66
+  },
+  {
+   "id": "6-PRO-1",
+   "map": "m8",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "alligator-gar": 2,
+     "camouflage-frog": 4,
+     "driftwood-crab": 4,
+     "fire-ant-raft": 4,
+     "heron-hag": 3,
+     "newt-doctor": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "alligator-gar": 2,
+     "camouflage-frog": 4,
+     "driftwood-crab": 4,
+     "fire-ant-raft": 4,
+     "newt-doctor": 3,
+     "barrow-leech-bat": 3
+    },
+    "val": {
+     "v": 0.325,
+     "ref": 0.325,
+     "gap": 0
+    },
+    "leaders": [
+     "alligator-gar"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: heron-hag -> barrow-leech-bat",
+     "was": [
+      "heron-hag: off the pro pool",
+      "under 10 list copies",
+      "heron-hag: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.25,
+     "ref": 0.25,
+     "gap": 0
+    }
+   ],
+   "readings": 10,
+   "sec": 6
+  },
+  {
+   "id": "6-WPRO-1",
+   "map": "m8",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "camouflage-frog": 4,
+     "constrictor-coil": 4,
+     "crocodile-ambusher": 4,
+     "venomlord-serpent": 4,
+     "booming-bittern": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "camouflage-frog": 4,
+     "constrictor-coil": 4,
+     "crocodile-ambusher": 4,
+     "booming-bittern": 4,
+     "cypress-root-lurker": 4
+    },
+    "val": {
+     "v": 0.663,
+     "ref": 0.663,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: venomlord-serpent -> cypress-root-lurker",
+     "was": [
+      "venomlord-serpent: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.633,
+     "ref": 0.633,
+     "gap": 0
+    }
+   ],
+   "readings": 7,
+   "sec": 4
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

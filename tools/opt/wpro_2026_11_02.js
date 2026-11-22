@@ -8,7 +8,7 @@
 //   node tools/opt/wpro_2026_11_02.js check             every WPRO deck: 20 cards, the caps, the 6/4 rule, every card on the map's list, no Baby card
 //   node tools/opt/wpro_2026_11_02.js summary [--md out.md]   strong (BPRO-1) and weak (WPRO-1) win rates per map
 //
-// The pool is BPRO's (tools/opt/deck1_2026_10_30.js deck1Pools(map).anchor: the map's list + SPECIAL inside the map's rarity cap, no faction
+// The pool is BPRO's (tools/opt/deck1_2026_10_30.js deck1Pools(map).anchor: the map's list (no SPECIAL since PROLIST 2026-11-22) inside the map's rarity cap, no faction
 // card), without Baby cards and eggs. The deck rule is BPRO's (20 cards, at most 6 different cards and 4 copies, the rarity copy caps and the
 // top-rank caps: tools/bench/deck.js rule). The gauntlet is BPRO's too (deckopt buildEntries: the map's fight decks and its reference decks in a
 // fair mirror under each fight's field, Level 1, the Smart CPU both sides, seats swapped), so the strong and the weak deck are read on one scale.

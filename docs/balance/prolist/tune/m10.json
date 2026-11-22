@@ -1,0 +1,144 @@
+{
+ "map": "m10",
+ "generated": "2026-11-22T02:37:25.611Z",
+ "decks": [
+  {
+   "id": "11-BPRO-4",
+   "map": "m10",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "peak-condor": 4,
+     "pika-hoarder": 4,
+     "swamp-alligator": 2,
+     "the-gannet-queen": 4,
+     "golden-eagle-diver": 3,
+     "eyrie-warden": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "pika-hoarder": 4,
+     "the-gannet-queen": 4,
+     "golden-eagle-diver": 4,
+     "eyrie-warden": 4,
+     "gannet-nestweaver": 4
+    },
+    "val": {
+     "v": 0.26,
+     "ref": 0.775,
+     "gap": 0
+    },
+    "leaders": [
+     "the-gannet-queen"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: swamp-alligator -> eyrie-warden",
+     "was": [
+      "swamp-alligator: off the bpro pool",
+      "swamp-alligator: not on the map's list (held, not listed)",
+      "swamp-alligator: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.317,
+     "ref": 0.75,
+     "gap": 0.047
+    },
+    {
+     "move": "peak-condor x4 -> gannet-nestweaver",
+     "v": 0.292,
+     "ref": 0.775,
+     "gap": 0.022,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 719,
+   "sec": 132
+  },
+  {
+   "id": "11-WPRO-1",
+   "map": "m10",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "chamois-leaper": 4,
+     "eagle-owl-quartermaster": 3,
+     "eagle-sharpshooter": 1,
+     "eyrie-warden": 4,
+     "swamp-alligator": 4,
+     "the-gannet-queen": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "chamois-leaper": 4,
+     "eagle-owl-quartermaster": 3,
+     "eagle-sharpshooter": 1,
+     "eyrie-warden": 4,
+     "the-gannet-queen": 4,
+     "anvil-thrush": 4
+    },
+    "val": {
+     "v": 0.963,
+     "ref": 0.963,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: swamp-alligator -> anvil-thrush",
+     "was": [
+      "swamp-alligator: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.95,
+     "ref": 0.95,
+     "gap": 0
+    }
+   ],
+   "readings": 14,
+   "sec": 11
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

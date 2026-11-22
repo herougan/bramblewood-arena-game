@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-22 (package PROLIST: strong and weak decks from the map list only)
+- Owner 09:56: "Do not use cards not in the map list." The PRO, BPRO and WPRO pools no longer take a map's SPECIAL tier, or a card found only in a road fight's deck. PRO still adds the cards a player holds by then. One shared rule: `tools/opt/deckopt.js` `mapTruePools` `listOnly` (used by `mapRuleProblems`, `deck1Pools` and the deckopt CLI), so deck1, bpro2, wpro, skir1, skwk and `pro_skirmishes.js` (which drops such a deck to `replaced`) all follow it. Decision PROLIST-1.
+- 107 decks broke the new rule (Maps 0-23 and their side maps; 2 of them PRO decks that fell under 10 list copies). 103 were repaired: each off-list card swapped for a list card, then tuned to its mark with SKWK4's per-deck routine on fresh seeds, on the BLEED1 engine. They were not re-searched, so the N-SK / N-WK tuning holds. 4 had no legal repair and went to `replaced`: 8-PRO-3, 10-A-BPRO-4, 14-A-BPRO-2, 20-A-WPRO-2. Map 0's strong deck 0-BPRO-2 now runs 2 Honey Bees in place of 2 Thorn Shrikes. Tool: `tools/opt/prolist_2026_11_22.js`; results: `docs/balance/prolist/`. `tests/pro-2026-10-23.js` now fails on any Maps 0-20 deck holding a card that is not on its map's list.
+
 ## 2026-11-22 (packages BLEED1 and PIPC: owner 09:56 #1-#2)
 - Players see: a Bleeding unit takes its Bleed before it acts, and if that kills it, it does nothing: no swing, no On Action / On Attack, no skill, no Archer shot (it used to act first and bleed after; FIX7's 11-03 rule let its On Attack still go off). An Archer's shot now bleeds too (it never did). Its On Death still goes off.
 - Players see: numbers in card pips sit on their emoji's centre line (the sun's 2 beside the wing, Esprit's 2 ...). The number and its emoji were baseline-aligned inside the pip's inner span, so the digit read about 2px high.

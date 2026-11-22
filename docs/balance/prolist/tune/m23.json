@@ -1,0 +1,359 @@
+{
+ "map": "m23",
+ "generated": "2026-11-22T02:56:20.247Z",
+ "decks": [
+  {
+   "id": "23-BPRO-1",
+   "map": "m23",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "acacia-giraffe": 4,
+     "pack-mule": 4,
+     "pangolin-roller": 3,
+     "raccoon-bandit": 3,
+     "stoat-cutthroat": 3,
+     "testudo-tortoise": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "acacia-giraffe": 4,
+     "pangolin-roller": 3,
+     "raccoon-bandit": 3,
+     "stoat-cutthroat": 3,
+     "testudo-tortoise": 3,
+     "badger-trench-digger": 4
+    },
+    "val": {
+     "v": 0.475,
+     "ref": 0.85,
+     "gap": 0.175
+    },
+    "leaders": [
+     "testudo-tortoise"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: pack-mule -> badger-trench-digger",
+     "was": [
+      "pack-mule: off the bpro pool",
+      "pack-mule: not on the map's list (held, not listed)",
+      "pack-mule: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.4,
+     "ref": 0.7,
+     "gap": 0.13
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 375,
+   "sec": 53
+  },
+  {
+   "id": "23-BPRO-2",
+   "map": "m23",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "beetle-battering-ram": 2,
+     "meerkat-burrower": 4,
+     "mouse-sapper": 4,
+     "pack-mule": 4,
+     "raccoon-bandit": 3,
+     "stoat-cutthroat": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "beetle-battering-ram": 2,
+     "meerkat-burrower": 4,
+     "mouse-sapper": 4,
+     "badger-trench-digger": 4,
+     "secretary-bird-stomper": 3,
+     "acacia-giraffe": 3
+    },
+    "val": {
+     "v": 0.36,
+     "ref": 0.675,
+     "gap": 0.06
+    },
+    "leaders": [
+     "beetle-battering-ram"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: pack-mule -> badger-trench-digger",
+     "was": [
+      "pack-mule: off the bpro pool",
+      "pack-mule: not on the map's list (held, not listed)",
+      "pack-mule: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.517,
+     "ref": 0.675,
+     "gap": 0.247
+    },
+    {
+     "move": "raccoon-bandit x3 -> secretary-bird-stomper",
+     "v": 0.325,
+     "ref": 0.65,
+     "gap": 0.055,
+     "tried": 24
+    },
+    {
+     "move": "stoat-cutthroat x3 -> acacia-giraffe",
+     "v": 0.283,
+     "ref": 0.75,
+     "gap": 0.013,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 843,
+   "sec": 102
+  },
+  {
+   "id": "23-BPRO-3",
+   "map": "m23",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "alley-cat": 4,
+     "eagle-owl-quartermaster": 3,
+     "hoopoe-herald": 4,
+     "howdah-archers": 3,
+     "pack-mule": 4,
+     "siege-rhino": 2
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "alley-cat": 4,
+     "eagle-owl-quartermaster": 3,
+     "hoopoe-herald": 4,
+     "howdah-archers": 3,
+     "siege-rhino": 2,
+     "acacia-giraffe": 4
+    },
+    "val": {
+     "v": 0.72,
+     "ref": 0.525,
+     "gap": 0.42
+    },
+    "leaders": [
+     "siege-rhino"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: pack-mule -> acacia-giraffe",
+     "was": [
+      "pack-mule: off the bpro pool",
+      "pack-mule: not on the map's list (held, not listed)",
+      "pack-mule: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.65,
+     "ref": 0.45,
+     "gap": 0.38
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 325,
+   "sec": 39
+  },
+  {
+   "id": "23-WPRO-1",
+   "map": "m23",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "acacia-giraffe": 4,
+     "lodge-engineer": 4,
+     "marshal-tuskwell": 1,
+     "meerkat-burrower": 4,
+     "pronghorn-racer": 4,
+     "testudo-tortoise": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "acacia-giraffe": 4,
+     "meerkat-burrower": 4,
+     "pronghorn-racer": 4,
+     "testudo-tortoise": 3,
+     "alley-cat": 4,
+     "badger-trench-digger": 1
+    },
+    "val": {
+     "v": 0.838,
+     "ref": 0.838,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: lodge-engineer x4 -> alley-cat",
+     "was": [
+      "lodge-engineer: off the wpro pool",
+      "marshal-tuskwell: off the wpro pool"
+     ]
+    },
+    {
+     "move": "repair: marshal-tuskwell -> badger-trench-digger",
+     "was": [
+      "marshal-tuskwell: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.767,
+     "ref": 0.767,
+     "gap": 0
+    }
+   ],
+   "readings": 42,
+   "sec": 18
+  },
+  {
+   "id": "23-WPRO-2",
+   "map": "m23",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "acacia-giraffe": 4,
+     "alley-cat": 3,
+     "badger-trench-digger": 4,
+     "border-collie": 3,
+     "lodge-engineer": 4,
+     "meerkat-burrower": 2
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "acacia-giraffe": 4,
+     "alley-cat": 3,
+     "badger-trench-digger": 4,
+     "border-collie": 3,
+     "meerkat-burrower": 2,
+     "bison-bulldozer": 4
+    },
+    "val": {
+     "v": 0.788,
+     "ref": 0.788,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: lodge-engineer -> bison-bulldozer",
+     "was": [
+      "lodge-engineer: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.933,
+     "ref": 0.933,
+     "gap": 0
+    }
+   ],
+   "readings": 5,
+   "sec": 3
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

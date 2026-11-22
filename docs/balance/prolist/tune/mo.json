@@ -1,0 +1,235 @@
+{
+ "map": "mo",
+ "generated": "2026-11-22T02:51:08.335Z",
+ "decks": [
+  {
+   "id": "0-B-BPRO-1",
+   "map": "mo",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "bramble-sprout": 4,
+     "cricket-drummer": 4,
+     "ent": 2,
+     "quill-thorn-boar": 2,
+     "elder-willow": 4,
+     "proboscis-monkey": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "cricket-drummer": 4,
+     "ent": 3,
+     "quill-thorn-boar": 2,
+     "proboscis-monkey": 4,
+     "barkplate-beetle": 4,
+     "phoenix-mushrooms": 3
+    },
+    "val": {
+     "v": 0.38,
+     "ref": 0.625,
+     "gap": 0.08
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: elder-willow -> barkplate-beetle",
+     "was": [
+      "elder-willow: off the bpro pool",
+      "elder-willow: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "elder-willow: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.408,
+     "ref": 0.6,
+     "gap": 0.138
+    },
+    {
+     "move": "bramble-sprout x4 -> phoenix-mushrooms",
+     "v": 0.25,
+     "ref": 0.55,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 315,
+   "sec": 51
+  },
+  {
+   "id": "0-B-BPRO-2",
+   "map": "mo",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cricket-drummer": 4,
+     "earthworm": 4,
+     "farm-dog": 4,
+     "proboscis-monkey": 1,
+     "elder-willow": 4,
+     "thorn-shrike": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "earthworm": 4,
+     "farm-dog": 3,
+     "proboscis-monkey": 4,
+     "platypus-spur": 4,
+     "phoenix-mushrooms": 2,
+     "strangler-vine": 3
+    },
+    "val": {
+     "v": 0.145,
+     "ref": 0.675,
+     "gap": 0.005
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: elder-willow+thorn-shrike -> platypus-spur",
+     "was": [
+      "elder-willow: off the bpro pool",
+      "thorn-shrike: off the bpro pool",
+      "elder-willow: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "thorn-shrike: not on the map's list (held, not listed)",
+      "elder-willow: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)",
+      "thorn-shrike: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.417,
+     "ref": 0.5,
+     "gap": 0.147
+    },
+    {
+     "move": "farm-dog -2 -> phoenix-mushrooms",
+     "v": 0.325,
+     "ref": 0.625,
+     "gap": 0.055,
+     "tried": 24
+    },
+    {
+     "move": "cricket-drummer x4 -> strangler-vine",
+     "v": 0.192,
+     "ref": 0.625,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 589,
+   "sec": 89
+  },
+  {
+   "id": "0-B-BPRO-3",
+   "map": "mo",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "bramblewood-lynx": 3,
+     "cricket-drummer": 4,
+     "platypus-spur": 4,
+     "wolf-spider-mother": 3,
+     "elder-willow": 3,
+     "quill-thorn-boar": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "bramblewood-lynx": 3,
+     "cricket-drummer": 3,
+     "platypus-spur": 4,
+     "wolf-spider-mother": 3,
+     "quill-thorn-boar": 3,
+     "proboscis-monkey": 4
+    },
+    "val": {
+     "v": 0.325,
+     "ref": 0.625,
+     "gap": 0.025
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: elder-willow -> proboscis-monkey",
+     "was": [
+      "elder-willow: off the bpro pool",
+      "elder-willow: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "elder-willow: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.308,
+     "ref": 0.5,
+     "gap": 0.038
+    },
+    {
+     "move": "cricket-drummer -1 -> proboscis-monkey",
+     "v": 0.275,
+     "ref": 0.6,
+     "gap": 0.005,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 517,
+   "sec": 51
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

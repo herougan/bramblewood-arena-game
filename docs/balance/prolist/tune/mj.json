@@ -1,0 +1,450 @@
+{
+ "map": "mj",
+ "generated": "2026-11-22T02:34:54.397Z",
+ "decks": [
+  {
+   "id": "10-A-BPRO-1",
+   "map": "mj",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "coral-current-eel": 3,
+     "krill-swarm": 4,
+     "reef-admiral": 2,
+     "sea-turtle-elder": 4,
+     "reef-shark": 4,
+     "kraken-spawnling": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "coral-current-eel": 3,
+     "krill-swarm": 4,
+     "sea-turtle-elder": 4,
+     "reef-shark": 4,
+     "giant-clam": 2,
+     "riptide-eel": 3
+    },
+    "val": {
+     "v": 0.28,
+     "ref": 0.7,
+     "gap": 0
+    },
+    "leaders": [
+     "coral-current-eel"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: reef-admiral -2 -> giant-clam",
+     "was": [
+      "reef-admiral: off the bpro pool",
+      "kraken-spawnling: off the bpro pool",
+      "reef-admiral: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "kraken-spawnling: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "kraken-spawnling: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)",
+      "reef-admiral: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "repair: kraken-spawnling -> riptide-eel",
+     "was": [
+      "kraken-spawnling: off the bpro pool",
+      "kraken-spawnling: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "kraken-spawnling: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.267,
+     "ref": 0.475,
+     "gap": 0
+    }
+   ],
+   "readings": 161,
+   "sec": 25
+  },
+  {
+   "id": "10-A-BPRO-2",
+   "map": "mj",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "blue-ringed-octopus": 3,
+     "coral-current-eel": 3,
+     "reef-shark": 4,
+     "riptide-eel": 4,
+     "orca-vanguard": 4,
+     "reef-admiral": 2
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "blue-ringed-octopus": 3,
+     "coral-current-eel": 3,
+     "reef-shark": 4,
+     "riptide-eel": 4,
+     "coral-polyp-colony": 3,
+     "mantis-shrimp": 3
+    },
+    "val": {
+     "v": 0.51,
+     "ref": 0.475,
+     "gap": 0.21
+    },
+    "leaders": [
+     "mantis-shrimp"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: reef-admiral -2 -> moon-jelly",
+     "was": [
+      "orca-vanguard: off the bpro pool",
+      "reef-admiral: off the bpro pool",
+      "orca-vanguard: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "reef-admiral: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "orca-vanguard: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)",
+      "reef-admiral: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "repair: orca-vanguard -> coral-polyp-colony",
+     "was": [
+      "orca-vanguard: off the bpro pool",
+      "orca-vanguard: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "orca-vanguard: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.833,
+     "ref": 0.125,
+     "gap": 0.563
+    },
+    {
+     "move": "moon-jelly -2 -> mantis-shrimp",
+     "v": 0.575,
+     "ref": 0.225,
+     "gap": 0.305,
+     "tried": 16
+    },
+    {
+     "move": "coral-polyp-colony -1 -> mantis-shrimp",
+     "v": 0.508,
+     "ref": 0.275,
+     "gap": 0.238,
+     "tried": 10
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 10
+    }
+   ],
+   "readings": 531,
+   "sec": 95
+  },
+  {
+   "id": "10-A-BPRO-3",
+   "map": "mj",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "blue-ringed-octopus": 3,
+     "moon-jelly": 2,
+     "reef-shark": 4,
+     "giant-clam": 4,
+     "kraken-spawnling": 4,
+     "mantis-shrimp": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "blue-ringed-octopus": 3,
+     "moon-jelly": 2,
+     "reef-shark": 4,
+     "giant-clam": 4,
+     "mantis-shrimp": 3,
+     "krill-swarm": 4
+    },
+    "val": {
+     "v": 0.245,
+     "ref": 0.625,
+     "gap": 0
+    },
+    "leaders": [
+     "mantis-shrimp"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: kraken-spawnling -> krill-swarm",
+     "was": [
+      "kraken-spawnling: off the bpro pool",
+      "kraken-spawnling: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "kraken-spawnling: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.192,
+     "ref": 0.575,
+     "gap": 0
+    }
+   ],
+   "readings": 21,
+   "sec": 10
+  },
+  {
+   "id": "10-A-BPRO-4",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "repairFailed": [
+    "shares 16 copies with another deck"
+   ],
+   "keep": false
+  },
+  {
+   "id": "10-A-PRO-2",
+   "map": "mj",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "alley-cat": 4,
+     "coral-polyp-colony": 4,
+     "mudpuppy": 2,
+     "orca-vanguard": 4,
+     "pincushion-urchin": 4,
+     "reef-shark": 2
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "alley-cat": 4,
+     "coral-polyp-colony": 4,
+     "mudpuppy": 2,
+     "pincushion-urchin": 4,
+     "reef-shark": 2,
+     "giant-clam": 4
+    },
+    "val": {
+     "v": 0.375,
+     "ref": 0.375,
+     "gap": 0
+    },
+    "leaders": [
+     "coral-polyp-colony"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: orca-vanguard -> giant-clam",
+     "was": [
+      "orca-vanguard: off the pro pool",
+      "under 10 list copies",
+      "orca-vanguard: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.35,
+     "ref": 0.35,
+     "gap": 0
+    }
+   ],
+   "readings": 4,
+   "sec": 7
+  },
+  {
+   "id": "10-A-WPRO-1",
+   "map": "mj",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "blue-ringed-octopus": 3,
+     "mantis-shrimp": 3,
+     "moon-jelly": 4,
+     "orca-vanguard": 3,
+     "reef-shark": 4,
+     "sea-turtle-elder": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "blue-ringed-octopus": 3,
+     "mantis-shrimp": 3,
+     "moon-jelly": 4,
+     "reef-shark": 4,
+     "sea-turtle-elder": 3,
+     "coral-current-eel": 3
+    },
+    "val": {
+     "v": 0.663,
+     "ref": 0.663,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: orca-vanguard -> coral-current-eel",
+     "was": [
+      "orca-vanguard: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.7,
+     "ref": 0.7,
+     "gap": 0
+    }
+   ],
+   "readings": 6,
+   "sec": 5
+  },
+  {
+   "id": "10-A-WPRO-2",
+   "map": "mj",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "giant-clam": 4,
+     "krill-swarm": 3,
+     "mantis-shrimp": 3,
+     "orca-vanguard": 4,
+     "riptide-eel": 4,
+     "sea-turtle-elder": 2
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "giant-clam": 4,
+     "krill-swarm": 4,
+     "mantis-shrimp": 3,
+     "riptide-eel": 4,
+     "sea-turtle-elder": 2,
+     "coral-current-eel": 3
+    },
+    "val": {
+     "v": 0.613,
+     "ref": 0.613,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: orca-vanguard -> coral-current-eel",
+     "was": [
+      "orca-vanguard: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.767,
+     "ref": 0.767,
+     "gap": 0
+    }
+   ],
+   "readings": 6,
+   "sec": 5
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

@@ -1,0 +1,65 @@
+{
+ "about": "PROLIST (2026-11-22): per Maps 0-20 map the decks holding a card off the map's list (owner 09:56), N-SK kind first; tools/opt/prolist_2026_11_22.js",
+ "maps": {
+  "m22": {
+   "tune": [
+    "22-BPRO-1",
+    "22-WPRO-1",
+    "22-WPRO-2"
+   ],
+   "cards": {
+    "22-BPRO-1": [
+     "ravenous-wolverine"
+    ],
+    "22-WPRO-1": [
+     "ash-cloud-condor",
+     "glacier-yak"
+    ],
+    "22-WPRO-2": [
+     "fumarole-ibex"
+    ]
+   }
+  },
+  "m23": {
+   "tune": [
+    "23-BPRO-1",
+    "23-BPRO-2",
+    "23-BPRO-3",
+    "23-WPRO-1",
+    "23-WPRO-2"
+   ],
+   "cards": {
+    "23-BPRO-1": [
+     "pack-mule"
+    ],
+    "23-BPRO-2": [
+     "pack-mule"
+    ],
+    "23-BPRO-3": [
+     "pack-mule"
+    ],
+    "23-WPRO-1": [
+     "lodge-engineer",
+     "marshal-tuskwell"
+    ],
+    "23-WPRO-2": [
+     "lodge-engineer"
+    ]
+   }
+  }
+ },
+ "beyondMap20": [
+  "22-PRO-1: fumarole-ibex",
+  "22-PRO-2: obsidian-scorpion",
+  "22-BPRO-1: ravenous-wolverine",
+  "22-WPRO-1: ash-cloud-condor, glacier-yak",
+  "22-WPRO-2: fumarole-ibex",
+  "23-PRO-1: pack-mule",
+  "23-PRO-2: pack-mule",
+  "23-BPRO-1: pack-mule",
+  "23-BPRO-2: pack-mule",
+  "23-BPRO-3: pack-mule",
+  "23-WPRO-1: lodge-engineer, marshal-tuskwell",
+  "23-WPRO-2: lodge-engineer"
+ ]
+}

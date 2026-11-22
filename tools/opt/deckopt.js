@@ -168,7 +168,13 @@ function mapTruePools(gm, map, opt, mode) {
   const e = side ? { cards: (pe.cards || []).concat(Array.isArray(subOwn) ? subOwn : (subOwn && subOwn.cards) || []), special: pe.special || [], submaps: {} } : pe;
   const cap = mapRarityCap(gm, map, opt.rarityCap), capStep = G.roadRarityStep(cap), capOk = id => G.roadRarityStep(gm.D[id].rarity) <= capStep;
   const noFaction = !(opt && opt.faction), ok = id => deckable(gm, id);
-  const own = uniq((e.cards || []).concat(e.special || [], ...fightsOf(map).map(n => Object.keys(n.deck)))).filter(ok).sort(), ownSet = new Set(own);
+  // 2026-11-22 (package PROLIST, owner 09:56: "Do not use cards not in the map list."): opt.listOnly (the PRO / BPRO / WPRO map rule:
+  // mapRuleProblems, deck1Pools, the deckopt CLI) makes the map's own cards its list only: no SPECIAL tier, no card that is the map's only
+  // through a road fight's deck. Such a card is still in a map-true deck when a player holds it by then. Other callers (the reference ladder,
+  // the bench) keep the old pool.
+  const listOnly = !!(opt && opt.listOnly), fightIds = uniq([].concat(...fightsOf(map).map(n => Object.keys(n.deck))));
+  const own = uniq((e.cards || []).concat(listOnly ? [] : (e.special || []).concat(fightIds))).filter(ok).sort(), ownSet = new Set(own);
+  const offList = id => !listOnly ? null : (e.special || []).includes(id) ? 'a SPECIAL-tier card, not on the map\'s list (PROLIST-1, owner 2026-11-22)' : fightIds.includes(id) ? 'only in a road fight\'s deck, not on the map\'s list' : null;
   const subsOpen = side ? [] : G.CONQUEST_MAPS.filter(m => m.sub && m.parent === map.id && !m.reserved && (G.mapUnlockNumberOf ? G.mapUnlockNumberOf(m.id) : mapNo) <= mapNo).map(m => m.id);
   const subCards = uniq([].concat(...subsOpen.map(id => { const l = (e.submaps || {})[id]; return Array.isArray(l) ? l : (l && l.cards) || []; }))).filter(ok);
   // owned by then: the plan's (Base from the start, the rest after their advancement map), and the MAP tier of every earlier main map (its
@@ -180,9 +186,9 @@ function mapTruePools(gm, map, opt, mode) {
     if (!capOk(id)) return `${d.rarity} is over the map's rarity cap (${cap})`;
     if (noFaction && isFactionCard(gm, id)) return 'a faction card (PRO3: left out of PRO pools; --faction keeps them)';
     if (ownSet.has(id)) return null;
-    if (mode === 'bpro') return 'not in the map\'s own pool (BPRO)';
-    if (!planOf(gm, id) && earlier[id] == null) return 'not obtainable (not in the progression plan or an earlier map\'s cards)';
-    const at = Math.max(obtainOf(gm, id), earlier[id] != null && !planOf(gm, id) ? earlier[id] : 0); if (at > mapNo) return `first obtainable on Map ${at}`;
+    if (mode === 'bpro') return offList(id) || 'not in the map\'s own pool (BPRO)';
+    if (!planOf(gm, id) && earlier[id] == null) return offList(id) || 'not obtainable (not in the progression plan or an earlier map\'s cards)';
+    const at = Math.max(obtainOf(gm, id), earlier[id] != null && !planOf(gm, id) ? earlier[id] : 0); if (at > mapNo) return offList(id) || `first obtainable on Map ${at}`;
     return null;
   };
   const allowed = ids => ids.filter(id => !rule(id));
@@ -232,7 +238,7 @@ function progPools(gm, map, opt) {
 }
 // the problems of a deck under a mode's map rule (no problems = every card may be in that map's PRO / BPRO deck)
 function mapRuleProblems(gm, map, deck, mode, rarityCap) {
-  const p = mapTruePools(gm, map, { rarityCap }, mode); return Object.keys(deck).filter(id => deck[id] > 0).sort().map(id => { const w = p.rule(id); return w ? id + ': ' + w : null; }).filter(Boolean);
+  const p = mapTruePools(gm, map, { rarityCap, listOnly: true }, mode); return Object.keys(deck).filter(id => deck[id] > 0).sort().map(id => { const w = p.rule(id); return w ? id + ': ' + w : null; }).filter(Boolean);
 }
 // a legal 20-card deck from any counts: copies within the rarity's cap and the top-rank caps, cards within `pool`
 function repair(gm, deck, pool, rng, credit, size) {
@@ -607,7 +613,7 @@ function parseArgs(argv) {
     pop: 16, children: 32, g0: 2, gmax: 32, top: 3, screenCopies: 3, screenMax: null, finalGames: 0, finalMax: 200, finalShare: 0.2, level: 1, beeTank: false,
     distinctRadius: 6, distinctWindow: 0.1, distinctMax: 4, h2hGames: 16,
     ladder: [600, 450, 300, 150], ladderCore: 10, ladderCoreMin: 6, redo: [], ladderGames: 32, ladderWalks: 8, ladderTol: 60,
-    compare: false, evalGames: 48, candidatesOnly: false, rules: null,
+    compare: false, evalGames: 48, candidatesOnly: false, rules: null, listOnly: true /* 2026-11-22 (PROLIST): map-true / bpro searches from the map's list */,
     seedRef: false, poolFile: null, out: null, ckptDir: path.join(os.tmpdir(), 'deckopt'), resume: false, root: null, quiet: false, summary: true, tag: null };
   const a = argv.slice(), take = () => a.shift();
   while (a.length) { const k = take();
@@ -647,8 +653,8 @@ const HELP = `deckopt ${VERSION}: the strongest deck per map over the real Bramb
   --seed-ref          (BAL7) every restart starts from the Map reference deck (referenceDeckFor, repaired into the pool) and its neighbours
   --mode map-true|bpro|classic|ref-pool   ref-pool (--ref-pool, package BAL6): only the cards a player holds arriving at the map, from
                       --pool-file (default docs/balance/ref/ref-pool-pools.json; tools/opt/ref_pool.js); main maps only. The card pool (default map-true, package PRO2): map-true = the map's own cards + what a player holds by then,
-                      all within the map's rarity cap and first obtainable by this map; bpro (--bpro) = the map's own pool only (MAP + SPECIAL +
-                      its fight decks), within the cap, no phase 2; classic (--classic) = the OPT2 pool (every submap, owned cards at any rarity)
+                      all within the map's rarity cap and first obtainable by this map; bpro (--bpro) = the map's own list only (no SPECIAL,
+                      no fight-deck card; PROLIST 2026-11-22), within the cap, no phase 2; classic (--classic) = the OPT2 pool (every submap, owned cards at any rarity)
   --no-faction | --faction       map-true / bpro leave faction cards out (default, package PRO3: a tier-11 faction-pack card) or keep them
   --side              with --maps: each listed main map's side maps too (not the tutorial, endless dungeons or reserved maps), right after it
   --rarity-cap map|skirmish|R    map-true / bpro cap: the highest of the map's fights (default), a plain skirmish's, or a rarity

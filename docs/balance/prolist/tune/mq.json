@@ -1,0 +1,407 @@
+{
+ "map": "mq",
+ "generated": "2026-11-22T02:20:22.959Z",
+ "decks": [
+  {
+   "id": "1-A-BPRO-1",
+   "map": "mq",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "chipmunk-cavalry": 4,
+     "clover-butterfly": 4,
+     "ladybird-guard": 2,
+     "lucky-hopper": 4,
+     "ant-scout": 2,
+     "puddle-skimmer": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "chipmunk-cavalry": 4,
+     "clover-butterfly": 4,
+     "ladybird-guard": 4,
+     "lucky-hopper": 4,
+     "puddle-skimmer": 4
+    },
+    "val": {
+     "v": 0.335,
+     "ref": 0.65,
+     "gap": 0.035
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: ant-scout -> chipmunk-cavalry",
+     "was": [
+      "ant-scout: off the bpro pool",
+      "ant-scout: not on the map's list (held, not listed)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.258,
+     "ref": 0.6,
+     "gap": 0
+    }
+   ],
+   "readings": 51,
+   "sec": 39
+  },
+  {
+   "id": "1-A-BPRO-2",
+   "map": "mq",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "ant-scout": 4,
+     "clover-butterfly": 4,
+     "dormouse": 4,
+     "ladybird-guard": 4,
+     "bee-forager": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "dormouse": 2,
+     "ladybird-guard": 4,
+     "bee-forager": 4,
+     "honey-bee": 4,
+     "chipmunk-cavalry": 4,
+     "puddle-skimmer": 2
+    },
+    "val": {
+     "v": 0.26,
+     "ref": 0.35,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: ant-scout -> honey-bee",
+     "was": [
+      "ant-scout: off the bpro pool",
+      "ant-scout: not on the map's list (held, not listed)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.475,
+     "ref": 0.275,
+     "gap": 0.205
+    },
+    {
+     "move": "clover-butterfly x4 -> chipmunk-cavalry",
+     "v": 0.325,
+     "ref": 0.375,
+     "gap": 0.055,
+     "tried": 24
+    },
+    {
+     "move": "dormouse -2 -> puddle-skimmer",
+     "v": 0.25,
+     "ref": 0.575,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 589,
+   "sec": 200
+  },
+  {
+   "id": "1-A-BPRO-3",
+   "map": "mq",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "chipmunk-cavalry": 4,
+     "clover-butterfly": 2,
+     "cottontail": 3,
+     "lucky-hopper": 4,
+     "jackrabbit-sprinter": 4,
+     "honey-bee": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "chipmunk-cavalry": 4,
+     "clover-butterfly": 2,
+     "cottontail": 3,
+     "lucky-hopper": 4,
+     "dormouse": 3,
+     "bee-forager": 4
+    },
+    "val": {
+     "v": 0.33,
+     "ref": 0.525,
+     "gap": 0.03
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: jackrabbit-sprinter -> dormouse",
+     "was": [
+      "jackrabbit-sprinter: off the bpro pool",
+      "jackrabbit-sprinter: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "jackrabbit-sprinter: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.492,
+     "ref": 0.425,
+     "gap": 0.222
+    },
+    {
+     "move": "honey-bee x3 -> bee-forager",
+     "v": 0.367,
+     "ref": 0.625,
+     "gap": 0.097,
+     "tried": 24
+    },
+    {
+     "move": "dormouse -1 -> bee-forager",
+     "v": 0.342,
+     "ref": 0.6,
+     "gap": 0.072,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 772,
+   "sec": 198
+  },
+  {
+   "id": "1-A-PRO-2",
+   "map": "mq",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "alley-cat": 3,
+     "alpine-marmot": 3,
+     "clover-butterfly": 4,
+     "compost-grub": 2,
+     "hawthorn-shieldbug": 4,
+     "robin-redbreast": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "alpine-marmot": 3,
+     "clover-butterfly": 4,
+     "compost-grub": 2,
+     "hawthorn-shieldbug": 4,
+     "robin-redbreast": 4,
+     "bee-forager": 3
+    },
+    "val": {
+     "v": 0.138,
+     "ref": 0.138,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: alley-cat x3 -> bee-forager",
+     "was": [
+      "under 10 list copies"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.25,
+     "ref": 0.25,
+     "gap": 0
+    }
+   ],
+   "readings": 24,
+   "sec": 16
+  },
+  {
+   "id": "1-A-PRO-4",
+   "map": "mq",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "burrow-rabbit": 3,
+     "chipmunk-cavalry": 4,
+     "compost-grub": 4,
+     "dormouse": 3,
+     "hawthorn-shieldbug": 4,
+     "robin-redbreast": 2
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "burrow-rabbit": 2,
+     "chipmunk-cavalry": 4,
+     "compost-grub": 4,
+     "dormouse": 4,
+     "hawthorn-shieldbug": 4,
+     "robin-redbreast": 2
+    },
+    "val": {
+     "v": 0.438,
+     "ref": 0.438,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: burrow-rabbit -1 -> dormouse",
+     "was": [
+      "under 10 list copies"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.417,
+     "ref": 0.417,
+     "gap": 0
+    }
+   ],
+   "readings": 25,
+   "sec": 20
+  },
+  {
+   "id": "1-A-WPRO-1",
+   "map": "mq",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "ant-scout": 3,
+     "bee-forager": 4,
+     "cottontail": 4,
+     "honey-bee": 4,
+     "ladybird-guard": 1,
+     "puddle-skimmer": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "bee-forager": 4,
+     "cottontail": 4,
+     "honey-bee": 4,
+     "ladybird-guard": 4,
+     "puddle-skimmer": 4
+    },
+    "val": {
+     "v": 0.7,
+     "ref": 0.7,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: ant-scout -> bee-forager",
+     "was": [
+      "ant-scout: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.733,
+     "ref": 0.733,
+     "gap": 0
+    }
+   ],
+   "readings": 7,
+   "sec": 7
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

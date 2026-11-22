@@ -1,0 +1,149 @@
+{
+ "map": "m4",
+ "generated": "2026-11-22T02:34:14.365Z",
+ "decks": [
+  {
+   "id": "8-PRO-1",
+   "map": "m4",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "alley-cat": 3,
+     "echo-matriarch": 3,
+     "echo-screecher": 3,
+     "fungus-gnat-cloud": 4,
+     "giant-cave-huntsman": 3,
+     "star-nosed-mole": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "alley-cat": 3,
+     "echo-screecher": 3,
+     "fungus-gnat-cloud": 4,
+     "giant-cave-huntsman": 3,
+     "star-nosed-mole": 4,
+     "acorn-chipmunk": 3
+    },
+    "val": {
+     "v": 0.113,
+     "ref": 0.113,
+     "gap": 0
+    },
+    "leaders": [
+     "giant-cave-huntsman"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: echo-matriarch -> acorn-chipmunk",
+     "was": [
+      "echo-matriarch: off the pro pool",
+      "echo-matriarch: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.117,
+     "ref": 0.117,
+     "gap": 0
+    }
+   ],
+   "readings": 20,
+   "sec": 7
+  },
+  {
+   "id": "8-PRO-3",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "repairFailed": [
+    "under 10 list copies"
+   ],
+   "keep": false
+  },
+  {
+   "id": "8-WPRO-1",
+   "map": "m4",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "blind-cave-fish": 3,
+     "hawthorn-shieldbug": 3,
+     "rot-swollen-carcass": 4,
+     "stalactite-golem": 4,
+     "sulfur-cinder-moth": 3,
+     "wolf-spider-mother": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "hawthorn-shieldbug": 3,
+     "rot-swollen-carcass": 4,
+     "stalactite-golem": 4,
+     "sulfur-cinder-moth": 3,
+     "wolf-spider-mother": 3,
+     "driftwood-crab": 3
+    },
+    "val": {
+     "v": 0.7,
+     "ref": 0.7,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: blind-cave-fish -> driftwood-crab",
+     "was": [
+      "blind-cave-fish: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.717,
+     "ref": 0.717,
+     "gap": 0
+    }
+   ],
+   "readings": 6,
+   "sec": 4
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}
