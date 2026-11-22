@@ -4773,5 +4773,7 @@
  "Add as reward": "보상으로 추가",
  "In {n} skirmish decks": "스커미시 덱 {n}개에 사용",
  "New! skills: {list}": "새 스킬: {list}",
- "Reward at {code}": "{code} 보상"
+ "Reward at {code}": "{code} 보상",
+ "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "오늘 첫 완전 클리어는 보상 전액, 이후는 20%. 2인 플레이: +25%.",
+ "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "오늘의 전액 보상은 받았습니다: 내일까지 보상은 20%. 2인 플레이: +25%."
 }

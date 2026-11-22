@@ -4770,5 +4770,7 @@
  "Add as reward": "Añadir como recompensa",
  "In {n} skirmish decks": "En {n} mazos de escaramuza",
  "New! skills: {list}": "¡Habilidades nuevas!: {list}",
- "Reward at {code}": "Recompensa en {code}"
+ "Reward at {code}": "Recompensa en {code}",
+ "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "Tu primera victoria completa de hoy paga entera; las siguientes pagan el 20 %. Dos jugadores: +25 %.",
+ "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "Ya cobraste la paga completa de hoy: las partidas pagan el 20 % hasta mañana. Dos jugadores: +25 %."
 }

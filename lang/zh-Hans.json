@@ -4771,5 +4771,7 @@
  "Add as reward": "加为奖励",
  "In {n} skirmish decks": "用于 {n} 个小战牌组",
  "New! skills: {list}": "新技能：{list}",
- "Reward at {code}": "奖励于 {code}"
+ "Reward at {code}": "奖励于 {code}",
+ "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "今天首次通关可获全额奖励；之后的挑战只得 20%。双人：+25%。",
+ "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "今天的全额奖励已领取：明天之前的挑战只得 20%。双人：+25%。"
 }

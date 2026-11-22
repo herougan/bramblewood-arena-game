@@ -17,7 +17,9 @@ const fs = require('fs'), path = require('path');
 const L = require('./pvp1/lib.js');
 const ROOT = L.ROOT, arg = (k, d)=>{ const i = process.argv.indexOf('--' + k); return i > 0 ? process.argv[i + 1] : d; };
 const TEST = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/pvp-test-decks.json'), 'utf8')).decks;
-const CFG = {pvp: {strike: ()=> 2, bonus: 1, leaders: true}, live: {strike: r=> r % 2 === 0 ? 1 : 2, bonus: 0, leaders: false, rules: {}},
+// 2026-11-23 (MP1 phase 2, decision MP1-3 a, built): pvp and live are the game as built (= alt1 / liveAlt); pvpOld / liveOld are the phase 1 set-ups
+const CFG = {pvpOld: {strike: ()=> 2, bonus: 1, leaders: true}, liveOld: {strike: r=> r % 2 === 0 ? 1 : 2, bonus: 0, leaders: false, rules: {}},
+  pvp: {strike: r=> r % 2 === 0 ? 1 : 2, bonus: 1, leaders: true}, live: {strike: r=> r % 2 === 0 ? 1 : 2, order: r=> r % 2 === 0 ? [1, 2] : [2, 1], bonus: 0, leaders: false, rules: {}},
   lib: {strike: r=> r % 2 === 0 ? 1 : 2, bonus: 2, leaders: true}, none: {strike: r=> r % 2 === 0 ? 1 : 2, bonus: 0, leaders: true},
   // candidates: PvP with the strikes alternating and the +1 Shield kept on you (seat 1); Live Ranked with the +1 Shield on seat 1 (D24's
   // "second player" = the side that does not strike first in round 1)

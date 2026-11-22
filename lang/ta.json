@@ -4773,5 +4773,7 @@
  "Add as reward": "பரிசாகச் சேர்",
  "In {n} skirmish decks": "{n} சிறு போர் டெக்குகளில்",
  "New! skills: {list}": "புதிய திறன்கள்: {list}",
- "Reward at {code}": "{code} இல் பரிசு"
+ "Reward at {code}": "{code} இல் பரிசு",
+ "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "இன்றைய உங்கள் முதல் முழு வெற்றிக்கு முழு ஊதியம்; அடுத்தவற்றுக்கு 20%. இரண்டு வீரர்கள்: +25%.",
+ "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "இன்றைய முழு ஊதியம் பெறப்பட்டது: நாளை வரை ஓட்டங்களுக்கு 20%. இரண்டு வீரர்கள்: +25%."
 }

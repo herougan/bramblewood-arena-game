@@ -4771,5 +4771,7 @@
  "Add as reward": "Idagdag bilang gantimpala",
  "In {n} skirmish decks": "Nasa {n} skirmish deck",
  "New! skills: {list}": "Bagong skill: {list}",
- "Reward at {code}": "Gantimpala sa {code}"
+ "Reward at {code}": "Gantimpala sa {code}",
+ "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "Buong bayad ang una mong buong panalo ngayon; 20% na lang ang mga susunod. Dalawang manlalaro: +25%.",
+ "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "Nakuha mo na ang buong bayad ngayon: 20% ang bayad ng mga takbo hanggang bukas. Dalawang manlalaro: +25%."
 }

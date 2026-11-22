@@ -2,6 +2,15 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-23 Package MP1 phase 2 (multiplayer balance; MP1-1 a, MP1-2 a, MP1-3 a as defaults; RAIDBAL1-1 targets)
+- The Tidelock Vault is harder: every part's bramble x2 (48 / 52 / 42 / 50 / 56), and the CPU ally plays a stage-2 deck. Map 16 decks clear it 49% (was 77%), solo 51% / duo 47%.
+- The vault pays in full once a day: the day's first cleared run pays the full table, later runs that day x0.2, x1.25 when every seat is a human player. The vault card and room say which applies (2 new texts, 12 packs).
+- Raid fights pay double: `RAID_ATTEMPT_PAY` 24 / 95 (was 48 / 190), about 21 Leaves / 16 Dust a warm-up fight after the halving.
+- PvP against a stranger: the first strike alternates by round (was the stranger every round); you keep the +1 Shield. Mirrors: 36% -> 50%.
+- Live Ranked: the seat that strikes first in a round acts first in it (was seat 1 every round). Mirrors: 45% -> 50%.
+- Not applied: the Goliath's fight brambles 940 / 1040 / 670 / 250 (`canonical/raids.json`, outside this package's files). Measured with them: warm-ups 64%, the Core 34% (was 72 / 72).
+- Numbers: `docs/design/mp1-2026-11-23.md` "Built". New test `tests/mp1-2026-11-23.js`; `tests/raid-rb-2026-10-19.js` C9 now pins 24 / 95.
+
 ## 2026-11-23 Package MP1 phase 1 (owner 11-22 23:08: multiplayer balancing; design and measurement only, no game number changed)
 - `docs/design/mp1-2026-11-23.md`: how the Tidelock Vault, the Goliath and PvP work today, measured, with 8 proposals and owner questions MP1-1..3.
 - Measured:

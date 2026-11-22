@@ -31,7 +31,7 @@ const P = new Function('G', 'CARD_DEFS_BASELINE', 'CHARACTER_DEFS', 'CoopM', 'Gh
   ...['gdFillerDeck', 'gdPartyCastle', 'ECON_INCOME_MULT', 'ECON_HALVED_KINDS', 'econMult'].map(B.grab),
   'return {brambleHp, brambleChar, buildStandardDefs, gdFillerDeck, gdPartyCastle, econMult};'].join('\n'))(G, CARD_DEFS_BASELINE, CHARACTER_DEFS, C, Ghosts);
 const DEFS = P.buildStandardDefs();
-// --set '{"fillerStage":2}': the CPU ally's ghost-deck stage (gdFillerDeck asks generateGhostDeck for stage 3), by wrapping the module call
+// --set '{"fillerStage":2}': the CPU ally's ghost-deck stage (gdFillerDeck asks generateGhostDeck for stage 2 since MP1 phase 2, 2026-11-23; was 3), by wrapping the module call
 if(SET.fillerStage != null){ const orig = Ghosts.generateGhostDeck; Ghosts.generateGhostDeck = (d, st, seed, mx)=> orig(d, SET.fillerStage, seed, mx); }
 
 const LADDER = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/ref6/ladder-100.json'), 'utf8')).maps;

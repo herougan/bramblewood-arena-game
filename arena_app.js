@@ -13726,6 +13726,9 @@ let matchState = null; // {engine, players, sideOf, over, winner, selectedHandUi
 // Whose turn it is to act in the current round's planning phase. In 'ai' mode this is always
 // player 1 (the AI acts instantly alongside them, see aiActNow). In 'pc' mode (local hot-seat,
 // pass-and-play) the two human players alternate within the same round before combat resolves.
+// 2026-11-23 (package MP1, decision MP1-3 a): in Live Ranked the seat that strikes first in a round also acts first in it (seat 2 in odd
+// rounds, seat 1 in even, as resolveRound's strike side); was seat 1 every round, and seat 1 scored 45% in mirrors (now 50%).
+function liveFirstSeat(round){ return round % 2 === 0 ? 1 : 2; }
 function activePlayerId(m){ return (m && (m.mode==='pc' || m.mode==='liveRanked')) ? (m.active||1) : 1; }
 // Ranked 1v1 Live (#277): "whose logical turn is it" (activePlayerId, above) and "which seat
 // THIS BROWSER's owner is playing" are the SAME question in every other mode — 'pc' is
@@ -19270,7 +19273,7 @@ function startLiveRankedMatch(cfg){
   }
   matchState = {
     engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
-    mode:'liveRanked', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
+    mode:'liveRanked', active:liveFirstSeat(1), turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
     leaderDefId:null, leaderUid:null, // leader-summon isn't wired up for a real 2-player match yet — see module header, limitation #4
     liveMatchId: cfg.matchId, liveRole: cfg.role, liveMySeat: cfg.mySeat, liveOpponentId: cfg.oppId,
     liveOpponentRating: cfg.oppRating, liveOpponentName: cfg.oppName, liveReplaying: false,
@@ -28462,11 +28465,13 @@ function gdPartyCastle(seats){
 // 2026-10-29 (package UI3, S9; owner 23:01: "Some random decks to play with you in the multiplayer dungeons"): a CPU ally plays a random ghost deck (the Autobattler's
 // stand-in generator, BramblewoodGhosts.generateGhostDeck, from the Standard cards the vault can play), not a copy of the host's deck as before. It is a pure function of
 // the run's seed and the seat, run on every page when the start message arrives (gdOnEvent 'start'), so every page and the log catch-up build the same table.
+// 2026-11-23 (package MP1, decision MP1-1 a): the CPU ally plays a stage-2 ghost deck (was 3): with stage 3 a solo run cleared as often as two
+// players, and with the doubled brambles more often (55-63% vs 33-45%); stage 2 brings solo to about 50%, near the duo.
 function gdFillerDeck(seed, seat){
   try{
     if(!Ghosts || !Ghosts.generateGhostDeck) return null;
     const all = gdDefs(), defs = {}; Object.keys(all).forEach(id=>{ const d = all[id]; if(d && !d.token && !d.test && !CoopM.unsupportedCard(d) && !CoopM.noSlotCard(d)) defs[id] = d; });
-    return Ghosts.generateGhostDeck(defs, 3, ((seed >>> 0) + 7919 * (seat + 1)) >>> 0);
+    return Ghosts.generateGhostDeck(defs, 2, ((seed >>> 0) + 7919 * (seat + 1)) >>> 0);
   }catch(e){ return null; }
 }
 function gdFillCpuSeats(start){
@@ -28495,7 +28500,7 @@ function groupDungeonCardHTML(id){
   return `<div class="dg-card dg-group dg1-card" data-gd-type="${escapeAttr(id)}">${dg.preview ? `<span class="dg-admin-tag">🛠️ ${escapeHtml(TX('ui.dungeon1-preview'))}</span>` : ''}<div class="dg-diamond map-theme-marena">${compassDiamondSVG('dg-group-' + id, false)}<span class="wd-ico">${dg.icon}</span></div>
     <div class="dg-body"><b class="dg-name">${dg.icon} ${escapeHtml(gdThemedName(dg.id))}</b><small class="res3-gd-where">${escapeHtml(TX(last.nameKey))}</small>
       <p class="dg-sub">${escapeHtml(TX(dg.blurbKey || 'ui.coop2-group-sub'))}</p>
-      <p class="dg-sub gd-facts">${escapeHtml(TX('ui.coop2-group-facts', {floors: dg.floors.length, n: dg.players, energy: gdCost()}))}</p>
+      <p class="dg-sub gd-facts">${escapeHtml(TX('ui.coop2-group-facts', {floors: dg.floors.length, n: dg.players, energy: gdCost()}))}</p><p class="dg-sub">${gdPayLineHTML()}</p>
       <p class="dg-sub gd-people-line">${(()=>{ const c = mine ? gdRoomCounts() : null; return c ? gdPeopleHTML(c) : gdPeopleHTML({fixed: true, size: dg.players}); })()}</p>${GD.s && !mine ? '' : inv}
       ${GD.s ? (mine ? `<div class="dg-acts"><button type="button" class="btn primary" data-gd-open="show">👥 ${escapeHtml(TX('ui.ar3-room-title', {code: GD.code}))}</button></div>` : '') : `<div class="dg-acts gd-acts">
         <button type="button" class="btn primary" data-gd-open="create" data-gd-type="${escapeAttr(id)}">👥 ${escapeHtml(TX('ui.ar3-create'))}</button>
@@ -28746,11 +28751,24 @@ async function gdRoundOnPage(m){
 // CoopM.runFactor (RUN_PAY_BANDS: all parts 1; else f = won / parts, x 0.5, or x 0.25 for 1-3 parts). Then ECON1's halving. A card at the
 // raid's odds for each part won (that part's rank), the chance x the band's multiplier short of a clear; the raid's egg roll on a clear only.
 // Was (COOP2): each floor paid its own raid-style pay as it ended. The name stays (the floor's end is the run's end now).
+// 2026-11-23 (package MP1, decision MP1-2 a: "First run full, then x0.2; two players x1.25"): a vault run paid about 10x a road repeat per
+// Energy with no daily limit. Now the day's first CLEARED run pays the full table; every run that ends after it that day (a clear or a
+// partial band) pays GD_REPEAT_PAY_MULT. A run where every seat is a human player pays GD_DUO_PAY_MULT on top (Leaves and Dust only).
+// The count is this device's (localStorage, the local day, as the daily dungeon keys).
+const GD_FULL_PAY_PER_DAY = 1, GD_REPEAT_PAY_MULT = 0.2, GD_DUO_PAY_MULT = 1.25, GD_PAY_DAY_KEY = 'bramblewood_gd_pay_day_v1';
+function gdFullPaysLeft(){ let s = null; try{ s = JSON.parse(localStorage.getItem(GD_PAY_DAY_KEY) || 'null'); }catch(e){} return Math.max(0, GD_FULL_PAY_PER_DAY - (s && s.day === localDayKey() ? s.n | 0 : 0)); }
+function gdPayMult(cleared, allHuman){
+  const left = gdFullPaysLeft(), mult = (left > 0 ? 1 : GD_REPEAT_PAY_MULT) * (allHuman ? GD_DUO_PAY_MULT : 1);
+  if(cleared && left > 0) try{ localStorage.setItem(GD_PAY_DAY_KEY, JSON.stringify({day: localDayKey(), n: GD_FULL_PAY_PER_DAY - left + 1})); }catch(e){}
+  return mult;
+}
+function gdPayLineHTML(){ return `<span class="mp1-gd-pay">💰 ${escapeHtml(TX(gdFullPaysLeft() > 0 ? 'ui.mp1-gd-pay-full' : 'ui.mp1-gd-pay-used'))}</span>`; }
 function gdPayFloor(d){
   const m = matchState, T = d && d.T; if(!T) return null;
   const key = GD.startSeed + ':run'; if(GD.paid.some(p=> p.key === key)) return GD.paid.find(p=> p.key === key);
   const run = CoopM.runPay(T.typeId, T.partLog || []), last = (T.partLog || []).find(r=> r.idx === T.floorIdx) || {};
-  const pay = Object.assign({key, idx: T.floorIdx, won: run.cleared, dealt: last.dealt || 0, run}, econPayAll('coopDungeon', {gold: run.gold, dust: run.dust}), {rank: last.rank || null}); // ECON1: halved, ECON_INCOME_MULT.coopDungeon
+  const c = gdRoomCounts(), payMult = m && m.adminWin ? 1 : gdPayMult(run.cleared, !!(c && c.size >= 2 && c.humans === c.size)); // MP1-2
+  const pay = Object.assign({key, idx: T.floorIdx, won: run.cleared, dealt: last.dealt || 0, run, payMult}, econPayAll('coopDungeon', {gold: Math.round(run.gold * payMult), dust: Math.round(run.dust * payMult)}), {rank: last.rank || null}); // ECON1: halved, ECON_INCOME_MULT.coopDungeon
   if(m && m.adminWin){ pay.gold = pay.dust = 0; pay.admin = true; }
   else { if(pay.gold > 0) grantCurrency('gold', pay.gold); if(pay.dust > 0) grantCurrency('dust', pay.dust);
     const band = run.won ? (run.cleared ? 1 : run.factor / (run.won / run.total)) : 0;
@@ -28831,7 +28849,7 @@ function gdLobbyHTML(){
     <div class="gd-lobby dg1-room" style="--dg1-a:${escapeAttr(dg.tint ? dg.tint[0] : '#2a2018')}; --dg1-b:${escapeAttr(dg.tint ? dg.tint[1] : '#140e0a')}">
       <section class="dg1-banner">${art ? `<img class="dg1-banner-art" src="${escapeAttr(art)}" alt="">` : ''}<span class="dg1-banner-ico" aria-hidden="true">${dg.icon}</span>
         <div class="dg1-banner-text"><h2>${escapeHtml(gdThemedName(id))}</h2>${dg.blurbKey ? `<p>${escapeHtml(TX(dg.blurbKey))}</p>` : ''}
-          <p class="dg1-facts">${gdKindLine()}<span>${escapeHtml(TX('ui.coop2-group-facts', {floors: n, n: dg.players, energy: gdCost()}))}</span></p></div></section>
+          <p class="dg1-facts">${gdKindLine()}<span>${escapeHtml(TX('ui.coop2-group-facts', {floors: n, n: dg.players, energy: gdCost()}))}</span>${gdPayLineHTML()}</p></div></section>
       ${others}
       ${track}
       <div class="gd-seats-grid coop2-seats dg1-seats" style="--dg1-seats:${r.seats.length}" aria-label="${escapeAttr(TX('ui.ar3-seats'))}">
@@ -32287,7 +32305,7 @@ function settleRaidPartAfterMatch(m){
 }
 // Shared by the single-row fight and the trench: scores an attempt, stores it locally, pushes it
 // live, bumps quests and pays the small per-attempt reward.
-const RAID_ATTEMPT_PAY = {goldPer: 48, dustPer: 190}; // 2026-10-19 (package RB): raid damage per Maple Leaf / per 3 Magic Dust (was 250 / 1,000 on the x15 scale)
+const RAID_ATTEMPT_PAY = {goldPer: 24, dustPer: 95}; // 2026-10-19 (package RB): raid damage per Maple Leaf / per 3 Magic Dust (was 250 / 1,000 on the x15 scale). 2026-11-23 (package MP1, applying RAIDBAL1-1 / ECON1 section 6): was 48 / 190, which paid less per Energy than a road repeat; now about 7 Leaves + 5 Dust per Energy
 function recordRaidAttempt(def, partId, cycle, dealt, overwhelmed, rank){
   const part = (def.parts||[]).find(p=> p.id===partId);
   const contribution = RaidM.contributionFor(def, dealt, overwhelmed, part, rank); // + the fight's rank (2026-10-19, RV2): the server row gets the multiplied damage
@@ -39610,8 +39628,8 @@ function startMatchInner(mode, opts, standardDeck){
   const stats = {};
   engine.draw(players[1], 3, 'A', stats, []);
   engine.draw(players[2], 3, 'B', stats, []);
-  // The side that plays second gets the second-player bonus: the PvP stranger always plays first, so you're second there; everywhere
-  // else the opponent plays after you. 2026-10-23 (package EN, owner D24: "2nd player has no benefit except +1 Shield to Bramble."): the
+  // The side that plays second gets the second-player bonus: in PvP the stranger strikes first in round 1, so you're second there; everywhere
+  // else the opponent plays after you. 2026-11-23 (MP1-3 a): the PvP stranger no longer strikes first every round (strikes alternate), and you keep the +1 Shield. 2026-10-23 (package EN, owner D24: "2nd player has no benefit except +1 Shield to Bramble."): the
   // bonus is +1 Shield on its bramble and nothing else (was one more card, "draw 2 if you start 2nd"; N actions: N cards, Health, Lumber).
   if(arenaRuleset.secondDraw || (arenaRuleset.rules && arenaRuleset.rules.actions > 1)){ const second = mode==='pvp' ? 1 : 2; engine.applySecondPlayerBonus(players[second], second===1 ? 'A' : 'B', stats, []); } // +1 Shield on its bramble (EN, 2026-10-23; was +1 card, N actions +N cards, +N-1 Health, +N-2 Lumber)
   // Caged Fight (2026-10-10): your leader starts caged on the enemy board, 4 slots to your right. Cage level =
@@ -41717,7 +41735,7 @@ function syncFightBackdrop(m){
   const cssPal = fightPaletteFromCss(bf); _fightPal.set(key, cssPal); apply(cssPal);
   if(art) fightPaletteFromArt(art).then(p=>{ if(p){ _fightPal.set(key, p); if(matchState === m) apply(p); } });
 }
-function initiativeSideOf(m){ if(!m) return null; return m.mode==='pvp' ? 'B' : (m.round%2===0 ? 'A' : 'B'); }
+function initiativeSideOf(m){ if(!m) return null; return m.round%2===0 ? 'A' : 'B'; } // MP1-3 (2026-11-23): PvP alternates as every mode (was 'B' every round)
 function syncInitiativeCoin(){
   const m = matchState, bf = document.getElementById('battlefieldEl');
   if(!bf){ return; }
@@ -47480,7 +47498,7 @@ async function resolveRound(opts){
       return;
     }
     [1, 2].forEach(p=>{ m.players[p].playedThisTurn = false; m.players[p].discardUsedThisTurn = false; });
-    if(m.mode==='pc' || m.mode==='liveRanked'){ m.turnDone = {1:false, 2:false}; m.active = 1; }
+    if(m.mode==='pc' || m.mode==='liveRanked'){ m.turnDone = {1:false, 2:false}; m.active = m.mode==='liveRanked' ? liveFirstSeat(m.round + 1) : 1; } // MP1-3
     m.round += 1;
     const ev = [];
     fightSafe(()=>{ if(m.engine.roundStart && m.mode!=='tutorial' && m.mode!=='liveRanked') m.engine.roundStart(m.players, m.round, m.sideOf || (id=> id===1?'A':'B'), m.stats, ev); }, 'roundStart');
@@ -47555,7 +47573,7 @@ async function resolveRoundCore(opts){
   // you draw during the fight (an On Attack draw, a Dawn draw) is held out of the hand strip until its 'draw' event plays (eng19DrawShown),
   // so it lands in your hand as it is drawn; before, the hand only redrew after the round, beside the next turn's draw.
   const eng19HandPid = viewerHandPid(m), eng19Before = new Set(((m.players[eng19HandPid] || {}).hand || []).map(h=> h.uid));
-  let over = (m.forcedWinner!=null) ? true : (opts && opts.run) ? !!opts.run(events) : m.engine.resolveCombat(m.players, m.sideOf, m.stats, events, m.mode==='pvp' ? 2 : (m.round%2===0 ? 1 : 2));
+  let over = (m.forcedWinner!=null) ? true : (opts && opts.run) ? !!opts.run(events) : m.engine.resolveCombat(m.players, m.sideOf, m.stats, events, m.round%2===0 ? 1 : 2); // 2026-11-23 (package MP1, decision MP1-3 a): PvP vs a stranger alternates too (was: the stranger, side 2, every round; you scored 36% in mirrors, now 50%)
   m._eng19HandHold = new Set(((m.players[eng19HandPid] || {}).hand || []).map(h=> h.uid).filter(u=> !eng19Before.has(u))); // ENG19 (#12)
   m._rrCombatDone = true; m._needsCommit = false; m._rrFails = 0; // 2026-10-16: the round is fought (see resolveRound's recovery)
   // Wait-timer rework (2026-09-20, per explicit request: "decrement at start of turn (not end of
@@ -48335,7 +48353,7 @@ async function resolveRoundCore(opts){
   } else if(!(opts && opts.manual)){
     m.players[1].playedThisTurn=false; m.players[1].discardUsedThisTurn=false;
     m.players[2].playedThisTurn=false; m.players[2].discardUsedThisTurn=false;
-    if(m.mode==='pc' || m.mode==='liveRanked'){ m.turnDone = {1:false,2:false}; m.active = 1; }
+    if(m.mode==='pc' || m.mode==='liveRanked'){ m.turnDone = {1:false,2:false}; m.active = m.mode==='liveRanked' ? liveFirstSeat(m.round + 1) : 1; } // MP1-3
     m.round += 1;
     if((m.round === SUDDEN_DEATH_ROUND || m.round === SUDDEN_DEATH_CASTLE_ROUND) && m.mode!=='tutorial' && !m.coop /* DUNGEON1 */ && !(m.raidRoundCap && m.raidRoundCap <= m.round)){ const st = m.round >= SUDDEN_DEATH_CASTLE_ROUND ? 2 : 1; showSuddenDeathBanner(m, st);
       if(!(st >= 2 && (m.mode==='raidOnline' || m.mode==='raidOffline'))) try{ pushLog({type:'suddenDeath', stage:st, round:m.round}); }catch(e){} } // 2026-10-15: and a log line

@@ -4771,5 +4771,7 @@
  "Add as reward": "報酬に追加",
  "In {n} skirmish decks": "{n}個のスカーミッシュデッキで使用",
  "New! skills: {list}": "新スキル：{list}",
- "Reward at {code}": "{code}の報酬"
+ "Reward at {code}": "{code}の報酬",
+ "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "今日の最初の完全クリアは報酬が満額。以降は20%。2人プレイ：+25%。",
+ "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "今日の満額報酬は受け取り済み：明日まで報酬は20%。2人プレイ：+25%。"
 }

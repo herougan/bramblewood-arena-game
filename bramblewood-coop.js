@@ -40,16 +40,18 @@ const DUNGEONS = {
     blurbKey: 'ui.dungeon1-blurb-hollow', art: 'crushingdepths', tint: ['#123a52', '#0b1f2e'], mapNumber: 16,
     // the party's bramble: every player's bramble Health added up (the raid's merged bramble); the vault's scaled by the party (D49 steps)
     healthScale: [1, 1.7, 2.3, 2.8],
+    // 2026-11-23 (package MP1, decision MP1-1 a: "about 50% full clear"): every part's bramble x2 (was 24 / 26 / 21 / 25 / 28). Map 16 decks
+    // on Auto cleared all 5 parts 73% of the time, parts 1-4 95-100%; x2 measured 49% (docs/design/mp1-2026-11-23.md).
     floors: [
-      {key: 'roost', nameKey: 'ui.ar3-floor-roost', icon: '🦇', castle: 24,
+      {key: 'roost', nameKey: 'ui.ar3-floor-roost', icon: '🦇', castle: 48,
         deck: {'baby-bat': 4, 'cave-swiftlet': 3, 'vampire-bat': 3, 'cave-flitter': 3, 'upside-down-bat': 3, 'voltwing-bat': 2, 'fruit-bat-familiar': 2}},
-      {key: 'galleries', nameKey: 'ui.ar3-floor-galleries', icon: '⛏️', castle: 26,
+      {key: 'galleries', nameKey: 'ui.ar3-floor-galleries', icon: '⛏️', castle: 52,
         deck: {'quarry-mole': 4, 'star-nosed-mole': 3, 'ore-smelter-mole': 3, 'cave-cricket': 3, 'cave-centipede': 3, 'tiny-cave-dweller': 2, 'deep-cave-troll': 2}},
-      {key: 'pools', nameKey: 'ui.ar3-floor-pools', icon: '🦎', castle: 21,
+      {key: 'pools', nameKey: 'ui.ar3-floor-pools', icon: '🦎', castle: 42,
         deck: {'cave-olm': 3, 'alpine-salamander': 3, 'fire-salamander': 3, 'glimmer-spider': 3, 'glowworm-cluster': 2, 'whip-spider': 2, 'velvet-worm': 2, 'magma-salamander': 2}},
-      {key: 'stair', nameKey: 'ui.dungeon1-part-stair', icon: '🐟', castle: 25, // DUNGEON1: the fifth part (eels and lungfish on the way down)
+      {key: 'stair', nameKey: 'ui.dungeon1-part-stair', icon: '🐟', castle: 50, // DUNGEON1: the fifth part (eels and lungfish on the way down)
         deck: {'conger-eel': 3, 'riptide-eel': 3, 'bog-lungfish': 3, 'cave-olm': 3, 'glimmer-spider': 2, 'whip-spider': 2, 'coral-current-eel': 2, 'voltaic-eel': 2}},
-      {key: 'matriarch', nameKey: 'ui.ar3-floor-matriarch', icon: '👑', castle: 28, boss: {base: 'cave-warlord', nameKey: 'ui.ar3-boss-name', hpMult: 1.25, atkAdd: 0},
+      {key: 'matriarch', nameKey: 'ui.ar3-floor-matriarch', icon: '👑', castle: 56, boss: {base: 'cave-warlord', nameKey: 'ui.ar3-boss-name', hpMult: 1.25, atkAdd: 0},
         deck: {'giant-cave-huntsman': 2, 'wolf-spider-mother': 2, 'trapdoor-spider': 2, 'deep-cave-troll': 2, 'glowing-gecko': 3, 'hollow-oath-keeper': 3, 'cave-bat-swarm': 2, 'arc-bat': 2, 'irradiated-glow-wyrm': 2}},
     ],
     // the raid's scoring (RaidM.contributionFor): bramble damage x perInFightHp, capped; a fallen bramble scores overwhelmCap; the rank

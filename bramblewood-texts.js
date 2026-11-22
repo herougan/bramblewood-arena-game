@@ -3949,7 +3949,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rw3-add": "Add as reward",
   "ui.rw3-decks": "In {n} skirmish decks",
   "ui.rw3-newskills": "New! skills: {list}",
-  "ui.rw3-elsewhere": "Reward at {code}"
+  "ui.rw3-elsewhere": "Reward at {code}",
+  "ui.mp1-gd-pay-full": "Your first clear today pays in full; later runs pay 20%. Two players: +25%.",
+  "ui.mp1-gd-pay-used": "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
