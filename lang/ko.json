@@ -4742,5 +4742,17 @@
  "Scared -{n}": "공포 -{n}",
  "Scared: attacks for {n} less": "공포: 공격이 {n} 줄어든다",
  "While an ally leader is on the battlefield, it has {skills}.": "아군 지도자가 전장에 있는 동안 {skills}을(를) 가진다.",
- "Learns a skill at a higher level": "더 높은 레벨에서 스킬을 배웁니다"
+ "Learns a skill at a higher level": "더 높은 레벨에서 스킬을 배웁니다",
+ "All cards (0-20)": "모든 카드 (0-20)",
+ "All cards (20-40)": "모든 카드 (20-40)",
+ "Bonus (pack-only)": "보너스 (팩 전용)",
+ "In a skirmish deck or reward": "소규모 전투 덱 또는 보상에 있음",
+ "Starts Pack {n}": "팩 {n} 시작",
+ "Represents map": "대표 맵",
+ "Now: the starter deck": "현재: 시작 덱",
+ "Tutorial suggestions": "튜토리얼 제안",
+ "Default cuts": "기본 구분",
+ "A pack cannot start at or before the pack before it.": "팩은 이전 팩의 시작 위치 또는 그 이전에 시작할 수 없습니다.",
+ "YES or NO each card. Right-click a card (or ⋯) to set its map. ▸2 / ▸3 start that pack at the card.": "카드마다 YES 또는 NO. 우클릭(또는 ⋯)으로 맵 지정. ▸2 / ▸3은 이 카드부터 해당 팩을 시작.",
+ "Picked {n} / 16": "선택 {n} / 16"
 }

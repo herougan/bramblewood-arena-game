@@ -4740,5 +4740,17 @@
  "Scared -{n}": "驚恐 -{n}",
  "Scared: attacks for {n} less": "驚恐：攻擊減少 {n}",
  "While an ally leader is on the battlefield, it has {skills}.": "當友方首領在戰場上時，擁有{skills}。",
- "Learns a skill at a higher level": "在更高等級時習得技能"
+ "Learns a skill at a higher level": "在更高等級時習得技能",
+ "All cards (0-20)": "全部卡牌 (0-20)",
+ "All cards (20-40)": "全部卡牌 (20-40)",
+ "Bonus (pack-only)": "額外（僅卡包）",
+ "In a skirmish deck or reward": "在遭遇戰牌組或獎勵中",
+ "Starts Pack {n}": "從此起為卡包 {n}",
+ "Represents map": "代表地圖",
+ "Now: the starter deck": "現有：起始牌組",
+ "Tutorial suggestions": "教學建議",
+ "Default cuts": "預設分段",
+ "A pack cannot start at or before the pack before it.": "卡包不能從前一個卡包的起點或之前開始。",
+ "YES or NO each card. Right-click a card (or ⋯) to set its map. ▸2 / ▸3 start that pack at the card.": "每張卡選「是」或「否」。右鍵（或 ⋯）設定地圖。▸2 / ▸3 從此卡起開始該卡包。",
+ "Picked {n} / 16": "已選 {n} / 16"
 }

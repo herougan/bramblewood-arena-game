@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-22 Package PACKSET1 (owner 22:41)
+- **Pack Editor (admin):** two new rows under the packs, "All cards (0-20)" and "All cards (20-40)". Each opens a panel in the Map cards style: Tutorial (T-1/T-2 and the starter decks, then **Tutorial suggestions** per faction with an n / 16 counter), Base, Faction, then one section per map (its Yes picks plus its side maps' Yes, in map order), then **Bonus (pack-only)**. Pills: Map N, AI pick, faction, Skirmish (in a fight deck or reward, or a map-source card), x-uses, pack; the tile also shows Baby, Starter and the budget %.
+- **Bonus cards:** `canonical/pack-bonus-suggestions.json` (`node tools/packset1_suggest.js`) holds 3 per map for Maps 0-24 (63 for Maps 0-20; the third is the spare to the 2 asked), on no list, in no fight or reward, chosen by the map's biome, the animal families on its lists and its budget step; plus 40 / 26 tutorial suggestions (otters / hummingbirds). YES / NO on each; right-click a tile (or the ⋯ button) opens a map picker that sets the map it represents. A YES card joins its map's section.
+- **Pack cuts (ascending only):** the map-order cards (chosen + YES bonus) split into Packs 1-3 (0-20) or 4-6 (20-40). "▸2" / "▸3" on a card starts that pack there; a later pack's cut never goes at or before the one before, and a cut that passes a later cut pushes it on. Default = today's 7-maps-a-pack split ("Default cuts" resets). The header shows the card count per pack.
+- **How the packs read them:** the panel saves `{yes, no, map, tyes, cuts, tiers}` on this device (`bw_packset1_v1`) and in the admin row `__cfg:pack-set` (written when you click, never by SQL). `tiers` (card -> pack) is worked out whenever you change something; `basicPackTierOf` returns it for a card a map list puts in a basic pack today or a YES bonus card, and falls back to today's rule (`basicPackTier0`: first map list, `PACK_MAPS_PER_TIER = 7`) for every other card and while nothing is set. `packPoolOf` and the pack pools use `basicPackTierOf`, so they follow. Note: tiers are a snapshot of the map order at your last change here.
+- **Side maps:** the New! target is now the range 1-3 (green inside it); a number you type still wins. Recorded in project-state ("1-3 New! per submap").
+- Not built (REWARD3): the 2 skirmish rewards per map, Baby / General drops. The tile menu is a list (`PACKSET_MENU`) to extend.
+
 ## 2026-11-22 Packages MAPADD1b, CHOSEN1 (owner 21:28)
 - **Map cards window:** your chosen cards (Yes, or added by you) now sort first in NEW! and Carried each time the window opens; clicking while it is open does not move tiles.
 - **Map skill table:** Map 5 adds Poison Barbs, Map 8 adds Evasive (MAPADD1-1 a). Both are on no card yet, so they show as half-red, half-blue "To add" tiles, as Leech does on Map 5.

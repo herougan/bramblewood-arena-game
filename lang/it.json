@@ -4741,5 +4741,17 @@
  "Scared -{n}": "Spaventato -{n}",
  "Scared: attacks for {n} less": "Spaventato: attacca per {n} in meno",
  "While an ally leader is on the battlefield, it has {skills}.": "Finché un capo alleato è sul campo di battaglia, ha {skills}.",
- "Learns a skill at a higher level": "Impara un'abilità a un livello superiore"
+ "Learns a skill at a higher level": "Impara un'abilità a un livello superiore",
+ "All cards (0-20)": "Tutte le carte (0-20)",
+ "All cards (20-40)": "Tutte le carte (20-40)",
+ "Bonus (pack-only)": "Bonus (solo pacchetti)",
+ "In a skirmish deck or reward": "In un mazzo o premio di scaramuccia",
+ "Starts Pack {n}": "Inizia il pacchetto {n}",
+ "Represents map": "Rappresenta la mappa",
+ "Now: the starter deck": "Ora: il mazzo iniziale",
+ "Tutorial suggestions": "Suggerimenti tutorial",
+ "Default cuts": "Tagli predefiniti",
+ "A pack cannot start at or before the pack before it.": "Un pacchetto non può iniziare prima o dove inizia il precedente.",
+ "YES or NO each card. Right-click a card (or ⋯) to set its map. ▸2 / ▸3 start that pack at the card.": "SÌ o NO per ogni carta. Clic destro (o ⋯) per la mappa. ▸2 / ▸3 iniziano quel pacchetto qui.",
+ "Picked {n} / 16": "Scelte {n} / 16"
 }
