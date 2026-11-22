@@ -4763,5 +4763,15 @@
  "Drop": "제거",
  "Keep": "유지",
  "Replace": "교체",
- "to Map {n}": "지도 {n}(으)로"
+ "to Map {n}": "지도 {n}(으)로",
+ "Max {n} Rewards per map": "맵당 보상 최대 {n}개",
+ "Copies over the map: first clear, then repeat drops. Rarity cap {cap}": "맵에서의 장수: 첫 클리어, 이후 반복 드롭. 희귀도 상한 {cap}",
+ "Free drops": "무료 드롭",
+ "General drop": "일반 드롭",
+ "Baby card: drops from any fight, not from packs": "새끼 카드: 어느 전투에서나 드롭, 팩에는 없음",
+ "No free drop": "무료 드롭 없음",
+ "Add as reward": "보상으로 추가",
+ "In {n} skirmish decks": "스커미시 덱 {n}개에 사용",
+ "New! skills: {list}": "새 스킬: {list}",
+ "Reward at {code}": "{code} 보상"
 }

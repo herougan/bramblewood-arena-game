@@ -4763,5 +4763,15 @@
  "Drop": "நீக்கு",
  "Keep": "வைத்திரு",
  "Replace": "மாற்று",
- "to Map {n}": "வரைபடம் {n} க்கு"
+ "to Map {n}": "வரைபடம் {n} க்கு",
+ "Max {n} Rewards per map": "ஒரு வரைபடத்திற்கு அதிகபட்சம் {n} பரிசுகள்",
+ "Copies over the map: first clear, then repeat drops. Rarity cap {cap}": "வரைபடத்தில் நகல்கள்: முதல் வெற்றி, பின் மீண்டும் கிடைப்பவை. அரிதான வரம்பு {cap}",
+ "Free drops": "இலவச டிராப்கள்",
+ "General drop": "பொது டிராப்",
+ "Baby card: drops from any fight, not from packs": "குட்டி அட்டை: எந்த சண்டையிலும் கிடைக்கும், பேக்குகளில் அல்ல",
+ "No free drop": "இலவச டிராப் இல்லை",
+ "Add as reward": "பரிசாகச் சேர்",
+ "In {n} skirmish decks": "{n} சிறு போர் டெக்குகளில்",
+ "New! skills: {list}": "புதிய திறன்கள்: {list}",
+ "Reward at {code}": "{code} இல் பரிசு"
 }

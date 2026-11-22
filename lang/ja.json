@@ -4761,5 +4761,15 @@
  "Drop": "外す",
  "Keep": "残す",
  "Replace": "置換",
- "to Map {n}": "マップ{n}へ"
+ "to Map {n}": "マップ{n}へ",
+ "Max {n} Rewards per map": "マップごとに報酬は最大{n}枚",
+ "Copies over the map: first clear, then repeat drops. Rarity cap {cap}": "マップでの枚数：初回クリア、その後の再ドロップ。レア度上限 {cap}",
+ "Free drops": "無料ドロップ",
+ "General drop": "一般ドロップ",
+ "Baby card: drops from any fight, not from packs": "ベビーカード：どの戦闘でも落ちる。パックには入らない",
+ "No free drop": "無料ドロップなし",
+ "Add as reward": "報酬に追加",
+ "In {n} skirmish decks": "{n}個のスカーミッシュデッキで使用",
+ "New! skills: {list}": "新スキル：{list}",
+ "Reward at {code}": "{code}の報酬"
 }
