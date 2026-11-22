@@ -1,0 +1,73 @@
+{
+ "map": "mpd",
+ "generated": "2026-11-22T05:26:10.098Z",
+ "decks": [
+  {
+   "id": "18-A-BPRO-1",
+   "map": "mpd",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "antlion-pit": 4,
+     "caustic-scorpion": 4,
+     "dromedary": 4,
+     "horned-lizard": 2,
+     "dune-jackal": 4,
+     "dust-devil-kestrel": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.085,
+     "ref": 0.85,
+     "gap": 0.065
+    }
+   },
+   "pick": {
+    "deck": {
+     "antlion-pit": 4,
+     "caustic-scorpion": 4,
+     "dromedary": 4,
+     "horned-lizard": 2,
+     "dune-jackal": 4,
+     "dust-devil-kestrel": 2
+    },
+    "val": {
+     "v": 0.085,
+     "ref": 0.85,
+     "gap": 0.065
+    },
+    "leaders": [
+     "dust-devil-kestrel"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.083,
+     "ref": 0.775,
+     "gap": 0.097
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 4
+    }
+   ],
+   "readings": 95,
+   "sec": 28
+  }
+ ],
+ "drop": []
+}

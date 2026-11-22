@@ -1,0 +1,80 @@
+{
+ "map": "ms",
+ "generated": "2026-11-22T05:29:16.504Z",
+ "decks": [
+  {
+   "id": "5-A-BPRO-1",
+   "map": "ms",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "mudpuppy": 4,
+     "muskrat-reedgatherer": 3,
+     "nutria-reedcutter": 2,
+     "peat-cutter-vole": 4,
+     "swamp-alligator": 4,
+     "cottonmouth-matriarch": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.18,
+     "ref": 0.9,
+     "gap": 0.05
+    }
+   },
+   "pick": {
+    "deck": {
+     "mudpuppy": 4,
+     "muskrat-reedgatherer": 3,
+     "nutria-reedcutter": 4,
+     "peat-cutter-vole": 4,
+     "swamp-alligator": 2,
+     "cottonmouth-matriarch": 3
+    },
+    "val": {
+     "v": 0.135,
+     "ref": 0.85,
+     "gap": 0.015
+    },
+    "leaders": [
+     "cottonmouth-matriarch"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.15,
+     "ref": 0.925,
+     "gap": 0.32
+    },
+    {
+     "move": "swamp-alligator -2 -> nutria-reedcutter",
+     "v": 0.158,
+     "ref": 0.825,
+     "gap": 0.112,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 559,
+   "sec": 133
+  }
+ ],
+ "drop": []
+}

@@ -11,3 +11,17 @@
 10-A-BPRO-2 bpro SK ladder start 0.492 ref 0.35
 10-A-BPRO-2 validation {"v":0.535,"ref":0.35,"gap":0.235} -> {"v":0.535,"ref":0.35,"gap":0.235} no 33s
 8-A-BPRO-1 bpro SK ladder start 0.175 ref 0.85
+8-A-BPRO-1 1 barrow-leech-bat -2 -> fruit-bat 0.267 ref 0.675
+8-A-BPRO-1 validation {"v":0.165,"ref":0.825,"gap":0} -> {"v":0.27,"ref":0.8,"gap":0} KEEP 52s
+18-A-BPRO-1 bpro SK ladder start 0.083 ref 0.775
+18-A-BPRO-1 validation {"v":0.085,"ref":0.85,"gap":0.065} -> {"v":0.085,"ref":0.85,"gap":0.065} no 28s
+1-A-BPRO-1 bpro SK ladder start 0.242 ref 0.75
+1-A-BPRO-1 validation {"v":0.245,"ref":0.675,"gap":0} -> {"v":0.245,"ref":0.675,"gap":0} no 10s
+1-A-BPRO-3 bpro SK ladder start 0.325 ref 0.55
+1-A-BPRO-3 validation {"v":0.305,"ref":0.5,"gap":0.005} -> {"v":0.305,"ref":0.5,"gap":0.005} no 43s
+5-A-BPRO-1 bpro SK ladder start 0.15 ref 0.925
+5-A-BPRO-1 1 swamp-alligator -2 -> nutria-reedcutter 0.158 ref 0.825
+5-A-BPRO-1 validation {"v":0.18,"ref":0.9,"gap":0.05} -> {"v":0.135,"ref":0.85,"gap":0.015} no 133s
+11-A-BPRO-2 bpro SK ladder start 0.35 ref 0.75
+11-A-BPRO-2 1 chamois-leaper -1 -> the-gannet-queen 0.292 ref 0.775
+11-A-BPRO-2 validation {"v":0.29,"ref":0.8,"gap":0} -> {"v":0.275,"ref":0.825,"gap":0} KEEP 154s

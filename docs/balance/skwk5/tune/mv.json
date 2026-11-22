@@ -1,0 +1,80 @@
+{
+ "map": "mv",
+ "generated": "2026-11-22T05:31:50.164Z",
+ "decks": [
+  {
+   "id": "11-A-BPRO-2",
+   "map": "mv",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "eyrie-warden": 4,
+     "the-gannet-queen": 3,
+     "anvil-thrush": 3,
+     "chamois-leaper": 3,
+     "peregrine-stooper": 4,
+     "apollo-butterfly": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.29,
+     "ref": 0.8,
+     "gap": 0
+    }
+   },
+   "pick": {
+    "deck": {
+     "eyrie-warden": 4,
+     "the-gannet-queen": 4,
+     "anvil-thrush": 3,
+     "chamois-leaper": 2,
+     "peregrine-stooper": 4,
+     "apollo-butterfly": 3
+    },
+    "val": {
+     "v": 0.275,
+     "ref": 0.825,
+     "gap": 0
+    },
+    "leaders": [
+     "the-gannet-queen"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.35,
+     "ref": 0.75,
+     "gap": 0.08
+    },
+    {
+     "move": "chamois-leaper -1 -> the-gannet-queen",
+     "v": 0.292,
+     "ref": 0.775,
+     "gap": 0.022,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 508,
+   "sec": 154
+  }
+ ],
+ "drop": []
+}
