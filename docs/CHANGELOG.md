@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-22 (package TESTFIX9: test failures from the 11-22 full run, by cause)
+- Players see: nothing (tests, one baked reference-ladder line).
+- Fixed: n221, lvl10, bal13, bal21, bal24, ref5, budget2, bal9, bal12, bal14; road-rarity down to one real check. Ten Reference-ladder decks that NOC7 had given a card their player does not own were redone from their collections (`tests/tools/testfix9_ladder_2026_11_22.js`, `ref_decks.js --apply`). Known-card lists (`tests/lib/known-out-of-band.js`, lvl10's) carry the owner-edited cards. Still failing: road-rarity 20-A-4, bal7 (M3, K14), bal25; reward-screens B4 is an intermittent, unreproduced. Details: `docs/tests/full-2026-11-22-release.md`.
+
 ## 2026-11-22 Package MAPRM1 (owner 23:05)
 - **Map cards window:** a skill that is New! on a main map but not in that map's table row (or its Special / Faction column) is half red, half dark grey with a "To remove" tag. Map 5: Bleed, Constrict, Cure, Herbalist, Twin Strike.
 - Map skill table (hub, Design): a "To remove" column read from the game's own tiles; 36 across Maps 0-20.
