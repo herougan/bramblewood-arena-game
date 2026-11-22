@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-22 (package NOC7b: road fights after Nocturnal moved to the Morel Hollow)
+- Players see: Map 7's side map The Mycelium Deep is easier again, back to its targets. Leopard Slug is Nocturnal now (NOC7) and The Mycelium Deep is dark, so its slugs hit through the dark and those fights got far too hard (seed 9100: 7-A-3 69 -> 29, 7-A-4 59 -> 32, 7-A-2 74 -> 54, 7-A-5 43 -> 29). Their Leopard Slugs are now Compost Grubs (the plain 1/10 on the same list). Map 7's 7-2 swaps 2 of its 4 slugs too (71 -> 76, band 74.5-90.5).
+- Re-read (400 games): 7-A-2 74.8, 7-A-3 62, 7-A-4 62, 7-A-5 43.3, 7-2 76. Road (Maps 0-20, seed 9100, `docs/balance/noc7/`): main 112 in band / 125 within 10 / 2 beyond 20, side 43 / 47 / 4 (was 113 / 126 / 2 and 43 / 47 / 4 before NOC7). 7-1 (93.3) and 7-6 (39) moved nearer their targets.
+
 ## 2026-11-22 (package SKWK5: the strong decks PROLIST left off band)
 - No road change. Against the reference ladder, 5 of the 11 Maps 0-20 N-SK decks that PROLIST left 3+ points off the 15-30% band were kept nearer on fresh seeds: 20-A-BPRO-1 8 -> 11.5% (Map reference 92.5 -> 87.5%), 8-A-BPRO-1 16.5 -> 27%, 5-A-BPRO-1 18% (ref 90 -> 85%), 7-A-BPRO-1 5 -> 10%, 11-A-BPRO-2 29 -> 27.5%. Tool: `docs/balance/skwk5/` (SKWK4's routine, salts skwk5). The Old Bramble's 0-B-BPRO-1 is left out (opens after Map 21).
 - Not moved by local search (a fresh deck search is next): 2-B-BPRO-2 81.5% (far too strong), 10-A-BPRO-2 53.5%, 18-A-BPRO-1 8.5%, 0-BPRO-2 7% (Map 0's strong deck after its Thorn Shrikes left). 1-A-BPRO-1 / 1-A-BPRO-3 read in band on the validation seeds (24.5 / 30.5%).
