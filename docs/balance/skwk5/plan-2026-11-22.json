@@ -1,0 +1,66 @@
+{
+ "about": "SKWK5 (2026-11-22): the Maps 0-20 N-SK decks PROLIST left 3+ points off the protocol band (15-30% vs the ladder, Map reference <= 85%) on its validation seeds; fresh salts skwk5. Gaps under 3 points are inside the read noise and stay. The Old Bramble (mo, 0-B-BPRO-1) opens after Map 21 and is left out (BAL17-2).",
+ "maps": {
+  "m1": {
+   "tune": [
+    "0-BPRO-2"
+   ],
+   "drop": []
+  },
+  "me": {
+   "tune": [
+    "20-A-BPRO-1"
+   ],
+   "drop": []
+  },
+  "mg": {
+   "tune": [
+    "2-B-BPRO-2"
+   ],
+   "drop": []
+  },
+  "mj": {
+   "tune": [
+    "10-A-BPRO-2"
+   ],
+   "drop": []
+  },
+  "mn": {
+   "tune": [
+    "8-A-BPRO-1"
+   ],
+   "drop": []
+  },
+  "mpd": {
+   "tune": [
+    "18-A-BPRO-1"
+   ],
+   "drop": []
+  },
+  "mq": {
+   "tune": [
+    "1-A-BPRO-1",
+    "1-A-BPRO-3"
+   ],
+   "drop": []
+  },
+  "ms": {
+   "tune": [
+    "5-A-BPRO-1"
+   ],
+   "drop": []
+  },
+  "mv": {
+   "tune": [
+    "11-A-BPRO-2"
+   ],
+   "drop": []
+  },
+  "mz": {
+   "tune": [
+    "7-A-BPRO-1"
+   ],
+   "drop": []
+  }
+ }
+}

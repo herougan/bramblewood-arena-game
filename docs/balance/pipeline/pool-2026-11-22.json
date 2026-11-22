@@ -1,0 +1,3276 @@
+{
+ "about": "POOL: worthRuler with rests and opponents from Commons + Uncommons (low) / the full pool (shared) / Rare and up (high), bramble 15; move = interval above / below the full-pool one",
+ "stable": 65,
+ "rows": [
+  {
+   "key": "speed={\"kind\":\"swift\"}",
+   "price": 9.5,
+   "low": {
+    "m": 3.91,
+    "lo": 3.4104,
+    "hi": 4.5986
+   },
+   "full": {
+    "m": 4.451,
+    "lo": 4.2396,
+    "hi": 4.8294
+   },
+   "high": {
+    "m": 5.1489,
+    "lo": 3.7898,
+    "hi": 6.65
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "swarm=[\"Ants\"]",
+   "price": 3.13,
+   "low": {
+    "m": 0.2923,
+    "lo": 0.1583,
+    "hi": 0.5262
+   },
+   "full": {
+    "m": 0.494,
+    "lo": 0.298,
+    "hi": 0.9969
+   },
+   "high": {
+    "m": 0.0814,
+    "lo": -0.285,
+    "hi": 0.7372
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "rainrunner=2",
+   "price": 4,
+   "low": {
+    "m": 0.0877,
+    "lo": 0,
+    "hi": 0.2931
+   },
+   "full": {
+    "m": 0.266,
+    "lo": 0.0422,
+    "hi": 0.7281
+   },
+   "high": {
+    "m": 0.2443,
+    "lo": 0,
+    "hi": 0.8493
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "poisonBarbs=2",
+   "price": 3.2,
+   "low": {
+    "m": 6.4444,
+    "lo": 5.6196,
+    "hi": 7.4014
+   },
+   "full": {
+    "m": 6.122,
+    "lo": 5.6927,
+    "hi": 7.0428
+   },
+   "high": {
+    "m": 4.9345,
+    "lo": 3.97,
+    "hi": 5.7415
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "cheap"
+   ]
+  },
+  {
+   "key": "delivery=1",
+   "price": 5.25,
+   "low": {
+    "m": 2.805,
+    "lo": 2.2586,
+    "hi": 3.5645
+   },
+   "full": {
+    "m": 3.6496,
+    "lo": 2.7753,
+    "hi": 4.4582
+   },
+   "high": {
+    "m": 4.448,
+    "lo": 3.0096,
+    "hi": 5.2605
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "ok"
+   ]
+  },
+  {
+   "key": "T:onHealed>gain {\"do\":\"gain\",\"on\":\"onHealed\",\"amount\":1,\"resource\":\"lumber\"}",
+   "price": 1,
+   "low": {
+    "m": 0.1023,
+    "lo": -0.0178,
+    "hi": 0.285
+   },
+   "full": {
+    "m": 0.0475,
+    "lo": 0,
+    "hi": 0.1315
+   },
+   "high": {
+    "m": 0,
+    "lo": 0,
+    "hi": 0
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "pounce=1",
+   "price": 1.66,
+   "low": {
+    "m": 2.2695,
+    "lo": 1.655,
+    "hi": 2.7128
+   },
+   "full": {
+    "m": 1.8842,
+    "lo": 1.5722,
+    "hi": 2.2631
+   },
+   "high": {
+    "m": 2.0455,
+    "lo": 1.4868,
+    "hi": 2.6973
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "nursing=1",
+   "price": 5,
+   "low": {
+    "m": 2.8205,
+    "lo": 2.3189,
+    "hi": 3.4403
+   },
+   "full": {
+    "m": 2.9108,
+    "lo": 2.7128,
+    "hi": 3.0208
+   },
+   "high": {
+    "m": 2.5644,
+    "lo": 2.0276,
+    "hi": 3.0135
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "cure=1",
+   "price": 0.5,
+   "low": {
+    "m": -0.0146,
+    "lo": -0.0552,
+    "hi": 0
+   },
+   "full": {
+    "m": 0.0604,
+    "lo": 0.0239,
+    "hi": 0.1089
+   },
+   "high": {
+    "m": 0.0814,
+    "lo": 0,
+    "hi": 0.6586
+   },
+   "lowMove": "lower",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "ok"
+   ]
+  },
+  {
+   "key": "herbalist=1",
+   "price": 0.23,
+   "low": {
+    "m": 0.0731,
+    "lo": -0.0253,
+    "hi": 0.2111
+   },
+   "full": {
+    "m": 0.1474,
+    "lo": 0.0867,
+    "hi": 0.2211
+   },
+   "high": {
+    "m": 0.3257,
+    "lo": 0,
+    "hi": 0.9437
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "ok"
+   ]
+  },
+  {
+   "key": "immunity",
+   "price": 0.3,
+   "low": {
+    "m": 0.1023,
+    "lo": 0,
+    "hi": 0.2533
+   },
+   "full": {
+    "m": 0.2593,
+    "lo": 0.1806,
+    "hi": 0.3632
+   },
+   "high": {
+    "m": 0.2192,
+    "lo": 0.0456,
+    "hi": 0.4987
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "enfeeble=1",
+   "price": 2.5,
+   "low": {
+    "m": 1.7492,
+    "lo": 1.2961,
+    "hi": 2.255
+   },
+   "full": {
+    "m": 1.8114,
+    "lo": 1.5298,
+    "hi": 2.2054
+   },
+   "high": {
+    "m": 2.093,
+    "lo": 1.644,
+    "hi": 2.8288
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "ok"
+   ]
+  },
+  {
+   "key": "parasite",
+   "price": 1,
+   "low": {
+    "m": -2.7308,
+    "lo": -3.6551,
+    "hi": -2.0829
+   },
+   "full": {
+    "m": -2.6582,
+    "lo": -3.554,
+    "hi": -2.09
+   },
+   "high": {
+    "m": -5.0944,
+    "lo": -7.4359,
+    "hi": -3.5848
+   },
+   "lowMove": "same",
+   "highMove": "lower",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "sleepPowder=1",
+   "price": 2.5,
+   "low": {
+    "m": 3.99,
+    "lo": 3.5775,
+    "hi": 4.622
+   },
+   "full": {
+    "m": 4.4228,
+    "lo": 4.2073,
+    "hi": 4.7351
+   },
+   "high": {
+    "m": 4.255,
+    "lo": 3.0792,
+    "hi": 5.0983
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "cheap"
+   ]
+  },
+  {
+   "key": "broodkeeper=1",
+   "price": 3,
+   "low": {
+    "m": 0.0585,
+    "lo": -0.0136,
+    "hi": 0.1676
+   },
+   "full": {
+    "m": 0.1154,
+    "lo": 0.0663,
+    "hi": 0.1778
+   },
+   "high": {
+    "m": 0.4886,
+    "lo": 0.0712,
+    "hi": 1.1333
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "swarm=[\"Arachnid\"]",
+   "price": 3.13,
+   "low": {
+    "m": 0.1169,
+    "lo": 0.0311,
+    "hi": 0.2591
+   },
+   "full": {
+    "m": 0.095,
+    "lo": 0.0219,
+    "hi": 0.19
+   },
+   "high": {
+    "m": 0.2443,
+    "lo": -0.0712,
+    "hi": 0.8609
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "keenSense={\"sees\":\"dark\"}",
+   "price": 3,
+   "low": {
+    "m": 0.1462,
+    "lo": 0.0317,
+    "hi": 0.2942
+   },
+   "full": {
+    "m": 0.2565,
+    "lo": 0.0919,
+    "hi": 0.4823
+   },
+   "high": {
+    "m": 0.3727,
+    "lo": 0.1287,
+    "hi": 0.7687
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "T:onDeath>damage {\"do\":\"damage\",\"on\":\"onDeath\",\"sub\":\"adjacent\",\"who\":\"enemy\",\"amount\":2,\"dmgType\":\"heat\"}",
+   "price": 1.19,
+   "low": {
+    "m": 0.9062,
+    "lo": 0.456,
+    "hi": 1.5358
+   },
+   "full": {
+    "m": 1.2544,
+    "lo": 0.9974,
+    "hi": 1.5168
+   },
+   "high": {
+    "m": 1.2148,
+    "lo": 0.7877,
+    "hi": 1.6713
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "daunt={\"v\":1,\"lasts\":\"lasting\"}",
+   "price": 2.64,
+   "low": {
+    "m": 3.4056,
+    "lo": 2.8657,
+    "hi": 3.9614
+   },
+   "full": {
+    "m": 3.1991,
+    "lo": 2.9404,
+    "hi": 3.6605
+   },
+   "high": {
+    "m": 3.1256,
+    "lo": 2.7672,
+    "hi": 3.9665
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "cheap"
+   ]
+  },
+  {
+   "key": "paralysisPowder=1",
+   "price": 3.34,
+   "low": {
+    "m": 4.6833,
+    "lo": 4.1761,
+    "hi": 5.7352
+   },
+   "full": {
+    "m": 4.7232,
+    "lo": 4.6043,
+    "hi": 5.4497
+   },
+   "high": {
+    "m": 4.9345,
+    "lo": 3.6701,
+    "hi": 5.8718
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "cheap"
+   ]
+  },
+  {
+   "key": "twinShot=2",
+   "price": 13.26,
+   "low": {
+    "m": 8.5164,
+    "lo": 7.6128,
+    "hi": 9.6259
+   },
+   "full": {
+    "m": 8.4451,
+    "lo": 7.9295,
+    "hi": 9.4434
+   },
+   "high": {
+    "m": 6.5785,
+    "lo": 5.4889,
+    "hi": 7.5844
+   },
+   "lowMove": "same",
+   "highMove": "lower",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "dynamite=3",
+   "price": 1.1,
+   "low": {
+    "m": 2.2744,
+    "lo": 1.7789,
+    "hi": 2.4791
+   },
+   "full": {
+    "m": 2.3369,
+    "lo": 1.9125,
+    "hi": 2.6703
+   },
+   "high": {
+    "m": 2.5045,
+    "lo": 1.7567,
+    "hi": 2.9025
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "cheap"
+   ]
+  },
+  {
+   "key": "harbinger=1",
+   "price": 6.5,
+   "low": {
+    "m": 4.6567,
+    "lo": 3.9333,
+    "hi": 5.7544
+   },
+   "full": {
+    "m": 4.6307,
+    "lo": 4.4995,
+    "hi": 5.2036
+   },
+   "high": {
+    "m": 3.5795,
+    "lo": 2.9375,
+    "hi": 4.5313
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "exploit=2",
+   "price": 4.2,
+   "low": {
+    "m": 2.1842,
+    "lo": 1.6175,
+    "hi": 2.4038
+   },
+   "full": {
+    "m": 2.0698,
+    "lo": 1.8112,
+    "hi": 2.3129
+   },
+   "high": {
+    "m": 1.81,
+    "lo": 1.3991,
+    "hi": 2.1859
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "herald=1",
+   "price": 1.5,
+   "low": {
+    "m": -0.0146,
+    "lo": -0.0552,
+    "hi": 0
+   },
+   "full": {
+    "m": 0,
+    "lo": -0.0103,
+    "hi": 0.0097
+   },
+   "high": {
+    "m": 0,
+    "lo": 0,
+    "hi": 0
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "harden=1",
+   "price": 2.11,
+   "low": {
+    "m": 3.0693,
+    "lo": 2.463,
+    "hi": 3.6929
+   },
+   "full": {
+    "m": 2.8272,
+    "lo": 2.2907,
+    "hi": 3.666
+   },
+   "high": {
+    "m": 2.8141,
+    "lo": 2.1543,
+    "hi": 3.3178
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "cheap"
+   ]
+  },
+  {
+   "key": "loyal={\"v\":[1,3],\"gives\":{\"armor\":1}}",
+   "price": 0.93,
+   "low": {
+    "m": 0.0292,
+    "lo": -0.285,
+    "hi": 0.3483
+   },
+   "full": {
+    "m": 0.0142,
+    "lo": -0.1129,
+    "hi": 0.1455
+   },
+   "high": {
+    "m": 0.3288,
+    "lo": -0.0518,
+    "hi": 0.9334
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "ok"
+   ]
+  },
+  {
+   "key": "T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2}",
+   "price": 4.24,
+   "low": {
+    "m": 4.4433,
+    "lo": 3.6981,
+    "hi": 5.4289
+   },
+   "full": {
+    "m": 4.7466,
+    "lo": 4.4405,
+    "hi": 6.1409
+   },
+   "high": {
+    "m": 5.3634,
+    "lo": 3.9758,
+    "hi": 6.038
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "cheap",
+    "ok"
+   ]
+  },
+  {
+   "key": "loneWolf=[1,1]",
+   "price": 7.36,
+   "low": {
+    "m": 7.7939,
+    "lo": 6.9038,
+    "hi": 8.8495
+   },
+   "full": {
+    "m": 7.7892,
+    "lo": 7.3657,
+    "hi": 8.7864
+   },
+   "high": {
+    "m": 6.8529,
+    "lo": 5.8657,
+    "hi": 8.09
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "cheap",
+    "ok"
+   ]
+  },
+  {
+   "key": "offspring=1",
+   "price": 6.08,
+   "low": {
+    "m": 0.4531,
+    "lo": 0.1849,
+    "hi": 1.2246
+   },
+   "full": {
+    "m": 0.4049,
+    "lo": 0.2525,
+    "hi": 0.5959
+   },
+   "high": {
+    "m": 0.7513,
+    "lo": 0.3121,
+    "hi": 1.4169
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "shield=3",
+   "price": 4.93,
+   "low": {
+    "m": 2.0409,
+    "lo": 1.4725,
+    "hi": 2.4971
+   },
+   "full": {
+    "m": 2.3458,
+    "lo": 2.0883,
+    "hi": 2.5193
+   },
+   "high": {
+    "m": 2.9942,
+    "lo": 2.6424,
+    "hi": 3.962
+   },
+   "lowMove": "same",
+   "highMove": "higher",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "arrow={\"v\":1,\"type\":\"fire\"}",
+   "price": 6.56,
+   "low": {
+    "m": 6.049,
+    "lo": 4.869,
+    "hi": 7.0486
+   },
+   "full": {
+    "m": 5.8884,
+    "lo": 5.3091,
+    "hi": 6.8557
+   },
+   "high": {
+    "m": 4.863,
+    "lo": 3.6371,
+    "hi": 5.751
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "dear"
+   ]
+  },
+  {
+   "key": "guardian",
+   "price": 0,
+   "low": {
+    "m": -0.2338,
+    "lo": -0.8105,
+    "hi": 0.0814
+   },
+   "full": {
+    "m": -0.3072,
+    "lo": -0.5428,
+    "hi": -0.1007
+   },
+   "high": {
+    "m": -1.2513,
+    "lo": -2.0755,
+    "hi": -0.7481
+   },
+   "lowMove": "same",
+   "highMove": "lower",
+   "verdicts": [
+    "ok",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "thorns=2",
+   "price": 5.08,
+   "low": {
+    "m": 6.2944,
+    "lo": 5.0477,
+    "hi": 7.1343
+   },
+   "full": {
+    "m": 5.2984,
+    "lo": 4.7358,
+    "hi": 6.1197
+   },
+   "high": {
+    "m": 5.0774,
+    "lo": 3.9449,
+    "hi": 6.0457
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "thorns=1",
+   "price": 3.22,
+   "low": {
+    "m": 3.1682,
+    "lo": 2.744,
+    "hi": 3.6441
+   },
+   "full": {
+    "m": 2.9046,
+    "lo": 2.735,
+    "hi": 2.9517
+   },
+   "high": {
+    "m": 2.8298,
+    "lo": 2.4701,
+    "hi": 3.4502
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "dear",
+    "ok"
+   ]
+  },
+  {
+   "key": "foraging=1",
+   "price": 1.68,
+   "low": {
+    "m": 2.209,
+    "lo": 1.5977,
+    "hi": 2.6737
+   },
+   "full": {
+    "m": 2.0407,
+    "lo": 1.7126,
+    "hi": 2.3083
+   },
+   "high": {
+    "m": 1.6513,
+    "lo": 1.2022,
+    "hi": 2.1524
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "cheap",
+    "ok"
+   ]
+  },
+  {
+   "key": "repair=2",
+   "price": 2.97,
+   "low": {
+    "m": 2.4763,
+    "lo": 2.1604,
+    "hi": 2.97
+   },
+   "full": {
+    "m": 2.4081,
+    "lo": 2.1725,
+    "hi": 2.6604
+   },
+   "high": {
+    "m": 2.6983,
+    "lo": 2.1977,
+    "hi": 3.18
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "dear",
+    "ok"
+   ]
+  },
+  {
+   "key": "tide",
+   "price": 0.5,
+   "low": {
+    "m": 0.0877,
+    "lo": -0.1006,
+    "hi": 0.2936
+   },
+   "full": {
+    "m": 0.3705,
+    "lo": 0.1309,
+    "hi": 0.9228
+   },
+   "high": {
+    "m": 0.4056,
+    "lo": 0.1629,
+    "hi": 0.951
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "crabClaws",
+   "price": 0.1,
+   "low": {
+    "m": 0.2405,
+    "lo": -0.1124,
+    "hi": 0.6438
+   },
+   "full": {
+    "m": 0.3463,
+    "lo": 0.0794,
+    "hi": 0.665
+   },
+   "high": {
+    "m": 0.2627,
+    "lo": -0.2122,
+    "hi": 0.8105
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "inspiring=2",
+   "price": 5.9,
+   "low": {
+    "m": 6.1036,
+    "lo": 4.8735,
+    "hi": 7.0506
+   },
+   "full": {
+    "m": 6.3464,
+    "lo": 5.9147,
+    "hi": 7.345
+   },
+   "high": {
+    "m": 4.863,
+    "lo": 3.6895,
+    "hi": 5.5144
+   },
+   "lowMove": "same",
+   "highMove": "lower",
+   "verdicts": [
+    "ok",
+    "cheap",
+    "dear"
+   ]
+  },
+  {
+   "key": "pierce=2",
+   "price": 0.3,
+   "low": {
+    "m": 0.1169,
+    "lo": 0.0127,
+    "hi": 0.2769
+   },
+   "full": {
+    "m": 0.1598,
+    "lo": 0.1013,
+    "hi": 0.2264
+   },
+   "high": {
+    "m": 0.3257,
+    "lo": -0.095,
+    "hi": 1.0007
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "ok"
+   ]
+  },
+  {
+   "key": "T:onAttack>gain {\"do\":\"gain\",\"on\":\"onAttack\",\"amount\":1,\"resource\":\"lumber\"}",
+   "price": 1.35,
+   "low": {
+    "m": 4.0967,
+    "lo": 3.4897,
+    "hi": 4.8357
+   },
+   "full": {
+    "m": 4.6232,
+    "lo": 4.1613,
+    "hi": 5.1448
+   },
+   "high": {
+    "m": 5.1489,
+    "lo": 3.9194,
+    "hi": 5.775
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "cheap"
+   ]
+  },
+  {
+   "key": "T:onAttacked>gain {\"do\":\"gain\",\"on\":\"onAttacked\",\"amount\":1,\"resource\":\"lumber\"}",
+   "price": 1.9,
+   "low": {
+    "m": 2.93,
+    "lo": 2.32,
+    "hi": 3.64
+   },
+   "full": {
+    "m": 3.2268,
+    "lo": 2.7606,
+    "hi": 4.2187
+   },
+   "high": {
+    "m": 2.9613,
+    "lo": 2.4331,
+    "hi": 3.7374
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "cheap"
+   ]
+  },
+  {
+   "key": "salvage=1",
+   "price": 0.75,
+   "low": {
+    "m": -0.0146,
+    "lo": -0.0552,
+    "hi": 0
+   },
+   "full": {
+    "m": 0.0089,
+    "lo": -0.0137,
+    "hi": 0.0328
+   },
+   "high": {
+    "m": 0,
+    "lo": 0,
+    "hi": 0
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "pounce=3",
+   "price": 4.15,
+   "low": {
+    "m": 4.31,
+    "lo": 3.6985,
+    "hi": 5.1928
+   },
+   "full": {
+    "m": 4.5596,
+    "lo": 4.3731,
+    "hi": 4.9855
+   },
+   "high": {
+    "m": 2.9284,
+    "lo": 2.6033,
+    "hi": 3.9641
+   },
+   "lowMove": "same",
+   "highMove": "lower",
+   "verdicts": [
+    "ok",
+    "cheap",
+    "dear"
+   ]
+  },
+  {
+   "key": "arrow=2",
+   "price": 7.01,
+   "low": {
+    "m": 6.3217,
+    "lo": 5.4844,
+    "hi": 7.2345
+   },
+   "full": {
+    "m": 6.3437,
+    "lo": 5.9427,
+    "hi": 7.2887
+   },
+   "high": {
+    "m": 5.3634,
+    "lo": 4.32,
+    "hi": 6.2721
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "dear"
+   ]
+  },
+  {
+   "key": "tide=2",
+   "price": 0.93,
+   "low": {
+    "m": 0.2485,
+    "lo": 0.0335,
+    "hi": 0.57
+   },
+   "full": {
+    "m": 0.513,
+    "lo": 0.2121,
+    "hi": 1.3649
+   },
+   "high": {
+    "m": 0.5481,
+    "lo": 0.2726,
+    "hi": 1.1611
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "arrow=3",
+   "price": 9.39,
+   "low": {
+    "m": 7.8348,
+    "lo": 7.0687,
+    "hi": 8.8915
+   },
+   "full": {
+    "m": 7.8484,
+    "lo": 7.3724,
+    "hi": 8.8388
+   },
+   "high": {
+    "m": 6.2211,
+    "lo": 5.12,
+    "hi": 7.266
+   },
+   "lowMove": "same",
+   "highMove": "lower",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "arrow={\"v\":2,\"bramble\":true}",
+   "price": 6.31,
+   "low": {
+    "m": 8.0529,
+    "lo": 6.9898,
+    "hi": 9.2407
+   },
+   "full": {
+    "m": 8.2171,
+    "lo": 7.685,
+    "hi": 9.2912
+   },
+   "high": {
+    "m": 5.9352,
+    "lo": 4.5767,
+    "hi": 6.9593
+   },
+   "lowMove": "same",
+   "highMove": "lower",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "ok"
+   ]
+  },
+  {
+   "key": "daunt=2",
+   "price": 2.56,
+   "low": {
+    "m": 3.0891,
+    "lo": 2.6688,
+    "hi": 3.6843
+   },
+   "full": {
+    "m": 2.95,
+    "lo": 2.9138,
+    "hi": 3.3859
+   },
+   "high": {
+    "m": 3.1256,
+    "lo": 2.6701,
+    "hi": 3.9688
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "cheap"
+   ]
+  },
+  {
+   "key": "meiosis=1",
+   "price": 4.55,
+   "low": {
+    "m": 3.8224,
+    "lo": 3.2921,
+    "hi": 4.4496
+   },
+   "full": {
+    "m": 4.569,
+    "lo": 4.47,
+    "hi": 5.0042
+   },
+   "high": {
+    "m": 4.863,
+    "lo": 3.6314,
+    "hi": 5.9522
+   },
+   "lowMove": "lower",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "tide=3",
+   "price": 1.34,
+   "low": {
+    "m": 0.3069,
+    "lo": 0.0679,
+    "hi": 0.7775
+   },
+   "full": {
+    "m": 0.7842,
+    "lo": 0.4018,
+    "hi": 1.4511
+   },
+   "high": {
+    "m": 0.7513,
+    "lo": 0.3746,
+    "hi": 1.5218
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "forestry=1",
+   "price": 6.65,
+   "low": {
+    "m": 5.249,
+    "lo": 4.6322,
+    "hi": 6.65
+   },
+   "full": {
+    "m": 5.6191,
+    "lo": 4.8036,
+    "hi": 6.65
+   },
+   "high": {
+    "m": 6.65,
+    "lo": 6.65,
+    "hi": 6.65
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "twinStrike",
+   "price": 7.75,
+   "low": {
+    "m": 6.7852,
+    "lo": 6.0458,
+    "hi": 7.7369
+   },
+   "full": {
+    "m": 6.905,
+    "lo": 6.4703,
+    "hi": 7.9358
+   },
+   "high": {
+    "m": 8.1381,
+    "lo": 6.9469,
+    "hi": 9.4519
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "strangle=1",
+   "price": 4.21,
+   "low": {
+    "m": 4.31,
+    "lo": 3.6983,
+    "hi": 4.8816
+   },
+   "full": {
+    "m": 4.2874,
+    "lo": 3.9156,
+    "hi": 4.4947
+   },
+   "high": {
+    "m": 3.7725,
+    "lo": 2.989,
+    "hi": 4.673
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "bleed=3",
+   "price": 6.61,
+   "low": {
+    "m": 6.8397,
+    "lo": 6.1156,
+    "hi": 7.8409
+   },
+   "full": {
+    "m": 6.7938,
+    "lo": 6.4257,
+    "hi": 7.6904
+   },
+   "high": {
+    "m": 5.4348,
+    "lo": 4.3499,
+    "hi": 6.65
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "tide={\"gives\":{\"flood\":{\"attack\":2,\"health\":2,\"evasive\":true},\"ebb\":{\"armor\":2}}}",
+   "price": 4.68,
+   "low": {
+    "m": 0.4453,
+    "lo": 0.1275,
+    "hi": 1.0397
+   },
+   "full": {
+    "m": 0.6325,
+    "lo": 0.2734,
+    "hi": 1.3543
+   },
+   "high": {
+    "m": 1.1766,
+    "lo": 0.57,
+    "hi": 1.8298
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "ambush=3",
+   "price": 2.38,
+   "low": {
+    "m": 2.4167,
+    "lo": 1.7831,
+    "hi": 2.9406
+   },
+   "full": {
+    "m": 2.3569,
+    "lo": 2.07,
+    "hi": 2.5591
+   },
+   "high": {
+    "m": 2.5018,
+    "lo": 1.8967,
+    "hi": 2.991
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "sap",
+   "price": 2.3,
+   "low": {
+    "m": 2.0409,
+    "lo": 1.3269,
+    "hi": 2.5048
+   },
+   "full": {
+    "m": 2.5295,
+    "lo": 2.3515,
+    "hi": 2.7302
+   },
+   "high": {
+    "m": 3.1256,
+    "lo": 2.72,
+    "hi": 3.9737
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "cheap",
+    "cheap"
+   ]
+  },
+  {
+   "key": "scare=1",
+   "price": 3.02,
+   "low": {
+    "m": 2.4167,
+    "lo": 2.0678,
+    "hi": 2.89
+   },
+   "full": {
+    "m": 2.8264,
+    "lo": 2.6414,
+    "hi": 2.9163
+   },
+   "high": {
+    "m": 2.9284,
+    "lo": 2.6075,
+    "hi": 3.615
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "ok"
+   ]
+  },
+  {
+   "key": "strangle=2",
+   "price": 5.57,
+   "low": {
+    "m": 6.0081,
+    "lo": 4.8601,
+    "hi": 6.8646
+   },
+   "full": {
+    "m": 6.0128,
+    "lo": 5.6386,
+    "hi": 6.944
+   },
+   "high": {
+    "m": 5.1489,
+    "lo": 4.1276,
+    "hi": 6.3533
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "cheap",
+    "ok"
+   ]
+  },
+  {
+   "key": "carrion=2",
+   "price": 2.68,
+   "low": {
+    "m": 2.2967,
+    "lo": 1.8719,
+    "hi": 2.8333
+   },
+   "full": {
+    "m": 2.2411,
+    "lo": 1.9682,
+    "hi": 2.4216
+   },
+   "high": {
+    "m": 2.6654,
+    "lo": 2.0386,
+    "hi": 3.2473
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "dear",
+    "ok"
+   ]
+  },
+  {
+   "key": "corrode=1",
+   "price": 2.41,
+   "low": {
+    "m": 2.8436,
+    "lo": 2.4462,
+    "hi": 3.3075
+   },
+   "full": {
+    "m": 2.9155,
+    "lo": 2.6533,
+    "hi": 3.605
+   },
+   "high": {
+    "m": 2.9613,
+    "lo": 2.5825,
+    "hi": 3.6746
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "cheap"
+   ]
+  },
+  {
+   "key": "onDeathSpawn={\"defId\":\"maggot-swarmling\",\"count\":3}",
+   "price": 4.35,
+   "low": {
+    "m": 3.91,
+    "lo": 3.4454,
+    "hi": 4.5913
+   },
+   "full": {
+    "m": 4.37,
+    "lo": 3.609,
+    "hi": 5.0139
+   },
+   "high": {
+    "m": 5.5778,
+    "lo": 4.5944,
+    "hi": 6.9497
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "cheap"
+   ]
+  },
+  {
+   "key": "onDeathSpawn={\"defId\":\"worker-ant\",\"count\":3}",
+   "price": 4.35,
+   "low": {
+    "m": 6.9487,
+    "lo": 6.1427,
+    "hi": 8.0451
+   },
+   "full": {
+    "m": 7.4719,
+    "lo": 6.9808,
+    "hi": 8.4815
+   },
+   "high": {
+    "m": 7.9351,
+    "lo": 6.6,
+    "hi": 9.3414
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "cheap"
+   ]
+  },
+  {
+   "key": "poisonPowder=1",
+   "price": 3.2,
+   "low": {
+    "m": 3.7771,
+    "lo": 3.2523,
+    "hi": 4.4193
+   },
+   "full": {
+    "m": 4.2203,
+    "lo": 3.7429,
+    "hi": 4.4097
+   },
+   "high": {
+    "m": 3.1914,
+    "lo": 2.72,
+    "hi": 4.25
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "ok"
+   ]
+  },
+  {
+   "key": "poisonPowder=2",
+   "price": 6.4,
+   "low": {
+    "m": 7.4668,
+    "lo": 6.7182,
+    "hi": 8.3891
+   },
+   "full": {
+    "m": 7.6177,
+    "lo": 7.1613,
+    "hi": 8.5783
+   },
+   "high": {
+    "m": 6.0067,
+    "lo": 4.9466,
+    "hi": 7.0079
+   },
+   "lowMove": "same",
+   "highMove": "lower",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "ok"
+   ]
+  },
+  {
+   "key": "wakeful",
+   "price": 0.5,
+   "low": {
+    "m": 0.0292,
+    "lo": -0.0326,
+    "hi": 0.135
+   },
+   "full": {
+    "m": 0.0462,
+    "lo": -0.0036,
+    "hi": 0.1023
+   },
+   "high": {
+    "m": 0.3257,
+    "lo": 0,
+    "hi": 0.9147
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "ok"
+   ]
+  },
+  {
+   "key": "illuminate",
+   "price": 0.81,
+   "low": {
+    "m": 0.2996,
+    "lo": 0.1295,
+    "hi": 0.6885
+   },
+   "full": {
+    "m": 0.2539,
+    "lo": 0.1482,
+    "hi": 0.3637
+   },
+   "high": {
+    "m": 0.4823,
+    "lo": 0.2508,
+    "hi": 0.9727
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "ok"
+   ]
+  },
+  {
+   "key": "keenSense",
+   "price": 0.66,
+   "low": {
+    "m": 0.1608,
+    "lo": -0.0133,
+    "hi": 0.3508
+   },
+   "full": {
+    "m": 0.304,
+    "lo": 0.0825,
+    "hi": 0.6053
+   },
+   "high": {
+    "m": 0.5042,
+    "lo": 0.2206,
+    "hi": 1.0462
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "ok"
+   ]
+  },
+  {
+   "key": "purblind",
+   "price": -5.7,
+   "low": {
+    "m": -2.2609,
+    "lo": -2.9604,
+    "hi": -1.7265
+   },
+   "full": {
+    "m": -2.4664,
+    "lo": -3.2035,
+    "hi": -1.9646
+   },
+   "high": {
+    "m": -5.3705,
+    "lo": -7.98,
+    "hi": -3.9213
+   },
+   "lowMove": "same",
+   "highMove": "lower",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "ok"
+   ]
+  },
+  {
+   "key": "web=1",
+   "price": 0.97,
+   "low": {
+    "m": 0.1608,
+    "lo": 0.0104,
+    "hi": 0.3562
+   },
+   "full": {
+    "m": 0.1065,
+    "lo": 0.0238,
+    "hi": 0.1872
+   },
+   "high": {
+    "m": 0.2192,
+    "lo": 0,
+    "hi": 0.5383
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "trident",
+   "price": 2.28,
+   "low": {
+    "m": 2.99,
+    "lo": 2.3628,
+    "hi": 3.7612
+   },
+   "full": {
+    "m": 2.7452,
+    "lo": 2.2067,
+    "hi": 3.0605
+   },
+   "high": {
+    "m": 2.564,
+    "lo": 1.8261,
+    "hi": 2.9142
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "cheap",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "taunt",
+   "price": 0.4,
+   "low": {
+    "m": -0.0073,
+    "lo": -0.4784,
+    "hi": 0.38
+   },
+   "full": {
+    "m": -0.2131,
+    "lo": -0.4613,
+    "hi": 0.0408
+   },
+   "high": {
+    "m": -0.9752,
+    "lo": -1.6988,
+    "hi": -0.4811
+   },
+   "lowMove": "same",
+   "highMove": "lower",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "bludgeon",
+   "price": 3.95,
+   "low": {
+    "m": 4.1367,
+    "lo": 3.6117,
+    "hi": 4.7638
+   },
+   "full": {
+    "m": 4.4067,
+    "lo": 4.1276,
+    "hi": 4.7183
+   },
+   "high": {
+    "m": 4.1585,
+    "lo": 3.1143,
+    "hi": 5.0143
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "cheap",
+    "ok"
+   ]
+  },
+  {
+   "key": "electricity=1",
+   "price": 3,
+   "low": {
+    "m": 3.01,
+    "lo": 2.4865,
+    "hi": 3.693
+   },
+   "full": {
+    "m": 2.8904,
+    "lo": 2.5571,
+    "hi": 2.9373
+   },
+   "high": {
+    "m": 2.8955,
+    "lo": 2.304,
+    "hi": 3.6414
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "dear",
+    "ok"
+   ]
+  },
+  {
+   "key": "electricity=2",
+   "price": 6,
+   "low": {
+    "m": 4.8418,
+    "lo": 4.4639,
+    "hi": 6.6738
+   },
+   "full": {
+    "m": 4.6816,
+    "lo": 4.5572,
+    "hi": 5.3531
+   },
+   "high": {
+    "m": 3.7725,
+    "lo": 2.9254,
+    "hi": 4.8355
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "swarm",
+   "price": 3.13,
+   "low": {
+    "m": 3.83,
+    "lo": 3.3258,
+    "hi": 4.4557
+   },
+   "full": {
+    "m": 4.0423,
+    "lo": 2.96,
+    "hi": 4.4918
+   },
+   "high": {
+    "m": 2.1292,
+    "lo": 1.7404,
+    "hi": 2.8221
+   },
+   "lowMove": "same",
+   "highMove": "lower",
+   "verdicts": [
+    "cheap",
+    "ok",
+    "dear"
+   ]
+  },
+  {
+   "key": "armor=3",
+   "price": 4.85,
+   "low": {
+    "m": 4.3633,
+    "lo": 3.9386,
+    "hi": 5.1341
+   },
+   "full": {
+    "m": 4.6897,
+    "lo": 4.6025,
+    "hi": 5.2748
+   },
+   "high": {
+    "m": 5.8637,
+    "lo": 4.81,
+    "hi": 7.2438
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "poisonBarbs=1",
+   "price": 1.6,
+   "low": {
+    "m": 3.1682,
+    "lo": 2.7427,
+    "hi": 3.6416
+   },
+   "full": {
+    "m": 2.9002,
+    "lo": 2.7386,
+    "hi": 2.9426
+   },
+   "high": {
+    "m": 2.9942,
+    "lo": 2.6571,
+    "hi": 3.7993
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "cheap"
+   ]
+  },
+  {
+   "key": "wave",
+   "price": 2.15,
+   "low": {
+    "m": 2.5683,
+    "lo": 1.9302,
+    "hi": 3.07
+   },
+   "full": {
+    "m": 2.9112,
+    "lo": 2.6595,
+    "hi": 3.0096
+   },
+   "high": {
+    "m": 2.6608,
+    "lo": 1.9337,
+    "hi": 2.9316
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "cheap",
+    "ok"
+   ]
+  },
+  {
+   "key": "delivery={\"v\":1,\"res\":\"pearl\"}",
+   "price": 3.69,
+   "low": {
+    "m": 3.2078,
+    "lo": 2.408,
+    "hi": 4.2154
+   },
+   "full": {
+    "m": 3.8006,
+    "lo": 2.8453,
+    "hi": 4.5806
+   },
+   "high": {
+    "m": 4.641,
+    "lo": 3.0075,
+    "hi": 5.582
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "sweep=3",
+   "price": 6.22,
+   "low": {
+    "m": 6.7988,
+    "lo": 6.0404,
+    "hi": 7.6188
+   },
+   "full": {
+    "m": 6.8229,
+    "lo": 6.3734,
+    "hi": 7.8275
+   },
+   "high": {
+    "m": 5.2919,
+    "lo": 4.2042,
+    "hi": 6.2866
+   },
+   "lowMove": "same",
+   "highMove": "lower",
+   "verdicts": [
+    "ok",
+    "cheap",
+    "ok"
+   ]
+  },
+  {
+   "key": "arrow=1",
+   "price": 4.26,
+   "low": {
+    "m": 3.7696,
+    "lo": 3.0947,
+    "hi": 4.4073
+   },
+   "full": {
+    "m": 3.6757,
+    "lo": 3.1029,
+    "hi": 4.1413
+   },
+   "high": {
+    "m": 3.0763,
+    "lo": 2.626,
+    "hi": 3.9737
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "arrow=1+fletcher=1",
+   "price": 7.45,
+   "low": {
+    "m": 7.4668,
+    "lo": 6.4756,
+    "hi": 8.5766
+   },
+   "full": {
+    "m": 7.5774,
+    "lo": 7.0659,
+    "hi": 8.6738
+   },
+   "high": {
+    "m": 6.0169,
+    "lo": 5.1759,
+    "hi": 6.9946
+   },
+   "lowMove": "same",
+   "highMove": "lower",
+   "verdicts": [
+    "ok",
+    "ok",
+    "dear"
+   ]
+  },
+  {
+   "key": "frostbite=1",
+   "price": 0.19,
+   "low": {
+    "m": 0.0438,
+    "lo": 0,
+    "hi": 0.1315
+   },
+   "full": {
+    "m": 0.1172,
+    "lo": 0.064,
+    "hi": 0.192
+   },
+   "high": {
+    "m": 0.3257,
+    "lo": 0.0407,
+    "hi": 0.91
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "pierce=3",
+   "price": 0.34,
+   "low": {
+    "m": 0.1315,
+    "lo": 0.0233,
+    "hi": 0.3094
+   },
+   "full": {
+    "m": 0.1705,
+    "lo": 0.11,
+    "hi": 0.2408
+   },
+   "high": {
+    "m": 0.285,
+    "lo": 0.1056,
+    "hi": 0.6044
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "ok"
+   ]
+  },
+  {
+   "key": "T:onReady>damage {\"on\":\"onReady\",\"do\":\"damage\",\"amount\":4,\"dmgType\":\"physical\"}",
+   "price": 4.48,
+   "low": {
+    "m": 3.4056,
+    "lo": 2.7232,
+    "hi": 3.9228
+   },
+   "full": {
+    "m": 3.1869,
+    "lo": 2.9417,
+    "hi": 3.6843
+   },
+   "high": {
+    "m": 3.2243,
+    "lo": 2.8486,
+    "hi": 4.2631
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "arrow={\"v\":3,\"swings\":\"never\",\"style\":\"drop\"}",
+   "price": -4.9,
+   "low": {
+    "m": 2.7818,
+    "lo": 2.2351,
+    "hi": 3.2659
+   },
+   "full": {
+    "m": 1.5493,
+    "lo": 1.0405,
+    "hi": 2.0598
+   },
+   "high": {
+    "m": -3.469,
+    "lo": -5.2663,
+    "hi": -2.4387
+   },
+   "lowMove": "higher",
+   "highMove": "lower",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "ok"
+   ]
+  },
+  {
+   "key": "avalanche=1",
+   "price": 9.25,
+   "low": {
+    "m": 8.3392,
+    "lo": 7.395,
+    "hi": 9.5193
+   },
+   "full": {
+    "m": 9.0043,
+    "lo": 8.4536,
+    "hi": 10.1546
+   },
+   "high": {
+    "m": 8.6115,
+    "lo": 7.4371,
+    "hi": 9.9426
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "stealth",
+   "price": 6.88,
+   "low": {
+    "m": 6.2126,
+    "lo": 4.855,
+    "hi": 7.3273
+   },
+   "full": {
+    "m": 6.8758,
+    "lo": 6.3872,
+    "hi": 7.9618
+   },
+   "high": {
+    "m": 7.1911,
+    "lo": 6.1475,
+    "hi": 8.1766
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "recoil=1",
+   "price": -3.46,
+   "low": {
+    "m": -1.7887,
+    "lo": -2.3307,
+    "hi": -1.4098
+   },
+   "full": {
+    "m": -1.7828,
+    "lo": -2.3125,
+    "hi": -1.4436
+   },
+   "high": {
+    "m": -2.7387,
+    "lo": -4.0936,
+    "hi": -1.9548
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "ok"
+   ]
+  },
+  {
+   "key": "bulldoze=1",
+   "price": 2.23,
+   "low": {
+    "m": 2.2767,
+    "lo": 1.7231,
+    "hi": 2.7956
+   },
+   "full": {
+    "m": 2.4571,
+    "lo": 2.2173,
+    "hi": 2.6495
+   },
+   "high": {
+    "m": 2.8298,
+    "lo": 2.1966,
+    "hi": 3.5083
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "siege=1",
+   "price": 1.07,
+   "low": {
+    "m": 0.7381,
+    "lo": 0.3893,
+    "hi": 1.5107
+   },
+   "full": {
+    "m": 0.9668,
+    "lo": 0.643,
+    "hi": 1.2555
+   },
+   "high": {
+    "m": 1.1057,
+    "lo": 0.6631,
+    "hi": 1.5073
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "thorns=3",
+   "price": 6.63,
+   "low": {
+    "m": 7.0033,
+    "lo": 6.2979,
+    "hi": 7.9171
+   },
+   "full": {
+    "m": 6.905,
+    "lo": 6.5059,
+    "hi": 7.8782
+   },
+   "high": {
+    "m": 6.507,
+    "lo": 5.4238,
+    "hi": 7.7024
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "mighty",
+   "price": 4.79,
+   "low": {
+    "m": 4.39,
+    "lo": 3.6997,
+    "hi": 5.0128
+   },
+   "full": {
+    "m": 4.5368,
+    "lo": 4.3708,
+    "hi": 4.9581
+   },
+   "high": {
+    "m": 5.7922,
+    "lo": 4.726,
+    "hi": 6.9667
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "embolden=1",
+   "price": 3.59,
+   "low": {
+    "m": 4.5367,
+    "lo": 3.6973,
+    "hi": 5.5438
+   },
+   "full": {
+    "m": 4.5354,
+    "lo": 4.351,
+    "hi": 4.9351
+   },
+   "high": {
+    "m": 3.1585,
+    "lo": 2.6319,
+    "hi": 4.3149
+   },
+   "lowMove": "same",
+   "highMove": "lower",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "ok"
+   ]
+  },
+  {
+   "key": "pack=1",
+   "price": 3.25,
+   "low": {
+    "m": 4.1233,
+    "lo": 3.4382,
+    "hi": 4.9098
+   },
+   "full": {
+    "m": 4.4934,
+    "lo": 3.8733,
+    "hi": 5.1143
+   },
+   "high": {
+    "m": 2.7641,
+    "lo": 2.159,
+    "hi": 3.29
+   },
+   "lowMove": "same",
+   "highMove": "lower",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "ok"
+   ]
+  },
+  {
+   "key": "snipe=2",
+   "price": 2,
+   "low": {
+    "m": 1.5296,
+    "lo": 1.0311,
+    "hi": 2.0842
+   },
+   "full": {
+    "m": 1.3345,
+    "lo": 1.005,
+    "hi": 1.7621
+   },
+   "high": {
+    "m": 1.5619,
+    "lo": 1.0908,
+    "hi": 2.1048
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "dear",
+    "ok"
+   ]
+  },
+  {
+   "key": "ambush=2",
+   "price": 1.42,
+   "low": {
+    "m": 1.7747,
+    "lo": 1.2773,
+    "hi": 2.2467
+   },
+   "full": {
+    "m": 1.4182,
+    "lo": 1.1431,
+    "hi": 1.7304
+   },
+   "high": {
+    "m": 1.7803,
+    "lo": 1.3439,
+    "hi": 2.2312
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "pitchfork",
+   "price": 4,
+   "low": {
+    "m": 1.6845,
+    "lo": 1.0222,
+    "hi": 2.2404
+   },
+   "full": {
+    "m": 1.1779,
+    "lo": 0.6923,
+    "hi": 1.7541
+   },
+   "high": {
+    "m": -0.6368,
+    "lo": -1.3214,
+    "hi": -0.1322
+   },
+   "lowMove": "same",
+   "highMove": "lower",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "overwhelm",
+   "price": 1.05,
+   "low": {
+    "m": 0.0585,
+    "lo": -0.0855,
+    "hi": 0.19
+   },
+   "full": {
+    "m": 0.3267,
+    "lo": 0.2322,
+    "hi": 0.4451
+   },
+   "high": {
+    "m": 0.715,
+    "lo": 0.3688,
+    "hi": 1.3163
+   },
+   "lowMove": "lower",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "ok"
+   ]
+  },
+  {
+   "key": "pounce=6",
+   "price": 7.38,
+   "low": {
+    "m": 7.644,
+    "lo": 6.7971,
+    "hi": 8.6863
+   },
+   "full": {
+    "m": 7.8448,
+    "lo": 7.3487,
+    "hi": 8.8982
+   },
+   "high": {
+    "m": 6.9206,
+    "lo": 5.6875,
+    "hi": 8.1669
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "siege=3",
+   "price": 2.14,
+   "low": {
+    "m": 2.33,
+    "lo": 1.7557,
+    "hi": 2.9445
+   },
+   "full": {
+    "m": 2.6053,
+    "lo": 2.381,
+    "hi": 2.8244
+   },
+   "high": {
+    "m": 2.4918,
+    "lo": 2.0012,
+    "hi": 2.9708
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "cheap",
+    "ok"
+   ]
+  },
+  {
+   "key": "storm",
+   "price": 1.8,
+   "low": {
+    "m": 0.4677,
+    "lo": 0.2769,
+    "hi": 1.1469
+   },
+   "full": {
+    "m": 0.5079,
+    "lo": 0.381,
+    "hi": 0.7704
+   },
+   "high": {
+    "m": 0.3946,
+    "lo": 0.171,
+    "hi": 0.7939
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "reach",
+   "price": 1,
+   "low": {
+    "m": 0.38,
+    "lo": 0.0335,
+    "hi": 1.0868
+   },
+   "full": {
+    "m": 0.0994,
+    "lo": -0.0642,
+    "hi": 0.2662
+   },
+   "high": {
+    "m": -0.4117,
+    "lo": -0.9474,
+    "hi": 0.0104
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "sturdy",
+   "price": 2.81,
+   "low": {
+    "m": 2.8745,
+    "lo": 2.5491,
+    "hi": 3.3816
+   },
+   "full": {
+    "m": 2.8916,
+    "lo": 2.672,
+    "hi": 2.93
+   },
+   "high": {
+    "m": 3.5795,
+    "lo": 2.9271,
+    "hi": 4.3826
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "cheap"
+   ]
+  },
+  {
+   "key": "packLeader",
+   "price": 0,
+   "low": {
+    "m": -0.1315,
+    "lo": -0.5052,
+    "hi": 0.2107
+   },
+   "full": {
+    "m": 0.1805,
+    "lo": -0.2478,
+    "hi": 0.7264
+   },
+   "high": {
+    "m": -0.1096,
+    "lo": -0.57,
+    "hi": 0.3018
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "dive=2",
+   "price": -1.7,
+   "low": {
+    "m": 0,
+    "lo": 0,
+    "hi": 0
+   },
+   "full": {
+    "m": 0.0036,
+    "lo": 0,
+    "hi": 0.0117
+   },
+   "high": {
+    "m": 0,
+    "lo": 0,
+    "hi": 0
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "cheap",
+    "cheap",
+    "cheap"
+   ]
+  },
+  {
+   "key": "freeze={\"chance\":40,\"duration\":2}",
+   "price": 2.88,
+   "low": {
+    "m": 2.7586,
+    "lo": 2.204,
+    "hi": 3.2831
+   },
+   "full": {
+    "m": 2.6568,
+    "lo": 2.4128,
+    "hi": 2.9026
+   },
+   "high": {
+    "m": 3.1256,
+    "lo": 2.6626,
+    "hi": 4.0717
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "pulverise",
+   "price": 1.53,
+   "low": {
+    "m": 0.2485,
+    "lo": 0.1036,
+    "hi": 0.4987
+   },
+   "full": {
+    "m": 0.2628,
+    "lo": 0.1947,
+    "hi": 0.3557
+   },
+   "high": {
+    "m": 0.3288,
+    "lo": 0.1103,
+    "hi": 0.7098
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "dry",
+   "price": 4,
+   "low": {
+    "m": 0.1023,
+    "lo": -0.0292,
+    "hi": 0.2515
+   },
+   "full": {
+    "m": 0.0095,
+    "lo": -0.1943,
+    "hi": 0.19
+   },
+   "high": {
+    "m": 0.4933,
+    "lo": 0.223,
+    "hi": 0.9721
+   },
+   "lowMove": "same",
+   "highMove": "higher",
+   "verdicts": [
+    "dear",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "expose=2",
+   "price": 0.18,
+   "low": {
+    "m": 0.1462,
+    "lo": -0.0633,
+    "hi": 0.3958
+   },
+   "full": {
+    "m": 0.0586,
+    "lo": -0.0158,
+    "hi": 0.1471
+   },
+   "high": {
+    "m": 0.1973,
+    "lo": 0,
+    "hi": 0.456
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "dear",
+    "ok"
+   ]
+  },
+  {
+   "key": "T:onAttack>drawCard {\"do\":\"drawCard\",\"on\":\"onAttack\",\"count\":1}",
+   "price": 5.54,
+   "low": {
+    "m": 3.7242,
+    "lo": 2.925,
+    "hi": 4.5694
+   },
+   "full": {
+    "m": 4.3303,
+    "lo": 3.9464,
+    "hi": 4.5651
+   },
+   "high": {
+    "m": 5.2919,
+    "lo": 3.8715,
+    "hi": 6.5322
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "ok"
+   ]
+  },
+  {
+   "key": "arrow={\"v\":1,\"type\":\"acid\",\"form\":\"bolt\"}",
+   "price": 6.89,
+   "low": {
+    "m": 7.4395,
+    "lo": 6.7603,
+    "hi": 8.4068
+   },
+   "full": {
+    "m": 7.5403,
+    "lo": 7.1222,
+    "hi": 8.5973
+   },
+   "high": {
+    "m": 6.2211,
+    "lo": 5.0602,
+    "hi": 7.3658
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "cheap",
+    "ok"
+   ]
+  },
+  {
+   "key": "tornado=1",
+   "price": 1.17,
+   "low": {
+    "m": 0.5318,
+    "lo": 0.2781,
+    "hi": 1.2557
+   },
+   "full": {
+    "m": 1.0796,
+    "lo": 0.57,
+    "hi": 1.5774
+   },
+   "high": {
+    "m": 0.9389,
+    "lo": 0.2995,
+    "hi": 1.7962
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "key": "trap=5",
+   "price": 2.98,
+   "low": {
+    "m": 2.89,
+    "lo": 2.33,
+    "hi": 3.6865
+   },
+   "full": {
+    "m": 2.7961,
+    "lo": 2.5064,
+    "hi": 2.9168
+   },
+   "high": {
+    "m": 2.7148,
+    "lo": 2.1057,
+    "hi": 3.3975
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "dear",
+    "ok"
+   ]
+  },
+  {
+   "key": "trap=6",
+   "price": 3.74,
+   "low": {
+    "m": 3.4056,
+    "lo": 2.754,
+    "hi": 4.2558
+   },
+   "full": {
+    "m": 2.9346,
+    "lo": 2.8377,
+    "hi": 3.2485
+   },
+   "high": {
+    "m": 2.7969,
+    "lo": 2.2329,
+    "hi": 3.5242
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "ok",
+    "dear",
+    "dear"
+   ]
+  },
+  {
+   "key": "lastStand",
+   "price": 0.45,
+   "low": {
+    "m": 0.2338,
+    "lo": 0.1163,
+    "hi": 0.4222
+   },
+   "full": {
+    "m": 0.2841,
+    "lo": 0.2083,
+    "hi": 0.3814
+   },
+   "high": {
+    "m": 0.4886,
+    "lo": 0.1315,
+    "hi": 1.1286
+   },
+   "lowMove": "same",
+   "highMove": "same",
+   "verdicts": [
+    "dear",
+    "dear",
+    "ok"
+   ]
+  },
+  {
+   "key": "recoil=2",
+   "price": -5.88,
+   "low": {
+    "m": -2.8166,
+    "lo": -3.625,
+    "hi": -2.2139
+   },
+   "full": {
+    "m": -2.9725,
+    "lo": -3.8114,
+    "hi": -2.3967
+   },
+   "high": null,
+   "lowMove": "same",
+   "highMove": null,
+   "verdicts": [
+    "cheap",
+    "cheap",
+    null
+   ]
+  },
+  {
+   "key": "smokeBomb",
+   "price": 2,
+   "low": {
+    "m": 1.4353,
+    "lo": 0.9169,
+    "hi": 1.938
+   },
+   "full": {
+    "m": 0.7957,
+    "lo": 0.4629,
+    "hi": 1.2505
+   },
+   "high": null,
+   "lowMove": "same",
+   "highMove": null,
+   "verdicts": [
+    "dear",
+    "dear",
+    null
+   ]
+  },
+  {
+   "key": "bounty=1",
+   "price": 1.8,
+   "low": {
+    "m": 2.2951,
+    "lo": 1.9969,
+    "hi": 2.7247
+   },
+   "full": {
+    "m": 2.4771,
+    "lo": 2.1475,
+    "hi": 2.8312
+   },
+   "high": null,
+   "lowMove": "same",
+   "highMove": null,
+   "verdicts": [
+    "cheap",
+    "cheap",
+    null
+   ]
+  },
+  {
+   "key": "arrow={\"v\":1,\"type\":\"fire\",\"form\":\"bolt\"}",
+   "price": 2.5,
+   "low": {
+    "m": 6.8261,
+    "lo": 6.0517,
+    "hi": 7.7542
+   },
+   "full": {
+    "m": 6.6842,
+    "lo": 6.2449,
+    "hi": 7.6699
+   },
+   "high": null,
+   "lowMove": "same",
+   "highMove": null,
+   "verdicts": [
+    "cheap",
+    "cheap",
+    null
+   ]
+  },
+  {
+   "key": "T:onSpawn>stun {\"on\":\"onSpawn\",\"do\":\"stun\",\"who\":\"enemy\",\"sub\":\"adjacent\"}",
+   "price": 1.95,
+   "low": {
+    "m": 2.1459,
+    "lo": 1.566,
+    "hi": 2.711
+   },
+   "full": {
+    "m": 2.3324,
+    "lo": 2.0257,
+    "hi": 2.5555
+   },
+   "high": null,
+   "lowMove": "same",
+   "highMove": null,
+   "verdicts": [
+    "ok",
+    "cheap",
+    null
+   ]
+  },
+  {
+   "key": "arrow={\"v\":2,\"type\":\"fire\",\"form\":\"bolt\"}",
+   "price": 5,
+   "low": {
+    "m": 8.2983,
+    "lo": 7.5019,
+    "hi": 9.3827
+   },
+   "full": {
+    "m": 8.4823,
+    "lo": 7.9821,
+    "hi": 9.4994
+   },
+   "high": null,
+   "lowMove": "same",
+   "highMove": null,
+   "verdicts": [
+    "cheap",
+    "cheap",
+    null
+   ]
+  },
+  {
+   "key": "bulwark=2",
+   "price": 8.73,
+   "low": {
+    "m": 7.0987,
+    "lo": 6.1122,
+    "hi": 8.217
+   },
+   "full": {
+    "m": 7.1801,
+    "lo": 6.6639,
+    "hi": 8.1638
+   },
+   "high": null,
+   "lowMove": "same",
+   "highMove": null,
+   "verdicts": [
+    "dear",
+    "dear",
+    null
+   ]
+  },
+  {
+   "key": "onDeathSpawn={\"defId\":\"bat-swarmling\",\"count\":2}",
+   "price": 4.35,
+   "low": {
+    "m": 2.93,
+    "lo": 2.4831,
+    "hi": 3.5713
+   },
+   "full": {
+    "m": 3.8912,
+    "lo": 2.9371,
+    "hi": 4.416
+   },
+   "high": null,
+   "lowMove": "same",
+   "highMove": null,
+   "verdicts": [
+    "dear",
+    "ok",
+    null
+   ]
+  }
+ ]
+}
