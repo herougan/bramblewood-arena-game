@@ -22,6 +22,10 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { spawn, execFileSync } = require('child_process');
+// 2026-11-22 (MAPADD1): the container's Chromium moved (headless shell 1194 -> 1243); 48 tests default to the 1194 path and printed
+// "browser part skipped" while still passing. Point BW_CHROMIUM (which they all read) at the installed headless shell when it is unset.
+if (!process.env.BW_CHROMIUM) { try { const d = '/opt/pw-browsers', hs = fs.readdirSync(d).filter(x => /^chromium_headless_shell-\d+$/.test(x)).sort().pop(),
+  exe = hs && path.join(d, hs, 'chrome-headless-shell-linux64', 'chrome-headless-shell'); if (exe && fs.existsSync(exe)) process.env.BW_CHROMIUM = exe; } catch (e) { } }
 
 const ROOT = path.resolve(__dirname, '..');
 const OUT = path.join(ROOT, 'tests', 'out');

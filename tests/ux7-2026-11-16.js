@@ -12,6 +12,8 @@ ok(/__cfg:map-focus/.test(app), 'a live __cfg:map-focus row overrides (read only
 ok(/mapFocusKeys\(r\.n\)/.test(app.slice(app.indexOf('function skmapHTML('), app.indexOf('function openSkillsByMap('))) && /mapFocusSet\(mapId \|\| top\)/.test(app), 'both views read the table');
 ok(/\.ui19-sk\.is-focus\{outline:/.test(tpl) && /\.ui19-sk\.is-new\{border-color:#c62828/.test(tpl), 'focus is an outline, red is NEW! (UIQ2 2026-11-20)');
 ok(/ux7-2026-11-16/.test(read('tests/run-all.sh')), 'run-all.sh lists this test');
+// 2026-11-22 (MAPADD1, owner 13:22 #1): every table skill no main card carries (not only the first 3) is a half-red, half-blue "please add" tile
+ok(/function mapTableSet\(mapId\)/.test(app) && /const focusAdd = \[\.\.\.new Set\(\[\.\.\.focus, \.\.\.\(typeof mapTableSet/.test(app) && /\.ui19-sk\.is-focus-add\{background:linear-gradient\(90deg, #c62828 50%, #2f6fd0 50%\)/.test(tpl), 'a table skill on no main card: red to the middle, then blue (MAPADD1)');
 const F = new Function(app.match(/const MAP_FOCUS_SKILLS = \{[^\n]*\n/)[0] + 'return MAP_FOCUS_SKILLS;')();
 // 2026-11-19 (TESTFIX7): UIFIN (11-18) put REDESIGN3 v2's focus in the table: up to 5 a map, mapFocusKeys shows the first 3
 ok(Object.keys(F).length === 21 && Object.values(F).every(a=> a.length <= 5) && /function mapFocusKeys\(n\)\{[^\n]*\.slice\(0, 3\)/.test(app), '21 maps, 0-5 focus skills each, 3 shown');
