@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-22 Package ROADSEED (road on fresh seeds)
+- **Road:** Squire Road (15-2) swaps 2 Cataphract Destrier for Hoopoe Herald; The Frost Yeti King (19-6) swaps 1 Dune Jackal for Magma Salamander. Both had drifted out of band on fresh seeds; now in band on both seed sets (15-2 85.8 / 89.3, target 84; 19-6 35.3 / 37, target 40).
+- Stoat Ambush (15-3) and Archer Hill (15-4) are still too easy (91 / 82 vs 78 / 72): the tune reached them only with a 21-23 Shield, out of line with Maps 14-17 (all 0), so not applied.
+- Fresh-seed road measure: 140 in band vs 155 on the usual seeds; 135 on both (`docs/balance/roadseed-2026-11-22.md`).
+
 ## 2026-11-22 Package LOOKAHEAD1 (a look-ahead pilot for the skill ceiling)
 - **No game change** (no engine rule, not the game's CPU). The bench / pipeline's measured seat can now play by look-ahead: `--ai-mine look` (or `look<R>`). Each turn it tries up to 12 choices (the CPU's own turn, pass, each playable unit x legal slot, a pitch), replays the game to that point (`tools/bench/lookahead.js`; the engine has no state clone), lets the smartest CPU play both seats through this combat and R=2 more rounds on 2 fixed RNGs, and keeps the best HQ + board score. `tools/opt/deckopt.js` playOne's loop is split out as `playGame` (same games, same results).
 - Strength (`tests/lookahead-2026-11-22.js`, 200 mirrors of one bench deck, bramble 15): the look seat scores 58.0% [51.1, 64.6] where a level-2 seat scores 49.5% on the same fights (paired +8.5, SE 3.7); a starter-deck mirror at bramble 30 gave 77% vs 47% (60 fights). Cost: about 1 s a fight vs 31 ms at level 2 (x34); budget a look measure accordingly.
