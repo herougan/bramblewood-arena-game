@@ -188849,6 +188849,92 @@
    "statBase": 19,
    "measuredAt": "2026-11-22T01:05:20.712Z",
    "seconds": 19
+  },
+  "global@poollo|stealth": {
+   "key": "stealth",
+   "ctx": "global@poollo",
+   "bramble": 15,
+   "id": "stealth",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 6,
+   "cards": [
+    "fawn-scout",
+    "raccoon-nightcrew",
+    "owl-nightwatch",
+    "hush-wing-spy",
+    "glass-octopus",
+    "cunning-vixen"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 6.2126,
+     "lo": 4.79,
+     "hi": 7.3694
+    }
+   ],
+   "fingerprint": "8de2b747e825",
+   "canonRate": {
+    "m": 0.0306,
+    "lo": 0.0257,
+    "hi": 0.0356
+   },
+   "statRate": {
+    "m": 0.0363,
+    "lo": 0.0298,
+    "hi": 0.0433
+   },
+   "kappa": {
+    "m": 1.186,
+    "lo": 0.992,
+    "hi": 1.425
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0088,
+    "worthStat": {
+     "m": 0.2414,
+     "lo": -0.2411,
+     "hi": 0.6411
+    }
+   },
+   "test": {
+    "effects": {
+     "stealth": true
+    },
+    "gain": 0.1667,
+    "worth": {
+     "m": 5.4528,
+     "lo": 4.7028,
+     "hi": 6.4241
+    },
+    "worthRuler": {
+     "m": 6.2126,
+     "lo": 4.79,
+     "hi": 7.3694
+    },
+    "worthStat": {
+     "m": 4.5977,
+     "lo": 3.74,
+     "hi": 5.5796
+    },
+    "price": 6.88,
+    "net": -0.6674,
+    "verdict": "within its interval",
+    "between": [
+     "sweep 2 (5.08)",
+     "onReadyGold 1 (6.65)"
+    ]
+   },
+   "statBase": 18,
+   "measuredAt": "2026-11-22T01:10:58.344Z",
+   "seconds": 270
   }
  }
 }
