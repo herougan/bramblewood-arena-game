@@ -1,0 +1,17 @@
+{
+ "about": "SKWK6b (2026-11-22): the two N-SK decks SKWK5 left above the band (2-B-BPRO-2 81.5%, 10-A-BPRO-2 53.5%), what-if at a looser overlap.",
+ "maps": {
+  "mg": {
+   "tune": [
+    "2-B-BPRO-2"
+   ],
+   "drop": []
+  },
+  "mj": {
+   "tune": [
+    "10-A-BPRO-2"
+   ],
+   "drop": []
+  }
+ }
+}
