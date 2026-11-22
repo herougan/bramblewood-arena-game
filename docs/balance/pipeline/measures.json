@@ -210915,6 +210915,103 @@
    "statBase": 22.67,
    "measuredAt": "2026-11-22T05:22:48.784Z",
    "seconds": 26
+  },
+  "global@pilot2|speed={\"kind\":\"swift\"}": {
+   "key": "speed={\"kind\":\"swift\"}",
+   "ctx": "global@pilot2",
+   "bramble": 15,
+   "id": "speed",
+   "class": "keyword",
+   "kind": "measure",
+   "n": {
+    "kind": "swift"
+   },
+   "nCards": 13,
+   "cards": [
+    "jaguar-stalker",
+    "savanna-cheetah",
+    "dune-jackal",
+    "feral-tomcat",
+    "jackrabbit-sprinter",
+    "fleetfootd",
+    "pride-queen",
+    "ruby-throat-duelist",
+    "frillneck-duelist",
+    "ember-centipede",
+    "pronghorn-racer",
+    "alpine-swift",
+    "beachcomber-sanderling"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 4.1683,
+     "lo": 3.5579,
+     "hi": 4.7573
+    }
+   ],
+   "fingerprint": "326a186af18d",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0219,
+    "hi": 0.0324
+   },
+   "statRate": {
+    "m": 0.0284,
+    "lo": 0.0206,
+    "hi": 0.0373
+   },
+   "kappa": {
+    "m": 1.026,
+    "lo": 0.8263,
+    "hi": 1.3075
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0079,
+    "worthStat": {
+     "m": 0.2784,
+     "lo": -0.2881,
+     "hi": 0.7889
+    }
+   },
+   "test": {
+    "effects": {
+     "speed": {
+      "kind": "swift"
+     }
+    },
+    "gain": 0.1125,
+    "worth": {
+     "m": 4.0587,
+     "lo": 3.4756,
+     "hi": 4.9367
+    },
+    "worthRuler": {
+     "m": 4.1683,
+     "lo": 3.5579,
+     "hi": 4.7573
+    },
+    "worthStat": {
+     "m": 3.956,
+     "lo": 3.0977,
+     "hi": 5.2377
+    },
+    "price": 9.5,
+    "net": -5.3317,
+    "verdict": "over-priced",
+    "between": [
+     "inspiring 1 (3.96)",
+     "poison 2 (4.75)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T05:58:39.625Z",
+   "seconds": 1114
   }
  }
 }
