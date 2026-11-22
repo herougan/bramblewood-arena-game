@@ -116,7 +116,8 @@ async function browser(){
       ok(await pg.evaluate("!!window.__edStale && JSON.parse(window.__edStale).matchUid === matchState.matchUid"), 'B#9 a resume save of this match exists before the last round (as Quit keeps)');
       const g0 = await gold(pg);
       await pg.evaluate("window.__edM = matchState; matchState.players[2].hq.shield = 0; matchState.players[2].hq.hp = 0; resolveRound(); 1"); // the enemy bramble at 0: a real last blow
-      let decided = false; for(let i = 0; i < 40 && !decided; i++){ decided = await pg.evaluate("!!(window.__edM.resultDecided)"); if(!decided) await pg.waitForTimeout(100); }
+      // 2026-11-22 (TESTFIX8b): 4 s ran out on an idle 2-core box (the round's end sign is slow there); 20 s, as B#9a
+      let decided = false; for(let i = 0; i < 200 && !decided; i++){ decided = await pg.evaluate("!!(window.__edM.resultDecided)"); if(!decided) await pg.waitForTimeout(100); }
       ok(decided, 'B#9 the result is decided');
       const mid = await pg.evaluate("(()=>{ const m = window.__edM; const was = matchState; leaveMatchResumable(); return {over: m.over, stays: matchState === was, snap: localStorage.getItem(RESUME_KEY), cont: !!loadResumeSnapshot(), recorded: !!m.rewardRecorded}; })()");
       ok(mid.stays && mid.snap === null && !mid.cont, `B#9 Quit while the result is recorded: the fight stays, no resume save, no Continue (${JSON.stringify(mid)})`);
