@@ -5,6 +5,9 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 ## 2026-11-22 Package MAPSWAP1 (owner 23:08)
 - **Map cards window (admin, main maps):** a "Claude's swaps" section under the skills: one row per suggestion with the card tile, the skill, the why and Yes / No. Yes goes through your own pick path (Yes on the added card, No on the removed one, Yes on the destination map for a move); No hides the row. Nothing is written until you click.
 - Suggestions (`canonical/map-swap-suggestions.json`, rerun `node tools/mapswap1_suggest.js`): cards for the 6 "To add" tiles (2 new-card ideas where no card fits), a move / drop / keep for each of the 36 "To remove" tiles. Detail: `docs/design/mapswap1-2026-11-22.md`.
+## 2026-11-22 Package ECON1 phase 1 (currency flow design, owner 23:08)
+- Design only, no game number changed: `docs/design/econ1-2026-11-22.md`. Packs of 5 cards at Leaves only (Pouch 80, Chest 100, Case 125, Mystery 120), map-end pack 5, faction packs 3; first clears +10% Leaves / +5% Dust a map, a mini-boss row, side maps on the rule; 10 constants for phase 2, owner calls ECON1-1..3 (defaults set).
+- Sim `tools/econ1_sim.js`: a player who clears each map once holds 41-58% of the next map's BPRO pack copies (today 17%); a free casual player clears Map 20 on day 27-29.
 
 ## 2026-11-22 Package MAPRM1 (owner 23:05)
 - **Map cards window:** a skill that is New! on a main map but not in that map's table row (or its Special / Faction column) is half red, half dark grey with a "To remove" tag. Map 5: Bleed, Constrict, Cure, Herbalist, Twin Strike.
