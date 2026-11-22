@@ -21,6 +21,9 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - [ ] REFIT20: REFIT13-1 a (Map 8 reference deck: Worker Ant x4, 8-7 Mine), REFIT13-3 b (18-4 normal Sandstorm), REFIT13-4 a (18-7 no sandstorm, re-fit), REFIT15-3 a (Map 1 Bramble = enemy Health + Shield on 1-2/1-3/1-4), REFIT11-2 a (6-3: 2 copies of one pool card)
 - [ ] DEC21: redesign Glasswing Moth (not too reliant on skills, impact through skills), then rebalance (DEC20-1)
 - [ ] Later (owner): side-map cards re-chosen (REFIT17-1, REFIT14-1, REFIT13-2)
+- [ ] PACKSET1 (owner 22:41 #1, #2, #4-#6): Pack Editor rows "All cards (0-20)" / "All cards (20-40)" (tutorial, base, faction, chosen map + submap cards, 1-2 pack-only bonus cards per map); >= 42 bonus suggestions with Map pills, YES/NO, right-click map picker; ascending pack cuts; tutorial suggestions (owner builds 16 per faction); submap New! 1-3 (running)
+- [ ] REWARD3 (owner 22:41 #3, #8, #9): pick 2 skirmish rewards per map from its list; Baby cards are General drops (not pack); list Baby + all starter cards, flag any with no free drop in Map 0 or after the tutorial; T-1/T-2 base cards in no pack; reward appearance counts
+- [ ] Later (owner 22:41 #7, "eventually"): assign base and faction cards across the maps ("Next Faction Card" unlock), the map editor previews each
 - [ ] Test fixes: ref5, bal13, bal21 (card lists out of date after today's pool moves), road-rarity (9, older), the e2e group by cause
 
 ## 11-19 22:18 Decisions settled (owner)
