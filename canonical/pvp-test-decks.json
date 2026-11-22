@@ -223,13 +223,13 @@
    "name": "Fish Swarm: Duck Paddler",
    "leader": "thistle-baron",
    "cards": {
-    "pond-trout": 2,
-    "ember-jackal": 3,
-    "moonlit-hare": 3,
     "duck-paddler": 3,
+    "ember-jackal": 3,
     "guppy": 3,
     "otter-royal-guard": 1,
     "petal-fletcher": 3,
+    "pond-trout": 2,
+    "proboscis-monkey": 3,
     "ur-elk": 2
    },
    "seed": "pvp1-07",
@@ -239,7 +239,7 @@
    "shape": "Swarm",
    "anchor": "Ocean",
    "avgCost": 0.3,
-   "code": "BWD1:eyJuIjoiRmlzaCBTd2FybTogRHVjayBQYWRkbGVyIiwiYyI6ImNhc3RsZSIsImwiOiJ0aGlzdGxlLWJhcm9uIiwiZCI6eyJwb25kLXRyb3V0IjoyLCJlbWJlci1qYWNrYWwiOjMsIm1vb25saXQtaGFyZSI6MywiZHVjay1wYWRkbGVyIjozLCJndXBweSI6Mywib3R0ZXItcm95YWwtZ3VhcmQiOjEsInBldGFsLWZsZXRjaGVyIjozLCJ1ci1lbGsiOjJ9fQ=="
+   "code": "BWD1:eyJuIjoiRmlzaCBTd2FybTogRHVjayBQYWRkbGVyIiwiYyI6ImNhc3RsZSIsImwiOiJ0aGlzdGxlLWJhcm9uIiwiZCI6eyJkdWNrLXBhZGRsZXIiOjMsImVtYmVyLWphY2thbCI6MywiZ3VwcHkiOjMsIm90dGVyLXJveWFsLWd1YXJkIjoxLCJwZXRhbC1mbGV0Y2hlciI6MywicG9uZC10cm91dCI6MiwicHJvYm9zY2lzLW1vbmtleSI6MywidXItZWxrIjoyfX0="
   },
   {
    "id": "pvp1-08",
@@ -674,14 +674,14 @@
    "name": "Bird Tempo: Arctic Tern",
    "leader": "echo-matriarch",
    "cards": {
-    "arctic-tern": 4,
-    "pangolin-roller": 3,
-    "caustic-scorpion": 3,
-    "moonlit-hare": 3,
-    "fawn-scout": 3,
     "alpine-swift": 1,
+    "arctic-tern": 4,
+    "caustic-scorpion": 3,
+    "fawn-scout": 3,
     "marshal-of-rivergate": 1,
-    "meerkat-sentry": 2
+    "meerkat-sentry": 2,
+    "pangolin-roller": 3,
+    "proboscis-monkey": 3
    },
    "seed": "pvp1-27",
    "gauntletWin": 52.9,
@@ -690,7 +690,7 @@
    "shape": "Tempo",
    "anchor": "Arachnid",
    "avgCost": 0.5,
-   "code": "BWD1:eyJuIjoiQmlyZCBUZW1wbzogQXJjdGljIFRlcm4iLCJjIjoiY2FzdGxlIiwibCI6ImVjaG8tbWF0cmlhcmNoIiwiZCI6eyJhcmN0aWMtdGVybiI6NCwicGFuZ29saW4tcm9sbGVyIjozLCJjYXVzdGljLXNjb3JwaW9uIjozLCJtb29ubGl0LWhhcmUiOjMsImZhd24tc2NvdXQiOjMsImFscGluZS1zd2lmdCI6MSwibWFyc2hhbC1vZi1yaXZlcmdhdGUiOjEsIm1lZXJrYXQtc2VudHJ5IjoyfX0="
+   "code": "BWD1:eyJuIjoiQmlyZCBUZW1wbzogQXJjdGljIFRlcm4iLCJjIjoiY2FzdGxlIiwibCI6ImVjaG8tbWF0cmlhcmNoIiwiZCI6eyJhbHBpbmUtc3dpZnQiOjEsImFyY3RpYy10ZXJuIjo0LCJjYXVzdGljLXNjb3JwaW9uIjozLCJmYXduLXNjb3V0IjozLCJtYXJzaGFsLW9mLXJpdmVyZ2F0ZSI6MSwibWVlcmthdC1zZW50cnkiOjIsInBhbmdvbGluLXJvbGxlciI6MywicHJvYm9zY2lzLW1vbmtleSI6M319"
   },
   {
    "id": "pvp1-28",
