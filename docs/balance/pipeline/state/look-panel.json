@@ -1,0 +1,13 @@
+[
+ "onDeathSpawn={\"defId\":\"worker-ant\",\"count\":3}",
+ "thorns=3",
+ "forestry=1",
+ "poisonPowder=2",
+ "pack=1",
+ "arrow={\"v\":1,\"type\":\"fire\"}",
+ "speed={\"kind\":\"swift\"}",
+ "bleed=3",
+ "poisonBarbs=2",
+ "nursing=1",
+ "strangle=2"
+]
