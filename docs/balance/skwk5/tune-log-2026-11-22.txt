@@ -27,3 +27,5 @@
 11-A-BPRO-2 validation {"v":0.29,"ref":0.8,"gap":0} -> {"v":0.275,"ref":0.825,"gap":0} KEEP 154s
 7-A-BPRO-1 bpro SK ladder start 0.108 ref 0.375
 7-A-BPRO-1 1 puffball-bombardier -2 -> bombardier-beetle 0.142 ref 0.425
+7-A-BPRO-1 2 rootworm-colony -2 -> puffball-bombardier 0.175 ref 0.4
+7-A-BPRO-1 validation {"v":0.05,"ref":0.375,"gap":0.1} -> {"v":0.1,"ref":0.35,"gap":0.05} KEEP 214s

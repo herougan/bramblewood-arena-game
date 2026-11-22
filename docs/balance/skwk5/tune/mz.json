@@ -1,0 +1,86 @@
+{
+ "map": "mz",
+ "generated": "2026-11-22T05:35:24.097Z",
+ "decks": [
+  {
+   "id": "7-A-BPRO-1",
+   "map": "mz",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "fungus-gnat-cloud": 4,
+     "leopard-slug": 4,
+     "millipede-hauler": 4,
+     "rootworm-colony": 4,
+     "puffball-bombardier": 4
+    },
+    "legal": true,
+    "val": {
+     "v": 0.05,
+     "ref": 0.375,
+     "gap": 0.1
+    }
+   },
+   "pick": {
+    "deck": {
+     "fungus-gnat-cloud": 4,
+     "leopard-slug": 4,
+     "millipede-hauler": 4,
+     "rootworm-colony": 2,
+     "puffball-bombardier": 4,
+     "bombardier-beetle": 2
+    },
+    "val": {
+     "v": 0.1,
+     "ref": 0.35,
+     "gap": 0.05
+    },
+    "leaders": [
+     "millipede-hauler"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.108,
+     "ref": 0.375,
+     "gap": 0.072
+    },
+    {
+     "move": "puffball-bombardier -2 -> bombardier-beetle",
+     "v": 0.142,
+     "ref": 0.425,
+     "gap": 0.038,
+     "tried": 24
+    },
+    {
+     "move": "rootworm-colony -2 -> puffball-bombardier",
+     "v": 0.175,
+     "ref": 0.4,
+     "gap": 0.005,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 770,
+   "sec": 214
+  }
+ ],
+ "drop": []
+}

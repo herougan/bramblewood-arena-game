@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-22 (package SKWK5: the strong decks PROLIST left off band)
+- No road change. Against the reference ladder, 5 of the 11 Maps 0-20 N-SK decks that PROLIST left 3+ points off the 15-30% band were kept nearer on fresh seeds: 20-A-BPRO-1 8 -> 11.5% (Map reference 92.5 -> 87.5%), 8-A-BPRO-1 16.5 -> 27%, 5-A-BPRO-1 18% (ref 90 -> 85%), 7-A-BPRO-1 5 -> 10%, 11-A-BPRO-2 29 -> 27.5%. Tool: `docs/balance/skwk5/` (SKWK4's routine, salts skwk5). The Old Bramble's 0-B-BPRO-1 is left out (opens after Map 21).
+- Not moved by local search (a fresh deck search is next): 2-B-BPRO-2 81.5% (far too strong), 10-A-BPRO-2 53.5%, 18-A-BPRO-1 8.5%, 0-BPRO-2 7% (Map 0's strong deck after its Thorn Shrikes left). 1-A-BPRO-1 / 1-A-BPRO-3 read in band on the validation seeds (24.5 / 30.5%).
+- Fixed three PROLIST leftovers that tests/deck1 and tests/pro caught: 6-PRO-2 back to 10 list copies (1 Gannet Nestweaver -> Newt Doctor); 21-BPRO-3 and 23-PRO-1 showcase leaders re-derived for their repaired decks.
+
 ## 2026-11-22 (package MAPADD1: owner 13:22 #1-#2)
 - Players see (admin Map cards window): a skill in the owner's map table that no card on the map's list has is a half-red (NEW!), half-blue (suggested) tile, "please add this in". Every table skill counts now, not only the first three.
 - Hub: Design tab opens on "Map skill table (Maps 0-20)" (`docs/map-skill-table.md`, `node tools/hub/map_skill_table.js`, read from the built game): each table skill's carriers and New! status, the owner's 11-22 sheet where it differs, and the Special column.
