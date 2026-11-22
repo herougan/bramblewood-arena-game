@@ -4,240 +4,6 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
-**SKWK6-2. Two too-strong decks fit only if they share more cards** · Decide · Balance · asked 2026-11-22
-- 2-B-BPRO-2 (81.5%) and 10-A-BPRO-2 (53.5%) should beat the reference ladder 15-30%. Under the 10-shared-copies rule no change helps. Re-tunes ready: up to 13 shared, 31% and 21.5%; up to 12, 60.5% and 21.5%.
-  - a) Allow up to 13 for these two (both fixed)
-  - b) Allow up to 12 (Map 10 fixed, Map 2 to 60%)
-  - c) Keep the 10 rule; both stay too strong
-- **Default:** a
-
-**SKWK6-1. Map 0 and Map 18 strong decks can't reach 15% on list cards** · Decide · Balance · asked 2026-11-22
-- 0-BPRO-2 (7%) and 18-A-BPRO-1 (8%) should beat the reference ladder 15-30%. The best list-only decks a fresh search finds reach 9.5% and 10%, even with the 10-copy overlap rule loosened. Map 18's list has 9 cards.
-  - a) Accept both below the band
-  - b) Let these two use cards beyond the map list
-  - c) Lower the target to 10% for small lists
-- **Default:** a
-
-**MAPADD1-1. Your sheet's new skills: Poison Barbs on Map 5, Evasive on Map 8** · Decide · Skills · asked 2026-11-22
-- Your 11-22 sheet adds Poison Barbs to Map 5 and Evasive to Map 8. It still has Bleed on Map 5 and Leech on Map 6; the game has your 11-20 swap (Leech 5, Bleed 6). Hub: Design > Map skill table.
-  - a) Add both; keep the 11-20 swap
-  - b) Add both; undo the swap (Bleed 5, Leech 6)
-  - c) Change nothing
-- **Default:** a
-
-**NOC7-1. Moonlit Hare: delete the card, or keep it unobtainable?** · Decide · Cards · asked 2026-11-22
-- Moonlit Hare is on no map list now (Nocturnal moved to the Morel Hollow, Map 7). The card is still in the data, unattainable, and out of every deck. Delete it for good, or keep it for later?
-  - a) Keep it, unobtainable (nothing else changes).
-  - b) Delete it from the data and every language pack.
-- **Default:** a
-
-**CARRIER-1. Should a skill's price depend on the card's body?** · Decide · Balance · asked 2026-11-21
-- 34 of 127 skills are worth more on one kind of body. Ranged and siege skills gain 1.5-4 points on high-Health cards (Arrow 2 bramble 9.7 vs 5.3). Armor, Bulwark, Sturdy, Swift and death spawns gain 1.5-4.5 on high-Attack cards (Armor 3 7.3 vs 3.9). Today the budget prices a skill the same on any body; 93 skills need no change. Detail: docs/balance/pipeline/mapctx-2026-11-21.md.
-  - a) Add a body term to the budget for these 34 skills, then list cards that leave the band (no stat changes)
-  - b) Keep prices body-blind; use this as card-design guidance
-  - c) Measure on more carrier sets first
-- **Default:** b
-
-**MAPCTX-1. Price context skills by the map they live on** · Decide · Balance · asked 2026-11-21
-- All Maps 1-20 measured (309 skills on their home map). 194 read apart from the shared measure; against price 81 are too cheap, 127 too dear. Context skills swing: Tide is worth about 4 on Maps 2-4, 9, 10 and 0 on nine others. 32 skills are off the same way on every map (Swift 4 vs 9.5, Delivery 2.5 vs 5.25); 20 of them keep that verdict at bramble 5 and 30 too. Parasite reads -10 on Maps 7 and 12. Detail: docs/balance/pipeline/mapctx-2026-11-21.md.
-  - a) Give context skills a home-map price, then list cards that leave the budget (no stat changes)
-  - b) Re-price only the 32 skills that are off on every map (with SKM4-1); context skills keep one price
-  - c) Leave
-- **Default:** b
-
-**REFIT18-2. Enemy level for four fights that are too easy** · Decide · Balance · asked 2026-11-21
-- No legal swap or Shield fixes them; a higher enemy level does. 13-8: level 3 → 4 reads 38 (target 40). 20-4: 3.9 → 5 reads 69 (67). Side 10-A-3: 3 → 3.5 reads 69.5 (70). 20-9 (58 vs 50, within 10) instead takes Shield 60 → 90, reading 53.5.
-  - a) All four as listed
-  - b) Only 13-8 and 20-4 (the main fights 10+ off)
-  - c) Leave
-- **Default:** a
-
-**REFIT18-1. Main fight 5-2 is too hard** · Decide · Balance · asked 2026-11-21
-- Reads 73 against 84. Every legal swap makes it harder and Shield is 0. Its Health is already lowered; cutting it again, 14 → 9, reads 85. That goes further under the 60% floor.
-  - a) Health 9, under the floor (85)
-  - b) Leave
-- **Default:** b
-
-**SKM4-1. 60 combat skills priced outside their measured range** · Decide · Balance · asked 2026-11-21
-- Every combat skill now measured at 1,000 fights: 60 flags (24 too cheap, 36 too dear). Biggest: too cheap Fortify armor 1 (worth 9.1, price 3.0), Ally-played grant (4.7 / 0); too dear Evolute (-3.6 / 3.0), Swift (4.5 / 9.5), Nursing 2 (4.6 / 10), Venom Master (0.1 / 5.1), Twin Shot 2 (8.5 / 13.3), Offspring (0.4 / 6.1, also in SKM2-1). New: On Ready damage 4, Ice Arrow 1, Volley 1 slightly dear. Table: docs/balance/pipeline/flags-2026-11-21.md.
-  - a) Re-price the 10 biggest, then list cards that fall out of budget (no stat changes)
-  - b) Re-price all 60 the same way
-  - c) Leave
-- **Default:** a
-
-**SKM3-1. Raise the price of Corrode and Harden (and maybe Trident)** · Decide · Balance · asked 2026-11-21
-- Pipeline re-measure, 200 fights each. Corrode is worth 2.92 (range 2.65-3.61) against its price of 2.41. Harden is worth 2.83 (2.29-3.67) against 2.11. Both ranges sit above today's price. Trident is worth 2.75 (2.21-3.06) against 2.28; its range includes today's price, so it is likely, not certain. Most of SKM3's 234 measures agree. Flying and Evasive read cheap only when a whole deck flies: keep them.
-  - a) Corrode 2.9 and Harden 2.8
-  - b) Those two plus Trident 2.75
-  - c) Leave
-- **Default:** a
-
-**REFIT17-1. Side boss 20-A-4 is too easy** · Decide · Balance · asked 2026-11-21
-- Reads 64 against a target of 35.5. Every legal swap, Shield change or enemy level leaves it at 64 or easier. A 4th Obsidian Scorpion (over the rare cap) gives 60.5; nothing measured reaches 35.5.
-  - a) Lower the 20-A-4 target to about 60
-  - b) Allow a 4th Obsidian Scorpion (60.5)
-  - c) Leave
-- **Default:** a
-
-**REFIT17-2. Side fight 5-A-3 is too easy** · Decide · Balance · asked 2026-11-21
-- Reads 72 against 60. Shield is already at the rule and every legal swap makes it easier. Shield 26 (twice the rule) plus enemy level 4 reads 58, in band.
-  - a) Shield 26 + enemy level 4 (58)
-  - b) Leave
-- **Default:** a
-
-**REFIT17-3. Side fight 2-A-4 is too hard** · Decide · Balance · asked 2026-11-21
-- Reads 54 against 72. Every swap makes it harder. A 21st lowered-Health fight, Health 15 → 9 (the 60% floor), reads 72, in band.
-  - a) Raise the limit to 21 and cut Health to 9 (72)
-  - b) Leave
-- **Default:** a
-
-**REFIT17-4. Side fight 2-B-1 is too hard** · Decide · Balance · asked 2026-11-21
-- Reads 76 against 90. No swap or Shield change helps. Its Health is already lowered; cutting it again, 7 → 4, reads 82, in band. This goes under the 60% floor.
-  - a) Health 4, under the floor (82)
-  - b) Leave
-- **Default:** b
-
-**REFIT17-5. Side fight 1-A-1 is too hard** · Decide · Balance · asked 2026-11-21
-- Reads 79 against 90. No swap, Health or enemy level change helps. Letting the deck go under the 10-card side floor, to 8 cards (2 Ant Scout out), reads 87.5, in band.
-  - a) 8-card deck, under the side floor (87.5)
-  - b) Leave
-- **Default:** a
-
-**REFIT16-1. Map 17 fights are too hard (17-4, 17-6, 17-7)** · Decide · Balance · asked 2026-11-21
-- Deck rules block almost every swap and Shield is 0. Enemy level 3.36 → 3 reads 17-4 76 (target 75), 17-6 61 (65), 17-7 46 (60). 17-7 needs level 2.5 plus Health 11 (a 21st lowered-Health fight) to read 59.
-  - a) Map 17 enemy level 3, and 17-7 level 2.5 + Health 11
-  - b) Map 17 enemy level 3 only
-  - c) Leave
-- **Default:** a
-
-**REFIT15-1. 2-2 Gull Gang is too hard (57 vs 80)** · Decide · Balance · asked 2026-11-21
-- No swap or Shield change helps. All 20 lowered-Health slots are used, so a Health cut needs the limit raised to 21. Bramble Health 15 → 9 (the floor) reads 63; 15 → 6 reads 70.
-  - a) Raise the limit to 21 and cut to 6
-  - b) Raise the limit and cut to 9 (the floor)
-  - c) Leave it
-- **Default:** a
-
-**REFIT15-2. 4-3 Cetacean Pod is too hard (51 vs 70)** · Decide · Balance · asked 2026-11-21
-- It is already below the floor by your call HPCUT1, and Shield is 0. Bramble Health 5 → 3 reads 62 (in band); 5 → 2 reads 69.
-  - a) Health 3
-  - b) Health 2
-  - c) Leave it at 5
-- **Default:** a
-
-**REFIT15-3. Map 1 fights are too easy (96 vs 80-85)** · Decide · Balance · asked 2026-11-21
-- 1-2, 1-3 and 1-4 stay at 94-96 whatever the deck, Shield or level. Measured: the early-bramble lead (EB) never applies here, because your Bramble's 15 Health is already above every enemy's Health + Shield + 3. Setting your Bramble to the enemy's Health + Shield (no 15 floor) on these three fights reads 82 / 82 / 80, in band.
-  - a) Use enemy Health + Shield for your Bramble on 1-2, 1-3, 1-4
-  - b) Leave Map 1 easy
-- **Default:** a
-
-**REFIT14-1. Six Pale Desert fights are too easy (main 18-2, 18-3; side A-3 to A-6)** · Decide · Balance · asked 2026-11-21
-- 18-A-3, A-4, A-5 and A-6 read 88-99 against targets 69-77. No swap, Shield or Health change moves them. Stonedrop Vulture (from REFIT13-2 a) does: A-3 66 (target 71), A-4 78.5 (77), A-5 65 (73), A-6 63 (69). REFIT18: main fights 18-2 (96 vs 84) and 18-3 (94.5 vs 78) have the same cause. One Vulture for a Roadrunner Courier reads 18-2 at 88; one for the Worker Ant reads 18-3 at 77.
-  - a) Use Vulture on all six (x1 on 18-2 and 18-3; x2 on A-3 to A-5, x3 on A-6)
-  - b) Leave them easy
-- **Default:** a
-
-**REFIT14-2. 18-A-9 The Quicksand Queen is too easy (56 vs 40)** · Decide · Balance · asked 2026-11-21
-- No legal lever moves it. Its enemy level went from 4 to 3 in SIDE2-4 e; back at level 4 it reads 39.5.
-  - a) Enemy level back to 4
-  - b) Leave it at 56
-- **Default:** a
-
-**REFIT13-5. Cut two base Healths below the 60% floor?** · Decide · Balance · asked 2026-11-21
-- The test rule keeps a fight's lower Health at 60%+ of its bramble's own; past it needs your OK (as with HPCUT1). Within the floor: 8-7 reads 42 (target 60), 17-4 reads 67 (target 75). Below it: 8-7 Health 8 reads 55, 17-4 Health 16 reads 73.
-  - a) Allow both cuts as owner exceptions
-  - b) Keep the floor
-- **Default:** a
-
-**SKM2-1. Re-price 11 skills the re-measure confirmed** · Decide · Balance · asked 2026-11-21
-- At 1,000 fights, four methods agree. Cheap: Diurnal 1.5 (reads ~2.8), Pack 3.3 (~6+), Sleep Powder 2.5 (~4), Poison Barbs 2.4 (~4.5), Poison Powder 4.8 (~6.3), Dive's drawback -1.7 (~-0.3). Dear: Keen Sense 2.0 (~0.2), Parasite 1.0 (~-1.8), Pulverise 1.5 (~0.3), Overwhelm 1.1 (~0.5), Offspring 6.1 (~0.6). Flying, Evasive, Corrode, Trident, Repair not confirmed: keep.
-  - a) Re-price all 11, then list cards that fall out of budget (no stat changes without you)
-  - b) Only the big three: Offspring, Pack, Parasite
-  - c) Keep prices
-- **Default:** a
-
-**REFIT13-1. Map 8's reference deck holds 4 off-map cards** · Decide · Balance · asked 2026-11-21
-- Every Map 8 fight reads 8-17 under target. Map 8's reference deck carries 4 Muskrat Lodgekeepers (Tide, no skill on Map 8); simulated players carry Worker Ants. Swapping them lifts the 8 fights from 57 to 72 on average, 7 of 8 within 9 of target. 8-7 would then get its Collapsed Mine back (Health 4, reads 62.8 vs 60).
-  - a) Swap to Worker Ant x4 and restore 8-7's Mine
-  - b) Keep the deck (8-7 stays without the Mine)
-- **Default:** a
-
-**REFIT13-2. 18-A-7 Oryx Crossing is too easy (97 vs 64)** · Decide · Balance · asked 2026-11-21
-- No swap, Shield or rule change moves it. Adding a card to the Pale Desert pool does.
-  - a) Add Stonedrop Vulture (Uncommon 11/11 Flying), 3 copies: 60
-  - b) Vulture x2 + Dust-devil Kestrel x2: 64 (Kestrel is 18-7's reward)
-  - c) Leave it easy
-- **Default:** a
-
-**REFIT13-3. 18-4 Sandstorm: keep the blinding storm?** · Decide · Balance · asked 2026-11-21
-- Your call C4 made 18-4's storm blind. It reads 89.8 vs target 62. A normal Sandstorm with the Sand Veil boon kept reads 65.4.
-  - a) Keep blind (too easy)
-  - b) Normal Sandstorm
-- **Default:** a
-
-**REFIT13-4. 18-7 Sand Widow Queen is too easy (72.5 vs 40)** · Decide · Balance · asked 2026-11-21
-- Swaps, Shield and bramble Health don't move it. Removing the sandstorm (heatwave kept) reads 55.6, still 15 off.
-  - a) Remove the sandstorm, then re-fit the deck
-  - b) Leave it
-- **Default:** a
-
-**SKM1-1. How to price economy and partner skills** · Decide · Balance · asked 2026-11-21
-- Forestry, Rainrunner, Dry, Bloom Copy, Broodkeeper, Bounty, Herald, Loyal, Salvage and the Deliver triggers read about 0 in all 132 fight designs: plain fights can't see their value. Today they're priced by the 4-round rule.
-  - a) Keep the 4-round prices and mark them 'not fight-measured'
-  - b) Build a design whose decks pay Lumber and hold their tribe, then re-price
-- **Default:** a
-
-**SKM1-2. Which evidence can change a skill price** · Decide · Balance · asked 2026-11-21
-- Of 152 measured methods, the stat-equivalence searches and the carrier x20 test agree best with each other (rank agreement 0.84-0.88). Card-contribution regressions, deckopt pick rate and workbook power agree least (under 0.4).
-  - a) Price changes need the equivalence search plus carrier x20 to agree
-  - b) Keep using every method's average
-- **Default:** a
-
-**REFIT11-1. New skill carriers read too strong** · Decide · Balance · asked 2026-11-20
-- Road runs say three FOCUS2 carriers cost CPU-side fights more than their price: Sworn Shieldbearer (Harden 2.11) cost Map 15 fights 9-18 points, Meerkat Sentry (Embolden 3.59) cost Map 14 fights 3-19, Booming Bittern (Enfeeble 2.5) cost Map 6 fights 4-10. REFIT11 re-fitted the fights around them, so the road is back in band either way.
-  - a) Keep prices; the re-fits cover it
-  - b) Raise Harden and Embolden prices and trim the two cards (Bittern stays)
-  - c) Raise all three
-- **Default:** a
-
-**REFIT11-2. 6-3 Toad Chorus stays too hard** · Decide · Balance · asked 2026-11-20
-- 6-3 sits at 67.5 against a target of 80. Its other pool cards are capped at 1 copy and the deck already has 6 distinct cards, so none of the 10 legal decks does better.
-  - a) Allow 2 copies of one pool card
-  - b) Remove Booming Bittern from 6-3
-  - c) Lower the target to 70
-- **Default:** a
-
-**FOCUS2-1. Enfeeble's price** · Decide · Balance · asked 2026-11-20
-- Enfeeble N now makes the target Feeble (deals half) for N rounds. Priced 2.5; Embrittle (Fragile) is 4. Raising Enfeeble to 4 puts Tsetse Drainer over budget (99.7% today).
-  - a) Keep 2.5
-  - b) 4, like Embrittle, and trim Tsetse Drainer
-- **Default:** a
-
-**FOCUS2-2. Bleed cards left on Map 5** · Decide · Lists · asked 2026-11-20
-- Bleed moved to Map 6. On Map 5's list, Alley Cat has no other reason to be there; Mosquito Cloud is also on Map 6's list. Swamp Alligator stays (the swamp's namesake).
-  - a) No Alley Cat on Map 5
-  - b) No Alley Cat and Mosquito Cloud
-  - c) Keep both
-- **Default:** a
-
-**FOCUS2-3. Bog Leech: Bleed 1 to Leech?** · Decide · Cards · asked 2026-11-20
-- Bog Leech carries Bleed 1. With Leech now Map 5's focus, giving it Leech instead makes it the map's obvious leech. It is also a Suggested pick for Map 6 (Bleed).
-  - a) Swap to Leech (Map 5)
-  - b) Keep Bleed (Map 6)
-- **Default:** b
-
-**REFIT10-1. 19-A-7 Basalt Vanguard stays too hard** · Decide · Balance · asked 2026-11-20
-- After Malachite Golem replaced Granite Ox Golem, 19-A-7 wins 37% against a target of 67.5. No legal 16-card deck reaches the band (1104 read). A 12-card deck reads 62.5% (one seed).
-  - a) Shrink it to 12 cards
-  - b) Leave it hard until a weaker card joins the Basalt Foundry list
-- **Default:** a
-
-**DEC20-1. Glasswing Moth over budget after Embrittle** · Decide · Balance · asked 2026-11-20
-- Embrittle now makes the target Fragile (takes x2) for N rounds, so it costs 4.59 instead of 0.2. Glasswing Moth (Embrittle 2) goes from 110% to 144% of its budget. Illuminate's new reveal moves Glow-worm to 112%.
-  - a) Trim Glasswing Moth's stats to 100% (Claude picks)
-  - b) Embrittle 1 on it (1 round)
-  - c) Keep it as is
-- **Default:** b
-
 **CHEAT2-1. Apply the cheat-detection SQL ("apply it")** · Approve · Supabase · asked 2026-11-16
 - supabase/proposed/cheat2-2026-11-16.sql. A: the old market functions let two accounts create Leaves (urgent fix). B-G: a flags table, fight hand-in checks, daily reward caps, burst notes, ranked-draw rules, six functions hardened. All only flag; players see nothing. H is separate. Needs your "apply it".
   - a) Apply A-G.
@@ -272,6 +38,276 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 - **Default:** a
 
 ## Decided
+
+**SKWK6-2. Two too-strong decks fit only if they share more cards** · Decide · Balance · asked 2026-11-22 · decided 2026-11-22
+- 2-B-BPRO-2 (81.5%) and 10-A-BPRO-2 (53.5%) should beat the reference ladder 15-30%. Under the 10-shared-copies rule no change helps. Re-tunes ready: up to 13 shared, 31% and 21.5%; up to 12, 60.5% and 21.5%.
+  - a) Allow up to 13 for these two (both fixed)
+  - b) Allow up to 12 (Map 10 fixed, Map 2 to 60%)
+  - c) Keep the 10 rule; both stay too strong
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: c, keep the 10-shared-copies rule. "Too strong is good - we kind of don't care how strong it is, except that it may be a signal that a card or two is overpowered." Strong decks get no upper limit (evaluation protocol updated).
+
+**SKWK6-1. Map 0 and Map 18 strong decks can't reach 15% on list cards** · Decide · Balance · asked 2026-11-22 · decided 2026-11-22
+- 0-BPRO-2 (7%) and 18-A-BPRO-1 (8%) should beat the reference ladder 15-30%. The best list-only decks a fresh search finds reach 9.5% and 10%, even with the 10-copy overlap rule loosened. Map 18's list has 9 cards.
+  - a) Accept both below the band
+  - b) Let these two use cards beyond the map list
+  - c) Lower the target to 10% for small lists
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: a. "Weakest decks being too weak I guess is ok ... (that signals a card in the weak deck repertoire is too weak)". Both decks stay; copies follow the normal game rules.
+
+**MAPADD1-1. Your sheet's new skills: Poison Barbs on Map 5, Evasive on Map 8** · Decide · Skills · asked 2026-11-22 · decided 2026-11-22
+- Your 11-22 sheet adds Poison Barbs to Map 5 and Evasive to Map 8. It still has Bleed on Map 5 and Leech on Map 6; the game has your 11-20 swap (Leech 5, Bleed 6). Hub: Design > Map skill table.
+  - a) Add both; keep the 11-20 swap
+  - b) Add both; undo the swap (Bleed 5, Leech 6)
+  - c) Change nothing
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: a. Map 5 + Poison Barbs, Map 8 + Evasive; the 11-20 Leech / Bleed swap stays. Built in MAPADD1b.
+
+**NOC7-1. Moonlit Hare: delete the card, or keep it unobtainable?** · Decide · Cards · asked 2026-11-22 · decided 2026-11-22
+- Moonlit Hare is on no map list now (Nocturnal moved to the Morel Hollow, Map 7). The card is still in the data, unattainable, and out of every deck. Delete it for good, or keep it for later?
+  - a) Keep it, unobtainable (nothing else changes).
+  - b) Delete it from the data and every language pack.
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "Make it unobtainable for now." Moonlit Hare stays in the data, on no list.
+
+**CARRIER-1. Should a skill's price depend on the card's body?** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- 34 of 127 skills are worth more on one kind of body. Ranged and siege skills gain 1.5-4 points on high-Health cards (Arrow 2 bramble 9.7 vs 5.3). Armor, Bulwark, Sturdy, Swift and death spawns gain 1.5-4.5 on high-Attack cards (Armor 3 7.3 vs 3.9). Today the budget prices a skill the same on any body; 93 skills need no change. Detail: docs/balance/pipeline/mapctx-2026-11-21.md.
+  - a) Add a body term to the budget for these 34 skills, then list cards that leave the band (no stat changes)
+  - b) Keep prices body-blind; use this as card-design guidance
+  - c) Measure on more carrier sets first
+- **Default:** b
+- **Outcome:** Owner 2026-11-22 21:28: "How great is the variance, if possible, it'll be nice to assume a static skill cost." One body-blind price per skill. Spread: 34 of 127 skills differ 1.5-4.5 points between high-Health and high-Attack bodies; 93 within noise.
+
+**MAPCTX-1. Price context skills by the map they live on** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- All Maps 1-20 measured (309 skills on their home map). 194 read apart from the shared measure; against price 81 are too cheap, 127 too dear. Context skills swing: Tide is worth about 4 on Maps 2-4, 9, 10 and 0 on nine others. 32 skills are off the same way on every map (Swift 4 vs 9.5, Delivery 2.5 vs 5.25); 20 of them keep that verdict at bramble 5 and 30 too. Parasite reads -10 on Maps 7 and 12. Detail: docs/balance/pipeline/mapctx-2026-11-21.md.
+  - a) Give context skills a home-map price, then list cards that leave the budget (no stat changes)
+  - b) Re-price only the 32 skills that are off on every map (with SKM4-1); context skills keep one price
+  - c) Leave
+- **Default:** b
+- **Outcome:** Owner 2026-11-22 21:28: "No. The skill budget should be same. ... when testing ... do a representative smattering of the different major field events like darkness, wind, and tide." One price per skill; the measure gets a field-event mix (package FIELDMIX).
+
+**REFIT18-2. Enemy level for four fights that are too easy** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- No legal swap or Shield fixes them; a higher enemy level does. 13-8: level 3 → 4 reads 38 (target 40). 20-4: 3.9 → 5 reads 69 (67). Side 10-A-3: 3 → 3.5 reads 69.5 (70). 20-9 (58 vs 50, within 10) instead takes Shield 60 → 90, reading 53.5.
+  - a) All four as listed
+  - b) Only 13-8 and 20-4 (the main fights 10+ off)
+  - c) Leave
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "No, we need to meet our BR target. Question is, are their SK decks strong? If they are, we can pivot towards the hard reference deck(s). Since 4 are too easy, we need at least 2 different strong SK decks." No enemy-level change; follow-up REFIT19 checks those fights' strong decks and the hard references.
+
+**REFIT18-1. Main fight 5-2 is too hard** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- Reads 73 against 84. Every legal swap makes it harder and Shield is 0. Its Health is already lowered; cutting it again, 14 → 9, reads 85. That goes further under the 60% floor.
+  - a) Health 9, under the floor (85)
+  - b) Leave
+- **Default:** b
+- **Outcome:** Owner 2026-11-22 21:28: "See the philosophy of how i answered so far." Claude's reading (meet the BR target; no enemy-level or Health levers past Map 1; normal game rules for copies, deck size and floors; side-map cards chosen later): b, leave (a Health cut under the floor).
+
+**SKM4-1. 60 combat skills priced outside their measured range** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- Every combat skill now measured at 1,000 fights: 60 flags (24 too cheap, 36 too dear). Biggest: too cheap Fortify armor 1 (worth 9.1, price 3.0), Ally-played grant (4.7 / 0); too dear Evolute (-3.6 / 3.0), Swift (4.5 / 9.5), Nursing 2 (4.6 / 10), Venom Master (0.1 / 5.1), Twin Shot 2 (8.5 / 13.3), Offspring (0.4 / 6.1, also in SKM2-1). New: On Ready damage 4, Ice Arrow 1, Volley 1 slightly dear. Table: docs/balance/pipeline/flags-2026-11-21.md.
+  - a) Re-price the 10 biggest, then list cards that fall out of budget (no stat changes)
+  - b) Re-price all 60 the same way
+  - c) Leave
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: b. "Continue recalculating skill budget." Re-price all 60, list cards out of budget (no stat changes).
+
+**SKM3-1. Raise the price of Corrode and Harden (and maybe Trident)** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- Pipeline re-measure, 200 fights each. Corrode is worth 2.92 (range 2.65-3.61) against its price of 2.41. Harden is worth 2.83 (2.29-3.67) against 2.11. Both ranges sit above today's price. Trident is worth 2.75 (2.21-3.06) against 2.28; its range includes today's price, so it is likely, not certain. Most of SKM3's 234 measures agree. Flying and Evasive read cheap only when a whole deck flies: keep them.
+  - a) Corrode 2.9 and Harden 2.8
+  - b) Those two plus Trident 2.75
+  - c) Leave
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "follow your sims. a." Corrode 2.9, Harden 2.8.
+
+**REFIT17-1. Side boss 20-A-4 is too easy** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- Reads 64 against a target of 35.5. Every legal swap, Shield change or enemy level leaves it at 64 or easier. A 4th Obsidian Scorpion (over the rare cap) gives 60.5; nothing measured reaches 35.5.
+  - a) Lower the 20-A-4 target to about 60
+  - b) Allow a 4th Obsidian Scorpion (60.5)
+  - c) Leave
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "We'll choose side map cards again later." Held until the side-map card pass.
+
+**REFIT17-2. Side fight 5-A-3 is too easy** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- Reads 72 against 60. Shield is already at the rule and every legal swap makes it easier. Shield 26 (twice the rule) plus enemy level 4 reads 58, in band.
+  - a) Shield 26 + enemy level 4 (58)
+  - b) Leave
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: Not Shield 26 + level 4. "Shield should follow a certain separate rule ... shield values very slowly climb, depending on your skirmish#, map#, if elite, if submap, or ambush (ambushes have 50% less shield but typically feature harder enemies. The BR of an ambush is highest BR of the map's main skirmishes - 1." Package SHIELD1.
+
+**REFIT17-3. Side fight 2-A-4 is too hard** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- Reads 54 against 72. Every swap makes it harder. A 21st lowered-Health fight, Health 15 → 9 (the 60% floor), reads 72, in band.
+  - a) Raise the limit to 21 and cut Health to 9 (72)
+  - b) Leave
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "Past Map 1, do not randomly change the health of the bramble." Leave.
+
+**REFIT17-4. Side fight 2-B-1 is too hard** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- Reads 76 against 90. No swap or Shield change helps. Its Health is already lowered; cutting it again, 7 → 4, reads 82, in band. This goes under the 60% floor.
+  - a) Health 4, under the floor (82)
+  - b) Leave
+- **Default:** b
+- **Outcome:** Owner 2026-11-22 21:28: "See the philosophy of how i answered so far." Claude's reading (meet the BR target; no enemy-level or Health levers past Map 1; normal game rules for copies, deck size and floors; side-map cards chosen later): b, leave (Health cut under the floor).
+
+**REFIT17-5. Side fight 1-A-1 is too hard** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- Reads 79 against 90. No swap, Health or enemy level change helps. Letting the deck go under the 10-card side floor, to 8 cards (2 Ant Scout out), reads 87.5, in band.
+  - a) 8-card deck, under the side floor (87.5)
+  - b) Leave
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "See the philosophy of how i answered so far." Claude's reading (meet the BR target; no enemy-level or Health levers past Map 1; normal game rules for copies, deck size and floors; side-map cards chosen later): b, leave (8-card deck under the side floor).
+
+**REFIT16-1. Map 17 fights are too hard (17-4, 17-6, 17-7)** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- Deck rules block almost every swap and Shield is 0. Enemy level 3.36 → 3 reads 17-4 76 (target 75), 17-6 61 (65), 17-7 46 (60). 17-7 needs level 2.5 plus Health 11 (a 21st lowered-Health fight) to read 59.
+  - a) Map 17 enemy level 3, and 17-7 level 2.5 + Health 11
+  - b) Map 17 enemy level 3 only
+  - c) Leave
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "See the philosophy of how i answered so far." Claude's reading (meet the BR target; no enemy-level or Health levers past Map 1; normal game rules for copies, deck size and floors; side-map cards chosen later): c, leave (enemy level and Health levers).
+
+**REFIT15-1. 2-2 Gull Gang is too hard (57 vs 80)** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- No swap or Shield change helps. All 20 lowered-Health slots are used, so a Health cut needs the limit raised to 21. Bramble Health 15 → 9 (the floor) reads 63; 15 → 6 reads 70.
+  - a) Raise the limit to 21 and cut to 6
+  - b) Raise the limit and cut to 9 (the floor)
+  - c) Leave it
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "See the philosophy of how i answered so far." Claude's reading (meet the BR target; no enemy-level or Health levers past Map 1; normal game rules for copies, deck size and floors; side-map cards chosen later): c, leave (Health cut past Map 1).
+
+**REFIT15-2. 4-3 Cetacean Pod is too hard (51 vs 70)** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- It is already below the floor by your call HPCUT1, and Shield is 0. Bramble Health 5 → 3 reads 62 (in band); 5 → 2 reads 69.
+  - a) Health 3
+  - b) Health 2
+  - c) Leave it at 5
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "See the philosophy of how i answered so far." Claude's reading (meet the BR target; no enemy-level or Health levers past Map 1; normal game rules for copies, deck size and floors; side-map cards chosen later): c, leave at 5.
+
+**REFIT15-3. Map 1 fights are too easy (96 vs 80-85)** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- 1-2, 1-3 and 1-4 stay at 94-96 whatever the deck, Shield or level. Measured: the early-bramble lead (EB) never applies here, because your Bramble's 15 Health is already above every enemy's Health + Shield + 3. Setting your Bramble to the enemy's Health + Shield (no 15 floor) on these three fights reads 82 / 82 / 80, in band.
+  - a) Use enemy Health + Shield for your Bramble on 1-2, 1-3, 1-4
+  - b) Leave Map 1 easy
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "See the philosophy of how i answered so far." Claude's reading (meet the BR target; no enemy-level or Health levers past Map 1; normal game rules for copies, deck size and floors; side-map cards chosen later): a: Map 1 is where Health may change, and it meets the BR target. Override if not meant.
+
+**REFIT14-1. Six Pale Desert fights are too easy (main 18-2, 18-3; side A-3 to A-6)** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- 18-A-3, A-4, A-5 and A-6 read 88-99 against targets 69-77. No swap, Shield or Health change moves them. Stonedrop Vulture (from REFIT13-2 a) does: A-3 66 (target 71), A-4 78.5 (77), A-5 65 (73), A-6 63 (69). REFIT18: main fights 18-2 (96 vs 84) and 18-3 (94.5 vs 78) have the same cause. One Vulture for a Roadrunner Courier reads 18-2 at 88; one for the Worker Ant reads 18-3 at 77.
+  - a) Use Vulture on all six (x1 on 18-2 and 18-3; x2 on A-3 to A-5, x3 on A-6)
+  - b) Leave them easy
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "See the philosophy of how i answered so far." Claude's reading (meet the BR target; no enemy-level or Health levers past Map 1; normal game rules for copies, deck size and floors; side-map cards chosen later): held with the side-map card pass (Stonedrop Vulture joins the Pale Desert list only if you pick it).
+
+**REFIT14-2. 18-A-9 The Quicksand Queen is too easy (56 vs 40)** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- No legal lever moves it. Its enemy level went from 4 to 3 in SIDE2-4 e; back at level 4 it reads 39.5.
+  - a) Enemy level back to 4
+  - b) Leave it at 56
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "See the philosophy of how i answered so far." Claude's reading (meet the BR target; no enemy-level or Health levers past Map 1; normal game rules for copies, deck size and floors; side-map cards chosen later): b, leave (enemy level lever).
+
+**REFIT13-5. Cut two base Healths below the 60% floor?** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- The test rule keeps a fight's lower Health at 60%+ of its bramble's own; past it needs your OK (as with HPCUT1). Within the floor: 8-7 reads 42 (target 60), 17-4 reads 67 (target 75). Below it: 8-7 Health 8 reads 55, 17-4 Health 16 reads 73.
+  - a) Allow both cuts as owner exceptions
+  - b) Keep the floor
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "See the philosophy of how i answered so far." Claude's reading (meet the BR target; no enemy-level or Health levers past Map 1; normal game rules for copies, deck size and floors; side-map cards chosen later): b, keep the floor.
+
+**SKM2-1. Re-price 11 skills the re-measure confirmed** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- At 1,000 fights, four methods agree. Cheap: Diurnal 1.5 (reads ~2.8), Pack 3.3 (~6+), Sleep Powder 2.5 (~4), Poison Barbs 2.4 (~4.5), Poison Powder 4.8 (~6.3), Dive's drawback -1.7 (~-0.3). Dear: Keen Sense 2.0 (~0.2), Parasite 1.0 (~-1.8), Pulverise 1.5 (~0.3), Overwhelm 1.1 (~0.5), Offspring 6.1 (~0.6). Flying, Evasive, Corrode, Trident, Repair not confirmed: keep.
+  - a) Re-price all 11, then list cards that fall out of budget (no stat changes without you)
+  - b) Only the big three: Offspring, Pack, Parasite
+  - c) Keep prices
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "ok". Re-price all 11, list cards out of budget.
+
+**REFIT13-1. Map 8's reference deck holds 4 off-map cards** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- Every Map 8 fight reads 8-17 under target. Map 8's reference deck carries 4 Muskrat Lodgekeepers (Tide, no skill on Map 8); simulated players carry Worker Ants. Swapping them lifts the 8 fights from 57 to 72 on average, 7 of 8 within 9 of target. 8-7 would then get its Collapsed Mine back (Health 4, reads 62.8 vs 60).
+  - a) Swap to Worker Ant x4 and restore 8-7's Mine
+  - b) Keep the deck (8-7 stays without the Mine)
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "See the philosophy of how i answered so far." Claude's reading (meet the BR target; no enemy-level or Health levers past Map 1; normal game rules for copies, deck size and floors; side-map cards chosen later): a: the reference deck uses map-list cards (as PROLIST).
+
+**REFIT13-2. 18-A-7 Oryx Crossing is too easy (97 vs 64)** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- No swap, Shield or rule change moves it. Adding a card to the Pale Desert pool does.
+  - a) Add Stonedrop Vulture (Uncommon 11/11 Flying), 3 copies: 60
+  - b) Vulture x2 + Dust-devil Kestrel x2: 64 (Kestrel is 18-7's reward)
+  - c) Leave it easy
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "See the philosophy of how i answered so far." Claude's reading (meet the BR target; no enemy-level or Health levers past Map 1; normal game rules for copies, deck size and floors; side-map cards chosen later): held with the side-map card pass.
+
+**REFIT13-3. 18-4 Sandstorm: keep the blinding storm?** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- Your call C4 made 18-4's storm blind. It reads 89.8 vs target 62. A normal Sandstorm with the Sand Veil boon kept reads 65.4.
+  - a) Keep blind (too easy)
+  - b) Normal Sandstorm
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "See the philosophy of how i answered so far." Claude's reading (meet the BR target; no enemy-level or Health levers past Map 1; normal game rules for copies, deck size and floors; side-map cards chosen later): b, normal Sandstorm (meets the BR target). Override if C4 must stay.
+
+**REFIT13-4. 18-7 Sand Widow Queen is too easy (72.5 vs 40)** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- Swaps, Shield and bramble Health don't move it. Removing the sandstorm (heatwave kept) reads 55.6, still 15 off.
+  - a) Remove the sandstorm, then re-fit the deck
+  - b) Leave it
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "See the philosophy of how i answered so far." Claude's reading (meet the BR target; no enemy-level or Health levers past Map 1; normal game rules for copies, deck size and floors; side-map cards chosen later): a, remove the sandstorm and re-fit (meets the BR target more nearly).
+
+**SKM1-1. How to price economy and partner skills** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- Forestry, Rainrunner, Dry, Bloom Copy, Broodkeeper, Bounty, Herald, Loyal, Salvage and the Deliver triggers read about 0 in all 132 fight designs: plain fights can't see their value. Today they're priced by the 4-round rule.
+  - a) Keep the 4-round prices and mark them 'not fight-measured'
+  - b) Build a design whose decks pay Lumber and hold their tribe, then re-price
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: b. Build a design whose decks pay Lumber and hold their tribe, then re-price.
+
+**SKM1-2. Which evidence can change a skill price** · Decide · Balance · asked 2026-11-21 · decided 2026-11-22
+- Of 152 measured methods, the stat-equivalence searches and the carrier x20 test agree best with each other (rank agreement 0.84-0.88). Card-contribution regressions, deckopt pick rate and workbook power agree least (under 0.4).
+  - a) Price changes need the equivalence search plus carrier x20 to agree
+  - b) Keep using every method's average
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "Really have to see why resource related triggers don't offer their power well. We can base lumber, stone, and metal strength through standard candlestick cards. Let's assume stone gives 2x of lumber's budget, metal gives 4x of lumber's budget. Then we can create a simple card just made of stats and 1 random skill, at a random rarity above common/uncommon/rare if lumber/stone/metal." Package CANDLE1.
+
+**REFIT11-1. New skill carriers read too strong** · Decide · Balance · asked 2026-11-20 · decided 2026-11-22
+- Road runs say three FOCUS2 carriers cost CPU-side fights more than their price: Sworn Shieldbearer (Harden 2.11) cost Map 15 fights 9-18 points, Meerkat Sentry (Embolden 3.59) cost Map 14 fights 3-19, Booming Bittern (Enfeeble 2.5) cost Map 6 fights 4-10. REFIT11 re-fitted the fights around them, so the road is back in band either way.
+  - a) Keep prices; the re-fits cover it
+  - b) Raise Harden and Embolden prices and trim the two cards (Bittern stays)
+  - c) Raise all three
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "See the philosophy of how i answered so far." Claude's reading (meet the BR target; no enemy-level or Health levers past Map 1; normal game rules for copies, deck size and floors; side-map cards chosen later): b on price only: sims set Harden and Embolden prices (with SKM3-1 / SKM4-1); cards that leave the budget are listed, no trims without you.
+
+**REFIT11-2. 6-3 Toad Chorus stays too hard** · Decide · Balance · asked 2026-11-20 · decided 2026-11-22
+- 6-3 sits at 67.5 against a target of 80. Its other pool cards are capped at 1 copy and the deck already has 6 distinct cards, so none of the 10 legal decks does better.
+  - a) Allow 2 copies of one pool card
+  - b) Remove Booming Bittern from 6-3
+  - c) Lower the target to 70
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "See the philosophy of how i answered so far." Claude's reading (meet the BR target; no enemy-level or Health levers past Map 1; normal game rules for copies, deck size and floors; side-map cards chosen later): a: 2 copies of one pool card is within the normal game rules.
+
+**FOCUS2-1. Enfeeble's price** · Decide · Balance · asked 2026-11-20 · decided 2026-11-22
+- Enfeeble N now makes the target Feeble (deals half) for N rounds. Priced 2.5; Embrittle (Fragile) is 4. Raising Enfeeble to 4 puts Tsetse Drainer over budget (99.7% today).
+  - a) Keep 2.5
+  - b) 4, like Embrittle, and trim Tsetse Drainer
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "Price them based on simulations." Enfeeble priced by the pipeline measure.
+
+**FOCUS2-2. Bleed cards left on Map 5** · Decide · Lists · asked 2026-11-20 · decided 2026-11-22
+- Bleed moved to Map 6. On Map 5's list, Alley Cat has no other reason to be there; Mosquito Cloud is also on Map 6's list. Swamp Alligator stays (the swamp's namesake).
+  - a) No Alley Cat on Map 5
+  - b) No Alley Cat and Mosquito Cloud
+  - c) Keep both
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "Price them based on simulations."
+
+**FOCUS2-3. Bog Leech: Bleed 1 to Leech?** · Decide · Cards · asked 2026-11-20 · decided 2026-11-22
+- Bog Leech carries Bleed 1. With Leech now Map 5's focus, giving it Leech instead makes it the map's obvious leech. It is also a Suggested pick for Map 6 (Bleed).
+  - a) Swap to Leech (Map 5)
+  - b) Keep Bleed (Map 6)
+- **Default:** b
+- **Outcome:** Owner 2026-11-22 21:28: "Price them based on simulations."
+
+**REFIT10-1. 19-A-7 Basalt Vanguard stays too hard** · Decide · Balance · asked 2026-11-20 · decided 2026-11-22
+- After Malachite Golem replaced Granite Ox Golem, 19-A-7 wins 37% against a target of 67.5. No legal 16-card deck reaches the band (1104 read). A 12-card deck reads 62.5% (one seed).
+  - a) Shrink it to 12 cards
+  - b) Leave it hard until a weaker card joins the Basalt Foundry list
+- **Default:** a
+- **Outcome:** Owner 2026-11-22 21:28: "See the philosophy of how i answered so far." Claude's reading (meet the BR target; no enemy-level or Health levers past Map 1; normal game rules for copies, deck size and floors; side-map cards chosen later): b, leave until the Basalt Foundry list gets a weaker card (12 cards is under the deck size).
+
+**DEC20-1. Glasswing Moth over budget after Embrittle** · Decide · Balance · asked 2026-11-20 · decided 2026-11-22
+- Embrittle now makes the target Fragile (takes x2) for N rounds, so it costs 4.59 instead of 0.2. Glasswing Moth (Embrittle 2) goes from 110% to 144% of its budget. Illuminate's new reveal moves Glow-worm to 112%.
+  - a) Trim Glasswing Moth's stats to 100% (Claude picks)
+  - b) Embrittle 1 on it (1 round)
+  - c) Keep it as is
+- **Default:** b
+- **Outcome:** Owner 2026-11-22 21:28: "Redesign it to fit it well - not too reliant on skills but also having impact through skills. Then rebalance the card." Glasswing Moth redesign (package DEC21).
 
 **PROLIST-1. Strong and weak decks use only the map's list** · Decide · Balance · asked 2026-11-22 · decided 2026-11-22
 - Owner 2026-11-22 09:56: "I noticed Map 0's strong deck uses the Thorn Shrike, a card not even in the map list. Do not use cards not in the map list." PRO, BPRO and WPRO pools no longer take the SPECIAL tier (or cards found only in a road fight's deck). PRO still adds the cards a player holds by then. The Maps 0-20 decks that held one were repaired and re-tuned to their marks.
