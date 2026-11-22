@@ -8,6 +8,21 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-22 21:28 Owner answers, release (owner)
+- Owner: "You may release ... Release when ready, asap." Released batch-1023e to main (build 2b676b7e9652).
+- [x] MAPADD1b: Map 5 + Poison Barbs, Map 8 + Evasive (MAPADD1-1 a); half-red / half-blue "To add" tiles checked on Maps 5 and 8
+- [x] CHOSEN1: chosen (Yes) cards first in the Map cards window, each time it opens
+- [x] Decisions recorded (36), strong decks have no upper limit (`docs/evaluation-protocol.md`)
+- [ ] SKMPRICE: re-price per SKM4-1 b (all 60), SKM2-1 a (11), SKM3-1 a (Corrode 2.9, Harden 2.8), REFIT11-1 b (Harden, Embolden), FOCUS2-1/2/3 from sims; list cards out of budget, no stat changes
+- [ ] SHIELD1: a Shield rule (REFIT17-2): slow climb by skirmish #, map #, elite, submap; ambush 50% Shield, harder enemies, BR = the map's highest main-skirmish BR - 1. Proposal first
+- [ ] FIELDMIX: the skill measure plays a representative mix of major field events (darkness, wind, tide) (MAPCTX-1); one price per skill
+- [ ] CANDLE1: resource-trigger worth from standard candlestick cards: stone 2x Lumber's budget, metal 4x; simple stat cards + 1 random skill at a random rarity (SKM1-2); and SKM1-1 b (a Lumber-paying, tribe-holding design)
+- [ ] REFIT19: four too-easy fights of REFIT18-2: are their strong decks strong? If so pivot to the hard reference deck(s); at least 2 different strong decks
+- [ ] REFIT20: REFIT13-1 a (Map 8 reference deck: Worker Ant x4, 8-7 Mine), REFIT13-3 b (18-4 normal Sandstorm), REFIT13-4 a (18-7 no sandstorm, re-fit), REFIT15-3 a (Map 1 Bramble = enemy Health + Shield on 1-2/1-3/1-4), REFIT11-2 a (6-3: 2 copies of one pool card)
+- [ ] DEC21: redesign Glasswing Moth (not too reliant on skills, impact through skills), then rebalance (DEC20-1)
+- [ ] Later (owner): side-map cards re-chosen (REFIT17-1, REFIT14-1, REFIT13-2)
+- [ ] Test fixes: ref5, bal13, bal21 (card lists out of date after today's pool moves), road-rarity (9, older), the e2e group by cause
+
 ## 11-19 22:18 Decisions settled (owner)
 - Owner: "Execute the easy decisions too. only leave those that absolutely need me." DEC19 triaged the 143 open decisions: 131 settled (48 superseded, 76 default, 7 another option), 12 left open.
 - [x] Built in DEC19: PERF2-1 b (auto-lower effects can step twice, High -> Low), CHK1-1 / CHK1-2 a (B5 / B6 readings in `docs/evaluation-protocol.md`)
