@@ -4,6 +4,27 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**MP1-1. How hard should the Tidelock Vault be?** · Decide · Multiplayer · asked 2026-11-23
+- Map 16 decks clear all 5 parts 73% of the time on Auto; parts 1-4 are won 95-100%. Solo with the CPU ally clears as often as two players. Default: every part's bramble x2 (measured 49%) and the CPU ally plays a stage-2 deck.
+  - a) About 50% full clear
+  - b) Keep it easy (73-78%)
+  - c) Boss-hard, about 30-40%
+- **Default:** a
+
+**MP1-2. Cap the vault's pay?** · Decide · Multiplayer · asked 2026-11-23
+- A vault run pays about 10x a road repeat per Energy, with no daily limit, so a day of Energy there out-earns a whole map's first clears. Default: the day's first cleared run pays in full, later runs x0.2; two human players x1.25.
+  - a) First run full, then x0.2; two players x1.25
+  - b) No cap, as today
+  - c) Every run x0.3
+- **Default:** a
+
+**MP1-3. PvP turn order** · Decide · Multiplayer · asked 2026-11-23
+- In mirror decks you score 36% against a stranger (the stranger strikes first every round) and the first seat scores 45% in Live Ranked. Default: first strike alternates against a stranger (you keep the +1 Shield), and in Live Ranked the seat that strikes first also acts first: both go to 50%.
+  - a) Both fixes
+  - b) Only the stranger fix
+  - c) Keep both as they are
+- **Default:** a
+
 **TESTFIX9-1. Map 20 side dungeon fields a Unique card** · Decide · Balance · asked 2026-11-23
 - 20-A-4 (the Map 20 side dungeon) holds Ashmantle Fiend, a Unique card, while the road cap there is Epic.
   - a) Swap it for the best Epic-or-lower card that keeps the fight in band (Claude re-measures)
