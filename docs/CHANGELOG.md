@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-22 (packages BLEED1 and PIPC: owner 09:56 #1-#2)
+- Players see: a Bleeding unit takes its Bleed before it acts, and if that kills it, it does nothing: no swing, no On Action / On Attack, no skill, no Archer shot (it used to act first and bleed after; FIX7's 11-03 rule let its On Attack still go off). An Archer's shot now bleeds too (it never did). Its On Death still goes off.
+- Players see: numbers in card pips sit on their emoji's centre line (the sun's 2 beside the wing, Esprit's 2 ...). The number and its emoji were baseline-aligned inside the pip's inner span, so the digit read about 2px high.
+- Under the hood: engine `bleedTick` returns true when the unit bled out (`_bledOut`), every acting path drops the action on it, and the trigger loop skips that unit's later skills (not On Death / On Exile); `.abadge > span:not(.ab-wing)` centres its contents; `tests/bleed1-2026-11-22.js` (the old engine fails 6 of its 15 checks), `tests/fix7-2026-11-03.js` m2 inverted, `tests/uifin-2026-11-18.js` +1.
+
 ## 2026-11-22 (package PVPFIX: PvP test decks rebuilt from in-play cards)
 - The 30 PvP test decks in Camp > Simulator (Admin) are rebuilt. The old ones held cards that left the map lists on 11-18 (DATAFIX) and a leader that is no longer valid. Same tool and rules as PVP1 (`node tools/pvp1/pvp1.js build`, then `apply`); `pvp1` and `pvp2` tests pass again.
 
