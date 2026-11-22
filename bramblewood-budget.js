@@ -161,7 +161,9 @@ function bloomBodyMult(effects){ const e = XP(effects) || {}; return r2((e.bloom
 //   x 0.75 (it arrives Waiting 1, so it fights 3 of a unit's 4 rounds: the 4-round rule)
 // = OFFSPRING_COPY 0.32 a copy, so k = 1 + 0.32 N (N at most 6, the engine's cap). Its skill-table price is 0 (canonical/skill-costs.json
 // "offspring"): the body multiplier carries it. Not measured (on no card); the copy's own skills are not priced again (as Bloom's copy). Decision ENG28-4.
-const OFFSPRING_COPY = r2(0.5 * 0.85 * 0.75);
+// 2026-11-22 (package SKMPRICE, decisions SKM4-1 b / SKM2-1 a): measured, 0.32 -> 0.02. Offspring 1 reads 0.40 [0.25, 0.58] stat points at 1,000 fights
+// (docs/balance/pipeline/measures.json global|offspring=1) against 6.08 on the canon carriers (3A + H 19): 0.40 / 19 = 0.02 a copy.
+const OFFSPRING_COPY = 0.02; // was r2(0.5 * 0.85 * 0.75) = 0.32 (ENG28, by reasoning)
 function offspringBodyMult(effects){ const v = effects && effects.offspring; if(!v) return 1; const n = v === true ? 1 : Math.min(6, Math.max(0, Number(v) || 0)); return r2(1 + OFFSPRING_COPY * n); }
 // 2026-11-07 (package BAL21 item 5): ENG28's fallback ENG28_SKILL_PRICES {mulligan: -0.1, offspring: 0} is gone: canonical/skill-costs.json has
 // both rows now (Mulligan -0.1, owner 11-06 23:35 #4; Offspring 0), so the balance tools and the game's table price them; arena_app.js keeps
@@ -193,7 +195,8 @@ const EN5_UPTIME = {timberedGrant: 0.25, bedrockGrant: 0.2, forgedGrant: 0.5, la
 // step needs 3+ Lumber (Timbered's 0.25), 2+ Stone (Bedrock's 0.2) or 1+ Metal (Forged's 0.5), and a step is +1/+1 = 3A + H = 4 points:
 // Lumber 4 x 0.25 = 1 x N (canonical/skill-costs.json hoard perN, the base price), Stone x0.8, Metal x2 of it. Timber's own rule and price
 // are apart (a kind). hoardS(k, v, effects, perLumber) -> the S of the hoard key, or null for any other key.
-const HOARD_RES_MULT = {lumber: 1, stone: Math.round(EN5_UPTIME.bedrockGrant / EN5_UPTIME.timberedGrant * 100) / 100, metal: Math.round(EN5_UPTIME.forgedGrant / EN5_UPTIME.timberedGrant * 100) / 100};
+// 2026-11-22 (package SKMPRICE, decision SKM4-1 b): Metal x2 -> x0.04, measured: Hoard 1 (Metal) reads 0.04 [-0.12, 0.17] at 1,000 fights against 2 (Iron Warden).
+const HOARD_RES_MULT = {lumber: 1, stone: Math.round(EN5_UPTIME.bedrockGrant / EN5_UPTIME.timberedGrant * 100) / 100, metal: 0.04 /* was forgedGrant / timberedGrant = 2 */};
 function hoardResOf(e){ const r = e && e.hoardRes; return (r === 'stone' || r === 'metal') ? r : 'lumber'; }
 function hoardS(k, v, effects, perLumber){ if(k !== 'hoard' || !v) return null; const n = v === true ? 1 : Math.max(0, Number(v) || 0), res = hoardResOf(effects);
   return {S: Math.round(n * (+perLumber || 0) * HOARD_RES_MULT[res] * 100) / 100, res, mult: HOARD_RES_MULT[res]}; }
@@ -377,7 +380,7 @@ function productScore(A, H, S, cfg){ A = +A || 0; H = +H || 0; return A * H + ca
 // Per-skill half-miss multipliers (2026-10-23, package BF10; owner 01:03: "I think Flying may be overcosted."): the robust skill test
 // (docs/balance/skill-test-robust-mono-2000-2026-10-22.md) measured Flying's worth at 5.88 stat points against 6.89 paid at x1.5, so
 // Flying is x1.4. A skill not listed uses missMult (1.5). cfg.missMultBy overrides the table.
-const MISS_MULT_BY = {flying: 1.19, evasive: 1.18, shadow: 1.1}; // owner 01:57: "I estimate Flying is worth x1.39"; 2026-10-23 (BF12, call BF10-1): Evasive and Shadow at their measured worth // 2026-10-31 (SPEED1 pipeline, owner SKILL2-2, the measured value (docs/balance/skill2-measures-2026-10-31.json)): flying 1.39 -> 1.13, evasive 1.37 -> 1.13 // 2026-10-31 (SPEED1 pipeline, owner SKILL2-2, the measured value (docs/balance/skill2-measures-2026-10-31.json)): flying 1.13 -> 1.17, evasive 1.13 -> 1.16 // 2026-11-03 (package DEC1, BAL14-2 a, Claude's call under owner 11-03 09:39): flying 1.17 -> 1.19, evasive 1.16 -> 1.18, the bramble-15 measures (Flying x1.19 [1.18, 1.20], Evasive x1.18 [1.17, 1.20], BAL14)
+const MISS_MULT_BY = {flying: 1.19, evasive: 1.18, shadow: 1.1, swift: 1.23 /* 2026-11-22 (package SKMPRICE, decision SKM4-1 b): was the default 1.5; Swift reads 4.45 [4.24, 4.83] at 1,000 fights against 9.5 on stat terms of 19: 1 + 4.45 / 19 */}; // owner 01:57: "I estimate Flying is worth x1.39"; 2026-10-23 (BF12, call BF10-1): Evasive and Shadow at their measured worth // 2026-10-31 (SPEED1 pipeline, owner SKILL2-2, the measured value (docs/balance/skill2-measures-2026-10-31.json)): flying 1.39 -> 1.13, evasive 1.37 -> 1.13 // 2026-10-31 (SPEED1 pipeline, owner SKILL2-2, the measured value (docs/balance/skill2-measures-2026-10-31.json)): flying 1.13 -> 1.17, evasive 1.13 -> 1.16 // 2026-11-03 (package DEC1, BAL14-2 a, Claude's call under owner 11-03 09:39): flying 1.17 -> 1.19, evasive 1.16 -> 1.18, the bramble-15 measures (Flying x1.19 [1.18, 1.20], Evasive x1.18 [1.17, 1.20], BAL14)
 // Cap 2's limit (2026-10-23, package BF11; owner 11:11: "Im also starting to think N/3 ^2 is too restrictive. Maybe 2*(N/3)^2 since we
 // have A*H + S*|S|."): cap2Mult × (N/3)², cap2Mult 2 (was 1). Every cap-2 check reads this one helper.
 function cap2Limit(N, cfg){ const k = cfg && cfg.cap2Mult != null ? +cfg.cap2Mult : DEFAULTS.cap2Mult; return (N / 3) * (N / 3) * k; }
@@ -569,6 +572,9 @@ Object.assign(CONTEXT_MULT_BY, ZEIT_GRANT_MULT); // the braces' multipliers (con
 // dark fight (skill_costs.js adds it beside the bonus; a card with Darksight already pays nothing more).
 const ZEIT_DARK_SHARE = 0.1 /* 0.105 */;
 const ZEIT_KEYS = ['nocturnal', 'diurnal', 'crepuscular'];
+// 2026-11-22 (package SKMPRICE, decision SKM2-1 a): Diurnal's price x1.45 on its uptime share (the share itself, 0.38, stays for the braces and
+// Sunshy): Diurnal / Diurnal 1 / Diurnal 2 read 1.76 / 1.78 / 3.11 at 1,000 fights against 1.14 / 1.14 / 2.28 (least squares over the three, by cards).
+const ZEIT_PRICE_MULT = {diurnal: 1.45};
 // S of the time-of-day key k ('nocturnal', 'nocturnalHp' ...) on a card: {S, inner, mult} or null when k is not one. The flag carries the
 // price of both parts (+A from the flag, true = +1; +H from the Hp key); the Hp key costs nothing beside its flag; braces beside the flag
 // mean the plain bonus is not there (the engine's phaseStatsOf), so then 0.
@@ -600,7 +606,7 @@ function zeitS(k, effects, home){ const e = XP(effects) || {}, base = /Hp$/.test
   if(base === 'crepuscular'){ const p = crepPartsOf(e), iD = awNow() * p.day[0] + p.day[1], iN = awNow() * p.night[0] + p.night[1]; // ENG23 (2026-11-04): each part at its own share
     return {S: r2(iD * CREP_SHARE.day + iN * CREP_SHARE.night), inner: r2(iD + iN), mult: iD + iN > 0 ? r2((iD * CREP_SHARE.day + iN * CREP_SHARE.night) / (iD + iN)) : 0}; }
   const v = e[base], A = v === true ? 1 : Math.max(0, Number(v) || 0), Hh = Math.max(0, Number(e[base + 'Hp']) || 0), inner = awNow() * A + Hh /* BUDGET2: 3A + H */;
-  const m = ZEIT_PHASE[base] && home ? zeitShare(ZEIT_PHASE[base], home) : ZEIT_UPTIME[base]; // BAL11: at home
+  const m = (ZEIT_PHASE[base] && home ? zeitShare(ZEIT_PHASE[base], home) : ZEIT_UPTIME[base]) * (ZEIT_PRICE_MULT[base] || 1); // BAL11: at home; SKMPRICE (2026-11-22): x ZEIT_PRICE_MULT
   return {S: r2(inner * m), inner: r2(inner), mult: m}; }
 // Shock (owner L5: "Shock is too strong."): a Shocked unit takes 1.5x from every hit, every source, for the rest of the round it is struck
 // in and N more rounds (the engine's _shockedJustSet). By the 4-round rule, for On hit: Shock (chance p %, N rounds) on a unit with Attack A:

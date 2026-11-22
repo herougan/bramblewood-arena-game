@@ -24,14 +24,15 @@ const near = (a, b, e) => Math.abs(a - b) <= (e == null ? 0.011 : e);
   const plain = ((w['flying+dive'] - w.flying) + (w['tide+dive'] - w.tide)) / 2, dive2 = ((w['flying+dive=2'] - w.flying) + (w['tide+dive=2'] - w.tide)) / 2;
   const r05 = v => Math.round(v * 20) / 20;
   ok(M.inputs.maxFights === 1000 && Object.keys(w).length === 6, 'the measure is the 1,000-fight Flying / Tide run (6 variants)');
-  ok(sk('dive').scale === 'fixed' && sk('dive').plus === 'diveBonus' && near(sk('dive').value, r05(plain)) && sk('dive').value === -3.3, `Dive (plain = Dive 0) ${sk('dive').value} = the measured ${plain.toFixed(2)}, to 0.05`);
+  ok(sk('dive').scale === 'fixed' && sk('dive').plus === 'diveBonus' && near(sk('dive').skmpriceWas.value, r05(plain)) && sk('dive').skmpriceWas.value === -3.3 && sk('dive').value === -2.41 /* 2026-11-22 (SKMPRICE, SKM2-1 a): Dive 2 on Tide carriers reads -0.81 (SKM2), so the fixed part -0.81 - 1.6 */, `Dive (plain = Dive 0) ${sk('dive').value} (SKMPRICE; BAL34's ${sk('dive').skmpriceWas.value} = the measured ${plain.toFixed(2)}, to 0.05)`);
   ok(sk('diveBonus').scale === 'n' && near(sk('diveBonus').value, r05((dive2 - plain) / 2)) && sk('diveBonus').value === 0.8, `diveBonus ${sk('diveBonus').value} a point = (Dive 2 ${dive2.toFixed(2)} - plain) / 2`);
-  ok(T.skillCost('dive', true) === -3.3 && near(T.skillCost('dive', 1), -2.5) && near(T.skillCost('dive', 2), -1.7) && near(T.skillCost('dive', 3), -0.9), `Dive true / 1 / 2 / 3: ${[true, 1, 2, 3].map(n => T.skillCost('dive', n)).join(' / ')}`);
+  ok(T.skillCost('dive', true) === -2.41 && near(T.skillCost('dive', 1), -1.61) && near(T.skillCost('dive', 2), -0.81) && near(T.skillCost('dive', 3), -0.01) /* SKMPRICE (2026-11-22) */, `Dive true / 1 / 2 / 3: ${[true, 1, 2, 3].map(n => T.skillCost('dive', n)).join(' / ')}`);
   ok(sk('dive').bal34Was && sk('dive').bal34Was.value === -1 && sk('diveBonus').bal34Was && sk('diveBonus').bal34Was.value === 0.5 && sk('dive').eng32Was && /BAL34/.test(sk('dive').bal34), 'ENG32\'s -1 + 0.5 N kept as bal34Was (EN7\'s as eng32Was)'); }
 
 // ---- 2. Bulwark ----
-ok(sk('bulwark').scale === 'n' && sk('bulwark').value === 6.3 && sk('bulwark').pow === 0.47 && sk('bulwark').bal34Was && sk('bulwark').bal34Was.value === 6.65 && /ENG40-2 a/.test(sk('bulwark').bal34),
-  `Bulwark 6.3 x N^0.47 (was 6.65): Bulwark 1 / 2 ${T.skillCost('bulwark', 1)} / ${T.skillCost('bulwark', 2)}`);
+// 2026-11-22 (package SKMPRICE, SKM4-1 b): Bulwark 1 / 2 read 4.67 / 7.18 at 1,000 fights: 4.67 x N^0.62, ENG40-2's 6.3 x N^0.47 kept in skmpriceWas
+ok(sk('bulwark').scale === 'n' && sk('bulwark').value === 4.67 && sk('bulwark').pow === 0.62 && sk('bulwark').skmpriceWas.value === 6.3 && sk('bulwark').skmpriceWas.pow === 0.47 && sk('bulwark').bal34Was && sk('bulwark').bal34Was.value === 6.65 && /ENG40-2 a/.test(sk('bulwark').bal34),
+  `Bulwark 4.67 x N^0.62 (SKMPRICE; BAL34 6.3 x N^0.47, was 6.65): Bulwark 1 / 2 ${T.skillCost('bulwark', 1)} / ${T.skillCost('bulwark', 2)}`);
 
 // ---- 3. Hoard ----
 { const t = by('tax-collector-teal'), d = by('magnate-duck');

@@ -83,6 +83,7 @@
       if(t.who && t.who !== 'self' && t.sub !== 'all' && (t.targets | 0) > 1) v *= Math.min(8, t.targets | 0);
       if(id === 'spawnCard' && t.defId) v *= tokenGrowth(t.defId, card && card.formLevel); // LVL11 (2026-11-19): the token at the card's level
       if(t.sub === 'all') v *= mod('subAll', 2);
+      if(t.everyone) v *= mod('everyone', 1); // 2026-11-22 (package SKMPRICE, SKM4-1 b): a trigger that hits everyone, its own side too (Granite Ox Golem's Stun reads -0.78): x the table's 'everyone' modifier
       // EN6 (2026-10-24): – bramble on Arrow, Missile and Deal damage (one opponent): x the table's 'bramble' modifier (bramblewood-budget.js EN6_BRAMBLE_MULT)
       if(t.bramble && (BB.EN6_BRAMBLE_ACTIONS || []).includes(id) && t.sub !== 'all') v *= mod('bramble', BB.EN6_BRAMBLE_MULT || 0.9);
       // EN7 (2026-10-24): – poison / – bleed on Arrow, Missile and Deal damage (one opponent): + the tip x the Poison (Bleed) action's value at the

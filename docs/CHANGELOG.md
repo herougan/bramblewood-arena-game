@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-22 Package SKMPRICE (skill re-price, owner 21:28)
+- **Skill prices:** the re-price you approved is in (SKM4-1 b, SKM2-1 a, SKM3-1 a, REFIT11-1 b price only, FOCUS2-1): 62 prices set from the 1,000-fight readings, all but one of the 60 combat flags, the 11 confirmed skills, Corrode 2.9, Harden 2.8, Embolden 4.54, Enfeeble 1.81. Biggest moves: Evolute 3 -> -3.63, Archer drop style -4.9 -> 1.55, Fortify 3.04 -> 9.06, Offspring 6.08 -> 0.38, Nursing 2 10 -> 4.57.
+- Two fixes: your own Shield was charged twice (as Health and as a 2.53 skill), so the skill part is now 0. Granting Swift cost nothing; it now costs 4.72.
+- Kept: Purblind x0.7 (your BF8) and On Spawn > Draw 1. No card stats changed. 7 in-play cards on Maps 0-20 leave the budget band: decisions SKMPRICE-1/2/3. Detail: `docs/balance/skmprice-2026-11-22.md`.
+
 ## 2026-11-22 Packages MAPADD1b, CHOSEN1 (owner 21:28)
 - **Map cards window:** your chosen cards (Yes, or added by you) now sort first in NEW! and Carried each time the window opens; clicking while it is open does not move tiles.
 - **Map skill table:** Map 5 adds Poison Barbs, Map 8 adds Evasive (MAPADD1-1 a). Both are on no card yet, so they show as half-red, half-blue "To add" tiles, as Leech does on Map 5.
