@@ -7608,15 +7608,15 @@
      ],
      "level": 1,
      "leaders": [
-      "moonlit-hare"
+      "puddle-skimmer"
      ],
      "deck": {
+      "acorn-chipmunk": 1,
       "cricket-drummer": 4,
       "driftwood-crab": 4,
       "meadow-frog": 3,
-      "moonlit-hare": 4,
       "pincushion-urchin": 4,
-      "acorn-chipmunk": 1
+      "puddle-skimmer": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/pro/bench-deck-map02-mb-2026-11-11.json",

@@ -15,7 +15,9 @@ const DATAFIX_LISTS = [['mw', 'add', 'cypress-root-lurker'], ['m7', 'add', 'fidd
   ...['pack-mule', 'lodge-engineer'].map(id => ['m23', 'remove', id])].map(([map, op, id]) => ({ map, op, id }));
 // 2026-11-20 (TESTFIX8): DEC19-DATA (11-19, LIST1-1 a): Malachite Golem takes Granite Ox Golem's place on Basalt Foundry (m3/m9). Applied last.
 const DEC19_LISTS = [{ map: 'm3', sub: 'm9', op: 'remove', id: 'granite-ox-golem' }, { map: 'm3', sub: 'm9', op: 'add', id: 'malachite-golem' }];
-R3.lists = R3.lists.concat(DATAFIX_LISTS, DEC19_LISTS);
+// 2026-11-22 (NOC7, owner 13:22 SGT): Moonlit Hare leaves Maps 1 and 2 (off every list), the Glow-worm Cluster joins Map 7 (Nocturnal moves there). Applied last.
+const NOC7_LISTS = [{ map: 'mf', op: 'remove', id: 'moonlit-hare' }, { map: 'mb', op: 'remove', id: 'moonlit-hare' }, { map: 'mu', op: 'add', id: 'glowworm-cluster' }];
+R3.lists = R3.lists.concat(DATAFIX_LISTS, DEC19_LISTS, NOC7_LISTS);
 // FOLD6's list moves, and CONTENT13's new cards (on no list before it): '<map>' or '<map>/<sub>' -> ids added there
 const LIST_ADDS = {}; R3.lists.filter(l => l.op === 'add').forEach(l => { const k = l.sub ? l.map + '/' + l.sub : l.map; (LIST_ADDS[k] = LIST_ADDS[k] || new Set()).add(l.id); });
 const listAdded = (map, id, sub) => !!(LIST_ADDS[sub ? map + '/' + sub : map] && LIST_ADDS[sub ? map + '/' + sub : map].has(id)) || DIFF_ADDED.has(id);

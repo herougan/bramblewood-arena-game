@@ -11,14 +11,14 @@
    "special": ["elder-willow", "thorn-shrike"]
   },
   "mf": {
-   "cards": ["bramble-sprout", "terrier-pup", "cricket-drummer", "chipmunk-cavalry", "hedgerow-shrew", "meadow-rabbit", "moonlit-hare", "dormouse", "puddle-skimmer", "soldier-ant", "ant-scout", "bee-knight", "honey-bee", "house-cat", "duck-paddler", "robin-redbreast", "hedgehog-scout"],
+   "cards": ["bramble-sprout", "terrier-pup", "cricket-drummer", "chipmunk-cavalry", "hedgerow-shrew", "meadow-rabbit", "dormouse", "puddle-skimmer", "soldier-ant", "ant-scout", "bee-knight", "honey-bee", "house-cat", "duck-paddler", "robin-redbreast", "hedgehog-scout"],
    "submaps": {
     "mq": ["clover-butterfly", "ladybird-guard", "lucky-hopper", "chipmunk-cavalry", "cottontail", "robin-redbreast", "dormouse", "puddle-skimmer", "honey-bee", "bee-forager"]
    },
    "special": ["meadow-rabbit", "cottontail", "ant-scout", "compost-grub", "jackrabbit-sprinter"]
   },
   "mb": {
-   "cards": ["driftwood-crab", "gull-thief", "open-ocean-hermit-crab", "oystercatcher", "pincushion-urchin", "dolphin-knight", "conch-herald", "rock-pool-starfish", "limpet-clinger", "puddle-skimmer", "duck-paddler", "hedgerow-shrew", "moonlit-hare", "robin-redbreast", "conch-crawler"],
+   "cards": ["driftwood-crab", "gull-thief", "open-ocean-hermit-crab", "oystercatcher", "pincushion-urchin", "dolphin-knight", "conch-herald", "rock-pool-starfish", "limpet-clinger", "puddle-skimmer", "duck-paddler", "hedgerow-shrew", "robin-redbreast", "conch-crawler"],
    "submaps": {
     "mp": ["old-sturgeon", "lodge-engineer", "riverworks-bastion", "beaver-lumberjack", "muskrat-reedgatherer", "muskrat-lodgekeeper", "duck-paddler", "snapstick-turtle", "pond-algae", "raft-spider", "water-shrew"],
     "mg": ["trash-panda-trickster", "octopus-tactician", "raccoon-nightcrew", "gull-thief", "pincushion-urchin", "limpet-clinger", "open-ocean-hermit-crab", "driftwood-crab", "rock-pool-starfish"]
@@ -50,7 +50,7 @@
    "special": ["venomlord-serpent", "heron-hag"]
   },
   "mu": {
-   "cards": ["corpse-flower-beetle", "wolf-spider-mother", "fungus-gnat-cloud", "rot-swollen-carcass", "puffball-bombardier", "cypress-root-lurker", "earthworm", "lamprey", "camouflage-frog", "compost-grub", "leopard-slug", "amber-cicada", "hawthorn-shieldbug", "phoenix-mushrooms", "planarian-splitter"],
+   "cards": ["corpse-flower-beetle", "wolf-spider-mother", "fungus-gnat-cloud", "rot-swollen-carcass", "puffball-bombardier", "cypress-root-lurker", "earthworm", "lamprey", "camouflage-frog", "compost-grub", "leopard-slug", "amber-cicada", "hawthorn-shieldbug", "phoenix-mushrooms", "planarian-splitter", "glowworm-cluster"],
    "submaps": {
     "mz": ["fungal-colossus", "rootworm-colony", "bombardier-beetle", "millipede-hauler", "rot-swollen-carcass", "puffball-bombardier", "fungus-gnat-cloud", "leopard-slug", "compost-grub", "hawthorn-shieldbug", "planarian-splitter", "earthworm"]
    },

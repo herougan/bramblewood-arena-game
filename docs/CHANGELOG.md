@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-22 (package NOC7: Nocturnal moves to the Morel Hollow, Moonlit Hare leaves the lists)
+- Players see: Nocturnal is New! on Map 7 (The Morel Hollow), carried by Leopard Slug and the Glow-worm Cluster (now on Map 7's list). Maps 0-6 no longer carry it: Lotus Frog is Pounce only (3/7), Barrow Leech is Flying + Parasite (2/9). Moonlit Hare is off Maps 1 and 2 and out of every deck (the card stays in the data, unobtainable; call NOC7-1: delete or keep).
+- Cards: `leopard-slug` + Nocturnal 1 (1/11, budget ok); `glowworm-cluster` placed on Map 7 (source pack tier 2, map mu); `lotus-frog` Nocturnal out, 2/7 -> 3/7; `barrow-leech-bat` Nocturnal out (Map 6 keeps only Lamprey as a second Parasite carrier, so it stays), 1/9 -> 2/9; `moonlit-hare` off `mf` and `mb`. `MAP_FOCUS_SKILLS`: Nocturnal leaves Map 4, joins Map 7 (5th key, so only the first 3 show).
+- Decks: the hare's copies went to the nearest-power card of the deck's map list (tools/noc7_decks_2026_11_22.js): 1 road deck (1-5 The Thistle Baron), 1 PRO deck (2-PRO-1, copies + leader), 24 reference-ladder decks, 8 progression decks, 2 PvP test decks. `history` entries of the PRO file keep what was played.
+
 ## 2026-11-22 (ROADSCOPE: side maps that open after Map 20 leave the Maps 0-20 totals)
 - No player-visible change. The Old Bramble, The Ice Hollow and The Deep Dark open after Map 21 and Basalt Foundry after Map 23, so under BAL17-2 ("We are only tuning Map 0-20") they leave the road measure (`tools/skirmish_pass.js --maxmap` now reads `mapUnlockNumberOf`) and the road totals (`tools/bal16/road_totals_2026_11_05.js`). The BLEED1 road read that way: main 113 in band / 126 within 10 / 2 beyond 20 (149 fights, unchanged), side 43 / 47 / 4 (59 fights; was 60 / 64 / 9 over 81 with those four maps' 22 fights).
 
