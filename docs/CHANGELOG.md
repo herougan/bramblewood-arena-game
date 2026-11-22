@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-23 Package MP1 phase 1 (owner 11-22 23:08: multiplayer balancing; design and measurement only, no game number changed)
+- `docs/design/mp1-2026-11-23.md`: how the Tidelock Vault, the Goliath and PvP work today, measured, with 8 proposals and owner questions MP1-1..3.
+- Measured:
+  - The vault: a full clear 63-78% for Map 16 decks; parts 1-4 95-100%; 40-60 Leaves + 30-45 Dust per Energy with no daily limit.
+  - The raid: warm-ups about 72%, the Core about 73% (targets 60 / 40).
+  - PvP: you score 36% in mirrors against a stranger, who strikes first every round. Live Ranked's first seat scores 45%.
+- New tools: `tools/mp1_coop_sim.js`, `tools/mp1_raid.js`, `tools/mp1_pvp.js`.
+
 ## 2026-11-23 Package ECON1 phase 2 (owner 11-22 23:08; ECON1-1 a, ECON1-2 a, ECON1-3 a)
 - **Packs hold 5 cards and cost Maple Leaves only:**
   - Hedgerow Pouch 80 (was 50 for 3 cards).
