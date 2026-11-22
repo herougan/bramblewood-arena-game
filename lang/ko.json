@@ -4742,5 +4742,7 @@
  "Scared -{n}": "공포 -{n}",
  "Scared: attacks for {n} less": "공포: 공격이 {n} 줄어든다",
  "While an ally leader is on the battlefield, it has {skills}.": "아군 지도자가 전장에 있는 동안 {skills}을(를) 가진다.",
- "Learns a skill at a higher level": "더 높은 레벨에서 스킬을 배웁니다"
+ "Learns a skill at a higher level": "더 높은 레벨에서 스킬을 배웁니다",
+ "To remove": "제거 예정",
+ "New here, but not in this map's skill table: take it off this map's cards": "여기서 새로 나오지만 이 맵의 스킬 표에 없음: 이 맵의 카드에서 빼기"
 }

@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-22 Package MAPRM1 (owner 23:05)
+- **Map cards window:** a skill that is New! on a main map but not in that map's table row (or its Special / Faction column) is half red, half dark grey with a "To remove" tag. Map 5: Bleed, Constrict, Cure, Herbalist, Twin Strike.
+- Map skill table (hub, Design): a "To remove" column read from the game's own tiles; 36 across Maps 0-20.
+
 ## 2026-11-22 Package SKMPRICE (skill re-price, owner 21:28)
 - **Skill prices:** the re-price you approved is in (SKM4-1 b, SKM2-1 a, SKM3-1 a, REFIT11-1 b price only, FOCUS2-1): 62 prices set from the 1,000-fight readings, all but one of the 60 combat flags, the 11 confirmed skills, Corrode 2.9, Harden 2.8, Embolden 4.54, Enfeeble 1.81. Biggest moves: Evolute 3 -> -3.63, Archer drop style -4.9 -> 1.55, Fortify 3.04 -> 9.06, Offspring 6.08 -> 0.38, Nursing 2 10 -> 4.57.
 - Two fixes: your own Shield was charged twice (as Health and as a 2.53 skill), so the skill part is now 0. Granting Swift cost nothing; it now costs 4.72.

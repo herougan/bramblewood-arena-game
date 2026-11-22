@@ -4742,5 +4742,7 @@
  "Scared -{n}": "அச்சம் -{n}",
  "Scared: attacks for {n} less": "அச்சம்: {n} குறைவாகத் தாக்கும்",
  "While an ally leader is on the battlefield, it has {skills}.": "நட்புத் தலைவர் போர்க்களத்தில் இருக்கும்வரை, இதற்கு {skills}.",
- "Learns a skill at a higher level": "உயர்ந்த நிலையில் ஒரு திறனைக் கற்கும்"
+ "Learns a skill at a higher level": "உயர்ந்த நிலையில் ஒரு திறனைக் கற்கும்",
+ "To remove": "நீக்க",
+ "New here, but not in this map's skill table: take it off this map's cards": "இங்கே புதியது, ஆனால் இந்த வரைபடத்தின் திறன் அட்டவணையில் இல்லை: அதன் அட்டைகளிலிருந்து நீக்கவும்"
 }

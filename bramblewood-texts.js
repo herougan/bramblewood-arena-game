@@ -3912,7 +3912,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-onslaught-codex": "The Attack stays for the fight. Each swing of another creature on your side counts; not while it waits, is stunned, frozen or asleep.",
   "ui.skin3-log-scared": "😱 {att} scares {name}: its attacks deal {n} less.",
   "ui.skin3-float-scared": "😱 Scared -{n}",
-  "ui.skin3-scared-tip": "Scared: attacks for {n} less"
+  "ui.skin3-scared-tip": "Scared: attacks for {n} less",
+  "ui.ux7-focus-remove": "To remove",
+  "ui.ux7-focus-remove-tip": "New here, but not in this map's skill table: take it off this map's cards"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

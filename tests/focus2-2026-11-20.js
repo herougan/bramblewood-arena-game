@@ -103,7 +103,8 @@ const CARRIERS = {harden: ['ladybird-guard', 'sworn-shieldbearer'], embolden: ['
     ok(BB.skillCountOf(d.effects) <= 2, `6. ${id}: two skills at most`); }));
   ok(['harden', 'embolden', 'enfeeble'].every(k=> cards.filter(c=> c.effects && c.effects[k] && !/^test-/.test(c.id)).length <= 2 + (k === 'enfeeble' ? 1 : 0)), '6. 1-2 existing cards a skill (+ Tsetse Drainer, Enfeeble\'s card before)');
   const S = e=> T.budget({id:'x', attack:1, health:3, effects:e, rarity:'common', level:1}).S;
-  ok(Math.abs(S({harden:1}) - 2.11) < 0.01 && Math.abs(S({embolden:1}) - 3.59) < 0.01 && Math.abs(S({enfeeble:1}) - 2.5) < 0.01, `6. prices at N 1: Harden ${S({harden:1})}, Embolden ${S({embolden:1})}, Enfeeble ${S({enfeeble:1})}`);
+  // 2026-11-22 (SKMPRICE: SKM3-1 a, REFIT11-1 b, FOCUS2-1 from sims): Harden 2.11 -> 2.8, Embolden 3.59 -> 4.54, Enfeeble 2.5 -> 1.81
+  ok(Math.abs(S({harden:1}) - 2.8) < 0.01 && Math.abs(S({embolden:1}) - 4.54) < 0.01 && Math.abs(S({enfeeble:1}) - 1.81) < 0.01, `6. prices at N 1: Harden ${S({harden:1})}, Embolden ${S({embolden:1})}, Enfeeble ${S({enfeeble:1})}`);
   ok(S({harden:2}) > S({harden:1}) && S({harden:2}) < 1.2 * S({harden:1}) && S({enfeeble:2}) < 1.2 * S({enfeeble:1}), '6. N adds little (refreshed, not stacked: pow 0.2, as Embrittle)');
   const D = J('canonical/skill-delivery.json'), C = J('canonical/skill-counters.json');
   ok(D.delivery.harden === 'none' && D.delivery.embolden === 'none' && C.noCounter.includes('harden') && C.noCounter.includes('embolden'), '6. delivery none, no counter (ally buffs)');

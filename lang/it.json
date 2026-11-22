@@ -4741,5 +4741,7 @@
  "Scared -{n}": "Spaventato -{n}",
  "Scared: attacks for {n} less": "Spaventato: attacca per {n} in meno",
  "While an ally leader is on the battlefield, it has {skills}.": "Finché un capo alleato è sul campo di battaglia, ha {skills}.",
- "Learns a skill at a higher level": "Impara un'abilità a un livello superiore"
+ "Learns a skill at a higher level": "Impara un'abilità a un livello superiore",
+ "To remove": "Da togliere",
+ "New here, but not in this map's skill table: take it off this map's cards": "Nuova qui, ma non nella tabella abilità di questa mappa: toglila dalle sue carte"
 }

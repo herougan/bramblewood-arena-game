@@ -4741,5 +4741,7 @@
  "Scared -{n}": "Ketakutan -{n}",
  "Scared: attacks for {n} less": "Ketakutan: serangan {n} lebih lemah",
  "While an ally leader is on the battlefield, it has {skills}.": "Selama pemimpin sekutu ada di medan perang, ia punya {skills}.",
- "Learns a skill at a higher level": "Mempelajari kemampuan di level yang lebih tinggi"
+ "Learns a skill at a higher level": "Mempelajari kemampuan di level yang lebih tinggi",
+ "To remove": "Hapus",
+ "New here, but not in this map's skill table: take it off this map's cards": "Baru di sini, tetapi tidak ada di tabel skill peta ini: hapus dari kartunya"
 }

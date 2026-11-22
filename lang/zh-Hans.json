@@ -4740,5 +4740,7 @@
  "Scared -{n}": "惊恐 -{n}",
  "Scared: attacks for {n} less": "惊恐：攻击减少 {n}",
  "While an ally leader is on the battlefield, it has {skills}.": "当友方首领在战场上时，拥有{skills}。",
- "Learns a skill at a higher level": "在更高等级时习得技能"
+ "Learns a skill at a higher level": "在更高等级时习得技能",
+ "To remove": "待移除",
+ "New here, but not in this map's skill table: take it off this map's cards": "此处为新，但不在本地图的技能表中：从本地图的卡牌上移除"
 }

@@ -4740,5 +4740,7 @@
  "Scared -{n}": "怯え -{n}",
  "Scared: attacks for {n} less": "怯え：攻撃が{n}減る",
  "While an ally leader is on the battlefield, it has {skills}.": "味方のリーダーが戦場にいる間、{skills}を持つ。",
- "Learns a skill at a higher level": "より高いレベルでスキルを覚える"
+ "Learns a skill at a higher level": "より高いレベルでスキルを覚える",
+ "To remove": "削除予定",
+ "New here, but not in this map's skill table: take it off this map's cards": "ここで新登場だが、このマップのスキル表にない：このマップのカードから外す"
 }
