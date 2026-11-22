@@ -37,6 +37,9 @@
 //     that breaks it is dropped to `replaced` (with the reason) before the rule runs, so the map is filled again from the new runs. That is
 //     how the OPT2-era PROs (Ents, the Otter Centurion, Bombardier Beetles on Map 0) gave way.
 //   - the same replace rule, band, cap of 4 and distinct radius for both kinds; BPRO lives under the map's `bpro`, its ids N-BPRO-k.
+// 2026-11-22 (package PROLIST, owner 09:56: "Do not use cards not in the map list."): the map rule (deckopt mapRuleProblems) is the list-only
+// one: a PRO / BPRO deck in the file that holds a SPECIAL-tier card (or a card only in a road fight's deck) a player does not hold by then is
+// dropped to `replaced` with that reason, and such candidates are skipped.
 'use strict';
 const path = require('path'), fs = require('fs');
 const O = require('./deckopt.js');

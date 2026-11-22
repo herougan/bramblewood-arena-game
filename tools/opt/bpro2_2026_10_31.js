@@ -9,7 +9,7 @@
 //   node tools/opt/bpro2_2026_10_31.js apply [--dry]           canonical/pro-skirmishes.json: the decks become each map's `bpro`; the old BPRO decks go to `history`
 //   node tools/opt/bpro2_2026_10_31.js check                   every BPRO deck: 20 cards, the caps, the 6/4 rule, every card on the map's list (exit 1 on a problem)
 //
-// The pool: tools/opt/deck1_2026_10_30.js deck1Pools(map).anchor (a main map's MAP tier, a side map's own SUBMAP list, + SPECIAL, within the
+// The pool: tools/opt/deck1_2026_10_30.js deck1Pools(map).anchor (a main map's MAP tier, a side map's own SUBMAP list (no SPECIAL: PROLIST 2026-11-22), within the
 // map's rarity cap, no faction card). A map with no list inside its cap (the Old Bramble: its list is over its fights' Common cap) gets no
 // BPRO deck; its old ones stay under history and it is reported. Focuses: DECK1's (tools/bench/deck.js focusesFor, priority stone / metal,
 // economy, big, swarm, then the list's skill families; at most 3, then `open`), each fillable under 4 copies. Search budget 6,000 games a map
@@ -62,7 +62,7 @@ function planMap(gm, map, rules) {
 }
 function readPlan() { return fs.existsSync(PLAN) ? JSON.parse(fs.readFileSync(PLAN, 'utf8')) : { about: null, maps: {} }; }
 function writePlan(j) { fs.writeFileSync(PLAN, JSON.stringify(j, null, 1) + '\n'); }
-const ABOUT = 'Package SKILL2 (2026-10-31, decision DECK1-2): per map the BPRO pool (the map\'s list + SPECIAL within its cap, DECK1\'s anchor), the focuses searched and the decks found. tools/opt/bpro2_2026_10_31.js; report docs/balance/skill2-2026-10-31.md.';
+const ABOUT = 'Package SKILL2 (2026-10-31, decision DECK1-2): per map the BPRO pool (the map\'s list within its cap, DECK1\'s anchor; no SPECIAL since PROLIST 2026-11-22), the focuses searched and the decks found. tools/opt/bpro2_2026_10_31.js; report docs/balance/skill2-2026-10-31.md.';
 function outFileOf(gm, map) { return path.join(OUTDIR, `bench-deck-map${String(gm.G.mapNumberOf(map.id)).padStart(2, '0')}-${map.id}-${DATE}.json`); }
 // the BPRO rule: the 6/4 rule and every card on the map's list (DECK1's anchor)
 function bproProblems(gm, map, deck, pools) {

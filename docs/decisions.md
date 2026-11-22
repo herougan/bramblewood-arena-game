@@ -1,6 +1,6 @@
 # Bramblewood Arena — Decisions
 
-_Generated from `decisions.json` (2026-11-19). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
+_Generated from `decisions.json` (2026-11-22). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
 
 ## Waiting on you
 
@@ -245,6 +245,10 @@ _Generated from `decisions.json` (2026-11-19). The hub has a searchable, filtera
 - **Default:** a
 
 ## Decided
+
+**PROLIST-1. Strong and weak decks use only the map's list** · Decide · Balance · asked 2026-11-22 · decided 2026-11-22
+- Owner 2026-11-22 09:56: "I noticed Map 0's strong deck uses the Thorn Shrike, a card not even in the map list. Do not use cards not in the map list." PRO, BPRO and WPRO pools no longer take the SPECIAL tier (or cards found only in a road fight's deck). PRO still adds the cards a player holds by then. The Maps 0-20 decks that held one were repaired and re-tuned to their marks.
+- **Outcome:** Owner, 2026-11-22 09:56: map list only. Built by package PROLIST (tools/opt/deckopt.js listOnly; docs/evaluation-protocol.md section 1).
 
 **REFIT7-1. 17 road fights no legal deck brings within 20 of target** · Decide · Balance · asked 2026-11-19 · decided 2026-11-19
 - After REFIT7 (seed 9100, 400 games). Too hard: 8-7 23% (target 60), 17-8 14 (40), 17-6 32 (65), 17-4 45 (75), 17-7 38 (60), 4-3 45 (70), 4-5 20 (40), 2-2 56 (80). Too easy: 18-A-4 100 (77), 18-A-7 97 (64), 18-A-6 95 (69), 18-4 95 (62), 18-7 73 (40), 3-6 84 (60), 20-A-4 64 (36), 10-A-5 68 (40), 5-A-4 60 (40). Map 17 lost about 21 points with LVL10 / ENG52; its reference deck is unchanged and fully owned.
