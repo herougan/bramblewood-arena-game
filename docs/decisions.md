@@ -4,6 +4,13 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**SKWK6-1. Map 0 and Map 18 strong decks can't reach 15% on list cards** · Decide · Balance · asked 2026-11-22
+- 0-BPRO-2 (7%) and 18-A-BPRO-1 (8%) should beat the reference ladder 15-30%. The best list-only decks a fresh search finds reach 9.5% and 10%, even with the 10-copy overlap rule loosened. Map 18's list has 9 cards.
+  - a) Accept both below the band
+  - b) Let these two use cards beyond the map list
+  - c) Lower the target to 10% for small lists
+- **Default:** a
+
 **MAPADD1-1. Your sheet's new skills: Poison Barbs on Map 5, Evasive on Map 8** · Decide · Skills · asked 2026-11-22
 - Your 11-22 sheet adds Poison Barbs to Map 5 and Evasive to Map 8. It still has Bleed on Map 5 and Leech on Map 6; the game has your 11-20 swap (Leech 5, Bleed 6). Hub: Design > Map skill table.
   - a) Add both; keep the 11-20 swap

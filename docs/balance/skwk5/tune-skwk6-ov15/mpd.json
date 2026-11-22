@@ -1,0 +1,95 @@
+{
+ "map": "mpd",
+ "generated": "2026-11-22T11:16:54.696Z",
+ "decks": [
+  {
+   "id": "18-A-BPRO-1",
+   "map": "mpd",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "antlion-pit": 4,
+     "caustic-scorpion": 4,
+     "dromedary": 4,
+     "horned-lizard": 2,
+     "dune-jackal": 4,
+     "dust-devil-kestrel": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.08,
+     "ref": 0.85,
+     "gap": 0.07
+    }
+   },
+   "pick": {
+    "deck": {
+     "antlion-pit": 4,
+     "caustic-scorpion": 4,
+     "dust-devil-kestrel": 2,
+     "roadrunner-courier": 3,
+     "horned-lizard": 4,
+     "dromedary": 3
+    },
+    "val": {
+     "v": 0.1,
+     "ref": 0.9,
+     "gap": 0.1
+    },
+    "leaders": [
+     "dust-devil-kestrel"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.092,
+     "ref": 0.875,
+     "gap": 0.278
+    },
+    {
+     "move": "dromedary x4 -> horned-lizard",
+     "v": 0.142,
+     "ref": 0.775,
+     "gap": 0.038,
+     "tried": 17
+    },
+    {
+     "move": "barrel-cactus x3 -> dromedary",
+     "v": 0.192,
+     "ref": 0.75,
+     "gap": 0,
+     "tried": 23
+    }
+   ],
+   "readings": 459,
+   "sec": 88,
+   "seeded": {
+    "deck": {
+     "antlion-pit": 4,
+     "barrel-cactus": 3,
+     "caustic-scorpion": 4,
+     "dromedary": 4,
+     "dust-devil-kestrel": 2,
+     "roadrunner-courier": 3
+    },
+    "focus": "open",
+    "score": 0.6458
+   }
+  }
+ ],
+ "drop": []
+}

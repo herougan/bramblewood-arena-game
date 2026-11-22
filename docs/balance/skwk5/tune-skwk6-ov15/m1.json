@@ -1,0 +1,90 @@
+{
+ "map": "m1",
+ "generated": "2026-11-22T11:15:26.573Z",
+ "decks": [
+  {
+   "id": "0-BPRO-2",
+   "map": "m1",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "ant-scout": 4,
+     "duck-paddler": 3,
+     "farm-dog": 4,
+     "pond-trout": 3,
+     "soldier-ant": 4,
+     "honey-bee": 2
+    },
+    "legal": true,
+    "val": {
+     "v": 0.075,
+     "ref": 0.6,
+     "gap": 0.075
+    }
+   },
+   "pick": {
+    "deck": {
+     "ant-scout": 3,
+     "duck-paddler": 4,
+     "farm-dog": 4,
+     "house-cat": 4,
+     "soldier-ant": 4,
+     "cottontail": 1
+    },
+    "val": {
+     "v": 0.095,
+     "ref": 0.375,
+     "gap": 0.055
+    },
+    "leaders": []
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.117,
+     "ref": 0.425,
+     "gap": 0.063
+    },
+    {
+     "move": "honey-bee -1 -> cottontail",
+     "v": 0.158,
+     "ref": 0.5,
+     "gap": 0.022,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 558,
+   "sec": 45,
+   "seeded": {
+    "deck": {
+     "ant-scout": 3,
+     "duck-paddler": 4,
+     "farm-dog": 4,
+     "honey-bee": 1,
+     "house-cat": 4,
+     "soldier-ant": 4
+    },
+    "focus": "open",
+    "score": 0.9306
+   }
+  }
+ ],
+ "drop": []
+}
