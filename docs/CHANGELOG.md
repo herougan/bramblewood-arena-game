@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-22 Package TESTFIX8b (co-op race test)
+- **No game change.** The co-op browser test's race step predated ENG17 (COOP3-3, "your starting slot is yours"): it raced both players on row 1's centre, which is player 2's, so both claims were refused. It now races on my own centre: mine lands, player 2's is refused and its card returns. The same-cell tie rule (lower index lands) stays pinned in `tests/coop2-2026-10-28.js` (95 passed). Not an ordering bug.
+- PILOT: `tools/pipeline/pilot_report.js` (skill ceiling = worth with a level-2 pilot minus a level-0 pilot).
+
 ## 2026-11-22 (package NOC7b: road fights after Nocturnal moved to the Morel Hollow)
 - Players see: Map 7's side map The Mycelium Deep is easier again, back to its targets. Leopard Slug is Nocturnal now (NOC7) and The Mycelium Deep is dark, so its slugs hit through the dark and those fights got far too hard (seed 9100: 7-A-3 69 -> 29, 7-A-4 59 -> 32, 7-A-2 74 -> 54, 7-A-5 43 -> 29). Their Leopard Slugs are now Compost Grubs (the plain 1/10 on the same list). Map 7's 7-2 swaps 2 of its 4 slugs too (71 -> 76, band 74.5-90.5).
 - Re-read (400 games): 7-A-2 74.8, 7-A-3 62, 7-A-4 62, 7-A-5 43.3, 7-2 76. Road (Maps 0-20, seed 9100, `docs/balance/noc7/`): main 112 in band / 125 within 10 / 2 beyond 20, side 43 / 47 / 4 (was 113 / 126 / 2 and 43 / 47 / 4 before NOC7). 7-1 (93.3) and 7-6 (39) moved nearer their targets.

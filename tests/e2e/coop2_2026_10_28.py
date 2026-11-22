@@ -92,24 +92,27 @@ async def main():
         check(st['mode'] == 'coop' and board['overlay'] and board['rowMine'] and board['res'] == 1 and board['hand'] >= 3, f'start: the normal battle board (front row + middle row, my hand), no overlay ({board})')
         check(st['page'] and st['page'] == st['bot'], 'start: both clients built the same table')
         check('Pip' in board['bar'], f"the coop bar names both players ({board['bar']})")
-        # 2. the race on the middle row: player 2 claims first, the page taps a card and the same slot in the same moment
+        # 2. the race on my own row: player 2 claims first, the page taps a card and the same slot in the same moment.
+        # 2026-11-22 (TESTFIX8b): since ENG17 (COOP3-3, "your starting slot is yours") seat 0 plays from row 0 and row 1's centre is player 2's,
+        # so the old race on row 1 had both claims refused. Now the race is on my centre: mine lands, player 2's is refused (the same-cell
+        # tie rule, lower index lands, stays pinned in tests/coop2-2026-10-28.js).
         race = await page.evaluate("""async()=>{ const m = matchState, C = BramblewoodCoop, b = window.__bot, T = m.coop.T;
-          const slot = C.rowLegalSlots(T, 1)[0], bh = C.seatData(b.T, 1).hand[0];
+          const slot = C.rowLegalSlots(T, 0, 0)[0], bh = C.seatData(b.T, 1).hand[0];
           const me = m.players[1], h = me.hand.find(h=> m.engine.canPlay(me, h.defId, h.uid) && !C.noSlotCard(getCardDefs()[h.defId]));
-          renderBoard(); b.claim({kind: 'play', uid: bh.uid, row: 1, slot});
+          renderBoard(); b.claim({kind: 'play', uid: bh.uid, row: 0, slot});
           const tile = document.querySelector(`#handStrip .card-tile[data-handuid="${h.uid}"]`); if(tile) tile.click();
           await new Promise(r=> setTimeout(r, 30));
-          const tgt = document.querySelector(`#battlefieldInner .reserve-target[data-reserve="1"][data-slot="${slot}"]`);
-          if(tgt && m.selectedUid === h.uid) tgt.click(); else await playCardByUid(h.uid, slot, null, {reserve: 1});
+          const tgt = document.querySelector(`#battlefieldInner [data-slot="${slot}"]:not([data-reserve]).drop-target, #battlefieldInner .slot-target[data-slot="${slot}"]`);
+          if(tgt && m.selectedUid === h.uid) tgt.click(); else await playCardByUid(h.uid, slot, null, {});
           const viaTap = !!(tgt && m.selectedUid == null);
           const ghost = !!document.querySelector('#battlefieldInner .coop-pending');
           await new Promise(r=> setTimeout(r, 700));
-          const u = C.unitAt(T, 1, slot), ub = C.unitAt(b.T, 1, slot);
+          const u = C.unitAt(T, 0, slot), ub = C.unitAt(b.T, 0, slot);
           return {slot, viaTap, ghost, pageSeat: u && u.coopSeat, pageDef: u && u.defId, mine: h.defId, same: !!(u && ub && u.uid === ub.uid),
             rejected: window.__botEv.some(e=> e[0] === 'reject' && e[1] === 0 && e[2] === bh.uid), back: C.seatData(b.T, 1).hand.some(x=> x.uid === bh.uid),
             hash: C.tableHash(T) === C.tableHash(b.T)}; }""")
-        check(race['pageSeat'] == 0 and race['pageDef'] == race['mine'] and race['same'], f'race: player 1 (lower index) lands the slot on both clients though player 2 claimed first ({race})')
-        check(race['rejected'] and race['back'], 'race: player 2 is refused (taken by player 1) and its card is back in its hand')
+        check(race['pageSeat'] == 0 and race['pageDef'] == race['mine'] and race['same'], f'race: my claim lands in my own centre on both clients though player 2 claimed it first ({race})')
+        check(race['back'], 'race: player 2 is refused (my centre is mine, COOP3-3) and its card is back in its hand')
         check(race['ghost'], 'race: my claim waited in its slot (dimmed, locked) until it landed')
         check(race['hash'], 'race: both tables are the same after it')
         # 3. player 2 plays into player 1's row: on the page, an ally's play from its hand
