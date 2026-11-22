@@ -1,0 +1,66 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-22T01:06:26.780Z",
+ "finished": "2026-11-22T01:10:58.368Z",
+ "durationSec": 271.6,
+ "args": [
+  "--bramble",
+  "15",
+  "--pool-file",
+  "docs/balance/pipeline/state/pool-low.json",
+  "--ctx-tag",
+  "poollo",
+  "--only-file",
+  "/tmp/claude-0/-home-claude/803d58f5-74f9-50e4-ac3c-c17d5b9039a6/scratchpad/one.json",
+  "--minutes",
+  "10",
+  "--wait"
+ ],
+ "head": "23b3cb1a7",
+ "inputs": {
+  "context": "global@poollo",
+  "bramble": 15,
+  "fingerprint": "8de2b747e825",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "stealth"
+  ]
+ },
+ "counts": {
+  "items": 1,
+  "measured": 1,
+  "reused": 0,
+  "stopped early": 1,
+  "fights saved": 800,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "stealth",
+   "field": "worth",
+   "old": "-",
+   "new": "6.2126 [4.79, 7.3694] at 200 fights, price on carriers 6.88"
+  }
+ ],
+ "flagged": [],
+ "cached": {
+  "hits": 0,
+  "played": 1
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-22-0906.json"
+}
