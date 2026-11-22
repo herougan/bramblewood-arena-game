@@ -4,6 +4,27 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**SKMPRICE-1. 6 in-play cards are out of budget after the re-price** · Decide · Balance · asked 2026-11-22
+- The new prices push 6 in-play Map 0-20 cards out of the band: Shellwright Apprentice 129% (Fortify now 9.06), Clownfish Scout 106%, Mouse Sapper 104%, Robin Redbreast 104% (your card; Diurnal reads 1.45x its old price), Leopard Slug 101%, all over; Blind Cave Fish 60%, under (Darksight now 0.18). No stats changed.
+  - a) Trim or lift each to the band, Claude picks the stat
+  - b) Keep them and accept
+  - c) Fix only the worst 3 (Shellwright, Clownfish, Mouse Sapper)
+- **Default:** a
+
+**SKMPRICE-2. Purblind: your x0.7 or the measured x0.87?** · Decide · Balance · asked 2026-11-22
+- You set Purblind (blind itself) to x0.7 in BF8, so its cards get more stats. At 1,000 fights it is worth -2.47 points against -5.7 at x0.7, which is x0.87. SKMPRICE kept your x0.7. At x0.87 Star-nosed Mole goes over budget (99% to 107%).
+  - a) Keep x0.7
+  - b) x0.87 as measured, Star-nosed Mole listed for a trim
+  - c) Re-measure with the field mix (FIELDMIX) first
+- **Default:** a
+
+**SKMPRICE-3. Stonedrop Vulture's drop style price** · Decide · Balance · asked 2026-11-22
+- The drop style now costs 6.45, measured on the standard carriers. Stonedrop Vulture (11/11) is the only card with it, and it goes from 74% to 102% of budget. The drop probably uses its Attack, which a single price per skill can't follow. It is on no map list now, so this is held for the side-map card pass.
+  - a) Hold until it joins a list, then trim it
+  - b) Price the drop style by the Attack it uses (a budget rule change)
+  - c) Accept it over budget
+- **Default:** a
+
 **CHEAT2-1. Apply the cheat-detection SQL ("apply it")** · Approve · Supabase · asked 2026-11-16
 - supabase/proposed/cheat2-2026-11-16.sql. A: the old market functions let two accounts create Leaves (urgent fix). B-G: a flags table, fight hand-in checks, daily reward caps, burst notes, ranked-draw rules, six functions hardened. All only flag; players see nothing. H is separate. Needs your "apply it".
   - a) Apply A-G.
