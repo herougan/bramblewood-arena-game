@@ -31,7 +31,7 @@ const B2 = require(path.join(ROOT, 'tools/opt/bpro2_2026_10_31.js')), D1 = requi
 const T3 = require(path.join(ROOT, 'tools/bench/deck.js'));
 const a = process.argv.slice(2), CMD = a[0], arg = (k, d) => { const i = a.indexOf(k); return i >= 0 ? a[i + 1] : d; }, has = k => a.includes(k);
 const PRO_FILE = path.join(ROOT, 'canonical', 'pro-skirmishes.json'), OUT = path.resolve(arg('--out', path.join(__dirname, 'tune'))), PLAN = path.resolve(arg('--plan', path.join(__dirname, 'plan-2026-11-22.json'))), DATE = '2026-11-22';
-const RULE = { maxUnique: 6, maxCopies: 4, size: 20, maxOverlap: 10 };
+const RULE = { maxUnique: 6, maxCopies: 4, size: 20, maxOverlap: +(process.argv.find(a => a.startsWith('--max-overlap=')) || '=10').split('=')[1] }; // 2026-11-22 (SKWK6): --max-overlap=N tries a looser BAL16 limit (what-if only)
 // the protocol's marks, and the windows the descent aims at (a margin inside them: the screen reads 40 ladder games, the re-read 120)
 const BAND = [0.15, 0.30], SK_EASY = 0.85, WK_STRONG = 0.50;
 const AIM = { sk: [+arg('--sk-lo', 0.18), +arg('--sk-hi', 0.27)], skRefMax: +arg('--ref-max', 0.78), wk: [0.60, 1], pro: [0, 0.78] }; // pass 2 (SKWK5): --sk-hi / --ref-max widen the aim where the band and the 85% line pull apart
