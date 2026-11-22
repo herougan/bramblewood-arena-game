@@ -1,1 +1,13 @@
 0-BPRO-2 bpro SK ladder start 0.108 ref 0.55
+0-BPRO-2 1 honey-bee -2 -> bee-forager 0.167 ref 0.5
+0-BPRO-2 validation {"v":0.075,"ref":0.6,"gap":0.075} -> {"v":0.07,"ref":0.6,"gap":0.08} no 50s
+20-A-BPRO-1 bpro SK ladder start 0.05 ref 0.95
+20-A-BPRO-1 1 berserker-boar -1 -> magma-salamander 0.108 ref 0.925
+20-A-BPRO-1 2 berserker-boar x3 -> brimstone-hound 0.092 ref 0.825
+20-A-BPRO-1 3 basalt-boar x4 -> berserker-boar 0.125 ref 0.8
+20-A-BPRO-1 validation {"v":0.08,"ref":0.925,"gap":0.145} -> {"v":0.115,"ref":0.875,"gap":0.06} KEEP 76s
+2-B-BPRO-2 bpro SK ladder start 0.825 ref 0.1
+2-B-BPRO-2 validation {"v":0.815,"ref":0.175,"gap":0.515} -> {"v":0.815,"ref":0.175,"gap":0.515} no 40s
+10-A-BPRO-2 bpro SK ladder start 0.492 ref 0.35
+10-A-BPRO-2 validation {"v":0.535,"ref":0.35,"gap":0.235} -> {"v":0.535,"ref":0.35,"gap":0.235} no 33s
+8-A-BPRO-1 bpro SK ladder start 0.175 ref 0.85

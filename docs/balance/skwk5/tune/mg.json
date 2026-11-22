@@ -1,0 +1,73 @@
+{
+ "map": "mg",
+ "generated": "2026-11-22T05:24:17.767Z",
+ "decks": [
+  {
+   "id": "2-B-BPRO-2",
+   "map": "mg",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "gull-thief": 3,
+     "limpet-clinger": 4,
+     "driftwood-crab": 4,
+     "pincushion-urchin": 4,
+     "octopus-tactician": 2,
+     "raccoon-nightcrew": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.815,
+     "ref": 0.175,
+     "gap": 0.515
+    }
+   },
+   "pick": {
+    "deck": {
+     "gull-thief": 3,
+     "limpet-clinger": 4,
+     "driftwood-crab": 4,
+     "pincushion-urchin": 4,
+     "octopus-tactician": 2,
+     "raccoon-nightcrew": 3
+    },
+    "val": {
+     "v": 0.815,
+     "ref": 0.175,
+     "gap": 0.515
+    },
+    "leaders": [
+     "octopus-tactician"
+    ]
+   },
+   "keep": false,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.825,
+     "ref": 0.1,
+     "gap": 0.555
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 21
+    }
+   ],
+   "readings": 265,
+   "sec": 40
+  }
+ ],
+ "drop": []
+}

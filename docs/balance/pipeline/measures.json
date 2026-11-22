@@ -210658,6 +210658,263 @@
    "statBase": 22.67,
    "measuredAt": "2026-11-22T05:21:42.133Z",
    "seconds": 17
+  },
+  "global@poolhi|arrow={\"v\":2,\"type\":\"fire\",\"form\":\"bolt\"}": {
+   "key": "arrow={\"v\":2,\"type\":\"fire\",\"form\":\"bolt\"}",
+   "ctx": "global@poolhi",
+   "bramble": 15,
+   "id": "arrow",
+   "class": "keyword",
+   "kind": "measure",
+   "n": {
+    "v": 2,
+    "type": "fire",
+    "form": "bolt"
+   },
+   "nCards": 1,
+   "cards": [
+    "fire-drake-hatchling"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 7.0897,
+     "lo": 5.961,
+     "hi": 8.2526
+    }
+   ],
+   "fingerprint": "ac1d235a36df",
+   "canonRate": {
+    "m": 0.0246,
+    "lo": 0.0194,
+    "hi": 0.0305
+   },
+   "statRate": {
+    "m": 0.0329,
+    "lo": 0.0213,
+    "hi": 0.0437
+   },
+   "kappa": {
+    "m": 1.3359,
+    "lo": 0.8793,
+    "hi": 1.7949
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0183,
+    "worthStat": {
+     "m": 0.557,
+     "lo": -0.2182,
+     "hi": 1.0667
+    }
+   },
+   "test": {
+    "effects": {
+     "arrow": {
+      "v": 2,
+      "type": "fire",
+      "form": "bolt"
+     }
+    },
+    "gain": 0.1758,
+    "worth": {
+     "m": 7.1359,
+     "lo": 6.1833,
+     "hi": 8.169
+    },
+    "worthRuler": {
+     "m": 7.0897,
+     "lo": 5.961,
+     "hi": 8.2526
+    },
+    "worthStat": {
+     "m": 5.3418,
+     "lo": 3.9529,
+     "hi": 7.9259
+    },
+    "price": 5,
+    "net": 2.0897,
+    "verdict": "under-priced",
+    "between": [
+     "onReadyGold 1 (6.65)",
+     "-"
+    ]
+   },
+   "statBase": 22.67,
+   "measuredAt": "2026-11-22T05:22:00.983Z",
+   "seconds": 19
+  },
+  "global@poolhi|bulwark=2": {
+   "key": "bulwark=2",
+   "ctx": "global@poolhi",
+   "bramble": 15,
+   "id": "bulwark",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 1,
+   "cards": [
+    "ancient-sloth-titan"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 6.9882,
+     "lo": 5.8056,
+     "hi": 8.3653
+    }
+   ],
+   "fingerprint": "ac1d235a36df",
+   "canonRate": {
+    "m": 0.0246,
+    "lo": 0.0194,
+    "hi": 0.0305
+   },
+   "statRate": {
+    "m": 0.0329,
+    "lo": 0.0213,
+    "hi": 0.0437
+   },
+   "kappa": {
+    "m": 1.3359,
+    "lo": 0.8793,
+    "hi": 1.7949
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0183,
+    "worthStat": {
+     "m": 0.557,
+     "lo": -0.2182,
+     "hi": 1.0667
+    }
+   },
+   "test": {
+    "effects": {
+     "bulwark": 2
+    },
+    "gain": 0.1733,
+    "worth": {
+     "m": 7.0344,
+     "lo": 5.8981,
+     "hi": 8.28
+    },
+    "worthRuler": {
+     "m": 6.9882,
+     "lo": 5.8056,
+     "hi": 8.3653
+    },
+    "worthStat": {
+     "m": 5.2658,
+     "lo": 3.798,
+     "hi": 7.8519
+    },
+    "price": 8.73,
+    "net": -1.7418,
+    "verdict": "over-priced",
+    "between": [
+     "onReadyGold 1 (6.65)",
+     "-"
+    ]
+   },
+   "statBase": 22.67,
+   "measuredAt": "2026-11-22T05:22:22.786Z",
+   "seconds": 22
+  },
+  "global@poolhi|onDeathSpawn={\"defId\":\"bat-swarmling\",\"count\":2}": {
+   "key": "onDeathSpawn={\"defId\":\"bat-swarmling\",\"count\":2}",
+   "ctx": "global@poolhi",
+   "bramble": 15,
+   "id": "onDeathSpawn",
+   "class": "keyword",
+   "kind": "measure",
+   "n": {
+    "defId": "bat-swarmling",
+    "count": 2
+   },
+   "nCards": 1,
+   "cards": [
+    "vampire-roost"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 3.7725,
+     "lo": 2.9836,
+     "hi": 4.6773
+    }
+   ],
+   "fingerprint": "ac1d235a36df",
+   "canonRate": {
+    "m": 0.0246,
+    "lo": 0.0194,
+    "hi": 0.0305
+   },
+   "statRate": {
+    "m": 0.0329,
+    "lo": 0.0213,
+    "hi": 0.0437
+   },
+   "kappa": {
+    "m": 1.3359,
+    "lo": 0.8793,
+    "hi": 1.7949
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0183,
+    "worthStat": {
+     "m": 0.557,
+     "lo": -0.2182,
+     "hi": 1.0667
+    }
+   },
+   "test": {
+    "effects": {
+     "onDeathSpawn": {
+      "defId": "bat-swarmling",
+      "count": 2
+     }
+    },
+    "gain": 0.1033,
+    "worth": {
+     "m": 4.1936,
+     "lo": 3.3642,
+     "hi": 5.1523
+    },
+    "worthRuler": {
+     "m": 3.7725,
+     "lo": 2.9836,
+     "hi": 4.6773
+    },
+    "worthStat": {
+     "m": 3.1392,
+     "lo": 2.1905,
+     "hi": 4.6222
+    },
+    "price": 4.35,
+    "net": -0.5775,
+    "verdict": "within its interval",
+    "between": [
+     "inspiring 1 (3.96)",
+     "poison 2 (4.75)"
+    ]
+   },
+   "statBase": 22.67,
+   "measuredAt": "2026-11-22T05:22:48.784Z",
+   "seconds": 26
   }
  }
 }

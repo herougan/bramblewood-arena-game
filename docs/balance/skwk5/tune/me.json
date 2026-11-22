@@ -1,0 +1,94 @@
+{
+ "map": "me",
+ "generated": "2026-11-22T05:23:37.680Z",
+ "decks": [
+  {
+   "id": "20-A-BPRO-1",
+   "map": "me",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "basalt-boar": 4,
+     "carrion-beetle": 4,
+     "honey-badger-fury": 4,
+     "obsidian-scorpion": 3,
+     "berserker-boar": 4,
+     "magma-salamander": 1
+    },
+    "legal": true,
+    "val": {
+     "v": 0.08,
+     "ref": 0.925,
+     "gap": 0.145
+    }
+   },
+   "pick": {
+    "deck": {
+     "carrion-beetle": 4,
+     "honey-badger-fury": 4,
+     "obsidian-scorpion": 3,
+     "magma-salamander": 2,
+     "brimstone-hound": 3,
+     "berserker-boar": 4
+    },
+    "val": {
+     "v": 0.115,
+     "ref": 0.875,
+     "gap": 0.06
+    },
+    "leaders": [
+     "magma-salamander"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.05,
+     "ref": 0.95,
+     "gap": 0.47
+    },
+    {
+     "move": "berserker-boar -1 -> magma-salamander",
+     "v": 0.108,
+     "ref": 0.925,
+     "gap": 0.362,
+     "tried": 11
+    },
+    {
+     "move": "berserker-boar x3 -> brimstone-hound",
+     "v": 0.092,
+     "ref": 0.825,
+     "gap": 0.178,
+     "tried": 11
+    },
+    {
+     "move": "basalt-boar x4 -> berserker-boar",
+     "v": 0.125,
+     "ref": 0.8,
+     "gap": 0.095,
+     "tried": 10
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 10
+    }
+   ],
+   "readings": 453,
+   "sec": 76
+  }
+ ],
+ "drop": []
+}

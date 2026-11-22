@@ -1,6 +1,6 @@
 {
  "about": "POOL: worthRuler with rests and opponents from Commons + Uncommons (low) / the full pool (shared) / Rare and up (high), bramble 15; move = interval above / below the full-pool one",
- "stable": 65,
+ "stable": 63,
  "rows": [
   {
    "key": "speed={\"kind\":\"swift\"}",
@@ -3109,13 +3109,17 @@
     "lo": -3.8114,
     "hi": -2.3967
    },
-   "high": null,
+   "high": {
+    "m": -5.2458,
+    "lo": -7.6756,
+    "hi": -3.8041
+   },
    "lowMove": "same",
-   "highMove": null,
+   "highMove": "same",
    "verdicts": [
     "cheap",
     "cheap",
-    null
+    "ok"
    ]
   },
   {
@@ -3131,13 +3135,17 @@
     "lo": 0.4629,
     "hi": 1.2505
    },
-   "high": null,
+   "high": {
+    "m": 1.5127,
+    "lo": 0.9074,
+    "hi": 2.2247
+   },
    "lowMove": "same",
-   "highMove": null,
+   "highMove": "same",
    "verdicts": [
     "dear",
     "dear",
-    null
+    "ok"
    ]
   },
   {
@@ -3153,13 +3161,17 @@
     "lo": 2.1475,
     "hi": 2.8312
    },
-   "high": null,
+   "high": {
+    "m": 3.1256,
+    "lo": 2.6115,
+    "hi": 4.39
+   },
    "lowMove": "same",
-   "highMove": null,
+   "highMove": "same",
    "verdicts": [
     "cheap",
     "cheap",
-    null
+    "cheap"
    ]
   },
   {
@@ -3175,13 +3187,17 @@
     "lo": 6.2449,
     "hi": 7.6699
    },
-   "high": null,
+   "high": {
+    "m": 5.2204,
+    "lo": 4.1771,
+    "hi": 6.2162
+   },
    "lowMove": "same",
-   "highMove": null,
+   "highMove": "lower",
    "verdicts": [
     "cheap",
     "cheap",
-    null
+    "cheap"
    ]
   },
   {
@@ -3197,13 +3213,17 @@
     "lo": 2.0257,
     "hi": 2.5555
    },
-   "high": null,
+   "high": {
+    "m": 2.7312,
+    "lo": 1.9879,
+    "hi": 3.38
+   },
    "lowMove": "same",
-   "highMove": null,
+   "highMove": "same",
    "verdicts": [
     "ok",
     "cheap",
-    null
+    "cheap"
    ]
   },
   {
@@ -3219,13 +3239,17 @@
     "lo": 7.9821,
     "hi": 9.4994
    },
-   "high": null,
+   "high": {
+    "m": 7.0897,
+    "lo": 5.961,
+    "hi": 8.2526
+   },
    "lowMove": "same",
-   "highMove": null,
+   "highMove": "same",
    "verdicts": [
     "cheap",
     "cheap",
-    null
+    "cheap"
    ]
   },
   {
@@ -3241,13 +3265,17 @@
     "lo": 6.6639,
     "hi": 8.1638
    },
-   "high": null,
+   "high": {
+    "m": 6.9882,
+    "lo": 5.8056,
+    "hi": 8.3653
+   },
    "lowMove": "same",
-   "highMove": null,
+   "highMove": "same",
    "verdicts": [
     "dear",
     "dear",
-    null
+    "dear"
    ]
   },
   {
@@ -3263,13 +3291,17 @@
     "lo": 2.9371,
     "hi": 4.416
    },
-   "high": null,
+   "high": {
+    "m": 3.7725,
+    "lo": 2.9836,
+    "hi": 4.6773
+   },
    "lowMove": "same",
-   "highMove": null,
+   "highMove": "same",
    "verdicts": [
     "dear",
     "ok",
-    null
+    "ok"
    ]
   }
  ]
