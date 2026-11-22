@@ -25,3 +25,5 @@
 11-A-BPRO-2 bpro SK ladder start 0.35 ref 0.75
 11-A-BPRO-2 1 chamois-leaper -1 -> the-gannet-queen 0.292 ref 0.775
 11-A-BPRO-2 validation {"v":0.29,"ref":0.8,"gap":0} -> {"v":0.275,"ref":0.825,"gap":0} KEEP 154s
+7-A-BPRO-1 bpro SK ladder start 0.108 ref 0.375
+7-A-BPRO-1 1 puffball-bombardier -2 -> bombardier-beetle 0.142 ref 0.425
