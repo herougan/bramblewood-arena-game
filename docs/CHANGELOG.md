@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-22 (ROADSCOPE: side maps that open after Map 20 leave the Maps 0-20 totals)
+- No player-visible change. The Old Bramble, The Ice Hollow and The Deep Dark open after Map 21 and Basalt Foundry after Map 23, so under BAL17-2 ("We are only tuning Map 0-20") they leave the road measure (`tools/skirmish_pass.js --maxmap` now reads `mapUnlockNumberOf`) and the road totals (`tools/bal16/road_totals_2026_11_05.js`). The BLEED1 road read that way: main 113 in band / 126 within 10 / 2 beyond 20 (149 fights, unchanged), side 43 / 47 / 4 (59 fights; was 60 / 64 / 9 over 81 with those four maps' 22 fights).
+
 ## 2026-11-22 (package PROLIST: strong and weak decks from the map list only)
 - Owner 09:56: "Do not use cards not in the map list." The PRO, BPRO and WPRO pools no longer take a map's SPECIAL tier, or a card found only in a road fight's deck. PRO still adds the cards a player holds by then. One shared rule: `tools/opt/deckopt.js` `mapTruePools` `listOnly` (used by `mapRuleProblems`, `deck1Pools` and the deckopt CLI), so deck1, bpro2, wpro, skir1, skwk and `pro_skirmishes.js` (which drops such a deck to `replaced`) all follow it. Decision PROLIST-1.
 - 107 decks broke the new rule (Maps 0-23 and their side maps; 2 of them PRO decks that fell under 10 list copies). 103 were repaired: each off-list card swapped for a list card, then tuned to its mark with SKWK4's per-deck routine on fresh seeds, on the BLEED1 engine. They were not re-searched, so the N-SK / N-WK tuning holds. 4 had no legal repair and went to `replaced`: 8-PRO-3, 10-A-BPRO-4, 14-A-BPRO-2, 20-A-WPRO-2. Map 0's strong deck 0-BPRO-2 now runs 2 Honey Bees in place of 2 Thorn Shrikes. Tool: `tools/opt/prolist_2026_11_22.js`; results: `docs/balance/prolist/`. `tests/pro-2026-10-23.js` now fails on any Maps 0-20 deck holding a card that is not on its map's list.

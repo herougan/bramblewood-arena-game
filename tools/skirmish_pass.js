@@ -439,7 +439,7 @@ function curveTune(f, band, steps){
 const MAIN_ONLY = argv.includes('--main');
 // --maxmap=N (2026-10-25, PRO3): only the fights of Maps 0..N and their side maps
 const MAXMAP = opt('maxmap', null) != null ? +opt('maxmap') : null;
-const all = fights().filter(f=> !ONLY.length || ONLY.includes(f.map) || ONLY.includes(f.key) || ONLY.includes(f.code)).filter(f=> !MAIN_ONLY || (!f.side && !f.endless)).filter(f=> MAXMAP == null || f.mapNo <= MAXMAP);
+const all = fights().filter(f=> !ONLY.length || ONLY.includes(f.map) || ONLY.includes(f.key) || ONLY.includes(f.code)).filter(f=> !MAIN_ONLY || (!f.side && !f.endless)).filter(f=> MAXMAP == null || Math.max(f.mapNo, G.mapUnlockNumberOf ? (G.mapUnlockNumberOf(f.map) || 0) : 0) <= MAXMAP); // 2026-11-22: a side map that opens after MAXMAP (The Deep Dark, mjd: Map 10's, opens after Map 21) is out (BAL17-2: tune Maps 0-20 only)
 const OUTDIR = path.join(ROOT, 'docs', 'balance');
 const readJsonl = file=>{ try{ return fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).map(l=> JSON.parse(l)); }catch(e){ return []; } };
 const rowOf = (f, extra)=>{ const {m, n, ...row} = f; return Object.assign(row, extra); };

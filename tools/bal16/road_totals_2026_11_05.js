@@ -9,7 +9,9 @@ const ROOT = path.join(__dirname, '..', '..');
 function rowsOf(tag) {
   const f = path.join(ROOT, 'docs', 'balance', `skirmish-pass-${tag}.jsonl`), by = {};
   fs.readFileSync(f, 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l)).forEach(r => { by[r.map + ':' + r.key] = r; });
-  return Object.values(by).filter(r => r.target != null && r.curve !== false);
+  // 2026-11-22: a side map that opens after Map 20 (The Deep Dark, mjd, opens after Map 21) is not part of the Maps 0-20 totals (BAL17-2)
+  const G = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G, late = id => G.mapUnlockNumberOf && (G.mapUnlockNumberOf(id) || 0) > 20;
+  return Object.values(by).filter(r => r.target != null && r.curve !== false && !late(r.map));
 }
 function totals(rows, worstN) {
   const gap = r => r.win - r.target, maps = {};
