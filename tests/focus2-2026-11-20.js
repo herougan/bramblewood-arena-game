@@ -85,7 +85,8 @@ const dealt = (f, uid)=> f.evs.map(ev=> ev.filter(x=> x.type === 'hit' && x.attU
 
 // ================= 5. the focus swap =================
 { const src = rd('arena_app.js'), m = /const MAP_FOCUS_SKILLS = (\{[^;]*\});/.exec(src), cfg = m && eval('(' + m[1] + ')');
-  ok(cfg && JSON.stringify(cfg[5]) === JSON.stringify(['forestry', 'sap', 'poison']), `5. Map 5: Forestry, Leech (sap), Venomous (${cfg && cfg[5]})`);
+  // 2026-11-22 (MAPADD1-1 a): Poison Barbs added after the first three
+  ok(cfg && JSON.stringify(cfg[5]) === JSON.stringify(['forestry', 'sap', 'poison', 'poisonBarbs']), `5. Map 5: Forestry, Leech (sap), Venomous, Poison Barbs (${cfg && cfg[5]})`);
   ok(cfg && JSON.stringify(cfg[6]) === JSON.stringify(['bleed', 'parasite', 'strangle']), `5. Map 6: Bleed, Parasite, Constrict (${cfg && cfg[6]})`);
   const fk = J('docs/design/redesign3-2026-11-17.json').focus, f5 = fk.find(f=> f.map === 5), f6 = fk.find(f=> f.map === 6);
   ok(f5.skills.some(s=> s.key === 'sap') && !f5.skills.some(s=> s.key === 'bleed') && f6.skills.some(s=> s.key === 'bleed') && !f6.skills.some(s=> s.key === 'sap'), '5. the REDESIGN3 design file follows'); }

@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-22 Packages MAPADD1b, CHOSEN1 (owner 21:28)
+- **Map cards window:** your chosen cards (Yes, or added by you) now sort first in NEW! and Carried each time the window opens; clicking while it is open does not move tiles.
+- **Map skill table:** Map 5 adds Poison Barbs, Map 8 adds Evasive (MAPADD1-1 a). Both are on no card yet, so they show as half-red, half-blue "To add" tiles, as Leech does on Map 5.
+- Decisions recorded (owner 21:28): SKWK6-1/2, MAPADD1-1, NOC7-1, CARRIER-1, MAPCTX-1, SKM1-1/1-2/2-1/3-1/4-1, FOCUS2-1/2/3, DEC20-1, REFIT10-1 to REFIT18-2. Strong decks have no upper limit (evaluation protocol).
+
 ## 2026-11-22 Package ROADSEED (road on fresh seeds)
 - **Road:** Squire Road (15-2) swaps 2 Cataphract Destrier for Hoopoe Herald; The Frost Yeti King (19-6) swaps 1 Dune Jackal for Magma Salamander. Both had drifted out of band on fresh seeds; now in band on both seed sets (15-2 85.8 / 89.3, target 84; 19-6 35.3 / 37, target 40).
 - Stoat Ambush (15-3) and Archer Hill (15-4) are still too easy (91 / 82 vs 78 / 72): the tune reached them only with a 21-23 Shield, out of line with Maps 14-17 (all 0), so not applied.

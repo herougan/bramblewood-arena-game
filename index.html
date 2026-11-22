@@ -59719,7 +59719,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '216f989bb6c1', BUILD_CARD_HASH = 'ad62554b686e0f4051ee1b1da898d93dd6043ed2b7c0d5f47e5d6eb47d4cc8f7';
+const BUILD_ID = '2b676b7e9652', BUILD_CARD_HASH = 'ad62554b686e0f4051ee1b1da898d93dd6043ed2b7c0d5f47e5d6eb47d4cc8f7';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
@@ -66198,7 +66198,7 @@ const SKMAP_PAST = [ // [label, "map skills | map skills"]; a name that is on th
 // DRAFT from REDESIGN1 "Skill plan (II)" (docs/design/redesign1-2026-11-16.json): the top 3 new skills of each map by II rank (1, then 2, then 3; ties in the plan's order); the owner may edit it.
 // A live `__cfg:map-focus` row (data: {focus: {"<map no>": [keys]}}) overrides a map's entry (read only here, applyCloudCfgRow).
 // 2026-11-22 (package NOC7, owner 13:22 SGT): Nocturnal moves from Map 4 to Map 7 (the Morel Hollow; Leopard Slug + Glow-worm Cluster carry it); only the first 3 of a map's keys show.
-const MAP_FOCUS_SKILLS = {0: ['swarm', 'flying', 'nursing'], 1: ['thorns', 'guardian', 'inspiring', 'foraging', 'diurnal'], 2: ['armor', 'pierce', 'shield', 'tide', 'crabClaws'], 3: ['pounce', 'swift', 'arrow'], 4: ['bloomCopy', 'meiosis', 'delivery', 'fork'], 5: ['forestry', 'sap', 'poison'], 6: ['bleed', 'parasite', 'strangle'], 7: ['carrion', 'corrode', 'sleepPowder', 'poisonPowder', 'nocturnal'], 8: ['darksight', 'web', 'illuminate', 'keenSense'], 9: ['trident', 'electricity', 'regen'], 10: ['weaken', 'wave'], 11: ['paralysisPowder'], 12: ['siege', 'recoil', 'stealth', 'bulldoze'], 13: ['harbinger', 'twinStrike', 'repair'], 14: ['mighty', 'pack', 'snipe', 'exploit'], 15: ['overwhelm', 'ambush', 'sweep'], 16: ['sturdy', 'reach'], 17: ['momentum', 'offspring'], 18: ['trap', 'expose'], 19: ['fireArrow'], 20: ['fireBolt']}; // 2026-11-18 (UIFIN): REDESIGN3 v2 focus skills (docs/design/redesign3-2026-11-17.json focus[].skills keys, Maps 0-20; mapFocusKeys shows the first 3); was REDESIGN2's 11-16 draft. 2026-11-19 (TESTFIX7): Map 19 'arrowFlaming' (the design file's key) -> 'fireArrow', the game's key for Arrow (Flaming); no skill has the old key, so Map 19's focus matched no card 2026-11-20 (FOCUS2, owner 00:39: "Put bleed in 6 and leech in 5"): Map 5 Bleed -> Leech (sap), Map 6 Leech -> Bleed; nothing dropped
+const MAP_FOCUS_SKILLS = {0: ['swarm', 'flying', 'nursing'], 1: ['thorns', 'guardian', 'inspiring', 'foraging', 'diurnal'], 2: ['armor', 'pierce', 'shield', 'tide', 'crabClaws'], 3: ['pounce', 'swift', 'arrow'], 4: ['bloomCopy', 'meiosis', 'delivery', 'fork'], 5: ['forestry', 'sap', 'poison', 'poisonBarbs'], 6: ['bleed', 'parasite', 'strangle'], 7: ['carrion', 'corrode', 'sleepPowder', 'poisonPowder', 'nocturnal'], 8: ['darksight', 'web', 'illuminate', 'keenSense', 'evasive'], 9: ['trident', 'electricity', 'regen'], 10: ['weaken', 'wave'], 11: ['paralysisPowder'], 12: ['siege', 'recoil', 'stealth', 'bulldoze'], 13: ['harbinger', 'twinStrike', 'repair'], 14: ['mighty', 'pack', 'snipe', 'exploit'], 15: ['overwhelm', 'ambush', 'sweep'], 16: ['sturdy', 'reach'], 17: ['momentum', 'offspring'], 18: ['trap', 'expose'], 19: ['fireArrow'], 20: ['fireBolt']}; // 2026-11-18 (UIFIN): REDESIGN3 v2 focus skills (docs/design/redesign3-2026-11-17.json focus[].skills keys, Maps 0-20; mapFocusKeys shows the first 3); was REDESIGN2's 11-16 draft. 2026-11-19 (TESTFIX7): Map 19 'arrowFlaming' (the design file's key) -> 'fireArrow', the game's key for Arrow (Flaming); no skill has the old key, so Map 19's focus matched no card 2026-11-20 (FOCUS2, owner 00:39: "Put bleed in 6 and leech in 5"): Map 5 Bleed -> Leech (sap), Map 6 Leech -> Bleed; nothing dropped 2026-11-22 (MAPADD1-1 a, owner 21:28): Map 5 + Poison Barbs, Map 8 + Evasive (the 11-22 sheet); the 11-20 Leech / Bleed swap stays
 let mapFocusCfg = null;
 function mapFocusKeys(n){ const c = mapFocusCfg && mapFocusCfg[n]; return (Array.isArray(c) ? c : MAP_FOCUS_SKILLS[n] || []).slice(0, 3); }
 // the focus skills of a map id (a main map only; a side map has none), as a Set
@@ -90735,6 +90735,8 @@ function ui41Cap(top, list, defs){
 // one map's split: {n, neu, car, extra, idx}
 // 2026-11-09 (package UI38, owner 03:55): the closed "More cards from earlier maps" fold is gone; ui38Fill tops NEW! up to 30+ (cards that fit the map, then
 // proposed concepts) and Carried up to 20+ (earlier main maps' cards, best fit first). extra stays an empty list for callers.
+// 2026-11-22 (CHOSEN1): the cards chosen (Yes, or added by the admin) when the window opened go first in NEW! and Carried; a stable sort keeps the rest in order
+function ui37ChosenFirst(sp, yes0, key){ const f = p=> yes0.has(p.id) || ui47IsAdminAdded(key, p.id) ? 0 : 1; sp.neu.sort((a, b)=> f(a) - f(b)); sp.car.sort((a, b)=> f(a) - f(b)); return sp; }
 function ui37Split(top, defs, ok){
   const n = mapNumberOf(top), maps = ui37MapsData(), idx = ui37CarriedIndex(n, maps), pros = ui37Prospects(top, defs, ok), neu = [], car = [];
   const SRC = {list: 0, list1: 1, maybe: 1, claude: 2, newcard: 3, flag: 4, suggest: 5}, rank = p=> Math.min(...[...p.src].map(s=> SRC[s] == null ? 9 : SRC[s]));
@@ -90868,6 +90870,7 @@ function ui37Mount(ov, top, mapId, ok){
   if(!adminModeEnabled || (mpIsSub(mapId) && !isSub)) return;
   const modal = ov.querySelector('.pk1-mc-modal'), body = modal && modal.querySelector('.pk1-mc-body'); if(!body || !(isSub || ui37MapsData().some(m=> m.id === top))) return;
   const key = isSub ? mapId : top, subSec = isSub ? mapPoolSections(top).find(x=> x.sub === mapId) : null;
+  const yes0 = new Set(ui37Ent(key).yes); // 2026-11-22 (CHOSEN1, owner 21:28: "Put all the chosen cards to the top of the Map Card's view (when revisiting the map card's page)"): the Yes picks as the window opens; they sort first, and a click while it is open does not move tiles
   try{ localStorage.removeItem(UI37_VIEW_KEY); }catch(e){} // the old Lists / Prospects choice
   const keys = mapPoolSections(top).filter(s=> isSub ? (s.key === 'special' || s.sub === mapId || (MP_EXTRA_LISTS[s.sub] && MP_EXTRA_LISTS[s.sub].map === mapId)) : (s.key === 'cards' || s.key === 'special')).map(s=> s.key), old = body.children[keys.indexOf(isSub ? 'sub:' + mapId : 'cards')];
   const wrap = document.createElement('section'); wrap.id = 'ui37Pros'; wrap.className = 'pk1-mc-sec ui39-list';
@@ -90902,8 +90905,8 @@ function ui37Mount(ov, top, mapId, ok){
     else if(e.key === 'Escape'){ e.stopPropagation(); aClose(); try{ aBtn.focus(); }catch(x){} } }); // Escape closes the search first, not the window
   aList.addEventListener('click', e=>{ const li = e.target.closest('[data-ui47-pick]'); if(li){ e.stopPropagation(); aPick(li.dataset.ui47Pick); } });
   const draw = ()=>{ const keep = modal.scrollTop, defs = getCardDefs(), ok2 = id=> ok(id) && ui41Allowed(id, defs) /* 2026-11-09 (UI41): no faction cards */;
-    if(isSub){ const sp = ui44Split(mapId, defs, ok2); head.innerHTML = ui44HeadHTML(mapId, sp); wrap.innerHTML = ui37GroupsHTML(mapId, defs, sp, ui39ReviewMap(top, ok2, subSec), 'sub:' + mapId); }
-    else { const sp = ui37Split(top, defs, ok2); head.innerHTML = ui37HeadHTML(top, sp); wrap.innerHTML = ui37GroupsHTML(top, defs, sp, ui39ReviewMap(top, ok2)); }
+    if(isSub){ const sp = ui37ChosenFirst(ui44Split(mapId, defs, ok2), yes0, key); head.innerHTML = ui44HeadHTML(mapId, sp); wrap.innerHTML = ui37GroupsHTML(mapId, defs, sp, ui39ReviewMap(top, ok2, subSec), 'sub:' + mapId); }
+    else { const sp = ui37ChosenFirst(ui37Split(top, defs, ok2), yes0, key); head.innerHTML = ui37HeadHTML(top, sp); wrap.innerHTML = ui37GroupsHTML(top, defs, sp, ui39ReviewMap(top, ok2)); }
     try{ wireRewardZoom(wrap); }catch(e){} rv2Update(ov); ui32McRefreshSkills(ov); /* 2026-11-11 (UI47 #2): Skills on these cards follows the Yes flags */ modal.scrollTop = keep; };
   const onClick = e=>{
     const t = e.target; let b;
