@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-22 (package TESTFIX8: failures the browser parts uncovered)
+- Players see: the Tower draws The Contradiction and the Fire Drake Hatchling as Super Rares (they are Super Rare in cards.json; the pools still listed them as Epic / Heroic). `TOWER_POOLS` gains a `superrare` tier and towerFloorDeck picks from it (KK20, as FIX6 did for Very Rare). Side effect: tests/keywords-w3's tower floors 6 -> 3 failing checks (worst floor 170 -> 67 off its rating).
+- Tests: fix6's 4-5 check accepts the Drowned Matriarch as the elite's showcase leader (REFIT4 took Shoal Shark out; its copies are still played from hand). ed B#9a, ux 8c and fx14 wait for their condition, not a fixed time (they ran out under the full run's load). lab-errors captures `.fxcat/cards.json` (capcards.py) when a checkout has none, as CI's setup does. ui2 passes with the new Chromium.
+
 ## 2026-11-22 (package SKWK5: the strong decks PROLIST left off band)
 - No road change. Against the reference ladder, 5 of the 11 Maps 0-20 N-SK decks that PROLIST left 3+ points off the 15-30% band were kept nearer on fresh seeds: 20-A-BPRO-1 8 -> 11.5% (Map reference 92.5 -> 87.5%), 8-A-BPRO-1 16.5 -> 27%, 5-A-BPRO-1 18% (ref 90 -> 85%), 7-A-BPRO-1 5 -> 10%, 11-A-BPRO-2 29 -> 27.5%. Tool: `docs/balance/skwk5/` (SKWK4's routine, salts skwk5). The Old Bramble's 0-B-BPRO-1 is left out (opens after Map 21).
 - Not moved by local search (a fresh deck search is next): 2-B-BPRO-2 81.5% (far too strong), 10-A-BPRO-2 53.5%, 18-A-BPRO-1 8.5%, 0-BPRO-2 7% (Map 0's strong deck after its Thorn Shrikes left). 1-A-BPRO-1 / 1-A-BPRO-3 read in band on the validation seeds (24.5 / 30.5%).

@@ -25655,8 +25655,10 @@ const TOWER_LEVEL_CAP = 20, TOWER_BR_START = 555, TOWER_BR_STEP = 25, TOWER_FLOO
 const TOWER_POOLS = {
   rare: ['malachite-golem', 'marching-elephant', 'ironback-gorilla', 'vampire-squid', 'obsidian-lich', 'badger-berserker', 'old-snapjaw'],
   veryrare: ['ur-elk', 'shimmerwing-stag', 'woodland-brawler', 'lone-grey-wolf', 'ember-revenant', 'yeti-chieftain', 'pride-queen', 'wolfsbane-alpha', 'siege-rhino' /* 2026-11-03 (release 11-03a): Very Rare since RAR-1 (BAL12) */],
-  epic: ['ironmaw-warwolf', 'marshal-of-rivergate', 'irradiated-couatl', 'the-sixfold', 'iron-warden', 'the-contradiction', 'triumvirate'],
-  heroic: ['rivergate-tribune', 'sunspire-sky-sovereign', 'caldera-wyrm', 'fire-drake-hatchling'], // + the Fire Drake Hatchling (Heroic, 20-B-4 like the Wyrm): the top floors had too few Heroics to reach their rating
+  // 2026-11-22 (TESTFIX8, KK20): The Contradiction (was Epic) and the Fire Drake Hatchling (was Heroic) are Super Rare in cards.json now; a Super Rare tier of their own, as FIX6 gave the Very Rares
+  superrare: ['the-contradiction', 'fire-drake-hatchling'],
+  epic: ['ironmaw-warwolf', 'marshal-of-rivergate', 'irradiated-couatl', 'the-sixfold', 'iron-warden', 'triumvirate'],
+  heroic: ['rivergate-tribune', 'sunspire-sky-sovereign', 'caldera-wyrm'], // the Fire Drake Hatchling (FIX6's Heroic addition) left for the Super Rares (TESTFIX8)
   unique: [],
   legendary: ['red-dragon', 'white-dragon', 'blue-dragon', 'green-dragon', 'black-dragon', 'old-willow-of-the-ford'],
 };
@@ -25689,7 +25691,7 @@ function towerFloorDeck(f, defs){
   const wantAvg = target / ratingLevelFactor(lvGoal, TOWER_LEVEL_CAP) / DECK_SIZE;
   let count = 0, wsum = 0;
   if(boss){ const id = pick('legendary'); if(id){ deck[id] = 1; count += 1; wsum += ratingWeightOf(defs[id]); } }
-  const tiers = ['rare', 'veryrare', 'epic', 'heroic', 'unique']; // + veryrare (FIX6, 2026-11-02)
+  const tiers = ['rare', 'veryrare', 'superrare', 'epic', 'heroic', 'unique']; // + veryrare (FIX6, 2026-11-02), + superrare (TESTFIX8, 2026-11-22)
   while(count < 12){
     const k = Math.min(2, 12 - count);
     let best = null, bestErr = Infinity; tiers.forEach(t=>{ if(!(TOWER_POOLS[t] || []).some(id=> defs[id] && !used.has(id))) return; const w = RATING_WEIGHT[t], err = Math.abs((wsum + k*w) / (count + k) - wantAvg); if(err < bestErr){ bestErr = err; best = t; } });

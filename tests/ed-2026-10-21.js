@@ -155,7 +155,8 @@ async function browser(){
       ok(await startFight(pg), 'B#9a the fight started (admin)');
       await pg.evaluate("saveResumeSnapshot(); window.__edStale = localStorage.getItem(RESUME_KEY); window.__edM = matchState; adminAutoWin(); 1");
       // 2026-11-19 (TESTFIX7): the auto-win's round decides 30-310 ms after the click (measured, one box); a flat 150 ms wait quit before it on a loaded machine
-      await pg.evaluate("(async()=>{ for(let i = 0; i < 250 && !window.__edM.resultDecided; i++) await new Promise(r=> setTimeout(r, 20)); })()"); // Quit as soon as it is decided
+      // 2026-11-22 (TESTFIX8): the full run (browser parts back on) still ran out of the 5 s ceiling (decided:false, enemy HQ already 0); up to 20 s now
+      await pg.evaluate("(async()=>{ for(let i = 0; i < 1000 && !window.__edM.resultDecided; i++) await new Promise(r=> setTimeout(r, 20)); })()"); // Quit as soon as it is decided
       const q = await pg.evaluate("(()=>{ const was = matchState; leaveMatchResumable(); return {stays: matchState === was, snap: localStorage.getItem(RESUME_KEY), decided: !!window.__edM.resultDecided}; })()");
       ok(q.decided && q.stays && q.snap === null, `B#9a Auto-win then Quit: the fight waits for its rewards, no resume save (${JSON.stringify(q)})`);
       for(let i = 0; i < 80; i++){ if(await pg.evaluate("!!window.__edM.rewardRecorded")) break; await pg.waitForTimeout(250); }

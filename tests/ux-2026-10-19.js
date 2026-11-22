@@ -243,7 +243,8 @@ async function browser(){
         if(performance.now() - t0 < 2600) setTimeout(tick, 80); else res(best); }; tick(); })`);
       ok(mid && Math.abs(mid.cx) <= 12 && Math.abs(mid.cy) <= 30, `${tag} 8c. the anvil stage is in the middle of the screen while it forges (${JSON.stringify(mid)})`);
       await centreShot;
-      await pg.waitForTimeout(3000);
+      // 2026-11-22 (TESTFIX8): was a flat 3 s; the full run's load finished the temper later (label still "Lv 2"), so wait for it, up to 15 s
+      await pg.waitForFunction(()=> !document.querySelector('.ux-fc-ov') && /Lv 3/.test((document.querySelector('.forge-level-label') || {}).textContent || ''), null, {timeout: 15000}).catch(()=> {});
       const after = await pg.evaluate(`(()=>({ov: !!document.querySelector('.ux-fc-ov'), inPanel: !!document.querySelector('#forgeDetail #anvilStage'), label: (document.querySelector('.forge-level-label') || {}).textContent}))()`);
       ok(after && !after.ov && after.inPanel && /Lv 3/.test(after.label || ''), `${tag} 8c. it returns to the anvil, tempered (${after && after.label})`);
       // 9 + 11. the Codex
