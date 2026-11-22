@@ -4753,5 +4753,12 @@
  "YES or NO each card. Right-click a card (or ⋯) to set its map. ▸2 / ▸3 start that pack at the card.": "SÍ o NO en cada carta. Clic derecho (o ⋯) para elegir su mapa. ▸2 / ▸3 empiezan ese sobre aquí.",
  "Picked {n} / 16": "Elegidas {n} / 16",
  "To remove": "Quitar",
- "New here, but not in this map's skill table: take it off this map's cards": "Nueva aquí, pero no está en la tabla de habilidades de este mapa: quítala de sus cartas"
+ "New here, but not in this map's skill table: take it off this map's cards": "Nueva aquí, pero no está en la tabla de habilidades de este mapa: quítala de sus cartas",
+ "Claude's swaps": "Cambios de Claude",
+ "Add": "Añadir",
+ "Move": "Mover",
+ "Drop": "Quitar",
+ "Keep": "Mantener",
+ "Replace": "Reemplazar",
+ "to Map {n}": "al mapa {n}"
 }

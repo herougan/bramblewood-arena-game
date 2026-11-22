@@ -4756,5 +4756,12 @@
  "YES or NO each card. Right-click a card (or ⋯) to set its map. ▸2 / ▸3 start that pack at the card.": "카드마다 YES 또는 NO. 우클릭(또는 ⋯)으로 맵 지정. ▸2 / ▸3은 이 카드부터 해당 팩을 시작.",
  "Picked {n} / 16": "선택 {n} / 16",
  "To remove": "제거 예정",
- "New here, but not in this map's skill table: take it off this map's cards": "여기서 새로 나오지만 이 맵의 스킬 표에 없음: 이 맵의 카드에서 빼기"
+ "New here, but not in this map's skill table: take it off this map's cards": "여기서 새로 나오지만 이 맵의 스킬 표에 없음: 이 맵의 카드에서 빼기",
+ "Claude's swaps": "Claude의 교체 제안",
+ "Add": "추가",
+ "Move": "이동",
+ "Drop": "제거",
+ "Keep": "유지",
+ "Replace": "교체",
+ "to Map {n}": "지도 {n}(으)로"
 }

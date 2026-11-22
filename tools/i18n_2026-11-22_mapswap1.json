@@ -1,0 +1,12 @@
+{
+ "tx": {
+  "ui.ms1-title": ["Claude's swaps", "Les échanges de Claude", "Claudes Tauschvorschläge", "Cambios de Claude", "Scambi di Claude", "Trocas do Claude", "Mga palit ni Claude", "க்ளாட்டின் மாற்றங்கள்", "Pertukaran dari Claude", "Claude 的调换建议", "Claude 的調換建議", "Claudeの入れ替え案", "Claude의 교체 제안"],
+  "ui.ms1-add": ["Add", "Ajouter", "Hinzufügen", "Añadir", "Aggiungi", "Adicionar", "Idagdag", "சேர்", "Tambah", "添加", "新增", "追加", "추가"],
+  "ui.ms1-concept": ["New card", "Nouvelle carte", "Neue Karte", "Carta nueva", "Nuova carta", "Carta nova", "Bagong baraha", "புதிய அட்டை", "Kartu baru", "新卡牌", "新卡牌", "新カード", "새 카드"],
+  "ui.ms1-move": ["Move", "Déplacer", "Verschieben", "Mover", "Sposta", "Mover", "Ilipat", "நகர்த்து", "Pindah", "移动", "移動", "移動", "이동"],
+  "ui.ms1-drop": ["Drop", "Retirer", "Entfernen", "Quitar", "Rimuovi", "Remover", "Alisin", "நீக்கு", "Hapus", "移除", "移除", "外す", "제거"],
+  "ui.ms1-keep": ["Keep", "Garder", "Behalten", "Mantener", "Mantieni", "Manter", "Panatilihin", "வைத்திரு", "Pertahankan", "保留", "保留", "残す", "유지"],
+  "ui.ms1-rep": ["Replace", "Remplacer", "Ersetzen", "Reemplazar", "Sostituisci", "Substituir", "Palitan", "மாற்று", "Ganti", "替换", "替換", "置換", "교체"],
+  "ui.ms1-to": ["to Map {n}", "vers la carte {n}", "zu Karte {n}", "al mapa {n}", "alla mappa {n}", "para o mapa {n}", "sa Mapa {n}", "வரைபடம் {n} க்கு", "ke Peta {n}", "到地图 {n}", "到地圖 {n}", "マップ{n}へ", "지도 {n}(으)로"]
+ }
+}

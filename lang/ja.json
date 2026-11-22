@@ -4754,5 +4754,12 @@
  "YES or NO each card. Right-click a card (or ⋯) to set its map. ▸2 / ▸3 start that pack at the card.": "各カードにYESかNO。右クリック（または⋯）でマップ設定。▸2 / ▸3でそのパックをここから開始。",
  "Picked {n} / 16": "選択 {n} / 16",
  "To remove": "削除予定",
- "New here, but not in this map's skill table: take it off this map's cards": "ここで新登場だが、このマップのスキル表にない：このマップのカードから外す"
+ "New here, but not in this map's skill table: take it off this map's cards": "ここで新登場だが、このマップのスキル表にない：このマップのカードから外す",
+ "Claude's swaps": "Claudeの入れ替え案",
+ "Add": "追加",
+ "Move": "移動",
+ "Drop": "外す",
+ "Keep": "残す",
+ "Replace": "置換",
+ "to Map {n}": "マップ{n}へ"
 }

@@ -34848,6 +34848,31 @@ function ui32McRefreshSkills(ov){
     const fresh = tmp.firstElementChild; if(!fresh) return; if(old) old.replaceWith(fresh); else { const body = ov.querySelector('.pk1-mc-body'); if(body) body.parentNode.insertBefore(fresh, body); }
   }catch(e){}
 }
+// 2026-11-22 (package MAPSWAP1, owner 23:08: "I look forward to your new card suggestions and swapping that meets our agreed criteria"): Claude's swaps, in the admin Map cards window
+// of a main map: one row per suggested card (tools/mapswap1_suggest.js -> canonical/map-swap-suggestions.json): a card that covers a To add tile, a new-card idea where none fits, a
+// carrier of a To remove skill with where it goes (move / drop / keep), a same-theme replacement. Yes sends the row through the owner's own pick path (ui37SetFlag: Yes on the
+// added card, No on the removed one, Yes on the destination map for a move), so it saves and publishes as his clicks do; No hides the row (this browser). Nothing is written otherwise.
+const MAP_SWAPS = __MAP_SWAPS__;
+const MS1_KEY = 'bramblewood_ms1_done', MS1_KIND = {add: ()=> TX('ui.ms1-add'), concept: ()=> TX('ui.ms1-concept'), move: ()=> TX('ui.ms1-move'), drop: ()=> TX('ui.ms1-drop'), keep: ()=> TX('ui.ms1-keep'), rep: ()=> TX('ui.ms1-rep')}; // literal keys (keyify)
+function ms1Done(){ try{ return JSON.parse(localStorage.getItem(MS1_KEY) || '{}') || {}; }catch(e){ return {}; } }
+function ms1Rows(mapId){
+  const m = ((MAP_SWAPS && MAP_SWAPS.maps) || []).find(x=> x.id === mapId), rows = []; if(!m) return rows;
+  m.add.forEach(a=>{ if(a.cards.length) a.cards.forEach(c=> rows.push({sid: m.n + ':a:' + a.key + ':' + c.id, kind: 'add', skill: a.skill, id: c.id, why: c.why, yes: [[m.id, c.id]], no: []}));
+    else if(a.concept) rows.push({sid: m.n + ':a:' + a.key + ':' + a.concept.id, kind: 'concept', skill: a.skill, id: a.concept.id, concept: a.concept, why: a.concept.role, yes: [[m.id, a.concept.id]], no: []}); });
+  m.remove.forEach(r=> rows.push({sid: m.n + ':r:' + r.card, kind: r.kind === 'stuck' ? 'drop' : r.kind, to: r.to, skill: r.skill, id: r.card, why: r.text + '. ' + r.why, yes: r.yes, no: r.no}));
+  if(m.replace) m.replace.cards.forEach(c=> rows.push({sid: m.n + ':p:' + c.id, kind: 'rep', skill: '', id: c.id, why: c.why, yes: [[m.id, c.id]], no: []}));
+  const done = ms1Done(); return rows.filter(r=> !done[r.sid]);
+}
+function ms1SwapsHTML(mapId, defs){
+  try{ if(!adminModeEnabled || mpIsSub(mapId)) return ''; const rows = ms1Rows(mapId).filter(r=> r.concept || defs[r.id]); if(!rows.length) return '';
+    return `<div class="ms1-sec" id="ms1Swaps"><h4>${escapeHtml(TX('ui.ms1-title'))} <small>${rows.length}</small></h4><ul class="ms1-list">${rows.map(r=> `<li class="ms1-row is-${r.kind}" data-ms1-sid="${escapeAttr(r.sid)}" data-ms1-map="${escapeAttr(mapId)}"><span class="ms1-tile">${r.concept ? ui38ConceptChipHTML(r.concept) : ui39PlainTileHTML(r.id, defs, '')}</span><span class="ms1-main"><b><i class="ui35-pill">${escapeHtml(MS1_KIND[r.kind]())}${r.kind === 'move' ? ' ' + escapeHtml(TX('ui.ms1-to', {n: r.to})) : ''}</i> ${escapeHtml(r.skill)}</b><small>${escapeHtml(r.why)}</small></span><span class="ui37-yn"><button type="button" class="ui37-yn-b is-yes" data-ms1-act="yes">${escapeHtml(TX('ui.ui37-yes'))}</button><button type="button" class="ui37-yn-b is-no" data-ms1-act="no">${escapeHtml(TX('ui.ui37-no'))}</button></span></li>`).join('')}</ul></div>`;
+  }catch(e){ return ''; }
+}
+function ms1Act(b){ const li = b.closest('[data-ms1-sid]'), row = li && ms1Rows(li.dataset.ms1Map).find(r=> r.sid === li.dataset.ms1Sid); if(!row) return;
+  if(b.dataset.ms1Act === 'yes'){ row.yes.forEach(([m, id])=> ui37SetFlag(m, id, 'yes')); row.no.forEach(([m, id])=> ui37SetFlag(m, id, 'no')); } // the owner's own pick path
+  const d = ms1Done(); d[row.sid] = b.dataset.ms1Act; try{ localStorage.setItem(MS1_KEY, JSON.stringify(d)); }catch(e){}
+  const ov = b.closest('#pk1MapCardsOverlay'); if(ov) ui32McRefreshSkills(ov); }
+document.addEventListener('click', e=>{ const b = e.target.closest && e.target.closest('[data-ms1-act]'); if(b) ms1Act(b); });
 // 2026-11-07 (package UI32 #7, owner 19:11): three ordered groups. (a) Main skills: the cards of the map's OWN list (`ids`), with the NEW! tag on a skill first seen on this
 // map in road order; (b) Other skills: skills found only on cards of its other sections (`otherIds`: side maps, specials, owner-added cards); (c) Recommended skills for the
 // map, in blue (the keyword intro, the Sugg. Intro picks no card has, the SKILLREC1 recommendations). A skill outside (a) that is a suggested intro here wears the Sugg. Intro pill;
@@ -34905,7 +34930,7 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId, otherIds){
   const newN = flaggedMain.filter(r=> r.isNew).length; // 2026-11-20 (UIQ2): the red tiles are the NEW! skills, so the header counts those (was the focus chips); // 2026-11-16 (UX7, owner 20:24): the header count is the red focus chips only (was: every new skill, UI35 #9)
   ; // 2026-11-08 (UI35 #6): how many skills this map introduces (the owner wants 2-3 on a main map, 0-1 on a side map)
   const tileN = flaggedMain.length + focusAdd.length + ctr.length + (cxTiles ? 1 : 0) + (kwMissing ? 1 : 0) + (suggTiles ? 1 : 0) + recs.length + picks.length + flaggedOther.length;
-  return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small> <small class="ui35-newn${newN ? ' has-new' : ''}" data-ui35-new="${newN}" title="${escapeAttr(TX('ui.ui35-new-count-tip'))}">${escapeHtml(TX('ui.ui35-new-count', {n: newN}))}</small></h3>${tileN ? `<p class="uiq2-legend">${['new', 'have', 'sugg', 'carried'].map(k=> `<span class="is-${k}">${escapeHtml(TX('ui.uiq2-leg-' + k))}</span>`).join('')}</p><ul class="ui19-sk-list">${flaggedMain.filter(r=> !r.late).map(li).join('')}${addTiles}${ctrTiles}${kwMissing}${suggTiles}${recs.map(rli).join('')}${pickTiles}${cxTiles}${hd('other', flaggedOther.length)}${flaggedOther.filter(r=> !r.late).map(li).join('')}${flagged.filter(r=> r.late).map(li).join('') /* 2026-11-16 (UX8, owner 23:35 #2): a skill no carrier has yet at its map level is not in the map: listed last */}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
+  return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small> <small class="ui35-newn${newN ? ' has-new' : ''}" data-ui35-new="${newN}" title="${escapeAttr(TX('ui.ui35-new-count-tip'))}">${escapeHtml(TX('ui.ui35-new-count', {n: newN}))}</small></h3>${tileN ? `<p class="uiq2-legend">${['new', 'have', 'sugg', 'carried'].map(k=> `<span class="is-${k}">${escapeHtml(TX('ui.uiq2-leg-' + k))}</span>`).join('')}</p><ul class="ui19-sk-list">${flaggedMain.filter(r=> !r.late).map(li).join('')}${addTiles}${ctrTiles}${kwMissing}${suggTiles}${recs.map(rli).join('')}${pickTiles}${cxTiles}${hd('other', flaggedOther.length)}${flaggedOther.filter(r=> !r.late).map(li).join('')}${flagged.filter(r=> r.late).map(li).join('') /* 2026-11-16 (UX8, owner 23:35 #2): a skill no carrier has yet at its map level is not in the map: listed last */}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}${typeof ms1SwapsHTML === 'function' ? ms1SwapsHTML(mapId || top, defs) : ''}</section>`;
 }
 // UI19_MC_SKILLS:END
 // UI34_COUNTERS:START
@@ -35544,6 +35569,7 @@ function ui44ExportRows(rows, defs){
 // flags as UI37 does (ui37CarriedIndex); a concept is flagged by its stable id (concept-<name>) in the same `__cfg:map-picks:<map>` row. No side-map cards.
 const UI38_PROS = __MAP_PROSPECTS__;
 const UI38_CONCEPTS = (()=>{ const o = {}; try{ Object.keys(UI38_PROS.maps || {}).forEach(mid=> (UI38_PROS.maps[mid].concepts || []).forEach(c=>{ if(c && c.id) o[c.id] = Object.assign({mapId: mid, mapNo: mapNumberOf(mid)}, c); })); }catch(e){}
+  try{ MAP_SWAPS.maps.forEach(m=> m.add.forEach(x=>{ if(x.concept && !o[x.concept.id]) o[x.concept.id] = Object.assign({}, x.concept); })); }catch(e){} // 2026-11-22 (MAPSWAP1): the swap ideas can be flagged
   try{ const l1 = (typeof CLAUDE_NEW !== 'undefined' && CLAUDE_NEW && CLAUDE_NEW.list1) || {}; Object.keys(l1).forEach(mid=> ((l1[mid] || {}).concepts || []).forEach(c=>{ if(c && c.id && !o[c.id]) o[c.id] = Object.assign({mapId: mid, mapNo: mapNumberOf(mid)}, c); })); }catch(e){} // 2026-11-13 (LIST1 #14): the gap concepts
   return o; })();
 function ui38Concept(id){ return (typeof id === 'string' && UI38_CONCEPTS[id]) || null; }

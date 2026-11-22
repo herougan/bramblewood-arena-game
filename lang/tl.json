@@ -4754,5 +4754,12 @@
  "YES or NO each card. Right-click a card (or ⋯) to set its map. ▸2 / ▸3 start that pack at the card.": "OO o HINDI sa bawat baraha. Right-click (o ⋯) para itakda ang mapa. Ang ▸2 / ▸3 ay magsisimula ng pack dito.",
  "Picked {n} / 16": "Napili {n} / 16",
  "To remove": "Tanggalin",
- "New here, but not in this map's skill table: take it off this map's cards": "Bago rito, pero wala sa skill table ng mapang ito: alisin sa mga card nito"
+ "New here, but not in this map's skill table: take it off this map's cards": "Bago rito, pero wala sa skill table ng mapang ito: alisin sa mga card nito",
+ "Claude's swaps": "Mga palit ni Claude",
+ "Add": "Idagdag",
+ "Move": "Ilipat",
+ "Drop": "Alisin",
+ "Keep": "Panatilihin",
+ "Replace": "Palitan",
+ "to Map {n}": "sa Mapa {n}"
 }

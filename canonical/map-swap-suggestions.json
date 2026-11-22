@@ -1,0 +1,1502 @@
+{
+ "_about": "MAPSWAP1 (2026-11-22): Claude's suggestions to cover the To add tiles and resolve the To remove tiles of the Map cards window, Maps 0-20. Regenerate: node tools/mapswap1_suggest.js. yes / no = [mapId, cardId] pairs sent through ui37SetFlag when the owner clicks Yes.",
+ "generated": "2026-11-22",
+ "totals": {
+  "add": 6,
+  "addCards": 4,
+  "addConcept": 2,
+  "rm": 38,
+  "rmMove": 20,
+  "rmKeep": 2,
+  "rmDrop": 13,
+  "rmStuck": 3
+ },
+ "stuck": [
+  {
+   "n": 1,
+   "card": "Puddle Skimmer",
+   "skill": "Rainrunner"
+  },
+  {
+   "n": 9,
+   "card": "Ironclaw Fiddler",
+   "skill": "Bludgeon"
+  },
+  {
+   "n": 18,
+   "card": "Caustic Scorpion",
+   "skill": "Acid"
+  }
+ ],
+ "maps": [
+  {
+   "n": 0,
+   "id": "m1",
+   "name": "Bramblewood Outskirts",
+   "cap": "common",
+   "list": 17,
+   "newHere": 17,
+   "target": 10,
+   "add": [],
+   "remove": [
+    {
+     "key": "foraging",
+     "skill": "Foraging",
+     "card": "chipmunk-forager",
+     "cardName": "Chipmunk Forager",
+     "kind": "drop",
+     "to": null,
+     "also": 18,
+     "text": "drop Chipmunk Forager from Map 0 (also on Map 18)",
+     "why": "Chipmunk Forager is already on Map 18's list, so it is not lost; Foraging is not meant to be New! on Map 0",
+     "yes": [],
+     "no": [
+      [
+       "m1",
+       "chipmunk-forager"
+      ]
+     ],
+     "keys": [
+      "foraging"
+     ]
+    }
+   ]
+  },
+  {
+   "n": 1,
+   "id": "mf",
+   "name": "Thistlewood",
+   "cap": "uncommon",
+   "list": 16,
+   "newHere": 11,
+   "target": 11,
+   "add": [],
+   "remove": [
+    {
+     "key": "rainrunner",
+     "skill": "Rainrunner",
+     "card": "puddle-skimmer",
+     "cardName": "Puddle Skimmer",
+     "kind": "stuck",
+     "to": null,
+     "also": null,
+     "text": "drop Puddle Skimmer from Map 1 (no row has Rainrunner)",
+     "why": "Rainrunner is in no map's table row and no other list shows it, so any list holding Puddle Skimmer marks it To remove; dropping it is the only fix from the cards",
+     "yes": [],
+     "no": [
+      [
+       "mf",
+       "puddle-skimmer"
+      ]
+     ],
+     "keys": [
+      "rainrunner"
+     ]
+    }
+   ],
+   "replace": {
+    "for": [
+     "puddle-skimmer"
+    ],
+    "cards": [
+     {
+      "id": "acorn-chipmunk",
+      "name": "Acorn Chipmunk",
+      "why": "a meadow forest creature, the squirrel family of the map's list · starter · on no list"
+     },
+     {
+      "id": "forager-ant",
+      "name": "Forager Ant",
+      "why": "a meadow forest creature, the ant family of the map's list · common · on no list"
+     }
+    ],
+    "yes": [
+     [
+      "mf",
+      "acorn-chipmunk"
+     ],
+     [
+      "mf",
+      "forager-ant"
+     ]
+    ],
+    "why": "Map 1's New! cards would fall below its target of 11 after the removals; same theme, no new unlisted skill"
+   }
+  },
+  {
+   "n": 2,
+   "id": "mb",
+   "name": "Pebble Beach",
+   "cap": "uncommon",
+   "list": 14,
+   "newHere": 10,
+   "target": 11,
+   "add": [
+    {
+     "key": "shield",
+     "skill": "Shield",
+     "cards": [],
+     "concept": {
+      "id": "concept-tideline-chiton",
+      "mapId": "mb",
+      "mapNo": 2,
+      "skill": "shield",
+      "name": "Tideline Chiton",
+      "animal": "chiton",
+      "family": "mollusc",
+      "element": "physical",
+      "rarity": "common",
+      "role": "A plated chiton clamped to a tide rock: a small body with Shield and no other skill (only the Armadillo Guard, a desert card from Map 18, carries Shield now)."
+     },
+     "why": "no existing card carries Shield and fits Map 2's theme and rarity cap"
+    }
+   ],
+   "remove": [
+    {
+     "key": "poisonBarbs",
+     "skill": "Poison Barbs",
+     "card": "pincushion-urchin",
+     "cardName": "Pincushion Urchin",
+     "kind": "drop",
+     "to": null,
+     "also": 10,
+     "text": "drop Pincushion Urchin from Map 2 (also on Map 10)",
+     "why": "Pincushion Urchin is already on Map 10's list, so it is not lost; Poison Barbs is not meant to be New! on Map 2",
+     "yes": [],
+     "no": [
+      [
+       "mb",
+       "pincushion-urchin"
+      ]
+     ],
+     "keys": [
+      "poisonBarbs"
+     ]
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "id": "mc",
+   "name": "Gannet Cliffs",
+   "cap": "uncommon",
+   "list": 17,
+   "newHere": 13,
+   "target": 11,
+   "add": [],
+   "remove": [
+    {
+     "key": "delivery",
+     "skill": "Delivery",
+     "card": "pika-hoarder",
+     "cardName": "Pika Hoarder",
+     "kind": "drop",
+     "to": null,
+     "also": 11,
+     "text": "drop Pika Hoarder from Map 3 (also on Map 11)",
+     "why": "Pika Hoarder is already on Map 11's list, so it is not lost; Delivery is not meant to be New! on Map 3",
+     "yes": [],
+     "no": [
+      [
+       "mc",
+       "pika-hoarder"
+      ]
+     ],
+     "keys": [
+      "delivery"
+     ]
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "id": "m2",
+   "name": "Sunken Hollow",
+   "cap": "uncommon",
+   "list": 15,
+   "newHere": 12,
+   "target": 10,
+   "add": [],
+   "remove": [
+    {
+     "key": "evasive",
+     "skill": "Evasive",
+     "card": "water-shrew",
+     "cardName": "Water Shrew",
+     "kind": "drop",
+     "to": null,
+     "also": 6,
+     "text": "drop Water Shrew from Map 4 (Map 6 shows Evasive too)",
+     "why": "Water Shrew carries Evasive, which Map 6's list shows too; here it is New! outside the table row, so the card leaves the list (no later map fits it)",
+     "yes": [],
+     "no": [
+      [
+       "m2",
+       "water-shrew"
+      ]
+     ],
+     "keys": [
+      "evasive"
+     ]
+    },
+    {
+     "key": "slow",
+     "skill": "Slow",
+     "card": "slow-worm",
+     "cardName": "Slow-worm",
+     "kind": "move",
+     "to": 22,
+     "also": null,
+     "text": "move Slow-worm from Map 4 to Map 22 (a later map, outside the table, that fits Slow-worm)",
+     "why": "Slow-worm carries Slow; Map 22's table row has it, so it shows there as intended",
+     "yes": [
+      [
+       "m22",
+       "slow-worm"
+      ]
+     ],
+     "no": [
+      [
+       "m2",
+       "slow-worm"
+      ]
+     ],
+     "keys": [
+      "slow"
+     ]
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "id": "mw",
+   "name": "Gatorback Swamp",
+   "cap": "rare",
+   "list": 16,
+   "newHere": 11,
+   "target": 10,
+   "add": [
+    {
+     "key": "sap",
+     "skill": "Leech",
+     "cards": [
+      {
+       "id": "bog-shrew",
+       "name": "Bog Shrew",
+       "rarity": "common",
+       "why": "a swamp creature · common · new card awaiting placement"
+      }
+     ],
+     "yes": [
+      [
+       "mw",
+       "bog-shrew"
+      ]
+     ],
+     "why": "Leech is in Map 5's table row and no card on the list carries it"
+    },
+    {
+     "key": "poisonBarbs",
+     "skill": "Poison Barbs",
+     "cards": [
+      {
+       "id": "rootworm-colony",
+       "name": "Rootworm Colony",
+       "rarity": "common",
+       "why": "near swamp, the worm family of the map's list · common · from the side maps of Map 7"
+      }
+     ],
+     "yes": [
+      [
+       "mw",
+       "rootworm-colony"
+      ]
+     ],
+     "why": "Poison Barbs is in Map 5's table row and no card on the list carries it"
+    }
+   ],
+   "remove": [
+    {
+     "key": "bleed",
+     "skill": "Bleed",
+     "card": "mosquito-cloud",
+     "cardName": "Mosquito Cloud",
+     "kind": "drop",
+     "to": null,
+     "also": 6,
+     "text": "drop Mosquito Cloud from Map 5 (also on Map 6)",
+     "why": "Mosquito Cloud is already on Map 6's list, so it is not lost; Bleed is not meant to be New! on Map 5",
+     "yes": [],
+     "no": [
+      [
+       "mw",
+       "mosquito-cloud"
+      ]
+     ],
+     "keys": [
+      "bleed"
+     ]
+    },
+    {
+     "key": "bleed",
+     "skill": "Bleed, Twin Strike",
+     "card": "alley-cat",
+     "cardName": "Alley Cat",
+     "kind": "drop",
+     "to": null,
+     "also": 9,
+     "text": "drop Alley Cat from Map 5 (also on Map 9)",
+     "why": "Alley Cat is already on Map 9's list, so it is not lost; Bleed is not meant to be New! on Map 5",
+     "yes": [],
+     "no": [
+      [
+       "mw",
+       "alley-cat"
+      ]
+     ],
+     "keys": [
+      "bleed",
+      "twinStrike"
+     ]
+    },
+    {
+     "key": "bleed",
+     "skill": "Bleed",
+     "card": "swamp-alligator",
+     "cardName": "Swamp Alligator",
+     "kind": "move",
+     "to": 6,
+     "also": null,
+     "text": "move Swamp Alligator from Map 5 to Map 6 (its row has Bleed)",
+     "why": "Swamp Alligator carries Bleed; Map 6's table row has it, so it shows there as intended",
+     "yes": [
+      [
+       "m8",
+       "swamp-alligator"
+      ]
+     ],
+     "no": [
+      [
+       "mw",
+       "swamp-alligator"
+      ]
+     ],
+     "keys": [
+      "bleed"
+     ]
+    },
+    {
+     "key": "strangle",
+     "skill": "Constrict",
+     "card": "cypress-root-lurker",
+     "cardName": "Cypress Root Lurker",
+     "kind": "drop",
+     "to": null,
+     "also": 6,
+     "text": "drop Cypress Root Lurker from Map 5 (also on Map 6)",
+     "why": "Cypress Root Lurker is already on Map 6's list, so it is not lost; Constrict is not meant to be New! on Map 5",
+     "yes": [],
+     "no": [
+      [
+       "mw",
+       "cypress-root-lurker"
+      ]
+     ],
+     "keys": [
+      "strangle"
+     ]
+    },
+    {
+     "key": "cure",
+     "skill": "Cure",
+     "card": "marsh-mallow-hare",
+     "cardName": "Marsh-mallow Hare",
+     "kind": "move",
+     "to": 21,
+     "also": null,
+     "text": "move Marsh-mallow Hare from Map 5 to Map 21 (a later map, outside the table, that fits Marsh-mallow Hare)",
+     "why": "Marsh-mallow Hare carries Cure; Map 21's table row has it, so it shows there as intended",
+     "yes": [
+      [
+       "m21",
+       "marsh-mallow-hare"
+      ]
+     ],
+     "no": [
+      [
+       "mw",
+       "marsh-mallow-hare"
+      ]
+     ],
+     "keys": [
+      "cure"
+     ]
+    },
+    {
+     "key": "herbalist",
+     "skill": "Herbalist",
+     "card": "newt-doctor",
+     "cardName": "Newt Doctor",
+     "kind": "move",
+     "to": 21,
+     "also": null,
+     "text": "move Newt Doctor from Map 5 to Map 21 (a later map, outside the table, that fits Newt Doctor)",
+     "why": "Newt Doctor carries Herbalist; Map 21's table row has it, so it shows there as intended",
+     "yes": [
+      [
+       "m21",
+       "newt-doctor"
+      ]
+     ],
+     "no": [
+      [
+       "mw",
+       "newt-doctor"
+      ]
+     ],
+     "keys": [
+      "herbalist"
+     ]
+    }
+   ],
+   "replace": {
+    "for": [
+     "mosquito-cloud",
+     "alley-cat",
+     "swamp-alligator",
+     "cypress-root-lurker",
+     "marsh-mallow-hare",
+     "newt-doctor"
+    ],
+    "cards": [
+     {
+      "id": "mossmother-newt",
+      "name": "Mossmother Newt",
+      "why": "a swamp creature, the salamander family of the map's list · common · on no list"
+     },
+     {
+      "id": "bog-shrew",
+      "name": "Bog Shrew",
+      "why": "a swamp creature · common · on no list"
+     }
+    ],
+    "yes": [
+     [
+      "mw",
+      "mossmother-newt"
+     ],
+     [
+      "mw",
+      "bog-shrew"
+     ]
+    ],
+    "why": "Map 5's New! cards would fall below its target of 10 after the removals; same theme, no new unlisted skill"
+   }
+  },
+  {
+   "n": 6,
+   "id": "m8",
+   "name": "Sable Swampmire",
+   "cap": "rare",
+   "list": 12,
+   "newHere": 7,
+   "target": 10,
+   "add": [],
+   "remove": [
+    {
+     "key": "enfeeble",
+     "skill": "Enfeeble, Scare",
+     "card": "booming-bittern",
+     "cardName": "Booming Bittern",
+     "kind": "move",
+     "to": 24,
+     "also": null,
+     "text": "move Booming Bittern from Map 6 to Map 24 (a later map, outside the table, that fits Booming Bittern)",
+     "why": "Booming Bittern carries Enfeeble; Map 24's table row has it, so it shows there as intended",
+     "yes": [
+      [
+       "m24",
+       "booming-bittern"
+      ]
+     ],
+     "no": [
+      [
+       "m8",
+       "booming-bittern"
+      ]
+     ],
+     "keys": [
+      "enfeeble",
+      "scare"
+     ]
+    },
+    {
+     "key": "sap",
+     "skill": "Leech",
+     "card": "lamprey",
+     "cardName": "Lamprey",
+     "kind": "keep",
+     "to": 5,
+     "also": null,
+     "text": "keep Lamprey on Map 6 (Map 5 adds Leech first)",
+     "why": "Leech is New! here only because no card on Map 5 (whose row has it) carries it yet; the Map 5 add of Leech shows it first, so Lamprey stays",
+     "yes": [],
+     "no": [],
+     "keys": [
+      "sap"
+     ]
+    }
+   ],
+   "replace": {
+    "for": [
+     "booming-bittern",
+     "lamprey"
+    ],
+    "cards": [
+     {
+      "id": "bog-shrew",
+      "name": "Bog Shrew",
+      "why": "a swamp creature, the shrew family of the map's list · common · on no list"
+     },
+     {
+      "id": "clinging-leech",
+      "name": "Clinging Leech",
+      "why": "a swamp creature, the leech family of the map's list · uncommon · on no list"
+     }
+    ],
+    "yes": [
+     [
+      "m8",
+      "bog-shrew"
+     ],
+     [
+      "m8",
+      "clinging-leech"
+     ]
+    ],
+    "why": "Map 6's New! cards would fall below its target of 10 after the removals; same theme, no new unlisted skill"
+   }
+  },
+  {
+   "n": 7,
+   "id": "mu",
+   "name": "The Morel Hollow",
+   "cap": "rare",
+   "list": 16,
+   "newHere": 11,
+   "target": 9,
+   "add": [],
+   "remove": [
+    {
+     "key": "prayer",
+     "skill": "Prayer",
+     "card": "glowworm-cluster",
+     "cardName": "Glowworm Cluster",
+     "kind": "move",
+     "to": 22,
+     "also": null,
+     "text": "move Glowworm Cluster from Map 7 to Map 22 (a later map, outside the table, that fits Glowworm Cluster)",
+     "why": "Glowworm Cluster carries Prayer; Map 22's table row has it, so it shows there as intended",
+     "yes": [
+      [
+       "m22",
+       "glowworm-cluster"
+      ]
+     ],
+     "no": [
+      [
+       "mu",
+       "glowworm-cluster"
+      ]
+     ],
+     "keys": [
+      "prayer"
+     ]
+    },
+    {
+     "key": "onDeathSpawn",
+     "skill": "Progeny",
+     "card": "rot-swollen-carcass",
+     "cardName": "Rot-Swollen Carcass",
+     "kind": "move",
+     "to": 22,
+     "also": null,
+     "text": "move Rot-Swollen Carcass from Map 7 to Map 22 (a later map, outside the table, that fits Rot-Swollen Carcass)",
+     "why": "Rot-Swollen Carcass carries Progeny; Map 22's table row has it, so it shows there as intended",
+     "yes": [
+      [
+       "m22",
+       "rot-swollen-carcass"
+      ]
+     ],
+     "no": [
+      [
+       "mu",
+       "rot-swollen-carcass"
+      ]
+     ],
+     "keys": [
+      "onDeathSpawn"
+     ]
+    }
+   ]
+  },
+  {
+   "n": 8,
+   "id": "m4",
+   "name": "Caves & Alcoves",
+   "cap": "rare",
+   "list": 14,
+   "newHere": 9,
+   "target": 9,
+   "add": [
+    {
+     "key": "evasive",
+     "skill": "Evasive",
+     "cards": [
+      {
+       "id": "cinder-gecko",
+       "name": "Cinder Gecko",
+       "rarity": "common",
+       "why": "a caves creature · common · moves from Map 22 (carried there)"
+      },
+      {
+       "id": "mirror-moth",
+       "name": "Mirror Moth",
+       "rarity": "rare",
+       "why": "the moth family of the map's list · rare · on no list"
+      }
+     ],
+     "yes": [
+      [
+       "m4",
+       "cinder-gecko"
+      ],
+      [
+       "m4",
+       "mirror-moth"
+      ]
+     ],
+     "why": "Evasive is in Map 8's table row and no card on the list carries it"
+    }
+   ],
+   "remove": [
+    {
+     "key": "purblind",
+     "skill": "Purblind",
+     "card": "star-nosed-mole",
+     "cardName": "Star-nosed Mole",
+     "kind": "move",
+     "to": 24,
+     "also": null,
+     "text": "move Star-nosed Mole from Map 8 to Map 24 (a later map, outside the table, that fits Star-nosed Mole)",
+     "why": "Star-nosed Mole carries Purblind; Map 24's table row has it, so it shows there as intended",
+     "yes": [
+      [
+       "m24",
+       "star-nosed-mole"
+      ]
+     ],
+     "no": [
+      [
+       "m4",
+       "star-nosed-mole"
+      ]
+     ],
+     "keys": [
+      "purblind"
+     ]
+    }
+   ],
+   "replace": {
+    "for": [
+     "star-nosed-mole"
+    ],
+    "cards": [
+     {
+      "id": "lantern-spark-fly",
+      "name": "Lantern Spark Fly",
+      "why": "a caves creature, the moth family of the map's list · uncommon · on no list"
+     },
+     {
+      "id": "tiny-cave-dweller",
+      "name": "Tiny Cave Dweller",
+      "why": "a caves creature, the woodlouse family of the map's list · uncommon · on no list"
+     }
+    ],
+    "yes": [
+     [
+      "m4",
+      "lantern-spark-fly"
+     ],
+     [
+      "m4",
+      "tiny-cave-dweller"
+     ]
+    ],
+    "why": "Map 8's New! cards would fall below its target of 9 after the removals; same theme, no new unlisted skill"
+   }
+  },
+  {
+   "n": 9,
+   "id": "mk",
+   "name": "The Kelp Mangroves",
+   "cap": "rare",
+   "list": 18,
+   "newHere": 11,
+   "target": 9,
+   "add": [
+    {
+     "key": "regen",
+     "skill": "Regenerate",
+     "cards": [
+      {
+       "id": "mangrove-manatee",
+       "name": "Mangrove Manatee",
+       "rarity": "rare",
+       "why": "a mangrove creature · rare · from the side maps of Map 11"
+      },
+      {
+       "id": "bog-lungfish",
+       "name": "Bog Lungfish",
+       "rarity": "common",
+       "why": "near mangrove, the fish family of the map's list · common · new card awaiting placement"
+      },
+      {
+       "id": "teatime-toad",
+       "name": "Teatime Toad",
+       "rarity": "uncommon",
+       "why": "near mangrove · uncommon · on no list"
+      }
+     ],
+     "yes": [
+      [
+       "mk",
+       "mangrove-manatee"
+      ],
+      [
+       "mk",
+       "bog-lungfish"
+      ],
+      [
+       "mk",
+       "teatime-toad"
+      ]
+     ],
+     "why": "Regenerate is in Map 9's table row and no card on the list carries it"
+    }
+   ],
+   "remove": [
+    {
+     "key": "bludgeon",
+     "skill": "Bludgeon",
+     "card": "ironclaw-fiddler",
+     "cardName": "Ironclaw Fiddler",
+     "kind": "stuck",
+     "to": null,
+     "also": null,
+     "text": "drop Ironclaw Fiddler from Map 9 (no row has Bludgeon)",
+     "why": "Bludgeon is in no map's table row and no other list shows it, so any list holding Ironclaw Fiddler marks it To remove; dropping it is the only fix from the cards",
+     "yes": [],
+     "no": [
+      [
+       "mk",
+       "ironclaw-fiddler"
+      ]
+     ],
+     "keys": [
+      "bludgeon"
+     ]
+    },
+    {
+     "key": "taunt",
+     "skill": "Taunt",
+     "card": "proboscis-monkey",
+     "cardName": "Proboscis Monkey",
+     "kind": "move",
+     "to": 23,
+     "also": null,
+     "text": "move Proboscis Monkey from Map 9 to Map 23 (a later map, outside the table, that fits Proboscis Monkey)",
+     "why": "Proboscis Monkey carries Taunt; Map 23's table row has it, so it shows there as intended",
+     "yes": [
+      [
+       "m23",
+       "proboscis-monkey"
+      ]
+     ],
+     "no": [
+      [
+       "mk",
+       "proboscis-monkey"
+      ]
+     ],
+     "keys": [
+      "taunt"
+     ]
+    }
+   ]
+  },
+  {
+   "n": 10,
+   "id": "m7",
+   "name": "Coral Current",
+   "cap": "veryrare",
+   "list": 16,
+   "newHere": 9,
+   "target": 9,
+   "add": [],
+   "remove": []
+  },
+  {
+   "n": 11,
+   "id": "m10",
+   "name": "Eyrie Heights",
+   "cap": "veryrare",
+   "list": 18,
+   "newHere": 11,
+   "target": 9,
+   "add": [],
+   "remove": [
+    {
+     "key": "archer",
+     "skill": "Archer",
+     "card": "stonedrop-vulture",
+     "cardName": "Stonedrop Vulture",
+     "kind": "move",
+     "to": 21,
+     "also": null,
+     "text": "move Stonedrop Vulture from Map 11 to Map 21 (a later map, outside the table, that fits Stonedrop Vulture)",
+     "why": "Stonedrop Vulture carries Archer; Map 21's table row has it, so it shows there as intended",
+     "yes": [
+      [
+       "m21",
+       "stonedrop-vulture"
+      ]
+     ],
+     "no": [
+      [
+       "m10",
+       "stonedrop-vulture"
+      ]
+     ],
+     "keys": [
+      "archer"
+     ]
+    },
+    {
+     "key": "daunt",
+     "skill": "Daunt",
+     "card": "golden-eagle-diver",
+     "cardName": "Golden Eagle",
+     "kind": "move",
+     "to": 21,
+     "also": null,
+     "text": "move Golden Eagle from Map 11 to Map 21 (a later map, outside the table, that fits Golden Eagle)",
+     "why": "Golden Eagle carries Daunt; Map 21's table row has it, so it shows there as intended",
+     "yes": [
+      [
+       "m21",
+       "golden-eagle-diver"
+      ]
+     ],
+     "no": [
+      [
+       "m10",
+       "golden-eagle-diver"
+      ]
+     ],
+     "keys": [
+      "daunt"
+     ]
+    },
+    {
+     "key": "frostbite",
+     "skill": "Frostbite",
+     "card": "mountain-hare",
+     "cardName": "Mountain Hare",
+     "kind": "move",
+     "to": 21,
+     "also": null,
+     "text": "move Mountain Hare from Map 11 to Map 21 (a later map, outside the table, that fits Mountain Hare)",
+     "why": "Mountain Hare carries Frostbite; Map 21's table row has it, so it shows there as intended",
+     "yes": [
+      [
+       "m21",
+       "mountain-hare"
+      ]
+     ],
+     "no": [
+      [
+       "m10",
+       "mountain-hare"
+      ]
+     ],
+     "keys": [
+      "frostbite"
+     ]
+    },
+    {
+     "key": "twinShot",
+     "skill": "Twin Shot",
+     "card": "eyrie-warden",
+     "cardName": "Eyrie Warden",
+     "kind": "drop",
+     "to": null,
+     "also": 21,
+     "text": "drop Eyrie Warden from Map 11 (also on Map 21)",
+     "why": "Eyrie Warden is already on Map 21's list, so it is not lost; Twin Shot is not meant to be New! on Map 11",
+     "yes": [],
+     "no": [
+      [
+       "m10",
+       "eyrie-warden"
+      ]
+     ],
+     "keys": [
+      "twinShot"
+     ]
+    }
+   ],
+   "replace": {
+    "for": [
+     "stonedrop-vulture",
+     "golden-eagle-diver",
+     "mountain-hare",
+     "eyrie-warden"
+    ],
+    "cards": [
+     {
+      "id": "abbey-goose",
+      "name": "Abbey Goose",
+      "why": "a mountain sky creature · uncommon · on no list"
+     },
+     {
+      "id": "gangrenous-leech",
+      "name": "Gangrenous Leech",
+      "why": "a mountain sky creature · uncommon · on no list"
+     }
+    ],
+    "yes": [
+     [
+      "m10",
+      "abbey-goose"
+     ],
+     [
+      "m10",
+      "gangrenous-leech"
+     ]
+    ],
+    "why": "Map 11's New! cards would fall below its target of 9 after the removals; same theme, no new unlisted skill"
+   }
+  },
+  {
+   "n": 12,
+   "id": "mh",
+   "name": "The Briar Maze",
+   "cap": "veryrare",
+   "list": 17,
+   "newHere": 9,
+   "target": 9,
+   "add": [],
+   "remove": []
+  },
+  {
+   "n": 13,
+   "id": "mr",
+   "name": "The Redwood Deep",
+   "cap": "veryrare",
+   "list": 17,
+   "newHere": 9,
+   "target": 9,
+   "add": [],
+   "remove": []
+  },
+  {
+   "n": 14,
+   "id": "m5",
+   "name": "Savanna Reaches",
+   "cap": "veryrare",
+   "list": 19,
+   "newHere": 10,
+   "target": 9,
+   "add": [],
+   "remove": [
+    {
+     "key": "carnage",
+     "skill": "Carnage",
+     "card": "dust-hyena",
+     "cardName": "Dust Hyena",
+     "kind": "move",
+     "to": 22,
+     "also": null,
+     "text": "move Dust Hyena from Map 14 to Map 22 (a later map, outside the table, that fits Dust Hyena)",
+     "why": "Dust Hyena carries Carnage; Map 22's table row has it, so it shows there as intended",
+     "yes": [
+      [
+       "m22",
+       "dust-hyena"
+      ]
+     ],
+     "no": [
+      [
+       "m5",
+       "dust-hyena"
+      ]
+     ],
+     "keys": [
+      "carnage"
+     ]
+    },
+    {
+     "key": "embolden",
+     "skill": "Embolden",
+     "card": "meerkat-sentry",
+     "cardName": "Meerkat Sentry",
+     "kind": "move",
+     "to": 23,
+     "also": null,
+     "text": "move Meerkat Sentry from Map 14 to Map 23 (a later map, outside the table, that fits Meerkat Sentry)",
+     "why": "Meerkat Sentry carries Embolden; Map 23's table row has it, so it shows there as intended",
+     "yes": [
+      [
+       "m23",
+       "meerkat-sentry"
+      ]
+     ],
+     "no": [
+      [
+       "m5",
+       "meerkat-sentry"
+      ]
+     ],
+     "keys": [
+      "embolden"
+     ]
+    },
+    {
+     "key": "herald",
+     "skill": "Herald",
+     "card": "hoopoe-herald",
+     "cardName": "Hoopoe Herald",
+     "kind": "drop",
+     "to": null,
+     "also": 23,
+     "text": "drop Hoopoe Herald from Map 14 (also on Map 23)",
+     "why": "Hoopoe Herald is already on Map 23's list, so it is not lost; Herald is not meant to be New! on Map 14",
+     "yes": [],
+     "no": [
+      [
+       "m5",
+       "hoopoe-herald"
+      ]
+     ],
+     "keys": [
+      "herald"
+     ]
+    }
+   ],
+   "replace": {
+    "for": [
+     "dust-hyena",
+     "meerkat-sentry",
+     "hoopoe-herald"
+    ],
+    "cards": [
+     {
+      "id": "elephant",
+      "name": "Elephant",
+      "why": "a savanna creature, the elephant family of the map's list · common · on no list"
+     },
+     {
+      "id": "meerkat-wayfarer",
+      "name": "Meerkat Wayfarer",
+      "why": "near savanna, the mongoose family of the map's list · common · on no list"
+     }
+    ],
+    "yes": [
+     [
+      "m5",
+      "elephant"
+     ],
+     [
+      "m5",
+      "meerkat-wayfarer"
+     ]
+    ],
+    "why": "Map 14's New! cards would fall below its target of 9 after the removals; same theme, no new unlisted skill"
+   }
+  },
+  {
+   "n": 15,
+   "id": "ml",
+   "name": "The Long Grass",
+   "cap": "veryrare",
+   "list": 21,
+   "newHere": 11,
+   "target": 9,
+   "add": [],
+   "remove": [
+    {
+     "key": "harden",
+     "skill": "Harden, Loyal",
+     "card": "sworn-shieldbearer",
+     "cardName": "Sworn Shieldbearer",
+     "kind": "move",
+     "to": 23,
+     "also": null,
+     "text": "move Sworn Shieldbearer from Map 15 to Map 23 (a later map, outside the table, that fits Sworn Shieldbearer)",
+     "why": "Sworn Shieldbearer carries Harden; Map 23's table row has it, so it shows there as intended",
+     "yes": [
+      [
+       "m23",
+       "sworn-shieldbearer"
+      ]
+     ],
+     "no": [
+      [
+       "ml",
+       "sworn-shieldbearer"
+      ]
+     ],
+     "keys": [
+      "harden",
+      "loyal"
+     ]
+    },
+    {
+     "key": "pitchfork",
+     "skill": "Pitchfork",
+     "card": "village-miller",
+     "cardName": "Village Miller",
+     "kind": "move",
+     "to": 23,
+     "also": null,
+     "text": "move Village Miller from Map 15 to Map 23 (a later map, outside the table, that fits Village Miller)",
+     "why": "Village Miller carries Pitchfork; Map 23's table row has it, so it shows there as intended",
+     "yes": [
+      [
+       "m23",
+       "village-miller"
+      ]
+     ],
+     "no": [
+      [
+       "ml",
+       "village-miller"
+      ]
+     ],
+     "keys": [
+      "pitchfork"
+     ]
+    }
+   ]
+  },
+  {
+   "n": 16,
+   "id": "mt",
+   "name": "The Pinewood Taiga",
+   "cap": "veryrare",
+   "list": 18,
+   "newHere": 8,
+   "target": 8,
+   "add": [],
+   "remove": [
+    {
+     "key": "loneWolf",
+     "skill": "Lone Wolf",
+     "card": "taiga-lynx",
+     "cardName": "Taiga Lynx",
+     "kind": "move",
+     "to": 23,
+     "also": null,
+     "text": "move Taiga Lynx from Map 16 to Map 23 (a later map, outside the table, that fits Taiga Lynx)",
+     "why": "Taiga Lynx carries Lone Wolf; Map 23's table row has it, so it shows there as intended",
+     "yes": [
+      [
+       "m23",
+       "taiga-lynx"
+      ]
+     ],
+     "no": [
+      [
+       "mt",
+       "taiga-lynx"
+      ]
+     ],
+     "keys": [
+      "loneWolf"
+     ]
+    }
+   ],
+   "replace": {
+    "for": [
+     "taiga-lynx"
+    ],
+    "cards": [
+     {
+      "id": "pinecone-crossbill",
+      "name": "Pinecone Crossbill",
+      "why": "a taiga creature · common · on no list"
+     }
+    ],
+    "yes": [
+     [
+      "mt",
+      "pinecone-crossbill"
+     ]
+    ],
+    "why": "Map 16's New! cards would fall below its target of 8 after the removals; same theme, no new unlisted skill"
+   }
+  },
+  {
+   "n": 17,
+   "id": "m6",
+   "name": "Wolfsbane Tundra",
+   "cap": "veryrare",
+   "list": 18,
+   "newHere": 7,
+   "target": 8,
+   "add": [
+    {
+     "key": "momentum",
+     "skill": "Momentum",
+     "cards": [],
+     "concept": {
+      "id": "concept-floe-wolverine",
+      "mapId": "m6",
+      "mapNo": 17,
+      "skill": "momentum",
+      "name": "Floe Wolverine",
+      "animal": "wolverine",
+      "family": "mustelid",
+      "element": "physical",
+      "rarity": "rare",
+      "role": "A tundra scrapper that finishes what the cold started: Momentum, no other skill (no card carries Momentum yet)."
+     },
+     "why": "no existing card carries Momentum and fits Map 17's theme and rarity cap"
+    }
+   ],
+   "remove": [
+    {
+     "key": "freeze",
+     "skill": "Freeze",
+     "card": "glacier-yak",
+     "cardName": "Glacier Yak",
+     "kind": "drop",
+     "to": null,
+     "also": 21,
+     "text": "drop Glacier Yak from Map 17 (also on Map 21)",
+     "why": "Glacier Yak is already on Map 21's list, so it is not lost; Freeze is not meant to be New! on Map 17",
+     "yes": [],
+     "no": [
+      [
+       "m6",
+       "glacier-yak"
+      ]
+     ],
+     "keys": [
+      "freeze"
+     ]
+    },
+    {
+     "key": "pulverise",
+     "skill": "Pulverise",
+     "card": "walrus-icebreaker",
+     "cardName": "Walrus Icebreaker",
+     "kind": "move",
+     "to": 22,
+     "also": null,
+     "text": "move Walrus Icebreaker from Map 17 to Map 22 (a later map, outside the table, that fits Walrus Icebreaker)",
+     "why": "Walrus Icebreaker carries Pulverise; Map 22's table row has it, so it shows there as intended",
+     "yes": [
+      [
+       "m22",
+       "walrus-icebreaker"
+      ]
+     ],
+     "no": [
+      [
+       "m6",
+       "walrus-icebreaker"
+      ]
+     ],
+     "keys": [
+      "pulverise"
+     ]
+    }
+   ],
+   "replace": {
+    "for": [
+     "glacier-yak",
+     "walrus-icebreaker"
+    ],
+    "cards": [
+     {
+      "id": "blessed-avatar",
+      "name": "Blessed Avatar",
+      "why": "near tundra ice, the deer family of the map's list · common · on no list"
+     },
+     {
+      "id": "shrine-acolyte",
+      "name": "Shrine Acolyte",
+      "why": "near tundra ice, the cat family of the map's list · common · on no list"
+     }
+    ],
+    "yes": [
+     [
+      "m6",
+      "blessed-avatar"
+     ],
+     [
+      "m6",
+      "shrine-acolyte"
+     ]
+    ],
+    "why": "Map 17's New! cards would fall below its target of 8 after the removals; same theme, no new unlisted skill"
+   }
+  },
+  {
+   "n": 18,
+   "id": "md",
+   "name": "The Glass Dunes",
+   "cap": "veryrare",
+   "list": 21,
+   "newHere": 9,
+   "target": 8,
+   "add": [],
+   "remove": [
+    {
+     "key": "acidBolt",
+     "skill": "Acid",
+     "card": "caustic-scorpion",
+     "cardName": "Caustic Scorpion",
+     "kind": "stuck",
+     "to": null,
+     "also": null,
+     "text": "drop Caustic Scorpion from Map 18 (no row has Acid)",
+     "why": "Acid is in no map's table row and no other list shows it, so any list holding Caustic Scorpion marks it To remove; dropping it is the only fix from the cards",
+     "yes": [],
+     "no": [
+      [
+       "md",
+       "caustic-scorpion"
+      ]
+     ],
+     "keys": [
+      "acidBolt"
+     ]
+    },
+    {
+     "key": "shield",
+     "skill": "Shield",
+     "card": "armadillo-guard",
+     "cardName": "Armadillo Guard",
+     "kind": "keep",
+     "to": 2,
+     "also": null,
+     "text": "keep Armadillo Guard on Map 18 (Map 2 adds Shield first)",
+     "why": "Shield is New! here only because no card on Map 2 (whose row has it) carries it yet; the Map 2 add of Shield shows it first, so Armadillo Guard stays",
+     "yes": [],
+     "no": [],
+     "keys": [
+      "shield"
+     ]
+    }
+   ]
+  },
+  {
+   "n": 19,
+   "id": "m3",
+   "name": "Ashen Spurn",
+   "cap": "veryrare",
+   "list": 20,
+   "newHere": 8,
+   "target": 8,
+   "add": [],
+   "remove": [
+    {
+     "key": "lastStand",
+     "skill": "Last Stand",
+     "card": "honey-badger-fury",
+     "cardName": "Honey Badger Fury",
+     "kind": "drop",
+     "to": null,
+     "also": 21,
+     "text": "drop Honey Badger Fury from Map 19 (also on Map 21)",
+     "why": "Honey Badger Fury is already on Map 21's list, so it is not lost; Last Stand is not meant to be New! on Map 19",
+     "yes": [],
+     "no": [
+      [
+       "m3",
+       "honey-badger-fury"
+      ]
+     ],
+     "keys": [
+      "lastStand"
+     ]
+    },
+    {
+     "key": "smokeBomb",
+     "skill": "Smoke Bomb",
+     "card": "smoke-raccoon",
+     "cardName": "Smokescreen Raccoon",
+     "kind": "drop",
+     "to": null,
+     "also": 21,
+     "text": "drop Smokescreen Raccoon from Map 19 (also on Map 21)",
+     "why": "Smokescreen Raccoon is already on Map 21's list, so it is not lost; Smoke Bomb is not meant to be New! on Map 19",
+     "yes": [],
+     "no": [
+      [
+       "m3",
+       "smoke-raccoon"
+      ]
+     ],
+     "keys": [
+      "smokeBomb"
+     ]
+    }
+   ],
+   "replace": {
+    "for": [
+     "honey-badger-fury",
+     "smoke-raccoon"
+    ],
+    "cards": [
+     {
+      "id": "ash-moth",
+      "name": "Ash Moth",
+      "why": "a volcanic ash creature, the moth family of the map's list · common · on no list"
+     },
+     {
+      "id": "blessed-avatar",
+      "name": "Blessed Avatar",
+      "why": "a volcanic ash creature, the deer family of the map's list · common · on no list"
+     }
+    ],
+    "yes": [
+     [
+      "m3",
+      "ash-moth"
+     ],
+     [
+      "m3",
+      "blessed-avatar"
+     ]
+    ],
+    "why": "Map 19's New! cards would fall below its target of 8 after the removals; same theme, no new unlisted skill"
+   }
+  },
+  {
+   "n": 20,
+   "id": "m11",
+   "name": "The Sundered Peak",
+   "cap": "superrare",
+   "list": 20,
+   "newHere": 8,
+   "target": 8,
+   "add": [],
+   "remove": []
+  }
+ ]
+}

@@ -4756,5 +4756,12 @@
  "YES or NO each card. Right-click a card (or ⋯) to set its map. ▸2 / ▸3 start that pack at the card.": "ஒவ்வொரு அட்டைக்கும் ஆம் அல்லது இல்லை. வரைபடத்தை அமைக்க வலது-கிளிக் (அல்லது ⋯). ▸2 / ▸3 அந்த பேக்கை இங்கே தொடங்கும்.",
  "Picked {n} / 16": "தேர்வு {n} / 16",
  "To remove": "நீக்க",
- "New here, but not in this map's skill table: take it off this map's cards": "இங்கே புதியது, ஆனால் இந்த வரைபடத்தின் திறன் அட்டவணையில் இல்லை: அதன் அட்டைகளிலிருந்து நீக்கவும்"
+ "New here, but not in this map's skill table: take it off this map's cards": "இங்கே புதியது, ஆனால் இந்த வரைபடத்தின் திறன் அட்டவணையில் இல்லை: அதன் அட்டைகளிலிருந்து நீக்கவும்",
+ "Claude's swaps": "க்ளாட்டின் மாற்றங்கள்",
+ "Add": "சேர்",
+ "Move": "நகர்த்து",
+ "Drop": "நீக்கு",
+ "Keep": "வைத்திரு",
+ "Replace": "மாற்று",
+ "to Map {n}": "வரைபடம் {n} க்கு"
 }

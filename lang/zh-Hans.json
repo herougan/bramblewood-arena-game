@@ -4754,5 +4754,12 @@
  "YES or NO each card. Right-click a card (or ⋯) to set its map. ▸2 / ▸3 start that pack at the card.": "每张卡选“是”或“否”。右键（或 ⋯）设置地图。▸2 / ▸3 从此卡起开始该卡包。",
  "Picked {n} / 16": "已选 {n} / 16",
  "To remove": "待移除",
- "New here, but not in this map's skill table: take it off this map's cards": "此处为新，但不在本地图的技能表中：从本地图的卡牌上移除"
+ "New here, but not in this map's skill table: take it off this map's cards": "此处为新，但不在本地图的技能表中：从本地图的卡牌上移除",
+ "Claude's swaps": "Claude 的调换建议",
+ "Add": "添加",
+ "Move": "移动",
+ "Drop": "移除",
+ "Keep": "保留",
+ "Replace": "替换",
+ "to Map {n}": "到地图 {n}"
 }

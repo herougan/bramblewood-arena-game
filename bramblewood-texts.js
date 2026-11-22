@@ -3930,7 +3930,15 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ps1-tut-sug": "Tutorial suggestions",
   "ui.ps1-reset": "Default cuts",
   "ui.ps1-cut-no": "A pack cannot start at or before the pack before it.",
-  "ui.ps1-sub": "YES or NO each card. Right-click a card (or ⋯) to set its map. ▸2 / ▸3 start that pack at the card."
+  "ui.ps1-sub": "YES or NO each card. Right-click a card (or ⋯) to set its map. ▸2 / ▸3 start that pack at the card.",
+  "ui.ms1-title": "Claude's swaps",
+  "ui.ms1-add": "Add",
+  "ui.ms1-concept": "New card",
+  "ui.ms1-move": "Move",
+  "ui.ms1-drop": "Drop",
+  "ui.ms1-keep": "Keep",
+  "ui.ms1-rep": "Replace",
+  "ui.ms1-to": "to Map {n}"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
