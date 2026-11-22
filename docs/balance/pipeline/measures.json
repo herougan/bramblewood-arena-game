@@ -210571,6 +210571,93 @@
    "statBase": 22.67,
    "measuredAt": "2026-11-22T05:21:25.393Z",
    "seconds": 11
+  },
+  "global@poolhi|T:onSpawn>stun {\"on\":\"onSpawn\",\"do\":\"stun\",\"who\":\"enemy\",\"sub\":\"adjacent\"}": {
+   "key": "T:onSpawn>stun {\"on\":\"onSpawn\",\"do\":\"stun\",\"who\":\"enemy\",\"sub\":\"adjacent\"}",
+   "ctx": "global@poolhi",
+   "bramble": 15,
+   "id": "onSpawn>stun",
+   "class": "trigger",
+   "kind": "measure",
+   "nCards": 1,
+   "cards": [
+    "ash-cloud-condor"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.7312,
+     "lo": 1.9879,
+     "hi": 3.38
+    }
+   ],
+   "fingerprint": "ac1d235a36df",
+   "canonRate": {
+    "m": 0.0246,
+    "lo": 0.0194,
+    "hi": 0.0305
+   },
+   "statRate": {
+    "m": 0.0329,
+    "lo": 0.0213,
+    "hi": 0.0437
+   },
+   "kappa": {
+    "m": 1.3359,
+    "lo": 0.8793,
+    "hi": 1.7949
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0183,
+    "worthStat": {
+     "m": 0.557,
+     "lo": -0.2182,
+     "hi": 1.0667
+    }
+   },
+   "test": {
+    "effects": {
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "stun",
+       "who": "enemy",
+       "sub": "adjacent"
+      }
+     ]
+    },
+    "gain": 0.0667,
+    "worth": {
+     "m": 2.7056,
+     "lo": 1.7111,
+     "hi": 3.7885
+    },
+    "worthRuler": {
+     "m": 2.7312,
+     "lo": 1.9879,
+     "hi": 3.38
+    },
+    "worthStat": {
+     "m": 2.0253,
+     "lo": 1.2121,
+     "hi": 3.2787
+    },
+    "price": 1.95,
+    "net": 0.7812,
+    "verdict": "under-priced",
+    "between": [
+     "armor 1 (2.33)",
+     "poison 1 (2.72)"
+    ]
+   },
+   "statBase": 22.67,
+   "measuredAt": "2026-11-22T05:21:42.133Z",
+   "seconds": 17
   }
  }
 }
