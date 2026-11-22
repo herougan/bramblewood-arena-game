@@ -221864,6 +221864,10949 @@
    "statBase": 19,
    "measuredAt": "2026-11-22T09:30:37.873Z",
    "seconds": 21
+  },
+  "global@pilot0|speed={\"kind\":\"swift\"}": {
+   "key": "speed={\"kind\":\"swift\"}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "speed",
+   "class": "keyword",
+   "kind": "measure",
+   "n": {
+    "kind": "swift"
+   },
+   "nCards": 13,
+   "cards": [
+    "jaguar-stalker",
+    "savanna-cheetah",
+    "dune-jackal",
+    "feral-tomcat",
+    "jackrabbit-sprinter",
+    "fleetfootd",
+    "pride-queen",
+    "ruby-throat-duelist",
+    "frillneck-duelist",
+    "ember-centipede",
+    "pronghorn-racer",
+    "alpine-swift",
+    "beachcomber-sanderling"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 4.1439,
+     "lo": 3.5413,
+     "hi": 5.1137
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "speed": {
+      "kind": "swift"
+     }
+    },
+    "gain": 0.1208,
+    "worth": {
+     "m": 4.3574,
+     "lo": 3.5371,
+     "hi": 5.1505
+    },
+    "worthRuler": {
+     "m": 4.1439,
+     "lo": 3.5413,
+     "hi": 5.1137
+    },
+    "worthStat": {
+     "m": 3.8538,
+     "lo": 2.8571,
+     "hi": 5.2884
+    },
+    "price": 9.5,
+    "net": -5.3561,
+    "verdict": "over-priced",
+    "between": [
+     "inspiring 1 (3.96)",
+     "poison 2 (4.75)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T09:37:05.222Z",
+   "seconds": 364
+  },
+  "global@pilot0|swarm=[\"Ants\"]": {
+   "key": "swarm=[\"Ants\"]",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "swarm",
+   "class": "keyword",
+   "kind": "measure",
+   "n": [
+    "Ants"
+   ],
+   "nCards": 2,
+   "cards": [
+    "ant-scout",
+    "fire-ant-raft"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.3145,
+     "lo": 0.1445,
+     "hi": 0.7083
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "swarm": [
+      "Ants"
+     ]
+    },
+    "gain": 0.0133,
+    "worth": {
+     "m": 0.4808,
+     "lo": 0.2359,
+     "hi": 0.7283
+    },
+    "worthRuler": {
+     "m": 0.3145,
+     "lo": 0.1445,
+     "hi": 0.7083
+    },
+    "worthStat": {
+     "m": 0.4252,
+     "lo": 0.1988,
+     "hi": 0.6875
+    },
+    "price": 3.13,
+    "net": -2.8155,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T09:37:26.253Z",
+   "seconds": 21
+  },
+  "global@pilot0|rainrunner=2": {
+   "key": "rainrunner=2",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "rainrunner",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 1,
+   "cards": [
+    "puddle-skimmer"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.2359,
+     "lo": 0.051,
+     "hi": 0.6807
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "rainrunner": 2
+    },
+    "gain": 0.01,
+    "worth": {
+     "m": 0.3606,
+     "lo": 0.0749,
+     "hi": 0.7343
+    },
+    "worthRuler": {
+     "m": 0.2359,
+     "lo": 0.051,
+     "hi": 0.6807
+    },
+    "worthStat": {
+     "m": 0.3189,
+     "lo": 0.0622,
+     "hi": 0.7339
+    },
+    "price": 4,
+    "net": -3.7641,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T09:37:45.693Z",
+   "seconds": 19
+  },
+  "global@pilot0|poisonBarbs=2": {
+   "key": "poisonBarbs=2",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "poisonBarbs",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 1,
+   "cards": [
+    "pincushion-urchin"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 5.6335,
+     "lo": 4.8604,
+     "hi": 6.7112
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "poisonBarbs": 2
+    },
+    "gain": 0.1629,
+    "worth": {
+     "m": 5.8749,
+     "lo": 4.8882,
+     "hi": 6.5885
+    },
+    "worthRuler": {
+     "m": 5.6335,
+     "lo": 4.8604,
+     "hi": 6.7112
+    },
+    "worthStat": {
+     "m": 5.196,
+     "lo": 4.041,
+     "hi": 7.2126
+    },
+    "price": 3.2,
+    "net": 2.4335,
+    "verdict": "under-priced",
+    "between": [
+     "sweep 2 (5.08)",
+     "onReadyGold 1 (6.65)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T09:38:05.534Z",
+   "seconds": 20
+  },
+  "global@pilot0|delivery=1": {
+   "key": "delivery=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "delivery",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 2,
+   "cards": [
+    "beaver-lumberjack",
+    "pika-hoarder"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 3.2672,
+     "lo": 2.7455,
+     "hi": 4.2081
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "delivery": 1
+    },
+    "gain": 0.0933,
+    "worth": {
+     "m": 3.3657,
+     "lo": 2.4371,
+     "hi": 4.2361
+    },
+    "worthRuler": {
+     "m": 3.2672,
+     "lo": 2.7455,
+     "hi": 4.2081
+    },
+    "worthStat": {
+     "m": 2.9767,
+     "lo": 2.0583,
+     "hi": 4.3105
+    },
+    "price": 5.25,
+    "net": -1.9828,
+    "verdict": "over-priced",
+    "between": [
+     "rage (3.01)",
+     "armor 2 (3.7)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T09:38:29.005Z",
+   "seconds": 23
+  },
+  "global@pilot0|T:onHealed>gain {\"do\":\"gain\",\"on\":\"onHealed\",\"amount\":1,\"resource\":\"lumber\"}": {
+   "key": "T:onHealed>gain {\"do\":\"gain\",\"on\":\"onHealed\",\"amount\":1,\"resource\":\"lumber\"}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "onHealed>gain",
+   "class": "trigger",
+   "kind": "measure",
+   "nCards": 1,
+   "cards": [
+    "gannet-nestweaver"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.0983,
+     "lo": 0,
+     "hi": 0.2806
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onHealed",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ]
+    },
+    "gain": 0.0042,
+    "worth": {
+     "m": 0.1503,
+     "lo": 0,
+     "hi": 0.4071
+    },
+    "worthRuler": {
+     "m": 0.0983,
+     "lo": 0,
+     "hi": 0.2806
+    },
+    "worthStat": {
+     "m": 0.1329,
+     "lo": 0,
+     "hi": 0.3625
+    },
+    "price": 1,
+    "net": -0.9017,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T09:38:52.246Z",
+   "seconds": 23
+  },
+  "global@pilot0|pounce=1": {
+   "key": "pounce=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "pounce",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 2,
+   "cards": [
+    "mallard-marauder",
+    "lotus-frog"
+   ],
+   "fights": 400,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.2004,
+     "lo": 0.8718,
+     "hi": 2.5425
+    },
+    {
+     "fights": 400,
+     "m": 2.2465,
+     "lo": 1.1503,
+     "hi": 2.3874
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0317,
+    "lo": 0.0274,
+    "hi": 0.0351
+   },
+   "statRate": {
+    "m": 0.0335,
+    "lo": 0.0274,
+    "hi": 0.039
+   },
+   "kappa": {
+    "m": 1.0574,
+    "lo": 0.9071,
+    "hi": 1.2718
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.009,
+    "worthStat": {
+     "m": 0.2675,
+     "lo": -0.0964,
+     "hi": 0.6063
+    }
+   },
+   "test": {
+    "effects": {
+     "pounce": 1
+    },
+    "gain": 0.0525,
+    "worth": {
+     "m": 1.6576,
+     "lo": 1.2542,
+     "hi": 2.0893
+    },
+    "worthRuler": {
+     "m": 2.2465,
+     "lo": 1.1503,
+     "hi": 2.3874
+    },
+    "worthStat": {
+     "m": 1.5677,
+     "lo": 1.1155,
+     "hi": 2.0315
+    },
+    "price": 1.66,
+    "net": 0.5865,
+    "verdict": "within its interval",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T09:44:07.256Z",
+   "seconds": 315
+  },
+  "global@pilot0|nursing=1": {
+   "key": "nursing=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "nursing",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 3,
+   "cards": [
+    "bee-forager",
+    "nectar-vintner",
+    "newt-doctor"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 3.5731,
+     "lo": 2.96,
+     "hi": 4.8021
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "nursing": 1
+    },
+    "gain": 0.1062,
+    "worth": {
+     "m": 3.8315,
+     "lo": 3.0247,
+     "hi": 4.5194
+    },
+    "worthRuler": {
+     "m": 3.5731,
+     "lo": 2.96,
+     "hi": 4.8021
+    },
+    "worthStat": {
+     "m": 3.3887,
+     "lo": 2.5652,
+     "hi": 4.6383
+    },
+    "price": 5,
+    "net": -1.4269,
+    "verdict": "over-priced",
+    "between": [
+     "armor 2 (3.7)",
+     "inspiring 1 (3.96)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T09:44:28.001Z",
+   "seconds": 21
+  },
+  "global@pilot0|cure=1": {
+   "key": "cure=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "cure",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 2,
+   "cards": [
+    "phoenix-fledgling",
+    "marsh-mallow-hare"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0,
+     "lo": 0,
+     "hi": 0
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "cure": 1
+    },
+    "gain": 0,
+    "worth": {
+     "m": 0,
+     "lo": 0,
+     "hi": 0
+    },
+    "worthRuler": {
+     "m": 0,
+     "lo": 0,
+     "hi": 0
+    },
+    "worthStat": {
+     "m": 0,
+     "lo": 0,
+     "hi": 0
+    },
+    "price": 0.5,
+    "net": -0.5,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T09:44:48.599Z",
+   "seconds": 21
+  },
+  "global@pilot0|herbalist=1": {
+   "key": "herbalist=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "herbalist",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 2,
+   "cards": [
+    "newt-doctor",
+    "hedgehog-herbalist"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.1867,
+     "lo": 0.0345,
+     "hi": 0.4247
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "herbalist": 1
+    },
+    "gain": 0.0079,
+    "worth": {
+     "m": 0.2855,
+     "lo": 0.0548,
+     "hi": 0.5775
+    },
+    "worthRuler": {
+     "m": 0.1867,
+     "lo": 0.0345,
+     "hi": 0.4247
+    },
+    "worthStat": {
+     "m": 0.2525,
+     "lo": 0.0508,
+     "hi": 0.5405
+    },
+    "price": 0.23,
+    "net": -0.0433,
+    "verdict": "within its interval",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T09:45:09.918Z",
+   "seconds": 21
+  },
+  "global@pilot0|immunity": {
+   "key": "immunity",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "immunity",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 2,
+   "cards": [
+    "venomlord-serpent",
+    "hedgehog-herbalist"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.2162,
+     "lo": 0.0695,
+     "hi": 0.4634
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "immunity": true
+    },
+    "gain": 0.0092,
+    "worth": {
+     "m": 0.3306,
+     "lo": 0.0963,
+     "hi": 0.6238
+    },
+    "worthRuler": {
+     "m": 0.2162,
+     "lo": 0.0695,
+     "hi": 0.4634
+    },
+    "worthStat": {
+     "m": 0.2924,
+     "lo": 0.0805,
+     "hi": 0.5963
+    },
+    "price": 0.3,
+    "net": -0.0838,
+    "verdict": "within its interval",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T09:45:30.598Z",
+   "seconds": 21
+  },
+  "global@pilot0|enfeeble=1": {
+   "key": "enfeeble=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "enfeeble",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 2,
+   "cards": [
+    "booming-bittern",
+    "tsetse-drainer"
+   ],
+   "fights": 400,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.2004,
+     "lo": 1.1233,
+     "hi": 2.4989
+    },
+    {
+     "fights": 400,
+     "m": 2.241,
+     "lo": 1.4144,
+     "hi": 2.4018
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0317,
+    "lo": 0.0274,
+    "hi": 0.0351
+   },
+   "statRate": {
+    "m": 0.0335,
+    "lo": 0.0274,
+    "hi": 0.039
+   },
+   "kappa": {
+    "m": 1.0574,
+    "lo": 0.9071,
+    "hi": 1.2718
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.009,
+    "worthStat": {
+     "m": 0.2675,
+     "lo": -0.0964,
+     "hi": 0.6063
+    }
+   },
+   "test": {
+    "effects": {
+     "enfeeble": 1
+    },
+    "gain": 0.0521,
+    "worth": {
+     "m": 1.6444,
+     "lo": 1.3846,
+     "hi": 1.9788
+    },
+    "worthRuler": {
+     "m": 2.241,
+     "lo": 1.4144,
+     "hi": 2.4018
+    },
+    "worthStat": {
+     "m": 1.5552,
+     "lo": 1.1982,
+     "hi": 1.9731
+    },
+    "price": 2.5,
+    "net": -0.259,
+    "verdict": "over-priced",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T09:46:10.777Z",
+   "seconds": 40
+  },
+  "global@pilot0|parasite": {
+   "key": "parasite",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "parasite",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 2,
+   "cards": [
+    "barrow-leech-bat",
+    "lamprey"
+   ],
+   "fights": 1000,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": -2.4471,
+     "lo": -5.3917,
+     "hi": -1.4064
+    },
+    {
+     "fights": 400,
+     "m": -2.1166,
+     "lo": -3.1629,
+     "hi": -1.3655
+    },
+    {
+     "fights": 700,
+     "m": -2.2776,
+     "lo": -3.2723,
+     "hi": -1.698
+    },
+    {
+     "fights": 1000,
+     "m": -2.4816,
+     "lo": -3.2792,
+     "hi": -1.8816
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0285,
+    "lo": 0.0263,
+    "hi": 0.0317
+   },
+   "statRate": {
+    "m": 0.0335,
+    "lo": 0.0298,
+    "hi": 0.0373
+   },
+   "kappa": {
+    "m": 1.1759,
+    "lo": 1.0302,
+    "hi": 1.2919
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0153,
+    "worthStat": {
+     "m": 0.4577,
+     "lo": 0.1938,
+     "hi": 0.6738
+    }
+   },
+   "test": {
+    "effects": {
+     "parasite": true
+    },
+    "gain": -0.119,
+    "worth": {
+     "m": -4.1771,
+     "lo": -4.771,
+     "hi": -3.4505
+    },
+    "worthRuler": {
+     "m": -2.4816,
+     "lo": -3.2792,
+     "hi": -1.8816
+    },
+    "worthStat": {
+     "m": -3.5522,
+     "lo": -4.1078,
+     "hi": -3.0035
+    },
+    "price": 1,
+    "net": -3.4816,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:00:47.486Z",
+   "seconds": 877
+  },
+  "global@pilot0|sleepPowder=1": {
+   "key": "sleepPowder=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "sleepPowder",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 2,
+   "cards": [
+    "amber-cicada",
+    "phoenix-mushrooms"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 3.6512,
+     "lo": 3.01,
+     "hi": 4.9534
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "sleepPowder": 1
+    },
+    "gain": 0.1096,
+    "worth": {
+     "m": 3.9517,
+     "lo": 3.1714,
+     "hi": 4.5514
+    },
+    "worthRuler": {
+     "m": 3.6512,
+     "lo": 3.01,
+     "hi": 4.9534
+    },
+    "worthStat": {
+     "m": 3.495,
+     "lo": 2.6,
+     "hi": 4.8193
+    },
+    "price": 2.5,
+    "net": 1.1512,
+    "verdict": "under-priced",
+    "between": [
+     "armor 2 (3.7)",
+     "inspiring 1 (3.96)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:01:11.718Z",
+   "seconds": 24
+  },
+  "global@pilot0|broodkeeper=1": {
+   "key": "broodkeeper=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "broodkeeper",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 1,
+   "cards": [
+    "wolf-spider-mother"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.2752,
+     "lo": 0.1018,
+     "hi": 0.7344
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "broodkeeper": 1
+    },
+    "gain": 0.0117,
+    "worth": {
+     "m": 0.4207,
+     "lo": 0.1516,
+     "hi": 0.7572
+    },
+    "worthRuler": {
+     "m": 0.2752,
+     "lo": 0.1018,
+     "hi": 0.7344
+    },
+    "worthStat": {
+     "m": 0.3721,
+     "lo": 0.1356,
+     "hi": 0.6875
+    },
+    "price": 3,
+    "net": -2.7248,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:01:33.947Z",
+   "seconds": 22
+  },
+  "global@pilot0|swarm=[\"Arachnid\"]": {
+   "key": "swarm=[\"Arachnid\"]",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "swarm",
+   "class": "keyword",
+   "kind": "measure",
+   "n": [
+    "Arachnid"
+   ],
+   "nCards": 1,
+   "cards": [
+    "wolf-spider-mother"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.0786,
+     "lo": -0.0308,
+     "hi": 0.2183
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "swarm": [
+      "Arachnid"
+     ]
+    },
+    "gain": 0.0033,
+    "worth": {
+     "m": 0.1202,
+     "lo": -0.038,
+     "hi": 0.2919
+    },
+    "worthRuler": {
+     "m": 0.0786,
+     "lo": -0.0308,
+     "hi": 0.2183
+    },
+    "worthStat": {
+     "m": 0.1063,
+     "lo": -0.0374,
+     "hi": 0.2832
+    },
+    "price": 3.13,
+    "net": -3.0514,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:01:54.264Z",
+   "seconds": 20
+  },
+  "global@pilot0|keenSense={\"sees\":\"dark\"}": {
+   "key": "keenSense={\"sees\":\"dark\"}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "keenSense",
+   "class": "keyword",
+   "kind": "measure",
+   "n": {
+    "sees": "dark"
+   },
+   "nCards": 5,
+   "cards": [
+    "echo-screecher",
+    "blind-cave-fish",
+    "meerkat-burrower",
+    "cave-olm",
+    "star-nosed-mole"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.059,
+     "lo": -0.095,
+     "hi": 0.3192
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "keenSense": {
+      "sees": "dark"
+     }
+    },
+    "gain": 0.0025,
+    "worth": {
+     "m": 0.0902,
+     "lo": -0.1321,
+     "hi": 0.4154
+    },
+    "worthRuler": {
+     "m": 0.059,
+     "lo": -0.095,
+     "hi": 0.3192
+    },
+    "worthStat": {
+     "m": 0.0797,
+     "lo": -0.1277,
+     "hi": 0.3499
+    },
+    "price": 3,
+    "net": -2.941,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:02:16.179Z",
+   "seconds": 22
+  },
+  "global@pilot0|T:onDeath>damage {\"do\":\"damage\",\"on\":\"onDeath\",\"sub\":\"adjacent\",\"who\":\"enemy\",\"amount\":2,\"dmgType\":\"heat\"}": {
+   "key": "T:onDeath>damage {\"do\":\"damage\",\"on\":\"onDeath\",\"sub\":\"adjacent\",\"who\":\"enemy\",\"amount\":2,\"dmgType\":\"heat\"}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "onDeath>damage",
+   "class": "trigger",
+   "kind": "measure",
+   "nCards": 1,
+   "cards": [
+    "sulfur-cinder-moth"
+   ],
+   "fights": 700,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 1.9929,
+     "lo": 1.1798,
+     "hi": 2.3948
+    },
+    {
+     "fights": 400,
+     "m": 1.4403,
+     "lo": 0.6622,
+     "hi": 2.2561
+    },
+    {
+     "fights": 700,
+     "m": 1.3837,
+     "lo": 0.9549,
+     "hi": 1.9096
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0302,
+    "lo": 0.027,
+    "hi": 0.0336
+   },
+   "statRate": {
+    "m": 0.0341,
+    "lo": 0.0295,
+    "hi": 0.039
+   },
+   "kappa": {
+    "m": 1.1297,
+    "lo": 0.9794,
+    "hi": 1.2773
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0157,
+    "worthStat": {
+     "m": 0.4603,
+     "lo": 0.186,
+     "hi": 0.6976
+    }
+   },
+   "test": {
+    "effects": {
+     "triggers": [
+      {
+       "do": "damage",
+       "on": "onDeath",
+       "sub": "adjacent",
+       "who": "enemy",
+       "amount": 2,
+       "dmgType": "heat"
+      }
+     ]
+    },
+    "gain": 0.0398,
+    "worth": {
+     "m": 1.3159,
+     "lo": 1.1227,
+     "hi": 1.4826
+    },
+    "worthRuler": {
+     "m": 1.3837,
+     "lo": 0.9549,
+     "hi": 1.9096
+    },
+    "worthStat": {
+     "m": 1.1648,
+     "lo": 0.9535,
+     "hi": 1.4063
+    },
+    "price": 1.19,
+    "net": 0.1937,
+    "verdict": "within its interval",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:03:28.758Z",
+   "seconds": 73
+  },
+  "global@pilot0|daunt={\"v\":1,\"lasts\":\"lasting\"}": {
+   "key": "daunt={\"v\":1,\"lasts\":\"lasting\"}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "daunt",
+   "class": "keyword",
+   "kind": "measure",
+   "n": {
+    "v": 1,
+    "lasts": "lasting"
+   },
+   "nCards": 2,
+   "cards": [
+    "reef-shark",
+    "cinder-hornet"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 3.0055,
+     "lo": 2.768,
+     "hi": 3.4118
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "daunt": {
+      "v": 1,
+      "lasts": "lasting"
+     }
+    },
+    "gain": 0.0838,
+    "worth": {
+     "m": 3.0201,
+     "lo": 2.4823,
+     "hi": 3.4359
+    },
+    "worthRuler": {
+     "m": 3.0055,
+     "lo": 2.768,
+     "hi": 3.4118
+    },
+    "worthStat": {
+     "m": 2.6711,
+     "lo": 1.9348,
+     "hi": 3.6431
+    },
+    "price": 2.64,
+    "net": 0.3655,
+    "verdict": "under-priced",
+    "between": [
+     "rage (3.01)",
+     "armor 2 (3.7)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:03:52.468Z",
+   "seconds": 24
+  },
+  "global@pilot0|paralysisPowder=1": {
+   "key": "paralysisPowder=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "paralysisPowder",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 2,
+   "cards": [
+    "nightshade-moth",
+    "apollo-butterfly"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 4.7088,
+     "lo": 4.0634,
+     "hi": 5.2555
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "paralysisPowder": 1
+    },
+    "gain": 0.1325,
+    "worth": {
+     "m": 4.7781,
+     "lo": 4,
+     "hi": 5.4919
+    },
+    "worthRuler": {
+     "m": 4.7088,
+     "lo": 4.0634,
+     "hi": 5.2555
+    },
+    "worthStat": {
+     "m": 4.2259,
+     "lo": 3.2239,
+     "hi": 5.7876
+    },
+    "price": 3.34,
+    "net": 1.3688,
+    "verdict": "under-priced",
+    "between": [
+     "poison 2 (4.75)",
+     "bleed 2 (4.87)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:04:14.611Z",
+   "seconds": 22
+  },
+  "global@pilot0|twinShot=2": {
+   "key": "twinShot=2",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "twinShot",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 1,
+   "cards": [
+    "eyrie-warden"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 8.9992,
+     "lo": 8.141,
+     "hi": 10.1822
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "twinShot": 2
+    },
+    "gain": 0.2563,
+    "worth": {
+     "m": 9.2406,
+     "lo": 7.8706,
+     "hi": 10.5544
+    },
+    "worthRuler": {
+     "m": 8.9992,
+     "lo": 8.141,
+     "hi": 10.1822
+    },
+    "worthStat": {
+     "m": 8.1728,
+     "lo": 6.3686,
+     "hi": 11.1795
+    },
+    "price": 13.26,
+    "net": -4.2608,
+    "verdict": "over-priced",
+    "between": [
+     "onReadyGold 1 (6.65)",
+     "-"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:04:31.010Z",
+   "seconds": 16
+  },
+  "global@pilot0|dynamite=3": {
+   "key": "dynamite=3",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "dynamite",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 3,
+   "nCards": 1,
+   "cards": [
+    "mouse-sapper"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.9556,
+     "lo": 2.33,
+     "hi": 3.7214
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "dynamite": 3
+    },
+    "gain": 0.0813,
+    "worth": {
+     "m": 2.9299,
+     "lo": 2.1037,
+     "hi": 3.7125
+    },
+    "worthRuler": {
+     "m": 2.9556,
+     "lo": 2.33,
+     "hi": 3.7214
+    },
+    "worthStat": {
+     "m": 2.5914,
+     "lo": 1.7674,
+     "hi": 3.8596
+    },
+    "price": 1.1,
+    "net": 1.8556,
+    "verdict": "under-priced",
+    "between": [
+     "regen 2 (2.9)",
+     "pounce 2 (2.96)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:04:50.440Z",
+   "seconds": 19
+  },
+  "global@pilot0|harbinger=1": {
+   "key": "harbinger=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "harbinger",
+   "class": "shorthand",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 3,
+   "cards": [
+    "monarch-wingblade",
+    "heron-hag",
+    "tasmanian-devil"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 5.1034,
+     "lo": 4.4419,
+     "hi": 5.7045
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "harbinger": 1
+    },
+    "gain": 0.1446,
+    "worth": {
+     "m": 5.2138,
+     "lo": 4.2372,
+     "hi": 6.0084
+    },
+    "worthRuler": {
+     "m": 5.1034,
+     "lo": 4.4419,
+     "hi": 5.7045
+    },
+    "worthStat": {
+     "m": 4.6113,
+     "lo": 3.5728,
+     "hi": 6.1245
+    },
+    "price": 6.5,
+    "net": -1.3966,
+    "verdict": "over-priced",
+    "between": [
+     "sweep 2 (5.08)",
+     "onReadyGold 1 (6.65)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:05:10.167Z",
+   "seconds": 20
+  },
+  "global@pilot0|exploit=2": {
+   "key": "exploit=2",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "exploit",
+   "class": "shorthand",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 1,
+   "cards": [
+    "stoat-cutthroat"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.2373,
+     "lo": 1.234,
+     "hi": 2.4293
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "exploit": 2
+    },
+    "gain": 0.0488,
+    "worth": {
+     "m": 1.758,
+     "lo": 1.2911,
+     "hi": 2.147
+    },
+    "worthRuler": {
+     "m": 2.2373,
+     "lo": 1.234,
+     "hi": 2.4293
+    },
+    "worthStat": {
+     "m": 1.5548,
+     "lo": 1.0931,
+     "hi": 2.2035
+    },
+    "price": 4.2,
+    "net": -1.9627,
+    "verdict": "over-priced",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:05:29.974Z",
+   "seconds": 20
+  },
+  "global@pilot0|herald=1": {
+   "key": "herald=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "herald",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 1,
+   "cards": [
+    "hoopoe-herald"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0,
+     "lo": 0,
+     "hi": 0
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "herald": 1
+    },
+    "gain": 0,
+    "worth": {
+     "m": 0,
+     "lo": 0,
+     "hi": 0
+    },
+    "worthRuler": {
+     "m": 0,
+     "lo": 0,
+     "hi": 0
+    },
+    "worthStat": {
+     "m": 0,
+     "lo": 0,
+     "hi": 0
+    },
+    "price": 1.5,
+    "net": -1.5,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:05:50.444Z",
+   "seconds": 20
+  },
+  "global@pilot0|harden=1": {
+   "key": "harden=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "harden",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 2,
+   "cards": [
+    "sworn-shieldbearer",
+    "ladybird-guard"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 3.1079,
+     "lo": 2.668,
+     "hi": 3.9401
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "harden": 1
+    },
+    "gain": 0.0875,
+    "worth": {
+     "m": 3.1553,
+     "lo": 2.3607,
+     "hi": 3.8916
+    },
+    "worthRuler": {
+     "m": 3.1079,
+     "lo": 2.668,
+     "hi": 3.9401
+    },
+    "worthStat": {
+     "m": 2.7907,
+     "lo": 2.0131,
+     "hi": 3.9279
+    },
+    "price": 2.11,
+    "net": 0.9979,
+    "verdict": "under-priced",
+    "between": [
+     "rage (3.01)",
+     "armor 2 (3.7)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:06:11.431Z",
+   "seconds": 21
+  },
+  "global@pilot0|loyal={\"v\":[1,3],\"gives\":{\"armor\":1}}": {
+   "key": "loyal={\"v\":[1,3],\"gives\":{\"armor\":1}}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "loyal",
+   "class": "keyword",
+   "kind": "measure",
+   "n": {
+    "v": [
+     1,
+     3
+    ],
+    "gives": {
+     "armor": 1
+    }
+   },
+   "nCards": 1,
+   "cards": [
+    "sworn-shieldbearer"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": -0.0491,
+     "lo": -0.5238,
+     "hi": 0.349
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "loyal": {
+      "v": [
+       1,
+       3
+      ],
+      "gives": {
+       "armor": 1
+      }
+     }
+    },
+    "gain": -0.0021,
+    "worth": {
+     "m": -0.0751,
+     "lo": -0.6589,
+     "hi": 0.5093
+    },
+    "worthRuler": {
+     "m": -0.0491,
+     "lo": -0.5238,
+     "hi": 0.349
+    },
+    "worthStat": {
+     "m": -0.0664,
+     "lo": -0.613,
+     "hi": 0.4825
+    },
+    "price": 0.93,
+    "net": -0.9791,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:06:29.913Z",
+   "seconds": 18
+  },
+  "global@pilot0|T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2}": {
+   "key": "T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "onSpawn>gain",
+   "class": "trigger",
+   "kind": "measure",
+   "nCards": 2,
+   "cards": [
+    "cone-cutter-squirrel",
+    "pumice-beetle"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 5.1034,
+     "lo": 4.3176,
+     "hi": 5.8817
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 2
+      }
+     ]
+    },
+    "gain": 0.1446,
+    "worth": {
+     "m": 5.2138,
+     "lo": 4.0576,
+     "hi": 6.254
+    },
+    "worthRuler": {
+     "m": 5.1034,
+     "lo": 4.3176,
+     "hi": 5.8817
+    },
+    "worthStat": {
+     "m": 4.6113,
+     "lo": 3.3865,
+     "hi": 6.5703
+    },
+    "price": 4.24,
+    "net": 0.8634,
+    "verdict": "under-priced",
+    "between": [
+     "sweep 2 (5.08)",
+     "onReadyGold 1 (6.65)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:06:51.857Z",
+   "seconds": 22
+  },
+  "global@pilot0|loneWolf=[1,1]": {
+   "key": "loneWolf=[1,1]",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "loneWolf",
+   "class": "keyword",
+   "kind": "measure",
+   "n": [
+    1,
+    1
+   ],
+   "nCards": 1,
+   "cards": [
+    "taiga-lynx"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 7.5267,
+     "lo": 6.8631,
+     "hi": 8.5673
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "loneWolf": [
+      1,
+      1
+     ]
+    },
+    "gain": 0.2154,
+    "worth": {
+     "m": 7.7681,
+     "lo": 6.6651,
+     "hi": 8.6914
+    },
+    "worthRuler": {
+     "m": 7.5267,
+     "lo": 6.8631,
+     "hi": 8.5673
+    },
+    "worthStat": {
+     "m": 6.8704,
+     "lo": 5.4985,
+     "hi": 9.3094
+    },
+    "price": 7.36,
+    "net": 0.1667,
+    "verdict": "within its interval",
+    "between": [
+     "onReadyGold 1 (6.65)",
+     "-"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:07:11.885Z",
+   "seconds": 20
+  },
+  "global@pilot0|offspring=1": {
+   "key": "offspring=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "offspring",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 2,
+   "cards": [
+    "polar-bear",
+    "ringed-seal"
+   ],
+   "fights": 400,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.6293,
+     "lo": 0.2087,
+     "hi": 2.23
+    },
+    {
+     "fights": 400,
+     "m": 0.4145,
+     "lo": 0.19,
+     "hi": 1.0054
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0317,
+    "lo": 0.0274,
+    "hi": 0.0351
+   },
+   "statRate": {
+    "m": 0.0335,
+    "lo": 0.0274,
+    "hi": 0.039
+   },
+   "kappa": {
+    "m": 1.0574,
+    "lo": 0.9071,
+    "hi": 1.2718
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.009,
+    "worthStat": {
+     "m": 0.2675,
+     "lo": -0.0964,
+     "hi": 0.6063
+    }
+   },
+   "test": {
+    "effects": {
+     "offspring": 1
+    },
+    "gain": 0.0217,
+    "worth": {
+     "m": 0.6841,
+     "lo": 0.352,
+     "hi": 1.0205
+    },
+    "worthRuler": {
+     "m": 0.4145,
+     "lo": 0.19,
+     "hi": 1.0054
+    },
+    "worthStat": {
+     "m": 0.647,
+     "lo": 0.3195,
+     "hi": 1.0097
+    },
+    "price": 6.08,
+    "net": -5.6655,
+    "verdict": "over-priced",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:07:54.347Z",
+   "seconds": 42
+  },
+  "global@pilot0|shield=3": {
+   "key": "shield=3",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "shield",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 3,
+   "nCards": 1,
+   "cards": [
+    "armadillo-guard"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.252,
+     "lo": 1.5875,
+     "hi": 2.6091
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "shield": 3
+    },
+    "gain": 0.0512,
+    "worth": {
+     "m": 1.8481,
+     "lo": 1.3655,
+     "hi": 2.2217
+    },
+    "worthRuler": {
+     "m": 2.252,
+     "lo": 1.5875,
+     "hi": 2.6091
+    },
+    "worthStat": {
+     "m": 1.6346,
+     "lo": 1.0839,
+     "hi": 2.3881
+    },
+    "price": 4.93,
+    "net": -2.678,
+    "verdict": "over-priced",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:08:16.482Z",
+   "seconds": 22
+  },
+  "global@pilot0|arrow={\"v\":1,\"type\":\"fire\"}": {
+   "key": "arrow={\"v\":1,\"type\":\"fire\"}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "arrow",
+   "class": "keyword",
+   "kind": "measure",
+   "n": {
+    "v": 1,
+    "type": "fire"
+   },
+   "nCards": 3,
+   "cards": [
+    "quillback-elder",
+    "fire-salamander",
+    "rimefire-salamander"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 5.8589,
+     "lo": 5.1445,
+     "hi": 6.9729
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "arrow": {
+      "v": 1,
+      "type": "fire"
+     }
+    },
+    "gain": 0.1692,
+    "worth": {
+     "m": 6.1003,
+     "lo": 5.2138,
+     "hi": 6.8797
+    },
+    "worthRuler": {
+     "m": 5.8589,
+     "lo": 5.1445,
+     "hi": 6.9729
+    },
+    "worthStat": {
+     "m": 5.3953,
+     "lo": 4.24,
+     "hi": 7.1647
+    },
+    "price": 6.56,
+    "net": -0.7011,
+    "verdict": "within its interval",
+    "between": [
+     "sweep 2 (5.08)",
+     "onReadyGold 1 (6.65)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:08:37.529Z",
+   "seconds": 21
+  },
+  "global@pilot0|guardian": {
+   "key": "guardian",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "guardian",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 23,
+   "cards": [
+    "terrier-pup",
+    "grizzly-vanguard",
+    "venomlord-serpent",
+    "cypress-root-lurker",
+    "stalactite-golem",
+    "fiddler-crab-swarm",
+    "badger-trench-digger",
+    "chipmunk-cavalry",
+    "canopy-sloth-guardian",
+    "old-shell",
+    "optio-of-the-ford",
+    "truce-heron",
+    "badger-lumberjack",
+    "alpine-marmot",
+    "border-collie",
+    "dhole-matriarch",
+    "marula-elephant",
+    "testudo-tortoise",
+    "ladybird-guard",
+    "kittiwake-flock",
+    "hawthorn-shieldbug",
+    "barnacle-bulwark",
+    "reefback-turtle"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": -0.0491,
+     "lo": -0.6887,
+     "hi": 0.4397
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "guardian": true
+    },
+    "gain": -0.0021,
+    "worth": {
+     "m": -0.0751,
+     "lo": -0.8863,
+     "hi": 0.6055
+    },
+    "worthRuler": {
+     "m": -0.0491,
+     "lo": -0.6887,
+     "hi": 0.4397
+    },
+    "worthStat": {
+     "m": -0.0664,
+     "lo": -0.8175,
+     "hi": 0.5248
+    },
+    "price": 0,
+    "net": -0.0491,
+    "verdict": "within its interval",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:08:59.320Z",
+   "seconds": 22
+  },
+  "global@pilot0|thorns=2": {
+   "key": "thorns=2",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "thorns",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 6,
+   "cards": [
+    "bramble-sprout",
+    "quillguard",
+    "strangler-vine",
+    "thistle-baron",
+    "barkplate-beetle",
+    "barrel-cactus"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 5.1149,
+     "lo": 4.5276,
+     "hi": 5.6052
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "thorns": 2
+    },
+    "gain": 0.145,
+    "worth": {
+     "m": 5.2288,
+     "lo": 4.4254,
+     "hi": 5.8752
+    },
+    "worthRuler": {
+     "m": 5.1149,
+     "lo": 4.5276,
+     "hi": 5.6052
+    },
+    "worthStat": {
+     "m": 4.6246,
+     "lo": 3.7006,
+     "hi": 6.0541
+    },
+    "price": 5.08,
+    "net": 0.0349,
+    "verdict": "within its interval",
+    "between": [
+     "sweep 2 (5.08)",
+     "onReadyGold 1 (6.65)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:09:19.886Z",
+   "seconds": 21
+  },
+  "global@pilot0|thorns=1": {
+   "key": "thorns=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "thorns",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 5,
+   "cards": [
+    "sulfur-vent-crab",
+    "hedgehog-scout",
+    "inside-out-hedgehog",
+    "horned-lizard",
+    "crown-of-thorns-star"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.9534,
+     "lo": 2.6474,
+     "hi": 3.3582
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "thorns": 1
+    },
+    "gain": 0.0808,
+    "worth": {
+     "m": 2.9149,
+     "lo": 2.3183,
+     "hi": 3.4054
+    },
+    "worthRuler": {
+     "m": 2.9534,
+     "lo": 2.6474,
+     "hi": 3.3582
+    },
+    "worthStat": {
+     "m": 2.5781,
+     "lo": 1.9115,
+     "hi": 3.6392
+    },
+    "price": 3.22,
+    "net": -0.2666,
+    "verdict": "within its interval",
+    "between": [
+     "regen 2 (2.9)",
+     "pounce 2 (2.96)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:09:43.075Z",
+   "seconds": 23
+  },
+  "global@pilot0|foraging=1": {
+   "key": "foraging=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "foraging",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 4,
+   "cards": [
+    "dormouse",
+    "pika-hoarder",
+    "hedgerow-shrew",
+    "red-billed-chough"
+   ],
+   "fights": 400,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.0521,
+     "lo": 0.985,
+     "hi": 2.4438
+    },
+    {
+     "fights": 400,
+     "m": 2.2879,
+     "lo": 1.6536,
+     "hi": 2.4498
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0317,
+    "lo": 0.0274,
+    "hi": 0.0351
+   },
+   "statRate": {
+    "m": 0.0335,
+    "lo": 0.0274,
+    "hi": 0.039
+   },
+   "kappa": {
+    "m": 1.0574,
+    "lo": 0.9071,
+    "hi": 1.2718
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.009,
+    "worthStat": {
+     "m": 0.2675,
+     "lo": -0.0964,
+     "hi": 0.6063
+    }
+   },
+   "test": {
+    "effects": {
+     "foraging": 1
+    },
+    "gain": 0.0556,
+    "worth": {
+     "m": 1.7563,
+     "lo": 1.4926,
+     "hi": 2.095
+    },
+    "worthRuler": {
+     "m": 2.2879,
+     "lo": 1.6536,
+     "hi": 2.4498
+    },
+    "worthStat": {
+     "m": 1.661,
+     "lo": 1.2804,
+     "hi": 2.0981
+    },
+    "price": 1.68,
+    "net": 0.6079,
+    "verdict": "within its interval",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:10:26.182Z",
+   "seconds": 43
+  },
+  "global@pilot0|repair=2": {
+   "key": "repair=2",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "repair",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 2,
+   "cards": [
+    "badger-lumberjack",
+    "beaver-feller"
+   ],
+   "fights": 400,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.2568,
+     "lo": 1.4024,
+     "hi": 2.7733
+    },
+    {
+     "fights": 400,
+     "m": 2.412,
+     "lo": 2.1348,
+     "hi": 2.8333
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0317,
+    "lo": 0.0274,
+    "hi": 0.0351
+   },
+   "statRate": {
+    "m": 0.0335,
+    "lo": 0.0274,
+    "hi": 0.039
+   },
+   "kappa": {
+    "m": 1.0574,
+    "lo": 0.9071,
+    "hi": 1.2718
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.009,
+    "worthStat": {
+     "m": 0.2675,
+     "lo": -0.0964,
+     "hi": 0.6063
+    }
+   },
+   "test": {
+    "effects": {
+     "repair": 2
+    },
+    "gain": 0.065,
+    "worth": {
+     "m": 2.0523,
+     "lo": 1.7026,
+     "hi": 2.488
+    },
+    "worthRuler": {
+     "m": 2.412,
+     "lo": 2.1348,
+     "hi": 2.8333
+    },
+    "worthStat": {
+     "m": 1.9409,
+     "lo": 1.5188,
+     "hi": 2.4296
+    },
+    "price": 2.97,
+    "net": -0.558,
+    "verdict": "over-priced",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:11:13.064Z",
+   "seconds": 47
+  },
+  "global@pilot0|tide": {
+   "key": "tide",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "tide",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 54,
+   "cards": [
+    "tide-spirit",
+    "pike-lancer",
+    "reef-shark",
+    "octopus-tactician",
+    "snapstick-turtle",
+    "orca-vanguard",
+    "clownfish-scout",
+    "sea-turtle-elder",
+    "coral-polyp-colony",
+    "blind-cave-fish",
+    "sulfur-vent-crab",
+    "riptide-eel",
+    "mangrove-mudskipper",
+    "fiddler-crab-swarm",
+    "open-ocean-hermit-crab",
+    "camouflage-frog",
+    "coral-current-eel",
+    "voltaic-eel",
+    "river-warden",
+    "meadow-frog",
+    "fleetfootd",
+    "otter-ferryman",
+    "drowned-matriarch",
+    "reef-admiral",
+    "conch-crawler",
+    "conch-herald",
+    "inkcloud-squid",
+    "abyss-lantern-squid",
+    "goliath-tentacle",
+    "moon-jelly",
+    "mudpuppy",
+    "harbor-seal",
+    "otter-angler",
+    "electric-ray",
+    "fathom-leviathan",
+    "river-mink",
+    "pincushion-urchin",
+    "rock-pool-starfish",
+    "limpet-clinger",
+    "muskrat-lodgekeeper",
+    "old-sturgeon",
+    "alligator-gar",
+    "fire-ant-raft",
+    "anhinga-spearbird",
+    "raft-spider",
+    "proboscis-monkey",
+    "crown-of-thorns-star",
+    "giant-clam",
+    "beluga",
+    "krill-swarm",
+    "greenland-shark",
+    "ringed-seal",
+    "ironclaw-fiddler",
+    "cormorant"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.2555,
+     "lo": 0.0577,
+     "hi": 0.6466
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "tide": true
+    },
+    "gain": 0.0108,
+    "worth": {
+     "m": 0.3907,
+     "lo": 0.0919,
+     "hi": 0.7141
+    },
+    "worthRuler": {
+     "m": 0.2555,
+     "lo": 0.0577,
+     "hi": 0.6466
+    },
+    "worthStat": {
+     "m": 0.3455,
+     "lo": 0.0692,
+     "hi": 0.7196
+    },
+    "price": 0.5,
+    "net": -0.2445,
+    "verdict": "within its interval",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:11:34.482Z",
+   "seconds": 21
+  },
+  "global@pilot0|crabClaws": {
+   "key": "crabClaws",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "crabClaws",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 4,
+   "cards": [
+    "sulfur-vent-crab",
+    "fiddler-crab-swarm",
+    "open-ocean-hermit-crab",
+    "driftwood-crab"
+   ],
+   "fights": 400,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.4521,
+     "lo": -0.1196,
+     "hi": 1.9045
+    },
+    {
+     "fights": 400,
+     "m": 0.3587,
+     "lo": 0.0424,
+     "hi": 1.1559
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0317,
+    "lo": 0.0274,
+    "hi": 0.0351
+   },
+   "statRate": {
+    "m": 0.0335,
+    "lo": 0.0274,
+    "hi": 0.039
+   },
+   "kappa": {
+    "m": 1.0574,
+    "lo": 0.9071,
+    "hi": 1.2718
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.009,
+    "worthStat": {
+     "m": 0.2675,
+     "lo": -0.0964,
+     "hi": 0.6063
+    }
+   },
+   "test": {
+    "effects": {
+     "crabClaws": true
+    },
+    "gain": 0.0188,
+    "worth": {
+     "m": 0.592,
+     "lo": 0.0747,
+     "hi": 1.0969
+    },
+    "worthRuler": {
+     "m": 0.3587,
+     "lo": 0.0424,
+     "hi": 1.1559
+    },
+    "worthStat": {
+     "m": 0.5599,
+     "lo": 0.0758,
+     "hi": 1.0808
+    },
+    "price": 0.1,
+    "net": 0.2587,
+    "verdict": "within its interval",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:12:16.929Z",
+   "seconds": 42
+  },
+  "global@pilot0|inspiring=2": {
+   "key": "inspiring=2",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "inspiring",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 4,
+   "cards": [
+    "conch-herald",
+    "triumvirate",
+    "goliath-broodmother",
+    "marshal-tuskwell"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 5.6636,
+     "lo": 4.842,
+     "hi": 6.7008
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "inspiring": 2
+    },
+    "gain": 0.1638,
+    "worth": {
+     "m": 5.905,
+     "lo": 4.9371,
+     "hi": 6.8373
+    },
+    "worthRuler": {
+     "m": 5.6636,
+     "lo": 4.842,
+     "hi": 6.7008
+    },
+    "worthStat": {
+     "m": 5.2226,
+     "lo": 4.0976,
+     "hi": 6.9907
+    },
+    "price": 5.9,
+    "net": -0.2364,
+    "verdict": "within its interval",
+    "between": [
+     "sweep 2 (5.08)",
+     "onReadyGold 1 (6.65)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:12:34.177Z",
+   "seconds": 17
+  },
+  "global@pilot0|pierce=2": {
+   "key": "pierce=2",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "pierce",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 3,
+   "cards": [
+    "old-snapjaw",
+    "mallard-halberdier",
+    "oystercatcher"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.0688,
+     "lo": -0.0193,
+     "hi": 0.2375
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "pierce": 2
+    },
+    "gain": 0.0029,
+    "worth": {
+     "m": 0.1052,
+     "lo": -0.0263,
+     "hi": 0.2402
+    },
+    "worthRuler": {
+     "m": 0.0688,
+     "lo": -0.0193,
+     "hi": 0.2375
+    },
+    "worthStat": {
+     "m": 0.093,
+     "lo": -0.024,
+     "hi": 0.2317
+    },
+    "price": 0.3,
+    "net": -0.2312,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:12:54.777Z",
+   "seconds": 21
+  },
+  "global@pilot0|T:onAttack>gain {\"do\":\"gain\",\"on\":\"onAttack\",\"amount\":1,\"resource\":\"lumber\"}": {
+   "key": "T:onAttack>gain {\"do\":\"gain\",\"on\":\"onAttack\",\"amount\":1,\"resource\":\"lumber\"}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "onAttack>gain",
+   "class": "trigger",
+   "kind": "measure",
+   "nCards": 2,
+   "cards": [
+    "forager-ant",
+    "gull-thief"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 4.9882,
+     "lo": 4.3596,
+     "hi": 5.3336
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onAttack",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ]
+    },
+    "gain": 0.1404,
+    "worth": {
+     "m": 5.0636,
+     "lo": 4.0495,
+     "hi": 5.9574
+    },
+    "worthRuler": {
+     "m": 4.9882,
+     "lo": 4.3596,
+     "hi": 5.3336
+    },
+    "worthStat": {
+     "m": 4.4784,
+     "lo": 3.3153,
+     "hi": 6.2387
+    },
+    "price": 1.35,
+    "net": 3.6382,
+    "verdict": "under-priced",
+    "between": [
+     "fork (4.95)",
+     "sweep 2 (5.08)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:13:15.952Z",
+   "seconds": 21
+  },
+  "global@pilot0|T:onAttacked>gain {\"do\":\"gain\",\"on\":\"onAttacked\",\"amount\":1,\"resource\":\"lumber\"}": {
+   "key": "T:onAttacked>gain {\"do\":\"gain\",\"on\":\"onAttacked\",\"amount\":1,\"resource\":\"lumber\"}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "onAttacked>gain",
+   "class": "trigger",
+   "kind": "measure",
+   "nCards": 1,
+   "cards": [
+    "driftwood-crab"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 3.5926,
+     "lo": 2.9968,
+     "hi": 4.7351
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onAttacked",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ]
+    },
+    "gain": 0.1071,
+    "worth": {
+     "m": 3.8615,
+     "lo": 3.0491,
+     "hi": 4.5828
+    },
+    "worthRuler": {
+     "m": 3.5926,
+     "lo": 2.9968,
+     "hi": 4.7351
+    },
+    "worthStat": {
+     "m": 3.4153,
+     "lo": 2.6167,
+     "hi": 4.7175
+    },
+    "price": 1.9,
+    "net": 1.6926,
+    "verdict": "under-priced",
+    "between": [
+     "armor 2 (3.7)",
+     "inspiring 1 (3.96)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:13:35.197Z",
+   "seconds": 19
+  },
+  "global@pilot0|salvage=1": {
+   "key": "salvage=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "salvage",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 1,
+   "cards": [
+    "salvager-hermit-crab"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0,
+     "lo": -0.059,
+     "hi": 0.0556
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "salvage": 1
+    },
+    "gain": 0,
+    "worth": {
+     "m": 0,
+     "lo": -0.0748,
+     "hi": 0.073
+    },
+    "worthRuler": {
+     "m": 0,
+     "lo": -0.059,
+     "hi": 0.0556
+    },
+    "worthStat": {
+     "m": 0,
+     "lo": -0.0734,
+     "hi": 0.0623
+    },
+    "price": 0.75,
+    "net": -0.75,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:13:55.581Z",
+   "seconds": 20
+  },
+  "global@pilot0|pounce=3": {
+   "key": "pounce=3",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "pounce",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 3,
+   "nCards": 9,
+   "cards": [
+    "ford-kingfisher",
+    "the-gannet-queen",
+    "fumarole-ibex",
+    "caldera-snow-leopard",
+    "pine-marten",
+    "peregrine-stooper",
+    "giant-cave-huntsman",
+    "fishing-cat",
+    "chamois-leaper"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 4.4868,
+     "lo": 3.6591,
+     "hi": 5.2103
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "pounce": 3
+    },
+    "gain": 0.1279,
+    "worth": {
+     "m": 4.6128,
+     "lo": 3.7898,
+     "hi": 5.2867
+    },
+    "worthRuler": {
+     "m": 4.4868,
+     "lo": 3.6591,
+     "hi": 5.2103
+    },
+    "worthStat": {
+     "m": 4.0797,
+     "lo": 3.1166,
+     "hi": 5.4825
+    },
+    "price": 4.15,
+    "net": 0.3368,
+    "verdict": "within its interval",
+    "between": [
+     "inspiring 1 (3.96)",
+     "poison 2 (4.75)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:14:13.849Z",
+   "seconds": 18
+  },
+  "global@pilot0|arrow=2": {
+   "key": "arrow=2",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "arrow",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 6,
+   "cards": [
+    "chipmunk-skirmisher",
+    "peak-condor",
+    "otter-guard",
+    "war-elephant",
+    "howdah-archers",
+    "battlement-heron"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 6.3247,
+     "lo": 5.7192,
+     "hi": 7.5213
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "arrow": 2
+    },
+    "gain": 0.1821,
+    "worth": {
+     "m": 6.5661,
+     "lo": 5.689,
+     "hi": 7.4091
+    },
+    "worthRuler": {
+     "m": 6.3247,
+     "lo": 5.7192,
+     "hi": 7.5213
+    },
+    "worthStat": {
+     "m": 5.8073,
+     "lo": 4.5994,
+     "hi": 7.776
+    },
+    "price": 7.01,
+    "net": -0.6853,
+    "verdict": "within its interval",
+    "between": [
+     "sweep 2 (5.08)",
+     "onReadyGold 1 (6.65)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:14:32.701Z",
+   "seconds": 19
+  },
+  "global@pilot0|tide=2": {
+   "key": "tide=2",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "tide",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 2,
+   "cards": [
+    "dolphin-knight",
+    "puffin-diver"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.3931,
+     "lo": 0.1445,
+     "hi": 1.25
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "tide": 2
+    },
+    "gain": 0.0167,
+    "worth": {
+     "m": 0.601,
+     "lo": 0.2201,
+     "hi": 1.108
+    },
+    "worthRuler": {
+     "m": 0.3931,
+     "lo": 0.1445,
+     "hi": 1.25
+    },
+    "worthStat": {
+     "m": 0.5316,
+     "lo": 0.1918,
+     "hi": 1.1193
+    },
+    "price": 0.93,
+    "net": -0.5369,
+    "verdict": "within its interval",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:14:53.209Z",
+   "seconds": 20
+  },
+  "global@pilot0|arrow=3": {
+   "key": "arrow=3",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "arrow",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 3,
+   "nCards": 1,
+   "cards": [
+    "eagle-sharpshooter"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 8.0826,
+     "lo": 7.3049,
+     "hi": 9.1891
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "arrow": 3
+    },
+    "gain": 0.2308,
+    "worth": {
+     "m": 8.3241,
+     "lo": 7.1886,
+     "hi": 9.4495
+    },
+    "worthRuler": {
+     "m": 8.0826,
+     "lo": 7.3049,
+     "hi": 9.1891
+    },
+    "worthStat": {
+     "m": 7.3621,
+     "lo": 5.7619,
+     "hi": 9.9487
+    },
+    "price": 9.39,
+    "net": -1.3074,
+    "verdict": "over-priced",
+    "between": [
+     "onReadyGold 1 (6.65)",
+     "-"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:15:11.787Z",
+   "seconds": 19
+  },
+  "global@pilot0|arrow={\"v\":2,\"bramble\":true}": {
+   "key": "arrow={\"v\":2,\"bramble\":true}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "arrow",
+   "class": "keyword",
+   "kind": "measure",
+   "n": {
+    "v": 2,
+    "bramble": true
+   },
+   "nCards": 1,
+   "cards": [
+    "balloon-archer"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 8.9541,
+     "lo": 7.9728,
+     "hi": 10.332
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "arrow": {
+      "v": 2,
+      "bramble": true
+     }
+    },
+    "gain": 0.255,
+    "worth": {
+     "m": 9.1955,
+     "lo": 7.7033,
+     "hi": 10.5579
+    },
+    "worthRuler": {
+     "m": 8.9541,
+     "lo": 7.9728,
+     "hi": 10.332
+    },
+    "worthStat": {
+     "m": 8.1329,
+     "lo": 6.3522,
+     "hi": 10.9637
+    },
+    "price": 6.31,
+    "net": 2.6441,
+    "verdict": "under-priced",
+    "between": [
+     "onReadyGold 1 (6.65)",
+     "-"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:15:27.860Z",
+   "seconds": 16
+  },
+  "global@pilot0|daunt=2": {
+   "key": "daunt=2",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "daunt",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 1,
+   "cards": [
+    "golden-eagle-diver"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 3.1193,
+     "lo": 2.8383,
+     "hi": 3.5566
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "daunt": 2
+    },
+    "gain": 0.0879,
+    "worth": {
+     "m": 3.1704,
+     "lo": 2.6008,
+     "hi": 3.5836
+    },
+    "worthRuler": {
+     "m": 3.1193,
+     "lo": 2.8383,
+     "hi": 3.5566
+    },
+    "worthStat": {
+     "m": 2.804,
+     "lo": 1.967,
+     "hi": 3.8025
+    },
+    "price": 2.56,
+    "net": 0.5593,
+    "verdict": "under-priced",
+    "between": [
+     "rage (3.01)",
+     "armor 2 (3.7)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:15:48.127Z",
+   "seconds": 20
+  },
+  "global@pilot0|meiosis=1": {
+   "key": "meiosis=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "meiosis",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 1,
+   "cards": [
+    "planarian-splitter"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 4.6684,
+     "lo": 4.0363,
+     "hi": 5.1751
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "meiosis": 1
+    },
+    "gain": 0.1317,
+    "worth": {
+     "m": 4.748,
+     "lo": 3.9961,
+     "hi": 5.2612
+    },
+    "worthRuler": {
+     "m": 4.6684,
+     "lo": 4.0363,
+     "hi": 5.1751
+    },
+    "worthStat": {
+     "m": 4.1993,
+     "lo": 3.1508,
+     "hi": 5.744
+    },
+    "price": 4.55,
+    "net": 0.1184,
+    "verdict": "within its interval",
+    "between": [
+     "inspiring 1 (3.96)",
+     "poison 2 (4.75)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:16:08.291Z",
+   "seconds": 20
+  },
+  "global@pilot0|tide=3": {
+   "key": "tide=3",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "tide",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 3,
+   "nCards": 1,
+   "cards": [
+    "shoal-shark"
+   ],
+   "fights": 400,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.5503,
+     "lo": 0.2412,
+     "hi": 2.23
+    },
+    {
+     "fights": 400,
+     "m": 0.4783,
+     "lo": 0.2437,
+     "hi": 1.2878
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0317,
+    "lo": 0.0274,
+    "hi": 0.0351
+   },
+   "statRate": {
+    "m": 0.0335,
+    "lo": 0.0274,
+    "hi": 0.039
+   },
+   "kappa": {
+    "m": 1.0574,
+    "lo": 0.9071,
+    "hi": 1.2718
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.009,
+    "worthStat": {
+     "m": 0.2675,
+     "lo": -0.0964,
+     "hi": 0.6063
+    }
+   },
+   "test": {
+    "effects": {
+     "tide": 3
+    },
+    "gain": 0.025,
+    "worth": {
+     "m": 0.7893,
+     "lo": 0.472,
+     "hi": 1.1818
+    },
+    "worthRuler": {
+     "m": 0.4783,
+     "lo": 0.2437,
+     "hi": 1.2878
+    },
+    "worthStat": {
+     "m": 0.7465,
+     "lo": 0.4267,
+     "hi": 1.1523
+    },
+    "price": 1.34,
+    "net": -0.8617,
+    "verdict": "over-priced",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:16:47.954Z",
+   "seconds": 40
+  },
+  "global@pilot0|forestry=1": {
+   "key": "forestry=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "forestry",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 9,
+   "cards": [
+    "elder-willow",
+    "lodge-engineer",
+    "coral-polyp-colony",
+    "chipmunk-hoarder",
+    "land-tiller",
+    "sunfeather-scout",
+    "old-willow-of-the-ford",
+    "nutria-reedcutter",
+    "muskrat-reedgatherer"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 5.3107,
+     "lo": 4.6214,
+     "hi": 6.65
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "forestry": 1
+    },
+    "gain": 0.1521,
+    "worth": {
+     "m": 5.4843,
+     "lo": 4.2717,
+     "hi": 6.5438
+    },
+    "worthRuler": {
+     "m": 5.3107,
+     "lo": 4.6214,
+     "hi": 6.65
+    },
+    "worthStat": {
+     "m": 4.8505,
+     "lo": 3.5294,
+     "hi": 6.8273
+    },
+    "price": 6.65,
+    "net": -1.3393,
+    "verdict": "within its interval",
+    "between": [
+     "sweep 2 (5.08)",
+     "onReadyGold 1 (6.65)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:17:09.609Z",
+   "seconds": 22
+  },
+  "global@pilot0|twinStrike": {
+   "key": "twinStrike",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "twinStrike",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 4,
+   "cards": [
+    "alley-cat",
+    "bramblewood-lynx",
+    "grizzly-vanguard",
+    "berserker-boar"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 6.8656,
+     "lo": 6.2321,
+     "hi": 7.8702
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "twinStrike": true
+    },
+    "gain": 0.1971,
+    "worth": {
+     "m": 7.107,
+     "lo": 6.1001,
+     "hi": 8.0681
+    },
+    "worthRuler": {
+     "m": 6.8656,
+     "lo": 6.2321,
+     "hi": 7.8702
+    },
+    "worthStat": {
+     "m": 6.2857,
+     "lo": 4.9733,
+     "hi": 8.4103
+    },
+    "price": 7.75,
+    "net": -0.8844,
+    "verdict": "within its interval",
+    "between": [
+     "onReadyGold 1 (6.65)",
+     "-"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:17:28.190Z",
+   "seconds": 19
+  },
+  "global@pilot0|strangle=1": {
+   "key": "strangle=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "strangle",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 3,
+   "cards": [
+    "constrictor-coil",
+    "cypress-root-lurker",
+    "birdlime-dauber"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 3.534,
+     "lo": 3.0077,
+     "hi": 4.5072
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "strangle": 1
+    },
+    "gain": 0.1046,
+    "worth": {
+     "m": 3.7714,
+     "lo": 3.1107,
+     "hi": 4.2738
+    },
+    "worthRuler": {
+     "m": 3.534,
+     "lo": 3.0077,
+     "hi": 4.5072
+    },
+    "worthStat": {
+     "m": 3.3355,
+     "lo": 2.5827,
+     "hi": 4.4918
+    },
+    "price": 4.21,
+    "net": -0.676,
+    "verdict": "within its interval",
+    "between": [
+     "armor 2 (3.7)",
+     "inspiring 1 (3.96)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:17:49.099Z",
+   "seconds": 21
+  },
+  "global@pilot0|bleed=3": {
+   "key": "bleed=3",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "bleed",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 3,
+   "nCards": 1,
+   "cards": [
+    "alligator-gar"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 6.3848,
+     "lo": 5.7408,
+     "hi": 7.3813
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "bleed": 3
+    },
+    "gain": 0.1838,
+    "worth": {
+     "m": 6.6262,
+     "lo": 5.6298,
+     "hi": 7.5057
+    },
+    "worthRuler": {
+     "m": 6.3848,
+     "lo": 5.7408,
+     "hi": 7.3813
+    },
+    "worthStat": {
+     "m": 5.8605,
+     "lo": 4.573,
+     "hi": 7.8491
+    },
+    "price": 6.61,
+    "net": -0.2252,
+    "verdict": "within its interval",
+    "between": [
+     "sweep 2 (5.08)",
+     "onReadyGold 1 (6.65)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:18:07.832Z",
+   "seconds": 19
+  },
+  "global@pilot0|tide={\"gives\":{\"flood\":{\"attack\":2,\"health\":2,\"evasive\":true},\"ebb\":{\"armor\":2}}}": {
+   "key": "tide={\"gives\":{\"flood\":{\"attack\":2,\"health\":2,\"evasive\":true},\"ebb\":{\"armor\":2}}}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "tide",
+   "class": "keyword",
+   "kind": "measure",
+   "n": {
+    "gives": {
+     "flood": {
+      "attack": 2,
+      "health": 2,
+      "evasive": true
+     },
+     "ebb": {
+      "armor": 2
+     }
+    }
+   },
+   "nCards": 1,
+   "cards": [
+    "mudflat-godwit"
+   ],
+   "fights": 700,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.5602,
+     "lo": 0.0374,
+     "hi": 2.2603
+    },
+    {
+     "fights": 400,
+     "m": 0.4544,
+     "lo": 0.1681,
+     "hi": 1.5474
+    },
+    {
+     "fights": 700,
+     "m": 0.5286,
+     "lo": 0.3149,
+     "hi": 1.1745
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0302,
+    "lo": 0.027,
+    "hi": 0.0336
+   },
+   "statRate": {
+    "m": 0.0341,
+    "lo": 0.0295,
+    "hi": 0.039
+   },
+   "kappa": {
+    "m": 1.1297,
+    "lo": 0.9794,
+    "hi": 1.2773
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0157,
+    "worthStat": {
+     "m": 0.4603,
+     "lo": 0.186,
+     "hi": 0.6976
+    }
+   },
+   "test": {
+    "effects": {
+     "tide": {
+      "gives": {
+       "flood": {
+        "attack": 2,
+        "health": 2,
+        "evasive": true
+       },
+       "ebb": {
+        "armor": 2
+       }
+      }
+     }
+    },
+    "gain": 0.0258,
+    "worth": {
+     "m": 0.8549,
+     "lo": 0.4887,
+     "hi": 1.1518
+    },
+    "worthRuler": {
+     "m": 0.5286,
+     "lo": 0.3149,
+     "hi": 1.1745
+    },
+    "worthStat": {
+     "m": 0.7568,
+     "lo": 0.4589,
+     "hi": 1.0765
+    },
+    "price": 4.68,
+    "net": -4.1514,
+    "verdict": "over-priced",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:19:20.358Z",
+   "seconds": 72
+  },
+  "global@pilot0|ambush=3": {
+   "key": "ambush=3",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "ambush",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 3,
+   "nCards": 2,
+   "cards": [
+    "adder-ambusher",
+    "ford-kingfisher"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.308,
+     "lo": 1.7932,
+     "hi": 2.9132
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "ambush": 3
+    },
+    "gain": 0.0608,
+    "worth": {
+     "m": 2.1937,
+     "lo": 1.5711,
+     "hi": 2.8248
+    },
+    "worthRuler": {
+     "m": 2.308,
+     "lo": 1.7932,
+     "hi": 2.9132
+    },
+    "worthStat": {
+     "m": 1.9402,
+     "lo": 1.3789,
+     "hi": 2.8125
+    },
+    "price": 2.38,
+    "net": -0.072,
+    "verdict": "within its interval",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:19:40.452Z",
+   "seconds": 20
+  },
+  "global@pilot0|sap": {
+   "key": "sap",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "sap",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 1,
+   "cards": [
+    "lamprey"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.2934,
+     "lo": 1.8348,
+     "hi": 2.84
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "sap": true
+    },
+    "gain": 0.0583,
+    "worth": {
+     "m": 2.1036,
+     "lo": 1.5946,
+     "hi": 2.5389
+    },
+    "worthRuler": {
+     "m": 2.2934,
+     "lo": 1.8348,
+     "hi": 2.84
+    },
+    "worthStat": {
+     "m": 1.8605,
+     "lo": 1.2491,
+     "hi": 2.7826
+    },
+    "price": 2.3,
+    "net": -0.0066,
+    "verdict": "within its interval",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:19:59.201Z",
+   "seconds": 19
+  },
+  "global@pilot0|scare=1": {
+   "key": "scare=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "scare",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 1,
+   "cards": [
+    "booming-bittern"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.8988,
+     "lo": 2.3033,
+     "hi": 3.0992
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "scare": 1
+    },
+    "gain": 0.0704,
+    "worth": {
+     "m": 2.5393,
+     "lo": 2.0773,
+     "hi": 3.0145
+    },
+    "worthRuler": {
+     "m": 2.8988,
+     "lo": 2.3033,
+     "hi": 3.0992
+    },
+    "worthStat": {
+     "m": 2.2458,
+     "lo": 1.6136,
+     "hi": 3.194
+    },
+    "price": 3.02,
+    "net": -0.1212,
+    "verdict": "within its interval",
+    "between": [
+     "armor 1 (2.33)",
+     "poison 1 (2.72)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:20:20.622Z",
+   "seconds": 21
+  },
+  "global@pilot0|strangle=2": {
+   "key": "strangle=2",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "strangle",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 1,
+   "cards": [
+    "crocodile-ambusher"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 5.4604,
+     "lo": 4.75,
+     "hi": 5.9918
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "strangle": 2
+    },
+    "gain": 0.1575,
+    "worth": {
+     "m": 5.6796,
+     "lo": 4.9229,
+     "hi": 6.3365
+    },
+    "worthRuler": {
+     "m": 5.4604,
+     "lo": 4.75,
+     "hi": 5.9918
+    },
+    "worthStat": {
+     "m": 5.0233,
+     "lo": 3.9237,
+     "hi": 6.617
+    },
+    "price": 5.57,
+    "net": -0.1096,
+    "verdict": "within its interval",
+    "between": [
+     "sweep 2 (5.08)",
+     "onReadyGold 1 (6.65)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:20:39.522Z",
+   "seconds": 19
+  },
+  "global@pilot0|carrion=2": {
+   "key": "carrion=2",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "carrion",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 3,
+   "cards": [
+    "corpse-flower-beetle",
+    "ossuary-lammergeier",
+    "greenland-shark"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.2763,
+     "lo": 1.566,
+     "hi": 2.7941
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "carrion": 2
+    },
+    "gain": 0.0554,
+    "worth": {
+     "m": 1.9984,
+     "lo": 1.5079,
+     "hi": 2.4328
+    },
+    "worthRuler": {
+     "m": 2.2763,
+     "lo": 1.566,
+     "hi": 2.7941
+    },
+    "worthStat": {
+     "m": 1.7674,
+     "lo": 1.234,
+     "hi": 2.6207
+    },
+    "price": 2.68,
+    "net": -0.4037,
+    "verdict": "within its interval",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:21:01.282Z",
+   "seconds": 22
+  },
+  "global@pilot0|corrode=1": {
+   "key": "corrode=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "corrode",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 2,
+   "cards": [
+    "leopard-slug",
+    "hawthorn-shieldbug"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.9228,
+     "lo": 2.3857,
+     "hi": 3.0896
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "corrode": 1
+    },
+    "gain": 0.075,
+    "worth": {
+     "m": 2.7046,
+     "lo": 2.1728,
+     "hi": 3.1046
+    },
+    "worthRuler": {
+     "m": 2.9228,
+     "lo": 2.3857,
+     "hi": 3.0896
+    },
+    "worthStat": {
+     "m": 2.392,
+     "lo": 1.7439,
+     "hi": 3.2627
+    },
+    "price": 2.41,
+    "net": 0.5128,
+    "verdict": "within its interval",
+    "between": [
+     "armor 1 (2.33)",
+     "poison 1 (2.72)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:21:21.598Z",
+   "seconds": 20
+  },
+  "global@pilot0|onDeathSpawn={\"defId\":\"maggot-swarmling\",\"count\":3}": {
+   "key": "onDeathSpawn={\"defId\":\"maggot-swarmling\",\"count\":3}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "onDeathSpawn",
+   "class": "keyword",
+   "kind": "measure",
+   "n": {
+    "defId": "maggot-swarmling",
+    "count": 3
+   },
+   "nCards": 1,
+   "cards": [
+    "rot-swollen-carcass"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 4.1439,
+     "lo": 3.577,
+     "hi": 5.0873
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "onDeathSpawn": {
+      "defId": "maggot-swarmling",
+      "count": 3
+     }
+    },
+    "gain": 0.1208,
+    "worth": {
+     "m": 4.3574,
+     "lo": 3.6654,
+     "hi": 4.8819
+    },
+    "worthRuler": {
+     "m": 4.1439,
+     "lo": 3.577,
+     "hi": 5.0873
+    },
+    "worthStat": {
+     "m": 3.8538,
+     "lo": 2.9849,
+     "hi": 5.104
+    },
+    "price": 4.35,
+    "net": -0.2061,
+    "verdict": "within its interval",
+    "between": [
+     "inspiring 1 (3.96)",
+     "poison 2 (4.75)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:21:43.173Z",
+   "seconds": 22
+  },
+  "global@pilot0|onDeathSpawn={\"defId\":\"worker-ant\",\"count\":3}": {
+   "key": "onDeathSpawn={\"defId\":\"worker-ant\",\"count\":3}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "onDeathSpawn",
+   "class": "keyword",
+   "kind": "measure",
+   "n": {
+    "defId": "worker-ant",
+    "count": 3
+   },
+   "nCards": 1,
+   "cards": [
+    "millipede-hauler"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 6.7905,
+     "lo": 6.0464,
+     "hi": 7.9642
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "onDeathSpawn": {
+      "defId": "worker-ant",
+      "count": 3
+     }
+    },
+    "gain": 0.195,
+    "worth": {
+     "m": 7.0319,
+     "lo": 5.9173,
+     "hi": 7.9017
+    },
+    "worthRuler": {
+     "m": 6.7905,
+     "lo": 6.0464,
+     "hi": 7.9642
+    },
+    "worthStat": {
+     "m": 6.2193,
+     "lo": 4.8309,
+     "hi": 8.367
+    },
+    "price": 4.35,
+    "net": 2.4405,
+    "verdict": "under-priced",
+    "between": [
+     "onReadyGold 1 (6.65)",
+     "-"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:22:05.796Z",
+   "seconds": 23
+  },
+  "global@pilot0|poisonPowder=1": {
+   "key": "poisonPowder=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "poisonPowder",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 1,
+   "cards": [
+    "fungus-gnat-cloud"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 3.6805,
+     "lo": 3.2553,
+     "hi": 4.9539
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "poisonPowder": 1
+    },
+    "gain": 0.1108,
+    "worth": {
+     "m": 3.9968,
+     "lo": 3.2125,
+     "hi": 4.6485
+    },
+    "worthRuler": {
+     "m": 3.6805,
+     "lo": 3.2553,
+     "hi": 4.9539
+    },
+    "worthStat": {
+     "m": 3.5349,
+     "lo": 2.7701,
+     "hi": 4.8319
+    },
+    "price": 3.2,
+    "net": 0.4805,
+    "verdict": "under-priced",
+    "between": [
+     "inspiring 1 (3.96)",
+     "poison 2 (4.75)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:22:28.821Z",
+   "seconds": 23
+  },
+  "global@pilot0|poisonPowder=2": {
+   "key": "poisonPowder=2",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "poisonPowder",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 1,
+   "cards": [
+    "puffball-bombardier"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 7.0158,
+     "lo": 6.3229,
+     "hi": 8.074
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "poisonPowder": 2
+    },
+    "gain": 0.2013,
+    "worth": {
+     "m": 7.2573,
+     "lo": 6.233,
+     "hi": 8.1904
+    },
+    "worthRuler": {
+     "m": 7.0158,
+     "lo": 6.3229,
+     "hi": 8.074
+    },
+    "worthStat": {
+     "m": 6.4186,
+     "lo": 5.0729,
+     "hi": 8.6018
+    },
+    "price": 6.4,
+    "net": 0.6158,
+    "verdict": "within its interval",
+    "between": [
+     "onReadyGold 1 (6.65)",
+     "-"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:22:49.039Z",
+   "seconds": 20
+  },
+  "global@pilot0|wakeful": {
+   "key": "wakeful",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "wakeful",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 1,
+   "cards": [
+    "sleepless-shrew"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.0393,
+     "lo": -0.06,
+     "hi": 0.194
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "wakeful": true
+    },
+    "gain": 0.0017,
+    "worth": {
+     "m": 0.0601,
+     "lo": -0.0742,
+     "hi": 0.2467
+    },
+    "worthRuler": {
+     "m": 0.0393,
+     "lo": -0.06,
+     "hi": 0.194
+    },
+    "worthStat": {
+     "m": 0.0532,
+     "lo": -0.0652,
+     "hi": 0.2388
+    },
+    "price": 0.5,
+    "net": -0.4607,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:23:09.469Z",
+   "seconds": 20
+  },
+  "global@pilot0|illuminate": {
+   "key": "illuminate",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "illuminate",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 5,
+   "cards": [
+    "lantern-bearer",
+    "otter-lantern-bearer",
+    "lantern-spark-fly",
+    "torch",
+    "glow-worm"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.3243,
+     "lo": 0.0773,
+     "hi": 1.1629
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "illuminate": true
+    },
+    "gain": 0.0138,
+    "worth": {
+     "m": 0.4958,
+     "lo": 0.1215,
+     "hi": 0.9694
+    },
+    "worthRuler": {
+     "m": 0.3243,
+     "lo": 0.0773,
+     "hi": 1.1629
+    },
+    "worthStat": {
+     "m": 0.4385,
+     "lo": 0.0967,
+     "hi": 0.9664
+    },
+    "price": 0.81,
+    "net": -0.4857,
+    "verdict": "within its interval",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:23:32.152Z",
+   "seconds": 23
+  },
+  "global@pilot0|keenSense": {
+   "key": "keenSense",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "keenSense",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 2,
+   "cards": [
+    "owl-sentinel",
+    "quarry-mole"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.059,
+     "lo": -0.1629,
+     "hi": 0.2796
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "keenSense": true
+    },
+    "gain": 0.0025,
+    "worth": {
+     "m": 0.0902,
+     "lo": -0.2273,
+     "hi": 0.3658
+    },
+    "worthRuler": {
+     "m": 0.059,
+     "lo": -0.1629,
+     "hi": 0.2796
+    },
+    "worthStat": {
+     "m": 0.0797,
+     "lo": -0.1778,
+     "hi": 0.3252
+    },
+    "price": 0.66,
+    "net": -0.601,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:23:53.467Z",
+   "seconds": 21
+  },
+  "global@pilot0|purblind": {
+   "key": "purblind",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "purblind",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 1,
+   "cards": [
+    "star-nosed-mole"
+   ],
+   "fights": 1000,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": -2.6731,
+     "lo": -5.5306,
+     "hi": -1.6725
+    },
+    {
+     "fights": 400,
+     "m": -2.2401,
+     "lo": -3.3606,
+     "hi": -1.6281
+    },
+    {
+     "fights": 700,
+     "m": -2.3628,
+     "lo": -3.2728,
+     "hi": -1.8564
+    },
+    {
+     "fights": 1000,
+     "m": -2.5389,
+     "lo": -3.2865,
+     "hi": -1.9686
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0285,
+    "lo": 0.0263,
+    "hi": 0.0317
+   },
+   "statRate": {
+    "m": 0.0335,
+    "lo": 0.0298,
+    "hi": 0.0373
+   },
+   "kappa": {
+    "m": 1.1759,
+    "lo": 1.0302,
+    "hi": 1.2919
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0153,
+    "worthStat": {
+     "m": 0.4577,
+     "lo": 0.1938,
+     "hi": 0.6738
+    }
+   },
+   "test": {
+    "effects": {
+     "purblind": true
+    },
+    "gain": -0.1218,
+    "worth": {
+     "m": -4.2737,
+     "lo": -4.8425,
+     "hi": -3.5598
+    },
+    "worthRuler": {
+     "m": -2.5389,
+     "lo": -3.2865,
+     "hi": -1.9686
+    },
+    "worthStat": {
+     "m": -3.6343,
+     "lo": -4.1151,
+     "hi": -3.1148
+    },
+    "price": -5.7,
+    "net": 3.1611,
+    "verdict": "under-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:25:40.103Z",
+   "seconds": 107
+  },
+  "global@pilot0|web=1": {
+   "key": "web=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "web",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 1,
+   "cards": [
+    "glow-worm"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.1671,
+     "lo": -0.0875,
+     "hi": 0.4856
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "web": 1
+    },
+    "gain": 0.0071,
+    "worth": {
+     "m": 0.2554,
+     "lo": -0.1001,
+     "hi": 0.6033
+    },
+    "worthRuler": {
+     "m": 0.1671,
+     "lo": -0.0875,
+     "hi": 0.4856
+    },
+    "worthStat": {
+     "m": 0.2259,
+     "lo": -0.0937,
+     "hi": 0.5797
+    },
+    "price": 0.97,
+    "net": -0.8029,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:26:01.154Z",
+   "seconds": 21
+  },
+  "global@pilot0|trident": {
+   "key": "trident",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "trident",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 3,
+   "cards": [
+    "mangrove-monitor",
+    "otter-angler",
+    "anhinga-spearbird"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 3.1193,
+     "lo": 2.6191,
+     "hi": 3.8451
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "trident": true
+    },
+    "gain": 0.0879,
+    "worth": {
+     "m": 3.1704,
+     "lo": 2.3576,
+     "hi": 3.8415
+    },
+    "worthRuler": {
+     "m": 3.1193,
+     "lo": 2.6191,
+     "hi": 3.8451
+    },
+    "worthStat": {
+     "m": 2.804,
+     "lo": 1.9873,
+     "hi": 3.8797
+    },
+    "price": 2.28,
+    "net": 0.8393,
+    "verdict": "under-priced",
+    "between": [
+     "rage (3.01)",
+     "armor 2 (3.7)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:26:22.211Z",
+   "seconds": 21
+  },
+  "global@pilot0|taunt": {
+   "key": "taunt",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "taunt",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 2,
+   "cards": [
+    "sheep",
+    "proboscis-monkey"
+   ],
+   "fights": 400,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": -0.1671,
+     "lo": -1.0133,
+     "hi": 0.4833
+    },
+    {
+     "fights": 400,
+     "m": -0.0997,
+     "lo": -0.4916,
+     "hi": 0.2486
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0317,
+    "lo": 0.0274,
+    "hi": 0.0351
+   },
+   "statRate": {
+    "m": 0.0335,
+    "lo": 0.0274,
+    "hi": 0.039
+   },
+   "kappa": {
+    "m": 1.0574,
+    "lo": 0.9071,
+    "hi": 1.2718
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.009,
+    "worthStat": {
+     "m": 0.2675,
+     "lo": -0.0964,
+     "hi": 0.6063
+    }
+   },
+   "test": {
+    "effects": {
+     "taunt": true
+    },
+    "gain": -0.0052,
+    "worth": {
+     "m": -0.1644,
+     "lo": -0.8323,
+     "hi": 0.4194
+    },
+    "worthRuler": {
+     "m": -0.0997,
+     "lo": -0.4916,
+     "hi": 0.2486
+    },
+    "worthStat": {
+     "m": -0.1555,
+     "lo": -0.7258,
+     "hi": 0.3962
+    },
+    "price": 0.4,
+    "net": -0.4997,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:27:04.465Z",
+   "seconds": 42
+  },
+  "global@pilot0|bludgeon": {
+   "key": "bludgeon",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "bludgeon",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 1,
+   "cards": [
+    "ironclaw-fiddler"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 4.3456,
+     "lo": 3.6321,
+     "hi": 5.1419
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "bludgeon": true
+    },
+    "gain": 0.125,
+    "worth": {
+     "m": 4.5076,
+     "lo": 3.725,
+     "hi": 5.1081
+    },
+    "worthRuler": {
+     "m": 4.3456,
+     "lo": 3.6321,
+     "hi": 5.1419
+    },
+    "worthStat": {
+     "m": 3.9867,
+     "lo": 3.0323,
+     "hi": 5.4815
+    },
+    "price": 3.95,
+    "net": 0.3956,
+    "verdict": "within its interval",
+    "between": [
+     "inspiring 1 (3.96)",
+     "poison 2 (4.75)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:27:23.923Z",
+   "seconds": 19
+  },
+  "global@pilot0|electricity=1": {
+   "key": "electricity=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "electricity",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 1,
+   "cards": [
+    "electric-ray"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 3.3486,
+     "lo": 2.8982,
+     "hi": 4.3167
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "electricity": 1
+    },
+    "gain": 0.0967,
+    "worth": {
+     "m": 3.4859,
+     "lo": 2.7029,
+     "hi": 4.1409
+    },
+    "worthRuler": {
+     "m": 3.3486,
+     "lo": 2.8982,
+     "hi": 4.3167
+    },
+    "worthStat": {
+     "m": 3.0831,
+     "lo": 2.2718,
+     "hi": 4.2813
+    },
+    "price": 3,
+    "net": 0.3486,
+    "verdict": "within its interval",
+    "between": [
+     "rage (3.01)",
+     "armor 2 (3.7)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:27:43.576Z",
+   "seconds": 20
+  },
+  "global@pilot0|electricity=2": {
+   "key": "electricity=2",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "electricity",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 1,
+   "cards": [
+    "voltaic-eel"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 5.4719,
+     "lo": 4.7317,
+     "hi": 6.2729
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "electricity": 2
+    },
+    "gain": 0.1579,
+    "worth": {
+     "m": 5.6946,
+     "lo": 4.7934,
+     "hi": 6.5506
+    },
+    "worthRuler": {
+     "m": 5.4719,
+     "lo": 4.7317,
+     "hi": 6.2729
+    },
+    "worthStat": {
+     "m": 5.0365,
+     "lo": 3.8867,
+     "hi": 6.768
+    },
+    "price": 6,
+    "net": -0.5281,
+    "verdict": "within its interval",
+    "between": [
+     "sweep 2 (5.08)",
+     "onReadyGold 1 (6.65)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:28:01.443Z",
+   "seconds": 18
+  },
+  "global@pilot0|swarm": {
+   "key": "swarm",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "swarm",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 3,
+   "cards": [
+    "hedge-changeling",
+    "lemming-swarm",
+    "krill-swarm"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 3.2786,
+     "lo": 2.8956,
+     "hi": 4.0112
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "swarm": true
+    },
+    "gain": 0.0937,
+    "worth": {
+     "m": 3.3807,
+     "lo": 2.709,
+     "hi": 3.9767
+    },
+    "worthRuler": {
+     "m": 3.2786,
+     "lo": 2.8956,
+     "hi": 4.0112
+    },
+    "worthStat": {
+     "m": 2.99,
+     "lo": 2.2222,
+     "hi": 4
+    },
+    "price": 3.13,
+    "net": 0.1486,
+    "verdict": "within its interval",
+    "between": [
+     "rage (3.01)",
+     "armor 2 (3.7)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:28:20.759Z",
+   "seconds": 19
+  },
+  "global@pilot0|armor=3": {
+   "key": "armor=3",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "armor",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 3,
+   "nCards": 2,
+   "cards": [
+    "sea-turtle-elder",
+    "testudo-tortoise"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 4.7693,
+     "lo": 4.2656,
+     "hi": 5.2352
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "armor": 3
+    },
+    "gain": 0.1338,
+    "worth": {
+     "m": 4.8231,
+     "lo": 4.1972,
+     "hi": 5.3137
+    },
+    "worthRuler": {
+     "m": 4.7693,
+     "lo": 4.2656,
+     "hi": 5.2352
+    },
+    "worthStat": {
+     "m": 4.2658,
+     "lo": 3.194,
+     "hi": 5.9149
+    },
+    "price": 4.85,
+    "net": -0.0807,
+    "verdict": "within its interval",
+    "between": [
+     "poison 2 (4.75)",
+     "bleed 2 (4.87)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:28:43.001Z",
+   "seconds": 22
+  },
+  "global@pilot0|poisonBarbs=1": {
+   "key": "poisonBarbs=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "poisonBarbs",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 2,
+   "cards": [
+    "clownfish-scout",
+    "rootworm-colony"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.925,
+     "lo": 2.3263,
+     "hi": 3.14
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "poisonBarbs": 1
+    },
+    "gain": 0.0754,
+    "worth": {
+     "m": 2.7196,
+     "lo": 2.1222,
+     "hi": 3.1567
+    },
+    "worthRuler": {
+     "m": 2.925,
+     "lo": 2.3263,
+     "hi": 3.14
+    },
+    "worthStat": {
+     "m": 2.4053,
+     "lo": 1.7358,
+     "hi": 3.5062
+    },
+    "price": 1.6,
+    "net": 1.325,
+    "verdict": "under-priced",
+    "between": [
+     "armor 1 (2.33)",
+     "poison 1 (2.72)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:29:04.422Z",
+   "seconds": 21
+  },
+  "global@pilot0|wave": {
+   "key": "wave",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "wave",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 2,
+   "cards": [
+    "riptide-eel",
+    "coral-current-eel"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 3.1876,
+     "lo": 2.7612,
+     "hi": 3.9185
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "wave": true
+    },
+    "gain": 0.0904,
+    "worth": {
+     "m": 3.2605,
+     "lo": 2.4367,
+     "hi": 3.8862
+    },
+    "worthRuler": {
+     "m": 3.1876,
+     "lo": 2.7612,
+     "hi": 3.9185
+    },
+    "worthStat": {
+     "m": 2.8837,
+     "lo": 2.0215,
+     "hi": 4.1328
+    },
+    "price": 2.15,
+    "net": 1.0376,
+    "verdict": "under-priced",
+    "between": [
+     "rage (3.01)",
+     "armor 2 (3.7)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:29:22.658Z",
+   "seconds": 18
+  },
+  "global@pilot0|delivery={\"v\":1,\"res\":\"pearl\"}": {
+   "key": "delivery={\"v\":1,\"res\":\"pearl\"}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "delivery",
+   "class": "keyword",
+   "kind": "measure",
+   "n": {
+    "v": 1,
+    "res": "pearl"
+   },
+   "nCards": 1,
+   "cards": [
+    "giant-clam"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 3.3095,
+     "lo": 2.6851,
+     "hi": 4.4407
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "delivery": {
+      "v": 1,
+      "res": "pearl"
+     }
+    },
+    "gain": 0.095,
+    "worth": {
+     "m": 3.4258,
+     "lo": 2.4383,
+     "hi": 4.4298
+    },
+    "worthRuler": {
+     "m": 3.3095,
+     "lo": 2.6851,
+     "hi": 4.4407
+    },
+    "worthStat": {
+     "m": 3.0299,
+     "lo": 2.0615,
+     "hi": 4.3817
+    },
+    "price": 3.69,
+    "net": -0.3805,
+    "verdict": "within its interval",
+    "between": [
+     "rage (3.01)",
+     "armor 2 (3.7)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:29:44.407Z",
+   "seconds": 22
+  },
+  "global@pilot0|sweep=3": {
+   "key": "sweep=3",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "sweep",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 3,
+   "nCards": 1,
+   "cards": [
+    "orca-vanguard"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 7.1661,
+     "lo": 6.5135,
+     "hi": 8.0563
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "sweep": 3
+    },
+    "gain": 0.2054,
+    "worth": {
+     "m": 7.4075,
+     "lo": 6.2761,
+     "hi": 8.4871
+    },
+    "worthRuler": {
+     "m": 7.1661,
+     "lo": 6.5135,
+     "hi": 8.0563
+    },
+    "worthStat": {
+     "m": 6.5515,
+     "lo": 5.0277,
+     "hi": 8.8598
+    },
+    "price": 6.22,
+    "net": 0.9461,
+    "verdict": "under-priced",
+    "between": [
+     "onReadyGold 1 (6.65)",
+     "-"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:30:03.134Z",
+   "seconds": 19
+  },
+  "global@pilot0|arrow=1": {
+   "key": "arrow=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "arrow",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 2,
+   "cards": [
+    "petal-fletcher",
+    "eagle-owl-quartermaster"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 3.5438,
+     "lo": 3.0196,
+     "hi": 4.5023
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "arrow": 1
+    },
+    "gain": 0.105,
+    "worth": {
+     "m": 3.7864,
+     "lo": 3.1164,
+     "hi": 4.3383
+    },
+    "worthRuler": {
+     "m": 3.5438,
+     "lo": 3.0196,
+     "hi": 4.5023
+    },
+    "worthStat": {
+     "m": 3.3488,
+     "lo": 2.5882,
+     "hi": 4.5622
+    },
+    "price": 4.26,
+    "net": -0.7162,
+    "verdict": "within its interval",
+    "between": [
+     "armor 2 (3.7)",
+     "inspiring 1 (3.96)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:30:24.211Z",
+   "seconds": 21
+  },
+  "global@pilot0|arrow=1+fletcher=1": {
+   "key": "arrow=1+fletcher=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "fletcher",
+   "class": "combo",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 1,
+   "cards": [
+    "eagle-owl-quartermaster"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 7.677,
+     "lo": 6.6827,
+     "hi": 8.9923
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "arrow": 1,
+     "fletcher": 1
+    },
+    "gain": 0.2196,
+    "worth": {
+     "m": 7.9184,
+     "lo": 6.7146,
+     "hi": 9.3294
+    },
+    "worthRuler": {
+     "m": 7.677,
+     "lo": 6.6827,
+     "hi": 8.9923
+    },
+    "worthStat": {
+     "m": 7.0033,
+     "lo": 5.1576,
+     "hi": 10.0901
+    },
+    "price": 7.45,
+    "net": 0.227,
+    "verdict": "within its interval",
+    "between": [
+     "onReadyGold 1 (6.65)",
+     "-"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:30:42.247Z",
+   "seconds": 18
+  },
+  "global@pilot0|frostbite=1": {
+   "key": "frostbite=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "frostbite",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 2,
+   "cards": [
+    "rimeheart-colossus",
+    "mountain-hare"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.1081,
+     "lo": 0.0253,
+     "hi": 0.3069
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "frostbite": 1
+    },
+    "gain": 0.0046,
+    "worth": {
+     "m": 0.1653,
+     "lo": 0.0398,
+     "hi": 0.3364
+    },
+    "worthRuler": {
+     "m": 0.1081,
+     "lo": 0.0253,
+     "hi": 0.3069
+    },
+    "worthStat": {
+     "m": 0.1462,
+     "lo": 0.0331,
+     "hi": 0.3114
+    },
+    "price": 0.19,
+    "net": -0.0819,
+    "verdict": "within its interval",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:31:02.262Z",
+   "seconds": 20
+  },
+  "global@pilot0|pierce=3": {
+   "key": "pierce=3",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "pierce",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 3,
+   "nCards": 2,
+   "cards": [
+    "anvil-thrush",
+    "redwood-woodpecker"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.0688,
+     "lo": -0.0193,
+     "hi": 0.2375
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "pierce": 3
+    },
+    "gain": 0.0029,
+    "worth": {
+     "m": 0.1052,
+     "lo": -0.0263,
+     "hi": 0.2402
+    },
+    "worthRuler": {
+     "m": 0.0688,
+     "lo": -0.0193,
+     "hi": 0.2375
+    },
+    "worthStat": {
+     "m": 0.093,
+     "lo": -0.024,
+     "hi": 0.2317
+    },
+    "price": 0.34,
+    "net": -0.2712,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:31:22.907Z",
+   "seconds": 21
+  },
+  "global@pilot0|T:onReady>damage {\"on\":\"onReady\",\"do\":\"damage\",\"amount\":4,\"dmgType\":\"physical\"}": {
+   "key": "T:onReady>damage {\"on\":\"onReady\",\"do\":\"damage\",\"amount\":4,\"dmgType\":\"physical\"}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "onReady>damage",
+   "class": "trigger",
+   "kind": "measure",
+   "nCards": 1,
+   "cards": [
+    "great-horned-owl"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 3.9623,
+     "lo": 3.4138,
+     "hi": 5.0747
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "triggers": [
+      {
+       "on": "onReady",
+       "do": "damage",
+       "amount": 4,
+       "dmgType": "physical"
+      }
+     ]
+    },
+    "gain": 0.1171,
+    "worth": {
+     "m": 4.2221,
+     "lo": 3.3328,
+     "hi": 4.8542
+    },
+    "worthRuler": {
+     "m": 3.9623,
+     "lo": 3.4138,
+     "hi": 5.0747
+    },
+    "worthStat": {
+     "m": 3.7342,
+     "lo": 2.7797,
+     "hi": 5.1321
+    },
+    "price": 4.48,
+    "net": -0.5177,
+    "verdict": "within its interval",
+    "between": [
+     "inspiring 1 (3.96)",
+     "poison 2 (4.75)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:31:44.328Z",
+   "seconds": 21
+  },
+  "global@pilot0|arrow={\"v\":3,\"swings\":\"never\",\"style\":\"drop\"}": {
+   "key": "arrow={\"v\":3,\"swings\":\"never\",\"style\":\"drop\"}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "arrow",
+   "class": "keyword",
+   "kind": "measure",
+   "n": {
+    "v": 3,
+    "swings": "never",
+    "style": "drop"
+   },
+   "nCards": 1,
+   "cards": [
+    "stonedrop-vulture"
+   ],
+   "fights": 400,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.2763,
+     "lo": 0.985,
+     "hi": 2.9169
+    },
+    {
+     "fights": 400,
+     "m": 2.412,
+     "lo": 1.9027,
+     "hi": 2.894
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0317,
+    "lo": 0.0274,
+    "hi": 0.0351
+   },
+   "statRate": {
+    "m": 0.0335,
+    "lo": 0.0274,
+    "hi": 0.039
+   },
+   "kappa": {
+    "m": 1.0574,
+    "lo": 0.9071,
+    "hi": 1.2718
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.009,
+    "worthStat": {
+     "m": 0.2675,
+     "lo": -0.0964,
+     "hi": 0.6063
+    }
+   },
+   "test": {
+    "effects": {
+     "arrow": {
+      "v": 3,
+      "swings": "never",
+      "style": "drop"
+     }
+    },
+    "gain": 0.065,
+    "worth": {
+     "m": 2.0523,
+     "lo": 1.5655,
+     "hi": 2.592
+    },
+    "worthRuler": {
+     "m": 2.412,
+     "lo": 1.9027,
+     "hi": 2.894
+    },
+    "worthStat": {
+     "m": 1.9409,
+     "lo": 1.381,
+     "hi": 2.5734
+    },
+    "price": -4.9,
+    "net": 7.312,
+    "verdict": "under-priced",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:32:29.406Z",
+   "seconds": 45
+  },
+  "global@pilot0|avalanche=1": {
+   "key": "avalanche=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "avalanche",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 1,
+   "cards": [
+    "ibex-rockcaller"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 8.4883,
+     "lo": 7.4555,
+     "hi": 9.7362
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "avalanche": 1
+    },
+    "gain": 0.2421,
+    "worth": {
+     "m": 8.7297,
+     "lo": 7.3072,
+     "hi": 10.0026
+    },
+    "worthRuler": {
+     "m": 8.4883,
+     "lo": 7.4555,
+     "hi": 9.7362
+    },
+    "worthStat": {
+     "m": 7.7209,
+     "lo": 5.9167,
+     "hi": 10.5688
+    },
+    "price": 9.25,
+    "net": -0.7617,
+    "verdict": "within its interval",
+    "between": [
+     "onReadyGold 1 (6.65)",
+     "-"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:32:50.633Z",
+   "seconds": 21
+  },
+  "global@pilot0|stealth": {
+   "key": "stealth",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "stealth",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 6,
+   "cards": [
+    "fawn-scout",
+    "raccoon-nightcrew",
+    "owl-nightwatch",
+    "hush-wing-spy",
+    "glass-octopus",
+    "cunning-vixen"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 7.3163,
+     "lo": 6.4575,
+     "hi": 8.4124
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "stealth": true
+    },
+    "gain": 0.2096,
+    "worth": {
+     "m": 7.5578,
+     "lo": 6.2571,
+     "hi": 8.8081
+    },
+    "worthRuler": {
+     "m": 7.3163,
+     "lo": 6.4575,
+     "hi": 8.4124
+    },
+    "worthStat": {
+     "m": 6.6844,
+     "lo": 5.2688,
+     "hi": 9.1592
+    },
+    "price": 6.88,
+    "net": 0.4363,
+    "verdict": "within its interval",
+    "between": [
+     "onReadyGold 1 (6.65)",
+     "-"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:33:08.345Z",
+   "seconds": 18
+  },
+  "global@pilot0|recoil=1": {
+   "key": "recoil=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "recoil",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 5,
+   "cards": [
+    "quill-thorn-boar",
+    "berserker-boar",
+    "basalt-boar",
+    "mantis-shrimp",
+    "barkplate-beetle"
+   ],
+   "fights": 700,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": -2.3783,
+     "lo": -4.8369,
+     "hi": -1.4762
+    },
+    {
+     "fights": 400,
+     "m": -1.7578,
+     "lo": -2.6406,
+     "hi": -1.2631
+    },
+    {
+     "fights": 700,
+     "m": -1.8635,
+     "lo": -2.5695,
+     "hi": -1.466
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0302,
+    "lo": 0.027,
+    "hi": 0.0336
+   },
+   "statRate": {
+    "m": 0.0341,
+    "lo": 0.0295,
+    "hi": 0.039
+   },
+   "kappa": {
+    "m": 1.1297,
+    "lo": 0.9794,
+    "hi": 1.2773
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0157,
+    "worthStat": {
+     "m": 0.4603,
+     "lo": 0.186,
+     "hi": 0.6976
+    }
+   },
+   "test": {
+    "effects": {
+     "recoil": 1
+    },
+    "gain": -0.0911,
+    "worth": {
+     "m": -3.0139,
+     "lo": -3.5476,
+     "hi": -2.5292
+    },
+    "worthRuler": {
+     "m": -1.8635,
+     "lo": -2.5695,
+     "hi": -1.466
+    },
+    "worthStat": {
+     "m": -2.6678,
+     "lo": -3.1985,
+     "hi": -2.2493
+    },
+    "price": -3.46,
+    "net": 1.5965,
+    "verdict": "under-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:34:21.977Z",
+   "seconds": 74
+  },
+  "global@pilot0|bulldoze=1": {
+   "key": "bulldoze=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "bulldoze",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 2,
+   "cards": [
+    "bison-bulldozer",
+    "briarback-hedgehog"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.3105,
+     "lo": 1.8506,
+     "hi": 2.9
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "bulldoze": 1
+    },
+    "gain": 0.0612,
+    "worth": {
+     "m": 2.2087,
+     "lo": 1.6193,
+     "hi": 2.6859
+    },
+    "worthRuler": {
+     "m": 2.3105,
+     "lo": 1.8506,
+     "hi": 2.9
+    },
+    "worthStat": {
+     "m": 1.9535,
+     "lo": 1.3026,
+     "hi": 2.8302
+    },
+    "price": 2.23,
+    "net": 0.0805,
+    "verdict": "within its interval",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:34:42.406Z",
+   "seconds": 20
+  },
+  "global@pilot0|siege=1": {
+   "key": "siege=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "siege",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 2,
+   "cards": [
+    "bramblewood-macaque",
+    "hollow-belly-rat"
+   ],
+   "fights": 700,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.8664,
+     "lo": 0.3968,
+     "hi": 2.2351
+    },
+    {
+     "fights": 400,
+     "m": 0.7795,
+     "lo": 0.4406,
+     "hi": 1.6433
+    },
+    {
+     "fights": 700,
+     "m": 0.5408,
+     "lo": 0.4086,
+     "hi": 1.0598
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0302,
+    "lo": 0.027,
+    "hi": 0.0336
+   },
+   "statRate": {
+    "m": 0.0341,
+    "lo": 0.0295,
+    "hi": 0.039
+   },
+   "kappa": {
+    "m": 1.1297,
+    "lo": 0.9794,
+    "hi": 1.2773
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0157,
+    "worthStat": {
+     "m": 0.4603,
+     "lo": 0.186,
+     "hi": 0.6976
+    }
+   },
+   "test": {
+    "effects": {
+     "siege": 1
+    },
+    "gain": 0.0264,
+    "worth": {
+     "m": 0.8746,
+     "lo": 0.6903,
+     "hi": 1.0503
+    },
+    "worthRuler": {
+     "m": 0.5408,
+     "lo": 0.4086,
+     "hi": 1.0598
+    },
+    "worthStat": {
+     "m": 0.7742,
+     "lo": 0.5974,
+     "hi": 0.9477
+    },
+    "price": 1.07,
+    "net": -0.5292,
+    "verdict": "over-priced",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:35:58.579Z",
+   "seconds": 76
+  },
+  "global@pilot0|thorns=3": {
+   "key": "thorns=3",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "thorns",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 3,
+   "nCards": 1,
+   "cards": [
+    "quill-thorn-boar"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 6.2045,
+     "lo": 5.5513,
+     "hi": 7.2218
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "thorns": 3
+    },
+    "gain": 0.1788,
+    "worth": {
+     "m": 6.4459,
+     "lo": 5.4897,
+     "hi": 7.3221
+    },
+    "worthRuler": {
+     "m": 6.2045,
+     "lo": 5.5513,
+     "hi": 7.2218
+    },
+    "worthStat": {
+     "m": 5.701,
+     "lo": 4.5531,
+     "hi": 7.6771
+    },
+    "price": 6.63,
+    "net": -0.4255,
+    "verdict": "within its interval",
+    "between": [
+     "sweep 2 (5.08)",
+     "onReadyGold 1 (6.65)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:36:19.486Z",
+   "seconds": 21
+  },
+  "global@pilot0|mighty": {
+   "key": "mighty",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "mighty",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 4,
+   "cards": [
+    "acacia-giraffe",
+    "deep-cave-troll",
+    "marula-elephant",
+    "hercules-beetle"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 4.8961,
+     "lo": 4.2897,
+     "hi": 5.2347
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "mighty": true
+    },
+    "gain": 0.1371,
+    "worth": {
+     "m": 4.9434,
+     "lo": 4.1852,
+     "hi": 5.5373
+    },
+    "worthRuler": {
+     "m": 4.8961,
+     "lo": 4.2897,
+     "hi": 5.2347
+    },
+    "worthStat": {
+     "m": 4.3721,
+     "lo": 3.4356,
+     "hi": 5.9459
+    },
+    "price": 4.79,
+    "net": 0.1061,
+    "verdict": "within its interval",
+    "between": [
+     "bleed 2 (4.87)",
+     "fork (4.95)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:36:39.962Z",
+   "seconds": 20
+  },
+  "global@pilot0|embolden=1": {
+   "key": "embolden=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "embolden",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 1,
+   "cards": [
+    "meerkat-sentry"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 5.4834,
+     "lo": 4.6772,
+     "hi": 6.4654
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "embolden": 1
+    },
+    "gain": 0.1583,
+    "worth": {
+     "m": 5.7096,
+     "lo": 4.6376,
+     "hi": 6.6097
+    },
+    "worthRuler": {
+     "m": 5.4834,
+     "lo": 4.6772,
+     "hi": 6.4654
+    },
+    "worthStat": {
+     "m": 5.0498,
+     "lo": 3.8563,
+     "hi": 7.0674
+    },
+    "price": 3.59,
+    "net": 1.8934,
+    "verdict": "under-priced",
+    "between": [
+     "sweep 2 (5.08)",
+     "onReadyGold 1 (6.65)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:37:02.915Z",
+   "seconds": 23
+  },
+  "global@pilot0|pack=1": {
+   "key": "pack=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "pack",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 1,
+   "cards": [
+    "meerkat-sentry"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 4.9652,
+     "lo": 4.3789,
+     "hi": 5.3113
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "pack": 1
+    },
+    "gain": 0.1396,
+    "worth": {
+     "m": 5.0335,
+     "lo": 4.2543,
+     "hi": 5.6715
+    },
+    "worthRuler": {
+     "m": 4.9652,
+     "lo": 4.3789,
+     "hi": 5.3113
+    },
+    "worthStat": {
+     "m": 4.4518,
+     "lo": 3.3168,
+     "hi": 5.9451
+    },
+    "price": 3.25,
+    "net": 1.7152,
+    "verdict": "under-priced",
+    "between": [
+     "fork (4.95)",
+     "sweep 2 (5.08)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:37:23.784Z",
+   "seconds": 21
+  },
+  "global@pilot0|snipe=2": {
+   "key": "snipe=2",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "snipe",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 1,
+   "cards": [
+    "spitting-cobra"
+   ],
+   "fights": 1000,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 1.4,
+     "lo": 0.4222,
+     "hi": 2.3386
+    },
+    {
+     "fights": 400,
+     "m": 1.6176,
+     "lo": 0.5332,
+     "hi": 2.2785
+    },
+    {
+     "fights": 700,
+     "m": 1.1966,
+     "lo": 0.5449,
+     "hi": 2.0225
+    },
+    {
+     "fights": 1000,
+     "m": 1.0686,
+     "lo": 0.5446,
+     "hi": 1.5968
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0285,
+    "lo": 0.0263,
+    "hi": 0.0317
+   },
+   "statRate": {
+    "m": 0.0335,
+    "lo": 0.0298,
+    "hi": 0.0373
+   },
+   "kappa": {
+    "m": 1.1759,
+    "lo": 1.0302,
+    "hi": 1.2919
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0153,
+    "worthStat": {
+     "m": 0.4577,
+     "lo": 0.1938,
+     "hi": 0.6738
+    }
+   },
+   "test": {
+    "effects": {
+     "snipe": 2
+    },
+    "gain": 0.0342,
+    "worth": {
+     "m": 1.1993,
+     "lo": 0.9692,
+     "hi": 1.4147
+    },
+    "worthRuler": {
+     "m": 1.0686,
+     "lo": 0.5446,
+     "hi": 1.5968
+    },
+    "worthStat": {
+     "m": 1.0199,
+     "lo": 0.8151,
+     "hi": 1.28
+    },
+    "price": 2,
+    "net": -0.9314,
+    "verdict": "over-priced",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:39:08.289Z",
+   "seconds": 104
+  },
+  "global@pilot0|ambush=2": {
+   "key": "ambush=2",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "ambush",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 3,
+   "cards": [
+    "grass-viper",
+    "tunnel-ant",
+    "matamata"
+   ],
+   "fights": 1000,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 1.9039,
+     "lo": 0.8553,
+     "hi": 2.4012
+    },
+    {
+     "fights": 400,
+     "m": 1.5853,
+     "lo": 0.57,
+     "hi": 2.2958
+    },
+    {
+     "fights": 700,
+     "m": 1.6197,
+     "lo": 1.0491,
+     "hi": 2.2392
+    },
+    {
+     "fights": 1000,
+     "m": 1.628,
+     "lo": 1.0982,
+     "hi": 2.231
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0285,
+    "lo": 0.0263,
+    "hi": 0.0317
+   },
+   "statRate": {
+    "m": 0.0335,
+    "lo": 0.0298,
+    "hi": 0.0373
+   },
+   "kappa": {
+    "m": 1.1759,
+    "lo": 1.0302,
+    "hi": 1.2919
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0153,
+    "worthStat": {
+     "m": 0.4577,
+     "lo": 0.1938,
+     "hi": 0.6738
+    }
+   },
+   "test": {
+    "effects": {
+     "ambush": 2
+    },
+    "gain": 0.0418,
+    "worth": {
+     "m": 1.4684,
+     "lo": 1.2414,
+     "hi": 1.648
+    },
+    "worthRuler": {
+     "m": 1.628,
+     "lo": 1.0982,
+     "hi": 2.231
+    },
+    "worthStat": {
+     "m": 1.2488,
+     "lo": 1.0384,
+     "hi": 1.4522
+    },
+    "price": 1.42,
+    "net": 0.208,
+    "verdict": "within its interval",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:40:48.143Z",
+   "seconds": 100
+  },
+  "global@pilot0|pitchfork": {
+   "key": "pitchfork",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "pitchfork",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 2,
+   "cards": [
+    "brimstone-hound",
+    "village-miller"
+   ],
+   "fights": 1000,
+   "converged": false,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.2544,
+     "lo": 0.4664,
+     "hi": 2.9231
+    },
+    {
+     "fights": 400,
+     "m": 1.7143,
+     "lo": 0.4077,
+     "hi": 2.381
+    },
+    {
+     "fights": 700,
+     "m": 1.9533,
+     "lo": 0.6504,
+     "hi": 2.3638
+    },
+    {
+     "fights": 1000,
+     "m": 1.7375,
+     "lo": 0.8416,
+     "hi": 2.2707
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0285,
+    "lo": 0.0263,
+    "hi": 0.0317
+   },
+   "statRate": {
+    "m": 0.0335,
+    "lo": 0.0298,
+    "hi": 0.0373
+   },
+   "kappa": {
+    "m": 1.1759,
+    "lo": 1.0302,
+    "hi": 1.2919
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0153,
+    "worthStat": {
+     "m": 0.4577,
+     "lo": 0.1938,
+     "hi": 0.6738
+    }
+   },
+   "test": {
+    "effects": {
+     "pitchfork": true
+    },
+    "gain": 0.0433,
+    "worth": {
+     "m": 1.5211,
+     "lo": 1.1217,
+     "hi": 1.8835
+    },
+    "worthRuler": {
+     "m": 1.7375,
+     "lo": 0.8416,
+     "hi": 2.2707
+    },
+    "worthStat": {
+     "m": 1.2935,
+     "lo": 0.9182,
+     "hi": 1.6844
+    },
+    "price": 4,
+    "net": -2.2625,
+    "verdict": "over-priced",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:42:43.486Z",
+   "seconds": 115
+  },
+  "global@pilot0|overwhelm": {
+   "key": "overwhelm",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "overwhelm",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 1,
+   "cards": [
+    "warhorse-charger"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.1966,
+     "lo": 0.0482,
+     "hi": 0.4609
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "overwhelm": true
+    },
+    "gain": 0.0083,
+    "worth": {
+     "m": 0.3005,
+     "lo": 0.0626,
+     "hi": 0.5038
+    },
+    "worthRuler": {
+     "m": 0.1966,
+     "lo": 0.0482,
+     "hi": 0.4609
+    },
+    "worthStat": {
+     "m": 0.2658,
+     "lo": 0.0593,
+     "hi": 0.5085
+    },
+    "price": 1.05,
+    "net": -0.8534,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:43:06.546Z",
+   "seconds": 23
+  },
+  "global@pilot0|pounce=6": {
+   "key": "pounce=6",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "pounce",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 6,
+   "nCards": 1,
+   "cards": [
+    "cataphract-destrier"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 7.8122,
+     "lo": 7.0239,
+     "hi": 8.8477
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "pounce": 6
+    },
+    "gain": 0.2233,
+    "worth": {
+     "m": 8.0536,
+     "lo": 6.8365,
+     "hi": 9.1281
+    },
+    "worthRuler": {
+     "m": 7.8122,
+     "lo": 7.0239,
+     "hi": 8.8477
+    },
+    "worthStat": {
+     "m": 7.1229,
+     "lo": 5.5916,
+     "hi": 9.5897
+    },
+    "price": 7.38,
+    "net": 0.4322,
+    "verdict": "within its interval",
+    "between": [
+     "onReadyGold 1 (6.65)",
+     "-"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:43:26.591Z",
+   "seconds": 20
+  },
+  "global@pilot0|siege=3": {
+   "key": "siege=3",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "siege",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 3,
+   "nCards": 1,
+   "cards": [
+    "siege-rhino"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.3251,
+     "lo": 2.0539,
+     "hi": 2.9692
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "siege": 3
+    },
+    "gain": 0.0637,
+    "worth": {
+     "m": 2.2989,
+     "lo": 1.6835,
+     "hi": 2.8737
+    },
+    "worthRuler": {
+     "m": 2.3251,
+     "lo": 2.0539,
+     "hi": 2.9692
+    },
+    "worthStat": {
+     "m": 2.0332,
+     "lo": 1.4758,
+     "hi": 2.8808
+    },
+    "price": 2.14,
+    "net": 0.1851,
+    "verdict": "within its interval",
+    "between": [
+     "quick (2.23)",
+     "armor 1 (2.33)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:43:48.176Z",
+   "seconds": 22
+  },
+  "global@pilot0|storm": {
+   "key": "storm",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "storm",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 1,
+   "cards": [
+    "gale-swift"
+   ],
+   "fights": 400,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.7479,
+     "lo": 0.3583,
+     "hi": 2.2415
+    },
+    {
+     "fights": 400,
+     "m": 0.5341,
+     "lo": 0.3527,
+     "hi": 1.4996
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0317,
+    "lo": 0.0274,
+    "hi": 0.0351
+   },
+   "statRate": {
+    "m": 0.0335,
+    "lo": 0.0274,
+    "hi": 0.039
+   },
+   "kappa": {
+    "m": 1.0574,
+    "lo": 0.9071,
+    "hi": 1.2718
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.009,
+    "worthStat": {
+     "m": 0.2675,
+     "lo": -0.0964,
+     "hi": 0.6063
+    }
+   },
+   "test": {
+    "effects": {
+     "storm": true
+    },
+    "gain": 0.0279,
+    "worth": {
+     "m": 0.8814,
+     "lo": 0.5928,
+     "hi": 1.2073
+    },
+    "worthRuler": {
+     "m": 0.5341,
+     "lo": 0.3527,
+     "hi": 1.4996
+    },
+    "worthStat": {
+     "m": 0.8336,
+     "lo": 0.5351,
+     "hi": 1.2247
+    },
+    "price": 1.8,
+    "net": -1.2659,
+    "verdict": "over-priced",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:44:40.028Z",
+   "seconds": 52
+  },
+  "global@pilot0|reach": {
+   "key": "reach",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "reach",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 5,
+   "cards": [
+    "upside-down-bat",
+    "riverstone-slinger",
+    "meerkat-wayfarer",
+    "mallard-halberdier",
+    "mist-net-otter"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": -0.0197,
+     "lo": -0.6107,
+     "hi": 0.4071
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "reach": true
+    },
+    "gain": -0.0008,
+    "worth": {
+     "m": -0.0301,
+     "lo": -0.7943,
+     "hi": 0.6496
+    },
+    "worthRuler": {
+     "m": -0.0197,
+     "lo": -0.6107,
+     "hi": 0.4071
+    },
+    "worthStat": {
+     "m": -0.0266,
+     "lo": -0.6944,
+     "hi": 0.6079
+    },
+    "price": 1,
+    "net": -1.0197,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:45:04.233Z",
+   "seconds": 24
+  },
+  "global@pilot0|sturdy": {
+   "key": "sturdy",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "sturdy",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 4,
+   "cards": [
+    "pinecone-sapper",
+    "ur-elk",
+    "pangolin-roller",
+    "woodland-caribou"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.9272,
+     "lo": 2.38,
+     "hi": 3.1385
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "sturdy": true
+    },
+    "gain": 0.0758,
+    "worth": {
+     "m": 2.7346,
+     "lo": 2.2145,
+     "hi": 3.1219
+    },
+    "worthRuler": {
+     "m": 2.9272,
+     "lo": 2.38,
+     "hi": 3.1385
+    },
+    "worthStat": {
+     "m": 2.4186,
+     "lo": 1.7538,
+     "hi": 3.316
+    },
+    "price": 2.81,
+    "net": 0.1172,
+    "verdict": "within its interval",
+    "between": [
+     "poison 1 (2.72)",
+     "bleed 1 (2.89)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:45:26.913Z",
+   "seconds": 23
+  },
+  "global@pilot0|packLeader": {
+   "key": "packLeader",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "packLeader",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 1,
+   "cards": [
+    "dhole-matriarch"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0,
+     "lo": -0.3936,
+     "hi": 0.3005
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "packLeader": true
+    },
+    "gain": 0,
+    "worth": {
+     "m": 0,
+     "lo": -0.482,
+     "hi": 0.4065
+    },
+    "worthRuler": {
+     "m": 0,
+     "lo": -0.3936,
+     "hi": 0.3005
+    },
+    "worthStat": {
+     "m": 0,
+     "lo": -0.3912,
+     "hi": 0.4244
+    },
+    "price": 0,
+    "net": 0,
+    "verdict": "within its interval",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:45:49.101Z",
+   "seconds": 22
+  },
+  "global@pilot0|dive=2": {
+   "key": "dive=2",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "dive",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 1,
+   "cards": [
+    "harbor-seal"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0,
+     "lo": 0,
+     "hi": 0
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "dive": 2
+    },
+    "gain": 0,
+    "worth": {
+     "m": 0,
+     "lo": 0,
+     "hi": 0
+    },
+    "worthRuler": {
+     "m": 0,
+     "lo": 0,
+     "hi": 0
+    },
+    "worthStat": {
+     "m": 0,
+     "lo": 0,
+     "hi": 0
+    },
+    "price": -1.7,
+    "net": 1.7,
+    "verdict": "under-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:46:09.862Z",
+   "seconds": 21
+  },
+  "global@pilot0|freeze={\"chance\":40,\"duration\":2}": {
+   "key": "freeze={\"chance\":40,\"duration\":2}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "freeze",
+   "class": "keyword",
+   "kind": "measure",
+   "n": {
+    "chance": 40,
+    "duration": 2
+   },
+   "nCards": 1,
+   "cards": [
+    "glacier-yak"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 3.0283,
+     "lo": 2.57,
+     "hi": 3.7982
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "freeze": {
+      "chance": 40,
+      "duration": 2
+     }
+    },
+    "gain": 0.0846,
+    "worth": {
+     "m": 3.0502,
+     "lo": 2.2464,
+     "hi": 3.6879
+    },
+    "worthRuler": {
+     "m": 3.0283,
+     "lo": 2.57,
+     "hi": 3.7982
+    },
+    "worthStat": {
+     "m": 2.6977,
+     "lo": 1.823,
+     "hi": 3.8565
+    },
+    "price": 2.88,
+    "net": 0.1483,
+    "verdict": "within its interval",
+    "between": [
+     "rage (3.01)",
+     "armor 2 (3.7)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:46:33.902Z",
+   "seconds": 24
+  },
+  "global@pilot0|pulverise": {
+   "key": "pulverise",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "pulverise",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 1,
+   "cards": [
+    "walrus-icebreaker"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.1572,
+     "lo": 0.0578,
+     "hi": 0.38
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "pulverise": true
+    },
+    "gain": 0.0067,
+    "worth": {
+     "m": 0.2404,
+     "lo": 0.0825,
+     "hi": 0.4111
+    },
+    "worthRuler": {
+     "m": 0.1572,
+     "lo": 0.0578,
+     "hi": 0.38
+    },
+    "worthStat": {
+     "m": 0.2126,
+     "lo": 0.0851,
+     "hi": 0.4099
+    },
+    "price": 1.53,
+    "net": -1.3728,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:46:56.854Z",
+   "seconds": 23
+  },
+  "global@pilot0|dry": {
+   "key": "dry",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "dry",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 3,
+   "cards": [
+    "sandstorm-roc",
+    "dromedary",
+    "pale-oryx"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.2162,
+     "lo": 0.0633,
+     "hi": 0.5182
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "dry": true
+    },
+    "gain": 0.0092,
+    "worth": {
+     "m": 0.3306,
+     "lo": 0.0902,
+     "hi": 0.5879
+    },
+    "worthRuler": {
+     "m": 0.2162,
+     "lo": 0.0633,
+     "hi": 0.5182
+    },
+    "worthStat": {
+     "m": 0.2924,
+     "lo": 0.0848,
+     "hi": 0.5647
+    },
+    "price": 4,
+    "net": -3.7838,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:47:18.034Z",
+   "seconds": 21
+  },
+  "global@pilot0|expose=2": {
+   "key": "expose=2",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "expose",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 2,
+   "cards": [
+    "dune-jackal",
+    "roadrunner-courier"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.0884,
+     "lo": -0.0548,
+     "hi": 0.285
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "expose": 2
+    },
+    "gain": 0.0038,
+    "worth": {
+     "m": 0.1352,
+     "lo": -0.0772,
+     "hi": 0.3432
+    },
+    "worthRuler": {
+     "m": 0.0884,
+     "lo": -0.0548,
+     "hi": 0.285
+    },
+    "worthStat": {
+     "m": 0.1196,
+     "lo": -0.0725,
+     "hi": 0.3421
+    },
+    "price": 0.18,
+    "net": -0.0916,
+    "verdict": "within its interval",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:47:41.523Z",
+   "seconds": 23
+  },
+  "global@pilot0|T:onAttack>drawCard {\"do\":\"drawCard\",\"on\":\"onAttack\",\"count\":1}": {
+   "key": "T:onAttack>drawCard {\"do\":\"drawCard\",\"on\":\"onAttack\",\"count\":1}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "onAttack>drawCard",
+   "class": "trigger",
+   "kind": "measure",
+   "nCards": 1,
+   "cards": [
+    "worker-ant"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 4.4868,
+     "lo": 3.6595,
+     "hi": 5.0994
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "triggers": [
+      {
+       "do": "drawCard",
+       "on": "onAttack",
+       "count": 1
+      }
+     ]
+    },
+    "gain": 0.1279,
+    "worth": {
+     "m": 4.6128,
+     "lo": 3.6146,
+     "hi": 5.4356
+    },
+    "worthRuler": {
+     "m": 4.4868,
+     "lo": 3.6595,
+     "hi": 5.0994
+    },
+    "worthStat": {
+     "m": 4.0797,
+     "lo": 3.1527,
+     "hi": 5.6132
+    },
+    "price": 5.54,
+    "net": -1.0532,
+    "verdict": "over-priced",
+    "between": [
+     "inspiring 1 (3.96)",
+     "poison 2 (4.75)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:48:07.835Z",
+   "seconds": 26
+  },
+  "global@pilot0|arrow={\"v\":1,\"type\":\"acid\",\"form\":\"bolt\"}": {
+   "key": "arrow={\"v\":1,\"type\":\"acid\",\"form\":\"bolt\"}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "arrow",
+   "class": "keyword",
+   "kind": "measure",
+   "n": {
+    "v": 1,
+    "type": "acid",
+    "form": "bolt"
+   },
+   "nCards": 1,
+   "cards": [
+    "caustic-scorpion"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 7.1811,
+     "lo": 6.6004,
+     "hi": 8.2168
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "arrow": {
+      "v": 1,
+      "type": "acid",
+      "form": "bolt"
+     }
+    },
+    "gain": 0.2058,
+    "worth": {
+     "m": 7.4225,
+     "lo": 6.3467,
+     "hi": 8.3932
+    },
+    "worthRuler": {
+     "m": 7.1811,
+     "lo": 6.6004,
+     "hi": 8.2168
+    },
+    "worthStat": {
+     "m": 6.5648,
+     "lo": 5.1976,
+     "hi": 8.9027
+    },
+    "price": 6.89,
+    "net": 0.2911,
+    "verdict": "within its interval",
+    "between": [
+     "onReadyGold 1 (6.65)",
+     "-"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:48:30.444Z",
+   "seconds": 23
+  },
+  "global@pilot0|tornado=1": {
+   "key": "tornado=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "tornado",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 1,
+   "cards": [
+    "dust-devil-kestrel"
+   ],
+   "fights": 1000,
+   "converged": false,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.2641,
+     "lo": 0.9309,
+     "hi": 2.883
+    },
+    {
+     "fights": 400,
+     "m": 2.2851,
+     "lo": 1.1185,
+     "hi": 2.5294
+    },
+    {
+     "fights": 700,
+     "m": 1.7011,
+     "lo": 0.8024,
+     "hi": 2.292
+    },
+    {
+     "fights": 1000,
+     "m": 1.2328,
+     "lo": 0.5052,
+     "hi": 2.095
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0285,
+    "lo": 0.0263,
+    "hi": 0.0317
+   },
+   "statRate": {
+    "m": 0.0335,
+    "lo": 0.0298,
+    "hi": 0.0373
+   },
+   "kappa": {
+    "m": 1.1759,
+    "lo": 1.0302,
+    "hi": 1.2919
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0153,
+    "worthStat": {
+     "m": 0.4577,
+     "lo": 0.1938,
+     "hi": 0.6738
+    }
+   },
+   "test": {
+    "effects": {
+     "tornado": 1
+    },
+    "gain": 0.0364,
+    "worth": {
+     "m": 1.2783,
+     "lo": 0.87,
+     "hi": 1.6483
+    },
+    "worthRuler": {
+     "m": 1.2328,
+     "lo": 0.5052,
+     "hi": 2.095
+    },
+    "worthStat": {
+     "m": 1.0871,
+     "lo": 0.7119,
+     "hi": 1.458
+    },
+    "price": 1.17,
+    "net": 0.0628,
+    "verdict": "within its interval",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:50:18.878Z",
+   "seconds": 108
+  },
+  "global@pilot0|trap=5": {
+   "key": "trap=5",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "trap",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 5,
+   "nCards": 1,
+   "cards": [
+    "antlion-pit"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.9206,
+     "lo": 2.3031,
+     "hi": 3.3043
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "trap": 5
+    },
+    "gain": 0.0746,
+    "worth": {
+     "m": 2.6895,
+     "lo": 2.0182,
+     "hi": 3.2907
+    },
+    "worthRuler": {
+     "m": 2.9206,
+     "lo": 2.3031,
+     "hi": 3.3043
+    },
+    "worthStat": {
+     "m": 2.3787,
+     "lo": 1.6894,
+     "hi": 3.3835
+    },
+    "price": 2.98,
+    "net": -0.0594,
+    "verdict": "within its interval",
+    "between": [
+     "armor 1 (2.33)",
+     "poison 1 (2.72)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:50:41.821Z",
+   "seconds": 23
+  },
+  "global@pilot0|trap=6": {
+   "key": "trap=6",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "trap",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 6,
+   "nCards": 1,
+   "cards": [
+    "quicksand-queen"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.96,
+     "lo": 2.4895,
+     "hi": 3.646
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "trap": 6
+    },
+    "gain": 0.0821,
+    "worth": {
+     "m": 2.96,
+     "lo": 2.2742,
+     "hi": 3.642
+    },
+    "worthRuler": {
+     "m": 2.96,
+     "lo": 2.4895,
+     "hi": 3.646
+    },
+    "worthStat": {
+     "m": 2.6179,
+     "lo": 1.8202,
+     "hi": 3.6471
+    },
+    "price": 3.74,
+    "net": -0.78,
+    "verdict": "over-priced",
+    "between": [
+     "pounce 2 (2.96)",
+     "rage (3.01)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:51:01.597Z",
+   "seconds": 20
+  },
+  "global@pilot0|lastStand": {
+   "key": "lastStand",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "lastStand",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 2,
+   "cards": [
+    "honey-badger-fury",
+    "badger-trench-digger"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 0.1671,
+     "lo": 0.0438,
+     "hi": 0.3841
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "lastStand": true
+    },
+    "gain": 0.0071,
+    "worth": {
+     "m": 0.2554,
+     "lo": 0.0601,
+     "hi": 0.5009
+    },
+    "worthRuler": {
+     "m": 0.1671,
+     "lo": 0.0438,
+     "hi": 0.3841
+    },
+    "worthStat": {
+     "m": 0.2259,
+     "lo": 0.0556,
+     "hi": 0.4424
+    },
+    "price": 0.45,
+    "net": -0.2829,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:51:21.221Z",
+   "seconds": 20
+  },
+  "global@pilot0|recoil=2": {
+   "key": "recoil=2",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "recoil",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 2,
+   "cards": [
+    "grindstone-boar",
+    "granite-ox-golem"
+   ],
+   "fights": 1000,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": -3.6067,
+     "lo": -7.5703,
+     "hi": -2.356
+    },
+    {
+     "fights": 400,
+     "m": -2.7105,
+     "lo": -3.9662,
+     "hi": -1.9683
+    },
+    {
+     "fights": 700,
+     "m": -3.0668,
+     "lo": -4.228,
+     "hi": -2.4192
+    },
+    {
+     "fights": 1000,
+     "m": -3.2254,
+     "lo": -4.1769,
+     "hi": -2.5344
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0285,
+    "lo": 0.0263,
+    "hi": 0.0317
+   },
+   "statRate": {
+    "m": 0.0335,
+    "lo": 0.0298,
+    "hi": 0.0373
+   },
+   "kappa": {
+    "m": 1.1759,
+    "lo": 1.0302,
+    "hi": 1.2919
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0153,
+    "worthStat": {
+     "m": 0.4577,
+     "lo": 0.1938,
+     "hi": 0.6738
+    }
+   },
+   "test": {
+    "effects": {
+     "recoil": 2
+    },
+    "gain": -0.1547,
+    "worth": {
+     "m": -5.4291,
+     "lo": -6.0169,
+     "hi": -4.7379
+    },
+    "worthRuler": {
+     "m": -3.2254,
+     "lo": -4.1769,
+     "hi": -2.5344
+    },
+    "worthStat": {
+     "m": -4.6169,
+     "lo": -5.1888,
+     "hi": -4.0268
+    },
+    "price": -5.88,
+    "net": 2.6546,
+    "verdict": "under-priced",
+    "between": [
+     "-",
+     "shell 2 (0.57)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:52:56.087Z",
+   "seconds": 95
+  },
+  "global@pilot0|smokeBomb": {
+   "key": "smokeBomb",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "smokeBomb",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 1,
+   "cards": [
+    "smoke-raccoon"
+   ],
+   "fights": 1000,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 1.4889,
+     "lo": 0.3473,
+     "hi": 2.4858
+    },
+    {
+     "fights": 400,
+     "m": 1.3275,
+     "lo": 0.4588,
+     "hi": 2.2676
+    },
+    {
+     "fights": 700,
+     "m": 1.2617,
+     "lo": 0.5202,
+     "hi": 2.0936
+    },
+    {
+     "fights": 1000,
+     "m": 0.9166,
+     "lo": 0.4449,
+     "hi": 1.5726
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0285,
+    "lo": 0.0263,
+    "hi": 0.0317
+   },
+   "statRate": {
+    "m": 0.0335,
+    "lo": 0.0298,
+    "hi": 0.0373
+   },
+   "kappa": {
+    "m": 1.1759,
+    "lo": 1.0302,
+    "hi": 1.2919
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0153,
+    "worthStat": {
+     "m": 0.4577,
+     "lo": 0.1938,
+     "hi": 0.6738
+    }
+   },
+   "test": {
+    "effects": {
+     "smokeBomb": true
+    },
+    "gain": 0.0321,
+    "worth": {
+     "m": 1.1262,
+     "lo": 0.7517,
+     "hi": 1.4395
+    },
+    "worthRuler": {
+     "m": 0.9166,
+     "lo": 0.4449,
+     "hi": 1.5726
+    },
+    "worthStat": {
+     "m": 0.9577,
+     "lo": 0.6508,
+     "hi": 1.2993
+    },
+    "price": 2,
+    "net": -1.0834,
+    "verdict": "over-priced",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:54:41.912Z",
+   "seconds": 106
+  },
+  "global@pilot0|bounty=1": {
+   "key": "bounty=1",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "bounty",
+   "class": "shorthand",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 4,
+   "cards": [
+    "raccoon-bandit",
+    "trash-panda-trickster",
+    "riverside-peddler",
+    "pack-mule"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.9556,
+     "lo": 2.3118,
+     "hi": 3.6014
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "bounty": 1
+    },
+    "gain": 0.0813,
+    "worth": {
+     "m": 2.9299,
+     "lo": 1.9838,
+     "hi": 3.6267
+    },
+    "worthRuler": {
+     "m": 2.9556,
+     "lo": 2.3118,
+     "hi": 3.6014
+    },
+    "worthStat": {
+     "m": 2.5914,
+     "lo": 1.6051,
+     "hi": 3.8298
+    },
+    "price": 1.8,
+    "net": 1.1556,
+    "verdict": "under-priced",
+    "between": [
+     "regen 2 (2.9)",
+     "pounce 2 (2.96)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:55:02.715Z",
+   "seconds": 21
+  },
+  "global@pilot0|arrow={\"v\":1,\"type\":\"fire\",\"form\":\"bolt\"}": {
+   "key": "arrow={\"v\":1,\"type\":\"fire\",\"form\":\"bolt\"}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "arrow",
+   "class": "keyword",
+   "kind": "measure",
+   "n": {
+    "v": 1,
+    "type": "fire",
+    "form": "bolt"
+   },
+   "nCards": 3,
+   "cards": [
+    "magma-salamander",
+    "bombardier-beetle",
+    "spitfire-sawfly-grubs"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 6.4148,
+     "lo": 5.8529,
+     "hi": 7.5057
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "arrow": {
+      "v": 1,
+      "type": "fire",
+      "form": "bolt"
+     }
+    },
+    "gain": 0.1846,
+    "worth": {
+     "m": 6.6562,
+     "lo": 5.6732,
+     "hi": 7.4807
+    },
+    "worthRuler": {
+     "m": 6.4148,
+     "lo": 5.8529,
+     "hi": 7.5057
+    },
+    "worthStat": {
+     "m": 5.887,
+     "lo": 4.7164,
+     "hi": 7.8085
+    },
+    "price": 2.5,
+    "net": 3.9148,
+    "verdict": "under-priced",
+    "between": [
+     "onReadyGold 1 (6.65)",
+     "-"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:55:22.191Z",
+   "seconds": 19
+  },
+  "global@pilot0|T:onSpawn>stun {\"on\":\"onSpawn\",\"do\":\"stun\",\"who\":\"enemy\",\"sub\":\"adjacent\"}": {
+   "key": "T:onSpawn>stun {\"on\":\"onSpawn\",\"do\":\"stun\",\"who\":\"enemy\",\"sub\":\"adjacent\"}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "onSpawn>stun",
+   "class": "trigger",
+   "kind": "measure",
+   "nCards": 1,
+   "cards": [
+    "ash-cloud-condor"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.269,
+     "lo": 1.51,
+     "hi": 2.7781
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "stun",
+       "who": "enemy",
+       "sub": "adjacent"
+      }
+     ]
+    },
+    "gain": 0.0542,
+    "worth": {
+     "m": 1.9533,
+     "lo": 1.4082,
+     "hi": 2.4211
+    },
+    "worthRuler": {
+     "m": 2.269,
+     "lo": 1.51,
+     "hi": 2.7781
+    },
+    "worthStat": {
+     "m": 1.7276,
+     "lo": 1.0997,
+     "hi": 2.4954
+    },
+    "price": 1.95,
+    "net": 0.319,
+    "verdict": "within its interval",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:55:42.327Z",
+   "seconds": 20
+  },
+  "global@pilot0|arrow={\"v\":2,\"type\":\"fire\",\"form\":\"bolt\"}": {
+   "key": "arrow={\"v\":2,\"type\":\"fire\",\"form\":\"bolt\"}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "arrow",
+   "class": "keyword",
+   "kind": "measure",
+   "n": {
+    "v": 2,
+    "type": "fire",
+    "form": "bolt"
+   },
+   "nCards": 1,
+   "cards": [
+    "fire-drake-hatchling"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 8.323,
+     "lo": 7.5396,
+     "hi": 9.4044
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "arrow": {
+      "v": 2,
+      "type": "fire",
+      "form": "bolt"
+     }
+    },
+    "gain": 0.2375,
+    "worth": {
+     "m": 8.5645,
+     "lo": 7.3505,
+     "hi": 9.6397
+    },
+    "worthRuler": {
+     "m": 8.323,
+     "lo": 7.5396,
+     "hi": 9.4044
+    },
+    "worthStat": {
+     "m": 7.5748,
+     "lo": 5.9547,
+     "hi": 10.3894
+    },
+    "price": 5,
+    "net": 3.323,
+    "verdict": "under-priced",
+    "between": [
+     "onReadyGold 1 (6.65)",
+     "-"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:56:00.890Z",
+   "seconds": 19
+  },
+  "global@pilot0|bulwark=2": {
+   "key": "bulwark=2",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "bulwark",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 1,
+   "cards": [
+    "ancient-sloth-titan"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 7.3464,
+     "lo": 6.4317,
+     "hi": 8.4803
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "bulwark": 2
+    },
+    "gain": 0.2104,
+    "worth": {
+     "m": 7.5878,
+     "lo": 6.3324,
+     "hi": 8.6446
+    },
+    "worthRuler": {
+     "m": 7.3464,
+     "lo": 6.4317,
+     "hi": 8.4803
+    },
+    "worthStat": {
+     "m": 6.711,
+     "lo": 5.1688,
+     "hi": 8.9799
+    },
+    "price": 8.73,
+    "net": -1.3836,
+    "verdict": "over-priced",
+    "between": [
+     "onReadyGold 1 (6.65)",
+     "-"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:56:22.557Z",
+   "seconds": 22
+  },
+  "global@pilot0|onDeathSpawn={\"defId\":\"bat-swarmling\",\"count\":2}": {
+   "key": "onDeathSpawn={\"defId\":\"bat-swarmling\",\"count\":2}",
+   "ctx": "global@pilot0",
+   "bramble": 15,
+   "id": "onDeathSpawn",
+   "class": "keyword",
+   "kind": "measure",
+   "n": {
+    "defId": "bat-swarmling",
+    "count": 2
+   },
+   "nCards": 1,
+   "cards": [
+    "vampire-roost"
+   ],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 3.29,
+     "lo": 2.8827,
+     "hi": 4.054
+    }
+   ],
+   "fingerprint": "b422704f26d1",
+   "canonRate": {
+    "m": 0.0277,
+    "lo": 0.0229,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0314,
+    "lo": 0.0227,
+    "hi": 0.0398
+   },
+   "kappa": {
+    "m": 1.1307,
+    "lo": 0.8352,
+    "hi": 1.4331
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0067,
+    "worthStat": {
+     "m": 0.2126,
+     "lo": -0.4392,
+     "hi": 0.7059
+    }
+   },
+   "test": {
+    "effects": {
+     "onDeathSpawn": {
+      "defId": "bat-swarmling",
+      "count": 2
+     }
+    },
+    "gain": 0.0942,
+    "worth": {
+     "m": 3.3957,
+     "lo": 2.7344,
+     "hi": 3.9273
+    },
+    "worthRuler": {
+     "m": 3.29,
+     "lo": 2.8827,
+     "hi": 4.054
+    },
+    "worthStat": {
+     "m": 3.0033,
+     "lo": 2.2515,
+     "hi": 4.0897
+    },
+    "price": 4.35,
+    "net": -1.06,
+    "verdict": "over-priced",
+    "between": [
+     "rage (3.01)",
+     "armor 2 (3.7)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-22T10:56:43.370Z",
+   "seconds": 21
   }
  }
 }

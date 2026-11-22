@@ -1,0 +1,1280 @@
+{
+ "about": "PILOT: worthRuler with the measured deck at CPU level 2 vs level 0 (opponent level 1), bramble 15; ceiling = pilot2 - pilot0, z from the 95% intervals; pilot1 = the shared measure",
+ "counts": {
+  "same": 123,
+  "higher with a good pilot": 3,
+  "higher with a basic pilot": 1
+ },
+ "rows": [
+  {
+   "key": "onDeathSpawn={\"defId\":\"worker-ant\",\"count\":3}",
+   "price": 4.35,
+   "pilot0": 6.79,
+   "pilot1": 7.47,
+   "pilot2": 8.68,
+   "ceiling": 1.89,
+   "z": 2.49,
+   "rel": 0.28
+  },
+  {
+   "key": "thorns=3",
+   "price": 6.63,
+   "pilot0": 6.2,
+   "pilot1": 6.91,
+   "pilot2": 7.73,
+   "ceiling": 1.53,
+   "z": 2.52,
+   "rel": 0.25
+  },
+  {
+   "key": "forestry=1",
+   "price": 6.65,
+   "pilot0": 5.31,
+   "pilot1": 5.62,
+   "pilot2": 6.65,
+   "ceiling": 1.34,
+   "z": 1.94,
+   "rel": 0.25
+  },
+  {
+   "key": "poisonPowder=2",
+   "price": 6.4,
+   "pilot0": 7.02,
+   "pilot1": 7.62,
+   "pilot2": 8.09,
+   "ceiling": 1.08,
+   "z": 1.55,
+   "rel": 0.15
+  },
+  {
+   "key": "bleed=3",
+   "price": 6.61,
+   "pilot0": 6.38,
+   "pilot1": 6.79,
+   "pilot2": 7.45,
+   "ceiling": 1.06,
+   "z": 1.85,
+   "rel": 0.17
+  },
+  {
+   "key": "poisonBarbs=2",
+   "price": 3.2,
+   "pilot0": 5.63,
+   "pilot1": 6.12,
+   "pilot2": 6.68,
+   "ceiling": 1.05,
+   "z": 1.45,
+   "rel": 0.19
+  },
+  {
+   "key": "tornado=1",
+   "price": 1.17,
+   "pilot0": 1.23,
+   "pilot1": 1.08,
+   "pilot2": 2.25,
+   "ceiling": 1.01,
+   "z": 2.13,
+   "rel": 0.82
+  },
+  {
+   "key": "avalanche=1",
+   "price": 9.25,
+   "pilot0": 8.49,
+   "pilot1": 9,
+   "pilot2": 9.42,
+   "ceiling": 0.93,
+   "z": 1.02,
+   "rel": 0.11
+  },
+  {
+   "key": "arrow=1+fletcher=1",
+   "price": 7.45,
+   "pilot0": 7.68,
+   "pilot1": 7.58,
+   "pilot2": 8.51,
+   "ceiling": 0.84,
+   "z": 0.99,
+   "rel": 0.11
+  },
+  {
+   "key": "arrow={\"v\":2,\"type\":\"fire\",\"form\":\"bolt\"}",
+   "price": 5,
+   "pilot0": 8.32,
+   "pilot1": 8.48,
+   "pilot2": 9.16,
+   "ceiling": 0.84,
+   "z": 1.11,
+   "rel": 0.1
+  },
+  {
+   "key": "loneWolf=[1,1]",
+   "price": 7.36,
+   "pilot0": 7.53,
+   "pilot1": 7.79,
+   "pilot2": 8.3,
+   "ceiling": 0.78,
+   "z": 1.2,
+   "rel": 0.1
+  },
+  {
+   "key": "arrow=3",
+   "price": 9.39,
+   "pilot0": 8.08,
+   "pilot1": 7.85,
+   "pilot2": 8.84,
+   "ceiling": 0.76,
+   "z": 1.03,
+   "rel": 0.09
+  },
+  {
+   "key": "arrow={\"v\":1,\"type\":\"acid\",\"form\":\"bolt\"}",
+   "price": 6.89,
+   "pilot0": 7.18,
+   "pilot1": 7.54,
+   "pilot2": 7.87,
+   "ceiling": 0.69,
+   "z": 1.09,
+   "rel": 0.1
+  },
+  {
+   "key": "strangle=1",
+   "price": 4.21,
+   "pilot0": 3.53,
+   "pilot1": 4.29,
+   "pilot2": 4.22,
+   "ceiling": 0.68,
+   "z": 1.52,
+   "rel": 0.19
+  },
+  {
+   "key": "twinStrike",
+   "price": 7.75,
+   "pilot0": 6.87,
+   "pilot1": 6.91,
+   "pilot2": 7.48,
+   "ceiling": 0.61,
+   "z": 0.96,
+   "rel": 0.09
+  },
+  {
+   "key": "stealth",
+   "price": 6.88,
+   "pilot0": 7.32,
+   "pilot1": 6.88,
+   "pilot2": 7.93,
+   "ceiling": 0.61,
+   "z": 0.8,
+   "rel": 0.08
+  },
+  {
+   "key": "pounce=6",
+   "price": 7.38,
+   "pilot0": 7.81,
+   "pilot1": 7.84,
+   "pilot2": 8.41,
+   "ceiling": 0.6,
+   "z": 0.86,
+   "rel": 0.08
+  },
+  {
+   "key": "sweep=3",
+   "price": 6.22,
+   "pilot0": 7.17,
+   "pilot1": 6.82,
+   "pilot2": 7.75,
+   "ceiling": 0.58,
+   "z": 0.94,
+   "rel": 0.08
+  },
+  {
+   "key": "thorns=1",
+   "price": 3.22,
+   "pilot0": 2.95,
+   "pilot1": 2.9,
+   "pilot2": 3.44,
+   "ceiling": 0.49,
+   "z": 1.36,
+   "rel": 0.17
+  },
+  {
+   "key": "arrow=2",
+   "price": 7.01,
+   "pilot0": 6.32,
+   "pilot1": 6.34,
+   "pilot2": 6.82,
+   "ceiling": 0.49,
+   "z": 0.68,
+   "rel": 0.08
+  },
+  {
+   "key": "arrow={\"v\":1,\"type\":\"fire\",\"form\":\"bolt\"}",
+   "price": 2.5,
+   "pilot0": 6.41,
+   "pilot1": 6.68,
+   "pilot2": 6.91,
+   "ceiling": 0.49,
+   "z": 0.67,
+   "rel": 0.08
+  },
+  {
+   "key": "sleepPowder=1",
+   "price": 2.5,
+   "pilot0": 3.65,
+   "pilot1": 4.42,
+   "pilot2": 4.12,
+   "ceiling": 0.47,
+   "z": 0.83,
+   "rel": 0.13
+  },
+  {
+   "key": "bulwark=2",
+   "price": 8.73,
+   "pilot0": 7.35,
+   "pilot1": 7.18,
+   "pilot2": 7.76,
+   "ceiling": 0.42,
+   "z": 0.57,
+   "rel": 0.06
+  },
+  {
+   "key": "T:onDeath>damage {\"do\":\"damage\",\"on\":\"onDeath\",\"sub\":\"adjacent\",\"who\":\"enemy\",\"amount\":2,\"dmgType\":\"heat\"}",
+   "price": 1.19,
+   "pilot0": 1.38,
+   "pilot1": 1.25,
+   "pilot2": 1.71,
+   "ceiling": 0.33,
+   "z": 0.94,
+   "rel": 0.24
+  },
+  {
+   "key": "twinShot=2",
+   "price": 13.26,
+   "pilot0": 9,
+   "pilot1": 8.45,
+   "pilot2": 9.33,
+   "ceiling": 0.33,
+   "z": 0.42,
+   "rel": 0.04
+  },
+  {
+   "key": "siege=3",
+   "price": 2.14,
+   "pilot0": 2.33,
+   "pilot1": 2.61,
+   "pilot2": 2.65,
+   "ceiling": 0.33,
+   "z": 0.94,
+   "rel": 0.14
+  },
+  {
+   "key": "delivery={\"v\":1,\"res\":\"pearl\"}",
+   "price": 3.69,
+   "pilot0": 3.31,
+   "pilot1": 3.8,
+   "pilot2": 3.61,
+   "ceiling": 0.3,
+   "z": 0.51,
+   "rel": 0.09
+  },
+  {
+   "key": "daunt=2",
+   "price": 2.56,
+   "pilot0": 3.12,
+   "pilot1": 2.95,
+   "pilot2": 3.36,
+   "ceiling": 0.24,
+   "z": 0.78,
+   "rel": 0.08
+  },
+  {
+   "key": "bludgeon",
+   "price": 3.95,
+   "pilot0": 4.35,
+   "pilot1": 4.41,
+   "pilot2": 4.59,
+   "ceiling": 0.24,
+   "z": 0.51,
+   "rel": 0.06
+  },
+  {
+   "key": "daunt={\"v\":1,\"lasts\":\"lasting\"}",
+   "price": 2.64,
+   "pilot0": 3.01,
+   "pilot1": 3.2,
+   "pilot2": 3.24,
+   "ceiling": 0.23,
+   "z": 0.89,
+   "rel": 0.08
+  },
+  {
+   "key": "arrow={\"v\":2,\"bramble\":true}",
+   "price": 6.31,
+   "pilot0": 8.95,
+   "pilot1": 8.22,
+   "pilot2": 9.16,
+   "ceiling": 0.21,
+   "z": 0.23,
+   "rel": 0.02
+  },
+  {
+   "key": "onDeathSpawn={\"defId\":\"maggot-swarmling\",\"count\":3}",
+   "price": 4.35,
+   "pilot0": 4.14,
+   "pilot1": 4.37,
+   "pilot2": 4.35,
+   "ceiling": 0.2,
+   "z": 0.42,
+   "rel": 0.05
+  },
+  {
+   "key": "swarm",
+   "price": 3.13,
+   "pilot0": 3.28,
+   "pilot1": 4.04,
+   "pilot2": 3.47,
+   "ceiling": 0.2,
+   "z": 0.5,
+   "rel": 0.06
+  },
+  {
+   "key": "onDeathSpawn={\"defId\":\"bat-swarmling\",\"count\":2}",
+   "price": 4.35,
+   "pilot0": 3.29,
+   "pilot1": 3.89,
+   "pilot2": 3.49,
+   "ceiling": 0.2,
+   "z": 0.48,
+   "rel": 0.06
+  },
+  {
+   "key": "T:onSpawn>stun {\"on\":\"onSpawn\",\"do\":\"stun\",\"who\":\"enemy\",\"sub\":\"adjacent\"}",
+   "price": 1.95,
+   "pilot0": 2.27,
+   "pilot1": 2.33,
+   "pilot2": 2.46,
+   "ceiling": 0.19,
+   "z": 0.5,
+   "rel": 0.08
+  },
+  {
+   "key": "swarm=[\"Ants\"]",
+   "price": 3.13,
+   "pilot0": 0.31,
+   "pilot1": 0.49,
+   "pilot2": 0.49,
+   "ceiling": 0.18,
+   "z": 0.54,
+   "rel": null
+  },
+  {
+   "key": "bulldoze=1",
+   "price": 2.23,
+   "pilot0": 2.31,
+   "pilot1": 2.46,
+   "pilot2": 2.5,
+   "ceiling": 0.18,
+   "z": 0.58,
+   "rel": 0.08
+  },
+  {
+   "key": "keenSense",
+   "price": 0.66,
+   "pilot0": 0.06,
+   "pilot1": 0.3,
+   "pilot2": 0.21,
+   "ceiling": 0.15,
+   "z": 0.8,
+   "rel": null
+  },
+  {
+   "key": "sap",
+   "price": 2.3,
+   "pilot0": 2.29,
+   "pilot1": 2.53,
+   "pilot2": 2.43,
+   "ceiling": 0.14,
+   "z": 0.46,
+   "rel": 0.06
+  },
+  {
+   "key": "snipe=2",
+   "price": 2,
+   "pilot0": 1.07,
+   "pilot1": 1.33,
+   "pilot2": 1.2,
+   "ceiling": 0.14,
+   "z": 0.4,
+   "rel": 0.13
+  },
+  {
+   "key": "poisonBarbs=1",
+   "price": 1.6,
+   "pilot0": 2.93,
+   "pilot1": 2.9,
+   "pilot2": 3.06,
+   "ceiling": 0.13,
+   "z": 0.43,
+   "rel": 0.04
+  },
+  {
+   "key": "dynamite=3",
+   "price": 1.1,
+   "pilot0": 2.96,
+   "pilot1": 2.34,
+   "pilot2": 3.06,
+   "ceiling": 0.1,
+   "z": 0.19,
+   "rel": 0.03
+  },
+  {
+   "key": "shield=3",
+   "price": 4.93,
+   "pilot0": 2.25,
+   "pilot1": 2.35,
+   "pilot2": 2.35,
+   "ceiling": 0.09,
+   "z": 0.26,
+   "rel": 0.04
+  },
+  {
+   "key": "ambush=3",
+   "price": 2.38,
+   "pilot0": 2.31,
+   "pilot1": 2.36,
+   "pilot2": 2.4,
+   "ceiling": 0.09,
+   "z": 0.24,
+   "rel": 0.04
+  },
+  {
+   "key": "exploit=2",
+   "price": 4.2,
+   "pilot0": 2.24,
+   "pilot1": 2.07,
+   "pilot2": 2.32,
+   "ceiling": 0.08,
+   "z": 0.24,
+   "rel": 0.04
+  },
+  {
+   "key": "tide",
+   "price": 0.5,
+   "pilot0": 0.26,
+   "pilot1": 0.37,
+   "pilot2": 0.33,
+   "ceiling": 0.08,
+   "z": 0.27,
+   "rel": null
+  },
+  {
+   "key": "tide=2",
+   "price": 0.93,
+   "pilot0": 0.39,
+   "pilot1": 0.51,
+   "pilot2": 0.47,
+   "ceiling": 0.08,
+   "z": 0.2,
+   "rel": null
+  },
+  {
+   "key": "tide=3",
+   "price": 1.34,
+   "pilot0": 0.48,
+   "pilot1": 0.78,
+   "pilot2": 0.56,
+   "ceiling": 0.08,
+   "z": 0.24,
+   "rel": null
+  },
+  {
+   "key": "poisonPowder=1",
+   "price": 3.2,
+   "pilot0": 3.68,
+   "pilot1": 4.22,
+   "pilot2": 3.76,
+   "ceiling": 0.08,
+   "z": 0.14,
+   "rel": 0.02
+  },
+  {
+   "key": "pierce=2",
+   "price": 0.3,
+   "pilot0": 0.07,
+   "pilot1": 0.16,
+   "pilot2": 0.14,
+   "ceiling": 0.07,
+   "z": 0.72,
+   "rel": null
+  },
+  {
+   "key": "carrion=2",
+   "price": 2.68,
+   "pilot0": 2.28,
+   "pilot1": 2.24,
+   "pilot2": 2.35,
+   "ceiling": 0.07,
+   "z": 0.18,
+   "rel": 0.03
+  },
+  {
+   "key": "pierce=3",
+   "price": 0.34,
+   "pilot0": 0.07,
+   "pilot1": 0.17,
+   "pilot2": 0.14,
+   "ceiling": 0.07,
+   "z": 0.72,
+   "rel": null
+  },
+  {
+   "key": "storm",
+   "price": 1.8,
+   "pilot0": 0.53,
+   "pilot1": 0.51,
+   "pilot2": 0.6,
+   "ceiling": 0.07,
+   "z": 0.19,
+   "rel": 0.13
+  },
+  {
+   "key": "pulverise",
+   "price": 1.53,
+   "pilot0": 0.16,
+   "pilot1": 0.26,
+   "pilot2": 0.23,
+   "ceiling": 0.07,
+   "z": 0.56,
+   "rel": null
+  },
+  {
+   "key": "pounce=1",
+   "price": 1.66,
+   "pilot0": 2.25,
+   "pilot1": 1.88,
+   "pilot2": 2.31,
+   "ceiling": 0.06,
+   "z": 0.16,
+   "rel": 0.03
+  },
+  {
+   "key": "lastStand",
+   "price": 0.45,
+   "pilot0": 0.17,
+   "pilot1": 0.28,
+   "pilot2": 0.23,
+   "ceiling": 0.06,
+   "z": 0.49,
+   "rel": null
+  },
+  {
+   "key": "ambush=2",
+   "price": 1.42,
+   "pilot0": 1.63,
+   "pilot1": 1.42,
+   "pilot2": 1.68,
+   "ceiling": 0.05,
+   "z": 0.13,
+   "rel": 0.03
+  },
+  {
+   "key": "sturdy",
+   "price": 2.81,
+   "pilot0": 2.93,
+   "pilot1": 2.89,
+   "pilot2": 2.97,
+   "ceiling": 0.05,
+   "z": 0.16,
+   "rel": 0.02
+  },
+  {
+   "key": "trap=6",
+   "price": 3.74,
+   "pilot0": 2.96,
+   "pilot1": 2.93,
+   "pilot2": 3.01,
+   "ceiling": 0.05,
+   "z": 0.12,
+   "rel": 0.02
+  },
+  {
+   "key": "siege=1",
+   "price": 1.07,
+   "pilot0": 0.54,
+   "pilot1": 0.97,
+   "pilot2": 0.58,
+   "ceiling": 0.04,
+   "z": 0.16,
+   "rel": 0.07
+  },
+  {
+   "key": "overwhelm",
+   "price": 1.05,
+   "pilot0": 0.2,
+   "pilot1": 0.33,
+   "pilot2": 0.24,
+   "ceiling": 0.04,
+   "z": 0.27,
+   "rel": null
+  },
+  {
+   "key": "keenSense={\"sees\":\"dark\"}",
+   "price": 3,
+   "pilot0": 0.06,
+   "pilot1": 0.26,
+   "pilot2": 0.09,
+   "ceiling": 0.03,
+   "z": 0.22,
+   "rel": null
+  },
+  {
+   "key": "armor=3",
+   "price": 4.85,
+   "pilot0": 4.77,
+   "pilot1": 4.69,
+   "pilot2": 4.8,
+   "ceiling": 0.03,
+   "z": 0.07,
+   "rel": 0.01
+  },
+  {
+   "key": "cure=1",
+   "price": 0.5,
+   "pilot0": 0,
+   "pilot1": 0.06,
+   "pilot2": 0.02,
+   "ceiling": 0.02,
+   "z": 1.1,
+   "rel": null
+  },
+  {
+   "key": "T:onAttacked>gain {\"do\":\"gain\",\"on\":\"onAttacked\",\"amount\":1,\"resource\":\"lumber\"}",
+   "price": 1.9,
+   "pilot0": 3.59,
+   "pilot1": 3.23,
+   "pilot2": 3.61,
+   "ceiling": 0.02,
+   "z": 0.03,
+   "rel": 0
+  },
+  {
+   "key": "rainrunner=2",
+   "price": 4,
+   "pilot0": 0.24,
+   "pilot1": 0.27,
+   "pilot2": 0.25,
+   "ceiling": 0.01,
+   "z": 0.06,
+   "rel": null
+  },
+  {
+   "key": "enfeeble=1",
+   "price": 2.5,
+   "pilot0": 2.24,
+   "pilot1": 1.81,
+   "pilot2": 2.25,
+   "ceiling": 0.01,
+   "z": 0.03,
+   "rel": 0
+  },
+  {
+   "key": "swarm=[\"Arachnid\"]",
+   "price": 3.13,
+   "pilot0": 0.08,
+   "pilot1": 0.1,
+   "pilot2": 0.09,
+   "ceiling": 0.01,
+   "z": 0.15,
+   "rel": null
+  },
+  {
+   "key": "foraging=1",
+   "price": 1.68,
+   "pilot0": 2.29,
+   "pilot1": 2.04,
+   "pilot2": 2.3,
+   "ceiling": 0.01,
+   "z": 0.05,
+   "rel": 0.01
+  },
+  {
+   "key": "smokeBomb",
+   "price": 2,
+   "pilot0": 0.92,
+   "pilot1": 0.8,
+   "pilot2": 0.92,
+   "ceiling": 0.01,
+   "z": 0.01,
+   "rel": 0.01
+  },
+  {
+   "key": "speed={\"kind\":\"swift\"}",
+   "price": 9.5,
+   "pilot0": 4.14,
+   "pilot1": 4.45,
+   "pilot2": 4.15,
+   "ceiling": 0,
+   "z": 0.01,
+   "rel": 0
+  },
+  {
+   "key": "herald=1",
+   "price": 1.5,
+   "pilot0": 0,
+   "pilot1": 0,
+   "pilot2": 0,
+   "ceiling": 0,
+   "z": 0,
+   "rel": null
+  },
+  {
+   "key": "dive=2",
+   "price": -1.7,
+   "pilot0": 0,
+   "pilot1": 0,
+   "pilot2": 0,
+   "ceiling": 0,
+   "z": 0,
+   "rel": null
+  },
+  {
+   "key": "illuminate",
+   "price": 0.81,
+   "pilot0": 0.32,
+   "pilot1": 0.25,
+   "pilot2": 0.32,
+   "ceiling": -0.01,
+   "z": -0.01,
+   "rel": null
+  },
+  {
+   "key": "salvage=1",
+   "price": 0.75,
+   "pilot0": 0,
+   "pilot1": 0.01,
+   "pilot2": -0.02,
+   "ceiling": -0.02,
+   "z": -0.41,
+   "rel": null
+  },
+  {
+   "key": "wakeful",
+   "price": 0.5,
+   "pilot0": 0.04,
+   "pilot1": 0.05,
+   "pilot2": 0.02,
+   "ceiling": -0.02,
+   "z": -0.21,
+   "rel": null
+  },
+  {
+   "key": "repair=2",
+   "price": 2.97,
+   "pilot0": 2.41,
+   "pilot1": 2.41,
+   "pilot2": 2.36,
+   "ceiling": -0.05,
+   "z": -0.24,
+   "rel": -0.02
+  },
+  {
+   "key": "web=1",
+   "price": 0.97,
+   "pilot0": 0.17,
+   "pilot1": 0.11,
+   "pilot2": 0.11,
+   "ceiling": -0.05,
+   "z": -0.29,
+   "rel": null
+  },
+  {
+   "key": "tide={\"gives\":{\"flood\":{\"attack\":2,\"health\":2,\"evasive\":true},\"ebb\":{\"armor\":2}}}",
+   "price": 4.68,
+   "pilot0": 0.53,
+   "pilot1": 0.63,
+   "pilot2": 0.47,
+   "ceiling": -0.06,
+   "z": -0.18,
+   "rel": -0.1
+  },
+  {
+   "key": "frostbite=1",
+   "price": 0.19,
+   "pilot0": 0.11,
+   "pilot1": 0.12,
+   "pilot2": 0.05,
+   "ceiling": -0.06,
+   "z": -0.79,
+   "rel": null
+  },
+  {
+   "key": "corrode=1",
+   "price": 2.41,
+   "pilot0": 2.92,
+   "pilot1": 2.92,
+   "pilot2": 2.86,
+   "ceiling": -0.07,
+   "z": -0.26,
+   "rel": -0.02
+  },
+  {
+   "key": "purblind",
+   "price": -5.7,
+   "pilot0": -2.54,
+   "pilot1": -2.47,
+   "pilot2": -2.61,
+   "ceiling": -0.07,
+   "z": -0.15,
+   "rel": -0.03
+  },
+  {
+   "key": "T:onHealed>gain {\"do\":\"gain\",\"on\":\"onHealed\",\"amount\":1,\"resource\":\"lumber\"}",
+   "price": 1,
+   "pilot0": 0.1,
+   "pilot1": 0.05,
+   "pilot2": 0.02,
+   "ceiling": -0.08,
+   "z": -1,
+   "rel": null
+  },
+  {
+   "key": "delivery=1",
+   "price": 5.25,
+   "pilot0": 3.27,
+   "pilot1": 3.65,
+   "pilot2": 3.17,
+   "ceiling": -0.09,
+   "z": -0.18,
+   "rel": -0.03
+  },
+  {
+   "key": "herbalist=1",
+   "price": 0.23,
+   "pilot0": 0.19,
+   "pilot1": 0.15,
+   "pilot2": 0.07,
+   "ceiling": -0.12,
+   "z": -1.05,
+   "rel": null
+  },
+  {
+   "key": "scare=1",
+   "price": 3.02,
+   "pilot0": 2.9,
+   "pilot1": 2.83,
+   "pilot2": 2.78,
+   "ceiling": -0.12,
+   "z": -0.4,
+   "rel": -0.04
+  },
+  {
+   "key": "pitchfork",
+   "price": 4,
+   "pilot0": 1.74,
+   "pilot1": 1.18,
+   "pilot2": 1.62,
+   "ceiling": -0.12,
+   "z": -0.23,
+   "rel": -0.07
+  },
+  {
+   "key": "paralysisPowder=1",
+   "price": 3.34,
+   "pilot0": 4.71,
+   "pilot1": 4.72,
+   "pilot2": 4.58,
+   "ceiling": -0.13,
+   "z": -0.31,
+   "rel": -0.03
+  },
+  {
+   "key": "loyal={\"v\":[1,3],\"gives\":{\"armor\":1}}",
+   "price": 0.93,
+   "pilot0": -0.05,
+   "pilot1": 0.01,
+   "pilot2": -0.18,
+   "ceiling": -0.13,
+   "z": -0.43,
+   "rel": null
+  },
+  {
+   "key": "broodkeeper=1",
+   "price": 3,
+   "pilot0": 0.28,
+   "pilot1": 0.12,
+   "pilot2": 0.14,
+   "ceiling": -0.14,
+   "z": -0.72,
+   "rel": null
+  },
+  {
+   "key": "recoil=1",
+   "price": -3.46,
+   "pilot0": -1.86,
+   "pilot1": -1.78,
+   "pilot2": -2.01,
+   "ceiling": -0.14,
+   "z": -0.36,
+   "rel": -0.08
+  },
+  {
+   "key": "meiosis=1",
+   "price": 4.55,
+   "pilot0": 4.67,
+   "pilot1": 4.57,
+   "pilot2": 4.51,
+   "ceiling": -0.16,
+   "z": -0.41,
+   "rel": -0.03
+  },
+  {
+   "key": "packLeader",
+   "price": 0,
+   "pilot0": 0,
+   "pilot1": 0.18,
+   "pilot2": -0.16,
+   "ceiling": -0.16,
+   "z": -0.59,
+   "rel": null
+  },
+  {
+   "key": "immunity",
+   "price": 0.3,
+   "pilot0": 0.22,
+   "pilot1": 0.26,
+   "pilot2": 0.05,
+   "ceiling": -0.17,
+   "z": -1.36,
+   "rel": null
+  },
+  {
+   "key": "dry",
+   "price": 4,
+   "pilot0": 0.22,
+   "pilot1": 0.01,
+   "pilot2": 0.05,
+   "ceiling": -0.17,
+   "z": -1.04,
+   "rel": null
+  },
+  {
+   "key": "trap=5",
+   "price": 2.98,
+   "pilot0": 2.92,
+   "pilot1": 2.8,
+   "pilot2": 2.74,
+   "ceiling": -0.18,
+   "z": -0.54,
+   "rel": -0.06
+  },
+  {
+   "key": "pounce=3",
+   "price": 4.15,
+   "pilot0": 4.49,
+   "pilot1": 4.56,
+   "pilot2": 4.3,
+   "ceiling": -0.19,
+   "z": -0.37,
+   "rel": -0.04
+  },
+  {
+   "key": "taunt",
+   "price": 0.4,
+   "pilot0": -0.1,
+   "pilot1": -0.21,
+   "pilot2": -0.29,
+   "ceiling": -0.19,
+   "z": -0.66,
+   "rel": null
+  },
+  {
+   "key": "reach",
+   "price": 1,
+   "pilot0": -0.02,
+   "pilot1": 0.1,
+   "pilot2": -0.21,
+   "ceiling": -0.19,
+   "z": -0.51,
+   "rel": null
+  },
+  {
+   "key": "recoil=2",
+   "price": -5.88,
+   "pilot0": -3.23,
+   "pilot1": -2.97,
+   "pilot2": -3.42,
+   "ceiling": -0.19,
+   "z": -0.31,
+   "rel": -0.06
+  },
+  {
+   "key": "freeze={\"chance\":40,\"duration\":2}",
+   "price": 2.88,
+   "pilot0": 3.03,
+   "pilot1": 2.66,
+   "pilot2": 2.82,
+   "ceiling": -0.2,
+   "z": -0.52,
+   "rel": -0.07
+  },
+  {
+   "key": "expose=2",
+   "price": 0.18,
+   "pilot0": 0.09,
+   "pilot1": 0.06,
+   "pilot2": -0.11,
+   "ceiling": -0.2,
+   "z": -1.33,
+   "rel": null
+  },
+  {
+   "key": "electricity=1",
+   "price": 3,
+   "pilot0": 3.35,
+   "pilot1": 2.89,
+   "pilot2": 3.09,
+   "ceiling": -0.26,
+   "z": -0.58,
+   "rel": -0.08
+  },
+  {
+   "key": "parasite",
+   "price": 1,
+   "pilot0": -2.48,
+   "pilot1": -2.66,
+   "pilot2": -2.76,
+   "ceiling": -0.28,
+   "z": -0.51,
+   "rel": -0.11
+  },
+  {
+   "key": "harbinger=1",
+   "price": 6.5,
+   "pilot0": 5.1,
+   "pilot1": 4.63,
+   "pilot2": 4.81,
+   "ceiling": -0.29,
+   "z": -0.55,
+   "rel": -0.06
+  },
+  {
+   "key": "offspring=1",
+   "price": 6.08,
+   "pilot0": 0.41,
+   "pilot1": 0.4,
+   "pilot2": 0.11,
+   "ceiling": -0.3,
+   "z": -0.97,
+   "rel": null
+  },
+  {
+   "key": "trident",
+   "price": 2.28,
+   "pilot0": 3.12,
+   "pilot1": 2.75,
+   "pilot2": 2.82,
+   "ceiling": -0.3,
+   "z": -0.69,
+   "rel": -0.09
+  },
+  {
+   "key": "harden=1",
+   "price": 2.11,
+   "pilot0": 3.11,
+   "pilot1": 2.83,
+   "pilot2": 2.8,
+   "ceiling": -0.31,
+   "z": -0.67,
+   "rel": -0.1
+  },
+  {
+   "key": "T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2}",
+   "price": 4.24,
+   "pilot0": 5.1,
+   "pilot1": 4.75,
+   "pilot2": 4.78,
+   "ceiling": -0.32,
+   "z": -0.57,
+   "rel": -0.06
+  },
+  {
+   "key": "guardian",
+   "price": 0,
+   "pilot0": -0.05,
+   "pilot1": -0.31,
+   "pilot2": -0.37,
+   "ceiling": -0.32,
+   "z": -0.9,
+   "rel": null
+  },
+  {
+   "key": "crabClaws",
+   "price": 0.1,
+   "pilot0": 0.36,
+   "pilot1": 0.35,
+   "pilot2": 0.03,
+   "ceiling": -0.33,
+   "z": -0.93,
+   "rel": null
+  },
+  {
+   "key": "T:onReady>damage {\"on\":\"onReady\",\"do\":\"damage\",\"amount\":4,\"dmgType\":\"physical\"}",
+   "price": 4.48,
+   "pilot0": 3.96,
+   "pilot1": 3.19,
+   "pilot2": 3.62,
+   "ceiling": -0.34,
+   "z": -0.61,
+   "rel": -0.09
+  },
+  {
+   "key": "thorns=2",
+   "price": 5.08,
+   "pilot0": 5.11,
+   "pilot1": 5.3,
+   "pilot2": 4.75,
+   "ceiling": -0.36,
+   "z": -0.88,
+   "rel": -0.07
+  },
+  {
+   "key": "mighty",
+   "price": 4.79,
+   "pilot0": 4.9,
+   "pilot1": 4.54,
+   "pilot2": 4.49,
+   "ceiling": -0.41,
+   "z": -1.17,
+   "rel": -0.08
+  },
+  {
+   "key": "arrow=1",
+   "price": 4.26,
+   "pilot0": 3.54,
+   "pilot1": 3.68,
+   "pilot2": 3.11,
+   "ceiling": -0.44,
+   "z": -0.96,
+   "rel": -0.12
+  },
+  {
+   "key": "bounty=1",
+   "price": 1.8,
+   "pilot0": 2.96,
+   "pilot1": 2.48,
+   "pilot2": 2.51,
+   "ceiling": -0.45,
+   "z": -0.96,
+   "rel": -0.15
+  },
+  {
+   "key": "wave",
+   "price": 2.15,
+   "pilot0": 3.19,
+   "pilot1": 2.91,
+   "pilot2": 2.72,
+   "ceiling": -0.47,
+   "z": -1.27,
+   "rel": -0.15
+  },
+  {
+   "key": "T:onAttack>drawCard {\"do\":\"drawCard\",\"on\":\"onAttack\",\"count\":1}",
+   "price": 5.54,
+   "pilot0": 4.49,
+   "pilot1": 4.33,
+   "pilot2": 4.01,
+   "ceiling": -0.48,
+   "z": -0.87,
+   "rel": -0.11
+  },
+  {
+   "key": "T:onAttack>gain {\"do\":\"gain\",\"on\":\"onAttack\",\"amount\":1,\"resource\":\"lumber\"}",
+   "price": 1.35,
+   "pilot0": 4.99,
+   "pilot1": 4.62,
+   "pilot2": 4.36,
+   "ceiling": -0.63,
+   "z": -1.7,
+   "rel": -0.13
+  },
+  {
+   "key": "strangle=2",
+   "price": 5.57,
+   "pilot0": 5.46,
+   "pilot1": 6.01,
+   "pilot2": 4.83,
+   "ceiling": -0.63,
+   "z": -1.45,
+   "rel": -0.12
+  },
+  {
+   "key": "nursing=1",
+   "price": 5,
+   "pilot0": 3.57,
+   "pilot1": 2.91,
+   "pilot2": 2.9,
+   "ceiling": -0.67,
+   "z": -1.24,
+   "rel": -0.19
+  },
+  {
+   "key": "electricity=2",
+   "price": 6,
+   "pilot0": 5.47,
+   "pilot1": 4.68,
+   "pilot2": 4.76,
+   "ceiling": -0.71,
+   "z": -1.25,
+   "rel": -0.13
+  },
+  {
+   "key": "arrow={\"v\":3,\"swings\":\"never\",\"style\":\"drop\"}",
+   "price": -4.9,
+   "pilot0": 2.41,
+   "pilot1": 1.55,
+   "pilot2": 1.68,
+   "ceiling": -0.73,
+   "z": -1.8,
+   "rel": -0.3
+  },
+  {
+   "key": "inspiring=2",
+   "price": 5.9,
+   "pilot0": 5.66,
+   "pilot1": 6.35,
+   "pilot2": 4.88,
+   "ceiling": -0.78,
+   "z": -1.08,
+   "rel": -0.14
+  },
+  {
+   "key": "embolden=1",
+   "price": 3.59,
+   "pilot0": 5.48,
+   "pilot1": 4.54,
+   "pilot2": 4.65,
+   "ceiling": -0.83,
+   "z": -1.31,
+   "rel": -0.15
+  },
+  {
+   "key": "pack=1",
+   "price": 3.25,
+   "pilot0": 4.97,
+   "pilot1": 4.49,
+   "pilot2": 4.11,
+   "ceiling": -0.86,
+   "z": -2.37,
+   "rel": -0.17
+  },
+  {
+   "key": "arrow={\"v\":1,\"type\":\"fire\"}",
+   "price": 6.56,
+   "pilot0": 5.86,
+   "pilot1": 5.89,
+   "pilot2": 4.89,
+   "ceiling": -0.96,
+   "z": -1.53,
+   "rel": -0.16
+  }
+ ]
+}
