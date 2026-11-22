@@ -4760,5 +4760,15 @@
  "Drop": "Quitar",
  "Keep": "Mantener",
  "Replace": "Reemplazar",
- "to Map {n}": "al mapa {n}"
+ "to Map {n}": "al mapa {n}",
+ "Max {n} Rewards per map": "Máx. {n} recompensas por mapa",
+ "Copies over the map: first clear, then repeat drops. Rarity cap {cap}": "Copias en el mapa: primera victoria y luego botines repetidos. Límite de rareza {cap}",
+ "Free drops": "Botines gratis",
+ "General drop": "Botín general",
+ "Baby card: drops from any fight, not from packs": "Carta cría: cae en cualquier combate, no en sobres",
+ "No free drop": "Sin botín gratis",
+ "Add as reward": "Añadir como recompensa",
+ "In {n} skirmish decks": "En {n} mazos de escaramuza",
+ "New! skills: {list}": "¡Habilidades nuevas!: {list}",
+ "Reward at {code}": "Recompensa en {code}"
 }

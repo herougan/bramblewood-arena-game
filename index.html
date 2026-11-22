@@ -14900,6 +14900,18 @@ html.bw-touch-dragging, body.bw-touch-dragging{overscroll-behavior:none;} /* 202
 .rv2-pill.is-unlikely{background:#b8463a; color:#fff; border-color:transparent; cursor:help;}
 .rv2-pill.is-baby{background:#f3c6d4; color:#4a1f2c; border-color:transparent; cursor:help;}
 .rv2-pill.is-egg{background:#efe2c0; color:#3b2c10; border-color:transparent; cursor:help;}
+/* REWARD3 (2026-11-22): the Reward pill, the per-tile Reward controls and the Free drops section in the Map cards window */
+.rv2-pill.is-rw3{background:var(--accent-strong); color:var(--accent-ink); border-color:transparent; cursor:help;}
+.rv2-pill.rw3-none{background:var(--attack); color:#fff; border-color:transparent;}
+.rv2-pill.rw3-src{background:var(--surface-3); color:var(--ink); cursor:help;}
+.rw3-ctl{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:4px 8px; margin-top:4px; font:700 12px/1.2 system-ui,sans-serif;}
+.rw3-ctl label{display:inline-flex; align-items:center; gap:3px;}
+.rw3-ctl select{max-width:100%; font:inherit; padding:3px 6px; border-radius:8px; background:var(--surface-2); color:var(--ink); border:1px solid var(--surface-border);}
+.rw3-ctl input[type=number]{width:3.4em; font:inherit; padding:2px 4px; border-radius:8px; background:var(--surface-2); color:var(--ink); border:1px solid var(--surface-border);}
+.ps1-menu .rw3-ctl{flex-direction:column; align-items:flex-start; justify-content:flex-start;}
+.rw3-ftile.is-noFree{outline:2px solid var(--attack); outline-offset:2px; border-radius:10px;}
+.rw3-add{margin-top:4px;}
+.rw3-none-n{color:var(--attack);}
 .rv1-tile.is-unlikely.is-chosen:not(.is-flipped) .vis4-mc-card.is-large{outline:1px solid rgba(184,70,58,.55); outline-offset:3px;}
 .ui13-acts{display:flex; justify-content:center; align-items:center; gap:5px;}
 .ui13-acts .rv1-act{white-space:nowrap; padding:4px 10px;}
@@ -49494,7 +49506,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=21661b15a7", "es": "assets/lang/es.js?v=b6620814ed", "fr": "assets/lang/fr.js?v=543ddd0512", "id": "assets/lang/id.js?v=2f3009c52d", "it": "assets/lang/it.js?v=085c1d92c2", "ja": "assets/lang/ja.js?v=3e894ea91e", "ko": "assets/lang/ko.js?v=5474040eaa", "pt": "assets/lang/pt.js?v=0cc507a54c", "ta": "assets/lang/ta.js?v=138514151e", "tl": "assets/lang/tl.js?v=21147a744a", "zh-Hans": "assets/lang/zh-Hans.js?v=163f3d3e95", "zh-Hant": "assets/lang/zh-Hant.js?v=1a849932cd"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=8e44b92b97", "es": "assets/lang/es.js?v=f150307430", "fr": "assets/lang/fr.js?v=37bc31a5e0", "id": "assets/lang/id.js?v=29a61835e1", "it": "assets/lang/it.js?v=c32077ca35", "ja": "assets/lang/ja.js?v=0e304cb22a", "ko": "assets/lang/ko.js?v=8c8e148bb9", "pt": "assets/lang/pt.js?v=3f2d80aaa0", "ta": "assets/lang/ta.js?v=8606ad8bf8", "tl": "assets/lang/tl.js?v=0ea344b3d2", "zh-Hans": "assets/lang/zh-Hans.js?v=6b56ac4519", "zh-Hant": "assets/lang/zh-Hant.js?v=d8733d174a"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -53559,7 +53571,18 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ms1-drop": "Drop",
   "ui.ms1-keep": "Keep",
   "ui.ms1-rep": "Replace",
-  "ui.ms1-to": "to Map {n}"
+  "ui.ms1-to": "to Map {n}",
+  "ui.rw3-max": "Max {n} Rewards per map",
+  "ui.rw3-fight": "Fight",
+  "ui.rw3-count-tip": "Copies over the map: first clear, then repeat drops. Rarity cap {cap}",
+  "ui.rw3-free-title": "Free drops",
+  "ui.rw3-general": "General drop",
+  "ui.rw3-where-general": "Baby card: drops from any fight, not from packs",
+  "ui.rw3-no-free": "No free drop",
+  "ui.rw3-add": "Add as reward",
+  "ui.rw3-decks": "In {n} skirmish decks",
+  "ui.rw3-newskills": "New! skills: {list}",
+  "ui.rw3-elsewhere": "Reward at {code}"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -59754,7 +59777,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'e5c8da48db81', BUILD_CARD_HASH = 'ad62554b686e0f4051ee1b1da898d93dd6043ed2b7c0d5f47e5d6eb47d4cc8f7';
+const BUILD_ID = '7c065e024e9c', BUILD_CARD_HASH = 'ad62554b686e0f4051ee1b1da898d93dd6043ed2b7c0d5f47e5d6eb47d4cc8f7';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
@@ -60305,9 +60328,22 @@ function isBasicPackSource(s){ if(!s || s.kind !== 'pack') return false; const t
 var PACKSET_KEY = 'bw_packset1_v1', packsetOff = false;
 var packsetState = (()=>{ try{ const o = JSON.parse(localStorage.getItem(PACKSET_KEY) || 'null'); return o && typeof o === 'object' ? o : {}; }catch(e){ return {}; } })();
 function packsetTierOf(d){ const st = packsetState; return packsetOff || !st || !st.tiers ? 0 : st.tiers[d.derivedFrom || d.id] || 0; }
+// 2026-11-22 (package REWARD3): skirmish rewards the owner picks in the Map cards window (<= 2 a map, plus the Free drops adds), and General drops (Baby cards, not pack cards). State, saved like the picks
+// (localStorage + the admin row `__cfg:reward3`): {r: {mapKey: [ids]}, f: {mapKey: [ids]}, node: {id: 'mapId:nodeKey'}, n: {id: copies}, localAt}. docs/design/reward3-2026-11-22.md
+var RW3_KEY = 'bw_reward3_v1';
+var rw3State = (()=>{ try{ const o = JSON.parse(localStorage.getItem(RW3_KEY) || 'null'); return o && typeof o === 'object' && !Array.isArray(o) ? o : {}; }catch(e){ return {}; } })();
+function rw3Keys(){ return [...new Set(Object.keys(rw3State.r || {}).concat(Object.keys(rw3State.f || {})))]; }
+function rw3List(k){ return [...new Set([].concat((rw3State.r || {})[k] || [], (rw3State.f || {})[k] || []))]; }
+function rw3AllIds(){ return [...new Set(rw3Keys().flatMap(rw3List))]; }
+function rw3MapOf(id){ return rw3Keys().find(k=> rw3List(k).includes(id)) || ''; }
+function rw3IsReward(d){ return !!d && !!rw3State && rw3Keys().length > 0 && !!rw3MapOf(d.derivedFrom || d.id); }
+// a Baby card is a General drop (any fight), not a pack card, unless its source is a fight, a nest or a quest
+function rw3IsBaby(d){ if(!d || d.kind !== 'baby' || d.token || isEasterEgg(d) || rw3IsReward(d)) return false; const k = cardSourceOf(d).kind; return k === 'pack' || k === 'base' || k === 'unsorted'; }
+function rw3Want(d){ const n = (rw3State.n || {})[d.id]; return Math.max(0, Math.min(n == null ? 1 : Math.round(Number(n)) || 0, maxCopiesForRarity(d.rarity || 'common'))); } // copies over the map
 function basicPackTier0(d){ packsetOff = true; try{ return basicPackTierOf(d); } finally { packsetOff = false; } }
 function basicPackTierOf(d){
   if(!d || d.token || d.test || isEasterEgg(d)) return 0;
+  if(typeof rw3IsReward === 'function' && (rw3IsReward(d) || rw3IsBaby(d))) return 0; // 2026-11-22 (REWARD3): a Reward card and a Baby card are no pack cards
   const ps = typeof packsetTierOf === 'function' ? packsetTierOf(d) : 0; if(ps) return ps; // 2026-11-22 (PACKSET1)
   const id = d.derivedFrom || d.id, idx = packIndex(), s = cardSourceOf(d);
   if(isBasicPackSource(s)){ const f = idx.first[id]; if(f) return packTierOfMapNumber(f.n) || 0; }
@@ -60318,6 +60354,7 @@ function packTierCardIds(t, defs){ defs = defs || getCardDefs(); return Object.k
 // How a card can actually be obtained right now (null = it can't).
 function cardObtainableFrom(d){
   if(isEasterEgg(d)) return null; // 2026-10-19 (package EE): Easter eggs can't be obtained yet
+  if(typeof rw3IsReward === 'function' && (rw3IsReward(d) || (rw3IsBaby(d) && rw3Want(d) > 0))) return 'skirmish'; // 2026-11-22 (REWARD3): a reward pick, or a General drop with a count
   const src = cardSourceOf(d);
   if(src.kind==='pack') return isBasicPackSource(src) && !basicPackTierOf(d) ? null : 'pack'; // 2026-10-28 (package PACK1): a basic-pack card in no map list and no pack extras is in no pack
   if(src.kind==='map' && src.node) return 'skirmish';
@@ -60355,6 +60392,7 @@ function cardWhereToGetText(d){
   if(src.kind==='map' && src.node){ const f = findConquestNode(src.id, src.node); return f ? `Win ${f.node.name} in ${f.map.name} (Conquest)` : 'A Conquest reward'; }
   if(src.kind==='pack' && d.faction === 'base') return TX('ui.codex-base-tip'); // 2026-10-19 (package UT, owner: "Base cards just mean they come from Skirmish rewards, not Card Packs")
   if(src.kind==='pack' && (Number(src.tier)===99 || Number(src.tier) >= 11)) return Number(src.tier)===99 ? 'The Mystery Booster (from the wandering trader)' : TX('ui.rp-where-faction') /* 2026-10-21 (package RP): faction rewards are in no pack since 2026-10-13 (BASIC_PACK_POOLS); this said "Any basic pack" */;
+  if(typeof rw3IsReward === 'function' && rw3IsReward(d)) return TX('ui.rw3-elsewhere', {code: rw3CodeOf(d.derivedFrom || d.id)}); if(typeof rw3IsBaby === 'function' && rw3IsBaby(d)) return TX('ui.rw3-where-general'); // 2026-11-22 (REWARD3)
   // 2026-10-28 (package PACK1): the pack the map lists put it in (basicPackTierOf), or a pack's extras; was source.tier
   { const pt = basicPackTierOf(d); if(pt) return packTierName(pt) ? TX('ui.rw5-where-pack', {name: packTierName(pt)}) /* RW5: its own pack */ : TX('ui.rw5-where-pack-later'); }
   if(src.kind==='nest') return `The Nest: set ${({woodland:'a Woodland Egg', bird:'a Speckled Egg', otter:'a River Bundle', scaly:'a Leathery Egg', bug:'a Cocoon', water:'a Roe Pearl', beast:'a Den Bundle'})[src.egg] || 'an egg of this kind'} in a nest to get this egg card`; // 2026-10-14
@@ -60975,6 +61013,7 @@ function applyCloudCfgRow(r){
   if(r.id==='__cfg:tutorial'){ applyCloudTutorialCfg(r); return; }
   if(r.id==='__cfg:dialogues'){ dialogueEdits = (r.deleted || !r.data) ? {} : (r.data.edits || {}); saveDialogueEdits(); return; }
   if(r.id==='__cfg:shop-packs'){ applyCloudShopPacks(r); return; }
+  if(r.id==='__cfg:reward3'){ applyCloudReward3(r); return; } // 2026-11-22 (REWARD3): the Reward picks, fights and counts
   if(r.id==='__cfg:pack-set'){ applyCloudPackSet(r); return; } // 2026-11-22 (PACKSET1): the Pack Editor's All cards panels (YES / NO, maps, cuts, tiers)
   if(r.id==='__cfg:forge-tiers'){ applyCloudForgeTiers(r); return; }
   const m = /^__cfg:map-layout:(.+)$/.exec(r.id);
@@ -67613,7 +67652,7 @@ function nodeFirstPackCardIds(mapId, nodeKey){
   const v = node && node.firstCard != null ? node.firstCard : SKIRMISH_FIRST_PACK_CARDS[mapId + ':' + nodeKey], defs = getCardDefs();
   return [].concat(v || []).filter(id=> defs[id] && !isUnattainable(defs[id]) && !isEquipmentDef(defs[id]) && !isEasterEgg(defs[id]));
 }
-function nodeFirstClearCardIds(mapId, nodeKey){ const own = nodeRewardCardIds(mapId, nodeKey); return own.concat(nodeFirstPackCardIds(mapId, nodeKey).filter(id=> !own.includes(id))); }
+function nodeFirstClearCardIds(mapId, nodeKey){ const own = nodeRewardCardIds(mapId, nodeKey).concat(typeof rw3NodeIds === 'function' ? rw3NodeIds(mapId, nodeKey) : []); return own.concat(nodeFirstPackCardIds(mapId, nodeKey).filter(id=> !own.includes(id))); } // 2026-11-22 (REWARD3): + the owner's Reward picks
 // Unattainable cards (2026-10-12, user: "Help me make all cards unattainable, then we build them together"): a card with
 // `unattainable: true` can't come out of a pack, a reward, a find, a craft or a promotion. Base, starter and tutorial
 // cards, tokens, tests, materia and the hero stay obtainable so a new player can still play. Card editor: "Obtainable".
@@ -90518,7 +90557,7 @@ function ui22McRewardsHTML(mapId, defs, ok){
   const roleLabel = {reward: TX('ui.ui22-role-reward'), first: TX('ui.ui22-role-first'), challenge: TX('ui.ui22-role-challenge')};
   const fights = [];
   ui22McMaps(mapId).filter(Boolean).forEach(map=> (map.nodes || []).forEach(node=>{
-    const own = nodeRewardCardIds(map.id, node.key).filter(ok), pack = nodeFirstPackCardIds(map.id, node.key).filter(id=> ok(id) && !own.includes(id));
+    const own = nodeRewardCardIds(map.id, node.key).concat(rw3NodeIds(map.id, node.key)).filter(ok), pack = nodeFirstPackCardIds(map.id, node.key).filter(id=> ok(id) && !own.includes(id));
     const items = own.map(id=> ({id, role: cardRewardIsChallenge(map.id, node, id) ? 'challenge' : 'reward'})).concat(pack.map(id=> ({id, role: 'first'})));
     if(items.length) fights.push({code: skirmishCode(map.id, node.key), name: node.name || '', icon: node.icon || '', items});
   }));
@@ -90620,7 +90659,7 @@ function pk1OpenMapCards(mapId){
   const ui22Lists = new Set(mapPoolSections(top).flatMap(s=> s.ids || []));
   try{ ui47Css(); }catch(e){} // 2026-11-11 (UI47): the rewards pills, the Add card search
   try{ ui40Css(); }catch(e){} // 2026-11-09 (UI40): the full-card Thematic Recommendation and Keyword sections
-  const ui22Secs = (()=>{ try{ return ui22McRewardsHTML(mapId, defs, ok) + ui22McClaudeNewHTML(mapId, defs, ok, ui22Lists); }catch(e){ return ''; } })()
+  const ui22Secs = (()=>{ try{ return ui22McRewardsHTML(mapId, defs, ok) + rw3FreeHTML(mapId, defs) + ui22McClaudeNewHTML(mapId, defs, ok, ui22Lists); }catch(e){ return ''; } })()
     + (()=>{ try{ return ui21McKeywordHTML(mapId, defs, mapPoolSections(top).filter(inScope).flatMap(s=> s.ids || []).filter(ok)); }catch(e){ return ''; } })(); // 2026-11-05 (UI21, IDEA-EARLY-3): the keyword of the map
   const anyRv = /has-rv1/.test(secs) || /data-rv-special/.test(secs);
   ov.innerHTML = `<div class="modal pk1-mc-modal" role="dialog" aria-modal="true" aria-labelledby="pk1McTitle"><div class="modal-head-row"><h2 id="pk1McTitle">${escapeHtml(TX('ui.pk1-map-cards-title', {name: mapLabel}))}</h2><button type="button" class="modal-close-btn" id="pk1McClose" aria-label="Close">✕</button></div>
@@ -90632,6 +90671,8 @@ function pk1OpenMapCards(mapId){
   document.addEventListener('keydown', onKey);
   ov.onclick = e=>{
     if(e.target === ov) return close();
+    if(!e.target.closest('.ps1-menu')) ov.querySelectorAll('.ps1-menu').forEach(m=> m.remove()); // 2026-11-22 (REWARD3): the right-click menu
+    const fr = e.target.closest && e.target.closest('[data-rw3-free]'); if(fr){ e.stopPropagation(); rw3Toggle(RW3_FREE_MAP, fr.dataset.rw3Free, true, true); return; } // 2026-11-22 (REWARD3): Add as reward
     const go = e.target.closest && e.target.closest('[data-ui51-go]'); if(go){ pk1OpenMapCards(go.dataset.ui51Go); return; } // 2026-11-13 (UI51)
     const ed = adminModeEnabled && e.target.closest && e.target.closest('.rv1-tile .vis4-mc-card'); if(ed){ e.stopPropagation(); ui13EditFromGallery(ov, ed.closest('.rv1-tile')); return; } // 2026-11-13 (package UI51): the card opens the editor (no ✏️)
     const b = e.target.closest && e.target.closest('.rv1-act'); if(!b) return;
@@ -90662,6 +90703,7 @@ function pk1OpenMapCards(mapId){
   });
   rv2Update(ov);
   try{ wireRewardZoom(ov); }catch(e){}
+  try{ rw3Wire(ov, ui44IsSub(mapId) ? mapId : top); }catch(e){} // 2026-11-22 (REWARD3)
   try{ ui37Mount(ov, top, mapId, ok); }catch(e){} // 2026-11-08 (package UI37, owner 17:22 #1-#3): the Prospects view (admin, main maps)
   try{ document.getElementById('pk1McClose').focus(); }catch(e){}
 }
@@ -90730,6 +90772,131 @@ function ui47SuggestFirst(top, neu){ const sug = new Set(ui47SuggestedOf(top)); 
 // a baby card (cardKindOf 'baby', the UI13 rule) shows and can be flagged, but is not counted toward the NEW! target, the minimum or the flagged count
 function ui47IsBaby(id, defs){ try{ return !ui38Concept(id) && !!defs[id] && ui13IsBaby(id, defs); }catch(e){ return false; } }
 function ui47Counted(list, defs){ return list.filter(p=> !ui47IsBaby(p.id, defs)); }
+// REWARD3:START
+// 2026-11-22 (package REWARD3): the Reward picks, General drops, Free drops section and tile labels in the admin Map cards window. Core state is next to PACKSET (rw3State).
+const RW3_MAX = 2, RW3_FREE_MAP = 'm1'; // at most 2 Reward picks per map (a side map too); Free drops adds go to Map 0
+function rw3Fights(key){ const m = mpMapById(key); return ((m && m.nodes) || []).filter(n=> (n.kind || 'skirmish') === 'skirmish' && !n.tower && !n.virtual); }
+// the fight that gives a Reward card: the owner's pick, else spread over the map's skirmishes by its place in the map's list
+function rw3NodeOf(id){
+  const k = rw3MapOf(id); if(!k) return ''; const set = (rw3State.node || {})[id]; if(set) return set;
+  const fights = rw3Fights(k), list = rw3List(k), i = list.indexOf(id); if(!fights.length) return '';
+  return k + ':' + fights[Math.min(fights.length - 1, Math.floor((i + 0.5) * fights.length / Math.max(list.length, 2)))].key;
+}
+function rw3NodeIds(mapId, nodeKey){ if(!rw3Keys().length) return []; const defs = getCardDefs(), at = mapId + ':' + nodeKey; return rw3AllIds().filter(id=> defs[id] && !isEasterEgg(defs[id]) && rw3NodeOf(id) === at); }
+function rw3CodeOf(id){ const at = rw3NodeOf(id), i = at.indexOf(':'); return i < 0 ? '' : skirmishCode(at.slice(0, i), at.slice(i + 1)); }
+function rw3GeneralIds(defs){ return Object.keys(defs).filter(id=>{ const d = defs[id]; return !d.derivedFrom && rw3IsBaby(d) && copiesOwned(id) < rw3Want(d); }); } // Baby cards a fight drop can still give
+var rw3Timer = 0, rw3Ctx = null;
+function rw3Row(){ const s = rw3State, o = x=> (x && typeof x === 'object' && !Array.isArray(x)) ? x : {}; return {kind: 'reward3', r: o(s.r), f: o(s.f), node: o(s.node), n: o(s.n)}; }
+function rw3Publish(){
+  clearTimeout(rw3Timer);
+  rw3Timer = setTimeout(async ()=>{ let ok = false; try{ ok = (typeof cloudCardAdmin !== 'undefined' && cloudCardAdmin) ? await cloudWriteCardOverride('__cfg:reward3', {data: rw3Row(), deleted: false, deleted_snapshot: null}) : false; }catch(x){ ok = false; }
+    ui37Status = {ok, at: Date.now()}; const s = document.getElementById('ui37Status'); if(s) s.textContent = ui37StatusText(); }, 700);
+}
+// the `__cfg:reward3` row (load or poll): the newer of this browser's unpublished edit and the row wins, as the map picks do
+function applyCloudReward3(r){
+  const localAt = rw3State.localAt || 0, cloudAt = Date.parse(r.updated_at || '') || 0;
+  if(localAt && localAt > cloudAt){ setTimeout(()=>{ if(cloudCardAdmin) rw3Publish(); }, 4000); return; }
+  const d = (!r.deleted && r.data) || {}, o = x=> (x && typeof x === 'object' && !Array.isArray(x)) ? x : {}, lists = x=>{ const out = {}; Object.entries(o(x)).forEach(([k, l])=>{ if(Array.isArray(l)) out[k] = l.filter(i=> typeof i === 'string' && i); }); return out; };
+  rw3State = {r: lists(d.r), f: lists(d.f), node: o(d.node), n: o(d.n), localAt: 0};
+  try{ localStorage.setItem(RW3_KEY, JSON.stringify(rw3State)); }catch(e){} rw3Refresh();
+}
+function rw3Refresh(){
+  try{ ui37Notify(); }catch(e){}
+  try{ const ov = document.getElementById('pk1MapCardsOverlay'), c = ov && !ov.hidden && ov._ui32Skills; if(c){ const defs = getCardDefs();
+    [['ui22McRewards', ui22McRewardsHTML(c.mapId, defs, c.ok)], ['rw3Free', rw3FreeHTML(c.mapId, defs)]].forEach(([id, html])=>{ const old = ov.querySelector('#' + id); if(!old || !html) return; const t = document.createElement('div'); t.innerHTML = html; old.replaceWith(t.firstElementChild); wireRewardZoom(t); }); } }catch(e){}
+  try{ if(packsetLive) packsetLive.draw(); }catch(e){}
+}
+function rw3Commit(){ rw3State.localAt = Date.now(); try{ localStorage.setItem(RW3_KEY, JSON.stringify(rw3State)); }catch(e){} rw3Publish(); rw3Refresh(); }
+// on: add id to a map (picked: counts against the 2; free: a Free drops add, outside the 2); off: remove it. false when the map already has 2 picks.
+function rw3Toggle(key, id, on, free){
+  const st = rw3State, drop = f=>{ const o = {}; Object.keys(st[f] || {}).forEach(k=>{ const l = st[f][k].filter(x=> x !== id); if(l.length) o[k] = l; }); st[f] = o; };
+  if(on && !free && ((st.r || {})[key] || []).filter(x=> x !== id).length >= RW3_MAX){ showToast(TX('ui.rw3-max', {n: RW3_MAX}), 'warn'); return false; }
+  drop('r'); drop('f');
+  if(on){ const f = free ? 'f' : 'r'; st[f][key] = (st[f][key] || []).concat(id); } else if(st.node){ st.node = Object.assign({}, st.node); delete st.node[id]; }
+  rw3Commit(); return true;
+}
+function rw3SetNode(id, v){ rw3State.node = Object.assign({}, rw3State.node, {[id]: v}); rw3Commit(); }
+function rw3SetN(id, v){ const n = v === '' ? 1 : Math.max(0, Math.min(9, Math.round(Number(v)) || 0)); rw3State.n = Object.assign({}, rw3State.n, {[id]: n}); rw3Commit(); }
+// one control row: Reward checkbox (when the window has a map), the fight, and x N for a Reward or General-drop card. Used on a tile, in the right-click menu and on the Free drops tiles.
+function rw3CtlHTML(key, id, d, free){
+  const rew = rw3IsReward(d), mine = rew && rw3MapOf(id) === key, gen = rw3IsBaby(d), A = ' data-ps1-menu="rw3"';
+  if(!key && !gen) return '';
+  const tog = key ? `<label class="rw3-chk"><input type="checkbox" data-rw3-t${A}${mine ? ' checked' : ''}> 🎁 ${escapeHtml(TX('ui.ui22-role-reward'))}</label>` : '';
+  const sel = mine ? `<select data-rw3-node${A} aria-label="${escapeAttr(TX('ui.rw3-fight'))}" title="${escapeAttr(TX('ui.rw3-fight'))}">${rw3Fights(key).map(n=>{ const v = key + ':' + n.key; return `<option value="${escapeAttr(v)}"${v === rw3NodeOf(id) ? ' selected' : ''}>${escapeHtml(skirmishCode(key, n.key))}</option>`; }).join('')}</select>` : '';
+  const cap = maxCopiesForRarity(d.rarity || 'common'), nn = (rw3State.n || {})[id];
+  const num = rew || gen ? `<label class="rw3-n" title="${escapeAttr(TX('ui.rw3-count-tip', {cap}))}">×<input type="number" min="0" max="9" inputmode="numeric" data-rw3-n${A} value="${nn == null ? 1 : nn}" aria-label="${escapeAttr(TX('ui.rw3-count-tip', {cap}))}"></label>` : '';
+  return `<span class="rw3-ctl" data-rw3-id="${escapeAttr(id)}" data-rw3-key="${escapeAttr(key || '')}"${free ? ' data-rw3-fr="1"' : ''}>${tog}${sel}${num}</span>`;
+}
+function rw3OnChange(e){
+  const el = e && e.target, c = el && el.closest && el.closest('.rw3-ctl'); if(!c) return false; const id = c.dataset.rw3Id, key = c.dataset.rw3Key;
+  if(el.matches('[data-rw3-t]')){ if(!rw3Toggle(key, id, el.checked, c.dataset.rw3Fr === '1')) el.checked = false; }
+  else if(el.matches('[data-rw3-node]')) rw3SetNode(id, el.value); else if(el.matches('[data-rw3-n]')) rw3SetN(id, el.value);
+  return true;
+}
+// the map a card's Reward toggle uses in the Pack editor: its reward map, else the map the owner moved it to, else the map whose list names it first
+function rw3KeyFor(id){ try{ const f = (packIndex().first || {})[id]; return rw3MapOf(id) || (packsetState.map || {})[id] || (f && f.loc ? mpTopOf(f.loc) : ''); }catch(e){ return ''; } }
+function rw3PillHTML(id, d){ return rw3IsReward(d) ? `<b class="rv2-pill is-rw3" title="${escapeAttr(TX('ui.rw3-elsewhere', {code: rw3CodeOf(id)}))}">🎁 ${escapeHtml(TX('ui.ui22-role-reward'))}</b>` : ''; }
+// every fight that pays a card on a first clear (Rewards, exclusives, first-clear pack cards): card id -> [{code, no, top}], the lowest map first
+function rw3FightIndex(){
+  const out = new Map();
+  (typeof CONQUEST_MAPS !== 'undefined' ? CONQUEST_MAPS : []).forEach(m=>{ if(m.tower || m.endless || m.reserved) return; const no = mapNumberOf(m.id); if(no == null) return;
+    (m.nodes || []).forEach(n=>{ let ids = []; try{ ids = nodeFirstClearCardIds(m.id, n.key); }catch(e){} ids.forEach(id=>{ if(!out.has(id)) out.set(id, []); out.get(id).push({code: skirmishCode(m.id, n.key), no, top: mpTopOf(m.id)}); }); }); });
+  out.forEach(l=> l.sort((a, b)=> a.no - b.no));
+  return out;
+}
+function rw3DeckUse(){
+  const out = new Map(), base = id=> String(id).replace(/~(raid|exposed|illusory)$/, '');
+  (typeof CONQUEST_MAPS !== 'undefined' ? CONQUEST_MAPS : []).forEach(m=> (m.nodes || []).forEach(n=> new Set(Object.keys(n.deck || {}).map(base)).forEach(id=> out.set(id, (out.get(id) || 0) + 1))));
+  return out;
+}
+function rw3MakeCtx(top, defs){ let early = new Set(); try{ early = ui19McEarlierSkillKeys(top, defs, id=> !!defs[id]); }catch(e){} return {early, use: rw3DeckUse(), fi: rw3FightIndex()}; }
+// the extra labels that help the owner choose a Reward: skirmish decks using the card, New! skills it carries, faction, a reward elsewhere (rarity, budget %, Pack N, Baby, Starter are on the card tile)
+function rw3LabelsHTML(key, id, d){
+  const x = rw3Ctx; if(!x || !d) return '';
+  const chip = (cls, txt, tip)=> `<b class="ui47-used rw3-lab ${cls}" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}" tabindex="0">${txt}</b>`;
+  const use = x.use.get(id) || 0, ns = []; try{ ui18CardSkillKeys(d).forEach(({key: k})=>{ if(!x.early.has(k) && ui34DefOk(k)){ const p = skillDefOf(k); ns.push(p && p.label ? p.label : k); } }); }catch(e){}
+  const fac = typeof packsetFacLabel === 'function' ? packsetFacLabel(d) : '', el = (x.fi.get(id) || []).find(e=> e.top !== key);
+  return (use ? chip('is-use', '⚔ ' + use, TX('ui.rw3-decks', {n: use})) : '') + (ns.length ? chip('is-ns', '✨ ' + ns.length, TX('ui.rw3-newskills', {list: ns.join(', ')})) : '')
+    + (fac ? chip('is-fac', escapeHtml(fac), fac) : '') + (el ? chip('is-el', '🎯 ' + escapeHtml(el.code), TX('ui.rw3-elsewhere', {code: el.code})) : '');
+}
+// Free drops (Map 0 and the tutorial): every Baby card, every starter-deck card (all the starter configs) and the T-1 / T-2 cards, each with where it drops for free or a red flag
+function rw3FreeIds(defs){
+  const ids = new Set(Object.keys(defs).filter(id=> defs[id].kind === 'baby'));
+  [STARTER_CFG_DEFAULT, TUTORIAL_CFG_DEFAULT, (typeof tutorialCfg !== 'undefined' && tutorialCfg) || {}].forEach(c=>{
+    ['starterShared', 'starterOtters', 'starterHummingbirds', 'starterBoth', 'starterFiller'].forEach(k=> Object.keys((c && c[k]) || {}).forEach(id=> ids.add(id))); ((c && c.starterTopUp) || []).forEach(id=> ids.add(id)); });
+  ['otters', 'hummingbirds', 'both'].forEach(f=>{ try{ Object.keys(starterDeckParts(f).all).forEach(id=> ids.add(id)); }catch(e){} });
+  try{ ui43TutorialCards().forEach(id=> ids.add(id)); }catch(e){}
+  return [...ids].filter(id=>{ const d = defs[id]; return d && !d.token && !d.test && !d.derivedFrom && !isEasterEgg(d); });
+}
+// {code}: a fight's first clear pays it; {general}: a Baby General drop; {txt, tip}: a pack or another giver; null: nothing gives it for free
+function rw3FreeSource(id, d, fi){
+  const f = (fi.get(id) || [])[0]; if(f) return {code: f.code};
+  if(rw3IsBaby(d) && rw3Want(d) > 0) return {general: true};
+  const pt = basicPackTierOf(d); if(pt) return {txt: TX('ui.pk1-in-pack', {n: pt})};
+  const k = cardSourceOf(d).kind, em = {nest: '🥚', quest: '🗝️', smith: '⚒️', secret: '❔'}[k]; return em ? {txt: em, tip: cardWhereToGetText(d)} : null;
+}
+function rw3FreeRows(defs){ const fi = rw3FightIndex(); return rw3FreeIds(defs).map(id=> ({id, src: rw3FreeSource(id, defs[id], fi)})); }
+function rw3FreeTileHTML(r, defs){
+  const d = defs[r.id], s = r.src, pill = (cls, t, tip)=> `<b class="rv2-pill ${cls}"${tip ? ` title="${escapeAttr(tip)}"` : ''}>${t}</b>`;
+  const chip = !s ? pill('rw3-none', '⚠ ' + escapeHtml(TX('ui.rw3-no-free'))) : s.general ? pill('rw3-src', '🍼 ' + escapeHtml(TX('ui.rw3-general')), TX('ui.rw3-where-general')) : s.code ? pill('rw3-src', '📍 ' + escapeHtml(s.code), TX('ui.rw3-elsewhere', {code: s.code})) : pill('rw3-src', escapeHtml(s.txt), s.tip || s.txt);
+  const add = s ? '' : `<button type="button" class="btn small rw3-add" data-rw3-free="${escapeAttr(r.id)}">➕ ${escapeHtml(TX('ui.rw3-add'))}</button>`;
+  return `<div class="ui37-tile ui39-tile rw3-ftile${s ? '' : ' is-noFree'}" data-rw3-fid="${escapeAttr(r.id)}">${ui39PlainTileHTML(r.id, defs, '')}<span class="ui37-pills">${chip}</span>${add}${rw3IsReward(d) || rw3IsBaby(d) ? rw3CtlHTML(RW3_FREE_MAP, r.id, d, true) : ''}</div>`;
+}
+function rw3FreeHTML(mapId, defs){
+  if(!adminModeEnabled || (mapId !== RW3_FREE_MAP && mapId !== 'mtut')) return '';
+  const rows = rw3FreeRows(defs).sort((a, b)=> (a.src ? 1 : 0) - (b.src ? 1 : 0) || String(defs[a.id].name).localeCompare(defs[b.id].name)), none = rows.filter(r=> !r.src).length;
+  return `<section class="pk1-mc-sec rv2-panel rw3-free" id="rw3Free"><h3>${escapeHtml(TX('ui.rw3-free-title'))} <small>${rows.length}</small>${none ? ` <small class="rw3-none-n">⚠ ${none}</small>` : ''}</h3><div class="vis4-mc-row rv1-row ui40-row">${rows.map(r=> rw3FreeTileHTML(r, defs)).join('')}</div></section>`;
+}
+// the Map cards window: one change handler for every control, one right-click menu (the Pack editor's menu list has the same entry)
+function rw3Wire(ov, key){
+  if(!adminModeEnabled) return;
+  try{ packsetCss(); }catch(e){}
+  ov.onchange = rw3OnChange;
+  ov.oncontextmenu = e=>{ const t = e.target.closest && e.target.closest('.ui37-tile[data-ui37-id]'); if(!t || t.classList.contains('is-concept') || e.target.closest('.ps1-menu')) return; const id = t.dataset.ui37Id, d = getCardDefs()[id]; if(!d) return;
+    e.preventDefault(); ov.querySelectorAll('.ps1-menu').forEach(m=> m.remove()); const m = document.createElement('div'); m.className = 'ps1-menu'; m.setAttribute('role', 'menu'); m.innerHTML = rw3CtlHTML(key, id, d);
+    ov.appendChild(m); m.style.left = Math.max(4, Math.min(e.clientX, innerWidth - m.offsetWidth - 4)) + 'px'; m.style.top = Math.max(4, Math.min(e.clientY, innerHeight - m.offsetHeight - 4)) + 'px'; };
+}
+// REWARD3:END
 const UI37_KEY = 'bw_ui37_map_picks_v1', UI37_VIEW_KEY = 'bw_ui37_view_v1';
 const ui37Picks = (()=>{ try{ const o = JSON.parse(localStorage.getItem(UI37_KEY) || '{}'); return o && typeof o === 'object' && !Array.isArray(o) ? o : {}; }catch(e){ return {}; } })(); // {mainMapId: {yes:[ids], no:[ids], t:{n, c}, localAt}}
 function ui37Save(){ try{ localStorage.setItem(UI37_KEY, JSON.stringify(ui37Picks)); }catch(e){} }
@@ -90849,6 +91016,7 @@ function applyCloudMapPicks(top, r){
 function ui37SetFlag(top, id, flag){
   const e = ui37Ent(top); e.yes = e.yes.filter(x=> x !== id); e.no = e.no.filter(x=> x !== id);
   if(flag === 'yes') e.yes.push(id); else if(flag === 'no') e.no.push(id);
+  if(flag !== 'yes' && ((rw3State.r || {})[top] || []).includes(id)) rw3Toggle(top, id, false); // 2026-11-22 (REWARD3): a card that is no longer Yes is no Reward pick
   ui37Picks[top] = {yes: e.yes, no: e.no, t: e.t, after: e.after, localAt: Date.now()}; ui37Save(); ui37Publish(top); ceRefreshMapChips(); // 2026-11-20 (UIQ3)
 }
 function ui37SetTarget(top, k, v){ const e = ui37Ent(top), t = Object.assign({}, e.t); if(v === '' || v == null) delete t[k]; else t[k] = Math.max(0, Math.min(99, Math.round(Number(v) || 0)));
@@ -90887,8 +91055,8 @@ function ui37TileHTML(top, p, kind, defs, idx, rvMap){
   const sugPill = ui47IsSuggested(top, p.id) ? `<b class="ui47-sug" title="${escapeAttr(TX('ui.ui47-suggested'))}">${escapeHtml(TX('ui.ui47-suggested'))}</b>` : '';
   const btn = (k, lab)=> `<button type="button" class="ui37-yn-b is-${k}${fs === k ? ' on' : ''}" data-ui37-flag="${k}" aria-pressed="${fs === k ? 'true' : 'false'}">${escapeHtml(lab)}</button>`;
   const card = c ? ui39ConceptCardHTML(c) : rv ? rv1TileHTML(rv.e, rv.kind, defs, 'cards') : ui39PlainTileHTML(p.id, defs, p.why || '');
-  return `<div class="ui37-tile ui39-tile is-${f || 'none'}${fs === 'no' ? ' ui43-no' : ''}${c ? ' is-concept' : ''}" data-ui37-id="${escapeAttr(p.id)}" data-ui37-kind="${kind}">${card}<span class="ui37-pills">${sugPill}${admPill}${src}${fromPill}${usedChip}</span>`
-    + `<span class="ui37-yn" role="group" aria-label="${escapeAttr(TX('ui.ui37-flag-label', {name: d.name}))}">${btn('yes', '↩ ' + TX('ui.ui37-yes'))}${btn('no', '✂ ' + TX('ui.ui37-no'))}</span></div>`;
+  return `<div class="ui37-tile ui39-tile is-${f || 'none'}${fs === 'no' ? ' ui43-no' : ''}${c ? ' is-concept' : ''}" data-ui37-id="${escapeAttr(p.id)}" data-ui37-kind="${kind}">${card}<span class="ui37-pills">${sugPill}${admPill}${src}${fromPill}${usedChip}${c ? '' : (rv ? rw3PillHTML(p.id, d) : '') + rw3LabelsHTML(top, p.id, d)}</span>`
+    + `<span class="ui37-yn" role="group" aria-label="${escapeAttr(TX('ui.ui37-flag-label', {name: d.name}))}">${btn('yes', '↩ ' + TX('ui.ui37-yes'))}${btn('no', '✂ ' + TX('ui.ui37-no'))}</span>${!c && (fs === 'yes' || rw3IsBaby(d)) ? rw3CtlHTML(top, p.id, d) : ''}</div>`; // 2026-11-22 (REWARD3): Reward / x N controls
 }
 // a card on no review: the same full card as a review tile (pack pill, power badge, ✏️ for admins), no Cut / Keep (it is on no list to cut from)
 // 2026-11-09 (package UI40): `x` (optional) = {cls, attrs, title, mark, pills}: the Thematic Recommendation and Keyword sections draw the same card with their own
@@ -90896,7 +91064,7 @@ function ui37TileHTML(top, p, kind, defs, idx, rvMap){
 function ui39PlainTileHTML(id, defs, why, x){
   const dd = defs[id], pt = dd ? basicPackTierOf(dd) : 0; x = x || {};
   const pack = pt && !(!adminModeEnabled && isCardHiddenForPlayer(dd)) ? `<b class="rv2-pill is-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</b>` : '';
-  return `<span class="rv1-tile is-ui39${x.cls ? ' ' + x.cls : ''}" data-rv-id="${escapeAttr(id)}" data-rv-sec="ui39" data-rv-kind="ui39"${x.attrs || ''}${x.title ? ` title="${escapeAttr(x.title)}"` : ''}>${x.mark || ''}${vis4MapCardTilesHTML([id], defs, {packs: true, large: true, power: true, why})}<span class="rv2-pills">${ui13IsBaby(id, defs) ? `<b class="rv2-pill is-baby" title="${escapeAttr(TX('ui.ui13-tip-baby'))}">${escapeHtml(TX('ui.ui13-tag-baby'))}</b>` : ''}${ux8IsStarter(id, defs) ? `<b class="rv2-pill is-starter" title="${escapeAttr(TX('ui.ux8-tip-starter'))}">${escapeHtml(TX('ui.ux8-tag-starter'))}</b>` : ''}${pack}${x.pills || ''}</span></span>`; // 2026-11-16 (UX8, owner 23:35 #3): Baby and Starter on a card no review lists too
+  return `<span class="rv1-tile is-ui39${x.cls ? ' ' + x.cls : ''}" data-rv-id="${escapeAttr(id)}" data-rv-sec="ui39" data-rv-kind="ui39"${x.attrs || ''}${x.title ? ` title="${escapeAttr(x.title)}"` : ''}>${x.mark || ''}${vis4MapCardTilesHTML([id], defs, {packs: true, large: true, power: true, why})}<span class="rv2-pills">${ui13IsBaby(id, defs) ? `<b class="rv2-pill is-baby" title="${escapeAttr(TX('ui.ui13-tip-baby'))}">${escapeHtml(TX('ui.ui13-tag-baby'))}</b>` : ''}${ux8IsStarter(id, defs) ? `<b class="rv2-pill is-starter" title="${escapeAttr(TX('ui.ux8-tip-starter'))}">${escapeHtml(TX('ui.ux8-tag-starter'))}</b>` : ''}${pack}${rw3PillHTML(id, dd)}${x.pills || ''}</span></span>`; // 2026-11-16 (UX8, owner 23:35 #3): Baby and Starter on a card no review lists too
 }
 // a proposed concept (no art, no stats): a full-size card-shaped placeholder with its name, animal, element, suggested rarity and role; the hover shows it all
 function ui39ConceptCardHTML(c){
@@ -90925,7 +91093,7 @@ function ui39ReviewMap(top, ok, sec){ // 2026-11-10 (UI44): sec = a submap's lis
   return out;
 }
 // NEW! then Carried (both open), then any review entry neither group shows (a cut card, say) in the Lists view's own parts, so nothing on the list is lost
-function ui37GroupsHTML(top, defs, sp, rvMap, secKey){ ui47UsageCache = ui47Usage(); try{ return ui37GroupsHTML0(top, defs, sp, rvMap, secKey); } finally { ui47UsageCache = null; } }
+function ui37GroupsHTML(top, defs, sp, rvMap, secKey){ ui47UsageCache = ui47Usage(); rw3Ctx = rw3MakeCtx(top, defs); try{ return ui37GroupsHTML0(top, defs, sp, rvMap, secKey); } finally { ui47UsageCache = null; rw3Ctx = null; } } // 2026-11-22 (REWARD3): the tile labels' lookups, once a draw
 function ui37GroupsHTML0(top, defs, sp, rvMap, secKey){ secKey = secKey || 'cards'; // 2026-11-10 (UI44): a submap's review rows use its own section key
   const rl = (UI38_PROS && UI38_PROS.rules) || {}, mn = {new: rl.newTarget || 45}; // 2026-11-09 (UI38): the pool size and its minimum
   const grp = (cls, title, list, kind)=> `<section class="pk1-mc-sec rv2-panel ui37-grp ${cls}" data-ui37-grp="${kind}"><h3>${escapeHtml(title)} <small data-ui38-n="${list.length}"${kind === 'new' ? ` title="${escapeAttr(TX('ui.ui47-baby-note'))}"` : ''}>${kind === 'new' ? ui47Counted(list, defs).length : list.length}</small> ${kind === 'new' && !ui44IsSub(top) ? `<small class="ui38-min">${escapeHtml(TX('ui.ui38-min', {n: mn.new}))}</small>` : ''}</h3><div class="vis4-mc-row rv1-row ui37-row">${list.length ? list.map(p=> ui37TileHTML(top, p, kind, defs, sp.idx, rvMap)).join('') : '<span class="panel-sub">–</span>'}</div></section>`;
@@ -93633,7 +93801,8 @@ function packsetTileHTML(id, defs, o){
 const PACKSET_MENU = [ // the right-click menu: add an entry here (REWARD3 adds the skirmish-reward picks); html(id) returns its markup, on(id, el) reacts to a `change` / click inside it
   {key: 'map', html: id=>{ const cur = (packsetState.map || {})[id] || '', opts = ui37MapsData().sort((a, b)=> a.n - b.n).map(m=> `<option value="${escapeAttr(m.id)}"${m.id === cur ? ' selected' : ''}>${escapeHtml(TX('ui.ui37-from', {n: m.n}) + ' · ' + m.name)}</option>`).join('');
       return `<label class="ps1-menu-row">${escapeHtml(TX('ui.ps1-map-menu'))} <select data-ps1-menu="map"><option value="">–</option>${opts}</select></label>`; },
-    on: (id, el)=> packsetSetMap(id, el.value)}];
+    on: (id, el)=> packsetSetMap(id, el.value)},
+  {key: 'rw3', html: id=>{ const d = getCardDefs()[id]; return d ? rw3CtlHTML(rw3KeyFor(id), id, d) : ''; }, on: (id, el)=> rw3OnChange({target: el})}]; // 2026-11-22 (REWARD3): Reward / fight / x N
 function packsetPanelHTML(pk){
   const P = PACKSET_PANELS[pk], defs = getCardDefs(), m = packsetModel(pk), starts = packsetStarts(pk, m.seq), st = packsetState, yes = new Set(st.yes || []), no = new Set(st.no || []), done = new Set(), sec = [];
   const idxOf = {}; m.seq.forEach((x, i)=> { idxOf[x.id] = i; });
@@ -114148,8 +114317,8 @@ function skirmishDropRarityRoll(mapNo, rng){
 function skirmishDropPick(node, rar, rng){
   rng = rng || Math.random;
   const defs = getCardDefs(), ladder = RARITY_DEFS.filter(r=> !r.as && r.key !== 'starter').map(r=> r.key), base = id=> String(id).replace(/~(raid|exposed|illusory)$/, '');
-  const poolIds = packCardPool(defs, 'basic', false, true /* RW3: a drop keeps the map / rarity gate; RW5: every pack tier */).filter(id=>{ const d = defs[id]; return d && !d.hero && d.cardType !== 'materia' && !isEquipmentDef(d) && !isEasterEgg(d) && !(d.archetypes||[]).includes('Castle'); }), inPool = new Set(poolIds);
-  const deckPack = [...new Set(Object.keys(node.deck || {}).map(base))].filter(id=> inPool.has(id)), at = (ids, r)=> ids.filter(id=> (defs[id].rarity || 'common') === r), pick0 = a=> a[Math.floor(rng() * a.length)];
+  const poolIds = packCardPool(defs, 'basic', false, true /* RW3: a drop keeps the map / rarity gate; RW5: every pack tier */).concat(typeof rw3GeneralIds === 'function' ? rw3GeneralIds(defs) : []).filter(id=>{ const d = defs[id]; return d && !d.hero && d.cardType !== 'materia' && !isEquipmentDef(d) && !isEasterEgg(d) && !(d.archetypes||[]).includes('Castle'); }), inPool = new Set(poolIds);
+  const deckPack = [...new Set(Object.keys(node.deck || {}).map(base))].filter(id=> inPool.has(id)), at = (ids, r)=> ids.filter(id=> (defs[id].rarity === 'starter' ? 'common' : (defs[id].rarity || 'common')) === r), pick0 = a=> a[Math.floor(rng() * a.length)];
   // 2026-10-23 (package RW5, owner 19:36: "only give 1 per card"): a card you don't own yet first, while the list has one
   const pick = a=>{ let f = []; try{ if(typeof REWARD_NEW_FIRST !== 'undefined' && REWARD_NEW_FIRST && typeof copiesOwned === 'function') f = a.filter(id=> !copiesOwned(id)); }catch(e){} return pick0(f.length ? f : a); };
   for(let i = ladder.indexOf(rar); i >= 0; i--){
@@ -114215,7 +114384,7 @@ function skirmishOwnDropShare(rarity){
 // The fight's own reward cards a repeat win can drop (a skirmish only; [] for anything else).
 function skirmishOwnDropIds(node, mapId){
   if(!node || node.tower || node.virtual || baseKind(node.kind || 'skirmish') !== 'skirmish') return [];
-  try{ return nodeFirstClearCardIds(mapId, node.key); }catch(e){ return []; } // + a first-clear pack card drops the same way (GD2, GD-5)
+  try{ const defs = getCardDefs(); return nodeFirstClearCardIds(mapId, node.key).filter(id=> typeof rw3IsReward !== 'function' || !rw3IsReward(defs[id]) || copiesOwned(id) < rw3Want(defs[id])); }catch(e){ return []; } // + a first-clear pack card drops the same way (GD2, GD-5); 2026-11-22 (REWARD3): a Reward card stops dropping at its count
 }
 // The card-drop chance a fight shows on its panel (the same numbers the win rolls). o.repeat: a repeat win (the fight is cleared).
 function nodeCardDropChance(mapId, node, o){

@@ -4762,5 +4762,15 @@
  "Drop": "Hapus",
  "Keep": "Pertahankan",
  "Replace": "Ganti",
- "to Map {n}": "ke Peta {n}"
+ "to Map {n}": "ke Peta {n}",
+ "Max {n} Rewards per map": "Maks. {n} hadiah per peta",
+ "Copies over the map: first clear, then repeat drops. Rarity cap {cap}": "Salinan di peta: kemenangan pertama, lalu drop ulang. Batas kelangkaan {cap}",
+ "Free drops": "Drop gratis",
+ "General drop": "Drop umum",
+ "Baby card: drops from any fight, not from packs": "Kartu bayi: jatuh dari pertarungan mana pun, bukan dari paket",
+ "No free drop": "Tanpa drop gratis",
+ "Add as reward": "Tambah sebagai hadiah",
+ "In {n} skirmish decks": "Di {n} dek skirmish",
+ "New! skills: {list}": "Skill baru: {list}",
+ "Reward at {code}": "Hadiah di {code}"
 }

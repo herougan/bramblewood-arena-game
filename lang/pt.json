@@ -4762,5 +4762,15 @@
  "Drop": "Remover",
  "Keep": "Manter",
  "Replace": "Substituir",
- "to Map {n}": "para o mapa {n}"
+ "to Map {n}": "para o mapa {n}",
+ "Max {n} Rewards per map": "Máx. {n} recompensas por mapa",
+ "Copies over the map: first clear, then repeat drops. Rarity cap {cap}": "Cópias no mapa: primeira vitória e depois drops repetidos. Limite de raridade {cap}",
+ "Free drops": "Drops grátis",
+ "General drop": "Drop geral",
+ "Baby card: drops from any fight, not from packs": "Carta filhote: cai em qualquer combate, não em pacotes",
+ "No free drop": "Sem drop grátis",
+ "Add as reward": "Adicionar como recompensa",
+ "In {n} skirmish decks": "Em {n} decks de escaramuça",
+ "New! skills: {list}": "Habilidades novas: {list}",
+ "Reward at {code}": "Recompensa em {code}"
 }

@@ -4761,5 +4761,15 @@
  "Drop": "Retirer",
  "Keep": "Garder",
  "Replace": "Remplacer",
- "to Map {n}": "vers la carte {n}"
+ "to Map {n}": "vers la carte {n}",
+ "Max {n} Rewards per map": "Max {n} récompenses par carte",
+ "Copies over the map: first clear, then repeat drops. Rarity cap {cap}": "Copies sur la carte : première victoire, puis butins répétés. Plafond de rareté {cap}",
+ "Free drops": "Butins gratuits",
+ "General drop": "Butin général",
+ "Baby card: drops from any fight, not from packs": "Carte bébé : tombe de n'importe quel combat, pas des paquets",
+ "No free drop": "Aucun butin gratuit",
+ "Add as reward": "Ajouter en récompense",
+ "In {n} skirmish decks": "Dans {n} decks d'escarmouche",
+ "New! skills: {list}": "Nouvelles compétences : {list}",
+ "Reward at {code}": "Récompense en {code}"
 }

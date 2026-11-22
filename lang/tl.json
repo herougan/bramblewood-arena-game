@@ -4761,5 +4761,15 @@
  "Drop": "Alisin",
  "Keep": "Panatilihin",
  "Replace": "Palitan",
- "to Map {n}": "sa Mapa {n}"
+ "to Map {n}": "sa Mapa {n}",
+ "Max {n} Rewards per map": "Max {n} gantimpala bawat mapa",
+ "Copies over the map: first clear, then repeat drops. Rarity cap {cap}": "Mga kopya sa mapa: unang panalo, saka paulit-ulit na drop. Limit ng rarity {cap}",
+ "Free drops": "Libreng drop",
+ "General drop": "Pangkalahatang drop",
+ "Baby card: drops from any fight, not from packs": "Baby card: nahuhulog sa anumang laban, hindi sa pack",
+ "No free drop": "Walang libreng drop",
+ "Add as reward": "Idagdag bilang gantimpala",
+ "In {n} skirmish decks": "Nasa {n} skirmish deck",
+ "New! skills: {list}": "Bagong skill: {list}",
+ "Reward at {code}": "Gantimpala sa {code}"
 }

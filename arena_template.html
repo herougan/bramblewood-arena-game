@@ -14852,6 +14852,18 @@ html.bw-touch-dragging, body.bw-touch-dragging{overscroll-behavior:none;} /* 202
 .rv2-pill.is-unlikely{background:#b8463a; color:#fff; border-color:transparent; cursor:help;}
 .rv2-pill.is-baby{background:#f3c6d4; color:#4a1f2c; border-color:transparent; cursor:help;}
 .rv2-pill.is-egg{background:#efe2c0; color:#3b2c10; border-color:transparent; cursor:help;}
+/* REWARD3 (2026-11-22): the Reward pill, the per-tile Reward controls and the Free drops section in the Map cards window */
+.rv2-pill.is-rw3{background:var(--accent-strong); color:var(--accent-ink); border-color:transparent; cursor:help;}
+.rv2-pill.rw3-none{background:var(--attack); color:#fff; border-color:transparent;}
+.rv2-pill.rw3-src{background:var(--surface-3); color:var(--ink); cursor:help;}
+.rw3-ctl{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:4px 8px; margin-top:4px; font:700 12px/1.2 system-ui,sans-serif;}
+.rw3-ctl label{display:inline-flex; align-items:center; gap:3px;}
+.rw3-ctl select{max-width:100%; font:inherit; padding:3px 6px; border-radius:8px; background:var(--surface-2); color:var(--ink); border:1px solid var(--surface-border);}
+.rw3-ctl input[type=number]{width:3.4em; font:inherit; padding:2px 4px; border-radius:8px; background:var(--surface-2); color:var(--ink); border:1px solid var(--surface-border);}
+.ps1-menu .rw3-ctl{flex-direction:column; align-items:flex-start; justify-content:flex-start;}
+.rw3-ftile.is-noFree{outline:2px solid var(--attack); outline-offset:2px; border-radius:10px;}
+.rw3-add{margin-top:4px;}
+.rw3-none-n{color:var(--attack);}
 .rv1-tile.is-unlikely.is-chosen:not(.is-flipped) .vis4-mc-card.is-large{outline:1px solid rgba(184,70,58,.55); outline-offset:3px;}
 .ui13-acts{display:flex; justify-content:center; align-items:center; gap:5px;}
 .ui13-acts .rv1-act{white-space:nowrap; padding:4px 10px;}

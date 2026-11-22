@@ -4761,5 +4761,15 @@
  "Drop": "移除",
  "Keep": "保留",
  "Replace": "替換",
- "to Map {n}": "到地圖 {n}"
+ "to Map {n}": "到地圖 {n}",
+ "Max {n} Rewards per map": "每張地圖最多 {n} 個獎勵",
+ "Copies over the map: first clear, then repeat drops. Rarity cap {cap}": "本圖的副本數：首次通關，之後重複掉落。稀有度上限 {cap}",
+ "Free drops": "免費掉落",
+ "General drop": "通用掉落",
+ "Baby card: drops from any fight, not from packs": "幼崽卡：任何戰鬥都會掉落，不出自卡包",
+ "No free drop": "無免費掉落",
+ "Add as reward": "加為獎勵",
+ "In {n} skirmish decks": "用於 {n} 個小戰牌組",
+ "New! skills: {list}": "新技能：{list}",
+ "Reward at {code}": "獎勵於 {code}"
 }

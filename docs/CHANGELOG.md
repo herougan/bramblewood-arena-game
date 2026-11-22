@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-22 Package REWARD3 (owner 22:41 #3 #4 #8 #9)
+- **Map cards window (admin):** a "Reward" tick on each Yes card (also in the right-click menu and the Pack editor's menu), at most 2 per map (side maps too). A Reward card is a skirmish reward of that map: in no pack, paid by the first clear of an auto-picked fight (editable in the tick's fight list), then dropped on repeat wins. "Reward" pill everywhere the card shows.
+- **Tile labels:** skirmish decks using it (swords), New! skills it carries (sparkles), faction, reward elsewhere (target), next to rarity, budget %, Pack N, Baby, Starter.
+- **Baby cards are General drops**, in no pack; they drop from any fight. **Free drops** section (Map 0 and the tutorial map): every Baby, starter-deck (all configs) and T-1 / T-2 card with where it drops for free, or a red "No free drop" and one-click "Add as reward" (Map 0 fight).
+- **x N** on Reward and General-drop cards: copies over the map (first clear 1, repeat drops until N owned, capped by the rarity cap).
+- Saved locally and in the admin row `__cfg:reward3`. Detail: `docs/design/reward3-2026-11-22.md`. Test: `tests/reward3-2026-11-22.js`.
+
 ## 2026-11-22 Package MAPSWAP1 (owner 23:08)
 - **Map cards window (admin, main maps):** a "Claude's swaps" section under the skills: one row per suggestion with the card tile, the skill, the why and Yes / No. Yes goes through your own pick path (Yes on the added card, No on the removed one, Yes on the destination map for a move); No hides the row. Nothing is written until you click.
 - Suggestions (`canonical/map-swap-suggestions.json`, rerun `node tools/mapswap1_suggest.js`): cards for the 6 "To add" tiles (2 new-card ideas where no card fits), a move / drop / keep for each of the 36 "To remove" tiles. Detail: `docs/design/mapswap1-2026-11-22.md`.

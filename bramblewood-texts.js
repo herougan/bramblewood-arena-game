@@ -3938,7 +3938,18 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ms1-drop": "Drop",
   "ui.ms1-keep": "Keep",
   "ui.ms1-rep": "Replace",
-  "ui.ms1-to": "to Map {n}"
+  "ui.ms1-to": "to Map {n}",
+  "ui.rw3-max": "Max {n} Rewards per map",
+  "ui.rw3-fight": "Fight",
+  "ui.rw3-count-tip": "Copies over the map: first clear, then repeat drops. Rarity cap {cap}",
+  "ui.rw3-free-title": "Free drops",
+  "ui.rw3-general": "General drop",
+  "ui.rw3-where-general": "Baby card: drops from any fight, not from packs",
+  "ui.rw3-no-free": "No free drop",
+  "ui.rw3-add": "Add as reward",
+  "ui.rw3-decks": "In {n} skirmish decks",
+  "ui.rw3-newskills": "New! skills: {list}",
+  "ui.rw3-elsewhere": "Reward at {code}"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
