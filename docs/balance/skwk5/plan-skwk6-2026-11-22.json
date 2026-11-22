@@ -1,0 +1,17 @@
+{
+ "about": "SKWK6 (2026-11-22): fresh BPRO search for the two N-SK decks SKWK5 could not lift (0-BPRO-2, 18-A-BPRO-1), then tune --from-search.",
+ "maps": {
+  "m1": {
+   "tune": [
+    "0-BPRO-2"
+   ],
+   "drop": []
+  },
+  "mpd": {
+   "tune": [
+    "18-A-BPRO-1"
+   ],
+   "drop": []
+  }
+ }
+}
