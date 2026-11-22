@@ -505,3 +505,4 @@ run node tests/dec20-skills-2026-11-19.js   # 2026-11-19 (package DEC20-SKILLS, 
 run node tests/focus2-2026-11-20.js   # 2026-11-20 (package FOCUS2, owner 00:39): Bleed to Map 6 / Leech to Map 5, Suggested picks, Harden / Embolden / Enfeeble (rounds) apply Sturdy / Mighty / Feeble, carriers under budget
 run node tests/skin3-2026-11-20.js   # 2026-11-20 (package SKIN3, owner Skills sheet 11-20): Scare makes its attacker Scared, the new Onslaught (+N/+0 per ally swing while Ready), the old one off the Bison, prices, Loyal text, ranking record
 run node tests/bleed1-2026-11-22.js   # 2026-11-22 (package BLEED1, owner 09:56 #2): a Bleeding unit bleeds before it acts; bleeding out stops the swing, its On Action / On Attack, its skills and an Archer's shot
+run node tests/lookahead-2026-11-22.js   # 2026-11-22 (package LOOKAHEAD1): the bench's look-ahead pilot (--ai-mine look): deterministic, beats a level-2 seat in a fixed-deck mirror, a pipeline measure runs with it
