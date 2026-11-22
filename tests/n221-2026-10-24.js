@@ -37,6 +37,7 @@ const n221Probs = ((chk.stdout || '') + (chk.stderr || '')).trim().split('\n').m
   m = /^(\S+): (in one map pool|card-obtain-maps)/.exec(l); if(m && !t2Any(m[1])) return false;
   m = /^(\S+): homed as \w+ \(a proposal\) but has a source now/.exec(l); if(m && (LF1SRC[m[1]] || placedSince(m[1]))) return false; // 2026-10-29 LISTFIX1 (+ TESTFIX1: placed since)
   m = /^no home: (\S+)/.exec(l); if(m && (laterHome(m[1]) || (by[m[1]] && by[m[1]].unattainable))) return false; // TESTFIX1: homed by a later owner call; 2026-11-16 (TESTFIX5): or cut by the owner's 11-12 / 11-13 lists (unattainable, SKIR3 / LIST1)
+  m = /^(\S+): awaiting and sourced/.exec(l); if(m && /package NOC7|NOC7, owner/.test((by[m[1]] || {}).creatorNote || '')) return false; // 2026-11-22 (TESTFIX9): NOC7 (owner-approved) put Glowworm Cluster on the Morel Hollow list on purpose; its awaitingSource flag stays
   return true; });
 ok(chk.status === 0 || !n221Probs.length, `the N221 check passes, but for THEME2's lists (${n221Probs.slice(0, 6).join(' | ') || 'ok'})`);
 

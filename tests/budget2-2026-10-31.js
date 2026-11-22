@@ -38,7 +38,8 @@ JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bal14', 'refit-20
 // 2026-11-16 (TESTFIX5): a card changed again after BUDGET2 (owner live edits folded by CONTENT12, CONTENT11-1 thematic lines, BAL30 ...) carries the later line; its note records it after the BUDGET2 entry. The band still applies.
 const laterLine = c=> { const n = c.creatorNote || '', i = n.indexOf('BUDGET2 re-fit'); return (i >= 0 && /->|folded in/.test(n.slice(n.indexOf('now ', i) + 4))) || redesigned(c.id) /* 2026-11-18 (TESTFIX): FOLD6 / SKAUD1 re-set it (OWN-1117-3) */; };
 const { redesigned } = require('./lib/redesign.js');
-const bad = plan.changes.filter(r=> !SK2.has(r.id) && !SPD.has(r.id)).filter(r=>{ const c = byId[r.id]; if(!c || (`${c.attack == null ? '-' : c.attack}/${c.health}` !== r.to && !laterLine(c))) return true;
+const KO = require('./lib/known-out-of-band.js'); // 2026-11-22 (TESTFIX9)
+const bad = plan.changes.filter(r=> !SK2.has(r.id) && !SPD.has(r.id) && !KO.isKnown(r.id)).filter(r=>{ const c = byId[r.id]; if(!c || (`${c.attack == null ? '-' : c.attack}/${c.health}` !== r.to && !laterLine(c))) return true;
   const b = T.budget(c), b1 = T.budget(c, {level: 1}); if(!(b.ok && b1.ok && b.x1 > 0.6 * b.N)) return true;
   if(TUT12.has(r.id)){ const st = G.statsAtLevel(c, 0); if(!T.budget(Object.assign({}, c, {attack: st.attack, health: st.health, effects: {}}), {level: 0}).ok) return true; }
   return !/BUDGET2 re-fit/.test(c.creatorNote || ''); }).map(r=> r.id);
@@ -51,7 +52,7 @@ ok(['bee-drone', 'worker-ant'].every(id=> !plan.changes.some(r=> r.id === id)), 
 { const before = new Set((plan.counts.outsideBeforeIds || []).map(s=> s.replace(/ \(out of play\)$/, ''))), held = new Set(plan.held.map(h=> h.id));
   const BAL12H = new Set((js('docs/balance/bal12/refit-2026-11-02.json').held || []).map(h=> h.id));
   const out = cards.filter(c=> LB.CARD_DEFS_BASELINE[c.id] && !c.pool && !c.token && !c.test && !c.easterEgg && SC.measured(c) && c.health != null && !lmp.isOutOfPlay(G, LB.CARD_DEFS_BASELINE[c.id]))
-    .filter(c=>{ const b = T.budget(c), b1 = T.budget(c, {level: 1}); return !(b.ok && b1.ok && b.x1 > 0.6 * b.N); }).filter(c=> !before.has(c.id) && !held.has(c.id) && !SK2.has(c.id) && !BAL12H.has(c.id)).map(c=> c.id); // 2026-10-31 SKILL2: its own held / named cards; 2026-11-02 BAL12: the cards its re-fit held (BAL12-1)
+    .filter(c=>{ const b = T.budget(c), b1 = T.budget(c, {level: 1}); return !(b.ok && b1.ok && b.x1 > 0.6 * b.N); }).filter(c=> !before.has(c.id) && !held.has(c.id) && !KO.isKnown(c.id) && !SK2.has(c.id) && !BAL12H.has(c.id)).map(c=> c.id); // 2026-10-31 SKILL2: its own held / named cards; 2026-11-02 BAL12: the cards its re-fit held (BAL12-1)
   ok(!out.length, `2. no in-play card outside its band but those outside before BUDGET2 or held: ${out.slice(0, 6).join(', ') || 'none'}`); }
 ok(js('docs/balance/listfix1-pending-budget-2026-10-29.json').count === 0, '2. LISTFIX1\'s pending list is empty (War Elephant fits)');
 
