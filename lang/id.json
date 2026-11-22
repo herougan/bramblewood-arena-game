@@ -4742,6 +4742,18 @@
  "Scared: attacks for {n} less": "Ketakutan: serangan {n} lebih lemah",
  "While an ally leader is on the battlefield, it has {skills}.": "Selama pemimpin sekutu ada di medan perang, ia punya {skills}.",
  "Learns a skill at a higher level": "Mempelajari kemampuan di level yang lebih tinggi",
+ "All cards (0-20)": "Semua kartu (0-20)",
+ "All cards (20-40)": "Semua kartu (20-40)",
+ "Bonus (pack-only)": "Bonus (khusus pack)",
+ "In a skirmish deck or reward": "Ada di dek atau hadiah skirmish",
+ "Starts Pack {n}": "Mulai Pack {n}",
+ "Represents map": "Mewakili peta",
+ "Now: the starter deck": "Sekarang: dek awal",
+ "Tutorial suggestions": "Saran tutorial",
+ "Default cuts": "Pemisah bawaan",
+ "A pack cannot start at or before the pack before it.": "Pack tidak bisa mulai di atau sebelum pack sebelumnya.",
+ "YES or NO each card. Right-click a card (or ⋯) to set its map. ▸2 / ▸3 start that pack at the card.": "YA atau TIDAK untuk tiap kartu. Klik kanan (atau ⋯) untuk atur peta. ▸2 / ▸3 memulai pack di kartu ini.",
+ "Picked {n} / 16": "Dipilih {n} / 16",
  "To remove": "Hapus",
  "New here, but not in this map's skill table: take it off this map's cards": "Baru di sini, tetapi tidak ada di tabel skill peta ini: hapus dari kartunya"
 }

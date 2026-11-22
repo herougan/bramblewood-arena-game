@@ -4741,6 +4741,18 @@
  "Scared: attacks for {n} less": "怯え：攻撃が{n}減る",
  "While an ally leader is on the battlefield, it has {skills}.": "味方のリーダーが戦場にいる間、{skills}を持つ。",
  "Learns a skill at a higher level": "より高いレベルでスキルを覚える",
+ "All cards (0-20)": "全カード (0-20)",
+ "All cards (20-40)": "全カード (20-40)",
+ "Bonus (pack-only)": "ボーナス（パック限定）",
+ "In a skirmish deck or reward": "スカーミッシュのデッキか報酬にあり",
+ "Starts Pack {n}": "パック{n}はここから",
+ "Represents map": "代表マップ",
+ "Now: the starter deck": "現在：スターターデッキ",
+ "Tutorial suggestions": "チュートリアル案",
+ "Default cuts": "初期の区切り",
+ "A pack cannot start at or before the pack before it.": "パックは前のパックの開始位置以前から始められません。",
+ "YES or NO each card. Right-click a card (or ⋯) to set its map. ▸2 / ▸3 start that pack at the card.": "各カードにYESかNO。右クリック（または⋯）でマップ設定。▸2 / ▸3でそのパックをここから開始。",
+ "Picked {n} / 16": "選択 {n} / 16",
  "To remove": "削除予定",
  "New here, but not in this map's skill table: take it off this map's cards": "ここで新登場だが、このマップのスキル表にない：このマップのカードから外す"
 }

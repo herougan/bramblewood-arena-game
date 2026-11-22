@@ -4741,6 +4741,18 @@
  "Scared: attacks for {n} less": "惊恐：攻击减少 {n}",
  "While an ally leader is on the battlefield, it has {skills}.": "当友方首领在战场上时，拥有{skills}。",
  "Learns a skill at a higher level": "在更高等级时习得技能",
+ "All cards (0-20)": "全部卡牌 (0-20)",
+ "All cards (20-40)": "全部卡牌 (20-40)",
+ "Bonus (pack-only)": "额外（仅卡包）",
+ "In a skirmish deck or reward": "在遭遇战牌组或奖励中",
+ "Starts Pack {n}": "从此起为卡包 {n}",
+ "Represents map": "代表地图",
+ "Now: the starter deck": "现有：起始牌组",
+ "Tutorial suggestions": "教程建议",
+ "Default cuts": "默认分段",
+ "A pack cannot start at or before the pack before it.": "卡包不能从前一个卡包的起点或之前开始。",
+ "YES or NO each card. Right-click a card (or ⋯) to set its map. ▸2 / ▸3 start that pack at the card.": "每张卡选“是”或“否”。右键（或 ⋯）设置地图。▸2 / ▸3 从此卡起开始该卡包。",
+ "Picked {n} / 16": "已选 {n} / 16",
  "To remove": "待移除",
  "New here, but not in this map's skill table: take it off this map's cards": "此处为新，但不在本地图的技能表中：从本地图的卡牌上移除"
 }

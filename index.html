@@ -49493,7 +49493,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=fbcd498e6c", "es": "assets/lang/es.js?v=0fe356a5bc", "fr": "assets/lang/fr.js?v=2492829e98", "id": "assets/lang/id.js?v=731c827fd8", "it": "assets/lang/it.js?v=c18fcab5c0", "ja": "assets/lang/ja.js?v=bd0d422a98", "ko": "assets/lang/ko.js?v=81193d80cf", "pt": "assets/lang/pt.js?v=46ab50530f", "ta": "assets/lang/ta.js?v=15975d71cc", "tl": "assets/lang/tl.js?v=4ff9c2d760", "zh-Hans": "assets/lang/zh-Hans.js?v=47893d686e", "zh-Hant": "assets/lang/zh-Hant.js?v=9e4be6da42"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=c5d71fcc84", "es": "assets/lang/es.js?v=78c20509bf", "fr": "assets/lang/fr.js?v=3980931c15", "id": "assets/lang/id.js?v=41635ff07f", "it": "assets/lang/it.js?v=a4ad703d75", "ja": "assets/lang/ja.js?v=7fc1e70ebf", "ko": "assets/lang/ko.js?v=a9d8bb0d79", "pt": "assets/lang/pt.js?v=9be158403a", "ta": "assets/lang/ta.js?v=0838b7fc27", "tl": "assets/lang/tl.js?v=3e2d5093cb", "zh-Hans": "assets/lang/zh-Hans.js?v=5f3d93649c", "zh-Hant": "assets/lang/zh-Hant.js?v=85be794181"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -53534,7 +53534,23 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.skin3-float-scared": "😱 Scared -{n}",
   "ui.skin3-scared-tip": "Scared: attacks for {n} less",
   "ui.ux7-focus-remove": "To remove",
-  "ui.ux7-focus-remove-tip": "New here, but not in this map's skill table: take it off this map's cards"
+  "ui.ux7-focus-remove-tip": "New here, but not in this map's skill table: take it off this map's cards",
+  "ui.ps1-all-a": "All cards (0-20)",
+  "ui.ps1-all-b": "All cards (20-40)",
+  "ui.ps1-fac-otters": "Otters",
+  "ui.ps1-fac-hummingbirds": "Hummingbirds",
+  "ui.ps1-fac-base": "Base",
+  "ui.ps1-bonus": "Bonus (pack-only)",
+  "ui.ps1-skirmish": "Skirmish",
+  "ui.ps1-skirmish-tip": "In a skirmish deck or reward",
+  "ui.ps1-starts": "Starts Pack {n}",
+  "ui.ps1-map-menu": "Represents map",
+  "ui.ps1-count": "Picked {n} / 16",
+  "ui.ps1-now": "Now: the starter deck",
+  "ui.ps1-tut-sug": "Tutorial suggestions",
+  "ui.ps1-reset": "Default cuts",
+  "ui.ps1-cut-no": "A pack cannot start at or before the pack before it.",
+  "ui.ps1-sub": "YES or NO each card. Right-click a card (or ⋯) to set its map. ▸2 / ▸3 start that pack at the card."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -59729,7 +59745,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'b9eb33dc8dd1', BUILD_CARD_HASH = 'ad62554b686e0f4051ee1b1da898d93dd6043ed2b7c0d5f47e5d6eb47d4cc8f7';
+const BUILD_ID = '52341b93f58e', BUILD_CARD_HASH = 'ad62554b686e0f4051ee1b1da898d93dd6043ed2b7c0d5f47e5d6eb47d4cc8f7';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
@@ -60274,8 +60290,16 @@ function packIndexBuild(){
 function cardFirstMapList(d){ if(!d) return null; const id = d.derivedFrom || d.id; return packIndex().first[id] || null; }
 function isBasicPackSource(s){ if(!s || s.kind !== 'pack') return false; const t = parseInt(s.tier, 10) || 1; return t >= 1 && t <= 10; }
 // the basic pack (1, 2, 3, 4 ...) a card is in now, 0 = none
+// 2026-11-22 (package PACKSET1): the Pack Editor's "All cards" panels keep `tiers` (card id -> pack), worked out from the owner's cuts each time he changes something there; it sets the pack of
+// a card a map list puts in a basic pack today or that he said YES to as a bonus card, and a card with no entry keeps today's rule (docs/design/packset1-2026-11-22.md). The check sits as one
+// line in basicPackTierOf (the balance tools lift that function alone, so it tests `typeof` first); basicPackTier0 is today's rule without it.
+var PACKSET_KEY = 'bw_packset1_v1', packsetOff = false;
+var packsetState = (()=>{ try{ const o = JSON.parse(localStorage.getItem(PACKSET_KEY) || 'null'); return o && typeof o === 'object' ? o : {}; }catch(e){ return {}; } })();
+function packsetTierOf(d){ const st = packsetState; return packsetOff || !st || !st.tiers ? 0 : st.tiers[d.derivedFrom || d.id] || 0; }
+function basicPackTier0(d){ packsetOff = true; try{ return basicPackTierOf(d); } finally { packsetOff = false; } }
 function basicPackTierOf(d){
   if(!d || d.token || d.test || isEasterEgg(d)) return 0;
+  const ps = typeof packsetTierOf === 'function' ? packsetTierOf(d) : 0; if(ps) return ps; // 2026-11-22 (PACKSET1)
   const id = d.derivedFrom || d.id, idx = packIndex(), s = cardSourceOf(d);
   if(isBasicPackSource(s)){ const f = idx.first[id]; if(f) return packTierOfMapNumber(f.n) || 0; }
   else if(s.kind === 'pack') return 0; // the Factions pool and the Mystery Booster keep their own pools
@@ -60942,6 +60966,7 @@ function applyCloudCfgRow(r){
   if(r.id==='__cfg:tutorial'){ applyCloudTutorialCfg(r); return; }
   if(r.id==='__cfg:dialogues'){ dialogueEdits = (r.deleted || !r.data) ? {} : (r.data.edits || {}); saveDialogueEdits(); return; }
   if(r.id==='__cfg:shop-packs'){ applyCloudShopPacks(r); return; }
+  if(r.id==='__cfg:pack-set'){ applyCloudPackSet(r); return; } // 2026-11-22 (PACKSET1): the Pack Editor's All cards panels (YES / NO, maps, cuts, tiers)
   if(r.id==='__cfg:forge-tiers'){ applyCloudForgeTiers(r); return; }
   const m = /^__cfg:map-layout:(.+)$/.exec(r.id);
   if(!m) return;
@@ -90716,7 +90741,7 @@ function list1SideOwnIndex(n, maps){
   return out;
 }
 function ui37Targets(top){ const n = mapNumberOf(top), sub = typeof ui44IsSub === 'function' && ui44IsSub(top), d0 = sub ? {own: 3, carried: 8} /* 2026-11-12 (UI48 #4): a side map's own target is 3 (was 12); 2026-11-10 (UI44): a side map; th6Targets is the main-map curve and has no side-map value, so 12 / 8 as the owner asked */ : (th6Targets(n == null ? 2 : n) || {own: 0, carried: 0}), d = {own: Math.max(d0.own, LIST1_NEW_TARGETS[top] || 0), carried: d0.carried}, t = ui37Ent(top).t, num = v=> (v === '' || v == null || !(Number(v) >= 0)) ? null : Math.round(Number(v));
-  return {n: num(t.n) != null ? num(t.n) : d.own, c: num(t.c) != null ? num(t.c) : d.carried, dn: d.own, dc: d.carried}; }
+  return {n: num(t.n) != null ? num(t.n) : d.own, c: num(t.c) != null ? num(t.c) : d.carried, dn: d.own, dc: d.carried, lo: sub && num(t.n) == null ? Math.min(1, d.own) : null /* 2026-11-22 (PACKSET1, owner: 1-3 New! per submap): a side map's own target is the range lo..dn (green inside it) until the owner types a number */}; }
 // every prospective card of a main map: id -> {id, src: Set('list' | 'maybe' | 'claude' | 'newcard' | 'flag'), why}
 function ui37Prospects(top, defs, ok){
   const side = ui38SideOnly(top); // 2026-11-09 (package UI38, owner 03:55): no side-map cards (one only on a side map's list shows only when flagged); a proposed concept by its id
@@ -90991,7 +91016,7 @@ function ui44HeadHTML(subId, sp){
   const m = mpMapById(subId), tg = ui37Targets(subId), yes = l=> l.filter(p=> ui37FlagOf(subId, p.id) === 'yes').length, cur = ui44CurrentAfter(subId);
   const mains = mainConquestMaps().filter(x=> !x.reserved && mapNumberOf(x.id) != null && (mapNumberOf(x.id) <= 20 || x.id === cur || x.id === sp.afterId));
   const opts = mains.map(x=> `<option value="${escapeAttr(x.id)}"${x.id === sp.afterId ? ' selected' : ''}>${escapeHtml(TX('ui.ui37-from', {n: mapNumberOf(x.id)}) + ' · ' + (x.icon ? x.icon + ' ' : '') + x.name + (x.id === cur ? ' ' + TX('ui.ui44-current') : ''))}</option>`).join('');
-  const ct = (k, x, t, dflt, lab, cls)=> { const tt = TX('ui.ui44-target-tip', {t: dflt}); return `<span class="ui37-ct ${cls}${x === t ? ' is-met' : x > t ? ' is-over' : ''}" data-ui37-ct="${k}">${escapeHtml(lab)} <b class="ui37-x">${x}</b> / <input type="number" min="0" max="99" inputmode="numeric" data-ui37-target="${k}" value="${t}" title="${escapeAttr(tt)}" aria-label="${escapeAttr(tt)}"></span>`; };
+  const ct = (k, x, t, dflt, lab, cls)=> { const tt = TX('ui.ui44-target-tip', {t: dflt}), lo = k === 'n' && tg.lo != null ? tg.lo : t; /* 2026-11-22 (PACKSET1): 1-3 */ return `<span class="ui37-ct ${cls}${x >= lo && x <= t ? ' is-met' : x > t ? ' is-over' : ''}" data-ui37-ct="${k}">${escapeHtml(lab)} <b class="ui37-x">${x}</b> / <input type="number" min="0" max="99" inputmode="numeric" data-ui37-target="${k}" value="${t}" title="${escapeAttr(tt)}" aria-label="${escapeAttr(tt)}"></span>`; };
   return `<div class="ui37-head ui44-head"><span class="ui44-sel"><label class="ui44-after"><span>${escapeHtml(TX('ui.ui44-unlocks-after'))}</span> <select data-ui44-after aria-label="${escapeAttr(TX('ui.ui44-unlocks-after'))}">${opts}</select></label><span class="panel-sub ui44-note">${escapeHtml(TX('ui.ui44-after-note'))}</span></span><span class="ui37-nav">${nav(ord[oi - 1], '‹', TX('ui.ui37-prev'))}<b class="ui37-map">${escapeHtml(((m && m.icon) ? m.icon + ' ' : '') + (m ? m.name : subId))}</b>${nav(ord[oi + 1], '›', TX('ui.ui37-next'))}</span>`
     + ct('n', yes(ui47Counted(sp.neu, getCardDefs())), tg.n, tg.dn, TX('ui.ui37-flagged-new'), 'is-new') + ct('c', yes(sp.car), tg.c, tg.dc, TX('ui.ui37-flagged-carried'), 'is-car')
     + `<span class="ui37-exp" title="${escapeAttr(TX('ui.ui37-export-tip'))}"><button type="button" class="btn small" data-ui37-export="json">⬇ ${escapeHtml(TX('ui.ui37-export'))} .json</button><button type="button" class="btn small" data-ui37-export="csv">.csv</button></span><span class="panel-sub ui37-status" id="ui37Status" role="status">${escapeHtml(ui37StatusText())}</span></div>`
@@ -93408,6 +93433,7 @@ function renderRollTableAdminHTML(){
       <h3>📦 Pack editor</h3>
       <p class="panel-sub">What each pack costs, how many cards come out, the odds of each rarity, how often cards come out foil and in which finish, and which cards are inside. A card's pool is its <b>From</b> field (also editable in the Codex placement panel). ${cloudShopPacks ? 'A published table is live.' : 'Using the shipped table (nothing published yet).'}</p>
       <div class="pe-list">${packs.map(packEditorCardHTML).join('')}</div>
+      ${packsetRowsHTML()}
       <div class="pe-actions">
         <button class="btn primary small" id="rtPublishBtn" type="button" ${cloudCardAdmin ? '' : 'disabled title="Sign in with an admin account to publish"'}>🌍 Publish for everyone</button>
         <button class="btn small" id="rtSaveBtn" type="button">💾 Save on this device</button>
@@ -93446,6 +93472,7 @@ function wireRollTableAdmin(){
     }
     if(e.target.classList.contains('pe-in')){ packEditorDraft = packEditorRead(); rerender(); }
   });
+  root.querySelectorAll('[data-ps1-open]').forEach(b=> b.addEventListener('click', ()=> packsetOpen(b.dataset.ps1Open))); // 2026-11-22 (PACKSET1)
   root.querySelectorAll('[data-pe-remove]').forEach(b=> b.addEventListener('click', ()=>{
     packEditorDraft = packEditorRead();
     { const p = packEditorDraft[+b.closest('.pe-pack').dataset.packidx]; if(p && (p.pool||1) <= 10){ packEditorExtrasEdit(packEditorDraft, p, b.dataset.peRemove, false); rerender(); return; } } // PACK1
@@ -93476,6 +93503,175 @@ function packEditorExtrasEdit(packs, p, id, on){
   if(on) cur.push(id);
   p.extras = cur; saveShopPacksOverride(packs); packEditorDraft = packs;
 }
+// ---- 2026-11-22 (package PACKSET1, owner 22:41 #2 #4 #5 #6): the Pack Editor's "All cards (0-20)" and "All cards (20-40)" panels -------------------------
+// One panel = Tutorial (+ per-faction suggestions, n / 16), Base, Faction, then per main map the cards chosen on it (its Yes picks + its side maps' Yes), then "Bonus (pack-only)":
+// Claude's suggestions (canonical/pack-bonus-suggestions.json, tools/packset1_suggest.js) on no list and in no fight, for the owner's YES / NO. A YES bonus card joins its map's
+// section, after the chosen cards. Right-click (or the ⋯ button) on any tile opens a menu: the map the card represents (PACKSET_MENU is the list to extend).
+// Pack cuts: the map-order cards (chosen + bonus) split into the panel's packs (0-20: 1-3, 20-40: 4-6); "Starts Pack k" on a card cuts there, ascending only.
+// packsetState = {yes, no (bonus), map {card: map id}, tyes {faction: [ids]}, cuts {pack: card id | '~'}, tiers {card: pack}, localAt}: kept here (PACKSET_KEY) and in the admin row
+// `__cfg:pack-set` (packsetPublish, same pattern as ui37Publish). `tiers` is the pack of each card, worked out whenever the owner changes something: basicPackTierOf reads it.
+const PACKSET_SUG = {"bonus":[{"id":"acorn-pelter-squirrel","map":"m1","mapNo":0,"why":"a meadow forest creature, the squirrel family of the map's lists · common"},{"id":"beetle-grunt","map":"m1","mapNo":0,"why":"a meadow forest creature, the beetle family of the map's lists, budget fits Map 1 · common"},{"id":"mire-rat","map":"m1","mapNo":0,"why":"a meadow forest creature, the rat family of the map's lists · common"},{"id":"blister-beetle","map":"mf","mapNo":1,"why":"a meadow forest creature, the beetle family of the map's lists, budget fits Map 1 · common"},{"id":"buck-brawler","map":"mf","mapNo":1,"why":"a meadow forest creature, the rabbit family of the map's lists, budget fits Map 2 · common"},{"id":"field-mouse","map":"mf","mapNo":1,"why":"a meadow forest creature, the mouse family of the map's lists, budget fits Map 1 · common"},{"id":"shell-drop-gull","map":"mb","mapNo":2,"why":"a coast creature, the gull family of the map's lists · common"},{"id":"tide-pool-crab","map":"mb","mapNo":2,"why":"a coast creature, the crab family of the map's lists, budget fits Map 1 · common"},{"id":"tidepool-trapper-crab","map":"mb","mapNo":2,"why":"a coast creature, the crab family of the map's lists, budget fits Map 1 · common"},{"id":"crimson-wing-drumcaller","map":"mc","mapNo":3,"why":"a cliffs creature · uncommon"},{"id":"marmot-stonecutter","map":"mc","mapNo":3,"why":"near cliffs, the squirrel family of the map's lists, budget fits Map 2 · common"},{"id":"talus-pika","map":"mc","mapNo":3,"why":"near cliffs, the rabbit family of the map's lists, budget fits Map 3 · common"},{"id":"beaver-builder","map":"m2","mapNo":4,"why":"a river creature, the beaver family of the map's lists · common"},{"id":"dam-keeper-beaver","map":"m2","mapNo":4,"why":"a river creature, the beaver family of the map's lists · common"},{"id":"trebuchet-crew","map":"m2","mapNo":4,"why":"a river creature, the beaver family of the map's lists, budget fits Map 4 · rare"},{"id":"adder","map":"mw","mapNo":5,"why":"a swamp creature, the snake family of the map's lists · common"},{"id":"bogfire-newt","map":"mw","mapNo":5,"why":"a swamp creature, the salamander family of the map's lists · uncommon"},{"id":"trident-caiman","map":"mw","mapNo":5,"why":"a swamp creature, the crocodile family of the map's lists · uncommon"},{"id":"cane-toad","map":"m8","mapNo":6,"why":"a swamp creature, the frog family of the map's lists · uncommon"},{"id":"clinging-leech","map":"m8","mapNo":6,"why":"a swamp creature, the leech family of the map's lists · uncommon"},{"id":"peat-smoke-shaman","map":"m8","mapNo":6,"why":"a swamp creature, the frog family of the map's lists · uncommon"},{"id":"bolas-spider","map":"mu","mapNo":7,"why":"near fungal, the spider family of the map's lists · uncommon"},{"id":"glimmer-spider","map":"mu","mapNo":7,"why":"near fungal, the spider family of the map's lists · uncommon"},{"id":"swarm-matriarch","map":"mu","mapNo":7,"why":"a fungal creature · rare"},{"id":"arc-bat","map":"m4","mapNo":8,"why":"a caves creature, the bat family of the map's lists · rare"},{"id":"cave-bat-swarm","map":"m4","mapNo":8,"why":"a caves creature, the bat family of the map's lists · rare"},{"id":"cave-flitter","map":"m4","mapNo":8,"why":"a caves creature, the bat family of the map's lists · uncommon"},{"id":"anaconda-coil","map":"mk","mapNo":9,"why":"near mangrove, the snake family of the map's lists · rare"},{"id":"shoebill","map":"mk","mapNo":9,"why":"near mangrove, the heron family of the map's lists · rare"},{"id":"tidefolk-harpooner","map":"mk","mapNo":9,"why":"a mangrove creature · rare"},{"id":"man-o-war","map":"m7","mapNo":10,"why":"a reef ocean creature, the jellyfish family of the map's lists · rare"},{"id":"nautiloid","map":"m7","mapNo":10,"why":"a reef ocean creature, the octopus family of the map's lists · rare"},{"id":"supernova-jelly","map":"m7","mapNo":10,"why":"a reef ocean creature, the jellyfish family of the map's lists · rare"},{"id":"eagle-diver","map":"m10","mapNo":11,"why":"a mountain sky creature, the eagle family of the map's lists · rare"},{"id":"storm-heron","map":"m10","mapNo":11,"why":"a mountain sky creature, the heron family of the map's lists · rare"},{"id":"vigil-owl","map":"m10","mapNo":11,"why":"a mountain sky creature, the owl family of the map's lists · rare"},{"id":"bramble-hoglet","map":"mh","mapNo":12,"why":"a maze briar creature, the hedgehog family of the map's lists, budget fits Map 12 · common"},{"id":"gatling-hog","map":"mh","mapNo":12,"why":"a maze briar creature, the hedgehog family of the map's lists · rare"},{"id":"quill-flinger-porcupine","map":"mh","mapNo":12,"why":"a maze briar creature, the porcupine family of the map's lists · uncommon"},{"id":"friar-badger","map":"mr","mapNo":13,"why":"near redwood, the badger family of the map's lists · uncommon"},{"id":"warren-scout","map":"mr","mapNo":13,"why":"near redwood, the rabbit family of the map's lists · rare"},{"id":"werebadger","map":"mr","mapNo":13,"why":"near redwood, the badger family of the map's lists · rare"},{"id":"elephant","map":"m5","mapNo":14,"why":"a savanna creature, the elephant family of the map's lists · common"},{"id":"marula-monkey","map":"m5","mapNo":14,"why":"a savanna creature, the monkey family of the map's lists · common"},{"id":"mongoose-duelist","map":"m5","mapNo":14,"why":"a savanna creature, the mongoose family of the map's lists · uncommon"},{"id":"carrion-fly-swarm","map":"ml","mapNo":15,"why":"near long grass, the fly family of the map's lists · rare"},{"id":"owl-fletcher","map":"ml","mapNo":15,"why":"near long grass, the owl family of the map's lists · rare"},{"id":"squires-mount","map":"ml","mapNo":15,"why":"a long grass creature, the horse family of the map's lists · rare"},{"id":"lunar-howler","map":"mt","mapNo":16,"why":"a taiga creature · rare"},{"id":"pack-wolf-reaver","map":"mt","mapNo":16,"why":"a taiga creature · common"},{"id":"wolf-pack-runner","map":"mt","mapNo":16,"why":"a taiga creature · rare"},{"id":"frostbitten-wolverine","map":"m6","mapNo":17,"why":"a tundra ice creature, the weasel family of the map's lists · uncommon"},{"id":"musk-ox-matriarch","map":"m6","mapNo":17,"why":"a tundra ice creature, the ox family of the map's lists · uncommon"},{"id":"yeti-tracker","map":"m6","mapNo":17,"why":"a tundra ice creature, the weasel family of the map's lists · uncommon"},{"id":"dune-jackal-scout","map":"md","mapNo":18,"why":"a desert glass creature, the jackal family of the map's lists · common"},{"id":"glowing-gecko","map":"md","mapNo":18,"why":"a desert glass creature, the lizard family of the map's lists · uncommon"},{"id":"moon-jerboa","map":"md","mapNo":18,"why":"a desert glass creature, the mouse family of the map's lists · uncommon"},{"id":"flagellant-vulture","map":"m3","mapNo":19,"why":"a volcanic ash creature, the vulture family of the map's lists · uncommon"},{"id":"hellbender","map":"m3","mapNo":19,"why":"a volcanic ash creature, the salamander family of the map's lists · common"},{"id":"thunder-lizard","map":"m3","mapNo":19,"why":"a volcanic ash creature, the lizard family of the map's lists · epic"},{"id":"dread-bell","map":"m11","mapNo":20,"why":"a volcanic ash creature, the bat family of the map's lists · uncommon"},{"id":"ember-wisp","map":"m11","mapNo":20,"why":"a volcanic ash creature, the beetle family of the map's lists · rare"},{"id":"fruit-bat-familiar","map":"m11","mapNo":20,"why":"a volcanic ash creature, the bat family of the map's lists · uncommon"},{"id":"mirrorhide-mutant","map":"m21","mapNo":21,"why":"a mountain sky creature, the goat family of the map's lists · rare"},{"id":"snow-owl-sentinel","map":"m21","mapNo":21,"why":"a mountain sky creature, budget fits Map 21 · superrare"},{"id":"yeti-snarer","map":"m21","mapNo":21,"why":"a mountain sky creature, the leopard family of the map's lists · rare"},{"id":"blessed-avatar","map":"m22","mapNo":22,"why":"a volcanic ash creature, the deer family of the map's lists · common"},{"id":"firefly-swarm","map":"m22","mapNo":22,"why":"a volcanic ash creature, the beetle family of the map's lists · uncommon"},{"id":"salamander-pyromancer","map":"m22","mapNo":22,"why":"a volcanic ash creature, the salamander family of the map's lists · epic"},{"id":"margay","map":"m23","mapNo":23,"why":"a village keep creature, the cat family of the map's lists · rare"},{"id":"petrified-tree","map":"m23","mapNo":23,"why":"a village keep creature, the owl family of the map's lists · rare"},{"id":"shieldbearer-hound","map":"m23","mapNo":23,"why":"a village keep creature, the dog family of the map's lists · rare"},{"id":"armory","map":"m24","mapNo":24,"why":"a village keep creature, the beaver family of the map's lists · rare"},{"id":"goose-sentry","map":"m24","mapNo":24,"why":"a village keep creature, the duck family of the map's lists · rare"},{"id":"war-hound","map":"m24","mapNo":24,"why":"a village keep creature, the dog family of the map's lists · rare"}],"tutorial":{"otters":[{"id":"otter-angler","why":"base card · otter fits the otters · river · common · cost 0"},{"id":"shellwright-apprentice","why":"base card · otter fits the otters · river · common · cost 0"},{"id":"otter-flag-bearer","why":"base card · otter fits the otters · river · uncommon · cost 0"},{"id":"otter-lantern-bearer","why":"base card · otter fits the otters · river · uncommon · cost 0"},{"id":"otter-guard","why":"base card · otter fits the otters · river · uncommon · cost 1"},{"id":"riverbed-diver","why":"base card · otter fits the otters · river · uncommon · cost 1"},{"id":"forager-ant","why":"base card · meadow forest · common · cost 0"},{"id":"clap-net-trapper","why":"otter fits the otters · river · common · cost 0"},{"id":"helmeted-otter","why":"otter fits the otters · river · common · cost 0"},{"id":"mist-net-otter","why":"otter fits the otters · river · common · cost 0"},{"id":"otter-ferryman","why":"otter fits the otters · river · common · cost 0"},{"id":"otter-netmender","why":"otter fits the otters · river · common · cost 0"},{"id":"rivergate-recruit","why":"otter fits the otters · river · common · cost 0"},{"id":"shell-cracker","why":"otter fits the otters · river · common · cost 0"},{"id":"beaver-builder","why":"beaver fits the otters · river · common · cost 0"},{"id":"bog-lungfish","why":"fish fits the otters · swamp · common · cost 0"},{"id":"minnow-skitter","why":"fish fits the otters · river · common · cost 0"},{"id":"dam-keeper-beaver","why":"beaver fits the otters · river · common · cost 1"},{"id":"dam-wall","why":"beaver fits the otters · river · common · cost 1"},{"id":"ferry-toll-frog","why":"frog fits the otters · river · common · cost 0"},{"id":"box-turtle","why":"turtle fits the otters · meadow forest · common · cost 0"},{"id":"great-crested-grebe","why":"duck fits the otters · river · common · cost 1"},{"id":"migration-leader","why":"duck fits the otters · river · common · cost 1"},{"id":"beaver-feller","why":"beaver fits the otters · meadow forest · common · cost 0"},{"id":"beaver-lumberjack","why":"beaver fits the otters · river · common · cost 0"},{"id":"pufferfish-bulwark","why":"fish fits the otters · river · common · cost 1"},{"id":"otter-riverguard","why":"otter fits the otters · river · common · cost 2"},{"id":"rivergate-drummer","why":"otter fits the otters · river · uncommon · cost 0"},{"id":"riverwing-envoy","why":"otter fits the otters · river · uncommon · cost 0"},{"id":"tide-pool-crab","why":"crab fits the otters · coast · common · cost 0"},{"id":"tidepool-trapper-crab","why":"crab fits the otters · coast · common · cost 0"},{"id":"marsh-gas-toad","why":"frog fits the otters · swamp · common · cost 1"},{"id":"poison-dart-croaker","why":"frog fits the otters · swamp · common · cost 1"},{"id":"swamp-rabbit","why":"rabbit fits the otters · swamp · common · cost 0"},{"id":"birdlime-dauber","why":"otter fits the otters · river · uncommon · cost 1"},{"id":"field-mouse","why":"mouse fits the otters · meadow forest · common · cost 0"},{"id":"mire-witch-heron","why":"heron fits the otters · swamp · common · cost 1"},{"id":"net-thrower","why":"otter fits the otters · river · uncommon · cost 1"},{"id":"oathsworn-legionary","why":"otter fits the otters · river · uncommon · cost 1"},{"id":"otter-shieldback","why":"otter fits the otters · river · uncommon · cost 1"}],"hummingbirds":[{"id":"honeyjoe-brewer","why":"hummingbirds card · hummingbird fits the hummingbirds · cliffs · uncommon · cost 0"},{"id":"sunthroat-courier","why":"hummingbirds card · hummingbird fits the hummingbirds · common · cost 0"},{"id":"dominion-nestguard","why":"hummingbirds card · hummingbird fits the hummingbirds · common · cost 1"},{"id":"gold-throated-acolyte","why":"hummingbirds card · hummingbird fits the hummingbirds · uncommon · cost 0"},{"id":"hummingbird-needler","why":"hummingbirds card · hummingbird fits the hummingbirds · uncommon · cost 0"},{"id":"voidfeather-scout","why":"hummingbirds card · hummingbird fits the hummingbirds · uncommon · cost 0"},{"id":"forager-ant","why":"base card · ant fits the hummingbirds · meadow forest · common · cost 0"},{"id":"chapel-sparrow","why":"songbird fits the hummingbirds · meadow forest · common · cost 0"},{"id":"candle-moth","why":"moth fits the hummingbirds · meadow forest · common · cost 0"},{"id":"garden-tiger-moth","why":"moth fits the hummingbirds · meadow forest · common · cost 0"},{"id":"anvil-thrush","why":"songbird fits the hummingbirds · meadow forest · common · cost 0"},{"id":"bee-drone","why":"bee fits the hummingbirds · meadow forest · uncommon · cost 0"},{"id":"scraper-of-skies","why":"bee fits the hummingbirds · meadow forest · common · cost 2"},{"id":"courier-pigeon","why":"pigeon fits the hummingbirds · meadow forest · common · cost 0"},{"id":"otter-angler","why":"base card · common · cost 0"},{"id":"shellwright-apprentice","why":"base card · common · cost 0"},{"id":"weaver-bird","why":"songbird fits the hummingbirds · savanna · common · cost 1"},{"id":"carrion-crow","why":"crow fits the hummingbirds · meadow forest · common · cost 0"},{"id":"field-crow","why":"crow fits the hummingbirds · meadow forest · common · cost 0"},{"id":"hoopoe-herald","why":"hoopoe fits the hummingbirds · savanna · common · cost 0"},{"id":"leafcutter-gardener","why":"ant fits the hummingbirds · meadow forest · common · cost 0"},{"id":"lovebird","why":"lovebird fits the hummingbirds · savanna · common · cost 1"},{"id":"beetle-grunt","why":"beetle fits the hummingbirds · meadow forest · common · cost 0"},{"id":"blister-beetle","why":"beetle fits the hummingbirds · meadow forest · common · cost 0"},{"id":"robin-redbreast","why":"songbird fits the hummingbirds · meadow forest · uncommon · cost 0"},{"id":"jay-pilferer","why":"crow fits the hummingbirds · meadow forest · common · cost 1"}]}}; // {bonus: [{id, map, mapNo, why}], tutorial: {otters: [{id, why}], hummingbirds: [...]}}
+const PACKSET_PANELS = {a: {lo: 0, hi: 20, tiers: [1, 2, 3], key: 'ui.ps1-all-a'}, b: {lo: 21, hi: 40, tiers: [4, 5, 6], key: 'ui.ps1-all-b'}};
+const PACKSET_FACTIONS = {otters: {key: 'ui.ps1-fac-otters', own: d=> d.basicSet === 'otters'}, hummingbirds: {key: 'ui.ps1-fac-hummingbirds', own: d=> d.faction === 'hummingbirds'}}; // literal keys (keyify)
+var packsetTimer = null, packsetStatus = null, packsetLive = null;
+function packsetSugList(){ return (PACKSET_SUG && PACKSET_SUG.bonus) || []; }
+function packsetArr(a){ return [...new Set((Array.isArray(a) ? a : []).filter(x=> typeof x === 'string' && x))]; }
+function packsetSave(){ try{ localStorage.setItem(PACKSET_KEY, JSON.stringify(packsetState)); }catch(e){} }
+function packsetRow(){ const s = packsetState; return {kind: 'pack-set', yes: packsetArr(s.yes), no: packsetArr(s.no), map: s.map || {}, tyes: s.tyes || {}, cuts: s.cuts || {}, tiers: s.tiers || {}}; }
+function packsetPublish(){
+  clearTimeout(packsetTimer);
+  packsetTimer = setTimeout(async ()=>{ let ok = false;
+    try{ ok = (typeof cloudCardAdmin !== 'undefined' && cloudCardAdmin) ? await cloudWriteCardOverride('__cfg:pack-set', {data: packsetRow(), deleted: false, deleted_snapshot: null}) : false; }catch(x){ ok = false; }
+    packsetStatus = {ok}; const s = document.getElementById('ps1Status'); if(s) s.textContent = packsetStatusText(); }, 700);
+}
+function packsetStatusText(){ return !packsetStatus ? '' : packsetStatus.ok ? '☁️ ' + TX('ui.ui37-saved-cloud') : '💾 ' + TX('ui.ui37-saved-local'); }
+// the `__cfg:pack-set` row (load or poll): the newer of this browser's unpublished edit and the row wins, as the map picks do
+function applyCloudPackSet(r){
+  const localAt = packsetState.localAt || 0, cloudAt = Date.parse(r.updated_at || '') || 0;
+  if(localAt && localAt > cloudAt){ setTimeout(()=>{ if(cloudCardAdmin) packsetPublish(); }, 4000); return; }
+  const d = (!r.deleted && r.data) || {}, o = x=> (x && typeof x === 'object' && !Array.isArray(x)) ? x : {};
+  packsetState = {yes: packsetArr(d.yes), no: packsetArr(d.no), map: o(d.map), tyes: o(d.tyes), cuts: o(d.cuts), tiers: o(d.tiers), localAt: 0};
+  packsetSave(); packIndexReset(); try{ if(packsetLive) packsetLive.draw(); }catch(e){}
+}
+function packsetMapNo(mapId){ try{ return mapId ? mapNumberOf(mapId) : null; }catch(e){ return null; } }
+// the cards of one panel in order: {secs: [{key, title, ids, n}] (one per main map of the panel), seq: [{id, n}] (the map order the cuts split), bonus: [{id, map, mapNo, why}]}
+function packsetModel(pk){
+  const P = PACKSET_PANELS[pk], st = packsetState, defs = getCardDefs(), yes = new Set(st.yes || []), ov = st.map || {}, all = ui37MapsData().sort((a, b)=> a.n - b.n);
+  const subs = ui44ProsSubs(), home = new Map(), bonusIds = new Set();
+  all.forEach(m=> m.yes.concat(...subs.filter(s=> mpTopOf(s.id) === m.id).map(s=> ui47YesList(s.id))).forEach(id=>{ if(defs[id] && !home.has(id)) home.set(id, m.id); }));
+  const sug = packsetSugList().filter(b=> defs[b.id]), sugBy = {}; sug.forEach(b=> { sugBy[b.id] = b; });
+  sug.forEach(b=>{ if(yes.has(b.id) && !home.has(b.id)){ home.set(b.id, b.map); bonusIds.add(b.id); } });
+  Object.keys(ov).forEach(id=>{ if(home.has(id) && mpMapById(ov[id])) home.set(id, ov[id]); });
+  const seen = new Set(), secs = all.filter(m=> m.n >= P.lo && m.n <= P.hi).map(m=>{ const ids = [...home.entries()].filter(([, mm])=> mm === m.id).map(([id])=> id).sort((a, b)=> (bonusIds.has(a) ? 1 : 0) - (bonusIds.has(b) ? 1 : 0));
+    return {key: m.id, title: (m.icon ? m.icon + ' ' : '') + m.name, n: m.n, ids}; });
+  const seq = []; secs.forEach(s=> s.ids.forEach(id=>{ if(!seen.has(id)){ seen.add(id); seq.push({id, n: s.n}); } }));
+  const bonus = sug.map(b=>{ const map = mpMapById(ov[b.id]) ? ov[b.id] : b.map; return Object.assign({}, b, {map, mapNo: packsetMapNo(map)}); }).filter(b=> b.mapNo != null && b.mapNo >= P.lo && b.mapNo <= P.hi);
+  return {secs, seq, bonus, bonusIds};
+}
+// where each pack of the panel starts in `seq` (indexes, ascending): the owner's cut cards, else the first card of the pack's own maps (PACK_MAPS_PER_TIER)
+function packsetStarts(pk, seq){
+  const cuts = packsetState.cuts || {}, out = [0];
+  PACKSET_PANELS[pk].tiers.slice(1).forEach(t=>{ const c = cuts[String(t)]; let i = c === '~' ? seq.length : c ? seq.findIndex(x=> x.id === c) : -1;
+    if(i < 0){ const lo = packMapRange(t)[0]; i = seq.findIndex(x=> x.n >= lo); if(i < 0) i = seq.length; }
+    out.push(Math.max(i, out[out.length - 1])); });
+  return out;
+}
+// "Starts Pack t" on card `id`: that card and every later card are Pack t or later; a cut never goes back to or before the pack before it. Returns false when refused.
+function packsetSetCut(pk, t, id){
+  const m = packsetModel(pk), P = PACKSET_PANELS[pk], j = P.tiers.indexOf(t), i = m.seq.findIndex(x=> x.id === id), st = packsetStarts(pk, m.seq);
+  if(j < 1 || i < 0 || i <= st[j - 1]) return false;
+  const cuts = Object.assign({}, packsetState.cuts), put = (tt, ix)=>{ cuts[String(tt)] = ix >= m.seq.length ? '~' : m.seq[ix].id; };
+  put(t, i); let prev = i;
+  for(let q = j + 1; q < P.tiers.length; q++){ const cur = st[q] > prev ? st[q] : prev + 1; put(P.tiers[q], cur); prev = cur; }
+  packsetState.cuts = cuts; packsetCommit(); return true;
+}
+// card id -> pack, for the cards a map list puts in a basic pack today or the owner said YES to (empty while he has set nothing: today's rule)
+function packsetRecompute(){
+  const st = packsetState, defs = getCardDefs(); st.tiers = {};
+  if(!(st.cuts && Object.keys(st.cuts).length) && !(st.yes || []).length) return;
+  Object.keys(PACKSET_PANELS).forEach(pk=>{ const m = packsetModel(pk), starts = packsetStarts(pk, m.seq), P = PACKSET_PANELS[pk];
+    m.seq.forEach((x, i)=>{ let j = 0; while(j + 1 < starts.length && i >= starts[j + 1]) j++; const d = defs[x.id]; if(d && (basicPackTier0(d) || (st.yes || []).includes(x.id))) st.tiers[x.id] = P.tiers[j]; }); });
+}
+function packsetCommit(){ packsetState.localAt = Date.now(); packsetRecompute(); packsetSave(); packsetPublish(); packIndexReset(); try{ if(packsetLive) packsetLive.draw(); }catch(e){} }
+function packsetFlag(id, flag){ const st = packsetState; st.yes = packsetArr(st.yes).filter(x=> x !== id); st.no = packsetArr(st.no).filter(x=> x !== id); if(flag === 'yes') st.yes.push(id); else st.no.push(id); packsetCommit(); }
+function packsetTutFlag(f, id, on){ const st = packsetState; st.tyes = st.tyes || {}; st.tyes[f] = packsetArr(st.tyes[f]).filter(x=> x !== id); if(on) st.tyes[f].push(id); packsetCommit(); }
+function packsetSetMap(id, mapId){ const st = packsetState; st.map = Object.assign({}, st.map); if(mapId) st.map[id] = mapId; else delete st.map[id]; packsetCommit(); }
+function packsetResetCuts(){ packsetState.cuts = {}; packsetCommit(); }
+// the ids a fight deck or reward names, in any node of any map; a map-source card (an exclusive skirmish reward) counts too
+var packsetUseCache = null;
+function packsetSkirmishIds(){
+  if(packsetUseCache) return packsetUseCache; const out = new Set();
+  try{ (JSON.stringify((typeof CONQUEST_MAPS !== 'undefined' ? CONQUEST_MAPS : []).map(m=> m.nodes)).match(/"[a-z0-9][a-z0-9-]*"/g) || []).forEach(s=> out.add(s.slice(1, -1))); }catch(e){}
+  return (packsetUseCache = out);
+}
+function packsetFacLabel(d){ return d.faction === 'base' ? TX('ui.ps1-fac-base') : d.faction === 'hummingbirds' ? TX('ui.ps1-fac-hummingbirds') : d.basicSet === 'otters' ? TX('ui.ps1-fac-otters') : ''; }
+// one tile: the map-cards tile (art, stats, power %, Baby / Starter / pack pills) + this panel's pills; o = {mapNo, sug, why, yn: 'yes'|'no'|undefined, starts: [tiers], cutOn: tier, tut: faction}
+function packsetTileHTML(id, defs, o){
+  const d = defs[id]; if(!d) return '';
+  const pill = (cls, txt, tip)=> `<b class="ps1-pill ${cls}"${tip ? ` title="${escapeAttr(tip)}"` : ''}>${escapeHtml(txt)}</b>`, fac = packsetFacLabel(d), use = packsetSkirmishIds().has(id) || (cardSourceOf(d) || {}).kind === 'map';
+  const pills = (o.mapNo != null ? pill('is-map', TX('ui.ui37-from', {n: o.mapNo})) : '') + (o.sug ? pill('is-sug', TX('ui.ui37-src-claude'), o.why) : '') + (fac ? pill('is-fac', fac) : '') + (use ? pill('is-use', TX('ui.ps1-skirmish'), TX('ui.ps1-skirmish-tip')) : '') + ui47UsedChipHTML(id);
+  const btn = (k, lab)=> `<button type="button" class="ui37-yn-b is-${k}${o.yn === k ? ' on' : ''}" data-ps1-flag="${k}" aria-pressed="${o.yn === k ? 'true' : 'false'}">${escapeHtml(lab)}</button>`;
+  const yn = o.yn ? `<span class="ui37-yn" role="group" aria-label="${escapeAttr(TX('ui.ui37-flag-label', {name: d.name}))}">${btn('yes', '↩ ' + TX('ui.ui37-yes'))}${btn('no', '✂ ' + TX('ui.ui37-no'))}</span>` : '';
+  const cuts = (o.starts || []).length ? `<span class="ps1-cuts">${o.starts.map(t=> `<button type="button" class="ps1-cut${o.cutOn === t ? ' on' : ''}" data-ps1-cut="${t}" title="${escapeAttr(TX('ui.ps1-starts', {n: t}))}" aria-label="${escapeAttr(TX('ui.ps1-starts', {n: t}))}">▸${t}</button>`).join('')}</span>` : '';
+  return `<div class="ui37-tile ui39-tile ps1-tile${o.yn === 'yes' ? ' is-yes' : ''}${o.yn === 'no' ? ' is-no ui43-no' : ''}" data-ps1-id="${escapeAttr(id)}" data-ps1-tut="${escapeAttr(o.tut || '')}">${ui39PlainTileHTML(id, defs, o.why || '')}<span class="ui37-pills">${pills}<button type="button" class="ps1-more" data-ps1-more aria-label="${escapeAttr(TX('ui.ps1-map-menu'))}" title="${escapeAttr(TX('ui.ps1-map-menu'))}">⋯</button></span>${yn}${cuts}</div>`;
+}
+const PACKSET_MENU = [ // the right-click menu: add an entry here (REWARD3 adds the skirmish-reward picks); html(id) returns its markup, on(id, el) reacts to a `change` / click inside it
+  {key: 'map', html: id=>{ const cur = (packsetState.map || {})[id] || '', opts = ui37MapsData().sort((a, b)=> a.n - b.n).map(m=> `<option value="${escapeAttr(m.id)}"${m.id === cur ? ' selected' : ''}>${escapeHtml(TX('ui.ui37-from', {n: m.n}) + ' · ' + m.name)}</option>`).join('');
+      return `<label class="ps1-menu-row">${escapeHtml(TX('ui.ps1-map-menu'))} <select data-ps1-menu="map"><option value="">–</option>${opts}</select></label>`; },
+    on: (id, el)=> packsetSetMap(id, el.value)}];
+function packsetPanelHTML(pk){
+  const P = PACKSET_PANELS[pk], defs = getCardDefs(), m = packsetModel(pk), starts = packsetStarts(pk, m.seq), st = packsetState, yes = new Set(st.yes || []), no = new Set(st.no || []), done = new Set(), sec = [];
+  const idxOf = {}; m.seq.forEach((x, i)=> { idxOf[x.id] = i; });
+  const sect = (cls, title, count, inner)=> `<section class="pk1-mc-sec rv2-panel ps1-sec ${cls}"><h3>${escapeHtml(title)} <small>${count}</small></h3>${inner}</section>`;
+  const row = (tiles)=> `<div class="vis4-mc-row rv1-row ui37-row">${tiles || ''}</div>`;
+  const plain = ids=> row(ids.filter(id=> defs[id] && !done.has(id) && done.add(id)).map(id=> packsetTileHTML(id, defs, {})).join(''));
+  ui47UsageCache = ui47Usage();
+  try{
+    if(pk === 'a'){
+      const tut = packsetArr(ui43TutorialCards().concat(Object.keys(PACKSET_FACTIONS).flatMap(f=> Object.keys(starterDeckParts(f).all)))).filter(id=> defs[id]);
+      const facBlocks = Object.keys(PACKSET_FACTIONS).map(f=>{ const own = packsetArr(Object.keys(starterDeckParts(f).all)).filter(id=> defs[id]), cur = packsetArr((st.tyes || {})[f]), sugs = ((PACKSET_SUG.tutorial || {})[f] || []).filter(e=> defs[e.id]);
+        const tile = (id, why, s)=> packsetTileHTML(id, defs, {yn: cur.includes(id) ? 'yes' : 'no', why, tut: f, sug: s});
+        const have = new Set(own); return `<div class="ps1-fac"><h4>${escapeHtml(TX(PACKSET_FACTIONS[f].key))} <small class="ps1-n${cur.length === 16 ? ' is-met' : cur.length > 16 ? ' is-over' : ''}">${escapeHtml(TX('ui.ps1-count', {n: cur.length}))}</small></h4>`
+          + `<p class="panel-sub">${escapeHtml(TX('ui.ps1-now'))}</p>${row(own.map(id=> tile(id, '', false)).join(''))}<p class="panel-sub">${escapeHtml(TX('ui.ps1-tut-sug'))} <small>${sugs.length}</small></p>${row(sugs.filter(e=> !have.has(e.id)).map(e=> tile(e.id, e.why, true)).join(''))}</div>`; }).join('');
+      sec.push(sect('is-tut', TX('tutorial.tutorial'), tut.length, `<p class="panel-sub">T-1 / T-2</p>${plain(ui43TutorialCards())}${facBlocks}`));
+      tut.forEach(id=> done.add(id));
+      const base = Object.keys(defs).filter(id=> { const d = defs[id]; return d && !d.token && !d.test && !isEasterEgg(d) && !done.has(id) && (d.faction === 'base' || d.basicSet === 'shared'); });
+      sec.push(sect('is-base', TX('ui.ps1-fac-base'), base.length, plain(base)));
+      Object.keys(PACKSET_FACTIONS).forEach(f=>{ const ids = Object.keys(defs).filter(id=> { const d = defs[id]; return d && !d.token && !d.test && !isEasterEgg(d) && !done.has(id) && PACKSET_FACTIONS[f].own(d) && d.kind !== 'baby'; }); sec.push(sect('is-fac', TX(PACKSET_FACTIONS[f].key), ids.length, plain(ids))); });
+    }
+    m.seq.forEach(x=> done.add(x.id));
+    m.secs.forEach(s=>{ const tiles = s.ids.filter((id, i)=> s.ids.indexOf(id) === i && defs[id]).map(id=>{ const i = idxOf[id], k = starts.findIndex((a, q)=> q > 0 && a === i), t = P.tiers.slice(1);
+      return (k > 0 ? `<span class="ps1-cutmark" aria-hidden="true">${escapeHtml(TX('ui.pk1-in-pack', {n: P.tiers[k]}))}</span>` : '') + packsetTileHTML(id, defs, {mapNo: s.n, sug: m.bonusIds.has(id), why: (m.bonus.find(b=> b.id === id) || {}).why, starts: t, cutOn: k > 0 ? P.tiers[k] : 0}); }).join('');
+      sec.push(sect('is-map', (TX('ui.ui37-from', {n: s.n}) + ' · ' + s.title), s.ids.length, row(tiles))); });
+    sec.push(sect('is-bonus', TX('ui.ps1-bonus'), m.bonus.length + ' · ' + m.bonus.filter(b=> yes.has(b.id)).length + ' ' + TX('ui.ui37-yes'), row(m.bonus.sort((a, b)=> a.mapNo - b.mapNo).map(b=> packsetTileHTML(b.id, defs, {mapNo: b.mapNo, sug: true, why: b.why, yn: yes.has(b.id) ? 'yes' : 'no'})).join(''))));
+  } finally { ui47UsageCache = null; }
+  const counts = P.tiers.map((t, k)=> TX('ui.pk1-in-pack', {n: t}) + ': ' + ((starts[k + 1] == null ? m.seq.length : starts[k + 1]) - starts[k])).join(' · ');
+  return `<div class="ps1-head"><b class="ps1-counts" role="status">${escapeHtml(counts)}</b><button type="button" class="btn small ghost" data-ps1-reset>${escapeHtml(TX('ui.ps1-reset'))}</button><span class="panel-sub" id="ps1Status" role="status">${escapeHtml(packsetStatusText())}</span></div><p class="panel-sub">${escapeHtml(TX('ui.ps1-sub'))}</p><div class="ui39-list">${sec.join('')}</div>`;
+}
+function packsetCss(){
+  if(document.getElementById('ps1Css')) return;
+  const st = document.createElement('style'); st.id = 'ps1Css';
+  st.textContent = '.ps1-head{display:flex; flex-wrap:wrap; align-items:center; gap:6px 12px; margin:4px 0;} .ps1-counts{font-weight:800;} .ps1-pill{font:800 10px/1 \'Baloo 2\',system-ui,sans-serif; padding:2px 7px; border-radius:999px; white-space:nowrap; background:var(--surface-3, rgba(120,90,50,.22)); color:var(--ink);}'
+    + ' .ps1-pill.is-map{background:var(--accent); color:var(--accent-ink);} .ps1-pill.is-sug{background:#e0a526; color:#2a1d00;} .ps1-pill.is-use{background:var(--attack); color:#fff;}'
+    + ' .ps1-more{font:800 14px/1 system-ui,sans-serif; min-width:28px; min-height:24px; border-radius:999px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); cursor:pointer; padding:0 6px;}'
+    + ' .ps1-cuts{display:flex; gap:4px; justify-content:center;} .ps1-cut{font:800 11px/1 system-ui,sans-serif; min-width:30px; min-height:26px; border-radius:8px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); cursor:pointer;} .ps1-cut.on{background:var(--accent); color:var(--accent-ink);}'
+    + ' .ps1-cutmark{align-self:stretch; display:flex; align-items:center; writing-mode:vertical-rl; font:800 11px/1 system-ui,sans-serif; padding:0 6px; border-radius:8px; background:var(--accent-strong); color:var(--accent-ink);}'
+    + ' .ps1-fac h4{margin:10px 0 2px;} .ps1-n{font-weight:800;} .ps1-n.is-met{color:var(--health);} .ps1-n.is-over{color:var(--attack);}'
+    + ' .ps1-menu{position:fixed; z-index:10050; min-width:220px; max-width:min(320px, 92vw); padding:8px 10px; border-radius:12px; background:var(--surface); color:var(--ink); border:1px solid var(--surface-border); box-shadow:0 8px 24px rgba(0,0,0,.35);} .ps1-menu-row{display:flex; flex-direction:column; gap:4px; font-weight:700;} .ps1-menu select{font:inherit; padding:5px 8px; border-radius:8px; background:var(--surface-2); color:var(--ink); border:1px solid var(--surface-border);}';
+  document.head.appendChild(st);
+}
+function packsetOpen(pk){
+  const P = PACKSET_PANELS[pk]; if(!P || !adminModeEnabled) return;
+  let ov = document.getElementById('ps1Overlay');
+  if(!ov){ ov = document.createElement('div'); ov.id = 'ps1Overlay'; ov.className = 'modal-overlay pk1-mc-overlay'; document.body.appendChild(ov); }
+  try{ ui38Css(); ui47Css(); packsetCss(); }catch(e){}
+  packsetUseCache = null; ov.hidden = false; ov.dataset.ps1 = pk;
+  ov.innerHTML = `<div class="modal pk1-mc-modal" role="dialog" aria-modal="true" aria-labelledby="ps1Title" data-ui39="1"><div class="modal-head-row"><h2 id="ps1Title">${escapeHtml(TX(P.key))}</h2><button type="button" class="modal-close-btn" id="ps1Close" aria-label="Close">✕</button></div><div id="ps1Body"></div></div>`;
+  const modal = ov.querySelector('.pk1-mc-modal'), body = ov.querySelector('#ps1Body'); let menu = null;
+  const closeMenu = ()=>{ if(menu){ menu.remove(); menu = null; } };
+  const draw = ()=>{ const keep = modal.scrollTop; closeMenu(); body.innerHTML = packsetPanelHTML(pk); try{ wireRewardZoom(body); }catch(e){} modal.scrollTop = keep; };
+  const close = ()=>{ closeMenu(); ov.hidden = true; ov.innerHTML = ''; packsetLive = null; document.removeEventListener('keydown', onKey); };
+  const onKey = e=>{ if(e.key === 'Escape' && !ov.hidden){ if(menu) closeMenu(); else close(); } };
+  const openMenu = (id, x, y)=>{ closeMenu(); menu = document.createElement('div'); menu.className = 'ps1-menu'; menu.dataset.ps1Menu = id; menu.setAttribute('role', 'menu'); menu.innerHTML = PACKSET_MENU.map(it=> it.html(id)).join('');
+    ov.appendChild(menu); menu.style.left = Math.max(4, Math.min(x, innerWidth - menu.offsetWidth - 4)) + 'px'; menu.style.top = Math.max(4, Math.min(y, innerHeight - menu.offsetHeight - 4)) + 'px'; };
+  document.addEventListener('keydown', onKey);
+  ov.addEventListener('contextmenu', e=>{ const t = e.target.closest && e.target.closest('.ps1-tile'); if(!t) return; e.preventDefault(); openMenu(t.dataset.ps1Id, e.clientX, e.clientY); });
+  ov.addEventListener('change', e=>{ const m = e.target.closest && e.target.closest('.ps1-menu'); if(!m) return; const it = PACKSET_MENU.find(x=> e.target.dataset.ps1Menu === x.key); if(it){ it.on(m.dataset.ps1Menu, e.target); closeMenu(); } });
+  ov.addEventListener('click', e=>{
+    const t = e.target; let b;
+    if(t === ov) return close();
+    if(!t.closest('.ps1-menu')) closeMenu();
+    if(t.closest('#ps1Close')) return close();
+    const tile = t.closest('.ps1-tile'), id = tile && tile.dataset.ps1Id;
+    if((b = t.closest('[data-ps1-more]'))){ e.stopPropagation(); const r = b.getBoundingClientRect(); openMenu(id, r.left, r.bottom + 4); return; }
+    if((b = t.closest('[data-ps1-flag]'))){ e.stopPropagation(); const on = b.dataset.ps1Flag === 'yes', f = tile.dataset.ps1Tut; if(f) packsetTutFlag(f, id, on); else packsetFlag(id, on ? 'yes' : 'no'); return; }
+    if((b = t.closest('[data-ps1-cut]'))){ e.stopPropagation(); if(!packsetSetCut(pk, +b.dataset.ps1Cut, id)) showToast(TX('ui.ps1-cut-no'), 'warn'); return; }
+    if(t.closest('[data-ps1-reset]')) packsetResetCuts();
+  });
+  packsetLive = {ov, draw}; draw();
+  try{ ov.querySelector('#ps1Close').focus(); }catch(e){}
+}
+function packsetRowsHTML(){ return `<div class="pe-all">${Object.keys(PACKSET_PANELS).map(pk=> `<button type="button" class="btn small" data-ps1-open="${pk}">🃏 ${escapeHtml(TX(PACKSET_PANELS[pk].key))}</button>`).join('')}</div>`; }
 // Sets a card's From to pack pool `pool` (0 = take it out of every pack → Unassigned).
 async function setCardPackPool(id, pool){
   const raw = rawCardDef(id); if(!raw) return;

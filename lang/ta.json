@@ -4743,6 +4743,18 @@
  "Scared: attacks for {n} less": "அச்சம்: {n} குறைவாகத் தாக்கும்",
  "While an ally leader is on the battlefield, it has {skills}.": "நட்புத் தலைவர் போர்க்களத்தில் இருக்கும்வரை, இதற்கு {skills}.",
  "Learns a skill at a higher level": "உயர்ந்த நிலையில் ஒரு திறனைக் கற்கும்",
+ "All cards (0-20)": "அனைத்து அட்டைகள் (0-20)",
+ "All cards (20-40)": "அனைத்து அட்டைகள் (20-40)",
+ "Bonus (pack-only)": "போனஸ் (பேக் மட்டும்)",
+ "In a skirmish deck or reward": "சிறுபோர் தொகுப்பிலோ பரிசிலோ உள்ளது",
+ "Starts Pack {n}": "பேக் {n} இங்கு தொடங்கும்",
+ "Represents map": "இந்த வரைபடத்தைக் குறிக்கும்",
+ "Now: the starter deck": "இப்போது: தொடக்க தொகுப்பு",
+ "Tutorial suggestions": "பயிற்சி பரிந்துரைகள்",
+ "Default cuts": "இயல்புநிலை பிரிவுகள்",
+ "A pack cannot start at or before the pack before it.": "ஒரு பேக் முந்தைய பேக்கின் இடத்திலோ அதற்கு முன்போ தொடங்க முடியாது.",
+ "YES or NO each card. Right-click a card (or ⋯) to set its map. ▸2 / ▸3 start that pack at the card.": "ஒவ்வொரு அட்டைக்கும் ஆம் அல்லது இல்லை. வரைபடத்தை அமைக்க வலது-கிளிக் (அல்லது ⋯). ▸2 / ▸3 அந்த பேக்கை இங்கே தொடங்கும்.",
+ "Picked {n} / 16": "தேர்வு {n} / 16",
  "To remove": "நீக்க",
  "New here, but not in this map's skill table: take it off this map's cards": "இங்கே புதியது, ஆனால் இந்த வரைபடத்தின் திறன் அட்டவணையில் இல்லை: அதன் அட்டைகளிலிருந்து நீக்கவும்"
 }

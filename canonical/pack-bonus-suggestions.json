@@ -1,0 +1,726 @@
+{
+ "_about": "PACKSET1 (2026-11-22): Claude suggestions for the Pack Editor \"All cards\" panels. Regenerate: node tools/packset1_suggest.js. bonus = pack-only cards on no map list, in no fight deck or reward (3 per map, 2 asked); tutorial = per-faction starters for the owner's 16.",
+ "generated": "2026-11-22",
+ "bonus": [
+  {
+   "id": "acorn-pelter-squirrel",
+   "map": "m1",
+   "mapNo": 0,
+   "why": "a meadow forest creature, the squirrel family of the map's lists · common"
+  },
+  {
+   "id": "beetle-grunt",
+   "map": "m1",
+   "mapNo": 0,
+   "why": "a meadow forest creature, the beetle family of the map's lists, budget fits Map 1 · common"
+  },
+  {
+   "id": "mire-rat",
+   "map": "m1",
+   "mapNo": 0,
+   "why": "a meadow forest creature, the rat family of the map's lists · common"
+  },
+  {
+   "id": "blister-beetle",
+   "map": "mf",
+   "mapNo": 1,
+   "why": "a meadow forest creature, the beetle family of the map's lists, budget fits Map 1 · common"
+  },
+  {
+   "id": "buck-brawler",
+   "map": "mf",
+   "mapNo": 1,
+   "why": "a meadow forest creature, the rabbit family of the map's lists, budget fits Map 2 · common"
+  },
+  {
+   "id": "field-mouse",
+   "map": "mf",
+   "mapNo": 1,
+   "why": "a meadow forest creature, the mouse family of the map's lists, budget fits Map 1 · common"
+  },
+  {
+   "id": "shell-drop-gull",
+   "map": "mb",
+   "mapNo": 2,
+   "why": "a coast creature, the gull family of the map's lists · common"
+  },
+  {
+   "id": "tide-pool-crab",
+   "map": "mb",
+   "mapNo": 2,
+   "why": "a coast creature, the crab family of the map's lists, budget fits Map 1 · common"
+  },
+  {
+   "id": "tidepool-trapper-crab",
+   "map": "mb",
+   "mapNo": 2,
+   "why": "a coast creature, the crab family of the map's lists, budget fits Map 1 · common"
+  },
+  {
+   "id": "crimson-wing-drumcaller",
+   "map": "mc",
+   "mapNo": 3,
+   "why": "a cliffs creature · uncommon"
+  },
+  {
+   "id": "marmot-stonecutter",
+   "map": "mc",
+   "mapNo": 3,
+   "why": "near cliffs, the squirrel family of the map's lists, budget fits Map 2 · common"
+  },
+  {
+   "id": "talus-pika",
+   "map": "mc",
+   "mapNo": 3,
+   "why": "near cliffs, the rabbit family of the map's lists, budget fits Map 3 · common"
+  },
+  {
+   "id": "beaver-builder",
+   "map": "m2",
+   "mapNo": 4,
+   "why": "a river creature, the beaver family of the map's lists · common"
+  },
+  {
+   "id": "dam-keeper-beaver",
+   "map": "m2",
+   "mapNo": 4,
+   "why": "a river creature, the beaver family of the map's lists · common"
+  },
+  {
+   "id": "trebuchet-crew",
+   "map": "m2",
+   "mapNo": 4,
+   "why": "a river creature, the beaver family of the map's lists, budget fits Map 4 · rare"
+  },
+  {
+   "id": "adder",
+   "map": "mw",
+   "mapNo": 5,
+   "why": "a swamp creature, the snake family of the map's lists · common"
+  },
+  {
+   "id": "bogfire-newt",
+   "map": "mw",
+   "mapNo": 5,
+   "why": "a swamp creature, the salamander family of the map's lists · uncommon"
+  },
+  {
+   "id": "trident-caiman",
+   "map": "mw",
+   "mapNo": 5,
+   "why": "a swamp creature, the crocodile family of the map's lists · uncommon"
+  },
+  {
+   "id": "cane-toad",
+   "map": "m8",
+   "mapNo": 6,
+   "why": "a swamp creature, the frog family of the map's lists · uncommon"
+  },
+  {
+   "id": "clinging-leech",
+   "map": "m8",
+   "mapNo": 6,
+   "why": "a swamp creature, the leech family of the map's lists · uncommon"
+  },
+  {
+   "id": "peat-smoke-shaman",
+   "map": "m8",
+   "mapNo": 6,
+   "why": "a swamp creature, the frog family of the map's lists · uncommon"
+  },
+  {
+   "id": "bolas-spider",
+   "map": "mu",
+   "mapNo": 7,
+   "why": "near fungal, the spider family of the map's lists · uncommon"
+  },
+  {
+   "id": "glimmer-spider",
+   "map": "mu",
+   "mapNo": 7,
+   "why": "near fungal, the spider family of the map's lists · uncommon"
+  },
+  {
+   "id": "swarm-matriarch",
+   "map": "mu",
+   "mapNo": 7,
+   "why": "a fungal creature · rare"
+  },
+  {
+   "id": "arc-bat",
+   "map": "m4",
+   "mapNo": 8,
+   "why": "a caves creature, the bat family of the map's lists · rare"
+  },
+  {
+   "id": "cave-bat-swarm",
+   "map": "m4",
+   "mapNo": 8,
+   "why": "a caves creature, the bat family of the map's lists · rare"
+  },
+  {
+   "id": "cave-flitter",
+   "map": "m4",
+   "mapNo": 8,
+   "why": "a caves creature, the bat family of the map's lists · uncommon"
+  },
+  {
+   "id": "anaconda-coil",
+   "map": "mk",
+   "mapNo": 9,
+   "why": "near mangrove, the snake family of the map's lists · rare"
+  },
+  {
+   "id": "shoebill",
+   "map": "mk",
+   "mapNo": 9,
+   "why": "near mangrove, the heron family of the map's lists · rare"
+  },
+  {
+   "id": "tidefolk-harpooner",
+   "map": "mk",
+   "mapNo": 9,
+   "why": "a mangrove creature · rare"
+  },
+  {
+   "id": "man-o-war",
+   "map": "m7",
+   "mapNo": 10,
+   "why": "a reef ocean creature, the jellyfish family of the map's lists · rare"
+  },
+  {
+   "id": "nautiloid",
+   "map": "m7",
+   "mapNo": 10,
+   "why": "a reef ocean creature, the octopus family of the map's lists · rare"
+  },
+  {
+   "id": "supernova-jelly",
+   "map": "m7",
+   "mapNo": 10,
+   "why": "a reef ocean creature, the jellyfish family of the map's lists · rare"
+  },
+  {
+   "id": "eagle-diver",
+   "map": "m10",
+   "mapNo": 11,
+   "why": "a mountain sky creature, the eagle family of the map's lists · rare"
+  },
+  {
+   "id": "storm-heron",
+   "map": "m10",
+   "mapNo": 11,
+   "why": "a mountain sky creature, the heron family of the map's lists · rare"
+  },
+  {
+   "id": "vigil-owl",
+   "map": "m10",
+   "mapNo": 11,
+   "why": "a mountain sky creature, the owl family of the map's lists · rare"
+  },
+  {
+   "id": "bramble-hoglet",
+   "map": "mh",
+   "mapNo": 12,
+   "why": "a maze briar creature, the hedgehog family of the map's lists, budget fits Map 12 · common"
+  },
+  {
+   "id": "gatling-hog",
+   "map": "mh",
+   "mapNo": 12,
+   "why": "a maze briar creature, the hedgehog family of the map's lists · rare"
+  },
+  {
+   "id": "quill-flinger-porcupine",
+   "map": "mh",
+   "mapNo": 12,
+   "why": "a maze briar creature, the porcupine family of the map's lists · uncommon"
+  },
+  {
+   "id": "friar-badger",
+   "map": "mr",
+   "mapNo": 13,
+   "why": "near redwood, the badger family of the map's lists · uncommon"
+  },
+  {
+   "id": "warren-scout",
+   "map": "mr",
+   "mapNo": 13,
+   "why": "near redwood, the rabbit family of the map's lists · rare"
+  },
+  {
+   "id": "werebadger",
+   "map": "mr",
+   "mapNo": 13,
+   "why": "near redwood, the badger family of the map's lists · rare"
+  },
+  {
+   "id": "elephant",
+   "map": "m5",
+   "mapNo": 14,
+   "why": "a savanna creature, the elephant family of the map's lists · common"
+  },
+  {
+   "id": "marula-monkey",
+   "map": "m5",
+   "mapNo": 14,
+   "why": "a savanna creature, the monkey family of the map's lists · common"
+  },
+  {
+   "id": "mongoose-duelist",
+   "map": "m5",
+   "mapNo": 14,
+   "why": "a savanna creature, the mongoose family of the map's lists · uncommon"
+  },
+  {
+   "id": "carrion-fly-swarm",
+   "map": "ml",
+   "mapNo": 15,
+   "why": "near long grass, the fly family of the map's lists · rare"
+  },
+  {
+   "id": "owl-fletcher",
+   "map": "ml",
+   "mapNo": 15,
+   "why": "near long grass, the owl family of the map's lists · rare"
+  },
+  {
+   "id": "squires-mount",
+   "map": "ml",
+   "mapNo": 15,
+   "why": "a long grass creature, the horse family of the map's lists · rare"
+  },
+  {
+   "id": "lunar-howler",
+   "map": "mt",
+   "mapNo": 16,
+   "why": "a taiga creature · rare"
+  },
+  {
+   "id": "pack-wolf-reaver",
+   "map": "mt",
+   "mapNo": 16,
+   "why": "a taiga creature · common"
+  },
+  {
+   "id": "wolf-pack-runner",
+   "map": "mt",
+   "mapNo": 16,
+   "why": "a taiga creature · rare"
+  },
+  {
+   "id": "frostbitten-wolverine",
+   "map": "m6",
+   "mapNo": 17,
+   "why": "a tundra ice creature, the weasel family of the map's lists · uncommon"
+  },
+  {
+   "id": "musk-ox-matriarch",
+   "map": "m6",
+   "mapNo": 17,
+   "why": "a tundra ice creature, the ox family of the map's lists · uncommon"
+  },
+  {
+   "id": "yeti-tracker",
+   "map": "m6",
+   "mapNo": 17,
+   "why": "a tundra ice creature, the weasel family of the map's lists · uncommon"
+  },
+  {
+   "id": "dune-jackal-scout",
+   "map": "md",
+   "mapNo": 18,
+   "why": "a desert glass creature, the jackal family of the map's lists · common"
+  },
+  {
+   "id": "glowing-gecko",
+   "map": "md",
+   "mapNo": 18,
+   "why": "a desert glass creature, the lizard family of the map's lists · uncommon"
+  },
+  {
+   "id": "moon-jerboa",
+   "map": "md",
+   "mapNo": 18,
+   "why": "a desert glass creature, the mouse family of the map's lists · uncommon"
+  },
+  {
+   "id": "flagellant-vulture",
+   "map": "m3",
+   "mapNo": 19,
+   "why": "a volcanic ash creature, the vulture family of the map's lists · uncommon"
+  },
+  {
+   "id": "hellbender",
+   "map": "m3",
+   "mapNo": 19,
+   "why": "a volcanic ash creature, the salamander family of the map's lists · common"
+  },
+  {
+   "id": "thunder-lizard",
+   "map": "m3",
+   "mapNo": 19,
+   "why": "a volcanic ash creature, the lizard family of the map's lists · epic"
+  },
+  {
+   "id": "dread-bell",
+   "map": "m11",
+   "mapNo": 20,
+   "why": "a volcanic ash creature, the bat family of the map's lists · uncommon"
+  },
+  {
+   "id": "ember-wisp",
+   "map": "m11",
+   "mapNo": 20,
+   "why": "a volcanic ash creature, the beetle family of the map's lists · rare"
+  },
+  {
+   "id": "fruit-bat-familiar",
+   "map": "m11",
+   "mapNo": 20,
+   "why": "a volcanic ash creature, the bat family of the map's lists · uncommon"
+  },
+  {
+   "id": "mirrorhide-mutant",
+   "map": "m21",
+   "mapNo": 21,
+   "why": "a mountain sky creature, the goat family of the map's lists · rare"
+  },
+  {
+   "id": "snow-owl-sentinel",
+   "map": "m21",
+   "mapNo": 21,
+   "why": "a mountain sky creature, budget fits Map 21 · superrare"
+  },
+  {
+   "id": "yeti-snarer",
+   "map": "m21",
+   "mapNo": 21,
+   "why": "a mountain sky creature, the leopard family of the map's lists · rare"
+  },
+  {
+   "id": "blessed-avatar",
+   "map": "m22",
+   "mapNo": 22,
+   "why": "a volcanic ash creature, the deer family of the map's lists · common"
+  },
+  {
+   "id": "firefly-swarm",
+   "map": "m22",
+   "mapNo": 22,
+   "why": "a volcanic ash creature, the beetle family of the map's lists · uncommon"
+  },
+  {
+   "id": "salamander-pyromancer",
+   "map": "m22",
+   "mapNo": 22,
+   "why": "a volcanic ash creature, the salamander family of the map's lists · epic"
+  },
+  {
+   "id": "margay",
+   "map": "m23",
+   "mapNo": 23,
+   "why": "a village keep creature, the cat family of the map's lists · rare"
+  },
+  {
+   "id": "petrified-tree",
+   "map": "m23",
+   "mapNo": 23,
+   "why": "a village keep creature, the owl family of the map's lists · rare"
+  },
+  {
+   "id": "shieldbearer-hound",
+   "map": "m23",
+   "mapNo": 23,
+   "why": "a village keep creature, the dog family of the map's lists · rare"
+  },
+  {
+   "id": "armory",
+   "map": "m24",
+   "mapNo": 24,
+   "why": "a village keep creature, the beaver family of the map's lists · rare"
+  },
+  {
+   "id": "goose-sentry",
+   "map": "m24",
+   "mapNo": 24,
+   "why": "a village keep creature, the duck family of the map's lists · rare"
+  },
+  {
+   "id": "war-hound",
+   "map": "m24",
+   "mapNo": 24,
+   "why": "a village keep creature, the dog family of the map's lists · rare"
+  }
+ ],
+ "tutorial": {
+  "otters": [
+   {
+    "id": "otter-angler",
+    "why": "base card · otter fits the otters · river · common · cost 0"
+   },
+   {
+    "id": "shellwright-apprentice",
+    "why": "base card · otter fits the otters · river · common · cost 0"
+   },
+   {
+    "id": "otter-flag-bearer",
+    "why": "base card · otter fits the otters · river · uncommon · cost 0"
+   },
+   {
+    "id": "otter-lantern-bearer",
+    "why": "base card · otter fits the otters · river · uncommon · cost 0"
+   },
+   {
+    "id": "otter-guard",
+    "why": "base card · otter fits the otters · river · uncommon · cost 1"
+   },
+   {
+    "id": "riverbed-diver",
+    "why": "base card · otter fits the otters · river · uncommon · cost 1"
+   },
+   {
+    "id": "forager-ant",
+    "why": "base card · meadow forest · common · cost 0"
+   },
+   {
+    "id": "clap-net-trapper",
+    "why": "otter fits the otters · river · common · cost 0"
+   },
+   {
+    "id": "helmeted-otter",
+    "why": "otter fits the otters · river · common · cost 0"
+   },
+   {
+    "id": "mist-net-otter",
+    "why": "otter fits the otters · river · common · cost 0"
+   },
+   {
+    "id": "otter-ferryman",
+    "why": "otter fits the otters · river · common · cost 0"
+   },
+   {
+    "id": "otter-netmender",
+    "why": "otter fits the otters · river · common · cost 0"
+   },
+   {
+    "id": "rivergate-recruit",
+    "why": "otter fits the otters · river · common · cost 0"
+   },
+   {
+    "id": "shell-cracker",
+    "why": "otter fits the otters · river · common · cost 0"
+   },
+   {
+    "id": "beaver-builder",
+    "why": "beaver fits the otters · river · common · cost 0"
+   },
+   {
+    "id": "bog-lungfish",
+    "why": "fish fits the otters · swamp · common · cost 0"
+   },
+   {
+    "id": "minnow-skitter",
+    "why": "fish fits the otters · river · common · cost 0"
+   },
+   {
+    "id": "dam-keeper-beaver",
+    "why": "beaver fits the otters · river · common · cost 1"
+   },
+   {
+    "id": "dam-wall",
+    "why": "beaver fits the otters · river · common · cost 1"
+   },
+   {
+    "id": "ferry-toll-frog",
+    "why": "frog fits the otters · river · common · cost 0"
+   },
+   {
+    "id": "box-turtle",
+    "why": "turtle fits the otters · meadow forest · common · cost 0"
+   },
+   {
+    "id": "great-crested-grebe",
+    "why": "duck fits the otters · river · common · cost 1"
+   },
+   {
+    "id": "migration-leader",
+    "why": "duck fits the otters · river · common · cost 1"
+   },
+   {
+    "id": "beaver-feller",
+    "why": "beaver fits the otters · meadow forest · common · cost 0"
+   },
+   {
+    "id": "beaver-lumberjack",
+    "why": "beaver fits the otters · river · common · cost 0"
+   },
+   {
+    "id": "pufferfish-bulwark",
+    "why": "fish fits the otters · river · common · cost 1"
+   },
+   {
+    "id": "otter-riverguard",
+    "why": "otter fits the otters · river · common · cost 2"
+   },
+   {
+    "id": "rivergate-drummer",
+    "why": "otter fits the otters · river · uncommon · cost 0"
+   },
+   {
+    "id": "riverwing-envoy",
+    "why": "otter fits the otters · river · uncommon · cost 0"
+   },
+   {
+    "id": "tide-pool-crab",
+    "why": "crab fits the otters · coast · common · cost 0"
+   },
+   {
+    "id": "tidepool-trapper-crab",
+    "why": "crab fits the otters · coast · common · cost 0"
+   },
+   {
+    "id": "marsh-gas-toad",
+    "why": "frog fits the otters · swamp · common · cost 1"
+   },
+   {
+    "id": "poison-dart-croaker",
+    "why": "frog fits the otters · swamp · common · cost 1"
+   },
+   {
+    "id": "swamp-rabbit",
+    "why": "rabbit fits the otters · swamp · common · cost 0"
+   },
+   {
+    "id": "birdlime-dauber",
+    "why": "otter fits the otters · river · uncommon · cost 1"
+   },
+   {
+    "id": "field-mouse",
+    "why": "mouse fits the otters · meadow forest · common · cost 0"
+   },
+   {
+    "id": "mire-witch-heron",
+    "why": "heron fits the otters · swamp · common · cost 1"
+   },
+   {
+    "id": "net-thrower",
+    "why": "otter fits the otters · river · uncommon · cost 1"
+   },
+   {
+    "id": "oathsworn-legionary",
+    "why": "otter fits the otters · river · uncommon · cost 1"
+   },
+   {
+    "id": "otter-shieldback",
+    "why": "otter fits the otters · river · uncommon · cost 1"
+   }
+  ],
+  "hummingbirds": [
+   {
+    "id": "honeyjoe-brewer",
+    "why": "hummingbirds card · hummingbird fits the hummingbirds · cliffs · uncommon · cost 0"
+   },
+   {
+    "id": "sunthroat-courier",
+    "why": "hummingbirds card · hummingbird fits the hummingbirds · common · cost 0"
+   },
+   {
+    "id": "dominion-nestguard",
+    "why": "hummingbirds card · hummingbird fits the hummingbirds · common · cost 1"
+   },
+   {
+    "id": "gold-throated-acolyte",
+    "why": "hummingbirds card · hummingbird fits the hummingbirds · uncommon · cost 0"
+   },
+   {
+    "id": "hummingbird-needler",
+    "why": "hummingbirds card · hummingbird fits the hummingbirds · uncommon · cost 0"
+   },
+   {
+    "id": "voidfeather-scout",
+    "why": "hummingbirds card · hummingbird fits the hummingbirds · uncommon · cost 0"
+   },
+   {
+    "id": "forager-ant",
+    "why": "base card · ant fits the hummingbirds · meadow forest · common · cost 0"
+   },
+   {
+    "id": "chapel-sparrow",
+    "why": "songbird fits the hummingbirds · meadow forest · common · cost 0"
+   },
+   {
+    "id": "candle-moth",
+    "why": "moth fits the hummingbirds · meadow forest · common · cost 0"
+   },
+   {
+    "id": "garden-tiger-moth",
+    "why": "moth fits the hummingbirds · meadow forest · common · cost 0"
+   },
+   {
+    "id": "anvil-thrush",
+    "why": "songbird fits the hummingbirds · meadow forest · common · cost 0"
+   },
+   {
+    "id": "bee-drone",
+    "why": "bee fits the hummingbirds · meadow forest · uncommon · cost 0"
+   },
+   {
+    "id": "scraper-of-skies",
+    "why": "bee fits the hummingbirds · meadow forest · common · cost 2"
+   },
+   {
+    "id": "courier-pigeon",
+    "why": "pigeon fits the hummingbirds · meadow forest · common · cost 0"
+   },
+   {
+    "id": "otter-angler",
+    "why": "base card · common · cost 0"
+   },
+   {
+    "id": "shellwright-apprentice",
+    "why": "base card · common · cost 0"
+   },
+   {
+    "id": "weaver-bird",
+    "why": "songbird fits the hummingbirds · savanna · common · cost 1"
+   },
+   {
+    "id": "carrion-crow",
+    "why": "crow fits the hummingbirds · meadow forest · common · cost 0"
+   },
+   {
+    "id": "field-crow",
+    "why": "crow fits the hummingbirds · meadow forest · common · cost 0"
+   },
+   {
+    "id": "hoopoe-herald",
+    "why": "hoopoe fits the hummingbirds · savanna · common · cost 0"
+   },
+   {
+    "id": "leafcutter-gardener",
+    "why": "ant fits the hummingbirds · meadow forest · common · cost 0"
+   },
+   {
+    "id": "lovebird",
+    "why": "lovebird fits the hummingbirds · savanna · common · cost 1"
+   },
+   {
+    "id": "beetle-grunt",
+    "why": "beetle fits the hummingbirds · meadow forest · common · cost 0"
+   },
+   {
+    "id": "blister-beetle",
+    "why": "beetle fits the hummingbirds · meadow forest · common · cost 0"
+   },
+   {
+    "id": "robin-redbreast",
+    "why": "songbird fits the hummingbirds · meadow forest · uncommon · cost 0"
+   },
+   {
+    "id": "jay-pilferer",
+    "why": "crow fits the hummingbirds · meadow forest · common · cost 1"
+   }
+  ]
+ }
+}

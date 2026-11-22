@@ -3914,7 +3914,23 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.skin3-float-scared": "😱 Scared -{n}",
   "ui.skin3-scared-tip": "Scared: attacks for {n} less",
   "ui.ux7-focus-remove": "To remove",
-  "ui.ux7-focus-remove-tip": "New here, but not in this map's skill table: take it off this map's cards"
+  "ui.ux7-focus-remove-tip": "New here, but not in this map's skill table: take it off this map's cards",
+  "ui.ps1-all-a": "All cards (0-20)",
+  "ui.ps1-all-b": "All cards (20-40)",
+  "ui.ps1-fac-otters": "Otters",
+  "ui.ps1-fac-hummingbirds": "Hummingbirds",
+  "ui.ps1-fac-base": "Base",
+  "ui.ps1-bonus": "Bonus (pack-only)",
+  "ui.ps1-skirmish": "Skirmish",
+  "ui.ps1-skirmish-tip": "In a skirmish deck or reward",
+  "ui.ps1-starts": "Starts Pack {n}",
+  "ui.ps1-map-menu": "Represents map",
+  "ui.ps1-count": "Picked {n} / 16",
+  "ui.ps1-now": "Now: the starter deck",
+  "ui.ps1-tut-sug": "Tutorial suggestions",
+  "ui.ps1-reset": "Default cuts",
+  "ui.ps1-cut-no": "A pack cannot start at or before the pack before it.",
+  "ui.ps1-sub": "YES or NO each card. Right-click a card (or ⋯) to set its map. ▸2 / ▸3 start that pack at the card."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

@@ -4740,6 +4740,18 @@
  "Scared: attacks for {n} less": "Asustado: ataca {n} menos",
  "While an ally leader is on the battlefield, it has {skills}.": "Mientras un líder aliado esté en el campo de batalla, tiene {skills}.",
  "Learns a skill at a higher level": "Aprende una habilidad a un nivel superior",
+ "All cards (0-20)": "Todas las cartas (0-20)",
+ "All cards (20-40)": "Todas las cartas (20-40)",
+ "Bonus (pack-only)": "Extra (solo sobres)",
+ "In a skirmish deck or reward": "En un mazo o recompensa de escaramuza",
+ "Starts Pack {n}": "Empieza el sobre {n}",
+ "Represents map": "Representa el mapa",
+ "Now: the starter deck": "Ahora: el mazo inicial",
+ "Tutorial suggestions": "Sugerencias de tutorial",
+ "Default cuts": "Cortes por defecto",
+ "A pack cannot start at or before the pack before it.": "Un sobre no puede empezar en o antes del sobre anterior.",
+ "YES or NO each card. Right-click a card (or ⋯) to set its map. ▸2 / ▸3 start that pack at the card.": "SÍ o NO en cada carta. Clic derecho (o ⋯) para elegir su mapa. ▸2 / ▸3 empiezan ese sobre aquí.",
+ "Picked {n} / 16": "Elegidas {n} / 16",
  "To remove": "Quitar",
  "New here, but not in this map's skill table: take it off this map's cards": "Nueva aquí, pero no está en la tabla de habilidades de este mapa: quítala de sus cartas"
 }
