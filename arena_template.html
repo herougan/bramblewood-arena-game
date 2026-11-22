@@ -12238,7 +12238,7 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .cnp-drops .cnp-drop-tile .card-chip{pointer-events:none; --cc-h:26px; font-size:12px;}
 /* the pack tray: one Full slot a card (a row up to 6, else two), capped by the row's width and the window's height, so the flight lands in a
    Full card; the reveal is a little smaller while a tray of Full slots sits under it. A pile (no slots) lists Chips that scroll. */
-.po2-got.has-slots{--po2-slot-w:min(var(--card-full-w), calc((min(92vw, 900px) - 20px - (var(--per, 5) - 1) * 6px) / var(--per, 5)), calc(22vh / var(--rows, 1) * .8));
+.po2-got.has-slots{--po2-slot-w:min(var(--card-full-w), calc((min(92vw, 900px) - 24px - (var(--per, 5) - 1) * 6px) / var(--per, 5)), calc(22vh / var(--rows, 1) * .8)); /* 2026-11-23 (ECON1 phase 2): - 24px (was 20): the box's padding plus slack, so a 5-card pack's row does not wrap to 4 + 1 on a phone (the box measures a pixel under 92vw) */
   max-width:calc(var(--per, 5) * var(--po2-slot-w) + (var(--per, 5) - 1) * 6px + 20px);}
 .po2-got:not(.has-slots){max-height:min(22vh, 170px); overflow-y:auto; overscroll-behavior:contain;}
 .po2-mini.is-chip{box-shadow:none; border-radius:calc(var(--chip-h) / 2);}

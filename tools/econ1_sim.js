@@ -31,6 +31,12 @@ const econ = new Function(econSrc + '\nreturn {econScale};')();
 const MAIN = G.CONQUEST_MAPS.filter(m=> !m.sub && !m.reserved);
 const nodeEnergyCost = new Function('CONQUEST_MAPS', 'mainConquestMaps', 'baseKind', B.grab('mapEnergyBase') + '\n' + B.grab('nodeEnergyCost') + '\nreturn nodeEnergyCost;')(G.CONQUEST_MAPS, ()=> MAIN, G.baseKind);
 const MU_DUST = UC.materiaUnit.dust;
+// 2026-11-23 (ECON1 phase 2): the "current" plan pays a first clear through the game's own nodeRewardTier (CONQUEST_NODE_REWARDS, the
+// FIRST_CLEAR_MAP_STEP growth and the nodes' overrides as built), so a re-run reads the game, not a copy. Code from before phase 2 has no
+// FIRST_CLEAR_MAP_STEP; nodeRewardTier is guarded for that and pays the flat rows.
+const gameTier = (()=>{ const has = n=>{ try{ return B.grab(n); }catch(e){ return ''; } };
+  return new Function('baseKind', 'mapUnlockNumberOf', 'mapOfNode', 'CONQUEST_MAPS', 'nodeEnergyCost', econSrc + '\n' + B.grab('CONQUEST_NODE_REWARDS') + '\n' + has('FIRST_CLEAR_MAP_STEP') + '\n' + B.grab('nodeRewardTier') + '\nreturn nodeRewardTier;')(G.baseKind, G.mapUnlockNumberOf, G.mapOfNode, G.CONQUEST_MAPS, nodeEnergyCost); })();
+const GAME_STEP = (()=>{ try{ return new Function(B.grab('FIRST_CLEAR_MAP_STEP') + '\nreturn FIRST_CLEAR_MAP_STEP;')(); }catch(e){ return {gold: 0, dust: 0}; } })();
 
 // ---------- PROPOSED (docs/design/econ1-2026-11-22.md, section 9) ----------
 const PROPOSED = {
@@ -44,7 +50,7 @@ const PROPOSED = {
   sideRule: true,                                 // the 41 side-map nodes with a hand-set first-clear pay (2-B, 5-A, 7-A, 8-A, 11-A, 18-A, 20-A, 20-B) follow the rule
   passSeries: true,                               // the Pass's daily pack is the current series (D35 said a Hedgerow Pouch)
 };
-const CURRENT = {packCards: null, packCost: null, endCards: N.MAP_END_PACK_CARDS, factionCards: N.FACTION_PACK_OWN + N.FACTION_PACK_GENERAL, firstStep: {gold: 0, dust: 0}, extraRows: {}, passGemPrice: null, passSeries: false, sideRule: false};
+const CURRENT = {packCards: null, packCost: null, endCards: N.MAP_END_PACK_CARDS, factionCards: N.FACTION_PACK_OWN + N.FACTION_PACK_GENERAL, firstStep: GAME_STEP, extraRows: {}, passGemPrice: null, passSeries: false, sideRule: false, game: true}; // the game as its arena_app.js stands
 
 // ---------- ASSUMPTIONS (argue with these) ----------
 const A = {
@@ -83,7 +89,7 @@ const poisMin = (lam, k)=>{ let p = Math.exp(-lam), s = 0, cdfTerm = 0; for(let 
 
 function plan(name){ const P = name === 'proposed' ? PROPOSED : CURRENT;
   const shop = id=>{ const p = N.SHOP.find(x=> x.id === id); return {cards: P.packCards || p.cards, cost: P.packCost ? P.packCost[id] : p.cost, metal: p.metal || 0, dust: econ.econScale('packDust', 'dust', MU_DUST * (N.MAT[id] || 0) / 100)}; };
-  const firstPay = (node, n, side)=>{ const row = P.extraRows[node.kind] || N.NODE[node.kind] || N.NODE[G.baseKind(node.kind)]; const o = (P.sideRule && side) ? {} : ((node.rewards && node.rewards.first) || {});
+  const firstPay = (node, n, side)=>{ if(P.game){ const t = gameTier(node, G.mapOfNode(node)); return {gold: t.first.gold, dust: t.first.dust}; } const row = P.extraRows[node.kind] || N.NODE[node.kind] || N.NODE[G.baseKind(node.kind)]; const o = (P.sideRule && side) ? {} : ((node.rewards && node.rewards.first) || {});
     const f = k=> o[k] != null && o[k] !== '' ? +o[k] : Math.round(row.first[k] * (1 + (P.firstStep[k] || 0) * n)); return {gold: f('gold'), dust: f('dust')}; };
   return {name, P, shop, firstPay}; }
 

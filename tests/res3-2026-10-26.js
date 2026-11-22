@@ -100,8 +100,10 @@ ok(/#myDeckList \.deck-stack\{display:block; width:var\(--card-full-col\)/.test(
   const packs = vm.runInNewContext(block.replace('const SHOP_PACKS_DEFAULT = ', '(').replace(/\];$/, '])'));
   const OLD = {bronze:{cards:3, gold:50, gems:0}, silver:{cards:5, gold:120, gems:10}, mystery:{cards:3, gold:80, gems:0}, gold:{cards:8, gold:250, gems:30}};
   packs.forEach(p=>{ const o = OLD[p.id];
-    ok(p.cards === 3, `G15. ${p.name}: 3 cards`);
-    ok(Math.abs(p.cost.gold - o.gold / o.cards * 3) <= 0.5 && Math.abs((p.cost.gems||0) - o.gems / o.cards * 3) <= 0.5, `G15. ${p.name}: ${p.cost.gold} + ${p.cost.gems||0} = the old price per card x 3`);
+    // 2026-11-23 (ECON1 phase 2, owner 11-22 23:08 "a pack should instead contain 5 cards by default now", ECON1-1 a): 5 cards at the Leaves-only
+    // prices (tests/econ1-2026-11-23.js pins them); RES3's 3-card prices are history. The Collector price below is unchanged.
+    ok(p.cards === 5, `G15. ${p.name}: 5 cards (ECON1)`);
+    ok(!(p.cost.gems > 0), `G15. ${p.name}: ${p.cost.gold} Leaves, no Gold Leaves (ECON1-1 a)`);
     if(p.collectorCost) ok(Math.abs(p.collectorCost.gold - o.gold * 12 / 10 * 5) <= 0.5 && Math.abs((p.collectorCost.gems||0) - o.gems * 12 / 10 * 5) <= 0.5, `G15. Collector ${p.name}: 5 cards at the old Collector price per card`); });
   const adv = new Function('TX', 'RES3_COLLECTOR_CARDS', fnSrc('advancedPackOf') + '\nreturn advancedPackOf;')(()=> 'C', 5)(Object.assign({}, packs[1]));
   ok(adv.cards === 5 && adv.mainCards === 5 && adv.cost.gold === packs[1].collectorCost.gold, 'G15. a Collector pack: 5 cards, all at 10x foil, its own price');

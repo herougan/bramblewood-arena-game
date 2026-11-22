@@ -2,6 +2,22 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-23 Package ECON1 phase 2 (owner 11-22 23:08; ECON1-1 a, ECON1-2 a, ECON1-3 a)
+- **Packs hold 5 cards and cost Maple Leaves only:**
+  - Hedgerow Pouch 80 (was 50 for 3 cards).
+  - Tidemire Chest 100 (was 72 + 6 Gold Leaves).
+  - Highcrest Case 125 (was 94 + 11 Gold Leaves).
+  - Mystery Booster 120 (was 80).
+  - The map-end pack and the free road packs hold 5 too. Faction packs stay at 3. Collector packs are unchanged.
+- **First clears grow with the map:** +10% Leaves and +5% Dust a map number. A side map counts the map that opens it.
+  - A skirmish pays 40 / 20 on Map 0, 80 / 30 on Map 10 and 120 / 40 on Map 20.
+  - A mini-boss pays 95 / 115 at base. The Ambush pays 160 / 195.
+  - The 41 hand-set side-map first clears (2-B to 20-B) follow the rule now.
+  - Repeats are unchanged.
+- **Sim on the built code** (`tools/econ1_sim.js`, which now reads the game's `nodeRewardTier`): next-map BPRO cover for a clear-once player goes from 17% to 58%, and a casual player's from 19% to 69%. Maps 0-20 first clears pay 27.6k 🍁 / 17.8k ✨ (was 16.0k / 8.9k). Detail: the "Built" section of `docs/design/econ1-2026-11-22.md`.
+- **Pack opener:** a 5-card tray stays in one row on a phone.
+- Test: `tests/econ1-2026-11-23.js`. Updated pins: pack1, res3 (G15) and rw5 (5).
+
 ## 2026-11-22 Package REWARD3 (owner 22:41 #3 #4 #8 #9)
 - **Map cards window (admin):** a "Reward" tick on each Yes card (also in the right-click menu and the Pack editor's menu), at most 2 per map (side maps too). A Reward card is a skirmish reward of that map: in no pack, paid by the first clear of an auto-picked fight (editable in the tick's fight list), then dropped on repeat wins. "Reward" pill everywhere the card shows.
 - **Tile labels:** skirmish decks using it (swords), New! skills it carries (sparkles), faction, reward elsewhere (target), next to rarity, budget %, Pack N, Baby, Starter.

@@ -75,8 +75,9 @@ ok(['function applyCloudShopPacks', 'function saveShopPacksOverride', 'function 
 
 // ---- 4. the packs still open, unchanged sizes, weights and foils
 for(const t of [1, 2, 3]){ const n = ids.filter(id=> G.basicPackTierOf(D[id]) === t && D[id].cardType !== 'spell' && D[id].cardType !== 'equipment').length; ok(n >= 5, `4. Pack ${t}'s pool holds ${n} cards (at least 5: a Collector pack without a repeat)`); }
-ok(/\{id:'bronze', packNo:1, name:'Hedgerow Pouch', icon:'🌿', cost:\{gold:50, gems:0\}, collectorCost:\{gold:300, gems:0\}, cards:3, [^\n]*pool:1 [^\n]*foilChance:0\.01, foilGuaranteed:false\}/.test(app)
-  && /\{id:'silver', packNo:2, [^\n]*cards:3, [^\n]*pool:2 [^\n]*foilChance:0\.015,/.test(app) && /\{id:'gold', packNo:3, [^\n]*cards:3, [^\n]*pool:3 [^\n]*foilChance:0\.02,/.test(app)
+// 2026-11-23 (ECON1 phase 2, owner 11-22 23:08, ECON1-1 a): 5 cards a pack, Leaves-only prices (was 3 cards, Pouch 50); pools, weights, foils unchanged
+ok(/\{id:'bronze', packNo:1, name:'Hedgerow Pouch', icon:'🌿', cost:\{gold:80, gems:0\}, collectorCost:\{gold:300, gems:0\}, cards:5, [^\n]*pool:1 [^\n]*foilChance:0\.01, foilGuaranteed:false\}/.test(app)
+  && /\{id:'silver', packNo:2, [^\n]*cards:5, [^\n]*pool:2 [^\n]*foilChance:0\.015,/.test(app) && /\{id:'gold', packNo:3, [^\n]*cards:5, [^\n]*pool:3 [^\n]*foilChance:0\.02,/.test(app)
   && /const PACK_RARITY_WEIGHT = \{special:0, devlegendary:0, devancient:0, eventlegendary:0, eventrare:0, starter:6, common:6, uncommon:3, quest:0, rare:1\.5,/.test(app), '4. pack sizes, pools 1 / 2 / 3, rarity weights and foil chances unchanged');
 
 // ---- 5. the Map cards button and overlay; texts
