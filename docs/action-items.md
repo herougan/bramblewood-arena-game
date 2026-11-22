@@ -8,6 +8,16 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-22 23:08 Night queue (owner: "queue up works for the night")
+- Owner order: map -> skirmish -> skirmish rewards -> packs -> currency -> multiplayer balancing -> UI/UX, look and feel, VFX -> player-data analysis (frustration, giving up, likely supporters; trees) -> release. "Release github once done."
+- [x] MAPRM1: New! skills not in the table row: half red, half dark grey, "To remove" (36 on Maps 0-20)
+- [x] PACKSET1 merged (All cards rows, 63 bonus suggestions for Maps 0-20, pack cuts, tutorial suggestions, submap New! 1-3)
+- [ ] MAPSWAP1 (owner 23:08: "Remember the leech changes etc. I look forward to your new card suggestions and swapping that meets our agreed criteria"): per map, card suggestions that carry each "To add" skill and swaps that move each "To remove" carrier to the map whose table has the skill; shown in the Map cards window for the owner's Yes / No
+- [ ] REWARD3: 2 skirmish rewards per map, Baby = General drops, starter / Baby free-drop check, reward counts
+- [ ] ECON1 (owner: "advise AND execute first, (ill readback later) what you think is a good currency flow - skirmish rewards, reward growth, pack costs etc. I think a pack should instead contain 5 cards by default now, instead of 3"): design doc + build
+- [ ] TESTFIX9: n221, lvl10, bal13/21/24, ref5 (NOC7 fallout), reward-screens B4 (elite gold card), the e2e group by cause
+- [ ] Later phases: multiplayer balancing; UI/UX, look and feel, VFX; player-data analysis
+
 ## 11-22 21:28 Owner answers, release (owner)
 - Owner: "You may release ... Release when ready, asap." Released batch-1023e to main (build 2b676b7e9652).
 - [x] MAPADD1b: Map 5 + Poison Barbs, Map 8 + Evasive (MAPADD1-1 a); half-red / half-blue "To add" tiles checked on Maps 5 and 8
