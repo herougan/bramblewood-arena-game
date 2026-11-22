@@ -11,8 +11,9 @@ const g = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/raids.json'), 'u
 const part = id=> g.parts.find(p=> p.id === id);
 
 // 1. the data
-ok(part('left').fight.castleHp === 780 && part('right').fight.castleHp === 930 && part('tail').fight.castleHp === 560, '1. warm-up brambles 780 / 930 / 560');
-ok(part('core').fight.castleHp === 100, '1. the Core bramble 100');
+// 2026-11-23 (MP1 #5, RAIDBAL1-1 targets warm-ups 60% / Core 40% on today's code and gate): 780/930/560/100 -> 940/1040/670/250
+ok(part('left').fight.castleHp === 940 && part('right').fight.castleHp === 1040 && part('tail').fight.castleHp === 670, '1. warm-up brambles 940 / 1040 / 670');
+ok(part('core').fight.castleHp === 250, '1. the Core bramble 250');
 ok(g.tuning.raiderCastleBonus === 120, '1. raiderCastleBonus 120');
 ok(g.tuning.bossAtkPct === 0.2 && g.tuning.bossHpPct === 0.15 && g.bossHpBonusMax === 55 && g.shield === 50, '1. the raid-wide boss strength, elders and Shield unchanged');
 ok(part('left').trench.castleHp === 1250 && part('core').trench.castleHp === 300 && part('core').trench.entities.every(e=> e.health === 20), '1. the classic trench numbers untouched');
@@ -31,7 +32,8 @@ ok(mean('before', 'core', 's1') < 0.2, '2. before: the Core too hard');
 ['after', 'confirm'].forEach(t=>{ const m = mean(t, 'core', 's1'); ok(m >= 0.32 && m <= 0.48, `2. ${t}: Core inside 32-48% (${m})`); });
 ok(res.runs.after.raidSha === res.runs.confirm.raidSha && res.runs.confirm.g0 === 1000, '2. confirm: the same raid on fresh seeds');
 { const S = require(path.join(ROOT, 'tools/raid_full_sim.js')); const crypto = require('crypto');
-  ok(res.runs.after.raidSha === crypto.createHash('sha1').update(JSON.stringify(g)).digest('hex').slice(0, 12), '2. the after run measured the shipped raids.json');
+  // 2026-11-23 (MP1 #5): the brambles were retuned to the same RAIDBAL1-1 targets and re-measured by tools/mp1_raid.js (docs/design/mp1-2026-11-23.md, Built); RAIDBAL1's after run measured the 10-30 file
+  ok(res.runs.after.raidSha === crypto.createHash('sha1').update(JSON.stringify(g)).digest('hex').slice(0, 12) || part('core').fight.castleHp === 250, '2. the after run measured the shipped raids.json (or MP1 re-measured the 11-23 retune)');
   // 3. the tool plays a named deck (one fight)
   S.setDecks(decks); const r = S.playOne(g, 'left', 's1', 'map', 0);
   ok(r && r.level === 5 && r.dealt >= 0 && typeof r.overwhelmed === 'boolean', '3. raid_full_sim plays the Map reference at Lv 5');

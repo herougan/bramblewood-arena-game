@@ -116,7 +116,7 @@ ok(/\{key:'spellward', category:'passive'/.test(app) && /spellward:'/.test(app),
   mains.forEach((m, i)=>{ const sk = m.nodes.filter(n=> (n.kind || 'skirmish') === 'skirmish' && !n.tower && !n.virtual);
     const ex = sk.filter(n=> cards.some(c=> c.source && c.source.kind === 'map' && c.source.id === m.id && c.source.node === n.key)).length;
     ok(ex <= 3, `GD-5: Map ${i} has ${ex} skirmish-exclusive skirmishes (max 3)`); });
-  ok(/function nodeFirstClearCardIds\(/.test(app) && /return nodeFirstClearCardIds\(mapId, node\.key\); \}catch/.test(app) && /: nodeFirstClearCardIds\(mapId, node\.key\); \/\/ \+ a first-clear pack card/.test(app), 'GD-5: the panel, the grant and the drop read nodeFirstClearCardIds');
+  ok(/function nodeFirstClearCardIds\(/.test(app) && /return nodeFirstClearCardIds\(mapId, node\.key\)(\.filter\(|; \}catch)/.test(app) /* 2026-11-23: REWARD3 filters Reward cards past their xN */ && /: nodeFirstClearCardIds\(mapId, node\.key\); \/\/ \+ a first-clear pack card/.test(app), 'GD-5: the panel, the grant and the drop read nodeFirstClearCardIds');
   // the drop itself, with a pack card as the reward
   let a = 1; const seeded = seed=>{ let s = seed >>> 0; return ()=>{ s = (s + 0x6D2B79F5) >>> 0; let t = s; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; };
   let rnd = seeded(5); const cdefs = byId;

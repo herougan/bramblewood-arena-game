@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-23 MP1 #5 applied (coordinator)
+- **Goliath raid:** fight brambles 780 / 930 / 560 / 100 -> 940 / 1040 / 670 / 250 in canonical/raids.json (RAIDBAL1-1 targets; MP1 measured warm-ups 64%, Core 34%, weekly fall 100% with 20 players). The only cloud raid row (`__cfg:raid:goliath`) is deleted, so the file is live. Tests raidbal1, raid-rb2, gd2 (REWARD3 filter) follow.
+
 ## 2026-11-23 Package MP1 phase 2 (multiplayer balance; MP1-1 a, MP1-2 a, MP1-3 a as defaults; RAIDBAL1-1 targets)
 - The Tidelock Vault is harder: every part's bramble x2 (48 / 52 / 42 / 50 / 56), and the CPU ally plays a stage-2 deck. Map 16 decks clear it 49% (was 77%), solo 51% / duo 47%.
 - The vault pays in full once a day: the day's first cleared run pays the full table, later runs that day x0.2, x1.25 when every seat is a human player. The vault card and room say which applies (2 new texts, 12 packs).
