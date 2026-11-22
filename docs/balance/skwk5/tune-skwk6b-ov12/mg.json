@@ -1,0 +1,101 @@
+{
+ "map": "mg",
+ "generated": "2026-11-22T11:24:28.512Z",
+ "decks": [
+  {
+   "id": "2-B-BPRO-2",
+   "map": "mg",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "gull-thief": 3,
+     "limpet-clinger": 4,
+     "driftwood-crab": 4,
+     "pincushion-urchin": 4,
+     "octopus-tactician": 2,
+     "raccoon-nightcrew": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.815,
+     "ref": 0.175,
+     "gap": 0.515
+    }
+   },
+   "pick": {
+    "deck": {
+     "gull-thief": 4,
+     "limpet-clinger": 4,
+     "driftwood-crab": 4,
+     "pincushion-urchin": 1,
+     "raccoon-nightcrew": 3,
+     "rock-pool-starfish": 4
+    },
+    "val": {
+     "v": 0.605,
+     "ref": 0.425,
+     "gap": 0.305
+    },
+    "leaders": [
+     "driftwood-crab"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.825,
+     "ref": 0.1,
+     "gap": 0.555
+    },
+    {
+     "move": "octopus-tactician -2 -> open-ocean-hermit-crab",
+     "v": 0.633,
+     "ref": 0.5,
+     "gap": 0.363,
+     "tried": 24
+    },
+    {
+     "move": "pincushion-urchin -1 -> gull-thief",
+     "v": 0.575,
+     "ref": 0.45,
+     "gap": 0.305,
+     "tried": 24
+    },
+    {
+     "move": "pincushion-urchin -2 -> open-ocean-hermit-crab",
+     "v": 0.542,
+     "ref": 0.55,
+     "gap": 0.272,
+     "tried": 24
+    },
+    {
+     "move": "open-ocean-hermit-crab x4 -> rock-pool-starfish",
+     "v": 0.5,
+     "ref": 0.5,
+     "gap": 0.23,
+     "tried": 23
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 20
+    }
+   ],
+   "readings": 1187,
+   "sec": 187
+  }
+ ],
+ "drop": []
+}

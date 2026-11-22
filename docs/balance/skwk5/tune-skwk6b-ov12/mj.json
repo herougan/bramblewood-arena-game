@@ -1,0 +1,76 @@
+{
+ "map": "mj",
+ "generated": "2026-11-22T11:25:10.409Z",
+ "decks": [
+  {
+   "id": "10-A-BPRO-2",
+   "map": "mj",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "blue-ringed-octopus": 3,
+     "coral-current-eel": 3,
+     "reef-shark": 4,
+     "riptide-eel": 4,
+     "coral-polyp-colony": 3,
+     "mantis-shrimp": 3
+    },
+    "legal": true,
+    "val": {
+     "v": 0.535,
+     "ref": 0.35,
+     "gap": 0.235
+    }
+   },
+   "pick": {
+    "deck": {
+     "blue-ringed-octopus": 3,
+     "coral-current-eel": 3,
+     "reef-shark": 4,
+     "riptide-eel": 4,
+     "mantis-shrimp": 3,
+     "moon-jelly": 3
+    },
+    "val": {
+     "v": 0.215,
+     "ref": 0.6,
+     "gap": 0
+    },
+    "leaders": [
+     "mantis-shrimp"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "start",
+     "v": 0.492,
+     "ref": 0.35,
+     "gap": 0.222
+    },
+    {
+     "move": "coral-polyp-colony x3 -> moon-jelly",
+     "v": 0.242,
+     "ref": 0.55,
+     "gap": 0,
+     "tried": 17
+    }
+   ],
+   "readings": 225,
+   "sec": 42
+  }
+ ],
+ "drop": []
+}

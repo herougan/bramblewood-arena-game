@@ -4,6 +4,13 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**SKWK6-2. Two too-strong decks fit only if they share more cards** · Decide · Balance · asked 2026-11-22
+- 2-B-BPRO-2 (81.5%) and 10-A-BPRO-2 (53.5%) should beat the reference ladder 15-30%. Under the 10-shared-copies rule no change helps. Re-tunes ready: up to 13 shared, 31% and 21.5%; up to 12, 60.5% and 21.5%.
+  - a) Allow up to 13 for these two (both fixed)
+  - b) Allow up to 12 (Map 10 fixed, Map 2 to 60%)
+  - c) Keep the 10 rule; both stay too strong
+- **Default:** a
+
 **SKWK6-1. Map 0 and Map 18 strong decks can't reach 15% on list cards** · Decide · Balance · asked 2026-11-22
 - 0-BPRO-2 (7%) and 18-A-BPRO-1 (8%) should beat the reference ladder 15-30%. The best list-only decks a fresh search finds reach 9.5% and 10%, even with the 10-copy overlap rule loosened. Map 18's list has 9 cards.
   - a) Accept both below the band
