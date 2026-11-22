@@ -11,6 +11,12 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
   - c) Change nothing
 - **Default:** a
 
+**NOC7-1. Moonlit Hare: delete the card, or keep it unobtainable?** · Decide · Cards · asked 2026-11-22
+- Moonlit Hare is on no map list now (Nocturnal moved to the Morel Hollow, Map 7). The card is still in the data, unattainable, and out of every deck. Delete it for good, or keep it for later?
+  - a) Keep it, unobtainable (nothing else changes).
+  - b) Delete it from the data and every language pack.
+- **Default:** a
+
 **CARRIER-1. Should a skill's price depend on the card's body?** · Decide · Balance · asked 2026-11-21
 - 34 of 127 skills are worth more on one kind of body. Ranged and siege skills gain 1.5-4 points on high-Health cards (Arrow 2 bramble 9.7 vs 5.3). Armor, Bulwark, Sturdy, Swift and death spawns gain 1.5-4.5 on high-Attack cards (Armor 3 7.3 vs 3.9). Today the budget prices a skill the same on any body; 93 skills need no change. Detail: docs/balance/pipeline/mapctx-2026-11-21.md.
   - a) Add a body term to the budget for these 34 skills, then list cards that leave the band (no stat changes)
