@@ -4046,7 +4046,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // carried onto the pushed statusFx event (Stun has none).
   function applyTargetedStatus(players, sideOf, playerId, boardCard, who, sub, amount, stats, events, mySide, statusKind, mutateFn){
     const pl = players[playerId], enemy = players[otherId(playerId)];
-    if(!sk1OnHitNow) bleedTick(sideOf, playerId, boardCard, stats, events, 'skill'); // an On Hit status rides on the swing (SK1, 2026-10-19)
+    if(!sk1OnHitNow && bleedTick(sideOf, playerId, boardCard, stats, events, 'skill')) return; // BLEED1: bled out, no action; an On Hit status rides on the swing (SK1, 2026-10-19)
     const targetPid = who==='enemy' ? otherId(playerId) : playerId;
     const apply = c=>{
       if(who!=='self' && ENG36_ACT_KEY[statusKind] && !eng36Lands(c, ENG36_ACT_KEY[statusKind])) return; // ENG36 (2026-11-08): a status Resist / Immune holds it off
@@ -4523,6 +4523,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // 2026-10-18 (user: "Bleed and poison both tick down by 1 per turn."): the stack no longer wears down per action; it loses 1
     // once a round at upkeep, like Poison (applyPoisonTicks, a 'bleedFade' event). decay:false keeps old replays' badge maths right.
     if(recordEvents && events) events.push({type:'bleedTick', side:sideOf(ownerId), defId:card.defId, uid:card.uid, dmg, cause, decay:false, mods:dnModsFor(card.uid)}); // + mods (DN2)
+    // 2026-11-22 (BLEED1, owner 09:56 #2: "even if the bleed would kill, the creature can perform its action first"): the tick comes before
+    // the action, and true here means it bled out, so the caller drops the action (and the trigger loop the unit's later skills: _bledOut).
+    if(card.hp <= 0){ card._bledOut = true; return true; } return false;
   }
   // Festering (2026-10-10, user: "a new global effect skill - this passive makes it such that all units on the field do
   // not remove their status counters naturally when they trigger - bleed & poison only, for now"): while any live unit
@@ -7099,7 +7102,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const kind = t.do, setter = SK3_STATUS[kind]; if(!setter) return true;
     const rounds = n || SK3_DEF[kind] || (kind === 'smokeScreen' ? SK3_DEF.smokeRounds : kind === 'magnet' ? SK3_DEF.magnetRounds : 1);
     const t2 = Object.assign({}, t, kind === 'smokeScreen' ? {who:'ally', sub: t.sub || 'all'} : kind === 'magnet' ? {who: t.who || 'enemy', sub: t.sub || 'all'} : {});
-    if(src.uid >= 0 && src.hp > 0) bleedTick(sideOf, pid, src, stats, events, 'skill');
+    if(src.uid >= 0 && src.hp > 0 && bleedTick(sideOf, pid, src, stats, events, 'skill')) return true; // BLEED1
     sk3Targets(players, pid, src, t2).forEach(({pid: tp, c, single})=>{
       if(single && tp !== pid && !dodgeCheck(c, src.defId)){ ev({type:'evaded', reason:lastMissReason, side, attDefId:src.defId, attUid:src.uid, targetSide:sideOf(tp), targetDefId:c.defId, targetUid:c.uid}); return; }
       if(tp !== pid && ENG36_SK3_KEY[kind] && !eng36Lands(c, ENG36_SK3_KEY[kind])) return; // ENG36 (2026-11-08)
@@ -7318,7 +7321,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function eng36HoldAction(players, sideOf, pid, src, t, stats, events){
     const kind = t.do, n = Math.max(0, Math.round(Number(t.amount) || 0)) || W2_DEF[kind] || 2, side = sideOf(pid);
     const tt = Object.assign({who: 'enemy', sub: 'adjacent'}, t); if(tt.who === 'self') tt.who = 'enemy';
-    if(src.uid >= 0 && src.hp > 0) bleedTick(sideOf, pid, src, stats, events, 'skill');
+    if(src.uid >= 0 && src.hp > 0 && bleedTick(sideOf, pid, src, stats, events, 'skill')) return; // BLEED1
     sk3Targets(players, pid, src, tt).forEach(({pid: tp, c, single})=>{
       if(tp === pid) return;
       if(single && !dodgeCheck(c, src.defId)){ if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side, attDefId:src.defId, attUid:src.uid, targetSide:sideOf(tp), targetDefId:c.defId, targetUid:c.uid}); return; }
@@ -8048,7 +8051,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   function fireEarthquake(players, sideOf, ownerId, attCard, amount, stats, events){
     const enemy = players[otherId(ownerId)];
-    bleedTick(sideOf, ownerId, attCard, stats, events, 'skill');
+    if(bleedTick(sideOf, ownerId, attCard, stats, events, 'skill')) return; // BLEED1
     // 2026-09-22 VFX coverage pass: before this, every Earthquake hit replayed as a plain 'hit'
     // event via fireDamageAction below -- indistinguishable on screen from an ordinary single-
     // target attack landing several times in a row, with no AOE-specific cue anywhere (the
@@ -8301,7 +8304,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // fromSky (2026-10-17): Skyfall drops its rock from above, so Reflect can't bounce it; every other missile is a shot.
   function fireMissile(players, sideOf, ownerId, attCard, eff, stats, events, fromSky){
     const enemy = players[otherId(ownerId)];
-    bleedTick(sideOf, ownerId, attCard, stats, events, 'skill');
+    if(bleedTick(sideOf, ownerId, attCard, stats, events, 'skill')) return; // BLEED1
     const amount = (eff.amount==='attack') ? attCard.atk : eff.amount;
     if(eff.target==='all'){
       ['left','center','right'].forEach(side=> enemy.row[side].slice().forEach(c=>{
@@ -8319,7 +8322,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // exactly (opposing-card lookup, Evasion-gated, no-op if nothing's opposite).
   function fireGash(players, sideOf, ownerId, attCard, amount, stats, events){
     const opp = opposingCardOf(players, ownerId, attCard);
-    bleedTick(sideOf, ownerId, attCard, stats, events, 'skill');
+    if(bleedTick(sideOf, ownerId, attCard, stats, events, 'skill')) return; // BLEED1
     if(!opp) return;
     if(!dodgeCheck(opp.card)){
       if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:sideOf(ownerId), attDefId:attCard.defId, attUid:attCard.uid, targetSide:sideOf(otherId(ownerId)), targetDefId:opp.card.defId, targetUid:opp.card.uid});
@@ -8330,7 +8333,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   function fireRender(players, sideOf, ownerId, attCard, eff, stats, events){
     const opp = opposingCardOf(players, ownerId, attCard);
-    bleedTick(sideOf, ownerId, attCard, stats, events, 'skill');
+    if(bleedTick(sideOf, ownerId, attCard, stats, events, 'skill')) return; // BLEED1
     if(!opp) return;
     // Evasion: Render is a skill effect, so a dodging target may ignore it entirely.
     if(!dodgeCheck(opp.card)){
@@ -8412,6 +8415,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // it does on its own turn) are doubled here; reactive and passive triggers (On Hit, On Death, On Play, On Round Start ...) go off once.
     const reps0 = (HEADWIND_HOOKS.has(hook) && trigs.some(t=> t.on===hook) && headwindTwice(boardCard, playerId, mySide, events)) ? 2 : 1;
     for(let rep0 = 0; rep0 < reps0; rep0++) trigs.filter(t=>t.on===hook).forEach((t, i)=>{
+      if(boardCard && boardCard._bledOut && hook !== 'onDeath' && hook !== 'onExile') return; // BLEED1 (2026-11-22): it bled out on an earlier skill of this turn
       if(hook === 'onAttack' && onAttackPhase && !onAttackGoes(t)) return; // ENG19 (2026-11-02, #12): On Attack goes off after the swing (onAttackPhase)
       // Generic "once" flag: this exact trigger fires at most once for this
       // specific board-card INSTANCE (not the card definition, so every copy
@@ -8521,7 +8525,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // pre-migration save data) fall back to the exact same reading they always had via the
         // legacyWho/legacySub mapping just below, so nothing already saved changes behavior.
         case 'damage': {
-          bleedTick(sideOf, playerId, boardCard, stats, events, 'skill');
+          if(bleedTick(sideOf, playerId, boardCard, stats, events, 'skill')) break; // BLEED1
           const who = t.who || 'enemy';
           const sub = t.sub || (t.target==='all' ? 'all' : t.target==='random' ? 'random' : 'adjacent');
           // Custom/My-Attack/My-Health amount selector (2026-09-30): 'attack' and 'health' both
@@ -8591,7 +8595,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // 4 actions were completely silent — no log line, no VFX hook at all) and an
         // 'evaded' event on a dodge, matching every other evasion-gated effect.
         case 'debuffAttack': {
-          bleedTick(sideOf, playerId, boardCard, stats, events, 'skill');
+          if(bleedTick(sideOf, playerId, boardCard, stats, events, 'skill')) break; // BLEED1
           const apply = c=>{ c.atk = Math.max(0, c.atk-(t.amount||0)); if(recordEvents&&events) events.push({type:'statusFx', kind:'debuffAttack', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(otherId(playerId)), targetDefId:c.defId, targetUid:c.uid, amount:t.amount||0}); if(c.hp>0){ bleedTick(sideOf, otherId(playerId), c, stats, events, 'defend'); runCustomTriggers(players, sideOf, otherId(playerId), c, CARD_DEFS[c.defId], 'onAttacked', stats, events); } };
           const dodge = c=>{ if(recordEvents&&events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(otherId(playerId)), targetDefId:c.defId, targetUid:c.uid}); };
           if(t.target==='all'){ ['left','center','right'].forEach(side=> enemy.row[side].forEach(c=>{ if(c.hp>0) apply(c); })); break; } // area effect: Evade only dodges single-target
@@ -8607,7 +8611,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(!target || !target.card) break;
           const c = target.card;
           if(who!=='self'){
-            bleedTick(sideOf, playerId, boardCard, stats, events, 'skill');
+            if(bleedTick(sideOf, playerId, boardCard, stats, events, 'skill')) break; // BLEED1
             if(!dodgeCheck(c)){ if(recordEvents&&events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(who==='ally'?playerId:otherId(playerId)), targetDefId:c.defId, targetUid:c.uid}); break; }
           }
           const atkAmt = t.amount||0, hpAmt = t.amount2||0;
@@ -8850,7 +8854,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // reactions, graveyard-vs-exile decision — rather than reimplementing any of that here.
         case 'exile': {
           if(!t.who || t.who==='self') break; // self-exile is the legacy onDeath-only path above
-          bleedTick(sideOf, playerId, boardCard, stats, events, 'skill');
+          if(bleedTick(sideOf, playerId, boardCard, stats, events, 'skill')) break; // BLEED1
           const target = resolveGeneralTarget(players, playerId, boardCard, t.who, t.sub);
           if(!target || !target.card) break;
           const c = target.card;
@@ -10050,6 +10054,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   var bxBook = null; // the acting archer's kill-credit book (its arrow's kills are its kills, as a swing's are)
   function bxArrowShot(players, sideOf, pid, c, n, stats, events, how, bramble, tip){
     const pl = players[pid], enemy = players[otherId(pid)]; if(!pl || !enemy || !c || !(c.hp > 0)) return false;
+    if(bleedTick(sideOf, pid, c, stats, events, 'skill')) return false; // BLEED1 (2026-11-22): a shot is an action, so it bleeds first (it never ticked before); bled out, no shot
     const amount = Math.max(0, Math.round(Number(n) || 0)) + ((pl.perks && pl.perks.fletcher) ? 1 : 0); // ENG34 (2026-11-07): Fletcher / Weapon Master come in fireDamageAction (a shot)
     const opp = opposingCardOf(players, pid, c), near0 = (opp && opp.card && opp.card.hp > 0) ? opp.card : arrowTargetOf(players, pid, c);
     const near = (near0 && !bramble) ? shotRedirect(players, sideOf, pid, c, near0, events) : near0, pulled = lastShotPull; lastShotPull = null; // ENG22 (2026-11-03, DESIGN1-4): Taunt / Guardian
@@ -10657,7 +10662,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   function firePositionBeam(players, sideOf, ownerId, card, amount, dmgType, stats, events){
     const plan = positionBeamPlan(players, ownerId, card); if(!plan) return null;
-    bleedTick(sideOf, ownerId, card, stats, events, 'skill');
+    if(bleedTick(sideOf, ownerId, card, stats, events, 'skill')) return null; // BLEED1
     const amt = amount === 'attack' ? Math.max(0, effAtk(card)) : Math.max(0, Number(amount)||0), dt = dmgType || 'magic';
     if(recordEvents && events) events.push({type:'positionBeam', side:sideOf(ownerId), defId:card.defId, uid:card.uid, lane:plan.lane, col:plan.col, amount:amt,
       targetSide:sideOf(otherId(ownerId)), targetUids:plan.cards.map(c=> c.uid), hq:plan.hq});
@@ -11633,11 +11638,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // a permanent Attack buff it grants takes effect starting NEXT round, not retroactively.
       a.att._inspHit = 0; // ENG21 (2026-11-03): set when a hit of this swing lands (a unit or the bramble), which spends its Inspiration
       a.att._fireHit = 0; // Fire on hit (2026-10-16): an On Attack trigger may load this swing with extra fire damage
+      // Bleed: attacking at all ticks this card's own bleed stacks, whether or not the attack finds/lands on a target.
+      // 2026-11-22 (BLEED1, owner 09:56 #2: "even if the bleed would kill, the creature can perform its action first"): the tick comes before
+      // its On Action / On Attack, and a unit that bleeds out does nothing this turn (was FIX7's 11-03 rule: its On Attack still went off).
+      if(bleedTick(sideOf, a.attId, a.att, stats, events, 'attack')){ reflowAfterKills(killCreditKeysAtTurnStart); watchScan(players, sideOf, stats, events); pending = pickNextAttacker(); continue; } // this is itself a fresh death — reflow now, not at round's end
       runCustomTriggers(players, sideOf, a.attId, a.att, attDef, 'onAction', stats, events); // Package BX (2026-10-21): On Action, its turn
       { const prev = onAttackPhase; onAttackPhase = 'pre'; try{ runCustomTriggers(players, sideOf, a.attId, a.att, attDef, 'onAttack', stats, events); } finally { onAttackPhase = prev; } } // ENG19 (2026-11-02, #12): only Fire on hit here; the rest after the swing (runOnAttackPost)
-      // Bleed: attacking at all ticks this card's own bleed stacks, whether or not the attack
-      // finds/lands on a target.
-      bleedTick(sideOf, a.attId, a.att, stats, events, 'attack');
       en8DauntUse(a.att, events, sideOf, a.attId, 'act'); // EN8 (2026-10-25): its action takes a Daunt counter off (this swing already counted it)
       // Bug fix (2026-09-16, reported as "units get hit by nothing" / "the unit is dying but
       // still attacking"): bleedTick just above can itself kill the attacker (bleeding out
@@ -11648,7 +11654,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // source. Re-check here and bail before any target is resolved or damage is dealt.
       // 2026-11-03 (package FIX7, review 11-03a m2): a unit that bleeds out as it attacks still gets its On Attack (before ENG19 it had fired
       // ahead of this tick), by ENG19's rule for a unit dead in its own swing ('postDead': it draws, gains and hits, gives itself nothing).
-      if(a.att.hp<=0){ runOnAttackPost(players, sideOf, a, attDef, stats, events); reflowAfterKills(killCreditKeysAtTurnStart); watchScan(players, sideOf, stats, events); pending = pickNextAttacker(); continue; } // this is itself a fresh death — reflow now, not at round's end
+      // (BLEED1, 2026-11-22: the tick and this bail moved above On Action / On Attack, see there.)
       // Live column/target resolution (2026-09-17 follow-up): both this attacker's OWN
       // column/facing and the enemy's column map are recomputed fresh from the CURRENT board,
       // not the frozen snapshot captured when the round started — see liveColOf's comment.

@@ -5,6 +5,7 @@
 //       The browser check is tests/e2e/fix7_2026_11_03.py.
 //   m1  the Flyers' wind marks follow the gust's kind: Crosswind +0/2 (heavy +0/5) and no Tail / Head; Heavy Headwind −2⚔; Heavy Tailwind +⏩.
 //   m2  an attacker killed by its own Bleed tick still gets its On Attack (ENG19's 'postDead' rule: draws, gives itself nothing).
+//       Since BLEED1 (2026-11-22, owner) it does nothing at all: the check is inverted below.
 //   m3  Auto-play's leader lend is undone even when aiTakeTurn throws (try / finally).
 //   m4  BASELVL-1's answer names the economy side effects.
 'use strict';
@@ -87,9 +88,11 @@ const raidEngine = seed=> E.makeSimEngine(defs, E.mulberry32(seed || 7), {record
   const drew = ev.some(x=> x.type === 'draw' && x.side === 'A'), hit = ev.some(x=> x.type === 'hit' && x.attUid === b.uid);
   const healed = ev.some(x=> (x.type === 'heal' || (x.type === 'statusFx' && x.kind === 'heal')) && (x.uid === b.uid || x.targetUid === b.uid));
   ok(b.hp <= 0 && !hit, `m2: the attacker bleeds out as it attacks and lands no blow (hp ${b.hp}, bleed event ${bled})`);
-  ok(drew && P[1].hand.length === h0 + 1, `m2: its On Attack draw still goes off (hand ${h0} -> ${P[1].hand.length})`);
-  ok(!healed, 'm2: it gives itself nothing (its On Attack heal is skipped: postDead)');
-  ok(/if\(a\.att\.hp<=0\)\{ runOnAttackPost\(players, sideOf, a, attDef, stats, events\); reflowAfterKills/.test(eng), 'm2: the Bleed bail-out runs runOnAttackPost first'); }
+  // 2026-11-22 (BLEED1, owner 09:56 #2: "even if the bleed would kill, the creature can perform its action first"): a unit that bleeds out does
+  // nothing this turn, its On Attack included (was m2: the draw still went off); tests/bleed1-2026-11-22.js covers the skills.
+  ok(!drew && P[1].hand.length === h0, `BLEED1: its On Attack draw no longer goes off (hand ${h0} -> ${P[1].hand.length})`);
+  ok(!healed, 'm2: it gives itself nothing');
+  ok(!/runOnAttackPost\(players, sideOf, a, attDef, stats, events\); reflowAfterKills\(killCreditKeysAtTurnStart\)/.test(eng), 'BLEED1: the Bleed bail-out no longer runs runOnAttackPost'); }
 
 // ---- m3: the Auto-play leader lend
 { const st = app.slice(app.indexOf('\nasync function autoplayStep('), app.indexOf('\nasync function autoplayStep(') + 2000); ok(/try\{ m\.engine\.aiTakeTurn\(m\.players, m\.sideOf, 1, m\.stats, ev\); \} finally \{ autoplayLeaderOff\(m, me, lead, ev\); \}/.test(st || ''), 'm3: aiTakeTurn sits in try / finally, autoplayLeaderOff always runs');

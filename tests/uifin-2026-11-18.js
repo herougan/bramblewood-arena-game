@@ -6,6 +6,7 @@ const ROOT = path.join(__dirname, '..');
 const src = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), tpl = fs.readFileSync(path.join(ROOT, 'arena_template.html'), 'utf8');
 let fail = 0; const ok = (c, m)=>{ if(!c){ fail++; console.log('  x', m); } };
 ok(/\.abadge\{display:inline-flex; align-items:center;/.test(tpl), '1 pips centre their text and emoji on one line');
+ok(/\.abadge > span:not\(\.ab-wing\)\{display:inline-flex; align-items:center;\}/.test(tpl), 'PIPC (2026-11-22, owner 09:56 #1): the inner span holding a number and its emoji centres them too (they were baseline-aligned)');
 ok(/\.ab-trig \.ab-arrow\{margin:0 -\.1em 0 -\.2em; translate:0 \.04em;\}/.test(tpl), '3 the trigger arrow sits tight to its glyph');
 ok(/ui52-first-map is-first/.test(src) && !/>\+ \$\{escapeHtml\(TX\('ui\.pg-map-n'/.test(src) && /\.ui52-first-map\.is-first\{/.test(tpl), '2 equal map pills, no plus, the first one stronger');
 ok(/map\.id==='md' \? mapSkullHTML\(\)/.test(src) && /\.map-skull\{/.test(tpl), '4 skull on the Glass Dunes');
