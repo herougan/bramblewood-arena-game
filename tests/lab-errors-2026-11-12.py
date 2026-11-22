@@ -38,6 +38,14 @@ async def worker(b, url, ids, errs, cur):
 async def main(a):
     from playwright.async_api import async_playwright
     if not a.no_build:
+        # 2026-11-22 (TESTFIX8): the build reads .fxcat/cards.json (gitignored), captured from a running game by tools/effects-lab/capcards.py; CI's
+        # setup_tests.sh captures it, a local checkout never did (FileNotFoundError), so capture it here when missing (capcards reads port 8765)
+        if not os.path.exists(os.path.join(LAB, 'cards.json')):
+            os.makedirs(LAB, exist_ok=True)
+            srv = subprocess.Popen([sys.executable, '-m', 'http.server', '8765', '--bind', '127.0.0.1', '--directory', ROOT], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            try:
+                import time; time.sleep(2); subprocess.run([sys.executable, os.path.join(ROOT, 'tools', 'effects-lab', 'capcards.py')], cwd=ROOT, capture_output=True)
+            finally: srv.terminate()
         r = subprocess.run([sys.executable, os.path.join(ROOT, 'tools', 'effects-lab', 'build.py')], cwd=ROOT, capture_output=True, text=True)
         if r.returncode: print('  FAIL the Lab does not build:', (r.stderr or r.stdout)[-400:]); return 1
     if not os.path.exists(os.path.join(LAB, 'effects.html')): print('  FAIL .fxcat/effects.html is missing'); return 1

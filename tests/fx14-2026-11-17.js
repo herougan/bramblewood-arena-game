@@ -110,7 +110,9 @@ const RUNS = [ // [name, js, selector that must appear, selector that must not]
     const e0 = errs.length;
     const r = await pg.evaluate(async ([js, sel, not])=>{ let max = 0, bad = 0; const iv = setInterval(()=>{ max = Math.max(max, document.querySelectorAll(sel).length); if(not) bad = Math.max(bad, document.querySelectorAll(not).length); }, 20);
       (0, eval)(js); await new Promise(r=> setTimeout(r, 2600)); clearInterval(iv); return {max, bad}; }, [js, sel, not || null]);
-    const left = await pg.evaluate(()=> document.querySelectorAll('.fxh:not(.fxh-atmos)').length);
+    // 2026-11-22 (TESTFIX8): a loaded machine (the full run) ends a look late ("Pearls paying" had 2 nodes still fading at 2.6 s), so wait up to 6 s more
+    // for them to go; a node that never leaves still fails
+    const left = await pg.evaluate(async ()=>{ const n = ()=> document.querySelectorAll('.fxh:not(.fxh-atmos)').length; for(let i = 0; i < 300 && n(); i++) await new Promise(r=> setTimeout(r, 20)); return n(); });
     ok(r.max > 0, `${name}: it draws (${sel})`); if(not) ok(r.bad === 0, `${name}: no ${not}`);
     ok(left === 0, `${name}: nothing left behind (${left})`); ok(errs.length === e0, `${name}: no console error ${errs.slice(e0, e0 + 2).join(' | ')}`);
   }

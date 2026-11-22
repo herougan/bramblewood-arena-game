@@ -56,7 +56,9 @@ function game(ctx, g, deal){
   const bOut = k=> runs[k].filter(r=> r.B.length).length; ok(bOut('plan') > 0, `5-7: the CPU still brings its leader out (${bOut('plan')}/${N})`);
   // 4-5, the CPU's side: the Drowned Matriarch in its deck is played from hand, Old Sturgeon leads
   // 2026-11-16 (TESTFIX5): the deck was rebuilt again (SKIR3 / BALREL); its leader is whatever skirmishLeadersOf names (Shoal Shark now), never the Drowned Matriarch
-  const L45 = G.skirmishLeadersOf(B.byKey('m2', '4-5'), 'm2') || [], c45 = G.referenceFightSetup('m2', B.byKey('m2', '4-5'), {}); ok(L45.length && !L45.includes('drowned-matriarch') && L45.every(id=> (c45.setup.reserveLeaders || []).includes(id)), `4-5 is led by its own leader, not the Drowned Matriarch (${L45})`);
+  // 2026-11-22 (TESTFIX8): REFIT4 took Shoal Shark out of 4-5 (docs/balance/refit4/refit4-fixes.jsonl), so the elite's showcase leader (SK: its strongest card) is the
+  // Drowned Matriarch now; FIX6's worry (its copies never played) is the dmPlays check below, so the 'not the Matriarch' clause went
+  const L45 = G.skirmishLeadersOf(B.byKey('m2', '4-5'), 'm2') || [], c45 = G.referenceFightSetup('m2', B.byKey('m2', '4-5'), {}); ok(L45.length && L45.every(id=> (c45.setup.reserveLeaders || []).includes(id)), `4-5 is led by its own leader, dealt to its reserve (${L45})`);
   let dmPlays = 0; for(let g = 0; g < 10; g++){ const engine = E.makeSimEngine(c45.defs, rng(9100 + g * 37), {recordEvents: true, battleMode: c45.mode, rules: c45.rules, aiAim: true, aiLevel: c45.cpu});
     const sideOf = id=> id === 1 ? 'A' : 'B', st = {}, ev = [], P = {1: engine.newPlayer(1, c45.mine, c45.myCastle), 2: engine.newPlayer(2, c45.enemyDeck, c45.sc.character)}; P[2].loopCards = []; P[2].reserveLeaders = c45.setup.reserveLeaders.slice();
     engine.draw(P[1], 3, 'A', st, ev); engine.draw(P[2], 3, 'B', st, ev);
@@ -97,10 +99,11 @@ function game(ctx, g, deal){
 
 // The Tower pools follow the current rarities (KK20)
 { const D = B.CARD_DEFS_BASELINE, T = new Function(B.grab('TOWER_POOLS') + '; return TOWER_POOLS;')(), BANDS = G.RARITY_TIER_BANDS || ['common', 'uncommon', 'rare', 'veryrare', 'superrare', 'epic', 'heroic', 'unique', 'legendary', 'mythic', 'ancient', 'divine'];
-  ['rare', 'veryrare', 'epic', 'heroic', 'unique'].forEach(t=> (T[t] || []).forEach(id=> ok(D[id] && D[id].rarity === t, `Tower ${t} pool: ${id} is ${D[id] ? D[id].rarity : 'missing'}`)));
+  // 2026-11-22 (TESTFIX8): + the Super Rare tier (The Contradiction and the Fire Drake Hatchling are Super Rare in cards.json now; KK20)
+  ['rare', 'veryrare', 'superrare', 'epic', 'heroic', 'unique'].forEach(t=> (T[t] || []).forEach(id=> ok(D[id] && D[id].rarity === t, `Tower ${t} pool: ${id} is ${D[id] ? D[id].rarity : 'missing'}`)));
   (T.legendary || []).forEach(id=> ok(D[id] && BANDS.indexOf(D[id].rarity) >= BANDS.indexOf('legendary'), `Tower boss pool: ${id} is Legendary or above (${D[id] && D[id].rarity})`));
   ok(!Object.values(T).some(l=> l.includes('drowned-matriarch')), 'the Drowned Matriarch (Uncommon) left the Tower');
-  ok(/const tiers = \['rare', 'veryrare', 'epic', 'heroic', 'unique'\];/.test(app), 'towerFloorDeck picks from the Very Rare tier too'); }
+  ok(/const tiers = \['rare', 'veryrare', 'superrare', 'epic', 'heroic', 'unique'\];/.test(app), 'towerFloorDeck picks from the Very Rare and Super Rare tiers too'); }
 
 // The package's paperwork
 { const ds = rd('docs/decisions.json'); ['FIX6-1', 'FIX6-2', 'FIX6-3'].forEach(d=> ok(ds.includes('"id": "' + d + '"'), d + ' in decisions.json'));
