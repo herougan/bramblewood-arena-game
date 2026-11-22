@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-22 (package MAPADD1: owner 13:22 #1-#2)
+- Players see (admin Map cards window): a skill in the owner's map table that no card on the map's list has is a half-red (NEW!), half-blue (suggested) tile, "please add this in". Every table skill counts now, not only the first three.
+- Hub: Design tab opens on "Map skill table (Maps 0-20)" (`docs/map-skill-table.md`, `node tools/hub/map_skill_table.js`, read from the built game): each table skill's carriers and New! status, the owner's 11-22 sheet where it differs, and the Special column.
+- Tests: `tests/run.js` points `BW_CHROMIUM` at the installed headless shell. 48 tests defaulted to an old Chromium path and quietly skipped their browser part.
+
 ## 2026-11-22 (ROADSCOPE: side maps that open after Map 20 leave the Maps 0-20 totals)
 - No player-visible change. The Old Bramble, The Ice Hollow and The Deep Dark open after Map 21 and Basalt Foundry after Map 23, so under BAL17-2 ("We are only tuning Map 0-20") they leave the road measure (`tools/skirmish_pass.js --maxmap` now reads `mapUnlockNumberOf`) and the road totals (`tools/bal16/road_totals_2026_11_05.js`). The BLEED1 road read that way: main 113 in band / 126 within 10 / 2 beyond 20 (149 fights, unchanged), side 43 / 47 / 4 (59 fights; was 60 / 64 / 9 over 81 with those four maps' 22 fights).
 

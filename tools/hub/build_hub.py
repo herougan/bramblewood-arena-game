@@ -188,6 +188,8 @@ skills_html = ''.join(skill_card(f) for f in SKILLS)
 # have"; "write down your ideas or my ideas in the master sheet in the design section"): the design
 # sheets and audits, newest first, each a collapsible card (the first one open).
 DESIGN = [
+  # 2026-11-22 (MAPADD1, owner 13:22: "Can I see this table in the master hub?"): the owner's Maps 0-20 skill table checked against the cards (generated: node tools/hub/map_skill_table.js), first so it opens by default
+  ('Map skill table (Maps 0-20)', 'map-skill-table.md'),
   # 2026-11-04 (package SKILLREC1, owner 07:42: "get a list of skill recommendations (sort by advancement) in the master hub"): first, so it opens by default
   ('Skill recommendations by road advancement (SKILLREC1)', 'skill-recommendations-2026-11-04.md'),
   ('Fields, day and night, Lumber from cards', 'fields-and-day-night-2026-10-09.md'),
