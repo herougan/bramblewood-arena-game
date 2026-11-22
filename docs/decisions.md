@@ -4,6 +4,37 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**TESTFIX9-1. Map 20 side dungeon fields a Unique card** · Decide · Balance · asked 2026-11-23
+- 20-A-4 (the Map 20 side dungeon) holds Ashmantle Fiend, a Unique card, while the road cap there is Epic.
+  - a) Swap it for the best Epic-or-lower card that keeps the fight in band (Claude re-measures)
+  - b) Allow it as an exception for this dungeon boss
+- **Default:** a
+
+**TESTFIX9-2. 61 road fights use cards from another map's list** · Decide · Balance · asked 2026-11-23
+- After this month's list moves, 61 of 260 road fights hold cards that are not on their map's list (the map-unique rule). A tool can re-card them from their own lists, then Claude re-measures and re-tunes the road.
+  - a) Re-card all 61, then re-measure and re-fit
+  - b) Leave them; the rule only warns
+- **Default:** a
+
+**ECON1-1. Packs cost Leaves only (no Gold Leaves)?** · Decide · Economy · asked 2026-11-22
+- With Leaves only (Pouch 80, Chest 100, Case 125 for 5 cards) a free player can buy every pack and holds 51-69% of the next map's strong deck. Keeping a Gold Leaves part leaves free players on Pouches, about 17-20%. Phase 2 builds the default; design: docs/design/econ1-2026-11-22.md.
+  - a) Leaves only
+  - b) Keep a Gold Leaves part (Chest +10, Case +18)
+- **Default:** a
+
+**ECON1-2. Faction packs: 3 cards or 5?** · Decide · Economy · asked 2026-11-22
+- Basic packs go to 5 cards (your call). Faction packs are paced so their first Rare lands on Map 14; 5 cards would bring faction cards about 1.7x as fast and need that gate retuned.
+  - a) Keep 3 (2 of your side + 1 general)
+  - b) 5 (3 + 2), retune the faction Rare gate
+- **Default:** a
+
+**ECON1-3. How fast first-clear rewards grow by map** · Decide · Economy · asked 2026-11-22
+- A skirmish first clear pays 40 Leaves / 20 Dust on Map 0. Default +10% Leaves and +5% Dust a map: 80 / 30 on Map 10, 120 / 40 on Map 20. +10% for both makes Dust pile up (19-34k unspent at Map 20 for a player who keeps a deck).
+  - a) +10% Leaves, +5% Dust a map
+  - b) +10% for both
+  - c) Flat, as today
+- **Default:** a
+
 **SKMPRICE-1. 6 in-play cards are out of budget after the re-price** · Decide · Balance · asked 2026-11-22
 - The new prices push 6 in-play Map 0-20 cards out of the band: Shellwright Apprentice 129% (Fortify now 9.06), Clownfish Scout 106%, Mouse Sapper 104%, Robin Redbreast 104% (your card; Diurnal reads 1.45x its old price), Leopard Slug 101%, all over; Blind Cave Fish 60%, under (Darksight now 0.18). No stats changed.
   - a) Trim or lift each to the band, Claude picks the stat
