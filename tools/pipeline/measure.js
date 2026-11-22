@@ -66,6 +66,7 @@ async function step(args, S) {
         args.copies != null ? { k: +args.copies } /* 2026-11-21 (COPIES): the slot's copies (bench default 6); pair with --ctx-tag */ : {},
         args.level != null ? { level: +args.level } /* 2026-11-22 (LEVEL): the level both decks play at (global default 1); pair with --ctx-tag */ : {},
         args.ai != null ? { ai: +args.ai } /* 2026-11-22 (AI): the CPU level both seats play (default 1, smart); pair with --ctx-tag */ : {},
+        args['ai-mine'] != null ? { aiMine: +args['ai-mine'] } /* 2026-11-22 (PILOT): the measured deck's seat alone at this CPU level (the opponents stay smart); pair with --ctx-tag */ : {},
         args.seed != null ? { seed: String(args.seed) } /* 2026-11-22 (SEED): a fresh, independent set of fights (bench default tools1); pair with --ctx-tag */ : {},
         args['pool-file'] ? { pool: JSON.parse(require('fs').readFileSync(String(args['pool-file']), 'utf8')) } /* 2026-11-22 (POOL): the cards both decks' rests and the opponents are drawn from; pair with --ctx-tag */ : {}));
       const w = res.test.worthRuler; if (w.m == null) { empty = true; break; } trail.push({ fights: M, m: w.m, lo: w.lo, hi: w.hi }); conv = converged(w, cfg);

@@ -58,8 +58,9 @@ function contextOf(gm, cs) {
   const bramble = cs.bramble != null && +cs.bramble > 0 ? +cs.bramble : BRAMBLE; if (bramble !== BRAMBLE) name += '-b' + bramble;
   // 2026-11-22 (AI): the CPU level both seats play (cs.ai: 0 basic, 1 smart, 2 smartest; default AI 1); in the key and the name only when not 1
   const ai = cs.ai != null ? +cs.ai : AI; if (ai !== AI) name += '-ai' + ai;
-  const key = fnv(JSON.stringify([VERSION, fingerprint(), cs.kind, map && map.id, cs.mode || '', seed, k, level, pool, fields.map(f => f.at)].concat(bramble !== BRAMBLE ? [bramble] : [], ai !== AI ? ['ai' + ai] : []))).toString(36);
-  return { cs, key, name, pool, fields, level, k, seed, bramble, ai, mapId: map && map.id, fights: new Map() };
+  const aiMine = cs.aiMine != null ? +cs.aiMine : null; if (aiMine != null) name += '-pilot' + aiMine; // 2026-11-22 (PILOT): the measured deck's seat alone at this CPU level
+  const key = fnv(JSON.stringify([VERSION, fingerprint(), cs.kind, map && map.id, cs.mode || '', seed, k, level, pool, fields.map(f => f.at)].concat(bramble !== BRAMBLE ? [bramble] : [], ai !== AI ? ['ai' + ai] : [], aiMine != null ? ['pilot' + aiMine] : []))).toString(36);
+  return { cs, key, name, pool, fields, level, k, seed, bramble, ai, aiMine, mapId: map && map.id, fights: new Map() };
 }
 
 // a random legal deck of `size` cards from `pool` (contribution.js's randomDeck with a size): kk different cards, then copies within the caps
@@ -140,7 +141,7 @@ function slotMine(gm, defs, v, level, k) {
 // ---------------------------------------------------------------- one game
 function makeGame(gm, X) {
   const G = gm.G, defs = G.referenceBaseDefs(), castle = { id: 'castle', name: 'Bramble', icon: '🏰', health: X.bramble || BRAMBLE /* BAL12 (2026-11-02) */, rarity: 'common', archetypes: ['Castle'], effects: {} };
-  const spec = { level: X.level, ai: X.ai != null ? X.ai : AI /* AI (2026-11-22) */, beeTank: false }, mode = G.CONQUEST_DEFAULT_MODE || 'open';
+  const spec = { level: X.level, ai: X.ai != null ? X.ai : AI /* AI (2026-11-22) */, aiMine: X.aiMine != null ? X.aiMine : undefined /* PILOT (2026-11-22) */, beeTank: false }, mode = G.CONQUEST_DEFAULT_MODE || 'open';
   // the score of deck A (slot `v` + the rest without `card`): '1' win, '0' loss, 'h' draw
   return function play(i, v, card) {
     const fx = fightOf(gm, X, i), R = restFor(gm, X, i, card);
@@ -228,13 +229,14 @@ function parseCommon(a, o) { // the options every command shares; returns true w
     case '--level': o.level = +take(); return true; case '--cache-dir': o.cacheDir = take(); return true; case '--tag': o.tag = take(); return true;
     case '--out': o.out = path.resolve(take()); return true; case '--quiet': a.shift(); o.quiet = true; return true; case '--chunk': o.chunk = +take(); return true;
     case '--pool': o.pool = take().split(',').map(s => s.trim()).filter(Boolean); return true;
+    case '--ai-mine': o.aiMine = +take(); return true; // PILOT (2026-11-22): the measured deck's seat alone at this CPU level
     case '--ai': o.ai = +take(); return true; // AI (2026-11-22): the CPU level both seats play (0 basic, 1 smart, 2 smartest)
     case '--bramble': o.bramble = +take(); return true; // BAL12 (2026-11-02): both brambles' Health (default 30; the road's is 15)
   }
   return false;
 }
 function defaults() { return { games: 200, k: 6, seed: 'tools1', workers: Math.max(1, Math.min(os.cpus().length, 2)), map: null, mode: 'bpro', level: null, cacheDir: path.join(os.tmpdir(), 'bramble-bench'), tag: new Date().toISOString().slice(0, 10), out: path.join(ROOT, 'docs', 'balance'), chunk: 25 }; }
-const csOf = o => o.map != null ? { kind: 'map', map: o.map, mode: o.mode, seed: o.seed, k: o.k, level: o.level, pool: o.pool, bramble: o.bramble, ai: o.ai } : { kind: 'global', seed: o.seed, k: o.k, level: o.level, pool: o.pool, bramble: o.bramble, ai: o.ai };
+const csOf = o => o.map != null ? { kind: 'map', map: o.map, mode: o.mode, seed: o.seed, k: o.k, level: o.level, pool: o.pool, bramble: o.bramble, ai: o.ai, aiMine: o.aiMine } : { kind: 'global', seed: o.seed, k: o.k, level: o.level, pool: o.pool, bramble: o.bramble, ai: o.ai, aiMine: o.aiMine };
 const pp = v => v == null ? '-' : (v >= 0 ? '+' : '') + (v * 100).toFixed(1);
 
 module.exports = { VERSION, ROOT, O, C, BLANK, fnv, r4, numOf, fingerprint, contextOf, randomDeck, fightOf, restFor, restHas, vKey, isPlain, paramKeysOf, variantEffects, printedDef, slotMine, makeGame, Bench, meanSE, diff, median, costs, budgetOf, parseCommon, defaults, csOf, pp };

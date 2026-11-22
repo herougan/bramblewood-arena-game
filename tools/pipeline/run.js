@@ -6,7 +6,7 @@
 // Exit code: 0 ok / partial, 1 failed, 2 usage.
 const P = require('./lib.js');
 const STEPS = ['measure', 'price', 'refit', 'bake', 'tournament', 'test'];
-const VALUED = ['skills', 'map', 'only', 'minutes', 'fights', 'cache-dir', 'set-const', 'games', 'maps', 'tag', 'from', 'only-ids', 'kind', 'baseline', 'budget', 'carriers', 'bramble' /* BAL12 (2026-11-02) */, 'only-file' /* BAL14 (2026-11-03) */, 'ctx-tag' /* BSWEEP (2026-11-21) */, 'copies' /* COPIES (2026-11-21) */, 'level' /* LEVEL (2026-11-22) */, 'ai' /* AI (2026-11-22) */, 'seed' /* SEED (2026-11-22) */, 'pool-file' /* POOL (2026-11-22) */];
+const VALUED = ['skills', 'map', 'only', 'minutes', 'fights', 'cache-dir', 'set-const', 'games', 'maps', 'tag', 'from', 'only-ids', 'kind', 'baseline', 'budget', 'carriers', 'bramble' /* BAL12 (2026-11-02) */, 'only-file' /* BAL14 (2026-11-03) */, 'ctx-tag' /* BSWEEP (2026-11-21) */, 'copies' /* COPIES (2026-11-21) */, 'level' /* LEVEL (2026-11-22) */, 'ai' /* AI (2026-11-22) */, 'seed' /* SEED (2026-11-22) */, 'ai-mine' /* PILOT (2026-11-22) */, 'pool-file' /* POOL (2026-11-22) */];
 
 async function runStep(step, args, argv) {
   const t0 = Date.now(), S = P.newSummary(step, argv);

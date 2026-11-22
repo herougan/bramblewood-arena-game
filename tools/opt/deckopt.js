@@ -318,7 +318,7 @@ function playOne(gm, spec, ctx, deck, g) {
     engine.setSuddenDeath(r >= E.SUDDEN_DEATH_ROUND, r >= E.SUDDEN_DEATH_CASTLE_ROUND ? 2 : 1);
     [1, 2].forEach(p => { P[p].playedThisTurn = false; P[p].discardUsedThisTurn = false; });
     if (r > 1) engine.roundStart(P, r, sideOf, st, null);
-    engine.setAiLevel(mirror ? spec.ai : 1); engine.aiTakeTurn(P, sideOf, 1, st, null); engine.setAiLevel(ai2); engine.aiTakeTurn(P, sideOf, 2, st, null);
+    engine.setAiLevel(mirror ? (spec.aiMine != null && aFirst ? spec.aiMine : spec.ai) : 1); engine.aiTakeTurn(P, sideOf, 1, st, null); engine.setAiLevel(mirror && spec.aiMine != null && !aFirst ? spec.aiMine : ai2); engine.aiTakeTurn(P, sideOf, 2, st, null); // 2026-11-22 (PILOT): spec.aiMine = the CPU level of the measured deck's seat only (the CPU level only steers a seat's own turn; combat aim is the same for all)
     over = engine.resolveCombat(P, sideOf, st, null, r % 2 === 0 ? 1 : 2); if (over) break;
     const sig = E.boardSignature(P); stalled = (sig === lastSig && E.noActionsLeft(P)) ? stalled + 1 : 0; lastSig = sig; if (stalled >= 2 && r >= E.STALL_DRAW_FROM_ROUND) break;
     engine.draw(P[1], 1, 'A', st, null); engine.draw(P[2], 1, 'B', st, null);
