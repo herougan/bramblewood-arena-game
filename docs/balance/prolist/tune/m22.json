@@ -1,0 +1,226 @@
+{
+ "map": "m22",
+ "generated": "2026-11-22T02:56:49.065Z",
+ "decks": [
+  {
+   "id": "22-BPRO-1",
+   "map": "m22",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "ashbone-ghoul": 4,
+     "cinder-gecko": 4,
+     "ember-jackal": 3,
+     "pumice-beetle": 3,
+     "ravenous-wolverine": 3,
+     "rimefire-salamander": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "ashbone-ghoul": 4,
+     "rimefire-salamander": 3,
+     "opossum-faker": 4,
+     "ur-elk": 2,
+     "cinder-skeleton": 4,
+     "osprey-plunger": 3
+    },
+    "val": {
+     "v": 0.535,
+     "ref": 0.825,
+     "gap": 0.235
+    },
+    "leaders": [
+     "ur-elk"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: ravenous-wolverine -> opossum-faker",
+     "was": [
+      "ravenous-wolverine: off the bpro pool",
+      "ravenous-wolverine: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "ravenous-wolverine: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.842,
+     "ref": 0.275,
+     "gap": 0.572
+    },
+    {
+     "move": "pumice-beetle x3 -> ur-elk",
+     "v": 0.725,
+     "ref": 0.575,
+     "gap": 0.455,
+     "tried": 24
+    },
+    {
+     "move": "cinder-gecko x4 -> cinder-skeleton",
+     "v": 0.608,
+     "ref": 0.75,
+     "gap": 0.338,
+     "tried": 24
+    },
+    {
+     "move": "ember-jackal x3 -> osprey-plunger",
+     "v": 0.475,
+     "ref": 0.8,
+     "gap": 0.245,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 1177,
+   "sec": 227
+  },
+  {
+   "id": "22-WPRO-1",
+   "map": "m22",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "ash-cloud-condor": 3,
+     "cinder-hornet": 4,
+     "glacier-wolf-pack": 4,
+     "glacier-yak": 4,
+     "ice-petrel": 1,
+     "phoenix-fledgling": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "cinder-hornet": 4,
+     "glacier-wolf-pack": 4,
+     "ice-petrel": 1,
+     "phoenix-fledgling": 4,
+     "ashbone-ghoul": 4,
+     "badger-berserker": 3
+    },
+    "val": {
+     "v": 0.963,
+     "ref": 0.963,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: ash-cloud-condor x3 -> ashbone-ghoul",
+     "was": [
+      "ash-cloud-condor: off the wpro pool",
+      "glacier-yak: off the wpro pool"
+     ]
+    },
+    {
+     "move": "repair: glacier-yak -> badger-berserker",
+     "was": [
+      "glacier-yak: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.983,
+     "ref": 0.983,
+     "gap": 0
+    }
+   ],
+   "readings": 33,
+   "sec": 12
+  },
+  {
+   "id": "22-WPRO-2",
+   "map": "m22",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "cinder-hornet": 1,
+     "ember-centipede": 4,
+     "fumarole-ibex": 3,
+     "glacier-wolf-pack": 4,
+     "ice-petrel": 4,
+     "phoenix-fledgling": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "cinder-hornet": 1,
+     "ember-centipede": 4,
+     "glacier-wolf-pack": 4,
+     "ice-petrel": 4,
+     "phoenix-fledgling": 4,
+     "cinder-gecko": 3
+    },
+    "val": {
+     "v": 0.975,
+     "ref": 0.975,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: fumarole-ibex -> cinder-gecko",
+     "was": [
+      "fumarole-ibex: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.967,
+     "ref": 0.967,
+     "gap": 0
+    }
+   ],
+   "readings": 12,
+   "sec": 5
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

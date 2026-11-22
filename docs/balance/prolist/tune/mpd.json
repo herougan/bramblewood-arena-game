@@ -1,0 +1,209 @@
+{
+ "map": "mpd",
+ "generated": "2026-11-22T02:40:46.035Z",
+ "decks": [
+  {
+   "id": "18-A-BPRO-1",
+   "map": "mpd",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "antlion-pit": 4,
+     "caustic-scorpion": 4,
+     "dromedary": 4,
+     "horned-lizard": 4,
+     "sand-widow": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "antlion-pit": 4,
+     "caustic-scorpion": 4,
+     "dromedary": 4,
+     "horned-lizard": 2,
+     "dune-jackal": 4,
+     "dust-devil-kestrel": 2
+    },
+    "val": {
+     "v": 0.09,
+     "ref": 0.875,
+     "gap": 0.085
+    },
+    "leaders": [
+     "dust-devil-kestrel"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: sand-widow x4 -> dune-jackal",
+     "was": [
+      "sand-widow: off the bpro pool",
+      "sand-widow: not on the map's list (held, not listed)"
+     ]
+    },
+    {
+     "move": "repair: antlion-pit -2 -> dust-devil-kestrel",
+     "was": [
+      "shares 12 copies with another deck"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.108,
+     "ref": 0.85,
+     "gap": 0.212
+    },
+    {
+     "move": "horned-lizard -2 -> antlion-pit",
+     "v": 0.083,
+     "ref": 0.7,
+     "gap": 0.097,
+     "tried": 7
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 4
+    }
+   ],
+   "readings": 166,
+   "sec": 41
+  },
+  {
+   "id": "18-A-WPRO-1",
+   "map": "mpd",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "caustic-scorpion": 4,
+     "dromedary": 2,
+     "dune-jackal": 4,
+     "dust-devil-kestrel": 2,
+     "roadrunner-courier": 4,
+     "sand-widow": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "caustic-scorpion": 4,
+     "dromedary": 2,
+     "dune-jackal": 4,
+     "dust-devil-kestrel": 2,
+     "roadrunner-courier": 4,
+     "antlion-pit": 4
+    },
+    "val": {
+     "v": 0.838,
+     "ref": 0.838,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: sand-widow -> antlion-pit",
+     "was": [
+      "sand-widow: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.867,
+     "ref": 0.867,
+     "gap": 0
+    }
+   ],
+   "readings": 5,
+   "sec": 5
+  },
+  {
+   "id": "18-A-WPRO-2",
+   "map": "mpd",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "barrel-cactus": 2,
+     "dromedary": 3,
+     "dune-jackal": 4,
+     "horned-lizard": 3,
+     "pale-oryx": 4,
+     "sand-widow": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "barrel-cactus": 2,
+     "dromedary": 3,
+     "dune-jackal": 4,
+     "horned-lizard": 3,
+     "pale-oryx": 4,
+     "antlion-pit": 4
+    },
+    "val": {
+     "v": 0.938,
+     "ref": 0.938,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: sand-widow -> antlion-pit",
+     "was": [
+      "sand-widow: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.9,
+     "ref": 0.9,
+     "gap": 0
+    }
+   ],
+   "readings": 5,
+   "sec": 4
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

@@ -1,0 +1,422 @@
+{
+ "map": "mb",
+ "generated": "2026-11-22T02:18:41.379Z",
+ "decks": [
+  {
+   "id": "2-BPRO-1",
+   "map": "mb",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "hedgerow-shrew": 3,
+     "old-shell": 4,
+     "pincushion-urchin": 4,
+     "oystercatcher": 1,
+     "gull-thief": 4,
+     "conch-crawler": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "hedgerow-shrew": 3,
+     "pincushion-urchin": 4,
+     "oystercatcher": 1,
+     "gull-thief": 4,
+     "conch-crawler": 4,
+     "puddle-skimmer": 4
+    },
+    "val": {
+     "v": 0.21,
+     "ref": 0.525,
+     "gap": 0
+    },
+    "leaders": [
+     "puddle-skimmer"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: old-shell -> puddle-skimmer",
+     "was": [
+      "old-shell: off the bpro pool",
+      "old-shell: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "old-shell: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.2,
+     "ref": 0.65,
+     "gap": 0
+    }
+   ],
+   "readings": 101,
+   "sec": 46
+  },
+  {
+   "id": "2-BPRO-2",
+   "map": "mb",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "driftwood-crab": 3,
+     "limpet-clinger": 4,
+     "old-shell": 2,
+     "rock-pool-starfish": 4,
+     "salvager-hermit-crab": 3,
+     "puddle-skimmer": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "driftwood-crab": 4,
+     "limpet-clinger": 4,
+     "rock-pool-starfish": 4,
+     "puddle-skimmer": 4,
+     "duck-paddler": 4
+    },
+    "val": {
+     "v": 0.18,
+     "ref": 0.625,
+     "gap": 0
+    },
+    "leaders": [
+     "puddle-skimmer"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: old-shell+salvager-hermit-crab -> duck-paddler",
+     "was": [
+      "old-shell: off the bpro pool",
+      "salvager-hermit-crab: off the bpro pool",
+      "old-shell: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "salvager-hermit-crab: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "old-shell: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)",
+      "salvager-hermit-crab: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.217,
+     "ref": 0.775,
+     "gap": 0
+    }
+   ],
+   "readings": 91,
+   "sec": 36
+  },
+  {
+   "id": "2-BPRO-3",
+   "map": "mb",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "duck-paddler": 4,
+     "limpet-clinger": 4,
+     "pincushion-urchin": 4,
+     "puddle-skimmer": 2,
+     "moonlit-hare": 4,
+     "old-shell": 2
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "duck-paddler": 4,
+     "limpet-clinger": 4,
+     "pincushion-urchin": 4,
+     "puddle-skimmer": 2,
+     "oystercatcher": 2,
+     "hedgerow-shrew": 4
+    },
+    "val": {
+     "v": 0.14,
+     "ref": 0.775,
+     "gap": 0.01
+    },
+    "leaders": [
+     "puddle-skimmer"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: old-shell -> oystercatcher",
+     "was": [
+      "old-shell: off the bpro pool",
+      "old-shell: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "old-shell: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.367,
+     "ref": 0.475,
+     "gap": 0.097
+    },
+    {
+     "move": "moonlit-hare x4 -> hedgerow-shrew",
+     "v": 0.217,
+     "ref": 0.6,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 355,
+   "sec": 119
+  },
+  {
+   "id": "2-BPRO-4",
+   "map": "mb",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "duck-paddler": 2,
+     "rock-pool-starfish": 4,
+     "salvager-hermit-crab": 3,
+     "conch-crawler": 4,
+     "hedgerow-shrew": 4,
+     "driftwood-crab": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "rock-pool-starfish": 3,
+     "conch-crawler": 4,
+     "hedgerow-shrew": 4,
+     "driftwood-crab": 4,
+     "gull-thief": 3,
+     "limpet-clinger": 2
+    },
+    "val": {
+     "v": 0.305,
+     "ref": 0.5,
+     "gap": 0.005
+    },
+    "leaders": [
+     "driftwood-crab"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: salvager-hermit-crab -> gull-thief",
+     "was": [
+      "salvager-hermit-crab: off the bpro pool",
+      "salvager-hermit-crab: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "salvager-hermit-crab: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.383,
+     "ref": 0.375,
+     "gap": 0.113
+    },
+    {
+     "move": "rock-pool-starfish -1 -> driftwood-crab",
+     "v": 0.317,
+     "ref": 0.4,
+     "gap": 0.047,
+     "tried": 24
+    },
+    {
+     "move": "duck-paddler -2 -> limpet-clinger",
+     "v": 0.242,
+     "ref": 0.475,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 619,
+   "sec": 143
+  },
+  {
+   "id": "2-PRO-1",
+   "map": "mb",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "cricket-drummer": 4,
+     "driftwood-crab": 4,
+     "meadow-frog": 3,
+     "moonlit-hare": 4,
+     "old-shell": 1,
+     "pincushion-urchin": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "cricket-drummer": 4,
+     "driftwood-crab": 4,
+     "meadow-frog": 3,
+     "moonlit-hare": 4,
+     "pincushion-urchin": 4,
+     "acorn-chipmunk": 1
+    },
+    "val": {
+     "v": 0.438,
+     "ref": 0.438,
+     "gap": 0
+    },
+    "leaders": [
+     "moonlit-hare"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: old-shell -> acorn-chipmunk",
+     "was": [
+      "old-shell: off the pro pool",
+      "old-shell: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.35,
+     "ref": 0.35,
+     "gap": 0
+    }
+   ],
+   "readings": 24,
+   "sec": 19
+  },
+  {
+   "id": "2-PRO-3",
+   "map": "mb",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "cricket-drummer": 3,
+     "driftwood-crab": 2,
+     "fleetfootd": 4,
+     "hedgerow-shrew": 3,
+     "old-shell": 4,
+     "open-ocean-hermit-crab": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "cricket-drummer": 3,
+     "driftwood-crab": 2,
+     "fleetfootd": 4,
+     "hedgerow-shrew": 3,
+     "open-ocean-hermit-crab": 4,
+     "conch-crawler": 4
+    },
+    "val": {
+     "v": 0.15,
+     "ref": 0.15,
+     "gap": 0
+    },
+    "leaders": [
+     "fleetfootd"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: old-shell -> conch-crawler",
+     "was": [
+      "old-shell: off the pro pool",
+      "under 10 list copies",
+      "old-shell: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.233,
+     "ref": 0.233,
+     "gap": 0
+    }
+   ],
+   "readings": 11,
+   "sec": 13
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

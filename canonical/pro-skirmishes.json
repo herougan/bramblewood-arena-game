@@ -1,7 +1,7 @@
 {
  "about": "Hidden PRO fights per main map and side map (package PRO, owner 2026-10-24 00:28; PRO2 21:20; PRO3 2026-10-25: side maps as N-L-PRO-k, faction cards left out). N-PRO-k: the best decks of the deck optimizer's map-true runs (the map's own cards + what a player holds by then, within the map's rarity cap); N-BPRO-k (Basic Pro, under `bpro`): its bpro runs (only the map's own pool, within the cap). Written by tools/opt/pro_skirmishes.js --apply; baked into the game by assemble_arena.py (the `pro` list; `bpro` waits for the PRO preview package). Not on the road, no progress, no rewards.",
  "version": 2,
- "updated": "2026-11-19",
+ "updated": "2026-11-22",
  "tool": "tools/opt/pro_skirmishes.js 1.2.0 (2026-10-25, PRO3)",
  "rule": {
   "games": 400,
@@ -152,7 +152,7 @@
      "name": "0-BPRO-2",
      "focus": "open",
      "labels": [
-      "swarm (18 copies at 0 Lumber)"
+      "midrange (average 0.0 Lumber)"
      ],
      "level": 1,
      "leaders": [],
@@ -162,7 +162,7 @@
       "farm-dog": 4,
       "pond-trout": 3,
       "soldier-ant": 4,
-      "thorn-shrike": 2
+      "honey-bee": 2
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map00-m1-2026-11-11.json",
@@ -195,7 +195,8 @@
        8
       ]
      },
-     "skwk2": "2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 6.5% -> 12%, Map reference 70% -> 45% (validation seeds); worker-ant -2 -> thorn-shrike (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 6.5% -> 12%, Map reference 70% -> 45% (validation seeds); worker-ant -2 -> thorn-shrike (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): thorn-shrike off (not on the map's list), thorn-shrike -> honey-bee; tuned for vs ladder 15-30% (now 6%), Map reference 60% on validation seeds; not re-searched"
     }
    ],
    "replaced": [
@@ -1442,6 +1443,21 @@
        "worker-ant": 2
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "0-BPRO-2": {
+       "ant-scout": 4,
+       "duck-paddler": 3,
+       "farm-dog": 4,
+       "pond-trout": 3,
+       "soldier-ant": 4,
+       "thorn-shrike": 2
+      }
+     }
     }
    ],
    "wpro": [
@@ -1694,17 +1710,18 @@
      "name": "0-B-BPRO-1",
      "focus": "family:spite",
      "labels": [
+      "big (13 copies at 1+ Lumber, average 1.0)",
       "spite x6"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
-      "bramble-sprout": 4,
       "cricket-drummer": 4,
-      "ent": 2,
+      "ent": 3,
       "quill-thorn-boar": 2,
-      "elder-willow": 4,
-      "proboscis-monkey": 4
+      "proboscis-monkey": 4,
+      "barkplate-beetle": 4,
+      "phoenix-mushrooms": 3
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map00-mo-2026-11-11.json",
@@ -1723,24 +1740,25 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 93% -> 45%, Map reference 37.5% -> 82.5% (validation seeds); barkplate-beetle x4 -> elder-willow; farm-dog x4 -> proboscis-monkey (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 93% -> 45%, Map reference 37.5% -> 82.5% (validation seeds); barkplate-beetle x4 -> elder-willow; farm-dog x4 -> proboscis-monkey (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): elder-willow off (not on the map's list), elder-willow -> barkplate-beetle; tuned for vs ladder 15-30% (now 38%), Map reference 62.5% on validation seeds; not re-searched"
     },
     {
      "id": "0-B-BPRO-2",
      "name": "0-B-BPRO-2",
      "focus": "swarm",
      "labels": [
-      "midrange (average 0.8 Lumber)"
+      "big (13 copies at 1+ Lumber, average 0.8)"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
-      "cricket-drummer": 4,
       "earthworm": 4,
-      "farm-dog": 4,
-      "proboscis-monkey": 1,
-      "elder-willow": 4,
-      "thorn-shrike": 3
+      "farm-dog": 3,
+      "proboscis-monkey": 4,
+      "platypus-spur": 4,
+      "phoenix-mushrooms": 2,
+      "strangler-vine": 3
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map00-mo-2026-11-11.json",
@@ -1759,24 +1777,25 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 82% -> 31%, Map reference 35% -> 72.5% (validation seeds); ent -2 -> elder-willow; proboscis-monkey -2 -> elder-willow; bramblewood-lynx x3 -> thorn-shrike (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 82% -> 31%, Map reference 35% -> 72.5% (validation seeds); ent -2 -> elder-willow; proboscis-monkey -2 -> elder-willow; bramblewood-lynx x3 -> thorn-shrike (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): elder-willow, thorn-shrike off (not on the map's list), elder-willow+thorn-shrike -> platypus-spur; tuned for vs ladder 15-30% (now 14.5%), Map reference 67.5% on validation seeds; not re-searched"
     },
     {
      "id": "0-B-BPRO-3",
      "name": "0-B-BPRO-3",
      "focus": "big",
      "labels": [
-      "midrange (average 1.1 Lumber)"
+      "big (17 copies at 1 Lumber, average 0.8)"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
       "bramblewood-lynx": 3,
-      "cricket-drummer": 4,
+      "cricket-drummer": 3,
       "platypus-spur": 4,
       "wolf-spider-mother": 3,
-      "elder-willow": 3,
-      "quill-thorn-boar": 3
+      "quill-thorn-boar": 3,
+      "proboscis-monkey": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map00-mo-2026-11-11.json",
@@ -1795,7 +1814,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 82% -> 32%, Map reference 52.5% -> 85% (validation seeds); ent x3 -> elder-willow; strangler-vine x3 -> quill-thorn-boar (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 82% -> 32%, Map reference 52.5% -> 85% (validation seeds); ent x3 -> elder-willow; strangler-vine x3 -> quill-thorn-boar (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): elder-willow off (not on the map's list), elder-willow -> proboscis-monkey; tuned for vs ladder 15-30% (now 32.5%), Map reference 62.5% on validation seeds; not re-searched"
     }
    ],
    "replaced": [
@@ -3507,6 +3527,37 @@
        "wolf-spider-mother": 3
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "0-B-BPRO-1": {
+       "bramble-sprout": 4,
+       "cricket-drummer": 4,
+       "ent": 2,
+       "quill-thorn-boar": 2,
+       "elder-willow": 4,
+       "proboscis-monkey": 4
+      },
+      "0-B-BPRO-2": {
+       "cricket-drummer": 4,
+       "earthworm": 4,
+       "farm-dog": 4,
+       "proboscis-monkey": 1,
+       "elder-willow": 4,
+       "thorn-shrike": 3
+      },
+      "0-B-BPRO-3": {
+       "bramblewood-lynx": 3,
+       "cricket-drummer": 4,
+       "platypus-spur": 4,
+       "wolf-spider-mother": 3,
+       "elder-willow": 3,
+       "quill-thorn-boar": 3
+      }
+     }
     }
    ],
    "wpro": [
@@ -3704,17 +3755,16 @@
      "name": "1-BPRO-1",
      "focus": "open",
      "labels": [
-      "big (8 copies at 1 Lumber, average 0.4)"
+      "swarm (16 copies at 0 Lumber)"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
       "bramble-sprout": 4,
       "chipmunk-cavalry": 4,
-      "dormouse": 2,
+      "dormouse": 4,
       "puddle-skimmer": 4,
-      "jackrabbit-sprinter": 4,
-      "duck-paddler": 2
+      "duck-paddler": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map01-mf-2026-11-11.json",
@@ -3733,7 +3783,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck (off its pool after FOLD6, repaired) tuned for its win rate vs the reference ladder (15-30%): vs ladder - -> 29.5%, Map reference - -> 60% (validation seeds); repair: chipmunk-skirmisher -> puddle-skimmer; robin-redbreast x4 -> jackrabbit-sprinter (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 26% -> 23%, Map reference 52.5% -> 65% (validation seeds); cricket-drummer -2 -> duck-paddler (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck (off its pool after FOLD6, repaired) tuned for its win rate vs the reference ladder (15-30%): vs ladder - -> 29.5%, Map reference - -> 60% (validation seeds); repair: chipmunk-skirmisher -> puddle-skimmer; robin-redbreast x4 -> jackrabbit-sprinter (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 26% -> 23%, Map reference 52.5% -> 65% (validation seeds); cricket-drummer -2 -> duck-paddler (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): jackrabbit-sprinter off (not on the map's list), jackrabbit-sprinter -> bramble-sprout; tuned for vs ladder 15-30% (now 22.5%), Map reference 77.5% on validation seeds; not re-searched"
     },
     {
      "id": "1-BPRO-2",
@@ -5316,6 +5367,28 @@
        "hedgerow-shrew": 4
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "1-BPRO-1": {
+       "bramble-sprout": 4,
+       "chipmunk-cavalry": 4,
+       "dormouse": 2,
+       "puddle-skimmer": 4,
+       "jackrabbit-sprinter": 4,
+       "duck-paddler": 2
+      },
+      "1-WPRO-2": {
+       "ant-scout": 4,
+       "cottontail": 4,
+       "house-cat": 4,
+       "meadow-rabbit": 4,
+       "puddle-skimmer": 4
+      }
+     }
     }
    ],
    "wpro": [
@@ -5364,10 +5437,10 @@
      "leaders": [],
      "deck": {
       "ant-scout": 4,
-      "cottontail": 4,
       "house-cat": 4,
       "meadow-rabbit": 4,
-      "puddle-skimmer": 4
+      "puddle-skimmer": 4,
+      "dormouse": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/wpro/wpro-map01-mf-2026-11-11.json",
@@ -5386,7 +5459,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-19 (SKWK4): N-WK deck tuned for the Map reference at 50%+: Map reference 37.5% -> 61.3% (validation seeds); bee-knight -2 -> honey-bee; bee-knight -2 -> puddle-skimmer; ant-scout -2 -> puddle-skimmer; honey-bee -2 -> ant-scout (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-19 (SKWK4): N-WK deck tuned for the Map reference at 50%+: Map reference 37.5% -> 61.3% (validation seeds); bee-knight -2 -> honey-bee; bee-knight -2 -> puddle-skimmer; ant-scout -2 -> puddle-skimmer; honey-bee -2 -> ant-scout (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): cottontail off (not on the map's list), cottontail -> dormouse; tuned for the Map reference at 50%+ (now 68.8%) on validation seeds; not re-searched"
     }
    ]
   },
@@ -5458,18 +5532,18 @@
      "focus": "open",
      "labels": [
       "swarm (16 copies at 0 Lumber)",
-      "flying x8",
+      "flying x11",
       "guard x7"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
-      "alley-cat": 3,
       "alpine-marmot": 3,
       "clover-butterfly": 4,
       "compost-grub": 2,
       "hawthorn-shieldbug": 4,
-      "robin-redbreast": 4
+      "robin-redbreast": 4,
+      "bee-forager": 3
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map01-mq-2026-11-11.json",
@@ -5487,7 +5561,8 @@
       "generated": "2026-11-13T04:44:01.886Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): compost-grub off (not on the map's list), alley-cat x3 -> bee-forager; tuned for the Map reference at 85% or under (now 13.8%) on validation seeds; not re-searched"
     },
     {
      "id": "1-A-PRO-3",
@@ -5530,15 +5605,16 @@
      "name": "1-A-PRO-4",
      "focus": "big",
      "labels": [
-      "big (8 copies at 1 Lumber, average 0.4)"
+      "big (8 copies at 1 Lumber, average 0.4)",
+      "guard x8"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
-      "burrow-rabbit": 3,
+      "burrow-rabbit": 2,
       "chipmunk-cavalry": 4,
       "compost-grub": 4,
-      "dormouse": 3,
+      "dormouse": 4,
       "hawthorn-shieldbug": 4,
       "robin-redbreast": 2
      },
@@ -5558,7 +5634,8 @@
       "generated": "2026-11-13T04:44:01.886Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): compost-grub off (not on the map's list), burrow-rabbit -1 -> dormouse; tuned for the Map reference at 85% or under (now 43.8%) on validation seeds; not re-searched"
     }
    ],
    "bpro": [
@@ -5568,16 +5645,15 @@
      "focus": "open",
      "labels": [
       "big (8 copies at 1 Lumber, average 0.4)",
-      "guard x6"
+      "guard x8"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
       "chipmunk-cavalry": 4,
       "clover-butterfly": 4,
-      "ladybird-guard": 2,
+      "ladybird-guard": 4,
       "lucky-hopper": 4,
-      "ant-scout": 2,
       "puddle-skimmer": 4
      },
      "source": {
@@ -5597,23 +5673,27 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 66% -> 29.5%, Map reference 10% -> 67.5% (validation seeds); robin-redbreast x4 -> lucky-hopper; honey-bee -2 -> ant-scout (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 42.5% -> 22.5%, Map reference 35% -> 75% (validation seeds); meadow-rabbit x4 -> puddle-skimmer (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 66% -> 29.5%, Map reference 10% -> 67.5% (validation seeds); robin-redbreast x4 -> lucky-hopper; honey-bee -2 -> ant-scout (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 42.5% -> 22.5%, Map reference 35% -> 75% (validation seeds); meadow-rabbit x4 -> puddle-skimmer (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): ant-scout off (not on the map's list), ant-scout -> chipmunk-cavalry; tuned for vs ladder 15-30% (now 33.5%), Map reference 65% on validation seeds; not re-searched"
     },
     {
      "id": "1-A-BPRO-2",
      "name": "1-A-BPRO-2",
      "focus": "family:flying",
      "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "guard x8",
       "flying x8"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
-      "ant-scout": 4,
-      "clover-butterfly": 4,
-      "dormouse": 4,
+      "dormouse": 2,
       "ladybird-guard": 4,
-      "bee-forager": 4
+      "bee-forager": 4,
+      "honey-bee": 4,
+      "chipmunk-cavalry": 4,
+      "puddle-skimmer": 2
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map01-mq-2026-11-11.json",
@@ -5632,14 +5712,16 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 59% -> 23%, Map reference 20% -> 62.5% (validation seeds); robin-redbreast x4 -> bee-forager (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 59% -> 23%, Map reference 20% -> 62.5% (validation seeds); robin-redbreast x4 -> bee-forager (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): ant-scout off (not on the map's list), ant-scout -> honey-bee; tuned for vs ladder 15-30% (now 26%), Map reference 35% on validation seeds; not re-searched"
     },
     {
      "id": "1-A-BPRO-3",
      "name": "1-A-BPRO-3",
      "focus": "big",
      "labels": [
-      "big (12 copies at 1 Lumber, average 0.6)"
+      "big (8 copies at 1 Lumber, average 0.4)",
+      "flying x6"
      ],
      "level": 1,
      "leaders": [],
@@ -5648,8 +5730,8 @@
       "clover-butterfly": 2,
       "cottontail": 3,
       "lucky-hopper": 4,
-      "jackrabbit-sprinter": 4,
-      "honey-bee": 3
+      "dormouse": 3,
+      "bee-forager": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map01-mq-2026-11-11.json",
@@ -5668,7 +5750,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 52% -> 26%, Map reference 22.5% -> 55% (validation seeds); dormouse x4 -> jackrabbit-sprinter; robin-redbreast x3 -> honey-bee (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 52% -> 26%, Map reference 22.5% -> 55% (validation seeds); dormouse x4 -> jackrabbit-sprinter; robin-redbreast x3 -> honey-bee (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): jackrabbit-sprinter off (not on the map's list), jackrabbit-sprinter -> dormouse; tuned for vs ladder 15-30% (now 33%), Map reference 52.5% on validation seeds; not re-searched"
     }
    ],
    "replaced": [
@@ -7392,6 +7475,60 @@
        "ant-scout": 2
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "1-A-BPRO-1": {
+       "chipmunk-cavalry": 4,
+       "clover-butterfly": 4,
+       "ladybird-guard": 2,
+       "lucky-hopper": 4,
+       "ant-scout": 2,
+       "puddle-skimmer": 4
+      },
+      "1-A-BPRO-2": {
+       "ant-scout": 4,
+       "clover-butterfly": 4,
+       "dormouse": 4,
+       "ladybird-guard": 4,
+       "bee-forager": 4
+      },
+      "1-A-BPRO-3": {
+       "chipmunk-cavalry": 4,
+       "clover-butterfly": 2,
+       "cottontail": 3,
+       "lucky-hopper": 4,
+       "jackrabbit-sprinter": 4,
+       "honey-bee": 3
+      },
+      "1-A-PRO-2": {
+       "alley-cat": 3,
+       "alpine-marmot": 3,
+       "clover-butterfly": 4,
+       "compost-grub": 2,
+       "hawthorn-shieldbug": 4,
+       "robin-redbreast": 4
+      },
+      "1-A-PRO-4": {
+       "burrow-rabbit": 3,
+       "chipmunk-cavalry": 4,
+       "compost-grub": 4,
+       "dormouse": 3,
+       "hawthorn-shieldbug": 4,
+       "robin-redbreast": 2
+      },
+      "1-A-WPRO-1": {
+       "ant-scout": 3,
+       "bee-forager": 4,
+       "cottontail": 4,
+       "honey-bee": 4,
+       "ladybird-guard": 1,
+       "puddle-skimmer": 4
+      }
+     }
     }
    ],
    "wpro": [
@@ -7400,17 +7537,15 @@
      "name": "1-A-WPRO-1",
      "focus": "weak low",
      "labels": [
-      "swarm (20 copies at 0 Lumber)",
       "flying x8"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
-      "ant-scout": 3,
       "bee-forager": 4,
       "cottontail": 4,
       "honey-bee": 4,
-      "ladybird-guard": 1,
+      "ladybird-guard": 4,
       "puddle-skimmer": 4
      },
      "source": {
@@ -7429,7 +7564,8 @@
       "generated": "2026-11-13T05:35:17.208Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): ant-scout off (not on the map's list), ant-scout -> bee-forager; tuned for the Map reference at 50%+ (now 70%) on validation seeds; not re-searched"
     }
    ]
   },
@@ -7466,21 +7602,21 @@
      "name": "2-PRO-1",
      "focus": "open",
      "labels": [
-      "swarm (15 copies at 0 Lumber)",
+      "swarm (16 copies at 0 Lumber)",
       "economy (4 resource makers)",
       "tide x7"
      ],
      "level": 1,
      "leaders": [
-      "old-shell"
+      "moonlit-hare"
      ],
      "deck": {
       "cricket-drummer": 4,
       "driftwood-crab": 4,
       "meadow-frog": 3,
       "moonlit-hare": 4,
-      "old-shell": 1,
-      "pincushion-urchin": 4
+      "pincushion-urchin": 4,
+      "acorn-chipmunk": 1
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/pro/bench-deck-map02-mb-2026-11-11.json",
@@ -7498,7 +7634,8 @@
       "generated": "2026-11-12T12:03:07.273Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): old-shell off (not on the map's list), old-shell -> acorn-chipmunk; tuned for the Map reference at 85% or under (now 43.8%) on validation seeds; not re-searched"
     },
     {
      "id": "2-PRO-2",
@@ -7543,21 +7680,21 @@
      "name": "2-PRO-3",
      "focus": "family:armor",
      "labels": [
-      "swarm (14 copies at 0 Lumber)",
-      "armor x10",
-      "tide x8"
+      "swarm (18 copies at 0 Lumber)",
+      "tide x12",
+      "armor x10"
      ],
      "level": 1,
      "leaders": [
-      "old-shell"
+      "fleetfootd"
      ],
      "deck": {
       "cricket-drummer": 3,
       "driftwood-crab": 2,
       "fleetfootd": 4,
       "hedgerow-shrew": 3,
-      "old-shell": 4,
-      "open-ocean-hermit-crab": 4
+      "open-ocean-hermit-crab": 4,
+      "conch-crawler": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/pro/bench-deck-map02-mb-2026-11-11.json",
@@ -7575,7 +7712,8 @@
       "generated": "2026-11-12T12:03:07.273Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): old-shell off (not on the map's list), old-shell -> conch-crawler; tuned for the Map reference at 85% or under (now 15%) on validation seeds; not re-searched"
     }
    ],
    "bpro": [
@@ -7584,22 +7722,21 @@
      "name": "2-BPRO-1",
      "focus": "open",
      "labels": [
-      "swarm (15 copies at 0 Lumber)",
+      "swarm (19 copies at 0 Lumber)",
       "economy (4 resource makers)",
-      "guard x8",
       "tide x8"
      ],
      "level": 1,
      "leaders": [
-      "old-shell"
+      "puddle-skimmer"
      ],
      "deck": {
       "hedgerow-shrew": 3,
-      "old-shell": 4,
       "pincushion-urchin": 4,
       "oystercatcher": 1,
       "gull-thief": 4,
-      "conch-crawler": 4
+      "conch-crawler": 4,
+      "puddle-skimmer": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map02-mb-2026-11-11.json",
@@ -7618,29 +7755,29 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck (off its pool after FOLD6, repaired) tuned for its win rate vs the reference ladder (15-30%): vs ladder - -> 30%, Map reference - -> 82.5% (validation seeds); repair: beachcomber-sanderling -> oystercatcher; robin-redbreast x4 -> gull-thief; moonlit-hare x4 -> conch-crawler (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck (off its pool after FOLD6, repaired) tuned for its win rate vs the reference ladder (15-30%): vs ladder - -> 30%, Map reference - -> 82.5% (validation seeds); repair: beachcomber-sanderling -> oystercatcher; robin-redbreast x4 -> gull-thief; moonlit-hare x4 -> conch-crawler (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): old-shell off (not on the map's list), old-shell -> puddle-skimmer; tuned for vs ladder 15-30% (now 21%), Map reference 52.5% on validation seeds; not re-searched"
     },
     {
      "id": "2-BPRO-2",
      "name": "2-BPRO-2",
      "focus": "economy",
      "labels": [
-      "swarm (15 copies at 0 Lumber)",
-      "economy (6 resource makers)",
-      "tide x8",
-      "guard x6"
+      "swarm (16 copies at 0 Lumber)",
+      "economy (4 resource makers)",
+      "armor x8",
+      "tide x8"
      ],
      "level": 1,
      "leaders": [
-      "old-shell"
+      "puddle-skimmer"
      ],
      "deck": {
-      "driftwood-crab": 3,
+      "driftwood-crab": 4,
       "limpet-clinger": 4,
-      "old-shell": 2,
       "rock-pool-starfish": 4,
-      "salvager-hermit-crab": 3,
-      "puddle-skimmer": 4
+      "puddle-skimmer": 4,
+      "duck-paddler": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map02-mb-2026-11-11.json",
@@ -7659,7 +7796,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck (off its pool after FOLD6, repaired) tuned for its win rate vs the reference ladder (15-30%): vs ladder - -> 38.5%, Map reference - -> 75% (validation seeds); repair: beachcomber-sanderling -> salvager-hermit-crab; robin-redbreast x4 -> puddle-skimmer (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck (off its pool after FOLD6, repaired) tuned for its win rate vs the reference ladder (15-30%): vs ladder - -> 38.5%, Map reference - -> 75% (validation seeds); repair: beachcomber-sanderling -> salvager-hermit-crab; robin-redbreast x4 -> puddle-skimmer (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): old-shell, salvager-hermit-crab off (not on the map's list), old-shell+salvager-hermit-crab -> duck-paddler; tuned for vs ladder 15-30% (now 18%), Map reference 62.5% on validation seeds; not re-searched"
     },
     {
      "id": "2-BPRO-3",
@@ -7667,20 +7805,19 @@
      "focus": "family:armor",
      "labels": [
       "swarm (18 copies at 0 Lumber)",
-      "tide x8",
-      "armor x6"
+      "tide x8"
      ],
      "level": 1,
      "leaders": [
-      "old-shell"
+      "puddle-skimmer"
      ],
      "deck": {
       "duck-paddler": 4,
       "limpet-clinger": 4,
       "pincushion-urchin": 4,
       "puddle-skimmer": 2,
-      "moonlit-hare": 4,
-      "old-shell": 2
+      "oystercatcher": 2,
+      "hedgerow-shrew": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map02-mb-2026-11-11.json",
@@ -7699,29 +7836,30 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 45.5% -> 29%, Map reference 70% -> 82.5% (validation seeds); rock-pool-starfish -2 -> puddle-skimmer; old-shell x4 -> moonlit-hare (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 38.5% -> 30%, Map reference 60% -> 62.5% (validation seeds); rock-pool-starfish -2 -> old-shell (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 45.5% -> 29%, Map reference 70% -> 82.5% (validation seeds); rock-pool-starfish -2 -> puddle-skimmer; old-shell x4 -> moonlit-hare (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 38.5% -> 30%, Map reference 60% -> 62.5% (validation seeds); rock-pool-starfish -2 -> old-shell (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): old-shell off (not on the map's list), old-shell -> oystercatcher; tuned for vs ladder 15-30% (now 14%), Map reference 77.5% on validation seeds; not re-searched"
     },
     {
      "id": "2-BPRO-4",
      "name": "2-BPRO-4",
      "focus": "family:tide",
      "labels": [
-      "swarm (17 copies at 0 Lumber)",
-      "economy (6 resource makers)",
-      "tide x8",
-      "armor x7"
+      "swarm (16 copies at 0 Lumber)",
+      "economy (7 resource makers)",
+      "armor x10",
+      "tide x9"
      ],
      "level": 1,
      "leaders": [
-      "salvager-hermit-crab"
+      "driftwood-crab"
      ],
      "deck": {
-      "duck-paddler": 2,
-      "rock-pool-starfish": 4,
-      "salvager-hermit-crab": 3,
+      "rock-pool-starfish": 3,
       "conch-crawler": 4,
       "hedgerow-shrew": 4,
-      "driftwood-crab": 3
+      "driftwood-crab": 4,
+      "gull-thief": 3,
+      "limpet-clinger": 2
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map02-mb-2026-11-11.json",
@@ -7740,7 +7878,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 81% -> 30.5%, Map reference 40% -> 72.5% (validation seeds); robin-redbreast x3 -> salvager-hermit-crab; open-ocean-hermit-crab x4 -> conch-crawler; driftwood-crab x4 -> old-shell; old-shell x4 -> hedgerow-shrew (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 45% -> 22.5%, Map reference 55% -> 72.5% (validation seeds); moonlit-hare x3 -> driftwood-crab (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 81% -> 30.5%, Map reference 40% -> 72.5% (validation seeds); robin-redbreast x3 -> salvager-hermit-crab; open-ocean-hermit-crab x4 -> conch-crawler; driftwood-crab x4 -> old-shell; old-shell x4 -> hedgerow-shrew (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 45% -> 22.5%, Map reference 55% -> 72.5% (validation seeds); moonlit-hare x3 -> driftwood-crab (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): salvager-hermit-crab off (not on the map's list), salvager-hermit-crab -> gull-thief; tuned for vs ladder 15-30% (now 30.5%), Map reference 50% on validation seeds; not re-searched"
     }
    ],
    "replaced": [
@@ -9725,6 +9864,61 @@
        "moonlit-hare": 4
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "2-BPRO-1": {
+       "hedgerow-shrew": 3,
+       "old-shell": 4,
+       "pincushion-urchin": 4,
+       "oystercatcher": 1,
+       "gull-thief": 4,
+       "conch-crawler": 4
+      },
+      "2-BPRO-2": {
+       "driftwood-crab": 3,
+       "limpet-clinger": 4,
+       "old-shell": 2,
+       "rock-pool-starfish": 4,
+       "salvager-hermit-crab": 3,
+       "puddle-skimmer": 4
+      },
+      "2-BPRO-3": {
+       "duck-paddler": 4,
+       "limpet-clinger": 4,
+       "pincushion-urchin": 4,
+       "puddle-skimmer": 2,
+       "moonlit-hare": 4,
+       "old-shell": 2
+      },
+      "2-BPRO-4": {
+       "duck-paddler": 2,
+       "rock-pool-starfish": 4,
+       "salvager-hermit-crab": 3,
+       "conch-crawler": 4,
+       "hedgerow-shrew": 4,
+       "driftwood-crab": 3
+      },
+      "2-PRO-1": {
+       "cricket-drummer": 4,
+       "driftwood-crab": 4,
+       "meadow-frog": 3,
+       "moonlit-hare": 4,
+       "old-shell": 1,
+       "pincushion-urchin": 4
+      },
+      "2-PRO-3": {
+       "cricket-drummer": 3,
+       "driftwood-crab": 2,
+       "fleetfootd": 4,
+       "hedgerow-shrew": 3,
+       "old-shell": 4,
+       "open-ocean-hermit-crab": 4
+      }
+     }
     }
    ],
    "wpro": [
@@ -9836,21 +10030,21 @@
      "name": "2-B-PRO-2",
      "focus": "open",
      "labels": [
-      "big (9 copies at 1+ Lumber, average 0.5)",
+      "big (8 copies at 1 Lumber, average 0.4)",
       "economy (7 resource makers)",
-      "flying x8"
+      "night x7"
      ],
      "level": 1,
      "leaders": [
-      "old-shell"
+      "driftwood-crab"
      ],
      "deck": {
       "driftwood-crab": 4,
       "kittiwake-flock": 4,
-      "old-shell": 1,
       "rock-pool-starfish": 4,
       "trash-panda-trickster": 3,
-      "raccoon-nightcrew": 4
+      "raccoon-nightcrew": 4,
+      "acorn-chipmunk": 1
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map02-mg-2026-11-11.json",
@@ -9883,7 +10077,8 @@
        -32
       ]
      },
-     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (razorbill x4); not re-searched"
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (razorbill x4); not re-searched",
+     "prolist": "2026-11-22 (PROLIST): old-shell off (not on the map's list), old-shell -> acorn-chipmunk; tuned for the Map reference at 85% or under (now 26.3%) on validation seeds; not re-searched"
     },
     {
      "id": "2-B-PRO-3",
@@ -9985,22 +10180,22 @@
      "name": "2-B-BPRO-2",
      "focus": "family:armor",
      "labels": [
-      "swarm (14 copies at 0 Lumber)",
-      "economy (12 resource makers)",
-      "armor x10",
-      "tide x6"
+      "big (9 copies at 1+ Lumber, average 0.6)",
+      "economy (7 resource makers)",
+      "tide x10",
+      "armor x8"
      ],
      "level": 1,
      "leaders": [
-      "old-shell"
+      "octopus-tactician"
      ],
      "deck": {
-      "gull-thief": 4,
+      "gull-thief": 3,
       "limpet-clinger": 4,
-      "old-shell": 2,
-      "salvager-hermit-crab": 4,
       "driftwood-crab": 4,
-      "pincushion-urchin": 2
+      "pincushion-urchin": 4,
+      "octopus-tactician": 2,
+      "raccoon-nightcrew": 3
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map02-mg-2026-11-11.json",
@@ -10019,7 +10214,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 77% -> 15.5%, Map reference 20% -> 65% (validation seeds); raccoon-nightcrew x4 -> salvager-hermit-crab (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 57% -> 26%, Map reference 60% -> 60% (validation seeds); trash-panda-trickster x4 -> driftwood-crab; open-ocean-hermit-crab -1 -> pincushion-urchin; salvager-hermit-crab -1 -> pincushion-urchin; old-shell -1 -> salvager-hermit-crab (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 77% -> 15.5%, Map reference 20% -> 65% (validation seeds); raccoon-nightcrew x4 -> salvager-hermit-crab (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 57% -> 26%, Map reference 60% -> 60% (validation seeds); trash-panda-trickster x4 -> driftwood-crab; open-ocean-hermit-crab -1 -> pincushion-urchin; salvager-hermit-crab -1 -> pincushion-urchin; old-shell -1 -> salvager-hermit-crab (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): old-shell, salvager-hermit-crab off (not on the map's list), old-shell+salvager-hermit-crab -> octopus-tactician; tuned for vs ladder 15-30% (now 81.5%), Map reference 20% on validation seeds; not re-searched"
     }
    ],
    "replaced": [
@@ -12301,6 +12497,36 @@
        "salvager-hermit-crab": 4
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "2-B-BPRO-2": {
+       "gull-thief": 4,
+       "limpet-clinger": 4,
+       "old-shell": 2,
+       "salvager-hermit-crab": 4,
+       "driftwood-crab": 4,
+       "pincushion-urchin": 2
+      },
+      "2-B-PRO-2": {
+       "driftwood-crab": 4,
+       "kittiwake-flock": 4,
+       "old-shell": 1,
+       "rock-pool-starfish": 4,
+       "trash-panda-trickster": 3,
+       "raccoon-nightcrew": 4
+      },
+      "2-B-WPRO-1": {
+       "limpet-clinger": 4,
+       "octopus-tactician": 4,
+       "old-shell": 4,
+       "pincushion-urchin": 4,
+       "rock-pool-starfish": 4
+      }
+     }
     }
    ],
    "wpro": [
@@ -12309,18 +12535,19 @@
      "name": "2-B-WPRO-1",
      "focus": "weak low",
      "labels": [
-      "big (8 copies at 1+ Lumber, average 0.6)",
+      "swarm (16 copies at 0 Lumber)",
+      "economy (4 resource makers)",
       "tide x16",
-      "armor x8"
+      "armor x12"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
       "limpet-clinger": 4,
-      "octopus-tactician": 4,
-      "old-shell": 4,
       "pincushion-urchin": 4,
-      "rock-pool-starfish": 4
+      "rock-pool-starfish": 4,
+      "open-ocean-hermit-crab": 4,
+      "driftwood-crab": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/wpro/wpro-map02-mg-2026-11-11.json",
@@ -12339,7 +12566,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-19 (SKWK4): N-WK deck tuned for the Map reference at 50%+: Map reference 26.3% -> 76.3% (validation seeds); gull-thief x4 -> rock-pool-starfish (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-19 (SKWK4): N-WK deck tuned for the Map reference at 50%+: Map reference 26.3% -> 76.3% (validation seeds); gull-thief x4 -> rock-pool-starfish (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): old-shell off (not on the map's list), old-shell -> open-ocean-hermit-crab; tuned for the Map reference at 50%+ (now 80%) on validation seeds; not re-searched"
     }
    ]
   },
@@ -12497,21 +12725,19 @@
      "name": "2-A-PRO-4",
      "focus": "family:guard",
      "labels": [
-      "swarm (14 copies at 0 Lumber)",
-      "armor x8",
-      "guard x8"
+      "swarm (18 copies at 0 Lumber)"
      ],
      "level": 1,
      "leaders": [
-      "old-shell"
+      "platypus-spur"
      ],
      "deck": {
       "alley-cat": 4,
       "beaver-lumberjack": 4,
       "conch-crawler": 4,
       "muskrat-reedgatherer": 2,
-      "old-shell": 4,
-      "platypus-spur": 2
+      "platypus-spur": 2,
+      "duck-paddler": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map02-mp-2026-11-11.json",
@@ -12529,7 +12755,8 @@
       "generated": "2026-11-13T04:50:20.181Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): old-shell off (not on the map's list), old-shell -> duck-paddler; tuned for the Map reference at 85% or under (now 7.5%) on validation seeds; not re-searched"
     }
    ],
    "bpro": [
@@ -12576,21 +12803,19 @@
      "name": "2-A-BPRO-2",
      "focus": "family:guard",
      "labels": [
-      "big (11 copies at 1+ Lumber, average 0.6)",
-      "guard x8",
       "tide x7"
      ],
      "level": 1,
      "leaders": [
-      "old-shell"
+      "muskrat-lodgekeeper"
      ],
      "deck": {
       "beaver-lumberjack": 4,
-      "duck-paddler": 4,
       "muskrat-lodgekeeper": 4,
-      "old-shell": 4,
       "raft-spider": 3,
-      "water-shrew": 1
+      "water-shrew": 1,
+      "pond-algae": 4,
+      "muskrat-reedgatherer": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map02-mp-2026-11-11.json",
@@ -12608,7 +12833,8 @@
       "generated": "2026-11-13T04:21:51.215Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): old-shell off (not on the map's list), old-shell -> pond-algae; tuned for vs ladder 15-30% (now 21%), Map reference 15% on validation seeds; not re-searched"
     },
     {
      "id": "2-A-BPRO-3",
@@ -12656,20 +12882,20 @@
      "focus": "open",
      "labels": [
       "big (12 copies at 1+ Lumber, average 0.9)",
-      "guard x8",
-      "armor x6"
+      "armor x6",
+      "tide x6"
      ],
      "level": 1,
      "leaders": [
       "lodge-engineer"
      ],
      "deck": {
-      "beaver-lumberjack": 4,
       "lodge-engineer": 2,
       "muskrat-reedgatherer": 4,
-      "old-shell": 4,
       "riverworks-bastion": 4,
-      "snapstick-turtle": 2
+      "snapstick-turtle": 3,
+      "old-sturgeon": 3,
+      "pond-algae": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map02-mp-2026-11-11.json",
@@ -12688,7 +12914,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 5.5% -> 24.5%, Map reference 57.5% -> 35% (validation seeds); lodge-engineer -2 -> snapstick-turtle (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 5.5% -> 24.5%, Map reference 57.5% -> 35% (validation seeds); lodge-engineer -2 -> snapstick-turtle (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): old-shell off (not on the map's list), old-shell x4 -> duck-paddler; beaver-lumberjack x4 -> old-sturgeon; duck-paddler x4 -> pond-algae; tuned for vs ladder 15-30% (now 19%), Map reference 60% on validation seeds; not re-searched"
     }
    ],
    "replaced": [],
@@ -14551,6 +14778,52 @@
        "riverworks-bastion": 4
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "2-A-BPRO-2": {
+       "beaver-lumberjack": 4,
+       "duck-paddler": 4,
+       "muskrat-lodgekeeper": 4,
+       "old-shell": 4,
+       "raft-spider": 3,
+       "water-shrew": 1
+      },
+      "2-A-BPRO-4": {
+       "beaver-lumberjack": 4,
+       "lodge-engineer": 2,
+       "muskrat-reedgatherer": 4,
+       "old-shell": 4,
+       "riverworks-bastion": 4,
+       "snapstick-turtle": 2
+      },
+      "2-A-PRO-4": {
+       "alley-cat": 4,
+       "beaver-lumberjack": 4,
+       "conch-crawler": 4,
+       "muskrat-reedgatherer": 2,
+       "old-shell": 4,
+       "platypus-spur": 2
+      },
+      "2-A-WPRO-1": {
+       "muskrat-lodgekeeper": 4,
+       "old-shell": 4,
+       "pond-algae": 4,
+       "riverworks-bastion": 4,
+       "water-shrew": 4
+      },
+      "2-A-WPRO-2": {
+       "duck-paddler": 2,
+       "muskrat-lodgekeeper": 4,
+       "old-shell": 2,
+       "old-sturgeon": 4,
+       "riverworks-bastion": 4,
+       "snapstick-turtle": 4
+      }
+     }
     }
    ],
    "wpro": [
@@ -14559,17 +14832,16 @@
      "name": "2-A-WPRO-1",
      "focus": "weak top-heavy",
      "labels": [
-      "big (12 copies at 1+ Lumber, average 0.8)",
-      "guard x12"
+      "big (8 copies at 1+ Lumber, average 0.6)"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
       "muskrat-lodgekeeper": 4,
-      "old-shell": 4,
       "pond-algae": 4,
       "riverworks-bastion": 4,
-      "water-shrew": 4
+      "water-shrew": 4,
+      "beaver-lumberjack": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/wpro/wpro-map02-mp-2026-11-11.json",
@@ -14587,26 +14859,27 @@
       "generated": "2026-11-13T05:37:47.658Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): old-shell off (not on the map's list), old-shell -> beaver-lumberjack; tuned for the Map reference at 50%+ (now 57.5%) on validation seeds; not re-searched"
     },
     {
      "id": "2-A-WPRO-2",
      "name": "2-A-WPRO-2",
      "focus": "weak low",
      "labels": [
-      "big (18 copies at 1+ Lumber, average 1.1)",
+      "big (16 copies at 1+ Lumber, average 1.0)",
       "tide x12",
-      "guard x10"
+      "armor x8"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
       "duck-paddler": 2,
       "muskrat-lodgekeeper": 4,
-      "old-shell": 2,
       "old-sturgeon": 4,
       "riverworks-bastion": 4,
-      "snapstick-turtle": 4
+      "snapstick-turtle": 4,
+      "pond-algae": 2
      },
      "source": {
       "file": "docs/balance/side2/refdecks/wpro/wpro-map02-mp-2026-11-11.json",
@@ -14624,7 +14897,8 @@
       "generated": "2026-11-13T05:37:47.658Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): old-shell off (not on the map's list), old-shell -> pond-algae; tuned for the Map reference at 50%+ (now 61.3%) on validation seeds; not re-searched"
     }
    ]
   },
@@ -14781,8 +15055,8 @@
      "name": "3-PRO-4",
      "focus": "family:flying",
      "labels": [
-      "big (8 copies at 1+ Lumber, average 0.4)",
-      "flying x12",
+      "swarm (16 copies at 0 Lumber)",
+      "flying x8",
       "strike-first x7"
      ],
      "level": 1,
@@ -14791,11 +15065,11 @@
      ],
      "deck": {
       "feral-tomcat": 3,
-      "hawk-arrowkeeper": 4,
       "kittiwake-flock": 4,
       "peregrine-stooper": 4,
       "pika-hoarder": 3,
-      "rock-pool-starfish": 2
+      "rock-pool-starfish": 2,
+      "acorn-chipmunk": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/pro/bench-deck-map03-mc-2026-11-11.json",
@@ -14813,7 +15087,8 @@
       "generated": "2026-11-12T12:13:23.139Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): hawk-arrowkeeper off (not on the map's list), hawk-arrowkeeper -> acorn-chipmunk; tuned for the Map reference at 85% or under (now 35%) on validation seeds; not re-searched"
     }
    ],
    "bpro": [
@@ -14862,21 +15137,21 @@
      "name": "3-BPRO-2",
      "focus": "family:flying",
      "labels": [
-      "swarm (14 copies at 0 Lumber)",
-      "flying x10",
-      "ranged x8"
+      "swarm (16 copies at 0 Lumber)",
+      "ranged x8",
+      "flying x8"
      ],
      "level": 1,
      "leaders": [
-      "hawk-arrowkeeper"
+      "cormorant"
      ],
      "deck": {
       "cormorant": 4,
       "eagle-sharpshooter": 4,
       "pika-hoarder": 4,
       "beachcomber-sanderling": 2,
-      "hawk-arrowkeeper": 2,
-      "chipmunk-skirmisher": 4
+      "chipmunk-skirmisher": 4,
+      "fiddler-crab-swarm": 2
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map03-mc-2026-11-11.json",
@@ -14895,7 +15170,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 37.5% -> 27%, Map reference 30% -> 57.5% (validation seeds); conch-herald -2 -> beachcomber-sanderling (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 57.5% -> 27%, Map reference 35% -> 55% (validation seeds); conch-herald -2 -> hawk-arrowkeeper; peak-condor x4 -> chipmunk-skirmisher (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 37.5% -> 27%, Map reference 30% -> 57.5% (validation seeds); conch-herald -2 -> beachcomber-sanderling (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 57.5% -> 27%, Map reference 35% -> 55% (validation seeds); conch-herald -2 -> hawk-arrowkeeper; peak-condor x4 -> chipmunk-skirmisher (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): hawk-arrowkeeper off (not on the map's list), hawk-arrowkeeper -> fiddler-crab-swarm; tuned for vs ladder 15-30% (now 19.5%), Map reference 55% on validation seeds; not re-searched"
     }
    ],
    "replaced": [
@@ -16750,6 +17026,45 @@
        "peregrine-stooper": 4
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "3-BPRO-2": {
+       "cormorant": 4,
+       "eagle-sharpshooter": 4,
+       "pika-hoarder": 4,
+       "beachcomber-sanderling": 2,
+       "hawk-arrowkeeper": 2,
+       "chipmunk-skirmisher": 4
+      },
+      "3-PRO-4": {
+       "feral-tomcat": 3,
+       "hawk-arrowkeeper": 4,
+       "kittiwake-flock": 4,
+       "peregrine-stooper": 4,
+       "pika-hoarder": 3,
+       "rock-pool-starfish": 2
+      },
+      "3-WPRO-1": {
+       "chipmunk-cavalry": 4,
+       "eagle-sharpshooter": 4,
+       "hawk-arrowkeeper": 4,
+       "peak-condor": 1,
+       "puffin-diver": 4,
+       "balloon-archer": 3
+      },
+      "3-WPRO-2": {
+       "chipmunk-cavalry": 1,
+       "eagle-sharpshooter": 3,
+       "gannet-nestweaver": 4,
+       "gull-thief": 4,
+       "hawk-arrowkeeper": 4,
+       "feral-tomcat": 4
+      }
+     }
     }
    ],
    "wpro": [
@@ -16760,18 +17075,17 @@
      "labels": [
       "big (20 copies at 1+ Lumber, average 1.2)",
       "swarm (16 copies at 1 Lumber)",
-      "flying x16",
-      "day x8"
+      "ranged x12",
+      "flying x12"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
       "chipmunk-cavalry": 4,
       "eagle-sharpshooter": 4,
-      "hawk-arrowkeeper": 4,
-      "peak-condor": 1,
+      "peak-condor": 4,
       "puffin-diver": 4,
-      "balloon-archer": 3
+      "balloon-archer": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/wpro/wpro-map03-mc-2026-11-11.json",
@@ -16790,17 +17104,17 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-WK deck (off its pool after FOLD6, repaired) tuned for the Map reference at 50%+: Map reference - -> 81.3% (validation seeds); repair: beaver-lumberjack -> balloon-archer (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-WK deck (off its pool after FOLD6, repaired) tuned for the Map reference at 50%+: Map reference - -> 81.3% (validation seeds); repair: beaver-lumberjack -> balloon-archer (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): hawk-arrowkeeper off (not on the map's list), hawk-arrowkeeper -> balloon-archer; tuned for the Map reference at 50%+ (now 46.3%) on validation seeds; not re-searched"
     },
     {
      "id": "3-WPRO-2",
      "name": "3-WPRO-2",
      "focus": "weak low",
      "labels": [
-      "big (8 copies at 1+ Lumber, average 0.6)",
+      "swarm (16 copies at 0 Lumber)",
       "economy (8 resource makers)",
-      "flying x15",
-      "day x7"
+      "flying x11"
      ],
      "level": 1,
      "leaders": [],
@@ -16809,8 +17123,8 @@
       "eagle-sharpshooter": 3,
       "gannet-nestweaver": 4,
       "gull-thief": 4,
-      "hawk-arrowkeeper": 4,
-      "feral-tomcat": 4
+      "feral-tomcat": 4,
+      "fiddler-crab-swarm": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/wpro/wpro-map03-mc-2026-11-11.json",
@@ -16829,7 +17143,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-WK deck tuned for the Map reference at 50%+: Map reference 52.5% -> 80% (validation seeds); peregrine-stooper x4 -> feral-tomcat (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-WK deck tuned for the Map reference at 50%+: Map reference 52.5% -> 80% (validation seeds); peregrine-stooper x4 -> feral-tomcat (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): hawk-arrowkeeper off (not on the map's list), hawk-arrowkeeper -> fiddler-crab-swarm; tuned for the Map reference at 50%+ (now 86.3%) on validation seeds; not re-searched"
     }
    ]
   },
@@ -16865,21 +17180,19 @@
      "name": "4-PRO-1",
      "focus": "family:tide",
      "labels": [
-      "swarm (16 copies at 0 Lumber)",
-      "tide x13",
-      "cleave x7"
+      "tide x9"
      ],
      "level": 1,
      "leaders": [
-      "drowned-matriarch"
+      "fleetfootd"
      ],
      "deck": {
       "alley-cat": 3,
       "conch-crawler": 2,
-      "drowned-matriarch": 4,
       "duck-paddler": 4,
       "fleetfootd": 3,
-      "rock-pool-starfish": 4
+      "rock-pool-starfish": 4,
+      "beaver-lumberjack": 4
      },
      "source": {
       "file": "docs/balance/prors1/refdecks/pro/bench-deck-map04-m2-2026-11-11.json",
@@ -16898,7 +17211,8 @@
      },
      "h2h": null,
      "later": [],
-     "kept1": "SKIR3 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (53.8%)"
+     "kept1": "SKIR3 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (53.8%)",
+     "prolist": "2026-11-22 (PROLIST): drowned-matriarch off (not on the map's list), drowned-matriarch -> beaver-lumberjack; tuned for the Map reference at 85% or under (now 13.8%) on validation seeds; not re-searched"
     },
     {
      "id": "4-PRO-2",
@@ -17014,20 +17328,20 @@
      "focus": "big",
      "labels": [
       "swarm (14 copies at 0 Lumber)",
-      "guard x8",
+      "armor x8",
       "tide x8"
      ],
      "level": 1,
      "leaders": [
-      "drowned-matriarch"
+      "lotus-frog"
      ],
      "deck": {
       "conch-crawler": 4,
-      "drowned-matriarch": 4,
       "kittiwake-flock": 4,
       "water-shrew": 4,
       "lotus-frog": 2,
-      "pond-algae": 2
+      "pond-algae": 2,
+      "snapstick-turtle": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map04-m2-2026-11-11.json",
@@ -17048,7 +17362,8 @@
      "kept1": "SKIR3 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (45.8%)",
      "prors1": "2026-11-11 (PRORS1): LISTFIX3's swapped deck re-confirmed by a search on the LISTFIX3 lists: the new best did not beat it at 55%+ over 400 games (52.8%); LISTFIX3 had: water-vole x2 not allowed here once the cut cards left the lists Claude had put them on (out of play, or not held by this map), swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched",
      "skir3": "2026-11-12 (SKIR3): pond-algae x2 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched",
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 74% -> 29%, Map reference 12.5% -> 30% (validation seeds); shoal-shark -2 -> lotus-frog; shoal-shark -2 -> pond-algae (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 74% -> 29%, Map reference 12.5% -> 30% (validation seeds); shoal-shark -2 -> lotus-frog; shoal-shark -2 -> pond-algae (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): drowned-matriarch off (not on the map's list), drowned-matriarch -> snapstick-turtle; tuned for vs ladder 15-30% (now 32.5%), Map reference 27.5% on validation seeds; not re-searched"
     }
    ],
    "replaced": [
@@ -19053,6 +19368,29 @@
       ]
      },
      "why": "re-baked after FOLD6 / CARDPOW2 / REFIT5-6 (SKWK2): the showcase leaders under the re-set cards; the previous values are here"
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "4-BPRO-1": {
+       "conch-crawler": 4,
+       "drowned-matriarch": 4,
+       "kittiwake-flock": 4,
+       "water-shrew": 4,
+       "lotus-frog": 2,
+       "pond-algae": 2
+      },
+      "4-PRO-1": {
+       "alley-cat": 3,
+       "conch-crawler": 2,
+       "drowned-matriarch": 4,
+       "duck-paddler": 4,
+       "fleetfootd": 3,
+       "rock-pool-starfish": 4
+      }
+     }
     }
    ],
    "wpro": [
@@ -19128,21 +19466,22 @@
      "name": "5-PRO-1",
      "focus": "big",
      "labels": [
-      "big (12 copies at 1+ Lumber, average 0.6)",
+      "big (12 copies at 1 Lumber, average 0.6)",
       "economy (4 resource makers)",
-      "tide x8"
+      "armor x8",
+      "heal x6"
      ],
      "level": 1,
      "leaders": [
       "planarian-splitter"
      ],
      "deck": {
-      "bog-leech": 2,
       "driftwood-crab": 4,
       "marsh-mallow-hare": 2,
       "planarian-splitter": 4,
       "snapstick-turtle": 4,
-      "newt-doctor": 4
+      "newt-doctor": 4,
+      "acorn-chipmunk": 2
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/pro/bench-deck-map05-mw-2026-11-11.json",
@@ -19162,17 +19501,18 @@
      "h2h": null,
      "later": [],
      "side2": "2026-11-13 (SIDE2): box-turtle x2 not allowed here once SIDE1's side lists took them off the side list that made them obtainable in time, swapped for the map list's nearest (Lumber, Wait, 2A+H; LISTFIX3's swap); not re-searched",
-     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (pyrenean-desman x4); not re-searched"
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (pyrenean-desman x4); not re-searched",
+     "prolist": "2026-11-22 (PROLIST): bog-leech off (not on the map's list), bog-leech -> acorn-chipmunk; tuned for the Map reference at 85% or under (now 5%) on validation seeds; not re-searched"
     },
     {
      "id": "5-PRO-2",
      "name": "5-PRO-2",
      "focus": "family:armor",
      "labels": [
-      "big (10 copies at 1+ Lumber, average 0.5)",
+      "big (12 copies at 1 Lumber, average 0.6)",
       "economy (4 resource makers)",
       "armor x8",
-      "guard x8"
+      "cleave x6"
      ],
      "level": 1,
      "leaders": [
@@ -19180,11 +19520,11 @@
      ],
      "deck": {
       "alley-cat": 4,
-      "bog-leech": 2,
       "conch-crawler": 4,
       "driftwood-crab": 4,
       "grass-snake": 2,
-      "planarian-splitter": 4
+      "planarian-splitter": 4,
+      "cypress-root-lurker": 2
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/pro/bench-deck-map05-mw-2026-11-11.json",
@@ -19202,7 +19542,8 @@
       "generated": "2026-11-12T12:18:30.969Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): bog-leech off (not on the map's list), bog-leech -> cypress-root-lurker; tuned for the Map reference at 85% or under (now 16.3%) on validation seeds; not re-searched"
     },
     {
      "id": "5-PRO-3",
@@ -19251,21 +19592,19 @@
      "name": "5-BPRO-1",
      "focus": "family:bleed",
      "labels": [
-      "big (9 copies at 1+ Lumber, average 0.7)",
-      "bleed x8",
+      "big (8 copies at 1 Lumber, average 0.4)",
       "tide x8"
      ],
      "level": 1,
      "leaders": [
-      "mudflat-godwit"
+      "fire-ant-raft"
      ],
      "deck": {
       "alley-cat": 4,
-      "bog-leech": 4,
-      "constrictor-coil": 4,
-      "mudpuppy": 3,
-      "mudflat-godwit": 1,
-      "fire-ant-raft": 4
+      "mudpuppy": 4,
+      "fire-ant-raft": 4,
+      "muskrat-reedgatherer": 4,
+      "cypress-root-lurker": 4
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map05-mw-2026-11-11.json",
@@ -19284,7 +19623,8 @@
      "h2h": null,
      "later": [],
      "kept1": "SKIR3 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (35.5%)",
-     "skwk2": "2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 37.5% -> 31.5%, Map reference 7.5% -> 17.5% (validation seeds); mudpuppy -1 -> mudflat-godwit (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 31.5% -> 17.5%, Map reference 17.5% -> 30% (validation seeds); muskrat-reedgatherer x4 -> fire-ant-raft (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 37.5% -> 31.5%, Map reference 7.5% -> 17.5% (validation seeds); mudpuppy -1 -> mudflat-godwit (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 31.5% -> 17.5%, Map reference 17.5% -> 30% (validation seeds); muskrat-reedgatherer x4 -> fire-ant-raft (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): bog-leech, constrictor-coil, mudflat-godwit off (not on the map's list), bog-leech x4 -> muskrat-reedgatherer; constrictor-coil+mudflat-godwit -> cypress-root-lurker; tuned for vs ladder 15-30% (now 18.5%), Map reference 47.5% on validation seeds; not re-searched"
     },
     {
      "id": "5-BPRO-2",
@@ -21273,6 +21613,52 @@
        "mudflat-godwit": 1
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "5-BPRO-1": {
+       "alley-cat": 4,
+       "bog-leech": 4,
+       "constrictor-coil": 4,
+       "mudpuppy": 3,
+       "mudflat-godwit": 1,
+       "fire-ant-raft": 4
+      },
+      "5-PRO-1": {
+       "bog-leech": 2,
+       "driftwood-crab": 4,
+       "marsh-mallow-hare": 2,
+       "planarian-splitter": 4,
+       "snapstick-turtle": 4,
+       "newt-doctor": 4
+      },
+      "5-PRO-2": {
+       "alley-cat": 4,
+       "bog-leech": 2,
+       "conch-crawler": 4,
+       "driftwood-crab": 4,
+       "grass-snake": 2,
+       "planarian-splitter": 4
+      },
+      "5-WPRO-1": {
+       "constrictor-coil": 4,
+       "muskrat-lodgekeeper": 4,
+       "platypus-spur": 4,
+       "snapstick-turtle": 4,
+       "swamp-alligator": 4
+      },
+      "5-WPRO-2": {
+       "constrictor-coil": 4,
+       "fire-ant-raft": 4,
+       "muskrat-lodgekeeper": 3,
+       "old-snapjaw": 3,
+       "raft-spider": 4,
+       "swamp-alligator": 2
+      }
+     }
     }
    ],
    "wpro": [
@@ -21281,17 +21667,18 @@
      "name": "5-WPRO-1",
      "focus": "weak low",
      "labels": [
-      "big (20 copies at 1+ Lumber, average 1.4)",
-      "tide x8"
+      "big (16 copies at 1+ Lumber, average 1.0)",
+      "bleed x8",
+      "armor x8"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
-      "constrictor-coil": 4,
       "muskrat-lodgekeeper": 4,
       "platypus-spur": 4,
       "snapstick-turtle": 4,
-      "swamp-alligator": 4
+      "swamp-alligator": 4,
+      "alley-cat": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/wpro/wpro-map05-mw-2026-11-11.json",
@@ -21309,25 +21696,27 @@
       "generated": "2026-11-12T13:37:20.843Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): constrictor-coil off (not on the map's list), constrictor-coil -> alley-cat; tuned for the Map reference at 50%+ (now 68.8%) on validation seeds; not re-searched"
     },
     {
      "id": "5-WPRO-2",
      "name": "5-WPRO-2",
      "focus": "weak top-heavy",
      "labels": [
-      "big (20 copies at 1+ Lumber, average 1.4)",
-      "tide x11"
+      "big (20 copies at 1+ Lumber, average 1.2)",
+      "swarm (16 copies at 1 Lumber)",
+      "tide x12",
+      "poison x8"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
-      "constrictor-coil": 4,
       "fire-ant-raft": 4,
-      "muskrat-lodgekeeper": 3,
-      "old-snapjaw": 3,
+      "muskrat-lodgekeeper": 4,
       "raft-spider": 4,
-      "swamp-alligator": 2
+      "swamp-alligator": 4,
+      "cypress-root-lurker": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/wpro/wpro-map05-mw-2026-11-11.json",
@@ -21345,7 +21734,8 @@
       "generated": "2026-11-12T13:37:20.843Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): constrictor-coil, old-snapjaw off (not on the map's list), constrictor-coil+old-snapjaw -> cypress-root-lurker; tuned for the Map reference at 50%+ (now 88.8%) on validation seeds; not re-searched"
     }
    ]
   },
@@ -21458,20 +21848,19 @@
      "name": "5-A-BPRO-1",
      "focus": "family:armor",
      "labels": [
-      "swarm (16 copies at 0 Lumber)",
-      "bleed x8"
+      "midrange (average 0.6 Lumber)"
      ],
      "level": 1,
      "leaders": [
-      "bog-leech"
+      "cottonmouth-matriarch"
      ],
      "deck": {
       "mudpuppy": 4,
       "muskrat-reedgatherer": 3,
-      "nutria-reedcutter": 1,
+      "nutria-reedcutter": 2,
       "peat-cutter-vole": 4,
       "swamp-alligator": 4,
-      "bog-leech": 4
+      "cottonmouth-matriarch": 3
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map05-ms-2026-11-11.json",
@@ -21490,26 +21879,27 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 43% -> 30%, Map reference 75% -> 82.5% (validation seeds); matamata x4 -> bog-leech; muskrat-reedgatherer -1 -> mudpuppy (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 43% -> 30%, Map reference 75% -> 82.5% (validation seeds); matamata x4 -> bog-leech; muskrat-reedgatherer -1 -> mudpuppy (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): bog-leech off (not on the map's list), bog-leech -> constrictor-coil; tuned for vs ladder 15-30% (now 23.5%), Map reference 92.5% on validation seeds; not re-searched"
     },
     {
      "id": "5-A-BPRO-2",
      "name": "5-A-BPRO-2",
      "focus": "big",
      "labels": [
-      "big (11 copies at 1 Lumber, average 0.6)"
+      "big (9 copies at 1 Lumber, average 0.5)"
      ],
      "level": 1,
      "leaders": [
       "cottonmouth-matriarch"
      ],
      "deck": {
-      "bog-leech": 2,
-      "cypress-root-lurker": 4,
+      "cypress-root-lurker": 3,
       "matamata": 4,
-      "mudpuppy": 3,
       "newt-doctor": 4,
-      "cottonmouth-matriarch": 3
+      "cottonmouth-matriarch": 2,
+      "muskrat-reedgatherer": 3,
+      "nutria-reedcutter": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map05-ms-2026-11-11.json",
@@ -21528,26 +21918,27 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 45.5% -> 29.5%, Map reference 75% -> 77.5% (validation seeds); bog-leech -2 -> cottonmouth-matriarch; mudpuppy -1 -> cottonmouth-matriarch (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 45.5% -> 29.5%, Map reference 75% -> 77.5% (validation seeds); bog-leech -2 -> cottonmouth-matriarch; mudpuppy -1 -> cottonmouth-matriarch (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): bog-leech off (not on the map's list), bog-leech -> muskrat-reedgatherer; tuned for vs ladder 15-30% (now 24%), Map reference 75% on validation seeds; not re-searched"
     },
     {
      "id": "5-A-BPRO-3",
      "name": "5-A-BPRO-3",
      "focus": "swarm",
      "labels": [
-      "big (9 copies at 1+ Lumber, average 0.8)"
+      "big (9 copies at 1+ Lumber, average 0.7)"
      ],
      "level": 1,
      "leaders": [
-      "old-snapjaw"
+      "cottonmouth-matriarch"
      ],
      "deck": {
       "crocodile-ambusher": 4,
       "matamata": 3,
       "newt-doctor": 3,
       "peat-cutter-vole": 4,
-      "old-snapjaw": 2,
-      "mudpuppy": 4
+      "mudpuppy": 4,
+      "cottonmouth-matriarch": 2
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map05-ms-2026-11-11.json",
@@ -21566,7 +21957,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 45.5% -> 33%, Map reference 65% -> 82.5% (validation seeds); mudpuppy -2 -> cottonmouth-matriarch; newt-doctor -1 -> crocodile-ambusher (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 20.5% -> 20%, Map reference 77.5% -> 80% (validation seeds); cottonmouth-matriarch -2 -> old-snapjaw; nutria-reedcutter x4 -> mudpuppy (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 45.5% -> 33%, Map reference 65% -> 82.5% (validation seeds); mudpuppy -2 -> cottonmouth-matriarch; newt-doctor -1 -> crocodile-ambusher (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 20.5% -> 20%, Map reference 77.5% -> 80% (validation seeds); cottonmouth-matriarch -2 -> old-snapjaw; nutria-reedcutter x4 -> mudpuppy (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): old-snapjaw off (not on the map's list), old-snapjaw -> cottonmouth-matriarch; tuned for vs ladder 15-30% (now 24%), Map reference 72.5% on validation seeds; not re-searched"
     },
     {
      "id": "5-A-BPRO-4",
@@ -21578,15 +21970,15 @@
      ],
      "level": 1,
      "leaders": [
-      "old-snapjaw"
+      "newt-doctor"
      ],
      "deck": {
       "cypress-root-lurker": 4,
       "muskrat-reedgatherer": 4,
-      "newt-doctor": 4,
-      "old-snapjaw": 3,
+      "newt-doctor": 2,
       "peat-cutter-vole": 4,
-      "hedgehog-herbalist": 1
+      "constrictor-coil": 4,
+      "river-carp": 2
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map05-ms-2026-11-11.json",
@@ -21605,7 +21997,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 19.5% -> 23%, Map reference 97.5% -> 87.5% (validation seeds); mudpuppy -1 -> bog-leech; bog-leech -1 -> hedgehog-herbalist (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 19.5% -> 23%, Map reference 97.5% -> 87.5% (validation seeds); mudpuppy -1 -> bog-leech; bog-leech -1 -> hedgehog-herbalist (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): old-snapjaw, hedgehog-herbalist off (not on the map's list), old-snapjaw+hedgehog-herbalist -> constrictor-coil; tuned for vs ladder 15-30% (now 31.5%), Map reference 80% on validation seeds; not re-searched"
     }
    ],
    "replaced": [
@@ -23753,6 +24146,53 @@
        "cottonmouth-matriarch": 2
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "5-A-BPRO-1": {
+       "mudpuppy": 4,
+       "muskrat-reedgatherer": 3,
+       "nutria-reedcutter": 1,
+       "peat-cutter-vole": 4,
+       "swamp-alligator": 4,
+       "bog-leech": 4
+      },
+      "5-A-BPRO-2": {
+       "bog-leech": 2,
+       "cypress-root-lurker": 4,
+       "matamata": 4,
+       "mudpuppy": 3,
+       "newt-doctor": 4,
+       "cottonmouth-matriarch": 3
+      },
+      "5-A-BPRO-3": {
+       "crocodile-ambusher": 4,
+       "matamata": 3,
+       "newt-doctor": 3,
+       "peat-cutter-vole": 4,
+       "old-snapjaw": 2,
+       "mudpuppy": 4
+      },
+      "5-A-BPRO-4": {
+       "cypress-root-lurker": 4,
+       "muskrat-reedgatherer": 4,
+       "newt-doctor": 4,
+       "old-snapjaw": 3,
+       "peat-cutter-vole": 4,
+       "hedgehog-herbalist": 1
+      },
+      "5-A-WPRO-1": {
+       "bog-leech": 4,
+       "constrictor-coil": 4,
+       "crocodile-ambusher": 4,
+       "old-snapjaw": 3,
+       "peat-cutter-vole": 1,
+       "swamp-alligator": 4
+      }
+     }
     }
    ],
    "wpro": [
@@ -23761,19 +24201,18 @@
      "name": "5-A-WPRO-1",
      "focus": "weak low",
      "labels": [
-      "big (15 copies at 1+ Lumber, average 1.5)",
-      "bleed x7",
-      "armor x7"
+      "big (16 copies at 1+ Lumber, average 1.4)",
+      "bleed x8",
+      "guard x8"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
-      "bog-leech": 4,
       "constrictor-coil": 4,
       "crocodile-ambusher": 4,
-      "old-snapjaw": 3,
-      "peat-cutter-vole": 1,
-      "swamp-alligator": 4
+      "peat-cutter-vole": 4,
+      "swamp-alligator": 4,
+      "cypress-root-lurker": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/wpro/wpro-map05-ms-2026-11-11.json",
@@ -23791,7 +24230,8 @@
       "generated": "2026-11-13T05:38:42.815Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): bog-leech, old-snapjaw off (not on the map's list), bog-leech+old-snapjaw -> cypress-root-lurker; tuned for the Map reference at 50%+ (now 100%) on validation seeds; not re-searched"
     },
     {
      "id": "5-A-WPRO-2",
@@ -23861,21 +24301,22 @@
      "name": "6-PRO-1",
      "focus": "family:tide",
      "labels": [
+      "big (17 copies at 1 Lumber, average 0.8)",
       "economy (4 resource makers)",
       "tide x10",
-      "poison x7"
+      "armor x6"
      ],
      "level": 1,
      "leaders": [
-      "heron-hag"
+      "alligator-gar"
      ],
      "deck": {
       "alligator-gar": 2,
       "camouflage-frog": 4,
       "driftwood-crab": 4,
       "fire-ant-raft": 4,
-      "heron-hag": 3,
-      "newt-doctor": 3
+      "newt-doctor": 3,
+      "barrow-leech-bat": 3
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/pro/bench-deck-map06-m8-2026-11-11.json",
@@ -23907,7 +24348,8 @@
        -141,
        -70
       ]
-     }
+     },
+     "prolist": "2026-11-22 (PROLIST): heron-hag off (not on the map's list), heron-hag -> barrow-leech-bat; tuned for the Map reference at 85% or under (now 32.5%) on validation seeds; not re-searched"
     },
     {
      "id": "6-PRO-2",
@@ -23971,15 +24413,15 @@
      ],
      "level": 1,
      "leaders": [
-      "heron-hag"
+      "alligator-gar"
      ],
      "deck": {
       "alligator-gar": 2,
       "cypress-root-lurker": 4,
-      "heron-hag": 3,
       "water-shrew": 4,
       "barrow-leech-bat": 3,
-      "constrictor-coil": 4
+      "constrictor-coil": 4,
+      "booming-bittern": 3
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map06-m8-2026-11-11.json",
@@ -23998,26 +24440,28 @@
      "h2h": null,
      "later": [],
      "kept1": "SKIR3 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (54.3%)",
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck (off its pool after FOLD6, repaired) tuned for its win rate vs the reference ladder (15-30%): vs ladder - -> 23%, Map reference - -> 47.5% (validation seeds); repair: grass-viper -> barrow-leech-bat; mosquito-cloud x4 -> constrictor-coil (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck (off its pool after FOLD6, repaired) tuned for its win rate vs the reference ladder (15-30%): vs ladder - -> 23%, Map reference - -> 47.5% (validation seeds); repair: grass-viper -> barrow-leech-bat; mosquito-cloud x4 -> constrictor-coil (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): heron-hag off (not on the map's list), heron-hag -> booming-bittern; tuned for vs ladder 15-30% (now 27%), Map reference 55% on validation seeds; not re-searched"
     },
     {
      "id": "6-BPRO-2",
      "name": "6-BPRO-2",
      "focus": "open",
      "labels": [
-      "guard x8",
+      "big (13 copies at 1+ Lumber, average 0.7)",
       "evasion x8"
      ],
      "level": 1,
      "leaders": [
-      "venomlord-serpent"
+      "constrictor-coil"
      ],
      "deck": {
       "cypress-root-lurker": 4,
-      "mosquito-cloud": 4,
+      "mosquito-cloud": 3,
       "water-shrew": 4,
-      "venomlord-serpent": 4,
-      "camouflage-frog": 4
+      "camouflage-frog": 4,
+      "lamprey": 4,
+      "constrictor-coil": 1
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map06-m8-2026-11-11.json",
@@ -24050,26 +24494,27 @@
        5
       ]
      },
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck (off its pool after FOLD6, repaired) tuned for its win rate vs the reference ladder (15-30%): vs ladder - -> 16%, Map reference - -> 27.5% (validation seeds); repair: adder-ambusher x3 -> venomlord-serpent; repair: anhinga-spearbird+nutria-reedcutter -> camouflage-frog (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck (off its pool after FOLD6, repaired) tuned for its win rate vs the reference ladder (15-30%): vs ladder - -> 16%, Map reference - -> 27.5% (validation seeds); repair: adder-ambusher x3 -> venomlord-serpent; repair: anhinga-spearbird+nutria-reedcutter -> camouflage-frog (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): venomlord-serpent off (not on the map's list), venomlord-serpent -> lamprey; tuned for vs ladder 15-30% (now 31%), Map reference 30% on validation seeds; not re-searched"
     },
     {
      "id": "6-BPRO-3",
      "name": "6-BPRO-3",
      "focus": "swarm",
      "labels": [
-      "guard x6"
+      "big (16 copies at 1+ Lumber, average 1.0)"
      ],
      "level": 1,
      "leaders": [
-      "heron-hag"
+      "barrow-leech-bat"
      ],
      "deck": {
       "cypress-root-lurker": 2,
-      "heron-hag": 3,
       "newt-doctor": 4,
-      "pond-algae": 4,
-      "venomlord-serpent": 4,
-      "barrow-leech-bat": 3
+      "barrow-leech-bat": 3,
+      "booming-bittern": 3,
+      "lamprey": 4,
+      "crocodile-ambusher": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map06-m8-2026-11-11.json",
@@ -24102,7 +24547,8 @@
        60
       ]
      },
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck (off its pool after FOLD6, repaired) tuned for its win rate vs the reference ladder (15-30%): vs ladder - -> 18%, Map reference - -> 45% (validation seeds); repair: nutria-reedcutter x4 -> venomlord-serpent; repair: grass-viper -> barrow-leech-bat (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck (off its pool after FOLD6, repaired) tuned for its win rate vs the reference ladder (15-30%): vs ladder - -> 18%, Map reference - -> 45% (validation seeds); repair: nutria-reedcutter x4 -> venomlord-serpent; repair: grass-viper -> barrow-leech-bat (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): heron-hag, venomlord-serpent off (not on the map's list), heron-hag x3 -> booming-bittern; venomlord-serpent -> lamprey; tuned for vs ladder 15-30% (now 29.5%), Map reference 45% on validation seeds; not re-searched"
     }
    ],
    "replaced": [
@@ -25856,6 +26302,51 @@
       "6-PRO-2": "6-PRO-1",
       "6-PRO-3": "6-PRO-2"
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "6-BPRO-1": {
+       "alligator-gar": 2,
+       "cypress-root-lurker": 4,
+       "heron-hag": 3,
+       "water-shrew": 4,
+       "barrow-leech-bat": 3,
+       "constrictor-coil": 4
+      },
+      "6-BPRO-2": {
+       "cypress-root-lurker": 4,
+       "mosquito-cloud": 4,
+       "water-shrew": 4,
+       "venomlord-serpent": 4,
+       "camouflage-frog": 4
+      },
+      "6-BPRO-3": {
+       "cypress-root-lurker": 2,
+       "heron-hag": 3,
+       "newt-doctor": 4,
+       "pond-algae": 4,
+       "venomlord-serpent": 4,
+       "barrow-leech-bat": 3
+      },
+      "6-PRO-1": {
+       "alligator-gar": 2,
+       "camouflage-frog": 4,
+       "driftwood-crab": 4,
+       "fire-ant-raft": 4,
+       "heron-hag": 3,
+       "newt-doctor": 3
+      },
+      "6-WPRO-1": {
+       "camouflage-frog": 4,
+       "constrictor-coil": 4,
+       "crocodile-ambusher": 4,
+       "venomlord-serpent": 4,
+       "booming-bittern": 4
+      }
+     }
     }
    ],
    "wpro": [
@@ -25864,7 +26355,7 @@
      "name": "6-WPRO-1",
      "focus": "weak low",
      "labels": [
-      "big (12 copies at 2+ Lumber, average 1.8)"
+      "big (20 copies at 1+ Lumber, average 1.4)"
      ],
      "level": 1,
      "leaders": [],
@@ -25872,8 +26363,8 @@
       "camouflage-frog": 4,
       "constrictor-coil": 4,
       "crocodile-ambusher": 4,
-      "venomlord-serpent": 4,
-      "booming-bittern": 4
+      "booming-bittern": 4,
+      "cypress-root-lurker": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/wpro/wpro-map06-m8-2026-11-11.json",
@@ -25892,7 +26383,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-WK deck (off its pool after FOLD6, repaired) tuned for the Map reference at 50%+: Map reference - -> 97.5% (validation seeds); repair: anhinga-spearbird -> booming-bittern (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-WK deck (off its pool after FOLD6, repaired) tuned for the Map reference at 50%+: Map reference - -> 97.5% (validation seeds); repair: anhinga-spearbird -> booming-bittern (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): venomlord-serpent off (not on the map's list), venomlord-serpent -> cypress-root-lurker; tuned for the Map reference at 50%+ (now 66.3%) on validation seeds; not re-searched"
     }
    ]
   },
@@ -25981,7 +26473,7 @@
       "fungus-gnat-cloud": 4,
       "mudpuppy": 3,
       "planarian-splitter": 3,
-      "sleepless-shrew": 4
+      "acorn-chipmunk": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/pro/bench-deck-map07-mu-2026-11-11.json",
@@ -25999,7 +26491,8 @@
       "generated": "2026-11-12T12:26:13.642Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): sleepless-shrew off (not on the map's list), sleepless-shrew -> acorn-chipmunk; tuned for the Map reference at 85% or under (now 41.3%) on validation seeds; not re-searched"
     }
    ],
    "bpro": [
@@ -26018,9 +26511,9 @@
       "cypress-root-lurker": 4,
       "fungus-gnat-cloud": 4,
       "hawthorn-shieldbug": 2,
-      "sleepless-shrew": 3,
       "puffball-bombardier": 4,
-      "rot-swollen-carcass": 3
+      "rot-swollen-carcass": 3,
+      "camouflage-frog": 3
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map07-mu-2026-11-11.json",
@@ -26039,7 +26532,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck (off its pool after FOLD6, repaired) tuned for its win rate vs the reference ladder (15-30%): vs ladder - -> 12.5%, Map reference - -> 85% (validation seeds); repair: adder-ambusher -> puffball-bombardier; hawthorn-shieldbug -2 -> puffball-bombardier; sleepless-shrew -1 -> puffball-bombardier; leopard-slug x3 -> earthworm; earthworm x3 -> rot-swollen-carcass (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck (off its pool after FOLD6, repaired) tuned for its win rate vs the reference ladder (15-30%): vs ladder - -> 12.5%, Map reference - -> 85% (validation seeds); repair: adder-ambusher -> puffball-bombardier; hawthorn-shieldbug -2 -> puffball-bombardier; sleepless-shrew -1 -> puffball-bombardier; leopard-slug x3 -> earthworm; earthworm x3 -> rot-swollen-carcass (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): sleepless-shrew off (not on the map's list), sleepless-shrew -> camouflage-frog; tuned for vs ladder 15-30% (now 24.5%), Map reference 77.5% on validation seeds; not re-searched"
     }
    ],
    "replaced": [
@@ -28160,6 +28654,29 @@
        "wolf-spider-mother": 3
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "7-BPRO-1": {
+       "cypress-root-lurker": 4,
+       "fungus-gnat-cloud": 4,
+       "hawthorn-shieldbug": 2,
+       "sleepless-shrew": 3,
+       "puffball-bombardier": 4,
+       "rot-swollen-carcass": 3
+      },
+      "7-PRO-2": {
+       "bee-forager": 3,
+       "corpse-flower-beetle": 3,
+       "fungus-gnat-cloud": 4,
+       "mudpuppy": 3,
+       "planarian-splitter": 3,
+       "sleepless-shrew": 4
+      }
+     }
     }
    ],
    "wpro": [
@@ -28361,8 +28878,8 @@
       "fungus-gnat-cloud": 4,
       "leopard-slug": 4,
       "millipede-hauler": 4,
-      "sleepless-shrew": 4,
-      "planarian-splitter": 4
+      "rootworm-colony": 4,
+      "puffball-bombardier": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map07-mz-2026-11-11.json",
@@ -28381,7 +28898,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 1.5% -> 5.5%, Map reference 92.5% -> 82.5% (validation seeds); hawthorn-shieldbug -2 -> planarian-splitter; hawthorn-shieldbug -2 -> planarian-splitter (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 1.5% -> 5.5%, Map reference 92.5% -> 82.5% (validation seeds); hawthorn-shieldbug -2 -> planarian-splitter; hawthorn-shieldbug -2 -> planarian-splitter (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): sleepless-shrew off (not on the map's list), sleepless-shrew -> rootworm-colony; tuned for vs ladder 15-30% (now 7.5%), Map reference 42.5% on validation seeds; not re-searched"
     },
     {
      "id": "7-A-BPRO-2",
@@ -30897,6 +31415,28 @@
        "mudpuppy": 4
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "7-A-BPRO-1": {
+       "fungus-gnat-cloud": 4,
+       "leopard-slug": 4,
+       "millipede-hauler": 4,
+       "sleepless-shrew": 4,
+       "planarian-splitter": 4
+      },
+      "7-A-WPRO-2": {
+       "fungal-colossus": 4,
+       "hawthorn-shieldbug": 4,
+       "millipede-hauler": 4,
+       "rootworm-colony": 3,
+       "rot-swollen-carcass": 3,
+       "sleepless-shrew": 2
+      }
+     }
     }
    ],
    "wpro": [
@@ -30940,9 +31480,8 @@
      "name": "7-A-WPRO-2",
      "focus": "weak top-heavy",
      "labels": [
-      "big (7 copies at 2+ Lumber, average 1.4)",
-      "swarm x11",
-      "armor x8"
+      "big (7 copies at 2+ Lumber, average 1.5)",
+      "swarm x7"
      ],
      "level": 1,
      "leaders": [],
@@ -30952,7 +31491,7 @@
       "millipede-hauler": 4,
       "rootworm-colony": 3,
       "rot-swollen-carcass": 3,
-      "sleepless-shrew": 2
+      "bombardier-beetle": 2
      },
      "source": {
       "file": "docs/balance/side2/refdecks/wpro/wpro-map07-mz-2026-11-11.json",
@@ -30970,7 +31509,8 @@
       "generated": "2026-11-13T05:39:42.871Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): sleepless-shrew off (not on the map's list), sleepless-shrew -> bombardier-beetle; tuned for the Map reference at 50%+ (now 96.3%) on validation seeds; not re-searched"
     }
    ]
   },
@@ -31008,8 +31548,8 @@
      "name": "8-PRO-1",
      "focus": "family:flying",
      "labels": [
-      "flying x10",
-      "night x6"
+      "swarm (14 copies at 0 Lumber)",
+      "flying x7"
      ],
      "level": 1,
      "leaders": [
@@ -31017,11 +31557,11 @@
      ],
      "deck": {
       "alley-cat": 3,
-      "echo-matriarch": 3,
       "echo-screecher": 3,
       "fungus-gnat-cloud": 4,
       "giant-cave-huntsman": 3,
-      "star-nosed-mole": 4
+      "star-nosed-mole": 4,
+      "acorn-chipmunk": 3
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/pro/bench-deck-map08-m4-2026-11-11.json",
@@ -31039,7 +31579,8 @@
       "generated": "2026-11-12T12:32:08.694Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): echo-matriarch off (not on the map's list), echo-matriarch -> acorn-chipmunk; tuned for the Map reference at 85% or under (now 11.3%) on validation seeds; not re-searched"
     },
     {
      "id": "8-PRO-2",
@@ -31082,45 +31623,6 @@
     {
      "id": "8-PRO-3",
      "name": "8-PRO-3",
-     "focus": "open",
-     "labels": [
-      "swarm (14 copies at 0 Lumber)",
-      "flying x13",
-      "night x6"
-     ],
-     "level": 1,
-     "leaders": [
-      "echo-matriarch"
-     ],
-     "deck": {
-      "alley-cat": 3,
-      "barrow-leech-bat": 3,
-      "bee-forager": 3,
-      "blind-cave-fish": 4,
-      "echo-matriarch": 3,
-      "fungus-gnat-cloud": 4
-     },
-     "source": {
-      "file": "docs/balance/skir3/refdecks/pro/bench-deck-map08-m4-2026-11-11.json",
-      "mode": "deck1",
-      "package": "SKIR1",
-      "run": "SKIR3",
-      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map m4 --pool alley-cat,alligator-gar,barkplate-beetle,barrow-leech-bat,bee-forager,blind-cave-fish,cave-olm,corpse-flower-beetle,driftwood-crab,echo-matriarch,echo-screecher,fire-ant-raft,fungus-gnat-cloud,gallery-orb-weaver,giant-cave-huntsman,hawthorn-shieldbug,mudpuppy,muskrat-lodgekeeper,newt-doctor,otter-centurion,planarian-splitter,quarry-mole,raft-spider,rot-swollen-carcass,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:flying,family:armor,big,open --anchor barrow-leech-bat,blind-cave-fish,cave-olm,corpse-flower-beetle,driftwood-crab,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,hawthorn-shieldbug,quarry-mole,rot-swollen-carcass,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,wolf-spider-mother --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.8485,
-      "ci": [
-       0.8072,
-       0.8898
-      ],
-      "avgLumber": 0.3,
-      "generated": "2026-11-12T12:32:08.694Z"
-     },
-     "h2h": null,
-     "later": []
-    },
-    {
-     "id": "8-PRO-4",
-     "name": "8-PRO-4",
      "focus": "big",
      "labels": [
       "big (8 copies at 2+ Lumber, average 1.1)",
@@ -31534,6 +32036,38 @@
       "vampire-bat-nurse: not in the map's own pool (BPRO)"
      ],
      "on": "2026-10-29"
+    },
+    {
+     "kind": "pro",
+     "id": "8-PRO-3",
+     "deck": {
+      "alley-cat": 3,
+      "barrow-leech-bat": 3,
+      "bee-forager": 3,
+      "blind-cave-fish": 4,
+      "echo-matriarch": 3,
+      "fungus-gnat-cloud": 4
+     },
+     "source": {
+      "file": "docs/balance/skir3/refdecks/pro/bench-deck-map08-m4-2026-11-11.json",
+      "mode": "deck1",
+      "package": "SKIR1",
+      "run": "SKIR3",
+      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+      "reproduce": "node tools/bench/bench.js deck --map m4 --pool alley-cat,alligator-gar,barkplate-beetle,barrow-leech-bat,bee-forager,blind-cave-fish,cave-olm,corpse-flower-beetle,driftwood-crab,echo-matriarch,echo-screecher,fire-ant-raft,fungus-gnat-cloud,gallery-orb-weaver,giant-cave-huntsman,hawthorn-shieldbug,mudpuppy,muskrat-lodgekeeper,newt-doctor,otter-centurion,planarian-splitter,quarry-mole,raft-spider,rot-swollen-carcass,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 8000 --final-games 24 --seed skir1-pro --focus family:flying,family:armor,big,open --anchor barrow-leech-bat,blind-cave-fish,cave-olm,corpse-flower-beetle,driftwood-crab,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,hawthorn-shieldbug,quarry-mole,rot-swollen-carcass,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,wolf-spider-mother --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.8485,
+      "ci": [
+       0.8072,
+       0.8898
+      ],
+      "avgLumber": 0.3,
+      "generated": "2026-11-12T12:32:08.694Z"
+     },
+     "dropped": [
+      "under 10 list copies"
+     ],
+     "on": "2026-11-22",
+     "package": "PROLIST"
     }
    ],
    "skipped": [
@@ -32761,6 +33295,46 @@
        "stalactite-golem": 4
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "8-PRO-1": {
+       "alley-cat": 3,
+       "echo-matriarch": 3,
+       "echo-screecher": 3,
+       "fungus-gnat-cloud": 4,
+       "giant-cave-huntsman": 3,
+       "star-nosed-mole": 4
+      },
+      "8-WPRO-1": {
+       "blind-cave-fish": 3,
+       "hawthorn-shieldbug": 3,
+       "rot-swollen-carcass": 4,
+       "stalactite-golem": 4,
+       "sulfur-cinder-moth": 3,
+       "wolf-spider-mother": 3
+      }
+     },
+     "dropped": [
+      {
+       "id": "8-PRO-3",
+       "deck": {
+        "alley-cat": 3,
+        "barrow-leech-bat": 3,
+        "bee-forager": 3,
+        "blind-cave-fish": 4,
+        "echo-matriarch": 3,
+        "fungus-gnat-cloud": 4
+       },
+       "why": "under 10 list copies"
+      }
+     ],
+     "renamed": {
+      "8-PRO-4": "8-PRO-3"
+     }
     }
    ],
    "wpro": [
@@ -32769,19 +33343,19 @@
      "name": "8-WPRO-1",
      "focus": "weak low",
      "labels": [
-      "big (8 copies at 2+ Lumber, average 1.4)",
+      "big (8 copies at 2+ Lumber, average 1.6)",
       "armor x7",
       "guard x7"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
-      "blind-cave-fish": 3,
       "hawthorn-shieldbug": 3,
       "rot-swollen-carcass": 4,
       "stalactite-golem": 4,
       "sulfur-cinder-moth": 3,
-      "wolf-spider-mother": 3
+      "wolf-spider-mother": 3,
+      "driftwood-crab": 3
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/wpro/wpro-map08-m4-2026-11-11.json",
@@ -32799,7 +33373,8 @@
       "generated": "2026-11-12T13:43:50.618Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): blind-cave-fish off (not on the map's list), blind-cave-fish -> driftwood-crab; tuned for the Map reference at 50%+ (now 70%) on validation seeds; not re-searched"
     },
     {
      "id": "8-WPRO-2",
@@ -32908,21 +33483,20 @@
      "name": "8-A-PRO-2",
      "focus": "family:flying",
      "labels": [
-      "big (9 copies at 1+ Lumber, average 0.5)",
-      "flying x9",
-      "night x6"
+      "big (9 copies at 1+ Lumber, average 0.6)",
+      "flying x6"
      ],
      "level": 1,
      "leaders": [
-      "echo-matriarch"
+      "eagle-owl-quartermaster"
      ],
      "deck": {
       "alpine-marmot": 4,
       "cave-olm": 3,
       "eagle-owl-quartermaster": 3,
-      "echo-matriarch": 3,
       "echo-screecher": 3,
-      "fruit-bat": 4
+      "fruit-bat": 4,
+      "acacia-giraffe": 3
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map08-mn-2026-11-11.json",
@@ -32940,28 +33514,28 @@
       "generated": "2026-11-13T05:05:40.694Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): echo-matriarch off (not on the map's list), echo-matriarch -> acacia-giraffe; tuned for the Map reference at 85% or under (now 23.8%) on validation seeds; not re-searched"
     },
     {
      "id": "8-A-PRO-3",
      "name": "8-A-PRO-3",
      "focus": "family:armor",
      "labels": [
-      "big (11 copies at 1+ Lumber, average 0.8)",
-      "armor x8",
+      "big (11 copies at 1+ Lumber, average 0.9)",
       "guard x8"
      ],
      "level": 1,
      "leaders": [
-      "echo-matriarch"
+      "dust-hyena"
      ],
      "deck": {
       "cave-olm": 4,
       "dust-hyena": 3,
-      "echo-matriarch": 3,
       "glow-worm": 2,
       "hawthorn-shieldbug": 4,
-      "stalactite-golem": 4
+      "stalactite-golem": 4,
+      "acacia-giraffe": 3
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map08-mn-2026-11-11.json",
@@ -32979,7 +33553,8 @@
       "generated": "2026-11-13T05:05:40.694Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): echo-matriarch off (not on the map's list), echo-matriarch -> acacia-giraffe; tuned for the Map reference at 85% or under (now 52.5%) on validation seeds; not re-searched"
     }
    ],
    "bpro": [
@@ -32988,7 +33563,7 @@
      "name": "8-A-BPRO-1",
      "focus": "family:flying",
      "labels": [
-      "big (12 copies at 1+ Lumber, average 0.8)",
+      "big (16 copies at 1+ Lumber, average 1.0)",
       "flying x6"
      ],
      "level": 1,
@@ -32997,11 +33572,11 @@
      ],
      "deck": {
       "barrow-leech-bat": 2,
-      "blind-cave-fish": 4,
       "glow-worm": 4,
       "sulfur-cinder-moth": 4,
       "stalactite-golem": 4,
-      "gallery-orb-weaver": 2
+      "gallery-orb-weaver": 2,
+      "quarry-mole": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map08-mn-2026-11-11.json",
@@ -33020,7 +33595,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 78% -> 30.5%, Map reference 22.5% -> 77.5% (validation seeds); fruit-bat x4 -> stalactite-golem; echo-matriarch -2 -> gallery-orb-weaver; barrow-leech-bat -1 -> sulfur-cinder-moth (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 78% -> 30.5%, Map reference 22.5% -> 77.5% (validation seeds); fruit-bat x4 -> stalactite-golem; echo-matriarch -2 -> gallery-orb-weaver; barrow-leech-bat -1 -> sulfur-cinder-moth (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): blind-cave-fish off (not on the map's list), blind-cave-fish -> quarry-mole; tuned for vs ladder 15-30% (now 17%), Map reference 92.5% on validation seeds; not re-searched"
     },
     {
      "id": "8-A-BPRO-2",
@@ -33034,12 +33610,12 @@
       "giant-cave-huntsman"
      ],
      "deck": {
-      "blind-cave-fish": 2,
       "echo-screecher": 3,
       "giant-cave-huntsman": 3,
       "stalactite-golem": 4,
       "cave-olm": 4,
-      "quarry-mole": 4
+      "quarry-mole": 4,
+      "fruit-bat": 2
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map08-mn-2026-11-11.json",
@@ -33058,14 +33634,15 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 77% -> 25.5%, Map reference 42.5% -> 82.5% (validation seeds); fruit-bat x4 -> stalactite-golem; glow-worm x4 -> cave-olm; whip-spider x4 -> quarry-mole (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 77% -> 25.5%, Map reference 42.5% -> 82.5% (validation seeds); fruit-bat x4 -> stalactite-golem; glow-worm x4 -> cave-olm; whip-spider x4 -> quarry-mole (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): blind-cave-fish off (not on the map's list), blind-cave-fish -> fruit-bat; tuned for vs ladder 15-30% (now 29.5%), Map reference 67.5% on validation seeds; not re-searched"
     },
     {
      "id": "8-A-BPRO-3",
      "name": "8-A-BPRO-3",
      "focus": "family:night",
      "labels": [
-      "big (10 copies at 1 Lumber, average 0.5)"
+      "big (12 copies at 1 Lumber, average 0.6)"
      ],
      "level": 1,
      "leaders": [
@@ -33077,7 +33654,7 @@
       "gallery-orb-weaver": 4,
       "glow-worm": 4,
       "whip-spider": 3,
-      "blind-cave-fish": 2
+      "quarry-mole": 2
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map08-mn-2026-11-11.json",
@@ -33096,7 +33673,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 69.5% -> 40%, Map reference 37.5% -> 72.5% (validation seeds); echo-matriarch x3 -> whip-spider; echo-screecher -2 -> blind-cave-fish (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 69.5% -> 40%, Map reference 37.5% -> 72.5% (validation seeds); echo-matriarch x3 -> whip-spider; echo-screecher -2 -> blind-cave-fish (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): blind-cave-fish off (not on the map's list), blind-cave-fish -> quarry-mole; tuned for vs ladder 15-30% (now 20%), Map reference 62.5% on validation seeds; not re-searched"
     },
     {
      "id": "8-A-BPRO-4",
@@ -35224,6 +35802,69 @@
       ]
      },
      "why": "re-baked after FOLD6 / CARDPOW2 / REFIT5-6 (SKWK2): the showcase leaders under the re-set cards; the previous values are here"
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "8-A-BPRO-1": {
+       "barrow-leech-bat": 2,
+       "blind-cave-fish": 4,
+       "glow-worm": 4,
+       "sulfur-cinder-moth": 4,
+       "stalactite-golem": 4,
+       "gallery-orb-weaver": 2
+      },
+      "8-A-BPRO-2": {
+       "blind-cave-fish": 2,
+       "echo-screecher": 3,
+       "giant-cave-huntsman": 3,
+       "stalactite-golem": 4,
+       "cave-olm": 4,
+       "quarry-mole": 4
+      },
+      "8-A-BPRO-3": {
+       "barrow-leech-bat": 3,
+       "cave-olm": 4,
+       "gallery-orb-weaver": 4,
+       "glow-worm": 4,
+       "whip-spider": 3,
+       "blind-cave-fish": 2
+      },
+      "8-A-PRO-2": {
+       "alpine-marmot": 4,
+       "cave-olm": 3,
+       "eagle-owl-quartermaster": 3,
+       "echo-matriarch": 3,
+       "echo-screecher": 3,
+       "fruit-bat": 4
+      },
+      "8-A-PRO-3": {
+       "cave-olm": 4,
+       "dust-hyena": 3,
+       "echo-matriarch": 3,
+       "glow-worm": 2,
+       "hawthorn-shieldbug": 4,
+       "stalactite-golem": 4
+      },
+      "8-A-WPRO-1": {
+       "echo-matriarch": 2,
+       "echo-screecher": 3,
+       "quarry-mole": 4,
+       "stalactite-golem": 4,
+       "sulfur-cinder-moth": 3,
+       "whip-spider": 4
+      },
+      "8-A-WPRO-2": {
+       "barrow-leech-bat": 3,
+       "blind-cave-fish": 4,
+       "cave-olm": 3,
+       "echo-screecher": 3,
+       "quarry-mole": 3,
+       "stalactite-golem": 4
+      }
+     }
     }
    ],
    "wpro": [
@@ -35232,18 +35873,18 @@
      "name": "8-A-WPRO-1",
      "focus": "weak low",
      "labels": [
-      "big (20 copies at 1+ Lumber, average 1.2)",
-      "flying x8"
+      "big (18 copies at 1+ Lumber, average 1.1)",
+      "flying x6"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
-      "echo-matriarch": 2,
       "echo-screecher": 3,
       "quarry-mole": 4,
       "stalactite-golem": 4,
       "sulfur-cinder-moth": 3,
-      "whip-spider": 4
+      "whip-spider": 4,
+      "fruit-bat": 2
      },
      "source": {
       "file": "docs/balance/side2/refdecks/wpro/wpro-map08-mn-2026-11-11.json",
@@ -35261,14 +35902,15 @@
       "generated": "2026-11-13T05:40:38.778Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): echo-matriarch off (not on the map's list), echo-matriarch -> fruit-bat; tuned for the Map reference at 50%+ (now 70%) on validation seeds; not re-searched"
     },
     {
      "id": "8-A-WPRO-2",
      "name": "8-A-WPRO-2",
      "focus": "weak top-heavy",
      "labels": [
-      "big (13 copies at 1+ Lumber, average 0.8)",
+      "big (17 copies at 1+ Lumber, average 1.1)",
       "flying x6",
       "night x6"
      ],
@@ -35276,11 +35918,11 @@
      "leaders": [],
      "deck": {
       "barrow-leech-bat": 3,
-      "blind-cave-fish": 4,
       "cave-olm": 3,
       "echo-screecher": 3,
       "quarry-mole": 3,
-      "stalactite-golem": 4
+      "stalactite-golem": 4,
+      "gallery-orb-weaver": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/wpro/wpro-map08-mn-2026-11-11.json",
@@ -35298,7 +35940,8 @@
       "generated": "2026-11-13T05:40:38.778Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): blind-cave-fish off (not on the map's list), blind-cave-fish -> gallery-orb-weaver; tuned for the Map reference at 50%+ (now 87.5%) on validation seeds; not re-searched"
     }
    ]
   },
@@ -37278,9 +37921,9 @@
      "name": "10-BPRO-1",
      "focus": "open",
      "labels": [
-      "big (13 copies at 2+ Lumber, average 1.4)",
+      "big (10 copies at 1+ Lumber, average 1.0)",
       "tide x20",
-      "armor x7"
+      "armor x10"
      ],
      "level": 1,
      "leaders": [
@@ -37288,11 +37931,11 @@
      ],
      "deck": {
       "clownfish-scout": 4,
-      "orca-vanguard": 3,
       "ironclaw-fiddler": 3,
       "voltaic-eel": 3,
       "sea-turtle-elder": 4,
-      "fiddler-crab-swarm": 3
+      "fiddler-crab-swarm": 3,
+      "conch-crawler": 3
      },
      "source": {
       "file": "docs/balance/skir2/refdecks/bpro/bench-deck-map10-m7-2026-11-11.json",
@@ -37313,15 +37956,16 @@
      "later": [],
      "kept1": "SKIR3 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (50.2%)",
      "skir3": "2026-11-12 (SKIR3): parrotfish x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched",
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 98% -> 32%, Map reference 20% -> 80% (validation seeds); dolphin-knight x3 -> orca-vanguard; krill-swarm x3 -> ironclaw-fiddler; moon-jelly x4 -> voltaic-eel; conch-crawler x4 -> sea-turtle-elder; crown-of-thorns-star x3 -> fiddler-crab-swarm (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 98% -> 32%, Map reference 20% -> 80% (validation seeds); dolphin-knight x3 -> orca-vanguard; krill-swarm x3 -> ironclaw-fiddler; moon-jelly x4 -> voltaic-eel; conch-crawler x4 -> sea-turtle-elder; crown-of-thorns-star x3 -> fiddler-crab-swarm (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): orca-vanguard off (not on the map's list), orca-vanguard -> conch-crawler; tuned for vs ladder 15-30% (now 21.5%), Map reference 60% on validation seeds; not re-searched"
     },
     {
      "id": "10-BPRO-2",
      "name": "10-BPRO-2",
      "focus": "big",
      "labels": [
-      "big (13 copies at 2+ Lumber, average 1.4)",
-      "tide x17"
+      "big (13 copies at 1+ Lumber, average 1.1)",
+      "tide x20"
      ],
      "level": 1,
      "leaders": [
@@ -37333,7 +37977,7 @@
       "krill-swarm": 3,
       "reef-shark": 4,
       "voltaic-eel": 3,
-      "kraken-spawnling": 3
+      "crown-of-thorns-star": 3
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map10-m7-2026-11-11.json",
@@ -37366,7 +38010,8 @@
        -139
       ]
      },
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 72.5% -> 43%, Map reference 57.5% -> 75% (validation seeds); dolphin-knight x3 -> kraken-spawnling (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 72.5% -> 43%, Map reference 57.5% -> 75% (validation seeds); dolphin-knight x3 -> kraken-spawnling (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): kraken-spawnling off (not on the map's list), kraken-spawnling -> crown-of-thorns-star; tuned for vs ladder 15-30% (now 30%), Map reference 65% on validation seeds; not re-searched"
     }
    ],
    "replaced": [
@@ -39611,6 +40256,37 @@
        "voltaic-eel": 3
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "10-BPRO-1": {
+       "clownfish-scout": 4,
+       "orca-vanguard": 3,
+       "ironclaw-fiddler": 3,
+       "voltaic-eel": 3,
+       "sea-turtle-elder": 4,
+       "fiddler-crab-swarm": 3
+      },
+      "10-BPRO-2": {
+       "clownfish-scout": 4,
+       "ironclaw-fiddler": 3,
+       "krill-swarm": 3,
+       "reef-shark": 4,
+       "voltaic-eel": 3,
+       "kraken-spawnling": 3
+      },
+      "10-WPRO-1": {
+       "coral-current-eel": 1,
+       "moon-jelly": 4,
+       "orca-vanguard": 4,
+       "reef-shark": 4,
+       "sea-turtle-elder": 4,
+       "voltaic-eel": 3
+      }
+     }
     }
    ],
    "wpro": [
@@ -39619,7 +40295,7 @@
      "name": "10-WPRO-1",
      "focus": "weak low",
      "labels": [
-      "big (15 copies at 2+ Lumber, average 1.8)",
+      "big (12 copies at 1+ Lumber, average 1.1)",
       "tide x20"
      ],
      "level": 1,
@@ -39627,10 +40303,10 @@
      "deck": {
       "coral-current-eel": 1,
       "moon-jelly": 4,
-      "orca-vanguard": 4,
       "reef-shark": 4,
       "sea-turtle-elder": 4,
-      "voltaic-eel": 3
+      "voltaic-eel": 3,
+      "clownfish-scout": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/wpro/wpro-map10-m7-2026-11-11.json",
@@ -39648,7 +40324,8 @@
       "generated": "2026-11-12T13:47:24.920Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): orca-vanguard off (not on the map's list), orca-vanguard -> clownfish-scout; tuned for the Map reference at 50%+ (now 55%) on validation seeds; not re-searched"
     }
    ]
   },
@@ -39727,8 +40404,7 @@
      "focus": "family:cleave",
      "labels": [
       "swarm (14 copies at 0 Lumber)",
-      "tide x14",
-      "cleave x8"
+      "tide x16"
      ],
      "level": 1,
      "leaders": [
@@ -39738,9 +40414,9 @@
       "alley-cat": 4,
       "coral-polyp-colony": 4,
       "mudpuppy": 2,
-      "orca-vanguard": 4,
       "pincushion-urchin": 4,
-      "reef-shark": 2
+      "reef-shark": 2,
+      "giant-clam": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/pro/bench-deck-map10-mj-2026-11-11.json",
@@ -39758,7 +40434,8 @@
       "generated": "2026-11-13T05:07:36.905Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): orca-vanguard off (not on the map's list), orca-vanguard -> giant-clam; tuned for the Map reference at 85% or under (now 37.5%) on validation seeds; not re-searched"
     }
    ],
    "bpro": [
@@ -39767,20 +40444,20 @@
      "name": "10-A-BPRO-1",
      "focus": "family:tide",
      "labels": [
-      "big (11 copies at 2+ Lumber, average 1.5)",
-      "tide x17"
+      "big (16 copies at 1+ Lumber, average 1.2)",
+      "tide x20"
      ],
      "level": 1,
      "leaders": [
-      "reef-admiral"
+      "coral-current-eel"
      ],
      "deck": {
       "coral-current-eel": 3,
       "krill-swarm": 4,
-      "reef-admiral": 2,
       "sea-turtle-elder": 4,
       "reef-shark": 4,
-      "kraken-spawnling": 3
+      "giant-clam": 2,
+      "riptide-eel": 3
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map10-mj-2026-11-11.json",
@@ -39799,27 +40476,28 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 93% -> 37%, Map reference 2.5% -> 82.5% (validation seeds); coral-polyp-colony x4 -> reef-shark; blue-ringed-octopus x3 -> kraken-spawnling (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 93% -> 37%, Map reference 2.5% -> 82.5% (validation seeds); coral-polyp-colony x4 -> reef-shark; blue-ringed-octopus x3 -> kraken-spawnling (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): reef-admiral, kraken-spawnling off (not on the map's list), reef-admiral -2 -> giant-clam; kraken-spawnling -> riptide-eel; tuned for vs ladder 15-30% (now 28%), Map reference 70% on validation seeds; not re-searched"
     },
     {
      "id": "10-A-BPRO-2",
      "name": "10-A-BPRO-2",
      "focus": "open",
      "labels": [
-      "big (8 copies at 2+ Lumber, average 1.6)",
-      "tide x17"
+      "big (17 copies at 1+ Lumber, average 1.2)",
+      "tide x14"
      ],
      "level": 1,
      "leaders": [
-      "reef-admiral"
+      "mantis-shrimp"
      ],
      "deck": {
       "blue-ringed-octopus": 3,
       "coral-current-eel": 3,
       "reef-shark": 4,
       "riptide-eel": 4,
-      "orca-vanguard": 4,
-      "reef-admiral": 2
+      "coral-polyp-colony": 3,
+      "mantis-shrimp": 3
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map10-mj-2026-11-11.json",
@@ -39838,15 +40516,16 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 91.5% -> 28%, Map reference 5% -> 82.5% (validation seeds); coral-polyp-colony x4 -> orca-vanguard; moon-jelly x4 -> mantis-shrimp; mantis-shrimp x3 -> reef-admiral (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 91.5% -> 28%, Map reference 5% -> 82.5% (validation seeds); coral-polyp-colony x4 -> orca-vanguard; moon-jelly x4 -> mantis-shrimp; mantis-shrimp x3 -> reef-admiral (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): orca-vanguard, reef-admiral off (not on the map's list), reef-admiral -2 -> moon-jelly; orca-vanguard -> coral-polyp-colony; tuned for vs ladder 15-30% (now 51%), Map reference 47.5% on validation seeds; not re-searched"
     },
     {
      "id": "10-A-BPRO-3",
      "name": "10-A-BPRO-3",
      "focus": "big",
      "labels": [
-      "big (11 copies at 2+ Lumber, average 1.6)",
-      "tide x10"
+      "big (14 copies at 1+ Lumber, average 1.1)",
+      "tide x14"
      ],
      "level": 1,
      "leaders": [
@@ -39857,8 +40536,8 @@
       "moon-jelly": 2,
       "reef-shark": 4,
       "giant-clam": 4,
-      "kraken-spawnling": 4,
-      "mantis-shrimp": 3
+      "mantis-shrimp": 3,
+      "krill-swarm": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map10-mj-2026-11-11.json",
@@ -39877,46 +40556,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 90% -> 37%, Map reference 12.5% -> 82.5% (validation seeds); coral-polyp-colony x4 -> giant-clam; krill-swarm x4 -> kraken-spawnling; orca-vanguard x4 -> mantis-shrimp (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
-    },
-    {
-     "id": "10-A-BPRO-4",
-     "name": "10-A-BPRO-4",
-     "focus": "family:armor",
-     "labels": [
-      "big (14 copies at 2+ Lumber, average 1.8)",
-      "tide x18"
-     ],
-     "level": 1,
-     "leaders": [
-      "mantis-shrimp"
-     ],
-     "deck": {
-      "giant-clam": 4,
-      "orca-vanguard": 4,
-      "reef-shark": 4,
-      "sea-turtle-elder": 4,
-      "mantis-shrimp": 2,
-      "coral-polyp-colony": 2
-     },
-     "source": {
-      "file": "docs/balance/side2/refdecks/bpro/bench-deck-map10-mj-2026-11-11.json",
-      "mode": "bpro2",
-      "package": "SKIR1",
-      "run": "SIDE2",
-      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mj --pool blue-ringed-octopus,coral-current-eel,coral-polyp-colony,giant-clam,krill-swarm,mantis-shrimp,moon-jelly,orca-vanguard,reef-admiral,reef-shark,riptide-eel,sea-turtle-elder --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:tide,family:armor,big,open --level 1 --mode map-true",
-      "score": 0.8021,
-      "ci": [
-       0.7572,
-       0.8469
-      ],
-      "avgLumber": 1.45,
-      "generated": "2026-11-13T04:29:43.664Z"
-     },
-     "h2h": null,
-     "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 72.5% -> 23%, Map reference 32.5% -> 80% (validation seeds); coral-polyp-colony x4 -> mantis-shrimp; mantis-shrimp -1 -> reef-shark (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK3): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 12.5% -> 31.5%, Map reference 92.5% -> 67.5% (validation seeds); reef-admiral -2 -> coral-polyp-colony (docs/balance/skwk3/skwk3_2026_11_19.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 90% -> 37%, Map reference 12.5% -> 82.5% (validation seeds); coral-polyp-colony x4 -> giant-clam; krill-swarm x4 -> kraken-spawnling; orca-vanguard x4 -> mantis-shrimp (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): kraken-spawnling off (not on the map's list), kraken-spawnling -> krill-swarm; tuned for vs ladder 15-30% (now 24.5%), Map reference 62.5% on validation seeds; not re-searched"
     }
    ],
    "replaced": [
@@ -40075,6 +40716,38 @@
       "whale-shark: not in the map's own pool (BPRO)"
      ],
      "on": "2026-10-29"
+    },
+    {
+     "kind": "bpro",
+     "id": "10-A-BPRO-4",
+     "deck": {
+      "giant-clam": 4,
+      "orca-vanguard": 4,
+      "reef-shark": 4,
+      "sea-turtle-elder": 4,
+      "mantis-shrimp": 2,
+      "coral-polyp-colony": 2
+     },
+     "source": {
+      "file": "docs/balance/side2/refdecks/bpro/bench-deck-map10-mj-2026-11-11.json",
+      "mode": "bpro2",
+      "package": "SKIR1",
+      "run": "SIDE2",
+      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+      "reproduce": "node tools/bench/bench.js deck --map mj --pool blue-ringed-octopus,coral-current-eel,coral-polyp-colony,giant-clam,krill-swarm,mantis-shrimp,moon-jelly,orca-vanguard,reef-admiral,reef-shark,riptide-eel,sea-turtle-elder --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:tide,family:armor,big,open --level 1 --mode map-true",
+      "score": 0.8021,
+      "ci": [
+       0.7572,
+       0.8469
+      ],
+      "avgLumber": 1.45,
+      "generated": "2026-11-13T04:29:43.664Z"
+     },
+     "dropped": [
+      "shares 16 copies with another deck"
+     ],
+     "on": "2026-11-22",
+     "package": "PROLIST"
     }
    ],
    "skipped": [
@@ -42352,6 +43025,75 @@
        "mantis-shrimp": 2
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "10-A-BPRO-1": {
+       "coral-current-eel": 3,
+       "krill-swarm": 4,
+       "reef-admiral": 2,
+       "sea-turtle-elder": 4,
+       "reef-shark": 4,
+       "kraken-spawnling": 3
+      },
+      "10-A-BPRO-2": {
+       "blue-ringed-octopus": 3,
+       "coral-current-eel": 3,
+       "reef-shark": 4,
+       "riptide-eel": 4,
+       "orca-vanguard": 4,
+       "reef-admiral": 2
+      },
+      "10-A-BPRO-3": {
+       "blue-ringed-octopus": 3,
+       "moon-jelly": 2,
+       "reef-shark": 4,
+       "giant-clam": 4,
+       "kraken-spawnling": 4,
+       "mantis-shrimp": 3
+      },
+      "10-A-PRO-2": {
+       "alley-cat": 4,
+       "coral-polyp-colony": 4,
+       "mudpuppy": 2,
+       "orca-vanguard": 4,
+       "pincushion-urchin": 4,
+       "reef-shark": 2
+      },
+      "10-A-WPRO-1": {
+       "blue-ringed-octopus": 3,
+       "mantis-shrimp": 3,
+       "moon-jelly": 4,
+       "orca-vanguard": 3,
+       "reef-shark": 4,
+       "sea-turtle-elder": 3
+      },
+      "10-A-WPRO-2": {
+       "giant-clam": 4,
+       "krill-swarm": 3,
+       "mantis-shrimp": 3,
+       "orca-vanguard": 4,
+       "riptide-eel": 4,
+       "sea-turtle-elder": 2
+      }
+     },
+     "dropped": [
+      {
+       "id": "10-A-BPRO-4",
+       "deck": {
+        "giant-clam": 4,
+        "orca-vanguard": 4,
+        "reef-shark": 4,
+        "sea-turtle-elder": 4,
+        "mantis-shrimp": 2,
+        "coral-polyp-colony": 2
+       },
+       "why": "shares 16 copies with another deck"
+      }
+     ]
     }
    ],
    "wpro": [
@@ -42360,7 +43102,7 @@
      "name": "10-A-WPRO-1",
      "focus": "weak low",
      "labels": [
-      "big (13 copies at 2+ Lumber, average 1.6)",
+      "big (16 copies at 1+ Lumber, average 1.3)",
       "tide x14"
      ],
      "level": 1,
@@ -42369,9 +43111,9 @@
       "blue-ringed-octopus": 3,
       "mantis-shrimp": 3,
       "moon-jelly": 4,
-      "orca-vanguard": 3,
       "reef-shark": 4,
-      "sea-turtle-elder": 3
+      "sea-turtle-elder": 3,
+      "coral-current-eel": 3
      },
      "source": {
       "file": "docs/balance/side2/refdecks/wpro/wpro-map10-mj-2026-11-11.json",
@@ -42389,26 +43131,26 @@
       "generated": "2026-11-13T05:41:23.109Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): orca-vanguard off (not on the map's list), orca-vanguard -> coral-current-eel; tuned for the Map reference at 50%+ (now 66.3%) on validation seeds; not re-searched"
     },
     {
      "id": "10-A-WPRO-2",
      "name": "10-A-WPRO-2",
      "focus": "weak top-heavy",
      "labels": [
-      "big (9 copies at 2+ Lumber, average 1.5)",
-      "tide x17",
-      "armor x6"
+      "big (16 copies at 1+ Lumber, average 1.1)",
+      "tide x17"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
       "giant-clam": 4,
-      "krill-swarm": 3,
+      "krill-swarm": 4,
       "mantis-shrimp": 3,
-      "orca-vanguard": 4,
       "riptide-eel": 4,
-      "sea-turtle-elder": 2
+      "sea-turtle-elder": 2,
+      "coral-current-eel": 3
      },
      "source": {
       "file": "docs/balance/side2/refdecks/wpro/wpro-map10-mj-2026-11-11.json",
@@ -42426,7 +43168,8 @@
       "generated": "2026-11-13T05:41:23.109Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): orca-vanguard off (not on the map's list), orca-vanguard -> coral-current-eel; tuned for the Map reference at 50%+ (now 61.3%) on validation seeds; not re-searched"
     }
    ]
   },
@@ -42741,21 +43484,20 @@
      "name": "11-BPRO-4",
      "focus": "family:flying",
      "labels": [
-      "big (9 copies at 2+ Lumber, average 1.4)",
-      "flying x14",
-      "strike-first x8"
+      "big (8 copies at 2+ Lumber, average 1.2)",
+      "economy (4 resource makers)",
+      "flying x16"
      ],
      "level": 1,
      "leaders": [
       "the-gannet-queen"
      ],
      "deck": {
-      "peak-condor": 4,
       "pika-hoarder": 4,
-      "swamp-alligator": 2,
       "the-gannet-queen": 4,
-      "golden-eagle-diver": 3,
-      "eyrie-warden": 3
+      "golden-eagle-diver": 4,
+      "eyrie-warden": 4,
+      "gannet-nestweaver": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map11-m10-2026-11-11.json",
@@ -42775,7 +43517,8 @@
      "h2h": null,
      "later": [],
      "side2": "2026-11-13 (SIDE2): wound-reaver x3 not allowed here once SIDE1's side lists or LIST1's fold of the owner's 11-13 picks took them off (late, out of play, or held on SPECIAL only for the old fights), swapped for the map list's nearest (Lumber, Wait, 2A+H; LISTFIX3's swap); not re-searched",
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 69% -> 32.5%, Map reference 65% -> 85% (validation seeds); stonedrop-vulture x4 -> eagle-owl-quartermaster; gangrenous-leech x4 -> the-gannet-queen (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK3): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 52% -> 46.5%, Map reference 55% -> 82.5% (validation seeds); eagle-owl-quartermaster x3 -> golden-eagle-diver (docs/balance/skwk3/skwk3_2026_11_19.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 47.5% -> 36.5%, Map reference 67.5% -> 65% (validation seeds); mountain-hare x3 -> eyrie-warden (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 69% -> 32.5%, Map reference 65% -> 85% (validation seeds); stonedrop-vulture x4 -> eagle-owl-quartermaster; gangrenous-leech x4 -> the-gannet-queen (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK3): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 52% -> 46.5%, Map reference 55% -> 82.5% (validation seeds); eagle-owl-quartermaster x3 -> golden-eagle-diver (docs/balance/skwk3/skwk3_2026_11_19.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 47.5% -> 36.5%, Map reference 67.5% -> 65% (validation seeds); mountain-hare x3 -> eyrie-warden (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): swamp-alligator off (not on the map's list), swamp-alligator -> eyrie-warden; tuned for vs ladder 15-30% (now 26%), Map reference 77.5% on validation seeds; not re-searched"
     }
    ],
    "replaced": [
@@ -44454,6 +45197,29 @@
        "chamois-leaper": 4
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "11-BPRO-4": {
+       "peak-condor": 4,
+       "pika-hoarder": 4,
+       "swamp-alligator": 2,
+       "the-gannet-queen": 4,
+       "golden-eagle-diver": 3,
+       "eyrie-warden": 3
+      },
+      "11-WPRO-1": {
+       "chamois-leaper": 4,
+       "eagle-owl-quartermaster": 3,
+       "eagle-sharpshooter": 1,
+       "eyrie-warden": 4,
+       "swamp-alligator": 4,
+       "the-gannet-queen": 4
+      }
+     }
     }
    ],
    "wpro": [
@@ -44462,9 +45228,9 @@
      "name": "11-WPRO-1",
      "focus": "weak low",
      "labels": [
-      "big (13 copies at 2+ Lumber, average 1.9)",
-      "flying x12",
-      "strike-first x8"
+      "big (9 copies at 2+ Lumber, average 1.4)",
+      "flying x16",
+      "ranged x8"
      ],
      "level": 1,
      "leaders": [],
@@ -44473,8 +45239,8 @@
       "eagle-owl-quartermaster": 3,
       "eagle-sharpshooter": 1,
       "eyrie-warden": 4,
-      "swamp-alligator": 4,
-      "the-gannet-queen": 4
+      "the-gannet-queen": 4,
+      "anvil-thrush": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/wpro/wpro-map11-m10-2026-11-11.json",
@@ -44492,7 +45258,8 @@
       "generated": "2026-11-12T13:50:05.926Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): swamp-alligator off (not on the map's list), swamp-alligator -> anvil-thrush; tuned for the Map reference at 50%+ (now 96.3%) on validation seeds; not re-searched"
     },
     {
      "id": "11-WPRO-2",
@@ -44803,21 +45570,21 @@
      "name": "11-A-BPRO-2",
      "focus": "open",
      "labels": [
-      "big (9 copies at 2+ Lumber, average 1.4)",
-      "flying x13",
-      "bleed x7"
+      "big (7 copies at 2+ Lumber, average 1.3)",
+      "flying x17",
+      "strike-first x10"
      ],
      "level": 1,
      "leaders": [
       "the-gannet-queen"
      ],
      "deck": {
-      "gangrenous-leech": 4,
-      "peak-condor": 4,
-      "eyrie-warden": 3,
+      "eyrie-warden": 4,
       "the-gannet-queen": 3,
       "anvil-thrush": 3,
-      "swamp-alligator": 3
+      "chamois-leaper": 3,
+      "peregrine-stooper": 4,
+      "apollo-butterfly": 3
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map11-mv-2026-11-11.json",
@@ -44836,7 +45603,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 75% -> 22.5%, Map reference 35% -> 75% (validation seeds); peregrine-stooper x3 -> eyrie-warden; gale-swift x3 -> the-gannet-queen; apollo-butterfly x3 -> peregrine-stooper; peregrine-stooper x3 -> anvil-thrush; eagle-owl-quartermaster x3 -> swamp-alligator (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 75% -> 22.5%, Map reference 35% -> 75% (validation seeds); peregrine-stooper x3 -> eyrie-warden; gale-swift x3 -> the-gannet-queen; apollo-butterfly x3 -> peregrine-stooper; peregrine-stooper x3 -> anvil-thrush; eagle-owl-quartermaster x3 -> swamp-alligator (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): gangrenous-leech, swamp-alligator off (not on the map's list), gangrenous-leech x4 -> chamois-leaper; swamp-alligator x3 -> peregrine-stooper; peak-condor x4 -> apollo-butterfly; tuned for vs ladder 15-30% (now 33%), Map reference 85% on validation seeds; not re-searched"
     }
    ],
    "replaced": [
@@ -47045,6 +47813,29 @@
        "great-horned-owl": 2
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "11-A-BPRO-2": {
+       "gangrenous-leech": 4,
+       "peak-condor": 4,
+       "eyrie-warden": 3,
+       "the-gannet-queen": 3,
+       "anvil-thrush": 3,
+       "swamp-alligator": 3
+      },
+      "11-A-WPRO-1": {
+       "chamois-leaper": 2,
+       "eagle-owl-quartermaster": 3,
+       "eyrie-warden": 4,
+       "gangrenous-leech": 3,
+       "swamp-alligator": 4,
+       "the-gannet-queen": 4
+      }
+     }
     }
    ],
    "wpro": [
@@ -47053,9 +47844,9 @@
      "name": "11-A-WPRO-1",
      "focus": "weak low",
      "labels": [
-      "big (12 copies at 2+ Lumber, average 1.8)",
-      "flying x11",
-      "strike-first x6"
+      "big (8 copies at 2+ Lumber, average 1.3)",
+      "flying x18",
+      "ranged x7"
      ],
      "level": 1,
      "leaders": [],
@@ -47063,9 +47854,9 @@
       "chamois-leaper": 2,
       "eagle-owl-quartermaster": 3,
       "eyrie-warden": 4,
-      "gangrenous-leech": 3,
-      "swamp-alligator": 4,
-      "the-gannet-queen": 4
+      "the-gannet-queen": 4,
+      "anvil-thrush": 3,
+      "apollo-butterfly": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/wpro/wpro-map11-mv-2026-11-11.json",
@@ -47083,7 +47874,8 @@
       "generated": "2026-11-13T05:42:26.758Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): gangrenous-leech, swamp-alligator off (not on the map's list), gangrenous-leech x3 -> anvil-thrush; swamp-alligator -> apollo-butterfly; tuned for the Map reference at 50%+ (now 71.3%) on validation seeds; not re-searched"
     }
    ]
   },
@@ -48988,8 +49780,7 @@
      "name": "13-PRO-2",
      "focus": "family:flying",
      "labels": [
-      "big (8 copies at 1+ Lumber, average 0.4)",
-      "flying x8"
+      "big (9 copies at 1 Lumber, average 0.5)"
      ],
      "level": 1,
      "leaders": [
@@ -48999,9 +49790,9 @@
       "alpine-marmot": 4,
       "balloon-archer": 3,
       "feral-tomcat": 3,
-      "fox-kit": 4,
       "monarch-wingblade": 2,
-      "pika-hoarder": 4
+      "pika-hoarder": 4,
+      "anhinga-spearbird": 4
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/pro/bench-deck-map13-mr-2026-11-11.json",
@@ -49020,7 +49811,8 @@
      },
      "h2h": null,
      "later": [],
-     "side2": "2026-11-13 (SIDE2): owl-nightwatch x3 not allowed here once SIDE1's side lists or LIST1's fold of the owner's 11-13 picks took them off (late, out of play, or held on SPECIAL only for the old fights), swapped for the map list's nearest (Lumber, Wait, 2A+H; LISTFIX3's swap); not re-searched"
+     "side2": "2026-11-13 (SIDE2): owl-nightwatch x3 not allowed here once SIDE1's side lists or LIST1's fold of the owner's 11-13 picks took them off (late, out of play, or held on SPECIAL only for the old fights), swapped for the map list's nearest (Lumber, Wait, 2A+H; LISTFIX3's swap); not re-searched",
+     "prolist": "2026-11-22 (PROLIST): fox-kit off (not on the map's list), fox-kit -> anhinga-spearbird; tuned for the Map reference at 85% or under (now 72.5%) on validation seeds; not re-searched"
     }
    ],
    "bpro": [
@@ -51171,6 +51963,21 @@
      "renamed": {
       "13-PRO-4 (restored)": "13-PRO-2"
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "13-PRO-2": {
+       "alpine-marmot": 4,
+       "balloon-archer": 3,
+       "feral-tomcat": 3,
+       "fox-kit": 4,
+       "monarch-wingblade": 2,
+       "pika-hoarder": 4
+      }
+     }
     }
    ],
    "wpro": [
@@ -51325,21 +52132,19 @@
      "name": "14-PRO-3",
      "focus": "family:strike-first",
      "labels": [
-      "big (8 copies at 1+ Lumber, average 0.4)",
-      "economy (4 resource makers)",
-      "strike-first x8"
+      "big (8 copies at 1+ Lumber, average 0.5)"
      ],
      "level": 1,
      "leaders": [
-      "pride-queen"
+      "fishing-cat"
      ],
      "deck": {
       "alpine-marmot": 4,
       "dust-hyena": 4,
       "fishing-cat": 3,
       "hoopoe-herald": 4,
-      "pride-queen": 2,
-      "stoat-cutthroat": 3
+      "stoat-cutthroat": 3,
+      "acacia-giraffe": 2
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/pro/bench-deck-map14-m5-2026-11-11.json",
@@ -51357,7 +52162,8 @@
       "generated": "2026-11-12T12:55:34.871Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): pride-queen off (not on the map's list), pride-queen -> acacia-giraffe; tuned for the Map reference at 85% or under (now 28.8%) on validation seeds; not re-searched"
     },
     {
      "id": "14-PRO-4",
@@ -51409,15 +52215,15 @@
      ],
      "level": 1,
      "leaders": [
-      "pride-queen"
+      "spitting-cobra"
      ],
      "deck": {
       "bramble-sprout": 4,
-      "pride-queen": 2,
-      "savanna-cheetah": 2,
       "tasmanian-devil": 4,
       "badger-lumberjack": 4,
-      "grizzly-vanguard": 4
+      "grizzly-vanguard": 4,
+      "hollow-belly-rat": 2,
+      "spitting-cobra": 2
      },
      "source": {
       "file": "docs/balance/skir1/refdecks/bpro/bench-deck-map14-m5-2026-11-11.json",
@@ -51437,7 +52243,8 @@
      "later": [],
      "kept1": "SKIR3 (PRO-1 replacement rule): the new best did not beat it at 55%+ over 400 games (35.8%)",
      "skir3": "2026-11-12 (SKIR3): golden-eagle-diver x4, termite-forager x4 not allowed here on the owner's 11-12 lists, swapped for the map list's nearest (Lumber, Wait, 2A+H); not re-searched",
-     "skwk2": "2026-11-19 (SKWK3): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 82% -> 24%, Map reference 17.5% -> 80% (validation seeds); hoopoe-herald x4 -> badger-lumberjack; dust-hyena x4 -> grizzly-vanguard (docs/balance/skwk3/skwk3_2026_11_19.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-19 (SKWK3): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 82% -> 24%, Map reference 17.5% -> 80% (validation seeds); hoopoe-herald x4 -> badger-lumberjack; dust-hyena x4 -> grizzly-vanguard (docs/balance/skwk3/skwk3_2026_11_19.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): pride-queen off (not on the map's list), pride-queen -> hollow-belly-rat; tuned for vs ladder 15-30% (now 23.5%), Map reference 67.5% on validation seeds; not re-searched"
     },
     {
      "id": "14-BPRO-2",
@@ -53419,6 +54226,29 @@
        "savanna-cheetah": 2
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "14-BPRO-1": {
+       "bramble-sprout": 4,
+       "pride-queen": 2,
+       "savanna-cheetah": 2,
+       "tasmanian-devil": 4,
+       "badger-lumberjack": 4,
+       "grizzly-vanguard": 4
+      },
+      "14-PRO-3": {
+       "alpine-marmot": 4,
+       "dust-hyena": 4,
+       "fishing-cat": 3,
+       "hoopoe-herald": 4,
+       "pride-queen": 2,
+       "stoat-cutthroat": 3
+      }
+     }
     }
    ],
    "wpro": [
@@ -53611,19 +54441,19 @@
      "name": "14-A-BPRO-1",
      "focus": "big",
      "labels": [
-      "big (14 copies at 1+ Lumber, average 0.9)"
+      "big (17 copies at 1 Lumber, average 0.8)"
      ],
      "level": 1,
      "leaders": [
-      "jaguar-stalker"
+      "fishing-cat"
      ],
      "deck": {
       "bramblewood-macaque": 3,
       "camouflage-frog": 4,
-      "hoopoe-herald": 3,
       "jaguar-stalker": 2,
       "kinkajou-lurker": 4,
-      "canopy-sloth-guardian": 4
+      "fishing-cat": 3,
+      "amber-cicada": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map14-my-2026-11-11.json",
@@ -53642,45 +54472,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 37% -> 28.5%, Map reference 7.5% -> 60% (validation seeds); amber-cicada x4 -> canopy-sloth-guardian (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
-    },
-    {
-     "id": "14-A-BPRO-2",
-     "name": "14-A-BPRO-2",
-     "focus": "family:strike-first",
-     "labels": [
-      "big (12 copies at 1+ Lumber, average 0.6)",
-      "strike-first x8"
-     ],
-     "level": 1,
-     "leaders": [
-      "pride-queen"
-     ],
-     "deck": {
-      "fishing-cat": 3,
-      "hoopoe-herald": 4,
-      "jaguar-stalker": 3,
-      "kinkajou-lurker": 4,
-      "mosquito-cloud": 4,
-      "pride-queen": 2
-     },
-     "source": {
-      "file": "docs/balance/side2/refdecks/bpro/bench-deck-map14-my-2026-11-11.json",
-      "mode": "bpro2",
-      "package": "SKIR1",
-      "run": "SIDE2",
-      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map my --pool amber-cicada,bramblewood-macaque,camouflage-frog,canopy-sloth-guardian,fishing-cat,hoopoe-herald,jaguar-stalker,kinkajou-lurker,mosquito-cloud,pride-queen,proboscis-monkey --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:strike-first,family:guard,big,open --level 1 --mode map-true",
-      "score": 0.3958,
-      "ci": [
-       0.3318,
-       0.4599
-      ],
-      "avgLumber": 0.6,
-      "generated": "2026-11-13T04:33:19.064Z"
-     },
-     "h2h": null,
-     "later": []
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 37% -> 28.5%, Map reference 7.5% -> 60% (validation seeds); amber-cicada x4 -> canopy-sloth-guardian (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): hoopoe-herald off (not on the map's list), hoopoe-herald -> fishing-cat; tuned for vs ladder 15-30% (now 20.5%), Map reference 30% on validation seeds; not re-searched"
     }
    ],
    "replaced": [
@@ -53831,6 +54624,39 @@
       "termite-forager: not in the map's own pool (BPRO)"
      ],
      "on": "2026-10-29"
+    },
+    {
+     "kind": "bpro",
+     "id": "14-A-BPRO-2",
+     "deck": {
+      "fishing-cat": 3,
+      "hoopoe-herald": 4,
+      "jaguar-stalker": 3,
+      "kinkajou-lurker": 4,
+      "mosquito-cloud": 4,
+      "pride-queen": 2
+     },
+     "source": {
+      "file": "docs/balance/side2/refdecks/bpro/bench-deck-map14-my-2026-11-11.json",
+      "mode": "bpro2",
+      "package": "SKIR1",
+      "run": "SIDE2",
+      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+      "reproduce": "node tools/bench/bench.js deck --map my --pool amber-cicada,bramblewood-macaque,camouflage-frog,canopy-sloth-guardian,fishing-cat,hoopoe-herald,jaguar-stalker,kinkajou-lurker,mosquito-cloud,pride-queen,proboscis-monkey --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed skir1-bpro --focus family:strike-first,family:guard,big,open --level 1 --mode map-true",
+      "score": 0.3958,
+      "ci": [
+       0.3318,
+       0.4599
+      ],
+      "avgLumber": 0.6,
+      "generated": "2026-11-13T04:33:19.064Z"
+     },
+     "dropped": [
+      "hoopoe-herald: off the bpro pool",
+      "hoopoe-herald: not on the map's list (held, not listed)"
+     ],
+     "on": "2026-11-22",
+     "package": "PROLIST"
     }
    ],
    "skipped": [
@@ -55634,6 +56460,50 @@
        "kinkajou-lurker": 4
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "14-A-BPRO-1": {
+       "bramblewood-macaque": 3,
+       "camouflage-frog": 4,
+       "hoopoe-herald": 3,
+       "jaguar-stalker": 2,
+       "kinkajou-lurker": 4,
+       "canopy-sloth-guardian": 4
+      },
+      "14-A-WPRO-1": {
+       "amber-cicada": 4,
+       "camouflage-frog": 4,
+       "canopy-sloth-guardian": 4,
+       "fishing-cat": 3,
+       "jaguar-stalker": 3,
+       "pride-queen": 2
+      },
+      "14-A-WPRO-2": {
+       "amber-cicada": 4,
+       "camouflage-frog": 4,
+       "hoopoe-herald": 4,
+       "mosquito-cloud": 4,
+       "proboscis-monkey": 4
+      }
+     },
+     "dropped": [
+      {
+       "id": "14-A-BPRO-2",
+       "deck": {
+        "fishing-cat": 3,
+        "hoopoe-herald": 4,
+        "jaguar-stalker": 3,
+        "kinkajou-lurker": 4,
+        "mosquito-cloud": 4,
+        "pride-queen": 2
+       },
+       "why": "hoopoe-herald: off the bpro pool; hoopoe-herald: not on the map's list (held, not listed)"
+      }
+     ]
     }
    ],
    "wpro": [
@@ -55642,8 +56512,8 @@
      "name": "14-A-WPRO-1",
      "focus": "weak low",
      "labels": [
-      "big (20 copies at 1+ Lumber, average 1.2)",
-      "strike-first x8"
+      "big (18 copies at 1+ Lumber, average 1.1)",
+      "strike-first x6"
      ],
      "level": 1,
      "leaders": [],
@@ -55653,7 +56523,7 @@
       "canopy-sloth-guardian": 4,
       "fishing-cat": 3,
       "jaguar-stalker": 3,
-      "pride-queen": 2
+      "bramblewood-macaque": 2
      },
      "source": {
       "file": "docs/balance/side2/refdecks/wpro/wpro-map14-my-2026-11-11.json",
@@ -55671,14 +56541,15 @@
       "generated": "2026-11-13T05:43:20.760Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): pride-queen off (not on the map's list), pride-queen -> bramblewood-macaque; tuned for the Map reference at 50%+ (now 86.3%) on validation seeds; not re-searched"
     },
     {
      "id": "14-A-WPRO-2",
      "name": "14-A-WPRO-2",
      "focus": "weak top-heavy",
      "labels": [
-      "big (12 copies at 1+ Lumber, average 0.6)",
+      "big (16 copies at 1 Lumber, average 0.8)",
       "tide x8"
      ],
      "level": 1,
@@ -55686,9 +56557,9 @@
      "deck": {
       "amber-cicada": 4,
       "camouflage-frog": 4,
-      "hoopoe-herald": 4,
       "mosquito-cloud": 4,
-      "proboscis-monkey": 4
+      "proboscis-monkey": 4,
+      "kinkajou-lurker": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/wpro/wpro-map14-my-2026-11-11.json",
@@ -55706,7 +56577,8 @@
       "generated": "2026-11-13T05:43:20.760Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): hoopoe-herald off (not on the map's list), hoopoe-herald -> kinkajou-lurker; tuned for the Map reference at 50%+ (now 81.3%) on validation seeds; not re-searched"
     }
    ]
   },
@@ -60128,8 +61000,7 @@
      "name": "17-BPRO-3",
      "focus": "big",
      "labels": [
-      "big (12 copies at 3+ Lumber, average 2.4)",
-      "cleave x8"
+      "big (12 copies at 3+ Lumber, average 2.4)"
      ],
      "level": 1,
      "leaders": [
@@ -60139,9 +61010,9 @@
       "cataphract-destrier": 4,
       "elderhorn-monarch": 4,
       "walrus-icebreaker": 2,
-      "wolfsbane-alpha": 2,
       "glacier-yak": 4,
-      "ringed-seal": 4
+      "ringed-seal": 4,
+      "ice-crevasse-wolf": 2
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map17-m6-2026-11-11.json",
@@ -60160,7 +61031,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 81.5% -> 32%, Map reference 45% -> 80% (validation seeds); cone-cutter-squirrel x4 -> boreal-elk; snowshoe-hare x4 -> glacier-yak; boreal-elk x4 -> ringed-seal (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 81.5% -> 32%, Map reference 45% -> 80% (validation seeds); cone-cutter-squirrel x4 -> boreal-elk; snowshoe-hare x4 -> glacier-yak; boreal-elk x4 -> ringed-seal (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): wolfsbane-alpha off (not on the map's list), wolfsbane-alpha -> ice-crevasse-wolf; tuned for vs ladder 15-30% (now 18.5%), Map reference 75% on validation seeds; not re-searched"
     }
    ],
    "replaced": [
@@ -62323,6 +63195,21 @@
        "cataphract-destrier": 4
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "17-BPRO-3": {
+       "cataphract-destrier": 4,
+       "elderhorn-monarch": 4,
+       "walrus-icebreaker": 2,
+       "wolfsbane-alpha": 2,
+       "glacier-yak": 4,
+       "ringed-seal": 4
+      }
+     }
     }
    ],
    "wpro": [
@@ -62626,21 +63513,20 @@
      "name": "17-A-BPRO-2",
      "focus": "swarm",
      "labels": [
-      "big (9 copies at 1 Lumber, average 0.5)",
       "tide x14",
       "day x7"
      ],
      "level": 1,
      "leaders": [
-      "wolfsbane-alpha"
+      "beluga"
      ],
      "deck": {
       "cormorant": 4,
       "dormouse": 4,
-      "wolfsbane-alpha": 2,
       "ringed-seal": 4,
       "rock-pool-starfish": 3,
-      "beluga": 3
+      "beluga": 3,
+      "glacier-yak": 2
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map17-mi-2026-11-11.json",
@@ -62659,7 +63545,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 94.5% -> 32.5%, Map reference 15% -> 72.5% (validation seeds); lemming-swarm x4 -> ringed-seal; moon-jelly x3 -> rock-pool-starfish; pincushion-urchin x4 -> beluga (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 94.5% -> 32.5%, Map reference 15% -> 72.5% (validation seeds); lemming-swarm x4 -> ringed-seal; moon-jelly x3 -> rock-pool-starfish; pincushion-urchin x4 -> beluga (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): wolfsbane-alpha off (not on the map's list), wolfsbane-alpha -> glacier-yak; tuned for vs ladder 15-30% (now 27.5%), Map reference 80% on validation seeds; not re-searched"
     },
     {
      "id": "17-A-BPRO-3",
@@ -62676,9 +63563,9 @@
       "limpet-clinger": 4,
       "riptide-eel": 4,
       "rock-pool-starfish": 2,
-      "harbor-seal": 4,
       "glacier-yak": 4,
-      "ice-crevasse-wolf": 2
+      "ice-crevasse-wolf": 2,
+      "ringed-seal": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map17-mi-2026-11-11.json",
@@ -62697,7 +63584,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 86% -> 53.5%, Map reference 35% -> 65% (validation seeds); snow-ermine x4 -> harbor-seal; rock-pool-starfish -2 -> glacier-yak (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 38% -> 24%, Map reference 70% -> 77.5% (validation seeds); dormouse -2 -> glacier-yak; dormouse -2 -> ice-crevasse-wolf (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 86% -> 53.5%, Map reference 35% -> 65% (validation seeds); snow-ermine x4 -> harbor-seal; rock-pool-starfish -2 -> glacier-yak (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from) || 2026-11-19 (SKWK4): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 38% -> 24%, Map reference 70% -> 77.5% (validation seeds); dormouse -2 -> glacier-yak; dormouse -2 -> ice-crevasse-wolf (docs/balance/skwk4/skwk4_2026_11_19.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): harbor-seal off (not on the map's list), harbor-seal -> ringed-seal; tuned for vs ladder 15-30% (now 19%), Map reference 80% on validation seeds; not re-searched"
     },
     {
      "id": "17-A-BPRO-4",
@@ -65241,6 +66129,29 @@
        "glacier-yak": 2
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "17-A-BPRO-2": {
+       "cormorant": 4,
+       "dormouse": 4,
+       "wolfsbane-alpha": 2,
+       "ringed-seal": 4,
+       "rock-pool-starfish": 3,
+       "beluga": 3
+      },
+      "17-A-BPRO-3": {
+       "limpet-clinger": 4,
+       "riptide-eel": 4,
+       "rock-pool-starfish": 2,
+       "harbor-seal": 4,
+       "glacier-yak": 4,
+       "ice-crevasse-wolf": 2
+      }
+     }
     }
    ],
    "wpro": [
@@ -67451,20 +68362,19 @@
      "name": "18-A-BPRO-1",
      "focus": "family:poison",
      "labels": [
-      "big (20 copies at 1+ Lumber, average 1.2)",
-      "swarm (16 copies at 1 Lumber)",
-      "poison x8"
+      "midrange (average 1.0 Lumber)"
      ],
      "level": 1,
      "leaders": [
-      "caustic-scorpion"
+      "dust-devil-kestrel"
      ],
      "deck": {
       "antlion-pit": 4,
       "caustic-scorpion": 4,
       "dromedary": 4,
-      "horned-lizard": 4,
-      "sand-widow": 4
+      "horned-lizard": 2,
+      "dune-jackal": 4,
+      "dust-devil-kestrel": 2
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map18-mpd-2026-11-11.json",
@@ -67482,7 +68392,8 @@
       "generated": "2026-11-13T04:35:56.556Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): sand-widow off (not on the map's list), sand-widow x4 -> dune-jackal; antlion-pit -2 -> dust-devil-kestrel; tuned for vs ladder 15-30% (now 9%), Map reference 87.5% on validation seeds; not re-searched"
     },
     {
      "id": "18-A-BPRO-2",
@@ -69836,6 +70747,36 @@
        "why": "Map reference over 85% or off its pool (owner 11-07 9b: remove every too-easy PRO deck)"
       }
      ]
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "18-A-BPRO-1": {
+       "antlion-pit": 4,
+       "caustic-scorpion": 4,
+       "dromedary": 4,
+       "horned-lizard": 4,
+       "sand-widow": 4
+      },
+      "18-A-WPRO-1": {
+       "caustic-scorpion": 4,
+       "dromedary": 2,
+       "dune-jackal": 4,
+       "dust-devil-kestrel": 2,
+       "roadrunner-courier": 4,
+       "sand-widow": 4
+      },
+      "18-A-WPRO-2": {
+       "barrel-cactus": 2,
+       "dromedary": 3,
+       "dune-jackal": 4,
+       "horned-lizard": 3,
+       "pale-oryx": 4,
+       "sand-widow": 4
+      }
+     }
     }
    ],
    "wpro": [
@@ -69844,10 +70785,7 @@
      "name": "18-A-WPRO-1",
      "focus": "weak low",
      "labels": [
-      "big (20 copies at 1+ Lumber, average 1.2)",
-      "swarm (16 copies at 1 Lumber)",
-      "poison x8",
-      "strike-first x8"
+      "midrange (average 1.0 Lumber)"
      ],
      "level": 1,
      "leaders": [],
@@ -69857,7 +70795,7 @@
       "dune-jackal": 4,
       "dust-devil-kestrel": 2,
       "roadrunner-courier": 4,
-      "sand-widow": 4
+      "antlion-pit": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/wpro/wpro-map18-mpd-2026-11-11.json",
@@ -69875,15 +70813,15 @@
       "generated": "2026-11-13T05:45:05.258Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): sand-widow off (not on the map's list), sand-widow -> antlion-pit; tuned for the Map reference at 50%+ (now 83.8%) on validation seeds; not re-searched"
     },
     {
      "id": "18-A-WPRO-2",
      "name": "18-A-WPRO-2",
      "focus": "weak top-heavy",
      "labels": [
-      "big (20 copies at 1+ Lumber, average 1.2)",
-      "swarm (16 copies at 1 Lumber)"
+      "midrange (average 1.0 Lumber)"
      ],
      "level": 1,
      "leaders": [],
@@ -69893,7 +70831,7 @@
       "dune-jackal": 4,
       "horned-lizard": 3,
       "pale-oryx": 4,
-      "sand-widow": 4
+      "antlion-pit": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/wpro/wpro-map18-mpd-2026-11-11.json",
@@ -69911,7 +70849,8 @@
       "generated": "2026-11-13T05:45:05.258Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): sand-widow off (not on the map's list), sand-widow -> antlion-pit; tuned for the Map reference at 50%+ (now 93.8%) on validation seeds; not re-searched"
     }
    ]
   },
@@ -74787,21 +75726,21 @@
      "name": "20-BPRO-2",
      "focus": "open",
      "labels": [
-      "big (6 copies at 2+ Lumber, average 1.5)",
-      "swarm (14 copies at 1 Lumber)",
-      "armor x9"
+      "big (16 copies at 1+ Lumber, average 1.0)",
+      "economy (4 resource makers)",
+      "ranged x6"
      ],
      "level": 1,
      "leaders": [
-      "obsidian-scorpion"
+      "magma-salamander"
      ],
      "deck": {
-      "basalt-boar": 4,
       "echo-screecher": 3,
       "honey-badger-fury": 4,
       "obsidian-scorpion": 3,
-      "ancient-sloth-titan": 4,
-      "quillback-elder": 2
+      "quillback-elder": 4,
+      "pack-mule": 4,
+      "magma-salamander": 2
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/bpro/bench-deck-map20-m11-2026-11-11.json",
@@ -74821,7 +75760,8 @@
      "h2h": null,
      "later": [],
      "side2": "2026-11-13 (SIDE2): sulfur-vent-crab x4 not allowed here once SIDE1's side lists or LIST1's fold of the owner's 11-13 picks took them off (late, out of play, or held on SPECIAL only for the old fights), swapped for the map list's nearest (Lumber, Wait, 2A+H; LISTFIX3's swap); not re-searched",
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck (off its pool after FOLD6, repaired) tuned for its win rate vs the reference ladder (15-30%): vs ladder - -> 31%, Map reference - -> 87.5% (validation seeds); repair: fire-salamander -> ancient-sloth-titan; magma-salamander -2 -> quillback-elder (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck (off its pool after FOLD6, repaired) tuned for its win rate vs the reference ladder (15-30%): vs ladder - -> 31%, Map reference - -> 87.5% (validation seeds); repair: fire-salamander -> ancient-sloth-titan; magma-salamander -2 -> quillback-elder (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): ancient-sloth-titan off (not on the map's list), ancient-sloth-titan -> pack-mule; tuned for vs ladder 15-30% (now 26.5%), Map reference 85% on validation seeds; not re-searched"
     }
    ],
    "replaced": [
@@ -76192,6 +77132,37 @@
        "obsidian-scorpion": 3
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "20-BPRO-2": {
+       "basalt-boar": 4,
+       "echo-screecher": 3,
+       "honey-badger-fury": 4,
+       "obsidian-scorpion": 3,
+       "ancient-sloth-titan": 4,
+       "quillback-elder": 2
+      },
+      "20-WPRO-1": {
+       "berserker-boar": 2,
+       "cataphract-destrier": 4,
+       "eagle-sharpshooter": 4,
+       "honey-badger-fury": 3,
+       "quillback-elder": 4,
+       "vampire-roost": 3
+      },
+      "20-WPRO-2": {
+       "ancient-sloth-titan": 4,
+       "berserker-boar": 4,
+       "cataphract-destrier": 4,
+       "deep-cave-troll": 1,
+       "eagle-sharpshooter": 4,
+       "fumarole-ibex": 3
+      }
+     }
     }
    ],
    "wpro": [
@@ -76200,7 +77171,9 @@
      "name": "20-WPRO-1",
      "focus": "weak low",
      "labels": [
-      "big (4 copies at 3+ Lumber, average 2.3)"
+      "big (4 copies at 3+ Lumber, average 2.1)",
+      "ranged x8",
+      "flying x7"
      ],
      "level": 1,
      "leaders": [],
@@ -76210,7 +77183,7 @@
       "eagle-sharpshooter": 4,
       "honey-badger-fury": 3,
       "quillback-elder": 4,
-      "vampire-roost": 3
+      "ash-cloud-condor": 3
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/wpro/wpro-map20-m11-2026-11-11.json",
@@ -76228,25 +77201,27 @@
       "generated": "2026-11-12T14:10:42.056Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): vampire-roost off (not on the map's list), vampire-roost -> ash-cloud-condor; tuned for the Map reference at 50%+ (now 100%) on validation seeds; not re-searched"
     },
     {
      "id": "20-WPRO-2",
      "name": "20-WPRO-2",
      "focus": "weak top-heavy",
      "labels": [
-      "big (9 copies at 3+ Lumber, average 2.6)",
-      "strike-first x7"
+      "big (6 copies at 3+ Lumber, average 2.2)",
+      "strike-first x7",
+      "flying x7"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
-      "ancient-sloth-titan": 4,
       "berserker-boar": 4,
       "cataphract-destrier": 4,
-      "deep-cave-troll": 1,
+      "deep-cave-troll": 2,
       "eagle-sharpshooter": 4,
-      "fumarole-ibex": 3
+      "fumarole-ibex": 3,
+      "barrow-leech-bat": 3
      },
      "source": {
       "file": "docs/balance/skir3/refdecks/wpro/wpro-map20-m11-2026-11-11.json",
@@ -76265,7 +77240,8 @@
      },
      "h2h": null,
      "later": [],
-     "side2": "2026-11-13 (SIDE2): frillneck-duelist x3 not allowed here once SIDE1's side lists or LIST1's fold of the owner's 11-13 picks took them off (late, out of play, or held on SPECIAL only for the old fights), swapped for the map list's nearest (Lumber, Wait, 2A+H; LISTFIX3's swap); not re-searched"
+     "side2": "2026-11-13 (SIDE2): frillneck-duelist x3 not allowed here once SIDE1's side lists or LIST1's fold of the owner's 11-13 picks took them off (late, out of play, or held on SPECIAL only for the old fights), swapped for the map list's nearest (Lumber, Wait, 2A+H; LISTFIX3's swap); not re-searched",
+     "prolist": "2026-11-22 (PROLIST): ancient-sloth-titan off (not on the map's list), ancient-sloth-titan -> barrow-leech-bat; tuned for the Map reference at 50%+ (now 100%) on validation seeds; not re-searched"
     }
    ]
   },
@@ -76384,21 +77360,21 @@
      "name": "20-A-BPRO-1",
      "focus": "open",
      "labels": [
-      "big (4 copies at 2+ Lumber, average 1.2)",
-      "poison x7",
-      "armor x7"
+      "big (20 copies at 1+ Lumber, average 1.2)",
+      "swarm (16 copies at 1 Lumber)",
+      "poison x7"
      ],
      "level": 1,
      "leaders": [
-      "ossuary-lammergeier"
+      "magma-salamander"
      ],
      "deck": {
       "basalt-boar": 4,
       "carrion-beetle": 4,
       "honey-badger-fury": 4,
       "obsidian-scorpion": 3,
-      "ossuary-lammergeier": 1,
-      "stalactite-golem": 4
+      "berserker-boar": 4,
+      "magma-salamander": 1
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map20-me-2026-11-11.json",
@@ -76416,7 +77392,8 @@
       "generated": "2026-11-13T04:38:03.448Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): stalactite-golem off (not on the map's list), stalactite-golem -> berserker-boar; tuned for vs ladder 15-30% (now 4%), Map reference 95% on validation seeds; not re-searched"
     }
    ],
    "replaced": [
@@ -76576,6 +77553,39 @@
       "obsidian-lich: not in the map's own pool (BPRO)"
      ],
      "on": "2026-10-29"
+    },
+    {
+     "kind": "wpro",
+     "id": "20-A-WPRO-2",
+     "deck": {
+      "ancient-sloth-titan": 4,
+      "basalt-boar": 4,
+      "brimstone-hound": 2,
+      "deep-cave-troll": 4,
+      "stalactite-golem": 2,
+      "vampire-roost": 4
+     },
+     "source": {
+      "file": "docs/balance/side2/refdecks/wpro/wpro-map20-me-2026-11-11.json",
+      "mode": "wpro",
+      "package": "SKIR1",
+      "run": "SIDE2",
+      "plan": "top-heavy",
+      "tool": "tools/skir1/refdecks_2026_11_11.js",
+      "score": 0.1917,
+      "ci": [
+       0.1523,
+       0.2311
+      ],
+      "refWins": 0.9722,
+      "generated": "2026-11-13T05:46:33.279Z"
+     },
+     "dropped": [
+      "deep-cave-troll: off the wpro pool",
+      "vampire-roost: off the wpro pool"
+     ],
+     "on": "2026-11-22",
+     "package": "PROLIST"
     }
    ],
    "skipped": [
@@ -78422,6 +79432,42 @@
        "brimstone-hound": 4
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "20-A-BPRO-1": {
+       "basalt-boar": 4,
+       "carrion-beetle": 4,
+       "honey-badger-fury": 4,
+       "obsidian-scorpion": 3,
+       "ossuary-lammergeier": 1,
+       "stalactite-golem": 4
+      },
+      "20-A-WPRO-1": {
+       "ancient-sloth-titan": 4,
+       "berserker-boar": 4,
+       "brimstone-hound": 4,
+       "honey-badger-fury": 4,
+       "vampire-roost": 4
+      }
+     },
+     "dropped": [
+      {
+       "id": "20-A-WPRO-2",
+       "deck": {
+        "ancient-sloth-titan": 4,
+        "basalt-boar": 4,
+        "brimstone-hound": 2,
+        "deep-cave-troll": 4,
+        "stalactite-golem": 2,
+        "vampire-roost": 4
+       },
+       "why": "deep-cave-troll: off the wpro pool; vampire-roost: off the wpro pool"
+      }
+     ]
     }
    ],
    "wpro": [
@@ -78430,17 +79476,16 @@
      "name": "20-A-WPRO-1",
      "focus": "weak low",
      "labels": [
-      "big (12 copies at 2+ Lumber, average 1.6)",
-      "rally x8"
+      "big (16 copies at 1+ Lumber, average 1.0)"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
-      "ancient-sloth-titan": 4,
       "berserker-boar": 4,
       "brimstone-hound": 4,
       "honey-badger-fury": 4,
-      "vampire-roost": 4
+      "basalt-boar": 4,
+      "carrion-beetle": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/wpro/wpro-map20-me-2026-11-11.json",
@@ -78458,43 +79503,8 @@
       "generated": "2026-11-13T05:46:33.279Z"
      },
      "h2h": null,
-     "later": []
-    },
-    {
-     "id": "20-A-WPRO-2",
-     "name": "20-A-WPRO-2",
-     "focus": "weak top-heavy",
-     "labels": [
-      "big (14 copies at 2+ Lumber, average 2.0)",
-      "guard x6"
-     ],
-     "level": 1,
-     "leaders": [],
-     "deck": {
-      "ancient-sloth-titan": 4,
-      "basalt-boar": 4,
-      "brimstone-hound": 2,
-      "deep-cave-troll": 4,
-      "stalactite-golem": 2,
-      "vampire-roost": 4
-     },
-     "source": {
-      "file": "docs/balance/side2/refdecks/wpro/wpro-map20-me-2026-11-11.json",
-      "mode": "wpro",
-      "package": "SKIR1",
-      "run": "SIDE2",
-      "plan": "top-heavy",
-      "tool": "tools/skir1/refdecks_2026_11_11.js",
-      "score": 0.1917,
-      "ci": [
-       0.1523,
-       0.2311
-      ],
-      "refWins": 0.9722,
-      "generated": "2026-11-13T05:46:33.279Z"
-     },
-     "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): ancient-sloth-titan, vampire-roost off (not on the map's list), ancient-sloth-titan x4 -> basalt-boar; vampire-roost -> carrion-beetle; tuned for the Map reference at 50%+ (now 98.8%) on validation seeds; not re-searched"
     }
    ]
   },
@@ -78646,7 +79656,7 @@
      "name": "20-B-BPRO-1",
      "focus": "family:flying",
      "labels": [
-      "big (12 copies at 2+ Lumber, average 1.8)",
+      "big (20 copies at 1+ Lumber, average 1.4)",
       "flying x11",
       "ranged x6"
      ],
@@ -78659,8 +79669,8 @@
       "cinder-hornet": 4,
       "eagle-sharpshooter": 4,
       "magma-salamander": 2,
-      "basalt-boar": 3,
-      "ancient-sloth-titan": 4
+      "basalt-boar": 4,
+      "quarry-mole": 3
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map20-mx-2026-11-11.json",
@@ -78679,14 +79689,16 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-19 (SKWK3): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 41.5% -> 30.5%, Map reference 80% -> 70% (validation seeds); obsidian-scorpion x3 -> basalt-boar; cataphract-destrier x4 -> ancient-sloth-titan (docs/balance/skwk3/skwk3_2026_11_19.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-19 (SKWK3): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 41.5% -> 30.5%, Map reference 80% -> 70% (validation seeds); obsidian-scorpion x3 -> basalt-boar; cataphract-destrier x4 -> ancient-sloth-titan (docs/balance/skwk3/skwk3_2026_11_19.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): ancient-sloth-titan off (not on the map's list), ancient-sloth-titan -> granite-ox-golem; tuned for vs ladder 15-30% (now 30%), Map reference 82.5% on validation seeds; not re-searched"
     },
     {
      "id": "20-B-BPRO-2",
      "name": "20-B-BPRO-2",
      "focus": "open",
      "labels": [
-      "big (4 copies at 3+ Lumber, average 1.6)"
+      "big (7 copies at 2+ Lumber, average 1.6)",
+      "ranged x6"
      ],
      "level": 1,
      "leaders": [
@@ -78694,11 +79706,11 @@
      ],
      "deck": {
       "basalt-boar": 4,
-      "cinder-hornet": 4,
-      "deep-cave-troll": 4,
-      "fire-salamander": 3,
+      "fire-salamander": 4,
       "magma-salamander": 2,
-      "obsidian-scorpion": 3
+      "obsidian-scorpion": 3,
+      "magma-titan": 4,
+      "granite-ox-golem": 3
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map20-mx-2026-11-11.json",
@@ -78716,15 +79728,15 @@
       "generated": "2026-11-13T04:39:50.465Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): deep-cave-troll off (not on the map's list), deep-cave-troll -> magma-titan; tuned for vs ladder 15-30% (now 21%), Map reference 87.5% on validation seeds; not re-searched"
     },
     {
      "id": "20-B-BPRO-3",
      "name": "20-B-BPRO-3",
      "focus": "family:armor",
      "labels": [
-      "big (20 copies at 1+ Lumber, average 1.6)",
-      "armor x9",
+      "big (20 copies at 1+ Lumber, average 1.4)",
       "ranged x8"
      ],
      "level": 1,
@@ -78735,9 +79747,9 @@
       "eagle-sharpshooter": 4,
       "fire-salamander": 4,
       "obsidian-scorpion": 3,
-      "stalactite-golem": 4,
       "ur-elk": 2,
-      "frillneck-duelist": 3
+      "quarry-mole": 4,
+      "granite-ox-golem": 3
      },
      "source": {
       "file": "docs/balance/side2/refdecks/bpro/bench-deck-map20-mx-2026-11-11.json",
@@ -78756,7 +79768,8 @@
      },
      "h2h": null,
      "later": [],
-     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 16.5% -> 39.5%, Map reference 95% -> 65% (validation seeds); basalt-boar x4 -> ancient-sloth-titan; caldera-wyrm -1 -> ur-elk; ancient-sloth-titan x4 -> frillneck-duelist (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)"
+     "skwk2": "2026-11-18 (SKWK2): N-SK deck tuned for its win rate vs the reference ladder (15-30%): vs ladder 16.5% -> 39.5%, Map reference 95% -> 65% (validation seeds); basalt-boar x4 -> ancient-sloth-titan; caldera-wyrm -1 -> ur-elk; ancient-sloth-titan x4 -> frillneck-duelist (docs/balance/skwk2/skwk2_2026_11_18.js; not re-searched, its source run is the deck it started from)",
+     "prolist": "2026-11-22 (PROLIST): stalactite-golem, frillneck-duelist off (not on the map's list), frillneck-duelist x3 -> barrow-leech-bat; stalactite-golem -> quarry-mole; tuned for vs ladder 15-30% (now 14.5%), Map reference 85% on validation seeds; not re-searched"
     }
    ],
    "replaced": [
@@ -80819,6 +81832,53 @@
        "obsidian-scorpion": 3
       }
      }
+    },
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "20-B-BPRO-1": {
+       "barrow-leech-bat": 3,
+       "cinder-hornet": 4,
+       "eagle-sharpshooter": 4,
+       "magma-salamander": 2,
+       "basalt-boar": 3,
+       "ancient-sloth-titan": 4
+      },
+      "20-B-BPRO-2": {
+       "basalt-boar": 4,
+       "cinder-hornet": 4,
+       "deep-cave-troll": 4,
+       "fire-salamander": 3,
+       "magma-salamander": 2,
+       "obsidian-scorpion": 3
+      },
+      "20-B-BPRO-3": {
+       "eagle-sharpshooter": 4,
+       "fire-salamander": 4,
+       "obsidian-scorpion": 3,
+       "stalactite-golem": 4,
+       "ur-elk": 2,
+       "frillneck-duelist": 3
+      },
+      "20-B-WPRO-1": {
+       "ancient-sloth-titan": 4,
+       "deep-cave-troll": 4,
+       "eagle-sharpshooter": 2,
+       "granite-ox-golem": 3,
+       "magma-titan": 3,
+       "stalactite-golem": 4
+      },
+      "20-B-WPRO-2": {
+       "barrow-leech-bat": 2,
+       "cataphract-destrier": 4,
+       "cinder-hornet": 4,
+       "deep-cave-troll": 4,
+       "granite-ox-golem": 3,
+       "quarry-mole": 3
+      }
+     }
     }
    ],
    "wpro": [
@@ -80827,18 +81887,18 @@
      "name": "20-B-WPRO-1",
      "focus": "weak low",
      "labels": [
-      "big (11 copies at 3+ Lumber, average 2.5)",
-      "guard x8"
+      "big (7 copies at 3+ Lumber, average 2.2)",
+      "flying x6"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
-      "ancient-sloth-titan": 4,
-      "deep-cave-troll": 4,
-      "eagle-sharpshooter": 2,
+      "eagle-sharpshooter": 3,
       "granite-ox-golem": 3,
       "magma-titan": 3,
-      "stalactite-golem": 4
+      "barrow-leech-bat": 3,
+      "basalt-boar": 4,
+      "cataphract-destrier": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/wpro/wpro-map20-mx-2026-11-11.json",
@@ -80856,14 +81916,15 @@
       "generated": "2026-11-13T05:47:20.654Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): ancient-sloth-titan, deep-cave-troll, stalactite-golem off (not on the map's list), ancient-sloth-titan x4 -> barrow-leech-bat; deep-cave-troll x4 -> basalt-boar; stalactite-golem -> cataphract-destrier; tuned for the Map reference at 50%+ (now 100%) on validation seeds; not re-searched"
     },
     {
      "id": "20-B-WPRO-2",
      "name": "20-B-WPRO-2",
      "focus": "weak top-heavy",
      "labels": [
-      "big (8 copies at 3+ Lumber, average 2.4)",
+      "big (4 copies at 3+ Lumber, average 1.9)",
       "flying x6"
      ],
      "level": 1,
@@ -80872,9 +81933,9 @@
       "barrow-leech-bat": 2,
       "cataphract-destrier": 4,
       "cinder-hornet": 4,
-      "deep-cave-troll": 4,
       "granite-ox-golem": 3,
-      "quarry-mole": 3
+      "quarry-mole": 3,
+      "fire-salamander": 4
      },
      "source": {
       "file": "docs/balance/side2/refdecks/wpro/wpro-map20-mx-2026-11-11.json",
@@ -80892,7 +81953,8 @@
       "generated": "2026-11-13T05:47:20.654Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): deep-cave-troll off (not on the map's list), deep-cave-troll -> fire-salamander; tuned for the Map reference at 50%+ (now 98.8%) on validation seeds; not re-searched"
     }
    ]
   },
@@ -81420,19 +82482,19 @@
      "name": "22-BPRO-1",
      "focus": "open",
      "labels": [
-      "midrange (average 0.6 Lumber)"
+      "big (16 copies at 1 Lumber, average 0.8)"
      ],
      "level": 1,
      "leaders": [
-      "ember-jackal"
+      "ur-elk"
      ],
      "deck": {
       "ashbone-ghoul": 4,
-      "cinder-gecko": 4,
-      "ember-jackal": 3,
-      "pumice-beetle": 3,
-      "ravenous-wolverine": 3,
-      "rimefire-salamander": 3
+      "rimefire-salamander": 3,
+      "opossum-faker": 4,
+      "ur-elk": 2,
+      "cinder-skeleton": 4,
+      "osprey-plunger": 3
      },
      "source": {
       "file": "docs/balance/bal16/bpro/bench-deck-map22-m22-2026-11-05.json",
@@ -81449,7 +82511,8 @@
       "generated": "2026-11-05T02:51:43.356Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): ravenous-wolverine off (not on the map's list), ravenous-wolverine -> opossum-faker; tuned for vs ladder 15-30% (now 53.5%), Map reference 82.5% on validation seeds; not re-searched"
     },
     {
      "id": "22-BPRO-2",
@@ -81494,25 +82557,57 @@
    "notes": [
     "BAL16: 2 PRO, 2 BPRO (distinct plans, at most 10 shared copies), 2 WPRO (weak plans low, top-heavy); the previous decks are under history"
    ],
-   "history": [],
+   "history": [
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "22-BPRO-1": {
+       "ashbone-ghoul": 4,
+       "cinder-gecko": 4,
+       "ember-jackal": 3,
+       "pumice-beetle": 3,
+       "ravenous-wolverine": 3,
+       "rimefire-salamander": 3
+      },
+      "22-WPRO-1": {
+       "ash-cloud-condor": 3,
+       "cinder-hornet": 4,
+       "glacier-wolf-pack": 4,
+       "glacier-yak": 4,
+       "ice-petrel": 1,
+       "phoenix-fledgling": 4
+      },
+      "22-WPRO-2": {
+       "cinder-hornet": 1,
+       "ember-centipede": 4,
+       "fumarole-ibex": 3,
+       "glacier-wolf-pack": 4,
+       "ice-petrel": 4,
+       "phoenix-fledgling": 4
+      }
+     }
+    }
+   ],
    "wpro": [
     {
      "id": "22-WPRO-1",
      "name": "22-WPRO-1",
      "focus": "weak low",
      "labels": [
-      "big (16 copies at 2+ Lumber, average 2.0)",
-      "flying x11"
+      "big (16 copies at 1+ Lumber, average 1.4)",
+      "flying x8"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
-      "ash-cloud-condor": 3,
       "cinder-hornet": 4,
       "glacier-wolf-pack": 4,
-      "glacier-yak": 4,
       "ice-petrel": 1,
-      "phoenix-fledgling": 4
+      "phoenix-fledgling": 4,
+      "ashbone-ghoul": 4,
+      "badger-berserker": 3
      },
      "source": {
       "file": "docs/balance/bal16/wpro/wpro-map22-m22-2026-11-05.json",
@@ -81529,25 +82624,25 @@
       "generated": "2026-11-05T05:13:50.438Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): ash-cloud-condor, glacier-yak off (not on the map's list), ash-cloud-condor x3 -> ashbone-ghoul; glacier-yak -> badger-berserker; tuned for the Map reference at 50%+ (now 96.3%) on validation seeds; not re-searched"
     },
     {
      "id": "22-WPRO-2",
      "name": "22-WPRO-2",
      "focus": "weak top-heavy",
      "labels": [
-      "big (9 copies at 2+ Lumber, average 1.3)",
-      "strike-first x7"
+      "big (13 copies at 1+ Lumber, average 1.1)"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
       "cinder-hornet": 1,
       "ember-centipede": 4,
-      "fumarole-ibex": 3,
       "glacier-wolf-pack": 4,
       "ice-petrel": 4,
-      "phoenix-fledgling": 4
+      "phoenix-fledgling": 4,
+      "cinder-gecko": 3
      },
      "source": {
       "file": "docs/balance/bal16/wpro/wpro-map22-m22-2026-11-05.json",
@@ -81564,7 +82659,8 @@
       "generated": "2026-11-05T05:13:50.438Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): fumarole-ibex off (not on the map's list), fumarole-ibex -> cinder-gecko; tuned for the Map reference at 50%+ (now 97.5%) on validation seeds; not re-searched"
     }
    ]
   },
@@ -81711,8 +82807,8 @@
      "name": "23-BPRO-1",
      "focus": "economy",
      "labels": [
-      "economy (7 resource makers)",
-      "economy x7",
+      "big (17 copies at 1+ Lumber, average 1.4)",
+      "guard x7",
       "armor x6"
      ],
      "level": 1,
@@ -81721,11 +82817,11 @@
      ],
      "deck": {
       "acacia-giraffe": 4,
-      "pack-mule": 4,
       "pangolin-roller": 3,
       "raccoon-bandit": 3,
       "stoat-cutthroat": 3,
-      "testudo-tortoise": 3
+      "testudo-tortoise": 3,
+      "badger-trench-digger": 4
      },
      "source": {
       "file": "docs/balance/bal16/bpro/bench-deck-map23-m23-2026-11-05.json",
@@ -81742,16 +82838,15 @@
       "generated": "2026-11-05T02:53:12.760Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): pack-mule off (not on the map's list), pack-mule -> badger-trench-digger; tuned for vs ladder 15-30% (now 47.5%), Map reference 85% on validation seeds; not re-searched"
     },
     {
      "id": "23-BPRO-2",
      "name": "23-BPRO-2",
      "focus": "family:night",
      "labels": [
-      "economy (7 resource makers)",
-      "night x9",
-      "economy x7"
+      "big (20 copies at 1+ Lumber, average 1.5)"
      ],
      "level": 1,
      "leaders": [
@@ -81761,9 +82856,9 @@
       "beetle-battering-ram": 2,
       "meerkat-burrower": 4,
       "mouse-sapper": 4,
-      "pack-mule": 4,
-      "raccoon-bandit": 3,
-      "stoat-cutthroat": 3
+      "badger-trench-digger": 4,
+      "secretary-bird-stomper": 3,
+      "acacia-giraffe": 3
      },
      "source": {
       "file": "docs/balance/bal16/bpro/bench-deck-map23-m23-2026-11-05.json",
@@ -81780,14 +82875,15 @@
       "generated": "2026-11-05T02:53:12.760Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): pack-mule off (not on the map's list), pack-mule -> badger-trench-digger; tuned for vs ladder 15-30% (now 36%), Map reference 67.5% on validation seeds; not re-searched"
     },
     {
      "id": "23-BPRO-3",
      "name": "23-BPRO-3",
      "focus": "open",
      "labels": [
-      "economy (4 resource makers)",
+      "big (12 copies at 1+ Lumber, average 0.8)",
       "ranged x6"
      ],
      "level": 1,
@@ -81799,8 +82895,8 @@
       "eagle-owl-quartermaster": 3,
       "hoopoe-herald": 4,
       "howdah-archers": 3,
-      "pack-mule": 4,
-      "siege-rhino": 2
+      "siege-rhino": 2,
+      "acacia-giraffe": 4
      },
      "source": {
       "file": "docs/balance/bal16/bpro/bench-deck-map23-m23-2026-11-05.json",
@@ -81817,7 +82913,8 @@
       "generated": "2026-11-05T02:53:12.760Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): pack-mule off (not on the map's list), pack-mule -> acacia-giraffe; tuned for vs ladder 15-30% (now 72%), Map reference 52.5% on validation seeds; not re-searched"
     }
    ],
    "replaced": [],
@@ -81825,24 +82922,72 @@
    "notes": [
     "BAL16: 3 PRO, 3 BPRO (distinct plans, at most 10 shared copies), 2 WPRO (weak plans low, top-heavy); the previous decks are under history"
    ],
-   "history": [],
+   "history": [
+    {
+     "package": "PROLIST",
+     "on": "2026-11-22",
+     "why": "owner 2026-11-22 09:56 \"Do not use cards not in the map list.\": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)",
+     "decks": {
+      "23-BPRO-1": {
+       "acacia-giraffe": 4,
+       "pack-mule": 4,
+       "pangolin-roller": 3,
+       "raccoon-bandit": 3,
+       "stoat-cutthroat": 3,
+       "testudo-tortoise": 3
+      },
+      "23-BPRO-2": {
+       "beetle-battering-ram": 2,
+       "meerkat-burrower": 4,
+       "mouse-sapper": 4,
+       "pack-mule": 4,
+       "raccoon-bandit": 3,
+       "stoat-cutthroat": 3
+      },
+      "23-BPRO-3": {
+       "alley-cat": 4,
+       "eagle-owl-quartermaster": 3,
+       "hoopoe-herald": 4,
+       "howdah-archers": 3,
+       "pack-mule": 4,
+       "siege-rhino": 2
+      },
+      "23-WPRO-1": {
+       "acacia-giraffe": 4,
+       "lodge-engineer": 4,
+       "marshal-tuskwell": 1,
+       "meerkat-burrower": 4,
+       "pronghorn-racer": 4,
+       "testudo-tortoise": 3
+      },
+      "23-WPRO-2": {
+       "acacia-giraffe": 4,
+       "alley-cat": 3,
+       "badger-trench-digger": 4,
+       "border-collie": 3,
+       "lodge-engineer": 4,
+       "meerkat-burrower": 2
+      }
+     }
+    }
+   ],
    "wpro": [
     {
      "id": "23-WPRO-1",
      "name": "23-WPRO-1",
      "focus": "weak low",
      "labels": [
-      "big (1 copies at 3+ Lumber, average 1.7)"
+      "big (16 copies at 1+ Lumber, average 1.2)"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
       "acacia-giraffe": 4,
-      "lodge-engineer": 4,
-      "marshal-tuskwell": 1,
       "meerkat-burrower": 4,
       "pronghorn-racer": 4,
-      "testudo-tortoise": 3
+      "testudo-tortoise": 3,
+      "alley-cat": 4,
+      "badger-trench-digger": 1
      },
      "source": {
       "file": "docs/balance/bal16/wpro/wpro-map23-m23-2026-11-05.json",
@@ -81860,14 +83005,16 @@
      },
      "h2h": null,
      "later": [],
-     "side2": "2026-11-13 (SIDE2): bison-bulldozer x4 not allowed here once SIDE1's side lists or LIST1's fold of the owner's 11-13 picks took them off (late, out of play, or held on SPECIAL only for the old fights), swapped for the map list's nearest (Lumber, Wait, 2A+H; LISTFIX3's swap); not re-searched"
+     "side2": "2026-11-13 (SIDE2): bison-bulldozer x4 not allowed here once SIDE1's side lists or LIST1's fold of the owner's 11-13 picks took them off (late, out of play, or held on SPECIAL only for the old fights), swapped for the map list's nearest (Lumber, Wait, 2A+H; LISTFIX3's swap); not re-searched",
+     "prolist": "2026-11-22 (PROLIST): lodge-engineer, marshal-tuskwell off (not on the map's list), lodge-engineer x4 -> alley-cat; marshal-tuskwell -> badger-trench-digger; tuned for the Map reference at 50%+ (now 83.8%) on validation seeds; not re-searched"
     },
     {
      "id": "23-WPRO-2",
      "name": "23-WPRO-2",
      "focus": "weak top-heavy",
      "labels": [
-      "big (0 copies at 3+ Lumber, average 1.4)"
+      "big (17 copies at 1+ Lumber, average 1.3)",
+      "guard x7"
      ],
      "level": 1,
      "leaders": [],
@@ -81876,8 +83023,8 @@
       "alley-cat": 3,
       "badger-trench-digger": 4,
       "border-collie": 3,
-      "lodge-engineer": 4,
-      "meerkat-burrower": 2
+      "meerkat-burrower": 2,
+      "bison-bulldozer": 4
      },
      "source": {
       "file": "docs/balance/bal16/wpro/wpro-map23-m23-2026-11-05.json",
@@ -81894,7 +83041,8 @@
       "generated": "2026-11-05T05:14:58.712Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "prolist": "2026-11-22 (PROLIST): lodge-engineer off (not on the map's list), lodge-engineer -> bison-bulldozer; tuned for the Map reference at 50%+ (now 78.8%) on validation seeds; not re-searched"
     }
    ]
   },

@@ -22,6 +22,11 @@ const DATE = '2026-11-22', DIR = path.join(ROOT, 'docs', 'balance', 'prolist'), 
 const a = process.argv.slice(2), CMD = a[0], arg = (k, d) => { const i = a.indexOf(k); return i >= 0 ? a[i + 1] : d; }, has = k => a.includes(k);
 const KINDS = ['pro', 'bpro', 'wpro'], readPro = () => JSON.parse(fs.readFileSync(PRO_FILE, 'utf8'));
 const skKindOf = ent => (ent.bpro || []).length ? 'bpro' : 'pro';
+// the maps: every entry of the file numbered 0-20, side maps that open later included (the Old Bramble mo, Map 17's mi open at Map 21; tests/deck1
+// checks them as Map 0 / 17)
+// --beyond20: the entries past Map 20 too (Maps 21-23 held SPECIAL cards; the owner's rule is for every map, BAL17-2 keeps tuning to 0-20, so a
+// second pass only repairs them to the rule)
+const mapsOf = (g, file) => Object.keys(file.maps).filter(id => has('--beyond20') ? file.maps[id].map > 20 : file.maps[id].map <= 20).map(id => g.G.CONQUEST_MAPS.find(m => m.id === id)).filter(Boolean);
 // the PROLIST problems of a deck: a card its kind's pool refuses because it is off the map's list (SPECIAL tier or a road fight's deck only)
 function offList(g, map, ent, kind, e) {
   const R = SK.rulesFor(g, map, ent, kind, e.id, e.deck), pe = g.pools[map.sub ? map.parent : map.id] || {}, sp = new Set(pe.special || []);
@@ -30,7 +35,7 @@ function offList(g, map, ent, kind, e) {
 function plan() {
   const g = O.loadGame(ROOT), file = readPro(), out = { about: 'PROLIST (2026-11-22): per Maps 0-20 map the decks holding a card off the map\'s list (owner 09:56), N-SK kind first; tools/opt/prolist_2026_11_22.js', maps: {} };
   let n = 0; const later = [];
-  for (const map of D1.mapsUpTo20(g, null)) { const ent = file.maps[map.id]; if (!ent) continue; const sk = skKindOf(ent), row = { tune: [], cards: {} };
+  for (const map of mapsOf(g, file)) { const ent = file.maps[map.id]; if (!ent) continue; const sk = skKindOf(ent), row = { tune: [], cards: {} };
     // also a PRO deck whose SPECIAL card is held (so legal) but no longer counts as a list copy: under its 10 list copies now
     const pe = g.pools[map.sub ? map.parent : map.id] || {}, sp = new Set(pe.special || []), list = new Set(D1.deck1Pools(g, map).list || []);
     for (const kind of [sk].concat(KINDS.filter(k => k !== sk))) for (const e of ent[kind] || []) { let bad = offList(g, map, ent, kind, e);
@@ -67,7 +72,9 @@ function apply(dry) {
   let nT = 0, nD = 0; const rows = [];
   for (const mid of Object.keys(pl.maps)) {
     const f = path.join(OUT, mid + '.json'); if (!fs.existsSync(f)) { console.log(mid + ': no tune result (skipped)'); continue; }
-    const res = JSON.parse(fs.readFileSync(f, 'utf8')), ent = file.maps[mid], map = g.G.CONQUEST_MAPS.find(m => m.id === mid), prefix = P.proPrefix(g, map);
+    const res = JSON.parse(fs.readFileSync(f, 'utf8')); if (res.applied) { console.log(mid + ': applied on ' + res.applied + ' (skipped)'); continue; }
+    if (!dry) { res.applied = DATE; fs.writeFileSync(f, JSON.stringify(res, null, 1) + '\n'); }
+    const ent = file.maps[mid], map = g.G.CONQUEST_MAPS.find(m => m.id === mid), prefix = P.proPrefix(g, map);
     const h = { package: 'PROLIST', on: DATE, why: 'owner 2026-11-22 09:56 "Do not use cards not in the map list.": a SPECIAL-tier card off, the deck repaired and tuned to its mark (docs/balance/prolist/)' };
     for (const r of res.decks) { const e = (ent[r.kind] || []).find(x => x.id === r.id); if (!e) continue;
       if (SK.keepOf(r)) { (h.decks = h.decks || {})[r.id] = e.deck; e.deck = r.pick.deck; e.leaders = r.kind === 'wpro' ? [] : P.leadersFor(g, map, e.deck); e.h2h = null;
@@ -86,7 +93,7 @@ function apply(dry) {
 }
 function check() {
   const g = O.loadGame(ROOT), file = readPro(), out = [];
-  for (const map of D1.mapsUpTo20(g, null)) { const ent = file.maps[map.id]; if (!ent) continue;
+  for (const map of mapsOf(g, file)) { const ent = file.maps[map.id]; if (!ent) continue;
     KINDS.forEach(k => (ent[k] || []).forEach(e => { const bad = offList(g, map, ent, k, e); if (bad.length) out.push(`${e.id}: ${bad.join(', ')} not on the map's list`); })); }
   out.forEach(x => console.log('problem: ' + x)); console.log(out.length ? out.length + ' problem(s)' : 'ok'); if (out.length) process.exitCode = 1;
 }

@@ -1,0 +1,205 @@
+{
+ "map": "m11",
+ "generated": "2026-11-22T02:42:17.628Z",
+ "decks": [
+  {
+   "id": "20-BPRO-2",
+   "map": "m11",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "basalt-boar": 4,
+     "echo-screecher": 3,
+     "honey-badger-fury": 4,
+     "obsidian-scorpion": 3,
+     "ancient-sloth-titan": 4,
+     "quillback-elder": 2
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "echo-screecher": 3,
+     "honey-badger-fury": 4,
+     "obsidian-scorpion": 3,
+     "quillback-elder": 4,
+     "pack-mule": 4,
+     "magma-salamander": 2
+    },
+    "val": {
+     "v": 0.265,
+     "ref": 0.85,
+     "gap": 0
+    },
+    "leaders": [
+     "magma-salamander"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: ancient-sloth-titan -> pack-mule",
+     "was": [
+      "ancient-sloth-titan: off the bpro pool",
+      "ancient-sloth-titan: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "ancient-sloth-titan: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.183,
+     "ref": 0.875,
+     "gap": 0.19
+    },
+    {
+     "move": "basalt-boar x4 -> magma-salamander",
+     "v": 0.317,
+     "ref": 0.8,
+     "gap": 0.087,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 639,
+   "sec": 111
+  },
+  {
+   "id": "20-WPRO-1",
+   "map": "m11",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "berserker-boar": 2,
+     "cataphract-destrier": 4,
+     "eagle-sharpshooter": 4,
+     "honey-badger-fury": 3,
+     "quillback-elder": 4,
+     "vampire-roost": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "berserker-boar": 2,
+     "cataphract-destrier": 4,
+     "eagle-sharpshooter": 4,
+     "honey-badger-fury": 3,
+     "quillback-elder": 4,
+     "ash-cloud-condor": 3
+    },
+    "val": {
+     "v": 1,
+     "ref": 1,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: vampire-roost -> ash-cloud-condor",
+     "was": [
+      "vampire-roost: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 1,
+     "ref": 1,
+     "gap": 0
+    }
+   ],
+   "readings": 14,
+   "sec": 6
+  },
+  {
+   "id": "20-WPRO-2",
+   "map": "m11",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "ancient-sloth-titan": 4,
+     "berserker-boar": 4,
+     "cataphract-destrier": 4,
+     "deep-cave-troll": 1,
+     "eagle-sharpshooter": 4,
+     "fumarole-ibex": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "berserker-boar": 4,
+     "cataphract-destrier": 4,
+     "deep-cave-troll": 2,
+     "eagle-sharpshooter": 4,
+     "fumarole-ibex": 3,
+     "barrow-leech-bat": 3
+    },
+    "val": {
+     "v": 1,
+     "ref": 1,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: ancient-sloth-titan -> barrow-leech-bat",
+     "was": [
+      "ancient-sloth-titan: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 1,
+     "ref": 1,
+     "gap": 0
+    }
+   ],
+   "readings": 13,
+   "sec": 6
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

@@ -1,0 +1,137 @@
+{
+ "map": "mu",
+ "generated": "2026-11-22T02:33:43.821Z",
+ "decks": [
+  {
+   "id": "7-BPRO-1",
+   "map": "mu",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cypress-root-lurker": 4,
+     "fungus-gnat-cloud": 4,
+     "hawthorn-shieldbug": 2,
+     "sleepless-shrew": 3,
+     "puffball-bombardier": 4,
+     "rot-swollen-carcass": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "cypress-root-lurker": 4,
+     "fungus-gnat-cloud": 4,
+     "hawthorn-shieldbug": 2,
+     "puffball-bombardier": 4,
+     "rot-swollen-carcass": 3,
+     "camouflage-frog": 3
+    },
+    "val": {
+     "v": 0.245,
+     "ref": 0.775,
+     "gap": 0
+    },
+    "leaders": [
+     "puffball-bombardier"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: sleepless-shrew -> camouflage-frog",
+     "was": [
+      "sleepless-shrew: off the bpro pool",
+      "sleepless-shrew: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "sleepless-shrew: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.217,
+     "ref": 0.675,
+     "gap": 0
+    }
+   ],
+   "readings": 111,
+   "sec": 22
+  },
+  {
+   "id": "7-PRO-2",
+   "map": "mu",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "bee-forager": 3,
+     "corpse-flower-beetle": 3,
+     "fungus-gnat-cloud": 4,
+     "mudpuppy": 3,
+     "planarian-splitter": 3,
+     "sleepless-shrew": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "bee-forager": 3,
+     "corpse-flower-beetle": 3,
+     "fungus-gnat-cloud": 4,
+     "mudpuppy": 3,
+     "planarian-splitter": 3,
+     "acorn-chipmunk": 4
+    },
+    "val": {
+     "v": 0.413,
+     "ref": 0.413,
+     "gap": 0
+    },
+    "leaders": [
+     "corpse-flower-beetle"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: sleepless-shrew -> acorn-chipmunk",
+     "was": [
+      "sleepless-shrew: off the pro pool",
+      "sleepless-shrew: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.517,
+     "ref": 0.517,
+     "gap": 0
+    }
+   ],
+   "readings": 24,
+   "sec": 17
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

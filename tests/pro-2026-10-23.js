@@ -101,7 +101,7 @@ Object.keys(data.maps).forEach(mid=>{
 { const D1 = require(path.join(ROOT, 'tools', 'opt', 'deck1_2026_10_30.js'));
   const m0 = G.CONQUEST_MAPS.find(m=> m.id === 'm1'), sp0 = ((gm.pools.m1 || {}).special || []).find(id=> !((gm.pools.m1 || {}).cards || []).includes(id) && O.deckable(gm, id));
   ok(sp0 && O.mapRuleProblems(gm, m0, { [sp0]: 1 }, 'bpro').some(x=> /SPECIAL-tier card/.test(x)) && O.mapRuleProblems(gm, m0, { [sp0]: 1 }, 'map-true').length > 0 && !D1.deck1Pools(gm, m0).anchor.includes(sp0), `1b. the map rule refuses Map 0's SPECIAL card ${sp0} (PRO and BPRO)`);
-  D1.mapsUpTo20(gm, null).forEach(m=>{ const ent = data.maps[m.id]; if(!ent) return; const p = D1.deck1Pools(gm, m), list = new Set(p.list || []), pe = gm.pools[m.sub ? m.parent : m.id] || {}, sp = new Set(pe.special || []);
+  Object.keys(data.maps).filter(id=> data.maps[id].map <= 20).map(id=> G.CONQUEST_MAPS.find(m=> m.id === id)).filter(Boolean).forEach(m=>{ const ent = data.maps[m.id]; if(!ent) return; const p = D1.deck1Pools(gm, m), list = new Set(p.list || []), pe = gm.pools[m.sub ? m.parent : m.id] || {}, sp = new Set(pe.special || []);
     ['pro', 'bpro', 'wpro'].forEach(k=> (ent[k] || []).forEach(e=>{ const ids = Object.keys(e.deck);
       const off = k === 'pro' ? ids.filter(id=> p.rule(id) && (sp.has(id) || !list.has(id))) : ids.filter(id=> !list.has(id));
       ok(!off.length, `1b. ${e.id}: every card on ${m.id}'s list${k === 'pro' ? ' or held by then' : ''} (off: ${off.join(', ')}${off.some(id=> sp.has(id)) ? '; SPECIAL tier' : ''})`); })); }); }

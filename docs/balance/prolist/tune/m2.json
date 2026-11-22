@@ -1,0 +1,142 @@
+{
+ "map": "m2",
+ "generated": "2026-11-22T02:23:33.922Z",
+ "decks": [
+  {
+   "id": "4-BPRO-1",
+   "map": "m2",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "conch-crawler": 4,
+     "drowned-matriarch": 4,
+     "kittiwake-flock": 4,
+     "water-shrew": 4,
+     "lotus-frog": 2,
+     "pond-algae": 2
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "conch-crawler": 4,
+     "kittiwake-flock": 4,
+     "water-shrew": 4,
+     "lotus-frog": 2,
+     "pond-algae": 2,
+     "snapstick-turtle": 4
+    },
+    "val": {
+     "v": 0.325,
+     "ref": 0.275,
+     "gap": 0.025
+    },
+    "leaders": [
+     "lotus-frog"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: drowned-matriarch -> snapstick-turtle",
+     "was": [
+      "drowned-matriarch: off the bpro pool",
+      "drowned-matriarch: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "drowned-matriarch: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.283,
+     "ref": 0.3,
+     "gap": 0.013
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 385,
+   "sec": 53
+  },
+  {
+   "id": "4-PRO-1",
+   "map": "m2",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "alley-cat": 3,
+     "conch-crawler": 2,
+     "drowned-matriarch": 4,
+     "duck-paddler": 4,
+     "fleetfootd": 3,
+     "rock-pool-starfish": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "alley-cat": 3,
+     "conch-crawler": 2,
+     "duck-paddler": 4,
+     "fleetfootd": 3,
+     "rock-pool-starfish": 4,
+     "beaver-lumberjack": 4
+    },
+    "val": {
+     "v": 0.138,
+     "ref": 0.138,
+     "gap": 0
+    },
+    "leaders": [
+     "fleetfootd"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: drowned-matriarch -> beaver-lumberjack",
+     "was": [
+      "drowned-matriarch: off the pro pool",
+      "under 10 list copies",
+      "drowned-matriarch: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.233,
+     "ref": 0.233,
+     "gap": 0
+    }
+   ],
+   "readings": 14,
+   "sec": 6
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

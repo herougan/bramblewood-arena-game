@@ -1,0 +1,144 @@
+{
+ "map": "m5",
+ "generated": "2026-11-22T02:39:50.970Z",
+ "decks": [
+  {
+   "id": "14-BPRO-1",
+   "map": "m5",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "bramble-sprout": 4,
+     "pride-queen": 2,
+     "savanna-cheetah": 2,
+     "tasmanian-devil": 4,
+     "badger-lumberjack": 4,
+     "grizzly-vanguard": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "bramble-sprout": 4,
+     "tasmanian-devil": 4,
+     "badger-lumberjack": 4,
+     "grizzly-vanguard": 4,
+     "hollow-belly-rat": 2,
+     "spitting-cobra": 2
+    },
+    "val": {
+     "v": 0.235,
+     "ref": 0.675,
+     "gap": 0
+    },
+    "leaders": [
+     "spitting-cobra"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: pride-queen -> hollow-belly-rat",
+     "was": [
+      "pride-queen: off the bpro pool",
+      "pride-queen: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "pride-queen: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.267,
+     "ref": 0.85,
+     "gap": 0.14
+    },
+    {
+     "move": "savanna-cheetah -2 -> spitting-cobra",
+     "v": 0.233,
+     "ref": 0.775,
+     "gap": 0,
+     "tried": 24
+    }
+   ],
+   "readings": 385,
+   "sec": 52
+  },
+  {
+   "id": "14-PRO-3",
+   "map": "m5",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "alpine-marmot": 4,
+     "dust-hyena": 4,
+     "fishing-cat": 3,
+     "hoopoe-herald": 4,
+     "pride-queen": 2,
+     "stoat-cutthroat": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "alpine-marmot": 4,
+     "dust-hyena": 4,
+     "fishing-cat": 3,
+     "hoopoe-herald": 4,
+     "stoat-cutthroat": 3,
+     "acacia-giraffe": 2
+    },
+    "val": {
+     "v": 0.288,
+     "ref": 0.288,
+     "gap": 0
+    },
+    "leaders": [
+     "fishing-cat"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: pride-queen -> acacia-giraffe",
+     "was": [
+      "pride-queen: off the pro pool",
+      "pride-queen: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.233,
+     "ref": 0.233,
+     "gap": 0
+    }
+   ],
+   "readings": 25,
+   "sec": 14
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

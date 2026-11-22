@@ -1,0 +1,382 @@
+{
+ "map": "mx",
+ "generated": "2026-11-22T02:46:24.184Z",
+ "decks": [
+  {
+   "id": "20-B-BPRO-1",
+   "map": "mx",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "barrow-leech-bat": 3,
+     "cinder-hornet": 4,
+     "eagle-sharpshooter": 4,
+     "magma-salamander": 2,
+     "basalt-boar": 3,
+     "ancient-sloth-titan": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "barrow-leech-bat": 3,
+     "cinder-hornet": 4,
+     "eagle-sharpshooter": 4,
+     "magma-salamander": 2,
+     "basalt-boar": 4,
+     "quarry-mole": 3
+    },
+    "val": {
+     "v": 0.3,
+     "ref": 0.825,
+     "gap": 0
+    },
+    "leaders": [
+     "magma-salamander"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: ancient-sloth-titan -> granite-ox-golem",
+     "was": [
+      "ancient-sloth-titan: off the bpro pool",
+      "ancient-sloth-titan: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "ancient-sloth-titan: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.15,
+     "ref": 0.85,
+     "gap": 0.17
+    },
+    {
+     "move": "granite-ox-golem x3 -> quarry-mole",
+     "v": 0.283,
+     "ref": 0.775,
+     "gap": 0.013,
+     "tried": 23
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 528,
+   "sec": 80
+  },
+  {
+   "id": "20-B-BPRO-2",
+   "map": "mx",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "basalt-boar": 4,
+     "cinder-hornet": 4,
+     "deep-cave-troll": 4,
+     "fire-salamander": 3,
+     "magma-salamander": 2,
+     "obsidian-scorpion": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "basalt-boar": 4,
+     "fire-salamander": 4,
+     "magma-salamander": 2,
+     "obsidian-scorpion": 3,
+     "magma-titan": 4,
+     "granite-ox-golem": 3
+    },
+    "val": {
+     "v": 0.21,
+     "ref": 0.875,
+     "gap": 0.025
+    },
+    "leaders": [
+     "magma-salamander"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: deep-cave-troll -> magma-titan",
+     "was": [
+      "deep-cave-troll: off the bpro pool",
+      "deep-cave-troll: not on the map's list (held, not listed)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.483,
+     "ref": 0.7,
+     "gap": 0.213
+    },
+    {
+     "move": "cinder-hornet x4 -> granite-ox-golem",
+     "v": 0.275,
+     "ref": 0.775,
+     "gap": 0.005,
+     "tried": 22
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 23
+    }
+   ],
+   "readings": 529,
+   "sec": 88
+  },
+  {
+   "id": "20-B-BPRO-3",
+   "map": "mx",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "eagle-sharpshooter": 4,
+     "fire-salamander": 4,
+     "obsidian-scorpion": 3,
+     "stalactite-golem": 4,
+     "ur-elk": 2,
+     "frillneck-duelist": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "eagle-sharpshooter": 4,
+     "fire-salamander": 4,
+     "obsidian-scorpion": 3,
+     "ur-elk": 2,
+     "quarry-mole": 4,
+     "granite-ox-golem": 3
+    },
+    "val": {
+     "v": 0.145,
+     "ref": 0.85,
+     "gap": 0.005
+    },
+    "leaders": [
+     "ur-elk"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: frillneck-duelist x3 -> barrow-leech-bat",
+     "was": [
+      "stalactite-golem: off the bpro pool",
+      "frillneck-duelist: off the bpro pool",
+      "stalactite-golem: not on the map's list (held, not listed)",
+      "frillneck-duelist: not on the map's list (held, not listed)",
+      "frillneck-duelist: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "repair: stalactite-golem -> quarry-mole",
+     "was": [
+      "stalactite-golem: off the bpro pool",
+      "stalactite-golem: not on the map's list (held, not listed)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.167,
+     "ref": 0.95,
+     "gap": 0.353
+    },
+    {
+     "move": "barrow-leech-bat x3 -> granite-ox-golem",
+     "v": 0.175,
+     "ref": 0.9,
+     "gap": 0.245,
+     "tried": 12
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 14
+    }
+   ],
+   "readings": 406,
+   "sec": 60
+  },
+  {
+   "id": "20-B-WPRO-1",
+   "map": "mx",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "ancient-sloth-titan": 4,
+     "deep-cave-troll": 4,
+     "eagle-sharpshooter": 2,
+     "granite-ox-golem": 3,
+     "magma-titan": 3,
+     "stalactite-golem": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "eagle-sharpshooter": 3,
+     "granite-ox-golem": 3,
+     "magma-titan": 3,
+     "barrow-leech-bat": 3,
+     "basalt-boar": 4,
+     "cataphract-destrier": 4
+    },
+    "val": {
+     "v": 1,
+     "ref": 1,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: ancient-sloth-titan x4 -> barrow-leech-bat",
+     "was": [
+      "ancient-sloth-titan: off the wpro pool",
+      "deep-cave-troll: off the wpro pool",
+      "stalactite-golem: off the wpro pool"
+     ]
+    },
+    {
+     "move": "repair: deep-cave-troll x4 -> basalt-boar",
+     "was": [
+      "deep-cave-troll: off the wpro pool",
+      "stalactite-golem: off the wpro pool"
+     ]
+    },
+    {
+     "move": "repair: stalactite-golem -> cataphract-destrier",
+     "was": [
+      "stalactite-golem: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 1,
+     "ref": 1,
+     "gap": 0
+    }
+   ],
+   "readings": 47,
+   "sec": 16
+  },
+  {
+   "id": "20-B-WPRO-2",
+   "map": "mx",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "barrow-leech-bat": 2,
+     "cataphract-destrier": 4,
+     "cinder-hornet": 4,
+     "deep-cave-troll": 4,
+     "granite-ox-golem": 3,
+     "quarry-mole": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "barrow-leech-bat": 2,
+     "cataphract-destrier": 4,
+     "cinder-hornet": 4,
+     "granite-ox-golem": 3,
+     "quarry-mole": 3,
+     "fire-salamander": 4
+    },
+    "val": {
+     "v": 0.988,
+     "ref": 0.988,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: deep-cave-troll -> fire-salamander",
+     "was": [
+      "deep-cave-troll: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 1,
+     "ref": 1,
+     "gap": 0
+    }
+   ],
+   "readings": 5,
+   "sec": 3
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

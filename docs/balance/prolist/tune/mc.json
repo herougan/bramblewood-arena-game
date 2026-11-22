@@ -1,0 +1,256 @@
+{
+ "map": "mc",
+ "generated": "2026-11-22T02:23:29.720Z",
+ "decks": [
+  {
+   "id": "3-BPRO-2",
+   "map": "mc",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "cormorant": 4,
+     "eagle-sharpshooter": 4,
+     "pika-hoarder": 4,
+     "beachcomber-sanderling": 2,
+     "hawk-arrowkeeper": 2,
+     "chipmunk-skirmisher": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "cormorant": 4,
+     "eagle-sharpshooter": 4,
+     "pika-hoarder": 4,
+     "beachcomber-sanderling": 2,
+     "chipmunk-skirmisher": 4,
+     "fiddler-crab-swarm": 2
+    },
+    "val": {
+     "v": 0.195,
+     "ref": 0.55,
+     "gap": 0
+    },
+    "leaders": [
+     "cormorant"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: hawk-arrowkeeper -> fiddler-crab-swarm",
+     "was": [
+      "hawk-arrowkeeper: off the bpro pool",
+      "hawk-arrowkeeper: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "hawk-arrowkeeper: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.258,
+     "ref": 0.5,
+     "gap": 0
+    }
+   ],
+   "readings": 141,
+   "sec": 32
+  },
+  {
+   "id": "3-PRO-4",
+   "map": "mc",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "feral-tomcat": 3,
+     "hawk-arrowkeeper": 4,
+     "kittiwake-flock": 4,
+     "peregrine-stooper": 4,
+     "pika-hoarder": 3,
+     "rock-pool-starfish": 2
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "feral-tomcat": 3,
+     "kittiwake-flock": 4,
+     "peregrine-stooper": 4,
+     "pika-hoarder": 3,
+     "rock-pool-starfish": 2,
+     "acorn-chipmunk": 4
+    },
+    "val": {
+     "v": 0.35,
+     "ref": 0.35,
+     "gap": 0
+    },
+    "leaders": [
+     "peregrine-stooper"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: hawk-arrowkeeper -> acorn-chipmunk",
+     "was": [
+      "hawk-arrowkeeper: off the pro pool",
+      "hawk-arrowkeeper: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.3,
+     "ref": 0.3,
+     "gap": 0
+    }
+   ],
+   "readings": 19,
+   "sec": 9
+  },
+  {
+   "id": "3-WPRO-1",
+   "map": "mc",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "chipmunk-cavalry": 4,
+     "eagle-sharpshooter": 4,
+     "hawk-arrowkeeper": 4,
+     "peak-condor": 1,
+     "puffin-diver": 4,
+     "balloon-archer": 3
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "chipmunk-cavalry": 4,
+     "eagle-sharpshooter": 4,
+     "peak-condor": 4,
+     "puffin-diver": 4,
+     "balloon-archer": 4
+    },
+    "val": {
+     "v": 0.463,
+     "ref": 0.463,
+     "gap": 0.037
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: hawk-arrowkeeper -> balloon-archer",
+     "was": [
+      "hawk-arrowkeeper: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.633,
+     "ref": 0.633,
+     "gap": 0
+    }
+   ],
+   "readings": 14,
+   "sec": 7
+  },
+  {
+   "id": "3-WPRO-2",
+   "map": "mc",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "chipmunk-cavalry": 1,
+     "eagle-sharpshooter": 3,
+     "gannet-nestweaver": 4,
+     "gull-thief": 4,
+     "hawk-arrowkeeper": 4,
+     "feral-tomcat": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "chipmunk-cavalry": 1,
+     "eagle-sharpshooter": 3,
+     "gannet-nestweaver": 4,
+     "gull-thief": 4,
+     "feral-tomcat": 4,
+     "fiddler-crab-swarm": 4
+    },
+    "val": {
+     "v": 0.863,
+     "ref": 0.863,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: hawk-arrowkeeper -> fiddler-crab-swarm",
+     "was": [
+      "hawk-arrowkeeper: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.75,
+     "ref": 0.75,
+     "gap": 0
+    }
+   ],
+   "readings": 14,
+   "sec": 10
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

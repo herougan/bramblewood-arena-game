@@ -1,0 +1,460 @@
+{
+ "map": "mn",
+ "generated": "2026-11-22T02:32:12.600Z",
+ "decks": [
+  {
+   "id": "8-A-BPRO-1",
+   "map": "mn",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "barrow-leech-bat": 2,
+     "blind-cave-fish": 4,
+     "glow-worm": 4,
+     "sulfur-cinder-moth": 4,
+     "stalactite-golem": 4,
+     "gallery-orb-weaver": 2
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "barrow-leech-bat": 2,
+     "glow-worm": 4,
+     "sulfur-cinder-moth": 4,
+     "stalactite-golem": 4,
+     "gallery-orb-weaver": 2,
+     "quarry-mole": 4
+    },
+    "val": {
+     "v": 0.17,
+     "ref": 0.925,
+     "gap": 0.075
+    },
+    "leaders": [
+     "barrow-leech-bat"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: blind-cave-fish -> quarry-mole",
+     "was": [
+      "blind-cave-fish: off the bpro pool",
+      "blind-cave-fish: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "blind-cave-fish: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.167,
+     "ref": 0.775,
+     "gap": 0.013
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 305,
+   "sec": 50
+  },
+  {
+   "id": "8-A-BPRO-2",
+   "map": "mn",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "blind-cave-fish": 2,
+     "echo-screecher": 3,
+     "giant-cave-huntsman": 3,
+     "stalactite-golem": 4,
+     "cave-olm": 4,
+     "quarry-mole": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "echo-screecher": 3,
+     "giant-cave-huntsman": 3,
+     "stalactite-golem": 4,
+     "cave-olm": 4,
+     "quarry-mole": 4,
+     "fruit-bat": 2
+    },
+    "val": {
+     "v": 0.295,
+     "ref": 0.675,
+     "gap": 0
+    },
+    "leaders": [
+     "giant-cave-huntsman"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: blind-cave-fish -> fruit-bat",
+     "was": [
+      "blind-cave-fish: off the bpro pool",
+      "blind-cave-fish: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "blind-cave-fish: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.283,
+     "ref": 0.5,
+     "gap": 0.013
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 305,
+   "sec": 59
+  },
+  {
+   "id": "8-A-BPRO-3",
+   "map": "mn",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "barrow-leech-bat": 3,
+     "cave-olm": 4,
+     "gallery-orb-weaver": 4,
+     "glow-worm": 4,
+     "whip-spider": 3,
+     "blind-cave-fish": 2
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "barrow-leech-bat": 3,
+     "cave-olm": 4,
+     "gallery-orb-weaver": 4,
+     "glow-worm": 4,
+     "whip-spider": 3,
+     "quarry-mole": 2
+    },
+    "val": {
+     "v": 0.2,
+     "ref": 0.625,
+     "gap": 0
+    },
+    "leaders": [
+     "barrow-leech-bat"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: blind-cave-fish -> quarry-mole",
+     "was": [
+      "blind-cave-fish: off the bpro pool",
+      "blind-cave-fish: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "blind-cave-fish: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.225,
+     "ref": 0.6,
+     "gap": 0
+    }
+   ],
+   "readings": 41,
+   "sec": 13
+  },
+  {
+   "id": "8-A-PRO-2",
+   "map": "mn",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "alpine-marmot": 4,
+     "cave-olm": 3,
+     "eagle-owl-quartermaster": 3,
+     "echo-matriarch": 3,
+     "echo-screecher": 3,
+     "fruit-bat": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "alpine-marmot": 4,
+     "cave-olm": 3,
+     "eagle-owl-quartermaster": 3,
+     "echo-screecher": 3,
+     "fruit-bat": 4,
+     "acacia-giraffe": 3
+    },
+    "val": {
+     "v": 0.238,
+     "ref": 0.238,
+     "gap": 0
+    },
+    "leaders": [
+     "eagle-owl-quartermaster"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: echo-matriarch -> acacia-giraffe",
+     "was": [
+      "echo-matriarch: off the pro pool",
+      "echo-matriarch: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.133,
+     "ref": 0.133,
+     "gap": 0
+    }
+   ],
+   "readings": 15,
+   "sec": 11
+  },
+  {
+   "id": "8-A-PRO-3",
+   "map": "mn",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "cave-olm": 4,
+     "dust-hyena": 3,
+     "echo-matriarch": 3,
+     "glow-worm": 2,
+     "hawthorn-shieldbug": 4,
+     "stalactite-golem": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "cave-olm": 4,
+     "dust-hyena": 3,
+     "glow-worm": 2,
+     "hawthorn-shieldbug": 4,
+     "stalactite-golem": 4,
+     "acacia-giraffe": 3
+    },
+    "val": {
+     "v": 0.525,
+     "ref": 0.525,
+     "gap": 0
+    },
+    "leaders": [
+     "dust-hyena"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: echo-matriarch -> acacia-giraffe",
+     "was": [
+      "echo-matriarch: off the pro pool",
+      "echo-matriarch: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.45,
+     "ref": 0.45,
+     "gap": 0
+    }
+   ],
+   "readings": 18,
+   "sec": 19
+  },
+  {
+   "id": "8-A-WPRO-1",
+   "map": "mn",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "echo-matriarch": 2,
+     "echo-screecher": 3,
+     "quarry-mole": 4,
+     "stalactite-golem": 4,
+     "sulfur-cinder-moth": 3,
+     "whip-spider": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "echo-screecher": 3,
+     "quarry-mole": 4,
+     "stalactite-golem": 4,
+     "sulfur-cinder-moth": 3,
+     "whip-spider": 4,
+     "fruit-bat": 2
+    },
+    "val": {
+     "v": 0.7,
+     "ref": 0.7,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: echo-matriarch -> fruit-bat",
+     "was": [
+      "echo-matriarch: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.683,
+     "ref": 0.683,
+     "gap": 0
+    }
+   ],
+   "readings": 5,
+   "sec": 4
+  },
+  {
+   "id": "8-A-WPRO-2",
+   "map": "mn",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "barrow-leech-bat": 3,
+     "blind-cave-fish": 4,
+     "cave-olm": 3,
+     "echo-screecher": 3,
+     "quarry-mole": 3,
+     "stalactite-golem": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "barrow-leech-bat": 3,
+     "cave-olm": 3,
+     "echo-screecher": 3,
+     "quarry-mole": 3,
+     "stalactite-golem": 4,
+     "gallery-orb-weaver": 4
+    },
+    "val": {
+     "v": 0.875,
+     "ref": 0.875,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: blind-cave-fish -> gallery-orb-weaver",
+     "was": [
+      "blind-cave-fish: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.917,
+     "ref": 0.917,
+     "gap": 0
+    }
+   ],
+   "readings": 4,
+   "sec": 4
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

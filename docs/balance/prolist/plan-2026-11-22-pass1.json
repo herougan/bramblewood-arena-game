@@ -1,0 +1,578 @@
+{
+ "about": "PROLIST (2026-11-22): per Maps 0-20 map the decks holding a card off the map's list (owner 09:56), N-SK kind first; tools/opt/prolist_2026_11_22.js",
+ "maps": {
+  "m1": {
+   "tune": [
+    "0-BPRO-2"
+   ],
+   "cards": {
+    "0-BPRO-2": [
+     "thorn-shrike"
+    ]
+   }
+  },
+  "mf": {
+   "tune": [
+    "1-BPRO-1",
+    "1-WPRO-2"
+   ],
+   "cards": {
+    "1-BPRO-1": [
+     "jackrabbit-sprinter"
+    ],
+    "1-WPRO-2": [
+     "cottontail"
+    ]
+   }
+  },
+  "mq": {
+   "tune": [
+    "1-A-BPRO-1",
+    "1-A-BPRO-2",
+    "1-A-BPRO-3",
+    "1-A-PRO-2",
+    "1-A-PRO-4",
+    "1-A-WPRO-1"
+   ],
+   "cards": {
+    "1-A-BPRO-1": [
+     "ant-scout"
+    ],
+    "1-A-BPRO-2": [
+     "ant-scout"
+    ],
+    "1-A-BPRO-3": [
+     "jackrabbit-sprinter"
+    ],
+    "1-A-PRO-2": [
+     "compost-grub"
+    ],
+    "1-A-PRO-4": [
+     "compost-grub"
+    ],
+    "1-A-WPRO-1": [
+     "ant-scout"
+    ]
+   }
+  },
+  "mb": {
+   "tune": [
+    "2-BPRO-1",
+    "2-BPRO-2",
+    "2-BPRO-3",
+    "2-BPRO-4",
+    "2-PRO-1",
+    "2-PRO-3"
+   ],
+   "cards": {
+    "2-BPRO-1": [
+     "old-shell"
+    ],
+    "2-BPRO-2": [
+     "old-shell",
+     "salvager-hermit-crab"
+    ],
+    "2-BPRO-3": [
+     "old-shell"
+    ],
+    "2-BPRO-4": [
+     "salvager-hermit-crab"
+    ],
+    "2-PRO-1": [
+     "old-shell"
+    ],
+    "2-PRO-3": [
+     "old-shell"
+    ]
+   }
+  },
+  "mg": {
+   "tune": [
+    "2-B-BPRO-2",
+    "2-B-PRO-2",
+    "2-B-WPRO-1"
+   ],
+   "cards": {
+    "2-B-BPRO-2": [
+     "old-shell",
+     "salvager-hermit-crab"
+    ],
+    "2-B-PRO-2": [
+     "old-shell"
+    ],
+    "2-B-WPRO-1": [
+     "old-shell"
+    ]
+   }
+  },
+  "mp": {
+   "tune": [
+    "2-A-BPRO-2",
+    "2-A-BPRO-4",
+    "2-A-PRO-4",
+    "2-A-WPRO-1",
+    "2-A-WPRO-2"
+   ],
+   "cards": {
+    "2-A-BPRO-2": [
+     "old-shell"
+    ],
+    "2-A-BPRO-4": [
+     "old-shell"
+    ],
+    "2-A-PRO-4": [
+     "old-shell"
+    ],
+    "2-A-WPRO-1": [
+     "old-shell"
+    ],
+    "2-A-WPRO-2": [
+     "old-shell"
+    ]
+   }
+  },
+  "mc": {
+   "tune": [
+    "3-BPRO-2",
+    "3-PRO-4",
+    "3-WPRO-1",
+    "3-WPRO-2"
+   ],
+   "cards": {
+    "3-BPRO-2": [
+     "hawk-arrowkeeper"
+    ],
+    "3-PRO-4": [
+     "hawk-arrowkeeper"
+    ],
+    "3-WPRO-1": [
+     "hawk-arrowkeeper"
+    ],
+    "3-WPRO-2": [
+     "hawk-arrowkeeper"
+    ]
+   }
+  },
+  "m2": {
+   "tune": [
+    "4-BPRO-1",
+    "4-PRO-1"
+   ],
+   "cards": {
+    "4-BPRO-1": [
+     "drowned-matriarch"
+    ],
+    "4-PRO-1": [
+     "drowned-matriarch"
+    ]
+   }
+  },
+  "mw": {
+   "tune": [
+    "5-BPRO-1",
+    "5-PRO-1",
+    "5-PRO-2",
+    "5-WPRO-1",
+    "5-WPRO-2"
+   ],
+   "cards": {
+    "5-BPRO-1": [
+     "bog-leech",
+     "constrictor-coil",
+     "mudflat-godwit"
+    ],
+    "5-PRO-1": [
+     "bog-leech"
+    ],
+    "5-PRO-2": [
+     "bog-leech"
+    ],
+    "5-WPRO-1": [
+     "constrictor-coil"
+    ],
+    "5-WPRO-2": [
+     "constrictor-coil",
+     "old-snapjaw"
+    ]
+   }
+  },
+  "ms": {
+   "tune": [
+    "5-A-BPRO-1",
+    "5-A-BPRO-2",
+    "5-A-BPRO-3",
+    "5-A-BPRO-4",
+    "5-A-WPRO-1"
+   ],
+   "cards": {
+    "5-A-BPRO-1": [
+     "bog-leech"
+    ],
+    "5-A-BPRO-2": [
+     "bog-leech"
+    ],
+    "5-A-BPRO-3": [
+     "old-snapjaw"
+    ],
+    "5-A-BPRO-4": [
+     "old-snapjaw",
+     "hedgehog-herbalist"
+    ],
+    "5-A-WPRO-1": [
+     "bog-leech",
+     "old-snapjaw"
+    ]
+   }
+  },
+  "m8": {
+   "tune": [
+    "6-BPRO-1",
+    "6-BPRO-2",
+    "6-BPRO-3",
+    "6-PRO-1",
+    "6-WPRO-1"
+   ],
+   "cards": {
+    "6-BPRO-1": [
+     "heron-hag"
+    ],
+    "6-BPRO-2": [
+     "venomlord-serpent"
+    ],
+    "6-BPRO-3": [
+     "heron-hag",
+     "venomlord-serpent"
+    ],
+    "6-PRO-1": [
+     "heron-hag"
+    ],
+    "6-WPRO-1": [
+     "venomlord-serpent"
+    ]
+   }
+  },
+  "mu": {
+   "tune": [
+    "7-BPRO-1",
+    "7-PRO-2"
+   ],
+   "cards": {
+    "7-BPRO-1": [
+     "sleepless-shrew"
+    ],
+    "7-PRO-2": [
+     "sleepless-shrew"
+    ]
+   }
+  },
+  "mz": {
+   "tune": [
+    "7-A-BPRO-1",
+    "7-A-WPRO-2"
+   ],
+   "cards": {
+    "7-A-BPRO-1": [
+     "sleepless-shrew"
+    ],
+    "7-A-WPRO-2": [
+     "sleepless-shrew"
+    ]
+   }
+  },
+  "m4": {
+   "tune": [
+    "8-PRO-1",
+    "8-PRO-3",
+    "8-WPRO-1"
+   ],
+   "cards": {
+    "8-PRO-1": [
+     "echo-matriarch"
+    ],
+    "8-PRO-3": [
+     "blind-cave-fish",
+     "echo-matriarch"
+    ],
+    "8-WPRO-1": [
+     "blind-cave-fish"
+    ]
+   }
+  },
+  "mn": {
+   "tune": [
+    "8-A-BPRO-1",
+    "8-A-BPRO-2",
+    "8-A-BPRO-3",
+    "8-A-PRO-2",
+    "8-A-PRO-3",
+    "8-A-WPRO-1",
+    "8-A-WPRO-2"
+   ],
+   "cards": {
+    "8-A-BPRO-1": [
+     "blind-cave-fish"
+    ],
+    "8-A-BPRO-2": [
+     "blind-cave-fish"
+    ],
+    "8-A-BPRO-3": [
+     "blind-cave-fish"
+    ],
+    "8-A-PRO-2": [
+     "echo-matriarch"
+    ],
+    "8-A-PRO-3": [
+     "echo-matriarch"
+    ],
+    "8-A-WPRO-1": [
+     "echo-matriarch"
+    ],
+    "8-A-WPRO-2": [
+     "blind-cave-fish"
+    ]
+   }
+  },
+  "m7": {
+   "tune": [
+    "10-BPRO-1",
+    "10-BPRO-2",
+    "10-WPRO-1"
+   ],
+   "cards": {
+    "10-BPRO-1": [
+     "orca-vanguard"
+    ],
+    "10-BPRO-2": [
+     "kraken-spawnling"
+    ],
+    "10-WPRO-1": [
+     "orca-vanguard"
+    ]
+   }
+  },
+  "mj": {
+   "tune": [
+    "10-A-BPRO-1",
+    "10-A-BPRO-2",
+    "10-A-BPRO-3",
+    "10-A-BPRO-4",
+    "10-A-PRO-2",
+    "10-A-WPRO-1",
+    "10-A-WPRO-2"
+   ],
+   "cards": {
+    "10-A-BPRO-1": [
+     "reef-admiral",
+     "kraken-spawnling"
+    ],
+    "10-A-BPRO-2": [
+     "orca-vanguard",
+     "reef-admiral"
+    ],
+    "10-A-BPRO-3": [
+     "kraken-spawnling"
+    ],
+    "10-A-BPRO-4": [
+     "orca-vanguard"
+    ],
+    "10-A-PRO-2": [
+     "orca-vanguard"
+    ],
+    "10-A-WPRO-1": [
+     "orca-vanguard"
+    ],
+    "10-A-WPRO-2": [
+     "orca-vanguard"
+    ]
+   }
+  },
+  "m10": {
+   "tune": [
+    "11-BPRO-4",
+    "11-WPRO-1"
+   ],
+   "cards": {
+    "11-BPRO-4": [
+     "swamp-alligator"
+    ],
+    "11-WPRO-1": [
+     "swamp-alligator"
+    ]
+   }
+  },
+  "mv": {
+   "tune": [
+    "11-A-BPRO-2",
+    "11-A-WPRO-1"
+   ],
+   "cards": {
+    "11-A-BPRO-2": [
+     "gangrenous-leech",
+     "swamp-alligator"
+    ],
+    "11-A-WPRO-1": [
+     "gangrenous-leech",
+     "swamp-alligator"
+    ]
+   }
+  },
+  "mr": {
+   "tune": [
+    "13-PRO-2"
+   ],
+   "cards": {
+    "13-PRO-2": [
+     "fox-kit"
+    ]
+   }
+  },
+  "m5": {
+   "tune": [
+    "14-BPRO-1",
+    "14-PRO-3"
+   ],
+   "cards": {
+    "14-BPRO-1": [
+     "pride-queen"
+    ],
+    "14-PRO-3": [
+     "pride-queen"
+    ]
+   }
+  },
+  "my": {
+   "tune": [
+    "14-A-BPRO-1",
+    "14-A-BPRO-2",
+    "14-A-WPRO-1",
+    "14-A-WPRO-2"
+   ],
+   "cards": {
+    "14-A-BPRO-1": [
+     "hoopoe-herald"
+    ],
+    "14-A-BPRO-2": [
+     "hoopoe-herald",
+     "pride-queen"
+    ],
+    "14-A-WPRO-1": [
+     "pride-queen"
+    ],
+    "14-A-WPRO-2": [
+     "hoopoe-herald"
+    ]
+   }
+  },
+  "m6": {
+   "tune": [
+    "17-BPRO-3"
+   ],
+   "cards": {
+    "17-BPRO-3": [
+     "wolfsbane-alpha"
+    ]
+   }
+  },
+  "mpd": {
+   "tune": [
+    "18-A-BPRO-1",
+    "18-A-WPRO-1",
+    "18-A-WPRO-2"
+   ],
+   "cards": {
+    "18-A-BPRO-1": [
+     "sand-widow"
+    ],
+    "18-A-WPRO-1": [
+     "sand-widow"
+    ],
+    "18-A-WPRO-2": [
+     "sand-widow"
+    ]
+   }
+  },
+  "m11": {
+   "tune": [
+    "20-BPRO-2",
+    "20-WPRO-1",
+    "20-WPRO-2"
+   ],
+   "cards": {
+    "20-BPRO-2": [
+     "ancient-sloth-titan"
+    ],
+    "20-WPRO-1": [
+     "vampire-roost"
+    ],
+    "20-WPRO-2": [
+     "ancient-sloth-titan"
+    ]
+   }
+  },
+  "me": {
+   "tune": [
+    "20-A-BPRO-1",
+    "20-A-WPRO-1",
+    "20-A-WPRO-2"
+   ],
+   "cards": {
+    "20-A-BPRO-1": [
+     "stalactite-golem"
+    ],
+    "20-A-WPRO-1": [
+     "ancient-sloth-titan",
+     "vampire-roost"
+    ],
+    "20-A-WPRO-2": [
+     "ancient-sloth-titan",
+     "deep-cave-troll",
+     "stalactite-golem",
+     "vampire-roost"
+    ]
+   }
+  },
+  "mx": {
+   "tune": [
+    "20-B-BPRO-1",
+    "20-B-BPRO-2",
+    "20-B-BPRO-3",
+    "20-B-WPRO-1",
+    "20-B-WPRO-2"
+   ],
+   "cards": {
+    "20-B-BPRO-1": [
+     "ancient-sloth-titan"
+    ],
+    "20-B-BPRO-2": [
+     "deep-cave-troll"
+    ],
+    "20-B-BPRO-3": [
+     "stalactite-golem",
+     "frillneck-duelist"
+    ],
+    "20-B-WPRO-1": [
+     "ancient-sloth-titan",
+     "deep-cave-troll",
+     "stalactite-golem"
+    ],
+    "20-B-WPRO-2": [
+     "deep-cave-troll"
+    ]
+   }
+  }
+ },
+ "beyondMap20": [
+  "22-PRO-1: fumarole-ibex",
+  "22-PRO-2: obsidian-scorpion",
+  "22-BPRO-1: ravenous-wolverine",
+  "22-WPRO-1: ash-cloud-condor, glacier-yak",
+  "22-WPRO-2: fumarole-ibex",
+  "23-PRO-1: pack-mule",
+  "23-PRO-2: pack-mule",
+  "23-BPRO-1: pack-mule",
+  "23-BPRO-2: pack-mule",
+  "23-BPRO-3: pack-mule",
+  "23-WPRO-1: lodge-engineer, marshal-tuskwell",
+  "23-WPRO-2: lodge-engineer"
+ ]
+}

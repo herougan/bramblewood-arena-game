@@ -1,0 +1,335 @@
+{
+ "map": "mw",
+ "generated": "2026-11-22T02:24:52.038Z",
+ "decks": [
+  {
+   "id": "5-BPRO-1",
+   "map": "mw",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "alley-cat": 4,
+     "bog-leech": 4,
+     "constrictor-coil": 4,
+     "mudpuppy": 3,
+     "mudflat-godwit": 1,
+     "fire-ant-raft": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "alley-cat": 4,
+     "mudpuppy": 4,
+     "fire-ant-raft": 4,
+     "muskrat-reedgatherer": 4,
+     "cypress-root-lurker": 4
+    },
+    "val": {
+     "v": 0.185,
+     "ref": 0.475,
+     "gap": 0
+    },
+    "leaders": [
+     "fire-ant-raft"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: bog-leech x4 -> muskrat-reedgatherer",
+     "was": [
+      "bog-leech: off the bpro pool",
+      "constrictor-coil: off the bpro pool",
+      "mudflat-godwit: off the bpro pool",
+      "bog-leech: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "constrictor-coil: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "mudflat-godwit: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "bog-leech: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)",
+      "constrictor-coil: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)",
+      "mudflat-godwit: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "repair: constrictor-coil+mudflat-godwit -> cypress-root-lurker",
+     "was": [
+      "constrictor-coil: off the bpro pool",
+      "mudflat-godwit: off the bpro pool",
+      "constrictor-coil: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "mudflat-godwit: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "constrictor-coil: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)",
+      "mudflat-godwit: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.217,
+     "ref": 0.375,
+     "gap": 0
+    }
+   ],
+   "readings": 501,
+   "sec": 56
+  },
+  {
+   "id": "5-PRO-1",
+   "map": "mw",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "bog-leech": 2,
+     "driftwood-crab": 4,
+     "marsh-mallow-hare": 2,
+     "planarian-splitter": 4,
+     "snapstick-turtle": 4,
+     "newt-doctor": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "driftwood-crab": 4,
+     "marsh-mallow-hare": 2,
+     "planarian-splitter": 4,
+     "snapstick-turtle": 4,
+     "newt-doctor": 4,
+     "acorn-chipmunk": 2
+    },
+    "val": {
+     "v": 0.05,
+     "ref": 0.05,
+     "gap": 0
+    },
+    "leaders": [
+     "planarian-splitter"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: bog-leech -> acorn-chipmunk",
+     "was": [
+      "bog-leech: off the pro pool",
+      "bog-leech: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.083,
+     "ref": 0.083,
+     "gap": 0
+    }
+   ],
+   "readings": 26,
+   "sec": 10
+  },
+  {
+   "id": "5-PRO-2",
+   "map": "mw",
+   "kind": "pro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0,
+    "hi": 0.78,
+    "band": [
+     0,
+     0.85
+    ]
+   },
+   "before": {
+    "deck": {
+     "alley-cat": 4,
+     "bog-leech": 2,
+     "conch-crawler": 4,
+     "driftwood-crab": 4,
+     "grass-snake": 2,
+     "planarian-splitter": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "alley-cat": 4,
+     "conch-crawler": 4,
+     "driftwood-crab": 4,
+     "grass-snake": 2,
+     "planarian-splitter": 4,
+     "cypress-root-lurker": 2
+    },
+    "val": {
+     "v": 0.163,
+     "ref": 0.163,
+     "gap": 0
+    },
+    "leaders": [
+     "grass-snake"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: bog-leech -> cypress-root-lurker",
+     "was": [
+      "bog-leech: off the pro pool",
+      "under 10 list copies",
+      "bog-leech: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.167,
+     "ref": 0.167,
+     "gap": 0
+    }
+   ],
+   "readings": 15,
+   "sec": 8
+  },
+  {
+   "id": "5-WPRO-1",
+   "map": "mw",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "constrictor-coil": 4,
+     "muskrat-lodgekeeper": 4,
+     "platypus-spur": 4,
+     "snapstick-turtle": 4,
+     "swamp-alligator": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "muskrat-lodgekeeper": 4,
+     "platypus-spur": 4,
+     "snapstick-turtle": 4,
+     "swamp-alligator": 4,
+     "alley-cat": 4
+    },
+    "val": {
+     "v": 0.688,
+     "ref": 0.688,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: constrictor-coil -> alley-cat",
+     "was": [
+      "constrictor-coil: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.667,
+     "ref": 0.667,
+     "gap": 0
+    }
+   ],
+   "readings": 13,
+   "sec": 4
+  },
+  {
+   "id": "5-WPRO-2",
+   "map": "mw",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "constrictor-coil": 4,
+     "fire-ant-raft": 4,
+     "muskrat-lodgekeeper": 3,
+     "old-snapjaw": 3,
+     "raft-spider": 4,
+     "swamp-alligator": 2
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "fire-ant-raft": 4,
+     "muskrat-lodgekeeper": 4,
+     "raft-spider": 4,
+     "swamp-alligator": 4,
+     "cypress-root-lurker": 4
+    },
+    "val": {
+     "v": 0.888,
+     "ref": 0.888,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: constrictor-coil+old-snapjaw -> cypress-root-lurker",
+     "was": [
+      "constrictor-coil: off the wpro pool",
+      "old-snapjaw: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.817,
+     "ref": 0.817,
+     "gap": 0
+    }
+   ],
+   "readings": 10,
+   "sec": 4
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

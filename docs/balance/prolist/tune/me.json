@@ -1,0 +1,168 @@
+{
+ "map": "me",
+ "generated": "2026-11-22T02:41:44.309Z",
+ "decks": [
+  {
+   "id": "20-A-BPRO-1",
+   "map": "me",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "basalt-boar": 4,
+     "carrion-beetle": 4,
+     "honey-badger-fury": 4,
+     "obsidian-scorpion": 3,
+     "ossuary-lammergeier": 1,
+     "stalactite-golem": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "basalt-boar": 4,
+     "carrion-beetle": 4,
+     "honey-badger-fury": 4,
+     "obsidian-scorpion": 3,
+     "berserker-boar": 4,
+     "magma-salamander": 1
+    },
+    "val": {
+     "v": 0.04,
+     "ref": 0.95,
+     "gap": 0.21
+    },
+    "leaders": [
+     "magma-salamander"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: stalactite-golem -> berserker-boar",
+     "was": [
+      "stalactite-golem: off the bpro pool",
+      "stalactite-golem: not on the map's list (held, not listed)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.05,
+     "ref": 0.9,
+     "gap": 0.37
+    },
+    {
+     "move": "ossuary-lammergeier -1 -> magma-salamander",
+     "v": 0.033,
+     "ref": 0.8,
+     "gap": 0.187,
+     "tried": 5
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 11
+    }
+   ],
+   "readings": 228,
+   "sec": 43
+  },
+  {
+   "id": "20-A-WPRO-1",
+   "map": "me",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "ancient-sloth-titan": 4,
+     "berserker-boar": 4,
+     "brimstone-hound": 4,
+     "honey-badger-fury": 4,
+     "vampire-roost": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "berserker-boar": 4,
+     "brimstone-hound": 4,
+     "honey-badger-fury": 4,
+     "basalt-boar": 4,
+     "carrion-beetle": 4
+    },
+    "val": {
+     "v": 0.988,
+     "ref": 0.988,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: ancient-sloth-titan x4 -> basalt-boar",
+     "was": [
+      "ancient-sloth-titan: off the wpro pool",
+      "vampire-roost: off the wpro pool"
+     ]
+    },
+    {
+     "move": "repair: vampire-roost -> carrion-beetle",
+     "was": [
+      "vampire-roost: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.983,
+     "ref": 0.983,
+     "gap": 0
+    }
+   ],
+   "readings": 6,
+   "sec": 3
+  },
+  {
+   "id": "20-A-WPRO-2",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "repairFailed": [
+    "deep-cave-troll: off the wpro pool",
+    "vampire-roost: off the wpro pool"
+   ],
+   "keep": false
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}

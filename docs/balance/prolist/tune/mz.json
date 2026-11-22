@@ -1,0 +1,143 @@
+{
+ "map": "mz",
+ "generated": "2026-11-22T02:29:32.130Z",
+ "decks": [
+  {
+   "id": "7-A-BPRO-1",
+   "map": "mz",
+   "kind": "bpro",
+   "sk": true,
+   "objective": {
+    "metric": "ladder",
+    "lo": 0.18,
+    "hi": 0.27,
+    "band": [
+     0.15,
+     0.3
+    ],
+    "refMax": 0.78,
+    "refCut": 0.85
+   },
+   "before": {
+    "deck": {
+     "fungus-gnat-cloud": 4,
+     "leopard-slug": 4,
+     "millipede-hauler": 4,
+     "sleepless-shrew": 4,
+     "planarian-splitter": 4
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "fungus-gnat-cloud": 4,
+     "leopard-slug": 4,
+     "millipede-hauler": 4,
+     "rootworm-colony": 4,
+     "puffball-bombardier": 4
+    },
+    "val": {
+     "v": 0.075,
+     "ref": 0.425,
+     "gap": 0.075
+    },
+    "leaders": [
+     "millipede-hauler"
+    ]
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: sleepless-shrew -> rootworm-colony",
+     "was": [
+      "sleepless-shrew: off the bpro pool",
+      "sleepless-shrew: not on the map's list (a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22))",
+      "sleepless-shrew: a SPECIAL-tier card, not on the map's list (PROLIST-1, owner 2026-11-22)"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.075,
+     "ref": 0.35,
+     "gap": 0.105
+    },
+    {
+     "move": "planarian-splitter x4 -> puffball-bombardier",
+     "v": 0.1,
+     "ref": 0.35,
+     "gap": 0.08,
+     "tried": 24
+    },
+    {
+     "move": "stop (no move 2+ points nearer)",
+     "tried": 24
+    }
+   ],
+   "readings": 619,
+   "sec": 139
+  },
+  {
+   "id": "7-A-WPRO-2",
+   "map": "mz",
+   "kind": "wpro",
+   "sk": false,
+   "objective": {
+    "metric": "ref",
+    "lo": 0.6,
+    "hi": 1,
+    "band": [
+     0.5,
+     1
+    ]
+   },
+   "before": {
+    "deck": {
+     "fungal-colossus": 4,
+     "hawthorn-shieldbug": 4,
+     "millipede-hauler": 4,
+     "rootworm-colony": 3,
+     "rot-swollen-carcass": 3,
+     "sleepless-shrew": 2
+    },
+    "legal": false,
+    "val": null
+   },
+   "pick": {
+    "deck": {
+     "fungal-colossus": 4,
+     "hawthorn-shieldbug": 4,
+     "millipede-hauler": 4,
+     "rootworm-colony": 3,
+     "rot-swollen-carcass": 3,
+     "bombardier-beetle": 2
+    },
+    "val": {
+     "v": 0.963,
+     "ref": 0.963,
+     "gap": 0
+    },
+    "leaders": []
+   },
+   "keep": true,
+   "trail": [
+    {
+     "move": "repair: sleepless-shrew -> bombardier-beetle",
+     "was": [
+      "sleepless-shrew: off the wpro pool"
+     ]
+    },
+    {
+     "move": "start",
+     "v": 0.917,
+     "ref": 0.917,
+     "gap": 0
+    }
+   ],
+   "readings": 5,
+   "sec": 5
+  }
+ ],
+ "done": true,
+ "applied": "2026-11-22"
+}
