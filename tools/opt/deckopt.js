@@ -301,11 +301,12 @@ function makeContexts(gm, spec) {
     return ctx;
   });
 }
-function playOne(gm, spec, ctx, deck, g) {
-  const E = gm.E, G = gm.G, seed = (ctx.seedBase + Math.imul(g + 1, 2654435761)) >>> 0;
-  const dk = deckKey(deck); let mine = ctx.mineCache.get(dk); if (!mine) { mine = mineFor(gm, ctx.defs, deck, spec.level, spec.levels || null); if (ctx.mineCache.size > 64) ctx.mineCache.clear(); ctx.mineCache.set(dk, mine); }
-  const mirror = ctx.en.kind === 'mirror', aFirst = !mirror || g % 2 === 0, ai2 = mirror ? spec.ai : ctx.cpu;
-  const engine = E.makeSimEngine(ctx.defs, gm.seededRng(seed), { recordEvents: false, battleMode: ctx.mode, rules: ctx.rules, aiAim: true, aiLevel: mirror ? spec.ai : ctx.cpu });
+// One game from its start (LOOKAHEAD1, 2026-11-22: split out of playOne so tools/bench/lookahead.js can replay a game, the engine having
+// no state clone). rnd: the engine's RNG (default the game's seeded one). hooks (all optional): turn(p, g) -> true when it played seat
+// p's turn itself; stop(g) -> true ends the game after this round's combat. Returns g = {engine, P, sideOf, st, r, over, mySide}.
+function playGame(gm, spec, ctx, mine, aFirst, seed, rnd, hooks) {
+  const E = gm.E, G = gm.G, mirror = ctx.en.kind === 'mirror', ai2 = mirror ? spec.ai : ctx.cpu, look = /^look/.test(String(spec.aiMine));
+  const engine = E.makeSimEngine(ctx.defs, rnd || gm.seededRng(seed), { recordEvents: false, battleMode: ctx.mode, rules: ctx.rules, aiAim: true, aiLevel: mirror ? spec.ai : ctx.cpu });
   const sideOf = id => id === 1 ? 'A' : 'B', st = {};
   const d1 = mirror ? (aFirst ? mine : ctx.oppMine) : mine, d2 = mirror ? (aFirst ? ctx.oppMine : mine) : ctx.enemyDeck;
   const P = { 1: engine.newPlayer(1, d1, ctx.myCastle), 2: engine.newPlayer(2, d2, mirror ? ctx.myCastle : ctx.sc.character) };
@@ -313,16 +314,30 @@ function playOne(gm, spec, ctx, deck, g) {
   if (spec.leader && !mirror) G.dealPlayerLeader(P[1], spec.leader, ctx.defs); // FIX6 (2026-11-02): --leader <id> gives your seat that leader, as the game deals it (mirrors stay leaderless)
   if (!mirror) { Object.assign(P[2].hq, ctx.setup.hq); if (ctx.setup.hq.shieldLayers) P[2].hq.shieldLayers = ctx.setup.hq.shieldLayers.slice(); if (ctx.setup.reserveLeaders) P[2].reserveLeaders = ctx.setup.reserveLeaders.slice(); }
   engine.draw(P[1], 3, 'A', st, null); engine.draw(P[2], 3, 'B', st, null);
-  let r = 1, over = false, lastSig = null, stalled = 0;
-  for (; r <= E.DRAW_ROUND_CAP && !over; r++) {
+  const g = { engine, P, sideOf, st, r: 1, over: false, mySide: aFirst ? 1 : 2 };
+  const turn = (p, lvl) => { if (hooks && hooks.turn && hooks.turn(p, g)) return; engine.setAiLevel(lvl); engine.aiTakeTurn(P, sideOf, p, st, null); };
+  const pilot = spec.aiMine != null && !look ? spec.aiMine : spec.ai; // LOOKAHEAD1: the look seat's own plays come from hooks.turn; its fallback is the both-seats level
+  let lastSig = null, stalled = 0;
+  for (; g.r <= E.DRAW_ROUND_CAP && !g.over; g.r++) {
+    const r = g.r;
     engine.setSuddenDeath(r >= E.SUDDEN_DEATH_ROUND, r >= E.SUDDEN_DEATH_CASTLE_ROUND ? 2 : 1);
     [1, 2].forEach(p => { P[p].playedThisTurn = false; P[p].discardUsedThisTurn = false; });
     if (r > 1) engine.roundStart(P, r, sideOf, st, null);
-    engine.setAiLevel(mirror ? (spec.aiMine != null && aFirst ? spec.aiMine : spec.ai) : 1); engine.aiTakeTurn(P, sideOf, 1, st, null); engine.setAiLevel(mirror && spec.aiMine != null && !aFirst ? spec.aiMine : ai2); engine.aiTakeTurn(P, sideOf, 2, st, null); // 2026-11-22 (PILOT): spec.aiMine = the CPU level of the measured deck's seat only (the CPU level only steers a seat's own turn; combat aim is the same for all)
-    over = engine.resolveCombat(P, sideOf, st, null, r % 2 === 0 ? 1 : 2); if (over) break;
+    turn(1, mirror ? (spec.aiMine != null && aFirst ? pilot : spec.ai) : 1); turn(2, mirror && spec.aiMine != null && !aFirst ? pilot : ai2); // 2026-11-22 (PILOT): spec.aiMine = the CPU level of the measured deck's seat only (the CPU level only steers a seat's own turn; combat aim is the same for all)
+    g.over = engine.resolveCombat(P, sideOf, st, null, r % 2 === 0 ? 1 : 2); if (g.over) break;
     const sig = E.boardSignature(P); stalled = (sig === lastSig && E.noActionsLeft(P)) ? stalled + 1 : 0; lastSig = sig; if (stalled >= 2 && r >= E.STALL_DRAW_FROM_ROUND) break;
+    if (hooks && hooks.stop && hooks.stop(g)) break;
     engine.draw(P[1], 1, 'A', st, null); engine.draw(P[2], 1, 'B', st, null);
   }
+  return g;
+}
+function playOne(gm, spec, ctx, deck, g) {
+  const seed = (ctx.seedBase + Math.imul(g + 1, 2654435761)) >>> 0;
+  const dk = deckKey(deck); let mine = ctx.mineCache.get(dk); if (!mine) { mine = mineFor(gm, ctx.defs, deck, spec.level, spec.levels || null); if (ctx.mineCache.size > 64) ctx.mineCache.clear(); ctx.mineCache.set(dk, mine); }
+  const mirror = ctx.en.kind === 'mirror', aFirst = !mirror || g % 2 === 0;
+  // LOOKAHEAD1 (2026-11-22): spec.aiMine 'look' (or 'look<R>'): the measured deck's seat plays by look-ahead (tools/bench/lookahead.js); mirrors only, as PILOT
+  const look = mirror && /^look/.test(String(spec.aiMine)) ? require(path.join(__dirname, '..', 'bench', 'lookahead.js')) : null;
+  const { P, over } = look ? look.playLook(gm, spec, ctx, mine, aFirst, seed, playGame) : playGame(gm, spec, ctx, mine, aFirst, seed, null, null);
   const mySide = aFirst ? 1 : 2, foe = 3 - mySide, meDead = P[mySide].hq.hp <= 0, foeDead = P[foe].hq.hp <= 0;
   if (!mirror) return (over && foeDead && !meDead) ? 1 : 0; // the road: a win is a win (as the game counts it)
   return meDead && !foeDead ? 0 : foeDead && !meDead ? 1 : 0.5;
@@ -1018,7 +1033,7 @@ async function main(argv) {
 }
 // 2026-10-24 (package PRO): + mineFor and playOne, for tools/opt/pro_skirmishes.js's head-to-head under a PRO fight's field
 // 2026-10-24 (package PRO2): + mapRarityCap, obtainOf, mapTruePools, mapRuleProblems, MODES
-if (typeof module !== 'undefined') module.exports = { mapRarityCap, obtainOf, mapTruePools, mapRuleProblems, MODES, mineFor, playOne, parseArgs, loadGame, loadRules, resolveMap, fightsOf, poolsFor, candidatesFor, mapFacts, repair, canAdd, capOf, buildEntries, makeContexts, runJobs, deckKey, deckFromKey, deckTotal, mulberry, wilson, elo, overlap, dist, nicheSelect, neighbours, optimizeMap, compareMap, Evaluator, main, summaryMd, compareMd, VERSION,
+if (typeof module !== 'undefined') module.exports = { mapRarityCap, obtainOf, mapTruePools, mapRuleProblems, MODES, mineFor, playOne, playGame /* LOOKAHEAD1 (2026-11-22) */, parseArgs, loadGame, loadRules, resolveMap, fightsOf, poolsFor, candidatesFor, mapFacts, repair, canAdd, capOf, buildEntries, makeContexts, runJobs, deckKey, deckFromKey, deckTotal, mulberry, wilson, elo, overlap, dist, nicheSelect, neighbours, optimizeMap, compareMap, Evaluator, main, summaryMd, compareMd, VERSION,
   // 2026-10-28 (package TOOLS1): the evaluation helpers, for tools/bench/deck.js (the workbench's constrained, focused search); no behaviour change
   Stats, ensure, halving, fitness, uniqDecks, deckable, isFactionCard };
 if (isMainThread && (require.main === module || SEA)) main(process.argv.slice(2)).catch(e => { console.error(e && e.stack || e); process.exit(1); });

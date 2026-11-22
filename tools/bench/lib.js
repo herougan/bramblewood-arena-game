@@ -39,6 +39,8 @@ function fingerprint() {
 }
 
 // ---------------------------------------------------------------- contexts
+// LOOKAHEAD1 (2026-11-22): --ai-mine is a CPU level (0-2) or 'look' / 'look<R>' (tools/bench/lookahead.js, R rounds ahead)
+const aiMineOf = v => v == null || v === '' ? null : /^look\d*$/.test(String(v)) ? String(v) : +v;
 // cs (serialisable): {kind: 'global'|'map', map, mode, seed, k, level}
 function contextOf(gm, cs) {
   const G = gm.G; let pool, fields, level, map = null, name;
@@ -58,7 +60,7 @@ function contextOf(gm, cs) {
   const bramble = cs.bramble != null && +cs.bramble > 0 ? +cs.bramble : BRAMBLE; if (bramble !== BRAMBLE) name += '-b' + bramble;
   // 2026-11-22 (AI): the CPU level both seats play (cs.ai: 0 basic, 1 smart, 2 smartest; default AI 1); in the key and the name only when not 1
   const ai = cs.ai != null ? +cs.ai : AI; if (ai !== AI) name += '-ai' + ai;
-  const aiMine = cs.aiMine != null ? +cs.aiMine : null; if (aiMine != null) name += '-pilot' + aiMine; // 2026-11-22 (PILOT): the measured deck's seat alone at this CPU level
+  const aiMine = aiMineOf(cs.aiMine); if (aiMine != null) name += '-pilot' + aiMine; // 2026-11-22 (PILOT): the measured deck's seat alone at this CPU level
   const key = fnv(JSON.stringify([VERSION, fingerprint(), cs.kind, map && map.id, cs.mode || '', seed, k, level, pool, fields.map(f => f.at)].concat(bramble !== BRAMBLE ? [bramble] : [], ai !== AI ? ['ai' + ai] : [], aiMine != null ? ['pilot' + aiMine] : []))).toString(36);
   return { cs, key, name, pool, fields, level, k, seed, bramble, ai, aiMine, mapId: map && map.id, fights: new Map() };
 }
@@ -229,7 +231,7 @@ function parseCommon(a, o) { // the options every command shares; returns true w
     case '--level': o.level = +take(); return true; case '--cache-dir': o.cacheDir = take(); return true; case '--tag': o.tag = take(); return true;
     case '--out': o.out = path.resolve(take()); return true; case '--quiet': a.shift(); o.quiet = true; return true; case '--chunk': o.chunk = +take(); return true;
     case '--pool': o.pool = take().split(',').map(s => s.trim()).filter(Boolean); return true;
-    case '--ai-mine': o.aiMine = +take(); return true; // PILOT (2026-11-22): the measured deck's seat alone at this CPU level
+    case '--ai-mine': o.aiMine = aiMineOf(take()); return true; // PILOT (2026-11-22): the measured deck's seat alone at this CPU level; LOOKAHEAD1: or 'look' / 'look<R>'
     case '--ai': o.ai = +take(); return true; // AI (2026-11-22): the CPU level both seats play (0 basic, 1 smart, 2 smartest)
     case '--bramble': o.bramble = +take(); return true; // BAL12 (2026-11-02): both brambles' Health (default 30; the road's is 15)
   }
@@ -239,4 +241,4 @@ function defaults() { return { games: 200, k: 6, seed: 'tools1', workers: Math.m
 const csOf = o => o.map != null ? { kind: 'map', map: o.map, mode: o.mode, seed: o.seed, k: o.k, level: o.level, pool: o.pool, bramble: o.bramble, ai: o.ai, aiMine: o.aiMine } : { kind: 'global', seed: o.seed, k: o.k, level: o.level, pool: o.pool, bramble: o.bramble, ai: o.ai, aiMine: o.aiMine };
 const pp = v => v == null ? '-' : (v >= 0 ? '+' : '') + (v * 100).toFixed(1);
 
-module.exports = { VERSION, ROOT, O, C, BLANK, fnv, r4, numOf, fingerprint, contextOf, randomDeck, fightOf, restFor, restHas, vKey, isPlain, paramKeysOf, variantEffects, printedDef, slotMine, makeGame, Bench, meanSE, diff, median, costs, budgetOf, parseCommon, defaults, csOf, pp };
+module.exports = { VERSION, ROOT, O, C, BLANK, fnv, r4, numOf, fingerprint, contextOf, randomDeck, fightOf, restFor, restHas, vKey, isPlain, paramKeysOf, variantEffects, printedDef, slotMine, makeGame, Bench, meanSE, diff, median, costs, budgetOf, parseCommon, defaults, csOf, pp, aiMineOf };

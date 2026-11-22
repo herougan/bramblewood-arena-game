@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-22 Package LOOKAHEAD1 (a look-ahead pilot for the skill ceiling)
+- **No game change** (no engine rule, not the game's CPU). The bench / pipeline's measured seat can now play by look-ahead: `--ai-mine look` (or `look<R>`). Each turn it tries up to 12 choices (the CPU's own turn, pass, each playable unit x legal slot, a pitch), replays the game to that point (`tools/bench/lookahead.js`; the engine has no state clone), lets the smartest CPU play both seats through this combat and R=2 more rounds on 2 fixed RNGs, and keeps the best HQ + board score. `tools/opt/deckopt.js` playOne's loop is split out as `playGame` (same games, same results).
+- Strength (`tests/lookahead-2026-11-22.js`, 200 mirrors of one bench deck, bramble 15): the look seat scores 58.0% [51.1, 64.6] where a level-2 seat scores 49.5% on the same fights (paired +8.5, SE 3.7); a starter-deck mirror at bramble 30 gave 77% vs 47% (60 fights). Cost: about 1 s a fight vs 31 ms at level 2 (x34); budget a look measure accordingly.
+
 ## 2026-11-22 Package TESTFIX8b (co-op race test)
 - **No game change.** The co-op browser test's race step predated ENG17 (COOP3-3, "your starting slot is yours"): it raced both players on row 1's centre, which is player 2's, so both claims were refused. It now races on my own centre: mine lands, player 2's is refused and its card returns. The same-cell tie rule (lower index lands) stays pinned in `tests/coop2-2026-10-28.js` (95 passed). Not an ordering bug.
 - PILOT: `tools/pipeline/pilot_report.js` (skill ceiling = worth with a level-2 pilot minus a level-0 pilot). Result: no measurable ceiling, 123/127 the same; the CPU levels differ only in turn choices (mapctx doc, PILOT).
