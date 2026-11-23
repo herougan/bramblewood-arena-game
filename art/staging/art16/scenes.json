@@ -1,0 +1,24 @@
+[
+ {
+  "slug": "cave",
+  "fit": "Caves & Alcoves (m4), Deep Dark; Cave archetype",
+  "bg": "scenes/cave-bg.png",
+  "floor": "scenes/cave-floor.png",
+  "bgPrompt": "Pokemon-style pixel art battle backdrop, clean dark outlines, rich readable palette, one bright accent, the inside of a wide damp limestone cave seen straight on, tall stalactites dripping water, a still dark pool reflecting small glowing blue crystals, a far cave mouth with a thin shaft of pale light, wet shining rock walls, an empty open middle ground left clear for a battle, no creatures, no people, no text, a full scenic background filling the whole frame",
+  "floorPrompt": "Pokemon-style pixel art battlefield ground texture seen from a high three-quarter angle, a wet cave floor of dark grey flagstones and pebbles, shining puddles reflecting blue crystal light, water drips making small rings, a few small stalagmites and pale mineral stains at the edges, a flat open area in the middle, no creatures, no people, no text, ground filling the whole frame, clean dark outlines, rich readable palette, one bright accent",
+  "bgVariant": "B",
+  "floorVariant": "C",
+  "size": "128 px sheet cell shown at 256 px, square (the 16:9 sizes cost the same 10 generations for 1 image, so 4-up 128 px was used)"
+ },
+ {
+  "slug": "kelp",
+  "fit": "Ocean / Coral Current (m7), Sunken Ferry",
+  "bg": "scenes/kelp-bg.png",
+  "floor": "scenes/kelp-floor.png",
+  "bgPrompt": "Pokemon-style pixel art battle backdrop, clean dark outlines, rich readable palette, one bright accent, a wide kelp forest seen from the water, tall golden-green kelp stalks swaying in rows, long soft shafts of sunlight from the surface, a rocky ridge and drifting bubbles in the distance, schools of tiny silver fish far away, an empty open middle ground left clear for a battle, no creatures in front, no people, no text, a full scenic background filling the whole frame",
+  "floorPrompt": "Pokemon-style pixel art battlefield ground texture seen from a high three-quarter angle, a sandy sea floor with gentle ripples, small shells, scattered pebbles, root-like kelp holdfasts and wavy bands of light moving across the sand, a flat open area in the middle, no creatures, no people, no text, ground filling the whole frame, clean dark outlines, rich readable palette, one bright accent",
+  "bgVariant": "B",
+  "floorVariant": "A",
+  "size": "128 px sheet cell shown at 256 px, square (the 16:9 sizes cost the same 10 generations for 1 image, so 4-up 128 px was used)"
+ }
+]

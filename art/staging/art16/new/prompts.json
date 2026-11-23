@@ -1,0 +1,98 @@
+[
+ {
+  "group": "new",
+  "id": "oarfish",
+  "variant": "A",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a cute giant oarfish with a very long silvery ribbon-shaped body, big round gentle eyes, a tall crest of bright red feathery rays rising from the top of its head and a long red dorsal fin running down its whole back, a small mouth with no teeth, gliding upward through deep blue open water, a few small glowing lantern fish and drifting marine snow around it, natural animal anatomy, not anthropomorphic, anatomically correct oarfish: one very long flat ribbon-like body with no legs, a continuous dorsal fin along the whole back, two long thin pelvic fins like oars hanging below the head, no tail fin, deep ocean background with soft sun rays fading into dark blue below, a full scenic background filling the whole frame, no text",
+  "why": "whole ribbon body in frame, red crest and oar-like pelvic fins clear",
+  "file": "new/oarfish.png"
+ },
+ {
+  "group": "new",
+  "id": "opah",
+  "variant": "B",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a cute opah moonfish, a perfectly round flat silvery-blue body dotted with white spots, bright red-orange fins, a tiny red mouth and a big round eye ringed in gold, swimming sideways with its broad red pectoral fins flapping like wings, natural animal anatomy, not anthropomorphic, anatomically correct opah: one round disc-shaped fish body with no legs, two broad pectoral fins, a tall dorsal fin, a pelvic fin and a crescent tail fin, deep blue open ocean background with soft sun rays, a small school of silver fish and a pale jellyfish far behind, a full scenic background filling the whole frame, no text",
+  "why": "round disc, red fins and lips, white spots, gold-ringed eye",
+  "file": "new/opah.png"
+ },
+ {
+  "group": "new",
+  "id": "sunfish",
+  "variant": "A",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a huge cute ocean sunfish, a tall round pale-grey body that looks like a swimming head with no real tail, a small round mouth, big sleepy eyes, a tall dorsal fin and a tall anal fin like two sails and a frilly rounded rudder at the back, basking on its side near the sunlit surface while small cleaner fish pick at its skin and a gull floats above, natural animal anatomy, not anthropomorphic, anatomically correct sunfish: one tall disc-shaped body with no legs, one tall dorsal fin, one tall anal fin, two small pectoral fins, a rounded clavus rudder instead of a tail, bright blue open sea background with light rays and a few jellyfish drifting below, a full scenic background filling the whole frame, no text",
+  "why": "tall disc with no tail, rudder visible, cleaner fish and gull",
+  "file": "new/sunfish.png"
+ },
+ {
+  "group": "new",
+  "id": "leafy-sea-dragon",
+  "variant": "A",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a cute leafy sea dragon, a slender seahorse-like fish with a long snout and a curled tail, covered in leaf-shaped olive-green and golden frills that look like drifting kelp, big shiny eyes, tiny transparent fins fluttering, drifting between swaying kelp stalks, natural animal anatomy, not anthropomorphic, anatomically correct leafy sea dragon: one long thin body with no legs, a tubular snout, leaf-like appendages along the body, small clear dorsal and pectoral fins, a gently curled tail, golden kelp forest background with soft green light rays, rocks and a small starfish on the sea floor, a full scenic background filling the whole frame, no text",
+  "why": "clear leaf frills, snout and curled tail, kelp setting",
+  "file": "new/leafy-sea-dragon.png"
+ },
+ {
+  "group": "new",
+  "id": "okapi",
+  "variant": "A",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a cute okapi with a velvety dark chocolate-brown body, bold white zebra stripes on its legs and rump, big soft ears, a long dark tongue just showing and gentle dark eyes, standing on four legs at a forest path, natural animal anatomy, not anthropomorphic, no hands, anatomically correct okapi: one hoofed body with four legs, a long neck, a short tail, two small horn-like ossicones on a male head, deep green rainforest background with tall trees, ferns and dappled golden light, a full scenic background filling the whole frame, no text",
+  "why": "stripes on legs and rump, chocolate body, readable at 160 px",
+  "file": "new/okapi.png"
+ },
+ {
+  "group": "new",
+  "id": "blobfish",
+  "variant": "C",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a cute round blobfish, a soft pale pink jelly-like body with a droopy gentle face, a big rounded nose, small sad-sweet eyes and a down-turned mouth, resting heavily on a dark sea floor, natural animal anatomy, not anthropomorphic, anatomically correct blobfish: one soft blob-shaped fish body with no legs, a small tail fin, two small pectoral fins, deep dark-blue sea floor background with pale sand, tiny glowing orange shrimp, tube sponges and drifting marine snow, a full scenic background filling the whole frame, no text",
+  "why": "front view of the drooping face, soft pink blob, orange shrimp accent",
+  "file": "new/blobfish.png"
+ },
+ {
+  "group": "new",
+  "id": "goblin-shark",
+  "variant": "C",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a cute goblin shark, a pale pink body with a long flat blade-shaped snout, a mouth just opening to show its jaw pushed forward on a long stalk with small pointed teeth, small dark eyes, a long heterocercal tail, gliding above a dark sea floor, natural animal anatomy, not anthropomorphic, anatomically correct shark: one torpedo body with no legs, two pectoral fins, two small dorsal fins, a pelvic fin pair, one anal fin, an upturned tail, deep blue-violet ocean background with thin sunlight from above, a crab and a sea star on a rocky ledge below, a full scenic background filling the whole frame, no text",
+  "why": "jaw shown pushed forward, blade snout, pale pink body",
+  "file": "new/goblin-shark.png"
+ },
+ {
+  "group": "new",
+  "id": "coelacanth",
+  "variant": "A",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a cute coelacanth, a stout steel-blue fish with pale white speckles, big gentle eyes, a thick body, lobed fleshy fins that stick out like little limbs, and a three-lobed tail, hovering above a rocky cave ledge, natural animal anatomy, not anthropomorphic, anatomically correct coelacanth: one fish body with no legs, paired fleshy lobed fins (two pectoral and two pelvic), two dorsal fins, one anal fin, a three-lobed tail, dim blue underwater cave background with a rocky floor, soft rays of light, small bright orange sea fans and an old broken amphora shard, a full scenic background filling the whole frame, no text",
+  "why": "lobed limb-like fins and three-lobed tail clear, amphora accent",
+  "file": "new/coelacanth.png"
+ },
+ {
+  "group": "new",
+  "id": "saiga",
+  "variant": "C",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a cute saiga antelope with a big soft drooping rounded nose like a short trunk, a sandy-tan coat, two short pale ringed horns, big dark eyes, standing on four slim legs on a frosty steppe, natural animal anatomy, not anthropomorphic, no hands, anatomically correct saiga: one hoofed body with four legs, a short tail, a large flexible inflated nose, windswept pale grassland steppe background with a low cold sun, a few snow patches and a herd of small saigas far behind, a full scenic background filling the whole frame, no text",
+  "why": "frontal view shows the big drooping nose and ringed horns",
+  "file": "new/saiga.png"
+ },
+ {
+  "group": "new",
+  "id": "kakapo",
+  "variant": "B",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a cute round kakapo, a plump moss-green and yellow-brown mottled owl-like parrot with a soft facial disc of whiskery feathers, a pale hooked beak and small stubby wings it cannot fly with, walking on a mossy log, natural animal anatomy, not anthropomorphic, no hands, anatomically correct bird: two legs with parrot toes, two short wings, one beak, misty mossy southern beech forest background with ferns and dawn light, a few glowing mushrooms on the log, a full scenic background filling the whole frame, no text",
+  "why": "owl-like face disc, flightless stubby wings, glowing golden mushroom accent",
+  "file": "new/kakapo.png"
+ },
+ {
+  "group": "new",
+  "id": "tapir",
+  "variant": "A",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a cute Malayan tapir, a black front half and a bright white back half like a saddle, a short flexible snout like a small trunk, small round ears with white rims and sleepy dark eyes, wading at the edge of a river, natural animal anatomy, not anthropomorphic, no hands, anatomically correct tapir: one stout body with four legs, three toes on the hind feet and four on the front, a tiny tail, a short flexible snout, lush rainforest river background with tall ferns, hanging vines and soft green light, a full scenic background filling the whole frame, no text",
+  "why": "black and white saddle clear, flexible snout, river setting",
+  "file": "new/tapir.png"
+ },
+ {
+  "group": "new",
+  "id": "glass-frog",
+  "variant": "C",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a tiny cute glass frog with a see-through belly showing its little red heart, a bright leaf-green back with small yellow dots, big forward-facing pale eyes, clinging with sticky toe pads to the underside of a wide leaf, natural animal anatomy, not anthropomorphic, no hands, anatomically correct frog: one small body, four legs with round sticky toe pads, no tail, rainy cloud-forest background with big dripping leaves, a stream below and soft misty light, a full scenic background filling the whole frame, no text",
+  "why": "see-through belly with red heart shows front on, four toe-pad legs",
+  "file": "new/glass-frog.png"
+ }
+]

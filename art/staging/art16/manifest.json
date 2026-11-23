@@ -1,0 +1,18 @@
+[
+ {
+  "group": "cards",
+  "id": "mudpuppy",
+  "variant": "A",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a very cute chubby mudpuppy salamander with a permanent happy smile, big shiny black eyes, a flat round head, a plump rusty-brown body with dark spots and a pale belly, three bright red feathery gills on each side of its head, a flat paddle tail, resting on a mossy flat stone in a clear autumn creek, a little crayfish and a tadpole peeking from behind a pebble, natural animal anatomy, not anthropomorphic, no hands, anatomically correct mudpuppy: one long body, four short legs with four toes each, three pairs of external gills, a flat tail fin, creek bed background with red maple leaves drifting on the water, smooth round stones, green water weed and warm low sunlight through the trees, a full scenic background filling the whole frame, no text",
+  "why": "cutest smile, three red gill pairs and four legs clear, crayfish and tadpole make the creek specific",
+  "file": "cards/mudpuppy.png"
+ },
+ {
+  "group": "cards",
+  "id": "plague-gnat-cloud",
+  "variant": "A",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a dense swirling cloud made of hundreds of tiny dark gnats, each one only a small speck with two clear wings, the cloud itself has no face and no eyes, one single bigger gnat in the foreground showing its true shape, natural animal anatomy, not anthropomorphic, anatomically correct gnat: three body segments, six thin legs from the middle segment, two wings, long feathery antennae, the swarm hanging over black swamp water between cattails and cypress roots, a few pale mist ribbons and a low orange sunset glow behind, a full scenic background filling the whole frame, no text",
+  "why": "cloud is a faceless swirl of specks; the lone foreground gnat shows 3 segments, 6 legs, 2 wings",
+  "file": "cards/plague-gnat-cloud.png"
+ }
+]
