@@ -8,6 +8,17 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-23 23:39 Owner list ("Extra, as the following requires very high effort")
+- Order: STATE2 (item 5: "take a step back, summarise the current state, before moving forward ... Then make wholistic changes") first; ART16 / CARDS1 / ENG (Corrode+Daunt) / card-design skill in parallel; then MAPUI2, then UISWEEP; ART17 after ART16.
+- [ ] STATE2: current-state review (screens, navigation, systems, data, art), feeds UISWEEP
+- [ ] ART16 (item 1): PixelLab with the remaining credits (account shows Subscription Inactive 11-23; renewal date not shown): new species (oarfish, opah ...; common animals 2-5, others 1), ~30 battle backgrounds + ~30 battlefield floors, re-art rejected cards (Mud Puppy ...); new species' cards after CARDS1
+- [ ] CARDS1 (items 6, 11, 12, 19, 20): starter cards at Level 0; resistances / weaknesses only where super relevant (default none); Fork for octopi only, Trident rare; Gallery Orb Weaver redesign; pack-bonus suggestions may take a later map's skill only into that later pack
+- [ ] ENG16 (item 16): Corrode and Daunt seem to stack
+- [ ] MAPUI2 (items 2 blur, 6-10, 13, 15, 17, 18): level bar 0-15 under one merged skill list (no "Other skills" subtitle), yellow average levels, skills follow the level (default the highest yellow), reward cards from the map only (not submaps); suggested + New! = red; should-be-New! not on main = blue/red; to-remove = black left, red right; Swarm black background and Nocturnal display bugs; Venomous / Decay "recommended" on Map 4; consolidate Main / Suggested / Sugg. intro; Swift missing from the ability picker; emoji: Constrict chain, Swift boots, Progeny maggot; pip numbers centred vertically; context pips 1-2 px down; blurred conquest trees at rest
+- [ ] UISWEEP (items 3, 4): UI rules everywhere (e.g. wandering merchant sign's margins), curtain transitions between shops, consistent navigation, main menu and nav bar look (Conquest mostly kept)
+- [ ] ART17 (item 2): living card art (moving parts, eye glow, twinkling stars, seasons, day-dusk) only at premium quality (alpha masks + generators); else report and choose another method
+- [ ] Card-design skill (item 14): Level 10 first, then Levels 1-10, skills learnt spread, mostly early
+
 ## 11-22 23:08 Night queue (owner: "queue up works for the night")
 - Owner order: map -> skirmish -> skirmish rewards -> packs -> currency -> multiplayer balancing -> UI/UX, look and feel, VFX -> player-data analysis (frustration, giving up, likely supporters; trees) -> release. "Release github once done."
 - [x] MAPRM1: New! skills not in the table row: half red, half dark grey, "To remove" (36 on Maps 0-20)
