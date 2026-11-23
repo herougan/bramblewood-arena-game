@@ -6,7 +6,7 @@ const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), tpl = fs.r
 ok(/\.ui19-sk\.is-new\{border-color:#c62828; background:#c62828/.test(tpl), 'NEW! tile: solid red');
 ok(/\.ui19-sk\.is-have\{border-color:#2e8b57/.test(tpl), 'have + recommended tile: green');
 ok(/\.ui19-sk\.is-focus\{outline:/.test(tpl) && !/\.ui19-sk\.is-focus\{border-color:#c62828/.test(tpl), 'focus is an outline, no longer red');
-ok(!/is-intro' : ''\}" data-ui19-skill/.test(app) && /introPill/.test(app), 'Intro is a pill, not a tile class');
+ok(!/is-intro' : ''\}" data-ui19-skill/.test(app) && !/introPill/.test(app), 'Intro is no tile class and no pill any more (2026-11-24, MAPUI2: it is the Suggested pill)');
 ok(/class="uiq2-legend"/.test(app), 'a legend sits above the tiles');
 ok(/UIQ2b[^\n]*\n\.ui19-sk\[data-eng35-key\] \.ui19-sk-main\{white-space:normal/.test(tpl) && /\.uiq2-legend\{display:grid/.test(tpl), 'UIQ2b: pills wrap, legend is a compact grid');
 const T = fs.readFileSync(path.join(ROOT, 'bramblewood-texts.js'), 'utf8');
@@ -31,18 +31,18 @@ async function browser(){
       const pills = t=> [...t.querySelectorAll('.ui35-pill, .ui28-sug, .ui30-sugg, .ui19-new')].map(p=> p.textContent.trim());
       return {dump: tiles.map(t=> t.className.replace('ui19-sk','').trim() + ' ' + (t.dataset.ui19Skill||t.dataset.ui24Rec||t.dataset.ui34Counter||'') + ' [' + pills(t).join(',') + ']'), n: tiles.length, legend: box.querySelectorAll('.uiq2-legend span').length,
         gold: tiles.filter(t=> has(t, 'is-intro')).length,
-        newTiles: tiles.filter(t=> has(t, 'is-new')).map(t=> pills(t).includes('NEW!')),
+        newTiles: tiles.filter(t=> has(t, 'is-new')).map(t=> pills(t).includes('NEW!') || pills(t).includes('To remove')),
         newNoRed: tiles.filter(t=> pills(t).includes('NEW!') && !has(t, 'is-new')).length,
         blueCarried: tiles.filter(t=> (has(t, 'is-rec') || has(t, 'is-sugg') || has(t, 'ui30-sugg-tile') || has(t, 'is-counter')) && (has(t, 'is-new') || has(t, 'is-have') || has(t, 'is-grey'))).length,
         greenNoPill: tiles.filter(t=> has(t, 'is-have') && !pills(t).some(x=> /Suggested|Counter|Sugg|Intro/.test(x))).length,
-        intro: tiles.filter(t=> pills(t).includes('Intro')).length}; })()`);
+        intro: tiles.filter(t=> pills(t).includes('Suggested')).length}; })()`);
     if(process.env.UIQ2_DEBUG) console.log(r.dump.join('\n'));
-    ok(r.n > 0 && r.legend === 4, 'the panel has tiles and a four-part legend (' + r.n + ')');
+    ok(r.n > 0 && r.legend === 5, 'the panel has tiles and a five-part legend: New!, To add, To remove, Suggested, Carried (' + r.n + ')');
     ok(r.gold === 0, 'no tile is gold (is-intro)');
     ok(r.newTiles.length > 0 && r.newTiles.every(Boolean) && r.newNoRed === 0, 'every NEW! tile is red and every red tile says NEW! (' + r.newTiles.length + ')');
     ok(r.blueCarried === 0, 'a blue tile is never also red, green or grey');
     ok(r.greenNoPill === 0, 'a green tile shows why it is recommended');
-    ok(r.intro >= 1, 'the map keyword shows an Intro pill');
+    ok(r.intro >= 1, 'a Suggested pill shows on a tile no card carries (2026-11-24, MAPUI2: the keyword intro is a Suggested pill)');
     await ctx.close();
   } finally { await b.close(); }
   ok(errs.length === 0, 'no page errors ' + errs.slice(0, 2).join(' | '));

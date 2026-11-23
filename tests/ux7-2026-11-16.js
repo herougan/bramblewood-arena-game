@@ -43,7 +43,7 @@ async function browser(){
       out.newN = box.querySelector('[data-ui35-new]').dataset.ui35New; out.newCount = tiles.filter(t=> t.classList.contains('is-new')).length; out.swift = key(tiles.find(t=> t.classList.contains('is-focus-add') && key(t) === 'swift') || tiles[0]);
       out.pounceOther = tiles.filter(t=> t.classList.contains('is-other') && key(t) === 'pounce').length;
       // minor NEW!: a main skill new on the map but not focus wears the small tag, no red
-      const bl = tiles.find(t=> key(t) === 'bleed'); out.bleedMinor = !!bl && !!bl.querySelector('.ui19-new') && bl.classList.contains('is-new') && !bl.classList.contains('is-focus'); // UIQ2: NEW! is red, no minor tag
+      const bl = tiles.find(t=> key(t) === 'bleed'); out.bleedMinor = !!bl && !!bl.querySelector('.ui35-pill.is-remove') && bl.classList.contains('is-new') && !bl.classList.contains('is-focus'); // 2026-11-24 (MAPUI2): New! outside the row wears To remove // UIQ2: NEW! is red, no minor tag
       // the table is overridable
       mapFocusCfg = {3: ['bleed']}; const h2 = document.createElement('div'); h2.innerHTML = ui19McSkillsHTML(mapId, [arrow, bleed], defs, ()=> true, mapId, []);
       out.cfgRed = [...h2.querySelectorAll('.ui19-sk.is-focus')].map(key); mapFocusCfg = null;
@@ -51,7 +51,7 @@ async function browser(){
       const sub = (typeof mpSubsOf === 'function' ? mpSubsOf(mapId) : [])[0]; out.subRed = sub ? mapFocusSet(sub.id).size : 0;
       return out; })()`);
     ok(r.red.includes('arrow') && r.red.includes('swift') && r.red.includes('pounce') && r.red.length === 3, /* 2026-11-19 (TESTFIX7): REDESIGN3 v2's Map 3 focus (UIFIN) */ `only the three focus skills are red (${r.red})`);
-    ok(r.cls.indexOf('red') < r.cls.indexOf('normal') && r.cls.indexOf('normal') < r.cls.indexOf('add') && (r.cls.indexOf('counter') < 0 || r.cls.indexOf('add') < r.cls.indexOf('counter')) && (r.cls.indexOf('other') < 0 || r.cls.lastIndexOf('add') < r.cls.indexOf('other')) && r.cls.indexOf('sugg') > r.cls.lastIndexOf('add'), `red, normal, to-add, blue, muted order (${r.cls.join(',')})`);
+    ok(r.cls.indexOf('red') < r.cls.indexOf('add') && (r.cls.indexOf('counter') < 0 || r.cls.lastIndexOf('add') < r.cls.indexOf('counter')) && r.cls.indexOf('sugg') > r.cls.lastIndexOf('add') && (r.cls.indexOf('other') < 0 || r.cls.lastIndexOf('sugg') < r.cls.indexOf('other')), /* 2026-11-24 (MAPUI2): one list, red then to-add then blue then grey (carried, then the other skills) */ `red, to-add, blue, grey order (${r.cls.join(',')})`);
     ok(r.newN === String(r.newCount) && r.newCount >= 3, /* 2026-11-22 (NOC7): the picked Arrow card can bring another skill that is New! here (Owl Fletcher's Nocturnal, now first on Map 7), so count the red tiles, not a fixed 3 */ `N new counts the red chips (${r.newN} of ${r.newCount})`);
     ok(r.bleedMinor && r.pounceOther === 0, `a new non-focus skill keeps a muted tag; a focus skill leaves the muted group (${r.bleedMinor} ${r.pounceOther})`);
     ok(r.cfgRed.join() === 'bleed', `a map-focus row overrides (${r.cfgRed})`);

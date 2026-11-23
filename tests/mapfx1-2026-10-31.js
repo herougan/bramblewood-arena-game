@@ -70,8 +70,8 @@ ok(/crystalTing\(k\)\{ const p = k \|\| 1;/.test(src) && /mfxPlay\('crystalTing'
 const mount = fnSrc('mountMapFx'), toggle = fnSrc('mfxFireToggle');
 ok(/function mfxSway\(\)\{ try\{ return !reducedMotion\(\) && fxAtLeast\('med'\)/.test(src), 'tree sway needs no reduced motion and Effects Medium or High');
 ok(/function mfxVisual\(\)\{ try\{ return !reducedMotion\(\) && fxAtLeast\('low'\)/.test(src), 'taps\' visuals need no reduced motion and Effects Low or more');
-ok(/@keyframes mfxSway\{from\{transform:rotate\(calc\(var\(--sw, \.8deg\) \* -1\)\);\} to\{transform:rotate\(var\(--sw, \.8deg\)\);\}\}/.test(css), 'the sway keyframes are one rotate');
-ok(/\.mfx-sway\{transform-origin:50% 80%; will-change:transform; animation:mfxSway/.test(css), 'the sway turns round the trunk base (bottom of the tree)');
+ok(/@keyframes mfxSway\{0%\{transform:rotate\(0\); opacity:0;\}[^@]*transform:rotate\(var\(--sw, \.8deg\)\);[^@]*transform:rotate\(calc\(var\(--sw, \.8deg\) \* -1\)\);[^@]*100%\{transform:rotate\(0\); opacity:0;\}\}/.test(css), 'the sway keyframes are one rotate that starts and ends at 0 (2026-11-24, MAPUI2 #2a: no resampled copy at rest)');
+ok(/\.mfx-sway\{transform-origin:50% 80%; will-change:transform; opacity:0; animation:mfxSway/.test(css), 'the sway turns round the trunk base (bottom of the tree)');
 ok(/\(\(i \* 37\) % 5\) \/ 10; \/\/ 0\.6 to 1\.0 degrees/.test(mount) && /\(4 \+ \(\(i \* 53\) % 31\) \/ 10\)/.test(mount) && /animationDelay = '-'/.test(mount), 'amplitude 0.6-1.0 degrees, 4.0-7.0 s, a different negative delay per tree');
 /* 2026-11-18 (MAPFIT0): the layer also clips its spots (overflow:hidden) */ ok(/\.map-fx-layer\{position:absolute; inset:0; z-index:0; pointer-events:none;[^}]*\}/.test(css) && /\.mfx-hit\{[^}]*pointer-events:auto/.test(css), 'the layer takes no taps; only its spots do');
 ok(/\.map-sway-layer\{[^}]*pointer-events:none/.test(css) && /\.mfx-patch\{[^}]*pointer-events:none/.test(css), 'the sway layer and its copies take no taps');

@@ -4776,5 +4776,8 @@
  "Reward at {code}": "{code} 보상",
  "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "오늘 첫 완전 클리어는 보상 전액, 이후는 20%. 2인 플레이: +25%.",
  "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "오늘의 전액 보상은 받았습니다: 내일까지 보상은 20%. 2인 플레이: +25%.",
- "Its hits set Corrode to {n} if lower; it fades 1 a round.": "명중하면 부식이 {n}보다 낮을 때 {n}으로 올라요. 매 라운드 1씩 줄어요."
+ "Its hits set Corrode to {n} if lower; it fades 1 a round.": "명중하면 부식이 {n}보다 낮을 때 {n}으로 올라요. 매 라운드 1씩 줄어요.",
+ "Gold: levels met on this map. Dark: below 1 or above 10.": "금색: 이 맵의 레벨. 어두움: 1 미만 또는 10 초과.",
+ "Red / blue = to add": "빨강 / 파랑 = 추가 예정",
+ "Black / red = to remove": "검정 / 빨강 = 제거 예정"
 }

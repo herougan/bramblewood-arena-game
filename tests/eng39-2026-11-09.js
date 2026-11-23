@@ -177,8 +177,8 @@ ok(/STATUS_KEYWORDS\.push\(\{k:'exploit', re:\/\\b\(exploit/.test(app) && /\{k:'
   ok(/data-sk="eng39bramble" data-i="2" checked/.test(b1) && /Bramble<\/label>/.test(b1) && /data-sk="eng39bramble"/.test(b2) && !/checked/.test(b2) && b3 === '' && !/checked/.test(b4), 'Balloon Archer\'s Arrow row shows Bramble ticked; Fire Bolt unticked; a non-shot has none; an unticked box stays unticked'); }
 ok(/eng39BrambleSet\.add\(bk\); if\(bb\.checked\) fx\[bk\] = true; else delete fx\[bk\];/.test(app) && /formKeys\.has\(k\) \|\| eng39BrambleSet\.has\(k\)/.test(app) && /r\.bramble = b\.checked/.test(app), 'Save writes or removes the bramble part from the box (the keep-step leaves it alone); the box survives a redraw');
 ok(require('../bramblewood-texts.js').TEXT['ui.eng39-bramble'] === 'Bramble', 'the box is labelled Bramble (translated in all 12 packs already)');
-ok(/\.filter\(x=> x\.key === row\.key \|\| !eng39KindOf\(x\.key\)\); \/\/ ENG39/.test(app) && /\$\{eng39KindSelectHTML\(row, i\)\}/.test(app), 'kinds leave the "+ Add Skill" picker; every row draws its Version field (the "twin" select the editor already handles)');
-ok(/if\(d && d\.key === 'swift'\) d\.hidden = true;/.test(app), 'Swift (on no card) leaves "+ Add Skill"');
+ok(/\.filter\(x=> x\.key === row\.key \|\| x\.key === 'swift' \/\* 2026-11-24 \(MAPUI2 #9\) \*\/ \|\| !eng39KindOf\(x\.key\)\); \/\/ ENG39/.test(app) && /\$\{eng39KindSelectHTML\(row, i\)\}/.test(app), 'kinds leave the "+ Add Skill" picker; every row draws its Version field (the "twin" select the editor already handles)');
+ok(!/if\(d && d\.key === 'swift'\) d\.hidden = true;/.test(app), 'Swift is pickable again (2026-11-24, MAPUI2 #9: the hide line is gone)');
 ok(/ENG39/.test(rd('bramblewood-engine.js')) && /rootOf\(key\)/.test(rd('bramblewood-engine.js')), 'the engine\'s delivery lookup reads rootOf');
 // docs
 ok(/ENG39/.test(rd('docs/effects-catalogue.md')) && /\| Daunt \(`daunt`\) \| lasts: lasting = `weaken`/.test(rd('docs/effects-catalogue.md')) && /ENG39, DES2-3/.test(rd('docs/project-state.md')), 'effects-catalogue.md (the table) and project-state.md');

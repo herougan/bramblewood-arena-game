@@ -116,7 +116,7 @@ ok(byId['beaver-lumberjack'].effects.delivery === 1 && /function eng23MigrateDel
 // ---- 5. the Map cards stats ---------------------------------------------------------------------------------------------------
 { const d = {id:'beaver-lumberjack', attack:3, health:5, rarity:'common', wait:1, cost:0, effects:{delivery:1}, obtainMap:0};
   const c = BB.forgeCurve(d, 1, 11); ok(c.rows[1].health === 5 && c.rows[10].health === 10, `5: the cause: the live 3/5 at the viewer's Level 10 is 3/${c.rows[10].health}; at its base level 3/${c.rows[1].health}`); }
-ok(/function eng23MapDef\(id, defs\)/.test(app) && /data-zoom-base="1"/.test(app) && /el\.dataset\.zoomBase \? eng23MapDef\(el\.dataset\.zoom\)/.test(app), '5: the Map cards tiles and their zoom draw the card at its base level');
+ok(/function eng23MapDef\(id, defs(?:, lv)?\)/.test(app) && /data-zoom-base="1"/.test(app) && /el\.dataset\.zoomBase \? eng23MapDef\(el\.dataset\.zoom\)/.test(app), '5: the Map cards tiles and their zoom draw the card at its base level');
 
 // ---- 6. Rodentia --------------------------------------------------------------------------------------------------------------
 ok(TAXO.name('Rodent') === 'Rodentia' && TAXO.key('Rodentia') === 'rodent' && TAXO.isA({species:['Rodent']}, 'Rodentia') && TAXO.isA({species:['Rodent']}, 'Rodent'), '6: Rodent shows as Rodentia; both names find the rodents');

@@ -4774,5 +4774,8 @@
  "Reward at {code}": "{code}の報酬",
  "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "今日の最初の完全クリアは報酬が満額。以降は20%。2人プレイ：+25%。",
  "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "今日の満額報酬は受け取り済み：明日まで報酬は20%。2人プレイ：+25%。",
- "Its hits set Corrode to {n} if lower; it fades 1 a round.": "命中すると腐食を{n}まで引き上げる（低い場合）。毎ラウンド1減る。"
+ "Its hits set Corrode to {n} if lower; it fades 1 a round.": "命中すると腐食を{n}まで引き上げる（低い場合）。毎ラウンド1減る。",
+ "Gold: levels met on this map. Dark: below 1 or above 10.": "金：このマップのレベル。暗：1 未満または 10 超。",
+ "Red / blue = to add": "赤 / 青 = 追加予定",
+ "Black / red = to remove": "黒 / 赤 = 削除予定"
 }

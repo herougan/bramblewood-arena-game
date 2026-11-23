@@ -4775,5 +4775,8 @@
  "Reward at {code}": "Recompensa em {code}",
  "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "Sua primeira vitória completa de hoje paga inteira; as seguintes pagam 20%. Dois jogadores: +25%.",
  "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "A paga completa de hoje já foi: as partidas pagam 20% até amanhã. Dois jogadores: +25%.",
- "Its hits set Corrode to {n} if lower; it fades 1 a round.": "Seus golpes elevam a Corrosão a {n} se for menor; ela cai 1 por rodada."
+ "Its hits set Corrode to {n} if lower; it fades 1 a round.": "Seus golpes elevam a Corrosão a {n} se for menor; ela cai 1 por rodada.",
+ "Gold: levels met on this map. Dark: below 1 or above 10.": "Ouro: níveis deste mapa. Escuro: abaixo de 1 ou acima de 10.",
+ "Red / blue = to add": "Vermelho / azul = a adicionar",
+ "Black / red = to remove": "Preto / vermelho = remover"
 }

@@ -27,10 +27,10 @@ const fn = (src, name)=>{ const m = src.match(new RegExp('function ' + name + '\
 
 // ================= 2. one list with pills =================
 { const f = fn(app, 'ui19McSkillsHTML');
-  ok(!/hd\('main'/.test(f) && !/hd\('rec'/.test(f) && !/hd\('counters'/.test(f) && /hd\('other', flaggedOther\.length\)/.test(f), 'no Main / Recommended / Counters headings; Other keeps its own');
+  ok(!/hd\(/.test(f), 'no group headings at all (2026-11-24, MAPUI2: Other lost its heading too)');
   // 2026-11-19 (TESTFIX6): UX8 lists a skill no carrier has yet at its level last (r.late); UX7 adds the focus-add tiles after Main
-  ok(/\$\{flaggedMain\.filter\(r=> !r\.late\)\.map\(li\)\.join\(''\)\}\$\{addTiles\}\$\{ctrTiles\}\$\{kwMissing\}\$\{suggTiles\}\$\{recs\.map\(rli\)\.join\(''\)\}\$\{pickTiles\}\$\{cxTiles\}\$\{hd\('other'/.test(f), 'one <ul>: Main, Counters, keyword, Sugg. Intro, recommendations, picks, then Other');
-  ok(/r\.outside \? '' : pill\('main', 'ui\.ui35-pill-main'/.test(f), 'a Main tile wears the Main pill (Other tiles do not)');
+  ok(/\$\{flaggedMain\.filter\(r=> r\.isNew && !r\.late\)\.map\(li\)\.join\(''\)\}\$\{addTiles\}\$\{ctrTiles\}\$\{kwMissing\}\$\{suggTiles\}\$\{recs\.map\(rli\)\.join\(''\)\}\$\{pickTiles\}\$\{cxTiles\}\$\{flaggedMain\.filter\(r=> !r\.isNew && !r\.late\)\.map\(li\)\.join\(''\)\}\$\{flaggedOther/.test(f), 'one <ul>: New!, To add, Counters, keyword, suggestions, picks, Codex, then carried, then the other skills (2026-11-24, MAPUI2)');
+  ok(!/pill\('main'/.test(f) && /' is-carried'/.test(f), 'no Main pill: a carried tile is grey (2026-11-24, MAPUI2)');
   ok((f.match(/sugPill\(/g) || []).length >= 3, 'recommendation, keyword and pick tiles wear the Suggested pill');
   ok(/class="ui35-newn/.test(f) && /ui35-new-count/.test(f) && /const newN = flaggedMain\.filter\(r=> r\.isNew\)\.length/.test(app), '"N new" beside the heading counts the red NEW! tiles (UIQ2, 11-20; UX7 counted focus chips)'); // 2026-11-19 (TESTFIX6)
   ok(/isNew: isMain && mt\.met/.test(f), 'NEW! only on the main list');
@@ -44,10 +44,10 @@ const fn = (src, name)=>{ const m = src.match(new RegExp('function ' + name + '\
     mapPoolSections: id=> [{key: 'cards', ids: id === 'm0' ? ['b'] : []}, {key: 'sub:s', ids: id === 'm0' ? ['a'] : []}]};
   vm.createContext(c); vm.runInContext(['ui19McSkillRows', 'ui19McEarlierSkillKeys', 'ui19McSkillText', 'ui19McSkillsHTML'].map(n=> fn(app, n)).join('\n') + '\nthis.api = {ui19McSkillsHTML};', c);
   const html = c.api.ui19McSkillsHTML('m1', ['a', 'b'], defs, ()=> true, 'm1', ['o']);
-  ok(/data-ui19-skill="bloomCopy"[^>]*>[\s\S]*?Bloom<\/b>[\s\S]*?ui35-pill is-main[\s\S]*?NEW!/.test(html), 'rendered: Bloom (on the side list of the earlier map only) is NEW! on the next main map');
+  ok(/is-new[^>]*data-ui19-skill="bloomCopy"[^>]*>[\s\S]*?Bloom<\/b>[\s\S]*?NEW!/.test(html), 'rendered: Bloom (on the side list of the earlier map only) is NEW! on the next main map');
   ok(!/data-ui19-skill="armor"[^>]*>[^]*?NEW![^]*?<\/li>/.test(html.replace(/data-ui19-skill="bloomCopy"[\s\S]*?<\/li>/, '')), 'rendered: Armor (on an earlier main list) is not NEW!');
   ok(/data-ui35-new="1"[^>]*>1 new</.test(html), 'rendered: the heading says "1 new"');
-  ok((html.match(/ui32-sk-head/g) || []).length === 1 && /ui32-sk-head is-other/.test(html) && /data-ui19-skill="flying"[\s\S]*$/.test(html.split('ui32-sk-head')[1]), 'rendered: only the Other heading; Flying sits under it with no Main pill and no NEW!');
+  ok((html.match(/ui32-sk-head/g) || []).length === 0 && /class="ui19-sk is-other[^"]*" data-ui19-skill="flying"/.test(html) && !/is-new[^>]*data-ui19-skill="flying"/.test(html), 'rendered: no heading; Flying is a grey other-skill tile with no NEW! (2026-11-24, MAPUI2)');
   ok(!/is-new[^>]*data-ui19-skill="flying"/.test(html), 'rendered: a skill of the Other group is never NEW!'); }
 
 // ================= 3. Thematic Recommendation and the deck editor views =================
@@ -116,8 +116,8 @@ ok(fs.existsSync(path.join(ROOT, 'tests/e2e/ui35_2026_11_08.py')) && ['mapcards-
   const cx = J('canonical/codex-skill-suggestions.json').maps, ids = Object.keys(cx);
   ok(ids.length === 21 && cx.m1.sig.join() === 'flying,diurnal,swarm' && cx.m4.sig.includes('sonar') && cx.mk.unmatched.some(u=> u.name === 'Pressure'), 'canonical/codex-skill-suggestions.json: 21 maps, draft names matched to skill keys, new names kept text-only');
   ok(ids.every(m=> [...cx[m].sig, ...cx[m].side].every(k=> new RegExp("'" + k + "'").test(app))), 'every matched Codex skill is an existing skill key');
-  ok(/pill\('cx' \+ cxo\.map\.get\(k\)/.test(app) && /ui35-codex-tile/.test(app) && /\.ui35-pill\.is-cxsig/.test(tpl) && /\.ui35-pill\.is-newuse/.test(tpl), 'Codex sig. / Codex side pills, a tile for a pick no card shows, a purple New use pill');
-  ok(/isNewUse = isMain && mt\.met && early\.has\(r\.key\)/.test(app) && /keys\.uses/.test(app) && /r\.isNew \? ` <i class="ui19-new[^\n]*: r\.isNewUse \? pill\('newuse'/ /* 2026-11-19 (TESTFIX6): UX7's is-minor class */.test(app), 'New use: a known skill family with a parameter no earlier main map used (not counted)');
+  ok(/pill\('cx', 'ui\.mapui2-pill-codex'/.test(app) && /ui35-codex-tile/.test(app) && /\.ui35-pill\.is-cxsig/.test(tpl) && /\.ui35-pill\.is-cx\{/.test(tpl), 'one Codex pill, a tile for a pick no card shows (2026-11-24, MAPUI2: the purple New use pill is gone)');
+  ok(!/isNewUse/.test(app) && !/pill\('newuse'/.test(app), 'New use pill removed (2026-11-24, MAPUI2: was a known skill family with a parameter no earlier main map used)');
   ok(/label:'Heal'/.test(app) && /label:'Regenerate'/.test(app) && /label:'Echolocate'|label:'Echolocation'/.test(app) && !/label:'Sonar'/.test(app) && /key:'sonar'/.test(app) && /key:'regen'/.test(app) && /key:'healing'/.test(app), 'display renames: Echolocation, Regenerate, Heal; internal keys unchanged');
   CODES.forEach(c=>{ ok(packs[c]['Heal'] && !packs[c]['Healing'] && packs[c]['Regenerate {n}: heals {n} Health at the start of every round.'], `lang/${c}.json carries the renamed rows`); });
 }

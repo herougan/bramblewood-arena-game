@@ -4774,5 +4774,8 @@
  "Reward at {code}": "Gantimpala sa {code}",
  "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "Buong bayad ang una mong buong panalo ngayon; 20% na lang ang mga susunod. Dalawang manlalaro: +25%.",
  "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "Nakuha mo na ang buong bayad ngayon: 20% ang bayad ng mga takbo hanggang bukas. Dalawang manlalaro: +25%.",
- "Its hits set Corrode to {n} if lower; it fades 1 a round.": "Itinatakda ng mga tama nito ang Kalawang sa {n} kung mas mababa; bumababa ito ng 1 bawat round."
+ "Its hits set Corrode to {n} if lower; it fades 1 a round.": "Itinatakda ng mga tama nito ang Kalawang sa {n} kung mas mababa; bumababa ito ng 1 bawat round.",
+ "Gold: levels met on this map. Dark: below 1 or above 10.": "Ginto: mga antas sa mapang ito. Madilim: mas mababa sa 1 o higit sa 10.",
+ "Red / blue = to add": "Pula / asul = idagdag",
+ "Black / red = to remove": "Itim / pula = tanggalin"
 }

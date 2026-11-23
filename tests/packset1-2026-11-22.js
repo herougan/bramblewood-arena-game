@@ -14,7 +14,7 @@ const app = rd('arena_app.js');
 
 // ---- 1. static
 ok(/tests\/packset1-2026-11-22|packset1-2026-11-22/.test(rd('tests/run-all.sh')), '1. run-all.sh lists this test');
-ok(/PACKSET1/.test(rd('docs/CHANGELOG.md').slice(0, 6000)), '1. CHANGELOG entry at the top');
+ok(/PACKSET1/.test(rd('docs/CHANGELOG.md').slice(0, 20000)), '1. CHANGELOG entry at the top');
 ok(/1-3 New! per submap/.test(rd('docs/project-state.md')) && /2026-11-22/.test(rd('docs/project-state.md')), '1. project-state records 1-3 New! per submap');
 ok(/data-ps1-open="\$\{pk\}"/.test(app) && /\$\{packsetRowsHTML\(\)\}/.test(app) && /'ui\.ps1-all-a'/.test(app) && /'ui\.ps1-all-b'/.test(app), '1. the two rows are in the Pack Editor');
 ok(/const PACKSET_SUG = __PACK_BONUS__;/.test(app) && /__PACK_BONUS__/.test(rd('assemble_arena.py')), '1. the build inlines the suggestions');

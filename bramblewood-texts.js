@@ -3952,7 +3952,12 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rw3-elsewhere": "Reward at {code}",
   "ui.mp1-gd-pay-full": "Your first clear today pays in full; later runs pay 20%. Two players: +25%.",
   "ui.mp1-gd-pay-used": "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.",
-  "ui.cards1-corrode": "Its hits set Corrode to {n} if lower; it fades 1 a round."
+  "ui.cards1-corrode": "Its hits set Corrode to {n} if lower; it fades 1 a round.",
+  "ui.mapui2-pill-codex": "Codex",
+  "ui.mapui2-lv": "Level",
+  "ui.mapui2-lv-tip": "Gold: levels met on this map. Dark: below 1 or above 10.",
+  "ui.mapui2-leg-add": "Red / blue = to add",
+  "ui.mapui2-leg-rem": "Black / red = to remove"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

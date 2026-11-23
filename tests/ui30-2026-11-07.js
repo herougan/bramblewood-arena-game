@@ -70,12 +70,12 @@ ok(/const MAP_INTRO_SUGG = __MAP_INTRO_SUGG__;/.test(app), '#16 the placeholder'
   ok(new Set(keys).size === keys.length, '#16 no skill is suggested twice along the road');
   const kw = JSON.parse(read('canonical/map-keywords.json')).keywords; ok(Object.keys(SUG).every(m=> !SUG[m].some(e=> e.skill === kw[m])), '#16 no pick repeats the map\'s own intro keyword'); }
 { const hs = fn(app, 'ui19McSkillsHTML');
-  ok(/typeof ui30McSugg === 'function'/.test(hs) && /typeof ui30SuggTilesHTML === 'function'/.test(hs) && (hs.match(/\$\{sp\(/g) || []).length >= 3 /* 2026-11-19 (TESTFIX6): UX7's focus-add tiles carry the pill too */, '#16 the pill on skill, keyword and recommendation tiles, and the missing-pick tiles (guarded)');
+  ok(/typeof ui30McSugg === 'function'/.test(hs) && /typeof ui30SuggTilesHTML === 'function'/.test(hs) && true /* 2026-11-24 (MAPUI2): sp() is gone from the tiles; Sugg. Intro is the Suggested pill and a map with a table row has none */, '#16 the pill on skill, keyword and recommendation tiles, and the missing-pick tiles (guarded)');
   const H = new Function('MAP_INTRO_SUGG', 'mpIsSub', 'skillDefOf', 'TX', 'escapeAttr', 'escapeHtml', 'ui19McSkillText', 'SKILL_ICON', fn(app, 'ui30McSugg') + fn(app, 'ui30SuggPillHTML') + fn(app, 'ui30SuggTilesHTML') + 'return {ui30McSugg, ui30SuggPillHTML, ui30SuggTilesHTML};')(
     {m1: [{skill: 'guardian', why: 'w1'}, {skill: 'gone', why: 'x'}], m4: [{skill: 'sonar', why: 'w2'}]}, id=> id === 'mo', k=> k === 'gone' ? null : {label: k.toUpperCase()}, k=> k, s=> String(s), s=> String(s), ()=> 'text', {sonar: '📡'});
   const s1 = H.ui30McSugg('m1'); ok(s1.size === 1 && s1.get('guardian') === 'w1', '#16 a map\'s picks (a skill with no row is dropped)');
   ok(H.ui30McSugg('mo').size === 0 && H.ui30McSugg(null).size === 0, '#16 a sub-map has none');
-  ok(/class="ui30-sugg"[^>]*>ui\.ui30-sugg-intro</.test(H.ui30SuggPillHTML('guardian', s1)) && /w1/.test(H.ui30SuggPillHTML('guardian', s1)) && H.ui30SuggPillHTML('quick', s1) === '', '#16 the pill (its why in the tooltip) only on a pick');
+  ok(/class="ui28-sug"[^>]*>ui\.ui28-suggested</.test(H.ui30SuggPillHTML('guardian', s1)) && /w1/.test(H.ui30SuggPillHTML('guardian', s1)) && H.ui30SuggPillHTML('quick', s1) === '', '#16 the pill (its why in the tooltip) only on a pick');
   const s4 = H.ui30McSugg('m4'); ok(/data-ui30-sugg="1"/.test(H.ui30SuggTilesHTML(s4, new Set())) && /📡/.test(H.ui30SuggTilesHTML(s4, new Set())) && H.ui30SuggTilesHTML(s4, new Set(['sonar'])) === '', '#16 a pick no tile shows gets its own tile; one already shown does not'); }
 ok(/\.ui30-sugg\{/.test(tpl), '#16 CSS: the pill');
 ok(/^## 2026-11-07[^\n]*UI30/m.test(read('docs/CHANGELOG.md')), 'CHANGELOG entry');
@@ -102,10 +102,10 @@ async function browser(){
       // #16: every main map (Maps 0-24) shows at least one pill; sub-maps none
       const scan = await pg.evaluate(`(()=>{ adminModeEnabled = true; const out = []; mainConquestMaps().forEach(m=>{ if(m.reserved) return; pk1OpenMapCards(m.id); const o = document.getElementById('pk1MapCardsOverlay');
         let grp = '', outside = 0; o.querySelectorAll('#ui19McSkills .ui19-sk-list > li').forEach(l=>{ if(l.classList.contains('ui32-sk-head')) grp = l.className; else if(grp.indexOf('is-other') >= 0 && l.querySelector('.ui30-sugg')) outside++; });
-        out.push({id: m.id, pills: o.querySelectorAll('#ui19McSkills .ui30-sugg').length, tiles: o.querySelectorAll('#ui19McSkills .ui30-sugg-tile').length + outside}); document.getElementById('pk1McClose').click(); });
+        out.push({id: m.id, pills: o.querySelectorAll('#ui19McSkills .ui19-sk:is(.is-new, .is-carried, .is-other, .is-grey) :is(.ui28-sug, .ui30-sugg)').length, /* 2026-11-24 (MAPUI2 #8): a tile a listed card carries wears no Suggested pill */ tiles: o.querySelectorAll('#ui19McSkills .ui30-sugg-tile').length + outside}); document.getElementById('pk1McClose').click(); });
         const subs = CONQUEST_MAPS.filter(m=> mpIsSub(m.id)).map(m=>{ pk1OpenMapCards(m.id); const k = document.querySelectorAll('#pk1MapCardsOverlay .ui30-sugg').length; document.getElementById('pk1McClose').click(); return k; });
         return {out, subPills: subs.reduce((a, b)=> a + b, 0), subs: subs.length}; })()`);
-      ok(scan.out.length >= 25 && scan.out.every(x=> x.pills >= 1), `@${w} #16 every main map has a Sugg. Intro pill (${scan.out.filter(x=> !x.pills).map(x=> x.id).join(',') || 'all'})`);
+      ok(scan.out.length >= 25 && scan.out.every(x=> x.pills === 0), `@${w} #16 (MAPUI2: was every main map has a Sugg. Intro pill) no New! / carried tile wears Suggested (${scan.out.filter(x=> x.pills).map(x=> x.id).join(',') || 'none'})`);
       ok(scan.out.some(x=> x.tiles > 0), `@${w} #16 a pick no card has shows as its own tile (${scan.out.filter(x=> x.tiles).map(x=> x.id).join(',')})`);
       ok(scan.subs > 0 && scan.subPills === 0, `@${w} #16 sub-maps show no pill (${scan.subs} checked)`);
       // #14, #7

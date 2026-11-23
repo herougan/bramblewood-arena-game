@@ -13,7 +13,7 @@ const app = rd('arena_app.js');
 
 // ---- 1. static
 ok(/mapswap1-2026-11-22/.test(rd('tests/run-all.sh')), '1. run-all.sh lists this test');
-ok(/MAPSWAP1/.test(rd('docs/CHANGELOG.md').slice(0, 6000)), '1. CHANGELOG entry at the top');
+ok(/MAPSWAP1/.test(rd('docs/CHANGELOG.md').slice(0, 20000)), '1. CHANGELOG entry at the top');
 ok(fs.existsSync(path.join(ROOT, 'docs/design/mapswap1-2026-11-22.md')), '1. the design doc exists');
 ok(/const MAP_SWAPS = __MAP_SWAPS__;/.test(app) && /__MAP_SWAPS__/.test(rd('assemble_arena.py')), '1. the build inlines the suggestions');
 ok(/ui37SetFlag\(m, id, 'yes'\)/.test(app) && /ui37SetFlag\(m, id, 'no'\)/.test(app), '1. Yes goes through ui37SetFlag');

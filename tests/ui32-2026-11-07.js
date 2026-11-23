@@ -71,9 +71,9 @@ ok(/ceSavedIds\.add\(c\.id\)/.test(app) && /\.\.\.ceSavedIds\]\)/.test(app) && /
 
 // 7 the skills section in three groups
 { const f = app.match(/function ui19McSkillsHTML[\s\S]*?\n\}\n/)[0];
-  ok(/otherIds/.test(f) && /hd\('other'/.test(f) && !/hd\('main'/.test(f) && !/hd\('rec'/.test(f), 'ui19McSkillsHTML: UI35 (2026-11-08, owner 09:27 #2) Main and recommended are one list told apart by pills; only Other keeps a heading');
+  ok(/otherIds/.test(f) && !/hd\(/.test(f) && !/ui32-sk-head/.test(f), 'ui19McSkillsHTML: one list, no group heading at all (2026-11-24, MAPUI2: was UI35 only Other kept a heading)');
   ok(/isNew: isMain && mt\.met/.test(f), 'NEW! only on the main group');
-  ok(/\$\{sp\(r\.key\)\}(\$\{cx\(r\.key\)\})?(<small>|<\/span><\/li>)/.test(f) /* ENG35 (2026-11-07): the tile is one line, the text moved to the hover window */, 'the Sugg. Intro pill stays on every group (outside-main skills always carry it; main ones too, UI30: every main map shows one)');
+  ok(!/\$\{sp\(r\.key\)\}/.test(f.slice(f.indexOf('const li = r=>'), f.indexOf('const focusAdd'))), 'a tile a card carries wears no Sugg. Intro / Suggested pill (2026-11-24, MAPUI2 #8)');
   ok(/!mainKeys\.has\(r\.key\)/.test(f), 'a skill already in the main group is not listed again under Other'); }
 ok(/function ui32McSkillIds\(top, mapId, ok\)/.test(app) && /ui32McRefreshSkills\(ov\)/.test(app) && (app.match(/ui32McRefreshSkills\(ov\)/g) || []).length >= 4, 'the section is redrawn after a Cut / Keep toggle, a SPECIAL add / remove and an editor save');
 

@@ -4774,5 +4774,8 @@
  "Reward at {code}": "獎勵於 {code}",
  "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "今天首次通關可獲全額獎勵；之後的挑戰只得 20%。雙人：+25%。",
  "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "今天的全額獎勵已領取：明天之前的挑戰只得 20%。雙人：+25%。",
- "Its hits set Corrode to {n} if lower; it fades 1 a round.": "它的命中將腐蝕設為 {n}（若更低）；每回合衰減 1。"
+ "Its hits set Corrode to {n} if lower; it fades 1 a round.": "它的命中將腐蝕設為 {n}（若更低）；每回合衰減 1。",
+ "Gold: levels met on this map. Dark: below 1 or above 10.": "金色：此地圖的等級。暗色：低於 1 或高於 10。",
+ "Red / blue = to add": "紅 / 藍 = 待新增",
+ "Black / red = to remove": "黑 / 紅 = 待移除"
 }

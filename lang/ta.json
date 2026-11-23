@@ -4776,5 +4776,8 @@
  "Reward at {code}": "{code} இல் பரிசு",
  "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "இன்றைய உங்கள் முதல் முழு வெற்றிக்கு முழு ஊதியம்; அடுத்தவற்றுக்கு 20%. இரண்டு வீரர்கள்: +25%.",
  "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "இன்றைய முழு ஊதியம் பெறப்பட்டது: நாளை வரை ஓட்டங்களுக்கு 20%. இரண்டு வீரர்கள்: +25%.",
- "Its hits set Corrode to {n} if lower; it fades 1 a round.": "இதன் தாக்குதல்கள் அரிப்பை {n} ஆக உயர்த்தும் (குறைவாக இருந்தால்); சுற்றுக்கு 1 குறையும்."
+ "Its hits set Corrode to {n} if lower; it fades 1 a round.": "இதன் தாக்குதல்கள் அரிப்பை {n} ஆக உயர்த்தும் (குறைவாக இருந்தால்); சுற்றுக்கு 1 குறையும்.",
+ "Gold: levels met on this map. Dark: below 1 or above 10.": "தங்கம்: இந்த வரைபடத்தின் நிலைகள். கருமை: 1க்குக் கீழ் அல்லது 10க்கு மேல்.",
+ "Red / blue = to add": "சிவப்பு / நீலம் = சேர்க்க",
+ "Black / red = to remove": "கருப்பு / சிவப்பு = நீக்க"
 }

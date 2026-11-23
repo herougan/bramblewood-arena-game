@@ -133,7 +133,7 @@ function wallsOf(id){ const {e, P} = mk(); const h = {uid: 9500, defId:id}; P[1]
 { const {e, P} = mk(); const a = put(e, P, 1, 'e36-con', 0), t = put(e, P, 2, 'e36-imm-constrict', 0); swing(e, P, a); ok(!(t.constricted > 0), 'Constrict Immune holds it off'); }
 { ok(E.ACTION_KEYS.includes('strangle') && E.ACTION_KEYS.includes('constrict'), 'Strangle and Constrict are actions (ACTION_KEYS)');
   const app = rd('arena_app.js'); ok(/ACTION_DEFS\.push\(\s*\{key:'strangle'[\s\S]{0,400}\{key:'constrict'/.test(app), 'the action editor offers Strangle and Constrict');
-  ok(/PASSIVE_DEFS\.push\(\{key:'constrict'/.test(app) && /constrict:'🐍'/.test(app), 'Constrict is a skill with an icon');
+  ok(/PASSIVE_DEFS\.push\(\{key:'constrict'/.test(app) && /constrict:'⛓️'/.test(app), 'Constrict is a skill with an icon');
   const del = J('canonical/skill-delivery.json'); ok(del.delivery.constrict === 'none' && del.rides.constrict === 'melee', 'skill-delivery.json: Constrict rides melee hits (as Strangle)');
   const sc = J('canonical/skill-costs.json'); ok(sc.skills.some(s=> s.id === 'constrict' && (s.value === 8 || (s.bal32Was && s.bal32Was.value === 8 && s.bal32Was.scale === 'half'))) && /* 2026-11-09 (FIX11): BAL32 repriced Constrict on purpose (scale n, value x N^pow); ENG36's price 8 half scale is kept in bal32Was */['strangle', 'constrict', 'strangle.amount', 'constrict.amount'].every(id=> sc.actions.some(a=> a.id === id)), 'Constrict is priced (skill 8, half scale) and both actions'); }
 
