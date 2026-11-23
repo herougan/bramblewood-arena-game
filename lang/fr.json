@@ -4773,5 +4773,6 @@
  "New! skills: {list}": "Nouvelles compétences : {list}",
  "Reward at {code}": "Récompense en {code}",
  "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "Votre première victoire complète du jour paie en entier ; les suivantes paient 20 %. À deux joueurs : +25 %.",
- "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "La victoire du jour à plein tarif est faite : les parties paient 20 % jusqu'à demain. À deux joueurs : +25 %."
+ "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "La victoire du jour à plein tarif est faite : les parties paient 20 % jusqu'à demain. À deux joueurs : +25 %.",
+ "Its hits set Corrode to {n} if lower; it fades 1 a round.": "Ses coups portent la Corrosion à {n} si elle est plus basse ; elle baisse de 1 par round."
 }

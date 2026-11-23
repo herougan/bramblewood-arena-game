@@ -1,6 +1,6 @@
 {
  "_about": "PACKSET1 (2026-11-22): Claude suggestions for the Pack Editor \"All cards\" panels. Regenerate: node tools/packset1_suggest.js. bonus = pack-only cards on no map list, in no fight deck or reward (3 per map, 2 asked); tutorial = per-faction starters for the owner's 16.",
- "generated": "2026-11-22",
+ "generated": "2026-11-23",
  "bonus": [
   {
    "id": "acorn-pelter-squirrel",
@@ -15,10 +15,10 @@
    "why": "a meadow forest creature, the beetle family of the map's lists, budget fits Map 1 · common"
   },
   {
-   "id": "mire-rat",
+   "id": "moonlit-hare",
    "map": "m1",
    "mapNo": 0,
-   "why": "a meadow forest creature, the rat family of the map's lists · common"
+   "why": "a meadow forest creature, the rabbit family of the map's lists, budget fits Map 1 · uncommon"
   },
   {
    "id": "blister-beetle",
@@ -87,10 +87,10 @@
    "why": "a river creature, the beaver family of the map's lists · common"
   },
   {
-   "id": "trebuchet-crew",
+   "id": "dam-wall",
    "map": "m2",
    "mapNo": 4,
-   "why": "a river creature, the beaver family of the map's lists, budget fits Map 4 · rare"
+   "why": "a river creature, the beaver family of the map's lists · common"
   },
   {
    "id": "adder",
@@ -99,16 +99,16 @@
    "why": "a swamp creature, the snake family of the map's lists · common"
   },
   {
+   "id": "baby-horned-capybara",
+   "map": "mw",
+   "mapNo": 5,
+   "why": "a swamp creature, the rodent family of the map's lists · common"
+  },
+  {
    "id": "bogfire-newt",
    "map": "mw",
    "mapNo": 5,
    "why": "a swamp creature, the salamander family of the map's lists · uncommon"
-  },
-  {
-   "id": "trident-caiman",
-   "map": "mw",
-   "mapNo": 5,
-   "why": "a swamp creature, the crocodile family of the map's lists · uncommon"
   },
   {
    "id": "cane-toad",
@@ -123,7 +123,7 @@
    "why": "a swamp creature, the leech family of the map's lists · uncommon"
   },
   {
-   "id": "peat-smoke-shaman",
+   "id": "rainmaker-frog",
    "map": "m8",
    "mapNo": 6,
    "why": "a swamp creature, the frog family of the map's lists · uncommon"
@@ -141,10 +141,10 @@
    "why": "near fungal, the spider family of the map's lists · uncommon"
   },
   {
-   "id": "swarm-matriarch",
+   "id": "peat-smoke-shaman",
    "map": "mu",
    "mapNo": 7,
-   "why": "a fungal creature · rare"
+   "why": "near fungal, the frog family of the map's lists · uncommon"
   },
   {
    "id": "arc-bat",
@@ -177,10 +177,10 @@
    "why": "near mangrove, the heron family of the map's lists · rare"
   },
   {
-   "id": "tidefolk-harpooner",
+   "id": "the-unremembered",
    "map": "mk",
    "mapNo": 9,
-   "why": "a mangrove creature · rare"
+   "why": "near mangrove, the heron family of the map's lists · rare"
   },
   {
    "id": "man-o-war",

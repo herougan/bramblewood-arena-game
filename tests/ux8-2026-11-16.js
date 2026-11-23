@@ -12,7 +12,7 @@ const by = id=> cards.find(c=> c.id === id);
 const lift = new Function(['cardBaseLevel', 'effectsAtLevel', 'ux8TriggerLevels'].map(fnSrc).join('\n') + '\nreturn {cardBaseLevel, effectsAtLevel, ux8TriggerLevels};')();
 const ant = by('worker-ant');
 ok(lift.cardBaseLevel(ant) === 0, 'Worker Ant starts at Level 0');
-ok(lift.cardBaseLevel(by('honey-bee')) === 1, 'other Base starters unchanged (Level 1)');
+ok(lift.cardBaseLevel(by('honey-bee')) === 0, 'other Base starters start at Level 0 too (CARDS1, 2026-11-24, owner #6; was Level 1)');
 ok(!lift.effectsAtLevel(ant, 0).triggers && lift.effectsAtLevel(ant, 1).triggers.length === 1, 'its trigger arrives at Level 1');
 ok(ant.attack === 1 && ant.health === 6, 'stats unchanged');
 // editor round trip: a levelled trigger reads back as lv, the base-level list does not

@@ -1,0 +1,15 @@
+{"tx": {"ui.cards1-corrode": {
+ "en": "Its hits set Corrode to {n} if lower; it fades 1 a round.",
+ "fr": "Ses coups portent la Corrosion à {n} si elle est plus basse ; elle baisse de 1 par round.",
+ "de": "Seine Treffer setzen Korrosion auf {n}, falls niedriger; sie sinkt um 1 pro Runde.",
+ "es": "Sus golpes suben la Corrosión a {n} si es menor; baja 1 por ronda.",
+ "it": "I suoi colpi portano la Corrosione a {n} se è più bassa; cala di 1 a round.",
+ "pt": "Seus golpes elevam a Corrosão a {n} se for menor; ela cai 1 por rodada.",
+ "tl": "Itinatakda ng mga tama nito ang Kalawang sa {n} kung mas mababa; bumababa ito ng 1 bawat round.",
+ "ta": "இதன் தாக்குதல்கள் அரிப்பை {n} ஆக உயர்த்தும் (குறைவாக இருந்தால்); சுற்றுக்கு 1 குறையும்.",
+ "id": "Serangannya menetapkan Korosi menjadi {n} jika lebih rendah; turun 1 per ronde.",
+ "zh-Hans": "它的命中将腐蚀设为 {n}（若更低）；每回合衰减 1。",
+ "zh-Hant": "它的命中將腐蝕設為 {n}（若更低）；每回合衰減 1。",
+ "ja": "命中すると腐食を{n}まで引き上げる（低い場合）。毎ラウンド1減る。",
+ "ko": "명중하면 부식이 {n}보다 낮을 때 {n}으로 올라요. 매 라운드 1씩 줄어요."
+}}}

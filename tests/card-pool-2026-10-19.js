@@ -51,7 +51,8 @@ for(let k = 0; k <= 12; k++){ const m = mains[k], cnt = pool.filter(c=> c.poolMa
 const polar = pool.filter(c=> ['m6', 'mi', 'mt'].includes(c.poolMap));
 ok(polar.length >= 8, `1. a polar set on the tundra / ice / taiga maps (${polar.length})`);
 ['polar-bear', 'harp-seal-pup', 'beluga', 'arctic-tern', 'musk-ox-calf'].forEach(id=> ok(polar.some(c=> c.id === id), `1. polar set has ${id}`));
-ok(polar.every(c=> (c.resist || []).includes('cold')), '1. the polar cards resist Cold');
+// 2026-11-24 (CARDS1, owner 11-23 23:39 #11): resist is explicit only when super relevant, so only the Polar Bear and the Musk Ox Calf of the polar set keep Cold
+ok(['polar-bear', 'musk-ox-calf'].every(id=> (polar.find(c=> c.id === id).resist || []).includes('cold')), '1. the polar cards that stay super relevant resist Cold (Polar Bear, Musk Ox Calf; the seals, tern, beluga, lemmings, krill, caribou lost it)');
 const urchin = pool.find(c=> /urchin/i.test(c.name)); ok(urchin && (urchin.effects.thorns >= 1 || urchin.effects.poisonBarbs >= 1 /* FOLD5: his 11-06 edit, Thorns -> Poison Barbs 2 */) && (urchin.archetypes || []).includes('Coastal'), '1. owner: a sea urchin with Thorns (or Poison Barbs) on a coastal map');
 const snakes = pool.filter(c=> /sea (snake|krait)/i.test(c.name));
 ok(snakes.length >= 1 && snakes.every(c=> c.effects.tide && (c.effects.poison || c.effects.venomous)), '1. owner: sea snakes, Poison (or Venomous) and Tide (Swimmer = Tide)');

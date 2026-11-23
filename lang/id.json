@@ -4774,5 +4774,6 @@
  "New! skills: {list}": "Skill baru: {list}",
  "Reward at {code}": "Hadiah di {code}",
  "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "Kemenangan penuh pertamamu hari ini dibayar penuh; berikutnya dibayar 20%. Dua pemain: +25%.",
- "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "Bayaran penuh hari ini sudah diambil: permainan dibayar 20% sampai besok. Dua pemain: +25%."
+ "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "Bayaran penuh hari ini sudah diambil: permainan dibayar 20% sampai besok. Dua pemain: +25%.",
+ "Its hits set Corrode to {n} if lower; it fades 1 a round.": "Serangannya menetapkan Korosi menjadi {n} jika lebih rendah; turun 1 per ronde."
 }

@@ -4775,5 +4775,6 @@
  "New! skills: {list}": "새 스킬: {list}",
  "Reward at {code}": "{code} 보상",
  "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "오늘 첫 완전 클리어는 보상 전액, 이후는 20%. 2인 플레이: +25%.",
- "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "오늘의 전액 보상은 받았습니다: 내일까지 보상은 20%. 2인 플레이: +25%."
+ "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "오늘의 전액 보상은 받았습니다: 내일까지 보상은 20%. 2인 플레이: +25%.",
+ "Its hits set Corrode to {n} if lower; it fades 1 a round.": "명중하면 부식이 {n}보다 낮을 때 {n}으로 올라요. 매 라운드 1씩 줄어요."
 }

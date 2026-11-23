@@ -19,7 +19,7 @@ const inFight = id => builtIn.has(id) || nodeBlob.includes('"' + id + '"');
 const plain = d => !d.token && !d.test && !d.hero && !d.derivedFrom && !d.cardType && d.kind !== 'baby' && d.rarity !== 'starter' && !(d.source && d.source.kind === 'easteregg');
 const cand = Object.values(D).filter(d => { const k = (d.source || {}).kind; if (!plain(d) || d.faction || d.basicSet) return false; if (k && k !== 'pack') return false;
   if (k === 'pack' && !(parseInt(d.source.tier, 10) >= 1 && parseInt(d.source.tier, 10) <= 10)) return false;
-  return !listed.has(d.id) && !yes.has(d.id) && !inFight(d.id); });
+  return !listed.has(d.id) && !inFight(d.id); }); // 2026-11-24 (CARDS1, owner 2026-11-23 23:39 #12): a card taken out of the map lists (a Yes pick no longer listed, e.g. the Camouflage Frog) may be a bonus card; was: not a Yes pick at all
 const KIN = {}; U.vocab.biomes.forEach(b => { KIN[b.id] = b.kin || []; });
 const maps = U.maps.filter(m => !m.sub && m.no <= 24).sort((a, b) => a.no - b.no);
 const mapAnimals = m => { const e = pools.maps[m.id] || {}, s = new Set(); [].concat(e.cards || [], ...Object.values(e.submaps || {})).forEach(id => { const u = units[id]; if (u) s.add(u.animalGroup || u.animal); }); return s; };
@@ -28,8 +28,17 @@ const score = (d, m, an) => { const u = units[d.id] || {}, bio = u.biomes || [];
   const ag = u.animalGroup || u.animal || d.animal; if (an.has(ag)) { s += 3; why.push('the ' + ag + ' family of the map\'s lists'); }
   if (u.firstMap != null) { const gap = u.firstMap - m.no; if (gap > 1) s -= 2 * gap; else if (Math.abs(gap) <= 2) { s += 1; why.push('budget fits Map ' + u.firstMap); } }
   s -= Math.abs(rar(d) - (1 + m.no / 5)) * 1.2; return {s, why: why.join(', ') + (why.length ? ' · ' : '') + (d.rarity || 'common')}; };
+// 2026-11-24 (CARDS1, owner #12): a bonus card may carry a skill first introduced on a later map only when it is placed in the pack holding that later map (it then belongs to that
+// pack); an earlier pack's card never carries a later pack's skill. Skill -> first map = MAP_FOCUS_SKILLS (arena_app.js); pack = the zone of canonical/pack-plan.json.
+const FOCUS = eval('(' + (appSrc.match(/const MAP_FOCUS_SKILLS = (\{[^\n]*?\});/) || [0, '{}'])[1] + ')'), firstMapOf = {};
+Object.keys(FOCUS).map(Number).sort((a, b) => a - b).forEach(n => FOCUS[n].forEach(k => { if (firstMapOf[k] == null) firstMapOf[k] = n; }));
+const ZONES = J('canonical/pack-plan.json').zones, zoneOf = n => { const z = ZONES.find(z => n >= z.maps[0] && n <= z.maps[1]); return z ? z.id : 'D'; };
+const RAW = Object.fromEntries(J('canonical/cards.json').map(c => [c.id, c]));
+const skillKeys = id => { const c = RAW[id] || {}, ks = new Set(Object.keys(c.effects || {})); Object.values(c.levelSkills || {}).forEach(o => Object.keys(o).forEach(k => ks.add(k))); Object.values(c.levelBonus || {}).forEach(o => Object.keys(o.skills || {}).forEach(k => ks.add(k))); return [...ks]; };
+const skillMap = id => Math.max(-1, ...skillKeys(id).map(k => firstMapOf[k] == null ? -1 : firstMapOf[k]));
+const gated = (d, m) => { const sm = skillMap(d.id); return sm >= 0 && zoneOf(m.no) < zoneOf(sm); };
 const take = new Set(), out = [], ranked = {};
-maps.forEach(m => { const an = mapAnimals(m); ranked[m.id] = cand.map(d => Object.assign({d}, score(d, m, an))).filter(x => x.s > -4).sort((a, b) => b.s - a.s || a.d.id.localeCompare(b.d.id)); });
+maps.forEach(m => { const an = mapAnimals(m); ranked[m.id] = cand.filter(d => !gated(d, m)).map(d => Object.assign({d}, score(d, m, an))).filter(x => x.s > -4).sort((a, b) => b.s - a.s || a.d.id.localeCompare(b.d.id)); });
 for (let r = 0; r < 3; r++) maps.slice().sort((a, b) => ranked[a.id].length - ranked[b.id].length).forEach(m => { const x = ranked[m.id].find(y => !take.has(y.d.id)); if (!x) return; take.add(x.d.id); out.push({id: x.d.id, map: m.id, mapNo: m.no, why: x.why}); });
 out.sort((a, b) => a.mapNo - b.mapNo || a.id.localeCompare(b.id));
 // tutorial: per faction

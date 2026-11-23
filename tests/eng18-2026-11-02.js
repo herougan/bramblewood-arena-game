@@ -180,7 +180,8 @@ const playable = (T, s)=> C.seatData(T, s).hand.find(h=> T.E.canPlay(C.seatData(
     ok(babies.every(d=>{ const s = G.statsAtLevel(d, 0); return s.attack === d.attack && s.health === d.health; }), 'a Level 0 Baby copy has its printed stats');
     const starters = Object.values(D).filter(d=> d.kind !== 'baby' && d.faction === 'base' && d.rarity === 'starter' && !d.token);
     // 2026-11-16 (UX8, owner 23:35 #5): Worker Ant is the one starter at Level 0
-    ok(starters.length > 0 && starters.every(d=> G.cardBaseLevel(d) === (d.id === 'worker-ant' ? 0 : 1)) , `the other starters (faction base) stay at Level 1 (${starters.length})`);
+    // 2026-11-24 (CARDS1, owner 11-23 23:39 #6): every starter-deck card starts at Level 0 (baseLevel 0, like the Worker Ant); was Level 1 but the Worker Ant
+    ok(starters.length > 0 && starters.filter(d=> !['bee-forager', 'bee-sentry', 'ant-scout'].includes(d.id) /* Map 0 starters outside the starter decks stay Level 1 */).every(d=> G.cardBaseLevel(d) === 0) , `the starters (faction base) start at Level 0 (${starters.length})`);
     // 2026-11-06 TESTFIX2: CONTENT12 folded the owner's live Duckling (Diurnal 1 at Level 1, no Hatchling), as eng25 already excepts it
     const hatchBabies = babies.filter(d=> d.id !== 'duckling');
     ok(hatchBabies.every(d=> d.levelSkills && d.levelSkills['1'] && d.levelSkills['1'].hatchling === true && !(d.levelSkills['0'] && d.levelSkills['0'].hatchling)), 'Hatchling at Level 1 on every Baby card (none at Level 0; 2026-11-05 ENG25, owner #3: "only appear at level 1 and up")'); // 2026-11-03 (ENG22, DESIGN1-2): a Baby's other abilities arrive at Level 1 now, so levelSkills "1" may exist; Hatchling is not in it

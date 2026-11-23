@@ -4772,5 +4772,6 @@
  "New! skills: {list}": "Neue Fähigkeiten: {list}",
  "Reward at {code}": "Belohnung bei {code}",
  "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "Dein erster Komplettsieg heute zahlt voll, weitere Läufe zahlen 20 %. Zu zweit: +25 %.",
- "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "Der volle Lohn ist heute vergeben: Läufe zahlen bis morgen 20 %. Zu zweit: +25 %."
+ "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "Der volle Lohn ist heute vergeben: Läufe zahlen bis morgen 20 %. Zu zweit: +25 %.",
+ "Its hits set Corrode to {n} if lower; it fades 1 a round.": "Seine Treffer setzen Korrosion auf {n}, falls niedriger; sie sinkt um 1 pro Runde."
 }

@@ -3245,7 +3245,7 @@ function waveParts(v, e){
   return {way, n: raw === 'N' ? 'N' : Math.max(1, Math.round(Number(raw)) || 1)};
 }
 const SKILL_TEXT = {
-  poison: v=> TX('ui.eng33-venomous', {n: v}) /* ENG33 */, decay: v=> `Its hits add ${v} Decay.`, bleed: v=> TX('ui.eng34-bleed', {n: v}) /* ENG34 */, corrode: v=> `Its hits add ${v} Corrode.`,
+  poison: v=> TX('ui.eng33-venomous', {n: v}) /* ENG33 */, decay: v=> `Its hits add ${v} Decay.`, bleed: v=> TX('ui.eng34-bleed', {n: v}) /* ENG34 */, corrode: v=> TX('ui.cards1-corrode', {n: v}) /* CARDS1 (2026-11-24): ENG16 made Corrode refresh, it no longer stacks; was `Its hits add ${v} Corrode.` */,
   armor: v=> `Takes ${v} less damage from every hit.`,
   counterattack: ()=> TX('ui.sk-counterattack'), // SKN1 (2026-11-16): it hits the unit facing it, not the attacker; swings only with no enemy facing it
   spiteful: v=> `Deal ${v} damage back to any enemy that damages it.`,

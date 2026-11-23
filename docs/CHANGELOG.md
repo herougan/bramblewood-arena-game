@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-24 Package CARDS1 (owner 11-23 23:39 #6 #11 #12 #19 #20)
+- **Starter cards start at Level 0** (21 cards, `baseLevel 0`; Flying / Taunt / Armor now arrive at Level 1). **Resist / weakness sparingly:** 22 cards lose theirs, Komodo Warlord keeps only Poison, 6 fire / ice / poison animals gain one (54 > 38 cards). **Fork** only on octopi (Shoal Shark, Grass Snake, Two-Headed Calf, Ironmaw Warwolf, Pack Wolf Reaver, Alpine Avalanche, Conger Eel re-skilled), **Trident** only on Swordfish Spearman and Anhinga Spearbird (Mangrove Monitor, Otter Angler re-skilled). **Gallery Orb-Weaver redesigned** (Web from Level 1, Venomous 1 from 2, Web 2 at 6, Level 10 5/10 at 98%). Pack bonus suggestions may use cards removed from map lists and never carry a later pack's skill. Corrode's player line says it refreshes. Doc `docs/design/cards1-2026-11-24.md`; card matrix golden updated.
+
 ## 2026-11-24 Package ENG16 (owner 11-23 23:39 #16: "Corrode and Daunt seem to be stacking")
 - **Corrode no longer stacks:** a hit sets Corrode to the larger of what the unit has and N; it still fades 1 a round after the last hit. Before, a unit hit every round never lost any: one Corrode 1 attacker took 1 more Attack off it every round, without end (Corrode 2 had a 10-Attack unit at 0 by round 5). Two Corrode units on one target now count the larger. Same for Acid Bolt's 1 and Corrode on Cleave / prong / counter hits. Can move fights with Corrode carriers (Map 7: Leopard Slug, Hawthorn Shieldbug; Black Dragon, Caustic Scorpion); Corrode's measured price (2.9) read the old rule.
 - **Daunt unchanged** (the owner's 10-12 rule: hits add; each mark lasts to the end of the next round, so one Daunt 2 unit hitting every round cuts 4). Its 😨 pip now shows that: mid-round it showed only this round's marks, and a live status refresh dropped it.
