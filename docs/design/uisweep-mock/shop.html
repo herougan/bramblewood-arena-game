@@ -1,0 +1,84 @@
+<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
+<title>UISWEEP mock: Shop with the curtain closing</title><link rel=stylesheet href=tokens.css>
+<style>
+#st::before{display:none}
+.night{position:absolute;inset:0;z-index:-2;background:radial-gradient(ellipse 70% 50% at 50% 0%,#4a3a63 0%,#2b2140 45%,#1a1326 100%)}
+.lants{position:absolute;top:0;left:0;right:0;height:170px;z-index:-1;background:
+ radial-gradient(circle at 8% 98px,rgba(255,196,90,.9) 0 5px,rgba(255,196,90,.22) 6px 34px,transparent 60px),
+ radial-gradient(circle at 24% 84px,rgba(255,196,90,.9) 0 5px,rgba(255,196,90,.22) 6px 34px,transparent 60px),
+ radial-gradient(circle at 76% 84px,rgba(255,196,90,.9) 0 5px,rgba(255,196,90,.22) 6px 34px,transparent 60px),
+ radial-gradient(circle at 92% 98px,rgba(255,196,90,.9) 0 5px,rgba(255,196,90,.22) 6px 34px,transparent 60px)}
+.page{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;padding:calc(var(--tap) + var(--sp-5) + var(--sp-3)) var(--sp-4) var(--sp-4);gap:var(--sp-4)}
+.hd{display:flex;flex-direction:column;align-items:center;gap:var(--sp-3)}
+.panel{width:min(780px,100%);background:linear-gradient(180deg,#f6eed6,var(--surface));color:var(--ink);border-radius:var(--r-l);border:2px solid var(--surface-border);box-shadow:var(--elev-3),inset 0 1px 0 #fff8;padding:var(--sp-5);display:flex;flex-direction:column;gap:var(--sp-4)}
+.panel p.lead{font-size:var(--fs-m);color:var(--ink-muted)}
+.merchant{position:relative;display:flex;align-items:center;gap:var(--sp-4);padding:var(--sp-4);border-radius:var(--r-m);border:2px dashed rgba(233,180,76,.7);background:linear-gradient(180deg,#3a2614,#24170a);color:#f6e7c6}
+.merchant .av{width:64px;height:64px;flex:none;border-radius:50%;border:2px solid var(--gold);background:url(../../../assets/npc/frog.png) center/cover;image-rendering:pixelated;box-shadow:0 0 0 4px rgba(233,180,76,.15)}
+.merchant h3{font-size:var(--fs-l);line-height:1.2;color:#fff3d6}.merchant p{font-size:var(--fs-s);color:rgba(246,231,198,.78)}
+.merchant .btn{margin-left:auto}
+.packs{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-4)}
+.pack{display:flex;flex-direction:column;align-items:center;gap:var(--sp-2);padding:var(--sp-4);border-radius:var(--r-m);background:var(--surface-2);border:1px solid var(--surface-border)}
+.pack .art{width:84px;height:118px;background-size:contain;background-repeat:no-repeat;filter:drop-shadow(0 6px 6px rgba(0,0,0,.35));transform:rotate(-2deg)}
+.pack:nth-child(2) .art{transform:rotate(2deg)}
+.pack h3{font-size:var(--fs-m);line-height:1.1}.pack small{font-size:var(--fs-xs);color:var(--ink-muted);text-align:center}
+.pack .btn{width:100%}
+.chips{display:flex;gap:var(--sp-2)}
+.chip{height:32px;padding:0 var(--sp-3);display:flex;align-items:center;gap:6px;border-radius:var(--r-pill);background:var(--surface-2);border:1px solid var(--surface-border);font:800 var(--fs-s) var(--font-display);color:var(--ink)}
+.gm{position:absolute;left:-30px;font:800 10px/1 var(--font-ui);color:#ffd27a;display:flex;align-items:center;justify-content:center;width:22px}
+.measure{position:relative}
+.measure::before,.measure::after{content:"";position:absolute;left:-14px;width:0;border-left:2px solid #ffd27a;height:var(--sp-4)}
+.measure::before{top:calc(-1 * var(--sp-4))}.measure::after{bottom:calc(-1 * var(--sp-4))}
+.measure i{white-space:nowrap;position:absolute;left:-44px;font:800 10px/1 var(--font-ui);color:#ffd27a;font-style:normal}
+.measure i.a{top:calc(-1 * var(--sp-4) / 2 - 5px)}.measure i.b{bottom:calc(-1 * var(--sp-4) / 2 - 5px)}
+/* curtain: --p 0 open .. 1 closed. Frame shown: closing, 58% */
+.curtain{position:absolute;inset:0;z-index:var(--z-curtain);pointer-events:none;--p:.56}
+.open .curtain,.open .tag{display:none}
+.open .measure::before,.open .measure::after,.open .measure i{white-space:nowrap;display:block}
+.mz{display:none}.open .mz{display:flex}
+.curtain .half{position:absolute;top:0;bottom:0;width:calc(50% * var(--p));overflow:hidden;box-shadow:0 0 40px rgba(0,0,0,.6)}
+.curtain .l{left:0}.curtain .r{right:0}
+.curtain .half::before{content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(90deg,#2f4f86 0 34px,#e9e0c8 34px 68px);}
+.curtain .half::after{content:"";position:absolute;inset:0;background:
+  repeating-linear-gradient(90deg,rgba(0,0,0,.28) 0 5px,rgba(0,0,0,0) 5px 17px,rgba(255,255,255,.12) 17px 22px,rgba(0,0,0,0) 22px 34px),
+  linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,0) 22%,rgba(0,0,0,0) 80%,rgba(0,0,0,.4))}
+.curtain .edge{position:absolute;top:0;bottom:0;width:14px;background:linear-gradient(90deg,#d6a63d,#f6d27a,#9a6d1c);box-shadow:0 0 14px rgba(0,0,0,.6)}
+.curtain .l .edge{right:0}.curtain .r .edge{left:0}
+.curtain .valance{position:absolute;top:0;left:0;right:0;height:46px;background:repeating-linear-gradient(90deg,#2f4f86 0 34px,#e9e0c8 34px 68px);
+  -webkit-mask:radial-gradient(circle at 17px 100%,transparent 0 16px,#000 17px) 0 0/34px 100%;box-shadow:0 8px 18px rgba(0,0,0,.45)}
+.curtain .rod{position:absolute;top:0;left:0;right:0;height:10px;background:linear-gradient(180deg,#f6d27a,#9a6d1c);box-shadow:0 2px 6px rgba(0,0,0,.5)}
+.tag{position:absolute;left:50%;bottom:var(--sp-4);transform:translateX(-50%);z-index:calc(var(--z-curtain) + 1);padding:6px var(--sp-4);border-radius:var(--r-pill);background:rgba(15,10,5,.88);border:1px solid var(--glass-line);font:800 var(--fs-xs) var(--font-display);letter-spacing:.06em;color:#f6e7c6;white-space:nowrap}
+.tag b{color:var(--gold)}
+@media (max-width:560px){
+ .curtain{--p:.4}
+ .panel{padding:var(--sp-4);gap:var(--sp-3)}
+ .merchant{flex-wrap:wrap;gap:var(--sp-3);padding:var(--sp-3)}.merchant .av{width:48px;height:48px}.merchant .btn{margin-left:0;width:100%}
+ .packs{gap:var(--sp-2)}.pack{padding:var(--sp-3) var(--sp-2)}.pack .art{width:60px;height:84px}.pack small{display:none}
+ .curtain .half::before{background:repeating-linear-gradient(90deg,#2f4f86 0 24px,#e9e0c8 24px 48px)}.curtain .valance{background:repeating-linear-gradient(90deg,#2f4f86 0 24px,#e9e0c8 24px 48px);-webkit-mask:radial-gradient(circle at 12px 100%,transparent 0 11px,#000 12px) 0 0/24px 100%}
+ .measure::before,.measure::after,.measure i{white-space:nowrap;display:none}.chips{flex-wrap:wrap}.tag{font-size:10px;bottom:var(--sp-3)}
+}
+</style>
+<div class="stage" id=st>
+<script>if(location.hash==="#open")document.getElementById("st").classList.add("open")</script>
+<div class=night></div><div class=lants></div>
+<div class=dock><span class="rbtn back" title="Back to the map">↩</span><span class=sp></span><span class=rbtn>🏠</span><span class=rbtn>🗺️</span><span class=rbtn>⚙️</span><span class="pill">20/20 <em>⚡</em></span><span class="pill acct"><span>👤</span><span class=lbl>Sign in</span></span></div>
+<style>@media (max-width:560px){.acct{width:var(--tap);padding:0;justify-content:center;font-size:19px}.acct .lbl{display:none}}</style>
+<main class=page>
+  <div class=hd><span class=sign>🧳 Shops</span><span class="seg"><button class=on>🛒 Shop</button><button>🍂 Premium</button></span></div>
+  <section class=panel>
+    <p class=lead>Three packs of five cards. Each pack draws from its own maps.</p>
+    <div class="merchant measure"><i class=a>16</i><i class=b>16</i><span class=av></span><div><h3>A wandering merchant is out on the map today.</h3><p>Find their barrow for a deal they only offer once.</p></div><span class="btn quiet sm">Show on map</span></div>
+    <div class=packs>
+      <div class=pack><div class=art style="background-image:url(../../../assets/backings/unit.png)"></div><h3>Hedgerow Pouch</h3><small>Maps 0-6</small><span class="btn primary sm">80 🍁</span></div>
+      <div class=pack><div class=art style="background-image:url(../../../assets/backings/field.png)"></div><h3>Tidemire Chest</h3><small>Maps 7-13</small><span class="btn primary sm">100 🍁</span></div>
+      <div class=pack><div class=art style="background-image:url(../../../assets/backings/castle.png)"></div><h3>Highcrest Case</h3><small>Maps 14-20</small><span class="btn primary sm">125 🍁</span></div>
+    </div>
+    <div class=chips><span class=chip>🍁 1700</span><span class=chip>✨ 20</span></div>
+  </section>
+</main>
+<div class=curtain>
+  <div class="half l"><div class=edge></div></div><div class="half r"><div class=edge></div></div>
+  <div class=valance></div><div class=rod></div>
+</div>
+<div class=tag>SHOP &rarr; PREMIUM &nbsp;&middot;&nbsp; <b>CLOSING</b> &nbsp;&middot;&nbsp; frame at 120 ms of 420</div>
+</div>

@@ -1,0 +1,71 @@
+/* UISWEEP tokens as proposed in docs/design/uisweep-2026-11-24.md (section 1). Mock only. */
+@import url(../../../fonts/fonts.css);
+:root{
+  /* colour: the game's own (arena_template.html :root) plus the Conquest "glass" family */
+  --bg:#dfe4cb; --surface:#f2e9cf; --surface-2:#e8dcb8; --surface-3:#dccf9e; --surface-border:#c9b483;
+  --ink:#2c3320; --ink-muted:#4f5a3e; --ink-soft:#7b8566;
+  --accent:#985a1a; --accent-strong:#7d4a15; --accent-ink:#fff6e4;
+  --page-wood:#2f2013; --page-wood-2:#4a3520; --page-ink:#f3e8cf;
+  --gold:#e9b44c;
+  --glass:rgba(26,17,9,.74); --glass-2:rgba(26,17,9,.58); --glass-line:rgba(233,180,76,.26); /* NEW */
+  --cream-btn:#efe3c6; --cream-btn-ring:#b9985a;                                              /* NEW: the round Conquest buttons */
+  /* spacing, 4 px base */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px; --sp-7:48px; --sp-8:64px;
+  /* type */
+  --font-ui:'Nunito',system-ui,sans-serif; --font-display:'Baloo 2','Nunito',sans-serif; --font-brand:'MedievalSharp','Baloo 2',serif;
+  --fs-xs:11px; --fs-s:12.5px; --fs-m:14px; --fs-l:17px; --fs-xl:22px; --fs-2xl:28px; --fs-hero:40px;
+  /* radii */
+  --r-s:8px; --r-m:12px; --r-l:18px; --r-pill:999px;
+  /* elevation */
+  --elev-1:0 1px 2px rgba(0,0,0,.35),0 2px 6px rgba(0,0,0,.22);
+  --elev-2:0 4px 14px rgba(0,0,0,.38),0 1px 3px rgba(0,0,0,.3);
+  --elev-3:0 18px 48px rgba(0,0,0,.5),0 4px 10px rgba(0,0,0,.35);
+  /* z layers */
+  --z-base:0; --z-raised:10; --z-sticky:50; --z-bar:95; --z-panel:200; --z-curtain:92; --z-modal:600; --z-dialog:650; --z-toast:700;
+  /* motion */
+  --t-fast:150ms; --t-base:250ms; --t-slow:400ms; --t-curtain-first:1000ms; --t-curtain-repeat:420ms;
+  --ease-out:cubic-bezier(.2,.8,.2,1); --ease-in:cubic-bezier(.5,0,.8,.4); --ease-swing:cubic-bezier(.5,1.75,.75,1.25);
+  --tap:40px; /* touch target; floor 36 */
+}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{font:500 var(--fs-m)/1.4 var(--font-ui);color:var(--page-ink);background:var(--page-wood);overflow:hidden}
+h1,h2,h3{font-family:var(--font-display);font-weight:800;letter-spacing:.01em}
+.stage{position:relative;width:100vw;height:100vh;overflow:hidden;isolation:isolate}
+.bgart{position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center;image-rendering:pixelated;filter:saturate(.8) brightness(.62) contrast(1.05)}
+.stage::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse 80% 70% at 50% 35%,rgba(47,32,19,0) 0%,rgba(24,15,8,.78) 100%),linear-gradient(180deg,rgba(47,32,19,.35),rgba(24,15,8,.65))}
+.fly{position:absolute;width:6px;height:6px;border-radius:50%;background:radial-gradient(#fff3b0,rgba(255,243,176,0) 70%);z-index:-1;opacity:.8}
+/* ---- the dock: one bar everywhere ---- */
+.dock{position:absolute;top:var(--sp-3);left:var(--sp-3);right:var(--sp-3);height:var(--tap);display:flex;align-items:center;gap:var(--sp-2);z-index:var(--z-bar)}
+.dock .sp{flex:1}
+.rbtn{width:var(--tap);height:var(--tap);flex:none;display:grid;place-items:center;border-radius:50%;font-size:19px;line-height:1;color:var(--ink);cursor:pointer;
+  background:radial-gradient(circle at 35% 28%,#fbf3dc,var(--cream-btn) 60%,#d9c79b);border:2px solid var(--cream-btn-ring);box-shadow:var(--elev-1);position:relative}
+.rbtn.on{background:linear-gradient(180deg,#a8661f,var(--accent-strong));border-color:#e9b44c;color:var(--accent-ink)}
+.rbtn .pip{position:absolute;right:-4px;bottom:-4px;min-width:18px;height:18px;padding:0 4px;border-radius:var(--r-pill);background:var(--page-wood);color:var(--gold);font:800 11px/18px var(--font-display);text-align:center;border:1.5px solid var(--gold)}
+.pill{height:var(--tap);flex:none;display:flex;align-items:center;gap:6px;padding:0 var(--sp-3);border-radius:var(--r-pill);background:linear-gradient(180deg,#fbf3dc,var(--cream-btn));border:2px solid var(--cream-btn-ring);color:var(--ink);font:800 var(--fs-m)/1 var(--font-display);box-shadow:var(--elev-1)}
+.pill em{font-style:normal;color:#d9731a}
+.gap-core{width:var(--sp-3);flex:none}
+.divider{width:1px;height:22px;background:rgba(243,232,207,.28);flex:none}
+.rbtn.back{background:rgba(26,17,9,.7);border-color:var(--glass-line);color:var(--page-ink);backdrop-filter:blur(6px)}
+/* ---- sign ---- */
+.sign{position:relative;display:inline-flex;align-items:center;gap:var(--sp-2);height:44px;padding:0 var(--sp-5);border-radius:var(--r-m);font:800 var(--fs-l)/1 var(--font-display);color:#f6e7c6;
+  background:linear-gradient(180deg,#8a5a2a,#6a421b 55%,#5a3815);border:2px solid #3b2410;box-shadow:inset 0 1px 0 rgba(255,235,190,.35),inset 0 -3px 0 rgba(0,0,0,.18),var(--elev-2);text-shadow:0 1px 0 rgba(0,0,0,.5)}
+.sign::before,.sign::after{content:"";position:absolute;top:-14px;width:3px;height:14px;background:#3b2410;border-radius:2px}
+.sign::before{left:22%}.sign::after{right:22%}
+/* ---- glass panel ---- */
+.glass{background:var(--glass);border:1px solid var(--glass-line);border-radius:var(--r-l);box-shadow:var(--elev-2);backdrop-filter:blur(8px)}
+/* ---- buttons ---- */
+.btn{height:var(--tap);padding:0 var(--sp-5);border-radius:var(--r-pill);font:800 var(--fs-m)/1 var(--font-display);border:2px solid transparent;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2)}
+.btn.primary{background:linear-gradient(180deg,#b06c22,var(--accent-strong));color:var(--accent-ink);border-color:var(--gold);box-shadow:var(--elev-1),inset 0 1px 0 rgba(255,235,190,.4)}
+.btn.quiet{background:linear-gradient(180deg,#fbf3dc,var(--surface-2));color:var(--ink);border-color:var(--surface-border)}
+.btn.ghost{background:transparent;color:var(--page-ink);border-color:var(--glass-line)}
+.btn.lg{height:48px;padding:0 var(--sp-6);font-size:var(--fs-l)}
+.btn.sm{height:36px;padding:0 var(--sp-4);font-size:var(--fs-s)}
+/* ---- segmented sub-tabs: the one component ---- */
+.seg{display:inline-flex;gap:var(--sp-1);padding:var(--sp-1);border-radius:var(--r-pill);background:var(--glass);border:1px solid var(--glass-line)}
+.seg button{height:36px;padding:0 var(--sp-4);border-radius:var(--r-pill);border:0;background:transparent;color:var(--page-ink);font:800 var(--fs-s)/1 var(--font-display);display:inline-flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap}
+.seg button.on{background:linear-gradient(180deg,#a8661f,var(--accent-strong));color:var(--accent-ink);box-shadow:inset 0 1px 0 rgba(255,235,190,.35)}
+.seg{align-self:flex-start}
+.seg.onpaper{background:var(--surface-2);border-color:var(--surface-border)}
+.seg.onpaper button{color:var(--ink)}
+.seg.onpaper button.on{color:var(--accent-ink)}

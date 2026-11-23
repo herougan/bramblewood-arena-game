@@ -1,0 +1,72 @@
+<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
+<title>UISWEEP mock: components</title><link rel=stylesheet href=tokens.css>
+<style>
+body{overflow:auto;background:radial-gradient(ellipse at 50% 0,#4a3520,#241709 70%)}
+.sheet{max-width:1180px;margin:auto;padding:var(--sp-5);display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--sp-4)}
+.sheet>h1{grid-column:1/-1;font-size:var(--fs-xl);color:#f6e7c6}
+.cell{padding:var(--sp-4);display:flex;flex-direction:column;gap:var(--sp-3)}
+.cell>h3{font:800 var(--fs-xs) var(--font-display);letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.cell>small{font-size:var(--fs-xs);color:rgba(246,231,198,.6)}
+.row{display:flex;gap:var(--sp-2);align-items:center;flex-wrap:wrap}
+.span2{grid-column:span 2}
+.paper{background:linear-gradient(180deg,#f6eed6,var(--surface));color:var(--ink);border:2px solid var(--surface-border);border-radius:var(--r-m);padding:var(--sp-4);display:flex;flex-direction:column;gap:var(--sp-3)}
+.empty{align-items:center;text-align:center;padding:var(--sp-5) var(--sp-4);gap:var(--sp-2)}
+.empty .ill{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-size:30px;background:var(--surface-2);border:2px dashed var(--surface-border)}
+.empty h3{font-size:var(--fs-l)}.empty p{font-size:var(--fs-s);color:var(--ink-muted);max-width:30ch}
+.soon{background:var(--glass);border:1px solid var(--glass-line);color:#f6e7c6;border-radius:var(--r-m);padding:var(--sp-5) var(--sp-4);text-align:center;display:flex;flex-direction:column;align-items:center;gap:var(--sp-2)}
+.soon .tag{font:800 var(--fs-xs) var(--font-display);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);padding:3px var(--sp-3);border:1px solid var(--glass-line);border-radius:var(--r-pill)}
+.soon .sil{font-size:34px;filter:grayscale(1) brightness(.5)}
+.guest{display:flex;align-items:center;gap:var(--sp-3);height:44px;padding:0 var(--sp-3) 0 var(--sp-4);border-radius:var(--r-m);background:var(--glass);border:1px solid var(--glass-line);font-size:var(--fs-s);color:#f6e7c6}
+.guest span{flex:1}
+.pageframe{height:210px;border-radius:var(--r-m);overflow:hidden;position:relative;border:1px solid var(--glass-line);display:flex;flex-direction:column;padding:var(--sp-3);gap:var(--sp-2);background:#2a1d10}
+.pageframe .content{flex:1;border-radius:var(--r-s);background:var(--surface);display:grid;place-items:center;color:var(--ink-soft);font-size:var(--fs-s)}
+.ladder{display:flex;flex-direction:column;gap:var(--sp-2)}
+.ladder div{display:flex;align-items:baseline;gap:var(--sp-3);color:#fff3d6}.ladder small{font:600 var(--fs-xs) var(--font-ui);color:rgba(246,231,198,.55);margin-left:auto}
+.stack{display:flex;flex-direction:column;gap:var(--sp-4)}.stack>*{margin:0}
+.stack .a,.stack .b,.stack .c{height:34px;border-radius:var(--r-s);display:grid;place-items:center;font:800 var(--fs-s) var(--font-display)}
+.stack .a,.stack .c{background:var(--surface-2);color:var(--ink)}
+.stack .b{background:linear-gradient(180deg,#3a2614,#24170a);color:#f6e7c6;border:2px dashed rgba(233,180,76,.7)}
+.gapnote{font:800 10px var(--font-ui);color:#ffd27a;text-align:center;border-top:2px solid #ffd27a;border-bottom:0;height:16px;margin:-16px 0;position:relative;top:0;pointer-events:none}
+@media (max-width:560px){.sheet{grid-template-columns:1fr;padding:var(--sp-3)}.span2{grid-column:auto}}
+</style>
+<div class=sheet>
+<h1>Components, one of each</h1>
+
+<div class="cell glass"><h3>Buttons</h3>
+ <div class=row><span class="btn primary lg">Fight ⚔️</span><span class="btn primary">Buy 80 🍁</span><span class="btn primary sm">Claim</span></div>
+ <div class=row><span class="btn quiet">Show on map</span><span class="btn ghost">Cancel</span><span class="rbtn">⚙️</span><span class="rbtn back">↩</span></div>
+ <small>48 / 40 / 36 px tall, pill radius, icon buttons 40 px round. Never below 36.</small></div>
+
+<div class="cell glass"><h3>Sub-tabs, one component</h3>
+ <span class=seg><button class=on>🛒 Shop</button><button>🍂 Premium</button></span>
+ <span class=seg><button class=on>⛺ Camp</button><button>🔨 Forge</button><button>🥚</button><button>🌿</button></span>
+ <div class="paper" style="padding:var(--sp-3)"><span class="seg onpaper"><button class=on>Friends</button><button>Ranking</button><button>Guild</button></span></div>
+ <small>36 px, scrolls with an edge fade when it overflows. Glass on art, paper on a panel.</small></div>
+
+<div class="cell glass"><h3>Heading ladder</h3>
+ <div class=ladder>
+  <div><span style="font:400 var(--fs-hero)/1 var(--font-brand)">Brand</span><small>fs-hero 40, brand only</small></div>
+  <div><h2 style="font-size:var(--fs-xl)">Page title</h2><small>fs-xl 22 / 800</small></div>
+  <div><h3 style="font-size:var(--fs-l)">Section</h3><small>fs-l 17 / 800</small></div>
+  <div><span style="font-size:var(--fs-m)">Body text, Nunito</span><small>fs-m 14 / 500</small></div>
+  <div><span style="font-size:var(--fs-s);opacity:.75">Caption, hints</span><small>fs-s 12.5</small></div>
+ </div></div>
+
+<div class="cell glass"><h3>Banner: the parent owns the gap</h3>
+ <div class=stack><div class=a>panel above</div><div class=b>Wandering merchant</div><div class=c>panel below</div></div>
+ <small>gap 16 above and 16 below, set once by the parent. Children carry no margin. No margin:10px 0 2px.</small></div>
+
+<div class="cell glass"><h3>Empty state</h3>
+ <div class="paper empty"><div class=ill>🥚</div><h3>No eggs yet</h3><p>Win a fight on Map 3 to find your first egg.</p><span class="btn quiet sm">Open the map</span></div>
+ <small>Icon, one line of why, at most one action.</small></div>
+
+<div class="cell glass"><h3>Coming soon</h3>
+ <div class=soon><span class=sil>🎪</span><span class=tag>Coming soon</span><p style="font-size:var(--fs-s);color:rgba(246,231,198,.75)">Promotions arrive after launch.</p></div>
+ <small>Silhouette, tag, one line. Never a link until it is live.</small></div>
+
+<div class="cell glass span2"><h3>Guest sign-in banner: part of the layout, never over content</h3>
+ <div class=pageframe><div class=dock style="position:static;height:36px"><span class="rbtn back" style="--tap:36px">↩</span><span class=sp></span><span class=rbtn style="--tap:36px">🏠</span><span class=rbtn style="--tap:36px">⚙️</span></div>
+  <div class=content>page content keeps its full height</div>
+  <div class=guest><span>Sign in to keep your progress</span><span class="btn primary sm" style="flex:none">Sign in</span><b style="opacity:.6">✕</b></div></div>
+ <small>Last row of the page column, not position:fixed. Hidden while a modal, the album or a fight is open; ✕ hides it for the session.</small></div>
+</div>

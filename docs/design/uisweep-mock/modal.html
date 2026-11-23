@@ -1,0 +1,41 @@
+<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
+<title>UISWEEP mock: the one modal shell</title><link rel=stylesheet href=tokens.css>
+<style>
+iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:-2}
+.scrim{position:absolute;inset:0;background:rgba(14,9,4,.5);backdrop-filter:blur(3px);z-index:var(--z-modal)}
+.modal{position:absolute;z-index:calc(var(--z-modal) + 1);left:50%;top:50%;transform:translate(-50%,-50%) scale(.985);width:min(440px,calc(100vw - 2*var(--sp-4)));
+  background:linear-gradient(180deg,#f6eed6,var(--surface));color:var(--ink);border:2px solid var(--surface-border);border-radius:var(--r-l);box-shadow:var(--elev-3),inset 0 1px 0 #fff8}
+.modal::before{content:"";position:absolute;left:var(--sp-5);right:var(--sp-5);top:-2px;height:4px;border-radius:0 0 4px 4px;background:var(--gold)}
+.mh{display:flex;align-items:center;gap:var(--sp-3);padding:var(--sp-4) var(--sp-4) var(--sp-3) var(--sp-5)}
+.mh h2{flex:1;font-size:var(--fs-xl);line-height:1.1;display:flex;gap:var(--sp-2);align-items:center}
+.x{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font:800 16px/1 var(--font-display);color:var(--ink);background:var(--surface-2);border:2px solid var(--surface-border);cursor:pointer;flex:none}
+.mb{padding:0 var(--sp-5) var(--sp-4);display:flex;flex-direction:column;gap:var(--sp-3)}
+.mb p{color:var(--ink-muted);font-size:var(--fs-m)}
+.g{height:var(--tap);border-radius:var(--r-pill);background:#fff;border:2px solid var(--surface-border);display:flex;align-items:center;justify-content:center;gap:var(--sp-2);font:800 var(--fs-m) var(--font-display);color:#3c4043}
+.or{display:flex;align-items:center;gap:var(--sp-3);color:var(--ink-soft);font-size:var(--fs-s)}.or::before,.or::after{content:"";flex:1;height:1px;background:var(--surface-border)}
+.in{height:var(--tap);border-radius:var(--r-m);border:2px solid var(--surface-border);background:#fffdf4;padding:0 var(--sp-3);display:flex;align-items:center;color:var(--ink-soft);font-size:var(--fs-m)}
+.mf{display:flex;gap:var(--sp-2);padding:var(--sp-3) var(--sp-5) var(--sp-5)}.mf .btn{flex:1}
+.fx{position:absolute;right:var(--sp-4);bottom:var(--sp-4);z-index:calc(var(--z-modal) + 2);font:800 var(--fs-xs) var(--font-display);letter-spacing:.06em;color:#f6e7c6;padding:6px var(--sp-3);border-radius:var(--r-pill);background:rgba(15,10,5,.88);border:1px solid var(--glass-line)}
+.grab{display:none}
+@media (max-width:560px){
+ .modal{left:0;right:0;top:auto;bottom:0;transform:none;width:auto;border-radius:var(--r-l) var(--r-l) 0 0;padding-bottom:env(safe-area-inset-bottom)}
+ .grab{display:block;width:44px;height:5px;border-radius:5px;background:var(--surface-border);margin:var(--sp-2) auto 0}
+ .mh{padding-top:var(--sp-2)}.fx{top:var(--sp-4);bottom:auto;right:auto;left:var(--sp-4)}
+}
+</style>
+<div class=stage>
+<iframe src="home.html" title="" tabindex=-1></iframe>
+<div class=scrim></div>
+<section class=modal role=dialog aria-labelledby=t>
+  <div class=grab></div>
+  <header class=mh><h2 id=t>🔑 Sign in</h2><span class=x aria-label=Close>✕</span></header>
+  <div class=mb>
+    <p>Signing in unlocks online play and syncs your data across devices.</p>
+    <div class=g><b style="color:#4285f4">G</b> Sign in with Google</div>
+    <div class=or>or</div>
+    <div class=in>Email</div><div class=in>Password (8+ characters for new accounts)</div>
+  </div>
+  <footer class=mf><span class="btn primary">Login</span><span class="btn quiet">Create account</span></footer>
+</section>
+<div class=fx>MODAL &middot; scale .96&rarr;1 + fade, 200 ms in / 140 ms out &middot; sheet slides up on a phone</div>
+</div>

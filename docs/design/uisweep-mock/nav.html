@@ -1,0 +1,50 @@
+<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
+<title>UISWEEP mock: one dock, four contexts</title><link rel=stylesheet href=tokens.css>
+<style>
+body{overflow:auto;background:var(--page-wood)}
+.board{padding:var(--sp-5);display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-5) var(--sp-5);max-width:1366px;margin:auto}
+.board>h1{grid-column:1/-1;font-size:var(--fs-xl);color:#f6e7c6;display:flex;align-items:baseline;gap:var(--sp-3)}
+.board>h1 small{font:600 var(--fs-s) var(--font-ui);color:rgba(246,231,198,.6)}
+figure{display:flex;flex-direction:column;gap:var(--sp-2)}
+figcaption{font-size:var(--fs-s);color:rgba(246,231,198,.78)}figcaption b{font:800 var(--fs-m) var(--font-display);color:var(--gold);margin-right:6px}
+.fr{position:relative;height:196px;border-radius:var(--r-l);overflow:hidden;border:1px solid var(--glass-line);box-shadow:var(--elev-2);isolation:isolate}
+.fr .bgart{position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center;image-rendering:pixelated;filter:saturate(.8) brightness(.6)}
+.fr::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(24,15,8,.15),rgba(24,15,8,.8))}
+.fr .dock{top:var(--sp-3);left:var(--sp-3);right:var(--sp-3)}
+.fr .sgn .sign{height:40px;font-size:var(--fs-m)}.fr .sgn{position:absolute;top:calc(var(--tap) + var(--sp-5) + var(--sp-2));left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:var(--sp-3)}
+.fr.tall{height:236px}.more{display:none}.fr .body{position:absolute;left:var(--sp-5);right:var(--sp-5);bottom:0;height:28px;border-radius:var(--r-l) var(--r-l) 0 0;background:var(--surface);opacity:.92}
+.fr .ttl{font:800 var(--fs-m) var(--font-display);color:#fff3d6;padding:0 var(--sp-3);height:var(--tap);display:flex;align-items:center;border-radius:var(--r-pill);background:var(--glass);border:1px solid var(--glass-line);max-width:42%;overflow:hidden;white-space:nowrap}
+.rbtn.dng{background:linear-gradient(180deg,#c24b3a,#8e2a20);border-color:#f0b0a0;color:#fff;width:auto;border-radius:var(--r-pill);padding:0 var(--sp-4);font:800 var(--fs-s) var(--font-display)}
+.legend{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:var(--sp-2) var(--sp-5);padding:var(--sp-4);border-radius:var(--r-l);font-size:var(--fs-s);color:#f6e7c6}
+.legend span{display:flex;align-items:center;gap:var(--sp-2)}
+.key{height:18px;width:18px;border-radius:50%;background:var(--cream-btn);border:2px solid var(--cream-btn-ring);display:inline-block}
+.slotlbl{position:absolute;bottom:6px;font:700 10px var(--font-ui);color:rgba(246,231,198,.55)}
+@media (max-width:560px){.board{grid-template-columns:1fr;padding:var(--sp-3);gap:var(--sp-4)}.board>h1{font-size:var(--fs-l);flex-direction:column;gap:0}
+  .fr{height:176px}.dock{gap:6px}.rbtn,.pill{--tap:36px}.fr .dock{left:var(--sp-2);right:var(--sp-2)}.pill.en{padding:0 var(--sp-2)}.hide-s{display:none!important}.more{display:grid!important}.ttl{max-width:36%!important}}
+</style>
+<div class=board>
+<h1>One dock, four contexts <small>back | context slot | core: Home, Map, Settings, Energy, Account. The core never moves.</small></h1>
+
+<figure><div class=fr><div class=bgart style="background-image:url(../../../assets/maps/m1.png)"></div>
+ <div class=dock><span class=sp></span><span class="rbtn on">🏠</span><span class=rbtn>🗺️</span><span class=rbtn>⚙️</span><span class="pill en">20/20 <em>⚡</em></span><span class="pill acct"><span>👤</span><span class="lbl hide-s">Sign in</span></span></div>
+ <span class=slotlbl style="left:14px">no back on Home</span></div>
+ <figcaption><b>Home</b>Home shows as the current place. No back, no slot.</figcaption></figure>
+
+<figure><div class="fr tall"><div class=bgart style="background-image:url(../../../assets/maps/mb.png)"></div>
+ <div class=dock><span class="rbtn back" title="Back to the map">↩</span><span class=sp></span><span class=rbtn>🏠</span><span class=rbtn>🗺️</span><span class=rbtn>⚙️</span><span class="pill en">20/20 <em>⚡</em></span><span class="pill acct"><span>👤</span><span class="lbl hide-s">Sign in</span></span></div>
+ <div class=sgn><span class=sign>🧳 Shops</span><span class=seg><button class=on>🛒 Shop</button><button>🍂 Premium</button></span></div><div class=body></div></div>
+ <figcaption><b>Camp, Shops, Codex, Profile</b>One back, first on the left; its tooltip names the target. The sign hangs from the same height on every page, the sub-tabs under it.</figcaption></figure>
+
+<figure><div class=fr><div class=bgart style="background-image:url(../../../assets/maps/mf.png)"></div>
+ <div class=dock><span class=rbtn style="display:none"></span>
+  <span class="rbtn hide-s" title="Arena">🏟️</span><span class="rbtn hide-s" title="Forge">🔨</span><span class="rbtn hide-s" title="Trail Mix Trek">🚐</span><span class=rbtn title="Murgle key">🔑<b class=pip>3</b></span><span class="rbtn more" title="More: Arena, Forge, Trail Mix Trek">⋯</span><span class=sp></span>
+  <span class=rbtn>🏠</span><span class="rbtn on">🗺️</span><span class=rbtn>⚙️</span><span class="pill en">20/20 <em>⚡</em></span><span class="pill acct"><span>👤</span><span class="lbl hide-s">Sign in</span></span></div>
+ <div class=sgn style="top:auto;bottom:14px"><span class=seg><button class=on>📖 Conquest</button><button>🧪 Test Lab</button></span></div></div>
+ <figcaption><b>Conquest and Play</b>Conquest as it is, plus the missing core buttons. Context shortcuts fill the slot where the back would be; at 390 Arena, Forge and the van fold into a ⋯ popover.</figcaption></figure>
+
+<figure><div class=fr><div class=bgart style="background-image:url(../../../assets/maps/mc.png)"></div>
+ <div class=dock><span class=ttl>vs Thicket Swarm</span><span class=sp></span><span class=pill>▶ 1x</span><span class=rbtn>📜</span><span class=rbtn>⛶</span><span class=rbtn>⚙️</span><span class="rbtn dng">Forfeit</span></div></div>
+ <figcaption><b>Fight HUD</b>Its own controls, the same ⚙️ panel and the same round button. Quit leaves only after Forfeit is tapped twice.</figcaption></figure>
+
+<div class="legend glass"><span><i class=key></i> round 40 px button (36 px floor on a phone)</span><span><span class="rbtn on" style="--tap:22px;font-size:11px">🏠</span> current place: filled wood, not hidden</span><span><span class="rbtn back" style="--tap:22px;font-size:11px">↩</span> back: glass, always the first control</span><span>Feedback moves into the ⚙️ panel</span></div>
+</div>
