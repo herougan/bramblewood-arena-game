@@ -916,7 +916,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       tipsy:0, _tipsyJustSet:false,         // Tipsy (2026-10-11): swings at the unit to the left, in front or to the right at random; nobody there = a miss
       confused:0, _confusedJustSet:false,   // Confused (2026-10-11; 2026-10-19 FZ): its triggers, skills and actions each fumble half the time (confusedFumbles)
       shocked:0, _shockedJustSet:false,     // every hit THIS card takes deals 50% bonus damage while >0, ticks down every upkeep
-      corrode:0, _corrodeJustSet:false,     // stacking (like Poison/Bleed): each stack lowers this card's effective Attack by 1, decays by 1/round
+      corrode:0, _corrodeJustSet:false,     // each point lowers this card's effective Attack by 1, decays by 1/round; refreshed to the larger, not added (ENG16, 2026-11-24: corrodeOn)
       // Stagger (2026-09-24, task #109, "one status effect per elemental damage type" — the
       // physical slot; cold/heat/acid/poison already had Frozen/Stun/Paralyzed/Asleep from the
       // 2026-09-16/17 batches, see effAtk/rollStatusOnHit/endOfRoundUpkeep): every hit THIS card
@@ -2798,7 +2798,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const bl = bN + en5HemoN(ad) + (Number(e.perforate) || 0) + (isFrenzied(att) ? 1 : 0) + (bN > 0 && (perksOfSide(side) || {}).thornbite ? 1 : 0);
       if(bl > 0){ const n = bl + venomBoost(attPid); t.bleed = (t.bleed || 0) + n; fx('bleed', n); } if(hw) en4HemorrhageEv(att, t, hw, side, tSide, events); }
     if(ok('decay') && e.decay && alive() && !immunityOf(t)) t.decay = (t.decay || 0) + (Number(e.decay) || 0);
-    if(ok('corrode') && e.corrode && alive() && eng36Lands(t, 'corrode') /* ENG36 */){ t.corrode = (t.corrode || 0) + (Number(e.corrode) || 0); t._corrodeJustSet = true; fx('corrode', e.corrode); if(t.equipment) eq2Wear(t, EQ2_DEF.corrodeWear, 'corrode'); }
+    if(ok('corrode') && e.corrode && alive() && eng36Lands(t, 'corrode') /* ENG36 */){ fx('corrode', e.corrode, {total: corrodeOn(t, e.corrode)}) /* ENG16: refreshed, not added */; if(t.equipment) eq2Wear(t, EQ2_DEF.corrodeWear, 'corrode'); }
     if(ok('daunt') && Number(e.daunt) > 0 && alive() && eng36Lands(t, 'daunt') /* ENG36 */){ (t.daunts = t.daunts || []).push({n: Number(e.daunt), until: combatNo + 1}); fx('daunt', Number(e.daunt)); }
     if(ok('scar') && e.scar && alive() && eng36Lands(t, 'scar') /* ENG36 */){ t.scar = (t.scar || 0) + e.scar; fx('scar', e.scar); }
     if(ok('perforate') && Number(e.perforate) > 0){ const pN = Number(e.perforate);
@@ -4392,13 +4392,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Effective Attack: base Attack (already includes any permanent buffs, Render debuffs, etc.)
   // plus this round's live Rally aura bonus. Combat should read through this, not card.atk
   // directly, so Rally is always live and never stale, and never goes negative.
-  // Corrode (status, 2026-09-17): stacking, like Poison/Bleed, but instead of a damage tick it
+  // Corrode (status, 2026-09-17): was stacking, like Poison/Bleed (refreshed since ENG16, corrodeOn below), but instead of a damage tick it
   // temporarily saps effective Attack — one point per stack, recomputed live here (so it's
   // never baked into .atk permanently, same convention Rally already uses) and decayed by 1
   // stack per round in endOfRoundUpkeep.
   // Daunt N (2026-10-12, user: "New passive. ____ N: On Hit, reduce its attack by N until end of next turn. If this happens
   // multiple times, his attack is reduced by N multiple times"): each landed hit leaves a {n, until} mark on the target; the
   // marks add up, and each lifts at the end of the round after the one it landed in.
+  // ENG16 (2026-11-24, owner 11-23 23:39 #16: "Corrode and Daunt seem to be stacking"): Corrode N is refreshed to the larger value, not added
+  // (as Enfeeble, Embrittle and Expose: a hit sets max(left, N) and re-arms the round's guard); it still fades 1 a round after the round of its
+  // last hit. Was: each hit added N and re-armed _corrodeJustSet, so a unit hit every round never lost a stack (Corrode 1: -1, -2, -3 ... for good).
+  // Daunt N keeps the owner's 10-12 rule (marks add, each to the end of the next round). Returns the Corrode the unit now has.
+  function corrodeOn(t, n){ t.corrode = Math.max(t.corrode || 0, Number(n) || 0); t._corrodeJustSet = true; return t.corrode; }
   function dauntOf(card){ const c0 = Math.max(0, (card && card.dauntN)||0); const d = card && card.daunts; if(!d || !d.length) return c0; let t = c0; for(const x of d) if(x.until >= combatNo) t += x.n; return t; } // + Render's Daunt counters (EN8, 2026-10-25)
   function en8DauntUse(card, events, sideOf, pid, why){ if(!card || !(card.dauntN > 0)) return; card.dauntN -= 1; if(recordEvents && events) events.push({type:'statusFx', kind:'dauntFade', side:sideOf ? sideOf(pid) : undefined, targetUid:card.uid, targetDefId:card.defId, left:card.dauntN, why}); }
   function effAtk(card){
@@ -8122,8 +8127,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // What a landed Ice Arrow or Bolt leaves on the unit it hit (2026-10-15).
   function applyShotStatus(kind, n, c, src, side, tSide, events, aStat){
     if(!c || !(c.hp > 0)) return;
-    const fx = (k, amount)=>{ if(recordEvents && events) events.push({type:'statusFx', kind:k, side, attDefId:src.defId, attUid:src.uid, targetSide:tSide, targetDefId:c.defId, targetUid:c.uid, amount}); };
-    if(kind === 'corrode'){ if(!eng36Lands(c, 'corrode')) return; /* ENG36 */ c.corrode = (c.corrode||0) + 1; c._corrodeJustSet = true; fx('corrode', 1); if(c.equipment) eq2Wear(c, EQ2_DEF.corrodeWear, 'corrode'); } // + EQ2: Corrode eats the piece
+    const fx = (k, amount, total)=>{ if(recordEvents && events) events.push({type:'statusFx', kind:k, side, attDefId:src.defId, attUid:src.uid, targetSide:tSide, targetDefId:c.defId, targetUid:c.uid, amount, total}); };
+    if(kind === 'corrode'){ if(!eng36Lands(c, 'corrode')) return; /* ENG36 */ fx('corrode', 1, corrodeOn(c, 1)) /* ENG16: refreshed, not added */; if(c.equipment) eq2Wear(c, EQ2_DEF.corrodeWear, 'corrode'); } // + EQ2: Corrode eats the piece
     else if(kind === 'sleep'){ if(dozing(c)) return; // Sleeping Powder N (POWDER1, 2026-11-17): Sleep's tokens, no stacking (see POWDERS)
       if(effectsOf(c).wakeful){ fx('wakeful'); return; } if(!eng36Lands(c, 'sleep')) return;
       c.asleep = n; c._asleepJustSet = true; if(recordEvents && events) events.push({type:'statusFx', kind:'sleep', side, attDefId:src.defId, attUid:src.uid, targetSide:tSide, targetDefId:c.defId, targetUid:c.uid, amount:n, left:c.asleep, powder:true}); }
@@ -12093,16 +12098,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(e40M) eqPryHit(attDef, a.att, defCard, mySide, sideOf(a.enemyId), events); // Pry N (EQ, 2026-10-19): strips N Armor for good
         if(e40M) pulveriseHit(players, attDef, a.att, defCard, mySide, sideOf(a.enemyId), events, sideOf); // CONTENT3 (2026-10-26, OWN-Q5)
         eqSunderHit(players, sideOf, a.att, defCard, events); // ENG10 (2026-10-26, PROP1-1): Sunder, 50% to break a Hardy life
-        // Corrode (status, 2026-09-17): stacks like Poison/Bleed, but saps effective Attack
+        // Corrode (status, 2026-09-17): stacked like Poison/Bleed until ENG16 (2026-11-24: refreshed, corrodeOn), but saps effective Attack
         // instead of dealing damage — see effAtk/endOfRoundUpkeep for the read/decay sides.
         // Unlike Poison/Bleed (silent on application, only their periodic tick is logged),
         // Corrode pushes its own statusFx on application — same convention Scar (the other
         // permanent/stacking mark) already uses — since there's no periodic tick moment of its
         // own to visualize the debuff landing.
         if(e40M && attDef.effects && attDef.effects.corrode && defCard.hp>0 && eng36Lands(defCard, 'corrode') /* ENG36 */){
-          defCard.corrode = (defCard.corrode||0) + attDef.effects.corrode;
-          defCard._corrodeJustSet = true;
-          if(recordEvents && events) events.push({type:'statusFx', kind:'corrode', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, amount:attDef.effects.corrode});
+          const corTotal = corrodeOn(defCard, attDef.effects.corrode); // ENG16 (2026-11-24): refreshed to the larger, not added
+          if(recordEvents && events) events.push({type:'statusFx', kind:'corrode', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, amount:attDef.effects.corrode, total:corTotal});
           if(defCard.equipment) eq2Wear(defCard, EQ2_DEF.corrodeWear, 'corrode'); // EQ2 (2026-10-24): each Corrode applied takes 2 durability
         }
         // Expose N (2026-10-15 rework, user: "It should give a debuff 'exposed'. This unit takes +1 damage and attacks on this unit

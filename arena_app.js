@@ -44246,8 +44246,7 @@ function boardCardHTML(c, defs, opts){
   if(c.confused>0) badges.push(`<span class="abadge confused" title="Confused">❓</span>`);
   if(c.shocked>0) badges.push(`<span class="abadge shock">🌩${c.shocked}</span>`);
   if(c.corrode>0) badges.push(`<span class="abadge corrode">🧪${c.corrode}</span>`); w2StatusBadges(c, badges); en20StatusBadges(c, badges); /* ENG20: water counters, Burn */ // Bound, Toxin, Invisible, Invincible (2026-10-16)
-  { const dn = (c.daunts||[]).reduce((t, x)=> t + (x.n||0), 0); if(dn > 0) badges.push(`<span class="abadge daunt" title="Daunted: −${dn} Attack until the end of next round">😨${dn}</span>`); }
-  if(c.dauntN > 0) badges.push(`<span class="abadge daunt en8-daunt" title="${escapeAttr(TX('ui.en8-daunt-badge', {n: c.dauntN}))}">😨${c.dauntN}</span>`); // EN8 (2026-10-25): Render's Daunt counters
+  eng16DauntPips(c, badges); // the Daunt marks and Render's Daunt counters (EN8, 2026-10-25); ENG16 (2026-11-24): one builder for both paths
   if(c.staggered>0) badges.push(`<span class="abadge stagger">💢${c.staggered}</span>`);
   // Task #202 (2026-09-18, "make sure all the relevant icons - skills, passives, functional
   // numbers like gold given on death and attack/defence are clearly listed on the card"): board
@@ -46323,6 +46322,13 @@ function ui31FrostRefresh(el){
   el.classList.remove('frost-in', 'frost-refresh'); void el.offsetWidth; el.classList.add('frost-refresh');
   clearTimeout(el._ui31FrostR); el._ui31FrostR = setTimeout(()=> el.classList.remove("frost-refresh"), 1050);
 }
+// ENG16 (2026-11-24, owner 11-23 23:39 #16: "Corrode and Daunt seem to be stacking"): the Daunt pips, for boardCardHTML and the live patch below.
+// 😨N = every Daunt mark on the unit (each lasts to the end of the round after its hit, so last round's mark and this round's add, as the engine's
+// dauntOf counts them); a second 😨N (en8-daunt) = Render's Daunt counters.
+function eng16DauntPips(c, badges){
+  const dn = (c.daunts||[]).reduce((t, x)=> t + (x.n||0), 0); if(dn > 0) badges.push(`<span class="abadge daunt" title="Daunted: −${dn} Attack until the end of next round">😨${dn}</span>`);
+  if(c.dauntN > 0) badges.push(`<span class="abadge daunt en8-daunt" title="${escapeAttr(TX('ui.en8-daunt-badge', {n: c.dauntN}))}">😨${c.dauntN}</span>`);
+}
 function updateCardStatusDisplay(uid){
   const c = currentCardByUid(uid); if(!c) return;
   const el = boardCardEl(uid); if(!el) return;
@@ -46364,6 +46370,7 @@ function updateCardStatusDisplay(uid){
   if(c.confused>0) badges.push(`<span class="abadge confused" title="Confused">❓</span>`);
   if(c.shocked>0) badges.push(`<span class="abadge shock">🌩${c.shocked}</span>`);
   if(c.corrode>0) badges.push(`<span class="abadge corrode">🧪${c.corrode}</span>`); w2StatusBadges(c, badges); en20StatusBadges(c, badges); /* ENG20: water counters, Burn */ // Bound, Toxin, Invisible, Invincible (2026-10-16)
+  eng16DauntPips(c, badges); // ENG16 (2026-11-24): this live patch had no Daunt pips, so a daunted unit's 😨 went out at any other status change mid-round
   if(c.staggered>0) badges.push(`<span class="abadge stagger">💢${c.staggered}</span>`);
   if(c.irradiation>0) badges.push(`<span class="abadge irradiation" title="Irradiated: ${c.irradiation} token${c.irradiation===1?'':'s'}">☢️${c.irradiation}</span>`); // 2026-10-14
   // Shield (a unit's own temporary Health) and a Durian eater's extra Thorns (2026-10-14).
@@ -47544,7 +47551,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, ...pl1AuraSnap(c) /* PL1 (2026-10-24, P24-12) */, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, dauntN:c.dauntN||0 /* EN8 */, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, chains:c.chains||0 /* ENG-RC1 */, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, pinDown:c.pinDown||0 /* ENG14 */, lassoed:c.lassoed||0, cowering:!!c.cowering /* ENG15 */, brittle:c.brittle||0 /* 2026-10-19 (GI) */, hardened:c.hardened||0, emboldened:c.emboldened||0 /* FOCUS2 */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0, vulnerable:c.vulnerable||0, feeble:c.feeble||0 /* ENG50 */, ffCounters:c.ffCounters||0 /* ENG23 */, inspTokens:c.inspTokens||0, pounceSpent:!!c.pounceSpent, helmetGone:!!c.helmetGone /* ENG27 */ /* ENG21 */ /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, ctxOn:c._ctxOn||'' /* ENG25 (2026-11-05): Loyal / Usurper / Liege on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, rememberSpent:!!c.rememberSpent, water:c.water||0, burn:c.burn||0 /* ENG20 */, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, ...pl1AuraSnap(c) /* PL1 (2026-10-24, P24-12) */, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, dauntN:c.dauntN||0 /* EN8 */, daunts:(c.daunts||[]).map(x=> ({n:x.n})) /* ENG16 (2026-11-24): last round's Daunt marks still cut this round, so the replay's 😨 pip counts them */, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, chains:c.chains||0 /* ENG-RC1 */, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, pinDown:c.pinDown||0 /* ENG14 */, lassoed:c.lassoed||0, cowering:!!c.cowering /* ENG15 */, brittle:c.brittle||0 /* 2026-10-19 (GI) */, hardened:c.hardened||0, emboldened:c.emboldened||0 /* FOCUS2 */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0, vulnerable:c.vulnerable||0, feeble:c.feeble||0 /* ENG50 */, ffCounters:c.ffCounters||0 /* ENG23 */, inspTokens:c.inspTokens||0, pounceSpent:!!c.pounceSpent, helmetGone:!!c.helmetGone /* ENG27 */ /* ENG21 */ /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, ctxOn:c._ctxOn||'' /* ENG25 (2026-11-05): Loyal / Usurper / Liege on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, rememberSpent:!!c.rememberSpent, water:c.water||0, burn:c.burn||0 /* ENG20 */, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
       });
     });
   });
@@ -56817,7 +56824,7 @@ function renderVfxForEvent(ev){
     // Task #92 (2026-09-16) additions: Scar (permanent stacking mark), Renewal's cleanse
     // pulse, and Grit's permanent attack gain — same statusFx envelope as the four above,
     // just three new `kind`s.
-    else if(ev.kind==='daunt'){ try{ SoundKit.curse(); }catch(e){} if(el) floatText(el, '😨 −'+ev.amount+'⚔', 'debuff'); if(rc){ (rc.daunts = rc.daunts || []).push({n:ev.amount}); } }
+    else if(ev.kind==='daunt'){ try{ SoundKit.curse(); }catch(e){} if(el) floatText(el, '😨 −'+ev.amount+'⚔', 'debuff'); if(rc){ rc.daunts = (rc.daunts || []).concat({n:ev.amount}); } } // ENG16 (2026-11-24): a new array, so a shallow replay copy (a reserve unit) never adds to the engine's own marks
     else if(ev.kind==='recoil'){ try{ SoundKit.recoilTone(); }catch(e){} if(el){ dnFloat(el, ev.amount, {mods: ev.mods}); /* DN2 */ try{ recoilEl(el, 0.7); }catch(e){} } }
     // 2026-10-14: Ichor's splash on the attacker, and a Cower unit hiding or backing off
     else if(ev.kind==='ichor'){ if(el){ dnFloat(el, ev.amount, {type:'acid', mods: ev.mods}); if(ev.armor) floatText(el, '−1🛡', 'debuff'); /* DN2 */ try{ recoilEl(el, 0.6); }catch(e){} } if(rc){ rc.bleed = (rc.bleed||0) + 1; if(ev.armor) rc.armorLoss = (rc.armorLoss||0) + 1; } }
@@ -56845,7 +56852,7 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='tipsy'){ SoundKit.blindTone(); if(el) floatText(el, '🍺 Tipsy', 'debuff'); if(rc) rc.tipsy = (rc.tipsy||0) + 1; }
     else if(ev.kind==='confuse'){ SoundKit.confuseWarble(); /* 2026-11-13 (FX10): was Blind's tone */ if(el) floatText(el, '❓ Confused', 'debuff'); if(rc) rc.confused = (rc.confused||0) + 1; }
     else if(ev.kind==='shock'){ SoundKit.shockTone(); if(el){ shakeEl(el); glitchVfx(el); floatText(el, '🌩 Shocked', 'debuff'); } if(rc) rc.shocked = (rc.shocked||0) + 1; }
-    else if(ev.kind==='corrode'){ SoundKit.corrodeTone(); if(el) floatText(el, '-'+ev.amount+'⚔ 🧪', 'debuff'); if(rc) rc.corrode = (rc.corrode||0) + ev.amount; }
+    else if(ev.kind==='corrode'){ SoundKit.corrodeTone(); if(el) floatText(el, '-'+ev.amount+'⚔ 🧪', 'debuff'); if(rc) rc.corrode = ev.total != null ? ev.total : Math.max(rc.corrode||0, ev.amount||0); } // ENG16 (2026-11-24): Corrode is refreshed to the larger, not added (the engine's total)
     // Stagger (2026-09-24, task #109): physical's elemental status, completing the cold/heat/
     // acid/poison/physical set — Shock's damage-dealt mirror, same duration-gated envelope.
     else if(ev.kind==='stagger'){ SoundKit.staggerTone(); if(el){ shakeEl(el); floatText(el, '💢 Staggered', 'debuff'); } if(rc) rc.staggered = (rc.staggered||0) + 1; }
@@ -56865,7 +56872,7 @@ function renderVfxForEvent(ev){
     // display at the end of the round, not a status badge).
     else if(ev.kind==='bleed'){ SoundKit.bleedApply(); if(el) floatText(el, TX('ui.en7-float-bleed', {n: ev.amount}), 'bleed') /* EN7: "🩸N" */; if(rc) rc.bleed = (rc.bleed||0) + ev.amount; }
     else if(ev.kind==='esprit'){ const attEl = boardCardEl(ev.attUid); SoundKit.espritTone(); if(attEl) floatText(attEl, '🤝 +'+(ev.amount||0)+'⚔'+(ev.hp ? ' +'+ev.hp+'❤' : ''), 'gold'); }
-    if(ev.kind==='poison' || ev.kind==='stun' || ev.kind==='scar' || ev.kind==='cleanse' || ev.kind==='freeze' || ev.kind==='sleep' || ev.kind==='paralyze' || ev.kind==='stunOnHit' || ev.kind==='blind' || ev.kind==='shock' || ev.kind==='corrode' || ev.kind==='bleed' || ev.kind==='stagger') updateCardStatusDisplay(ev.targetUid);
+    if(ev.kind==='poison' || ev.kind==='stun' || ev.kind==='scar' || ev.kind==='cleanse' || ev.kind==='freeze' || ev.kind==='sleep' || ev.kind==='paralyze' || ev.kind==='stunOnHit' || ev.kind==='blind' || ev.kind==='shock' || ev.kind==='corrode' || ev.kind==='bleed' || ev.kind==='stagger' || ev.kind==='daunt' /* ENG16 (2026-11-24): the 😨 pip as it lands */) updateCardStatusDisplay(ev.targetUid);
   }
   // Heal against Poison (2026-10-16, user: "When regeneration of heal are used to reduce poison, a grey poison counter jumps out of the
   // creature's grey poison counters. Note: it takes heal values to remove poison counters - priority."): the engine's applyHeal takes

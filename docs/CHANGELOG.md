@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-24 Package ENG16 (owner 11-23 23:39 #16: "Corrode and Daunt seem to be stacking")
+- **Corrode no longer stacks:** a hit sets Corrode to the larger of what the unit has and N; it still fades 1 a round after the last hit. Before, a unit hit every round never lost any: one Corrode 1 attacker took 1 more Attack off it every round, without end (Corrode 2 had a 10-Attack unit at 0 by round 5). Two Corrode units on one target now count the larger. Same for Acid Bolt's 1 and Corrode on Cleave / prong / counter hits. Can move fights with Corrode carriers (Map 7: Leopard Slug, Hawthorn Shieldbug; Black Dragon, Caustic Scorpion); Corrode's measured price (2.9) read the old rule.
+- **Daunt unchanged** (the owner's 10-12 rule: hits add; each mark lasts to the end of the next round, so one Daunt 2 unit hitting every round cuts 4). Its 😨 pip now shows that: mid-round it showed only this round's marks, and a live status refresh dropped it.
+- Texts unchanged: Corrode's card line still says "Its hits add N Corrode" (12 packs; a texts package can say "not stacked").
+- Test `tests/eng16-2026-11-24.js`. card-matrix golden updated: 173 diffs (160 duels, 7 squads, 6 matches), every one holding Leopard Slug, Hawthorn Shieldbug, Caustic Scorpion (Acid Bolt) or Black Dragon.
+
 ## 2026-11-23 MP1 #5 applied (coordinator)
 - **Goliath raid:** fight brambles 780 / 930 / 560 / 100 -> 940 / 1040 / 670 / 250 in canonical/raids.json (RAIDBAL1-1 targets; MP1 measured warm-ups 64%, Core 34%, weekly fall 100% with 20 players). The only cloud raid row (`__cfg:raid:goliath`) is deleted, so the file is live. Tests raidbal1, raid-rb2, gd2 (REWARD3 filter) follow.
 
