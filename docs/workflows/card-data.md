@@ -1,6 +1,7 @@
 # Workflow: card data and content
 
 For new cards, stat or skill edits, rewards, skirmish decks, card texts and names. Rules and safety are in `/CLAUDE.md`.
+Designing or redesigning a card's stats, skills and Level 0-10 table: follow the project skill `.claude/skills/card-level-design/SKILL.md` (owner 2026-11-23).
 
 ## Files you need
 - `canonical/cards.json`: the only source for cards. Append new cards at the end with `awaitingSource: true` until the owner places them.
