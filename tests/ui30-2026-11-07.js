@@ -18,11 +18,11 @@ const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Ha
 const fn = (src, name)=>{ const i = src.indexOf('function ' + name + '('); if(i < 0) return ''; let d = 0; const j = src.indexOf('{', i); for(let k = j; k < src.length; k++){ if(src[k] === '{') d++; else if(src[k] === '}' && --d === 0) return src.slice(i, k + 1); } return ''; };
 
 // ---- texts
-const KEYS = ['ui.ui30-sugg-intro', 'ui.ui30-sugg-intro-tip', 'ui.ui30-sugg-missing', 'ui.ui30-bleed-tip'];
+const KEYS = ['ui.ui30-sugg-intro-tip', 'ui.ui30-sugg-missing', 'ui.ui30-bleed-tip'];
 const {TEXT} = require(path.join(ROOT, 'bramblewood-texts.js'));
 KEYS.forEach(k=>{ const en = TEXT[k]; ok(!!en, 'TX key ' + k);
   CODES.forEach(c=>{ const pack = JSON.parse(read('lang/' + c + '.json')); ok(en && pack[en] && pack[en] !== en, `${c} translates "${en}"`); }); });
-ok(TEXT['ui.ui30-sugg-intro'] === 'Sugg. Intro' && /\{n\}/.test(TEXT['ui.ui30-bleed-tip']), 'the pill reads "Sugg. Intro"; the Bleed tooltip has the count');
+ok(!('ui.ui30-sugg-intro' in TEXT) /* 2026-11-24 (TESTFIX10): the pill is the one Suggested pill since MAPUI2; the key was removed */ && /\{n\}/.test(TEXT['ui.ui30-bleed-tip']), 'the Bleed tooltip has the count');
 
 // ---- #1 one toast per change
 { const w = fn(app, 'wireSettingsButton');

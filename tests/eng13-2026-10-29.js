@@ -78,7 +78,7 @@ function swing(att, seed, rules){ const {e, P} = mk(rules || {woods:true}, seed)
   ok(lock && new Function(lock + '\nreturn ambushLocksNode;')()({id:'mc'}, {key:'3-2'}) === false, 'ambushLocksNode locks nothing');
   ok(!/the-ambush-still-blocks-the-way'\), 'warn'\); conquestSelectedNodeKey = 'ambush'/.test(app), "3-2's Fight is no longer turned away while the Ambush stands");
   const m = app.match(/\!\(n\.chance > 0\) && \!n\.secret && \!n\.ambush/g) || []; ok(m.length === 3, `the next map's unlock, its "what is left" line and conquestMapCleared skip the Ambush (${m.length} of 3)`);
-  ok(/rewardTokens:\['factionGrowth'\], requires: \[\], floating: true, ambush:true/.test(app), 'its reward (a Faction Growth card) is kept'); }
+  ok(/rewardTokens:\['factionGrowth'\], rewards:\{first:\{[^}]*\}\}[^\n]{0,160}requires: \[\], floating: true, ambush:true/ /* 2026-11-24 (TESTFIX10): ECON1 phase 2 added a first-clear pay between the tokens and requires */.test(app), 'its reward (a Faction Growth card) is kept'); }
 { const B = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = B.G, D = G.getCardDefs();
   const DECKS = eval('(' + B.grab('AMBUSH_DECKS').replace(/^const AMBUSH_DECKS = /, '').replace(/;\s*$/, '') + ')'), HARD = eval('(' + B.grab('AMBUSH_HARD').replace(/^const AMBUSH_HARD = /, '').replace(/;\s*$/, '') + ')');
   ['hummingbirds', 'otters'].forEach(foe=>{ const deck = DECKS[foe], tot = Object.values(deck).reduce((a, b)=> a + b, 0), side = foe === 'hummingbirds' ? 'tribes' : '';

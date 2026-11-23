@@ -15,11 +15,11 @@ const app = read('arena_app.js'), tpl = read('arena_template.html');
 const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
 
 // ---- static
-const KEYS = ['ui.ui28-power-adv', 'ui.ui28-suggested', 'ui.ui28-suggested-tip', 'ui.ui28-grey-lvl', 'ui.ui28-grey-hidden'];
+const KEYS = ['ui.ui28-power-adv', 'ui.ui28-suggested', /* 2026-11-24 (TESTFIX10): ui.ui28-suggested-tip removed, nothing reads it since MAPUI2 */ 'ui.ui28-grey-lvl', 'ui.ui28-grey-hidden'];
 { const {TEXT} = require(path.join(ROOT, 'bramblewood-texts.js'));
   KEYS.forEach(k=>{ const en = TEXT[k]; ok(!!en, 'TX key ' + k);
     CODES.forEach(c=>{ const pack = JSON.parse(read('lang/' + c + '.json')); ok(en && pack[en] && (pack[en] !== en || c === 'tl'), `${c} translates "${en}"`); }); });
-  ok(/\{n\}/.test(TEXT['ui.ui28-power-adv']) && /\{card\}/.test(TEXT['ui.ui28-suggested-tip']) && /\{n\}/.test(TEXT['ui.ui28-grey-lvl']), 'the placeholders are in the strings');
+  ok(/\{n\}/.test(TEXT['ui.ui28-power-adv']) && /\{n\}/.test(TEXT['ui.ui28-grey-lvl']), 'the placeholders are in the strings');
   ok(TEXT['ui.rv1-act-cut'] === '✂', '#1 Cut is the emoji alone');
   CODES.forEach(c=>{ const pack = JSON.parse(read('lang/' + c + '.json')); ok(!('✂ Cut' in pack) && pack['✂'] === '✂', `${c}: the old "✂ Cut" row became "✂"`); }); }
 { const fn = name=>{ const i = app.indexOf('function ' + name + '('); let d = 0, j = app.indexOf('{', i); for(let k = j; k < app.length; k++){ if(app[k] === '{') d++; else if(app[k] === '}' && --d === 0) return app.slice(i, k + 1); } return ''; };

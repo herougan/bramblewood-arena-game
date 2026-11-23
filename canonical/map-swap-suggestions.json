@@ -1,14 +1,14 @@
 {
  "_about": "MAPSWAP1 (2026-11-22): Claude's suggestions to cover the To add tiles and resolve the To remove tiles of the Map cards window, Maps 0-20. Regenerate: node tools/mapswap1_suggest.js. yes / no = [mapId, cardId] pairs sent through ui37SetFlag when the owner clicks Yes.",
- "generated": "2026-11-22",
+ "generated": "2026-11-23",
  "totals": {
-  "add": 6,
+  "add": 7,
   "addCards": 4,
-  "addConcept": 2,
-  "rm": 38,
+  "addConcept": 3,
+  "rm": 37,
   "rmMove": 20,
   "rmKeep": 2,
-  "rmDrop": 13,
+  "rmDrop": 12,
   "rmStuck": 3
  },
  "stuck": [
@@ -38,29 +38,7 @@
    "newHere": 17,
    "target": 10,
    "add": [],
-   "remove": [
-    {
-     "key": "foraging",
-     "skill": "Foraging",
-     "card": "chipmunk-forager",
-     "cardName": "Chipmunk Forager",
-     "kind": "drop",
-     "to": null,
-     "also": 18,
-     "text": "drop Chipmunk Forager from Map 0 (also on Map 18)",
-     "why": "Chipmunk Forager is already on Map 18's list, so it is not lost; Foraging is not meant to be New! on Map 0",
-     "yes": [],
-     "no": [
-      [
-       "m1",
-       "chipmunk-forager"
-      ]
-     ],
-     "keys": [
-      "foraging"
-     ]
-    }
-   ]
+   "remove": []
   },
   {
    "n": 1,
@@ -216,7 +194,15 @@
    "list": 15,
    "newHere": 12,
    "target": 10,
-   "add": [],
+   "add": [
+    {
+     "key": "fork",
+     "skill": "Fork",
+     "cards": [],
+     "concept": null,
+     "why": "no existing card carries Fork and fits Map 4's theme and rarity cap"
+    }
+   ],
    "remove": [
     {
      "key": "evasive",

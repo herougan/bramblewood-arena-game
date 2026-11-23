@@ -68,7 +68,7 @@ ok(TXT['ui.sk2n-fortification'] === 'Build' && TXT['ui.e22-build-head'] === 'Bui
 ok(/key:'fortification', category:'passive', label:TX\('ui\.sk2n-fortification'\), kind:'text', placeholder:'0\/6 Palisade'/.test(app) && /key:'fortify', category:'passive', label:TX\('ui\.e22-fortify-name'\), kind:'text'/.test(app), '1: the editor fields: Build and Fortify take their braces as text');
 // 2026-11-18 (TESTFIX): FOLD6 (REDESIGN3, Map 15) gave Shellwright Apprentice Fortify (Armor 1); Fortification stays on no card
 ok(!cards.some(c=> c.effects && ((c.effects.fortify && !redesigned(c.id)) || c.effects.fortification)), '1: Fortify (and Build) on no card, but the redesign\'s carriers');
-ok(SK.fortify && SK.fortify.value === 3.04 && SK.fortify.theoretical, '1: Fortify priced theoretically (3.04 at the owner\'s example)');
+ok(SK.fortify && SK.fortify.value === 9.06 /* 2026-11-24 (TESTFIX10: SKMPRICE 11-22 re-priced Fortify 3.04 -> 9.06) */ && SK.fortify.theoretical, '1: Fortify priced theoretically (3.04 at the owner\'s example)');
 
 // ---- 2. Taunt / Guardian take arrows and shots -----------------------------------------------------------------------------
 function shotAt(setup, shooter){ const {e, P} = mk(6); const s = put(e, P, 1, shooter || 'x-shoot', 0); const ids = setup(e, P); const ev = [];

@@ -106,7 +106,8 @@ ok((app.match(/ui32McRefreshSkills\(ov\)/g) || []).length >= 4 && /ui19McSkillsH
   ok(L('m1', defsF, new Set(), 1).length === 1 && L('m1', defsF, new Set(), 0).length === 0, 'at most the room left'); }
 
 // ================= 5. texts =================
-const KEYS = ['ui.ui32-sk-counters', 'ui.ui34-counter-ctx', 'ui.ui34-resist-of', 'ui.ui34-resist-text', 'ui.ui34-resist-why', 'ui.ui34-unsure', 'ui.ui34-cn-tip', 'ui.ui34-pick-tip'];
+// 2026-11-24 (TESTFIX10): ui.ui32-sk-counters removed (MAPUI2 has no subtitles)
+const KEYS = ['ui.ui34-counter-ctx', 'ui.ui34-resist-of', 'ui.ui34-resist-text', 'ui.ui34-resist-why', 'ui.ui34-unsure', 'ui.ui34-cn-tip', 'ui.ui34-pick-tip'];
 const phs = s=> (s.match(/\{\w+\}/g) || []).sort().join(',');
 const core = t=> t.trim().replace(/^[\s \p{Extended_Pictographic}️‍]+/u, '');
 KEYS.forEach(k=>{ const m = texts.match(new RegExp('"' + k.replace(/\./g, '\\.') + '": "((?:[^"\\\\]|\\\\.)*)"')); ok(!!m, `TX key ${k} exists`); if(!m) return;

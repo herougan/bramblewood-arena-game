@@ -23783,7 +23783,9 @@
     "flavor": "It comes in with the tide, and it comes in fast.",
     "effects": {
       "tide": 3,
-      "swift": true
+      "speed": {
+        "kind": "swift"
+      }
     },
     "wait": 2,
     "cost": 1,

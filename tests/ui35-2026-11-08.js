@@ -92,7 +92,8 @@ ok(/"ui\.ui22-claude-title": "Thematic Recommendation"/.test(texts) && !/Recomme
   ok(/PRO decks win|ui\.bal24-pro-win/.test(sk), 'the PRO decks\' own win % line is still there'); }
 
 // ================= 6. texts =================
-const KEYS = ['ui.ui35-view-label', 'ui.ui35-view-full', 'ui.ui35-view-compact', 'ui.ui35-pool-left', 'ui.ui35-pool-how', 'ui.ui35-pill-main', 'ui.ui35-pill-main-tip', 'ui.ui35-pill-counter', 'ui.ui35-pill-counter-tip', 'ui.ui35-pill-newuse', 'ui.ui35-pill-newuse-tip', 'ui.ui35-pill-cxsig', 'ui.ui35-pill-cxsig-tip', 'ui.ui35-pill-cxside', 'ui.ui35-pill-cxside-tip', 'ui.ui35-codex-ctx',
+// 2026-11-24 (TESTFIX10): the Main / New use / Codex sig. / Codex side labels were removed with MAPUI2's pills (the cxsig / cxside tips are still read)
+const KEYS = ['ui.ui35-view-label', 'ui.ui35-view-full', 'ui.ui35-view-compact', 'ui.ui35-pool-left', 'ui.ui35-pool-how', 'ui.ui35-pill-counter', 'ui.ui35-pill-counter-tip', 'ui.ui35-pill-cxsig-tip', 'ui.ui35-pill-cxside-tip', 'ui.ui35-codex-ctx',
   'ui.ui35-new-count', 'ui.ui35-new-count-tip', 'ui.ui35-ref-sk', 'ui.ui35-ref-wk', 'ui.ui35-ref-cut-sk', 'ui.ui35-ref-cut-wk', 'ui.ui35-ref-worst', 'ui.ui35-ref-tip', 'ui.ui22-claude-title'];
 const phs = s=> (s.match(/\{\w+\}/g) || []).sort().join(',');
 const core = t=> t.trim().replace(/^[\s \p{Extended_Pictographic}️‍]+/u, '');

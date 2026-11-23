@@ -133,7 +133,7 @@ ok(/if\(e\.keenSense && !eng28DarkPipOff\(bopts\)\)/.test(app) && /if\(k === 'so
 { const {e, P} = mk(); P[1].hand.push({uid:99282, defId:'x-off2'}); P[1].lumber = 10; e.placeCard(P, so, 1, 99282, 'center', {}, []);
   const kids = all(P[1]).filter(c=> /~offspring~/.test(c.defId));
   ok(kids.length === 2 && kids.every(c=> c.atk === 0 && c.maxHp === 1), `a 1/1 Offspring 2: two 0/1 copies (Health at least 1) (${kids.map(c=> c.atk + '/' + c.maxHp)})`); }
-ok(B.OFFSPRING_COPY === 0.32 && B.bloomBodyMult({offspring:1}) === 1.32 && B.bloomBodyMult({offspring:2}) === 1.64 && B.capScores(2, 4, 0, {offspring:1}).k === 1.32, 'its price: k = 1 + 0.32 N on cap 1\'s stat terms (0.5 x 0.85 x 0.75)');
+ok(B.OFFSPRING_COPY === 0.02 /* 2026-11-24 (TESTFIX10: SKMPRICE 11-22, was 0.32) */ && B.bloomBodyMult({offspring:1}) === 1.02 && B.bloomBodyMult({offspring:2}) === 1.04 && B.capScores(2, 4, 0, {offspring:1}).k === 1.02, 'its price: k = 1 + 0.32 N on cap 1\'s stat terms (0.5 x 0.85 x 0.75)');
 
 // ---- 23:35 #17 Brood: Swarm (Species) ------------------------------------------------------------------------------------------
 // 2026-11-18 (SKAUD1): Grotto Lobster has Offspring now; the old Brood rule on a test def

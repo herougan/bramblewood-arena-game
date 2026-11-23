@@ -12,7 +12,7 @@ const CODES = ['de', 'es', 'fr', 'id', 'it', 'ja', 'ko', 'pt', 'ta', 'tl', 'zh-H
 
 // the new texts: in the table, translated in every pack with the same placeholders
 const KEYS = ['ui.ui32-log-tide-soak', 'ui.ui32-log-drain', 'ui.ui32-log-soak', 'ui.ui32-log-dry', 'ui.ui32-log-douse', 'ui.ui32-log-roll', 'ui.ui32-log-ignite', 'ui.ui32-log-glean',
-  'ui.ui32-log-feast', 'ui.ui32-log-cross', 'ui.ui32-edited', 'ui.ui32-no-skills', 'ui.ui32-triggers', 'ui.ui32-ctr-thorns', 'ui.ui32-sk-main', 'ui.ui32-sk-other', 'ui.ui32-sk-rec', 'ui.ui7-poison-tip'];
+  'ui.ui32-log-feast', 'ui.ui32-log-cross', 'ui.ui32-edited', 'ui.ui32-no-skills', 'ui.ui32-triggers', 'ui.ui32-ctr-thorns', /* 2026-11-24 (TESTFIX10): the Main / Other / Recommended subtitles were removed with MAPUI2's one skill list */ 'ui.ui7-poison-tip'];
 const phs = s=> (s.match(/\{\w+\}/g) || []).sort().join(',');
 KEYS.forEach(k=>{
   const m = texts.match(new RegExp('"' + k.replace(/\./g, '\\.') + '": "((?:[^"\\\\]|\\\\.)*)"')); ok(!!m, `TX key ${k} exists`); if(!m) return;

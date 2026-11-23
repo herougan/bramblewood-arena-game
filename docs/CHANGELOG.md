@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-24 Package TESTFIX10 (tests left red by today's packages)
+- **Pins re-set to the SKMPRICE 11-22 prices:** eng12 (Diurnal 0.55, Owl Nocturnal 5.42, Catfish 8.24), eng22 (Fortify 9.06), eng28 (Offspring copy 0.02), eng33 (Bulwark 4.67 x N^0.62), eng40 (Metal Hoard x0.04). eng13 reads the ECON1 first-clear pay; eng50 lets the known out-of-band Bar-headed Goose Leader through; card-pool reports its 13 old drifted checks as known drift (the same 13 fail before CARDS1).
+- **One real data bug, from CARDS1:** Shoal Shark carried the old key `swift: true` beside the fused `speed: {kind: swift}` form (eng35 / eng39 "fold tool has nothing left to fold"). Folded to `effects.speed = {kind: "swift"}` in `canonical/cards.json`; no stat or skill changed.
+- **Unused text keys removed** (with their rows in the 12 packs): the MAPUI2 pill and subtitle labels (Main, New use, Codex sig., Codex side, Focus, Sugg. Intro, "Green = on these cards") and the old skill-list subtitles; the tests that listed them were updated.
+- Still red: mapswap1 (Map 4 "To add fork": the generator needs a new-card concept for it; `tools/mapswap1_suggest.js` is outside this package's files).
+
 ## 2026-11-24 Package MAPUI2 (owner 11-23 23:39 #2a #6 #7 #8 #9 #10 #13 #15 #17 #18)
 - **Map cards window, one skill list:** red (NEW!, To remove), red / blue (To add), blue (Suggested, Counter, Codex), then grey (carried, then the side-map and special skills). No "Other skills" subtitle. **To remove is black LEFT, red RIGHT** (was red / black). The legend names New!, To add, To remove, Suggested, Carried.
 - **Pills, old -> new:** Main -> none (grey says it); Focus -> none (the outline stays); Intro, Sugg. Intro, Suggested -> **Suggested**; New use -> none; Codex sig., Codex side -> **Codex**; NEW! + To remove on one tile -> **To remove**; New!, To add, To remove, Counter unchanged. A skill a listed card carries never wears Suggested / Counter / Codex (Map 4's Venomous and Decay wore Suggested because the suggestion match is by skill key, so any card carrying the key took the pill meant for the card that should gain it). A map with a table row takes no Sugg. Intro: a skill outside the row is never suggested as an intro.
