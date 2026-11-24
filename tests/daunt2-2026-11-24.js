@@ -89,7 +89,7 @@ ok(/e\.intimidate && d === 0/.test(eng) && /DAUNT2/.test(eng), '3. the engine: m
 // ================= 4. poison colour =================
 { const r = /\.card-tile \.atk\.atk-poison\{([^}]*)\}/.exec(tpl); ok(r && !/dcaaff|52,24,76|190,130,240/i.test(r[1]) && /#[0-9a-f]{6}/i.test(r[1]), '4. the poison attack label is no longer purple');
   ok(/DAUNT2[^\n]*purple[^\n]*reserved/i.test(tpl), '4. the purple plate is kept as a reserved note');
-  ok(/\.ico-poisonpowder[^{]*\{[^}]*hue-rotate/.test(tpl) && /data-ui19-skill="poisonPowder"\][^{]*\{|data-ui19-skill="poisonPowder"\] \.ui19-sk-ico/.test(tpl) && /\.bk-ico\[data-sk="poisonPowder"\]/.test(tpl), '4. Poison Powder\'s 🍄 is tinted in pips, skill tiles and the Codex');
+  ok(/\.ico-poisonpowder > \*[^{]*\{[^}]*hue-rotate/.test(tpl) && /data-ui19-skill="poisonPowder"\][^{]*\{|data-ui19-skill="poisonPowder"\] \.ui19-sk-ico/.test(tpl) && /\.bk-ico\[data-sk="poisonPowder"\]/.test(tpl), '4. Poison Powder\'s 🍄 is tinted in pips, skill tiles and the Codex');
   ok(/class="bk-ico" data-sk=/.test(app), '4. the Codex icon names its skill'); }
 
 // ================= 5. Puffball blooms only on a poison kill =================

@@ -1,0 +1,68 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-24T16:22:44.951Z",
+ "finished": "2026-11-24T16:28:16.976Z",
+ "durationSec": 332,
+ "args": [
+  "--bramble",
+  "15",
+  "--skills",
+  "intimidate=1,intimidate=2",
+  "--minutes",
+  "55"
+ ],
+ "head": "c90d3a268",
+ "inputs": {
+  "context": "global",
+  "bramble": 15,
+  "fingerprint": "02198a52f278",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "intimidate=1",
+   "intimidate=2"
+  ]
+ },
+ "counts": {
+  "items": 2,
+  "measured": 2,
+  "reused": 0,
+  "stopped early": 2,
+  "fights saved": 1600,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "intimidate=1",
+   "field": "worth",
+   "old": "-",
+   "new": "2.2668 [1.7584, 2.6382] at 200 fights, price on carriers 2.18"
+  },
+  {
+   "id": "intimidate=2",
+   "field": "worth",
+   "old": "-",
+   "new": "3.9265 [3.0971, 4.95] at 200 fights, price on carriers 3.81"
+  }
+ ],
+ "flagged": [],
+ "cached": {
+  "hits": 0,
+  "played": 2
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-25-0022.json"
+}

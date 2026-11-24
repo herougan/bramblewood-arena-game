@@ -9368,8 +9368,9 @@
      color #dcaaff, buffed #f0d4ff, background rgba(52,24,76,.9) -> rgba(24,10,40,.94), rim rgba(190,130,240,.7), glow rgba(170,100,230,.4). */
   .card-tile .atk.atk-poison{color:#a8f08a; background:linear-gradient(180deg,rgba(18,62,26,.9),rgba(6,30,12,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(110,215,100,.7), 0 0 6px rgba(80,200,80,.4);}
   .card-tile .atk.atk-poison .atk-buffed{color:#d8ffc8;}
-  /* 2026-11-24 (DAUNT2, owner 23:25): Poison Powder's red 🍄 is drawn green (skill pips, map skill tiles, the Codex); every other 🍄 keeps its colour */
-  .ico-poisonpowder, [data-ui19-skill="poisonPowder"] .ui19-sk-ico, [data-ui24-rec="poisonPowder"] .ui19-sk-ico, [data-ui34-pick="poisonPowder"] .ui19-sk-ico, .bk-ico[data-sk="poisonPowder"]{filter:hue-rotate(105deg) saturate(1.15);}
+  /* 2026-11-24 (DAUNT2, owner 23:25): Poison Powder's red 🍄 is drawn green (skill pips, map skill tiles, the Codex); every other 🍄 keeps its colour. On the
+     emoji picture (the bundled sets): .ico[data-ik] clears the glyph span's own filter. */
+  .ico-poisonpowder > *, [data-ui19-skill="poisonPowder"] .ui19-sk-ico > *, [data-ui24-rec="poisonPowder"] .ui19-sk-ico > *, [data-ui34-pick="poisonPowder"] .ui19-sk-ico > *, .bk-ico[data-sk="poisonPowder"] > *{filter:hue-rotate(105deg) saturate(1.15);}
   .card-tile .atk.atk-decay{color:#d9b27a; background:linear-gradient(180deg,rgba(62,44,20,.9),rgba(30,20,8,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(190,150,90,.7), 0 0 6px rgba(170,120,60,.4);}
   .card-tile .atk.atk-decay .atk-buffed{color:#f0d6ae;}
   .card-tile .atk.atk-water{color:#8fe6f0; background:linear-gradient(180deg,rgba(8,58,70,.9),rgba(4,26,34,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(80,200,220,.7), 0 0 6px rgba(60,190,220,.4);}

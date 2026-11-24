@@ -2093,3 +2093,10 @@ Already in the game under these or other names (skipped):
 | Adversity: "Unit gains {+0/1} whenever an allied creature is attacked." | `adversity` | none / a new On Ally Attacked hook | (blank) | Fire On Ally Attacked on its side's units where On Attacked fires; Buff self +0/+N. |
 | Backlash: "Counterattack: {}" | `backlash` | by the action / On Attacked | (blank) | A name for On Attacked – {…} (the trigger exists); a keyword form like Sacrifice – {…}. |
 | Vengence: "Unit comes back to life and gains {Skills} when it dies, but vengence is permanently deactivated." | `vengeance` | none / On Death | GOD/MAGIC | Revive once (ENG9's Revive) plus Grant {skills} to the risen unit; once a fight. |
+
+## 2026-11-24 additions (package DAUNT2)
+- **Intimidate N** (`intimidate`, 👺): the enemy unit in its own column swings at −N while it stands, Ready or not (`majestyCut` at reach 0, inside `chokeOf`); the biggest of Majesty and Intimidate on one foe counts. No event of its own: the facing line trembles and the foe's swing shakes, as at a Scare unit. Booming Bittern: Intimidate 2 (3 at Level 7). Price 2.27 × N^0.79, measured (Intimidate 1 2.27 [1.76, 2.64], 2 3.93 [3.10, 4.95]); the Majesty-derived 2.18 × N^0.80 sat inside both.
+- **Scare** stays in the engine, on no card: Yeti 2, White Dragon 3, Lurking Dread 2, Frillneck Duelist 1 (Level 3), Ashmantle Fiend 2, Whale Shark 1 carry Daunt instead.
+- **Bloom condition Poison kill** (`poisonkill`): an enemy died of poison (any poison tick) while the unit stood on the board (`notePoisonDeath` in `damageCardFlat`). Puffball: Bloom (Wet & Poison kill).
+- **Keen Sense** also skips a grounded target's Evasive dodge (`keenNoseVs`, in `combatHitLands` and `dodgeCheck`).
+- **Corrode**'s texts: its hits leave Corrode N (refreshed to the larger, ENG16): N less Attack, fading 1 a round after the last hit.
