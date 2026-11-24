@@ -136,7 +136,7 @@ const CONTEXT = {
 // p = the conditions' odds over a unit's life (BLOOM_ODDS; 'and' multiplies them, 'or' is 1 − Π(1 − odds)) × BLOOM_LIVE (it is still on
 // the field at a round's start once they hold, with a free slot beside it) × BLOOM_LUMBER per Lumber it pays. These are formula estimates,
 // not measured (the robust skill test does not model the copy yet); Wet & Sunny p 0.27, Wet & Kill 0.17, Wet & Sunny + 1 Lumber 0.23.
-const BLOOM_ODDS = {day: 0.85, sunny: 0.8, night: 0.8, twilight: 0.4, dark: 0.85, tide: 0.35, ebb: 0.3, wet: 0.4, rain: 0.15, wind: 0.25, heat: 0.1, frost: 0.1, fullmoon: 0.15, kill: 0.5};
+const BLOOM_ODDS = {day: 0.85, sunny: 0.8, night: 0.8, twilight: 0.4, dark: 0.85, tide: 0.35, ebb: 0.3, wet: 0.4, rain: 0.15, wind: 0.25, heat: 0.1, frost: 0.1, fullmoon: 0.15, kill: 0.5, poisonkill: 0.5 /* DAUNT2 (2026-11-24): Puffball's Poison kill, as Kill (not measured), so its price stays */};
 const BLOOM_ODDS_OTHER = 0.3, BLOOM_LIVE = 0.85, BLOOM_LUMBER = 0.85;
 function bloomOdds(v){ if(!obj(v)) return 0; const w = (Array.isArray(v.when) ? v.when : [v.when]).filter(Boolean).map(x=> String(x).toLowerCase().replace(/\s+/g, ''));
   if(!w.length) return 0; const o = w.map(k=> BLOOM_ODDS[k] != null ? BLOOM_ODDS[k] : BLOOM_ODDS_OTHER);

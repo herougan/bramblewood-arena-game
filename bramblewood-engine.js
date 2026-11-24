@@ -1189,14 +1189,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Ready Majesty unit stands, the enemy units facing it (its column and the columns either side of it) swing at -N Attack, never below 0.
   // Several Majesty units do not stack on one foe: the biggest N counts. It rides on chokeOf, so it cuts every swing the way the Sulphur
   // Fumes' choke does (a unit, the bramble, the board's shown Attack), not Thorns or a skill's damage.
+  // Intimidate N (DAUNT2, 2026-11-24, owner 23:21: "creatures opposing it have -2 attack: passive"): Majesty at reach 0 with no Ready condition:
+  // while it stands, the enemy unit in its own column swings at -N. The biggest of Majesty and Intimidate on one foe counts.
   const MAJESTY_DEF = 1, MAJESTY_REACH = 1;
   function majestyCut(card){
     if(!card || !curPlayers) return 0;
     let pid = 0; for(const p of [1,2]){ const pl = curPlayers[p]; if(pl && pl.row && allBoardCards(pl).includes(card)){ pid = p; break; } } if(!pid) return 0;
     const foe = curPlayers[otherId(pid)]; if(!foe || !foe.row) return 0;
-    const kings = allBoardCards(foe).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf && !(c.wait > 0) && effectsOf(c).majesty); if(!kings.length) return 0;
+    const kings = allBoardCards(foe).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf && ((effectsOf(c).majesty && !(c.wait > 0)) || effectsOf(c).intimidate)); if(!kings.length) return 0;
     const myCol = columnOfCard(curPlayers[pid], card.uid); if(myCol == null) return 0;
-    let n = 0; kings.forEach(k=>{ const kc = columnOfCard(foe, k.uid); if(kc != null && Math.abs(kc - myCol) <= MAJESTY_REACH) n = Math.max(n, numN(effectsOf(k).majesty, MAJESTY_DEF)); });
+    let n = 0; kings.forEach(k=>{ const kc = columnOfCard(foe, k.uid); if(kc == null) return; const e = effectsOf(k), d = Math.abs(kc - myCol);
+      if(e.majesty && !(k.wait > 0) && d <= MAJESTY_REACH) n = Math.max(n, numN(e.majesty, MAJESTY_DEF));
+      if(e.intimidate && d === 0) n = Math.max(n, numN(e.intimidate, 1)); });
     return n; }
   // 2026-10-17 (user: "new ones like Ash Rain and Ashy (volcano explosion)"): rules.ashRain N (default 1): from round 2, ash falls every round:
   // both castles take N (never below 1), and the ash dims the sun: day bonuses are halved, as under Cloudy.
@@ -3280,7 +3284,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // card (its printed Wait), blooms once itself when its conditions hold (EN5, 2026-10-24, owner: "the copy can bloom"; it never could before, BL-1) and leaves no card in the graveyard when it dies.
   // No free slot beside it (owner call BL-2): it does not bloom yet; it tries again next round. (The old Bloom N heal, effects.bloom,
   // and Bloom (conditions), effects.bloomWhen, are retired names: the engine still runs them for an old custom card.)
-  const BLOOM_UNIT_CONDS = ['kill'];
+  // 'poisonkill' (DAUNT2, 2026-11-24, owner 23:25: "requires an enemy killed by poison, not just killed"): an enemy unit died of poison (a Poison,
+  // Greater Poison, Toxin or Pulse tick) while this unit stood on the board (c.bloomPoisonKill, set by notePoisonDeath).
+  const BLOOM_UNIT_CONDS = ['kill', 'poisonkill'];
+  function notePoisonDeath(card){ const pid = curPlayers && [1, 2].find(p=> curPlayers[p] && rowsUnitsOf(curPlayers[p]).includes(card)); if(!pid) return;
+    rowsUnitsOf(curPlayers[otherId(pid)]).forEach(c=>{ if(c && c.hp > 0) c.bloomPoisonKill = true; }); }
   // Encore {conditions} (ENG27, 2026-11-06): effects.encore = {when:[...], mode:'and'|'or'} (true / no conditions: Kill). The conditions are
   // Bloom's field ones (BLOOM_CONDS) and 'kill' (its swing this round killed a unit). The braced-facet form, as Bloom – {conditions}.
   function eng27EncoreOn(v, c){ const w = (v && typeof v === 'object') ? bloomCopyConds(v) : []; const conds = w.length ? w : ['kill'];
@@ -3288,7 +3296,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function bloomCopyConds(bc){ const w = bc && bc.when; return (Array.isArray(w) ? w : [w]).filter(Boolean).map(x=> String(x).toLowerCase().replace(/\s+/g, '')); }
   function bloomCopyLumber(bc){ return Math.max(0, Math.round(Number(bc && bc.lumber) || 0)); }
   function bloomCopyOn(bc, c, pl){ if(!bc || typeof bc !== 'object' || !c) return false; const w = bloomCopyConds(bc);
-    const one = k=> k === 'kill' ? !!c.bloomKill : bloomCond(k);
+    const one = k=> k === 'kill' ? !!c.bloomKill : k === 'poisonkill' ? !!c.bloomPoisonKill : bloomCond(k);
     if(!w.length || !(bc.mode === 'or' ? w.some(one) : w.every(one))) return false;
     return !pl || (pl.lumber||0) >= bloomCopyLumber(bc); }
   // The slot the copy grows into: a free one right beside it (a coin flip on the fight's rnd when both are), on a packed row its flank,
@@ -3739,10 +3747,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // (EXPOSE_TICKS counts every poison as a tick, so the test is the attacker: a real Poison tick has none)
     if(dmgType === 'poison' && attDefId && !en20Tick && dmg > 0){ const pn = roundDmg(dmg); const got = pn > 0 ? addPoison(card, pn) : 0; if(got > 0) eng28FlatPoison = {uid: card.uid, n: got}; dmg = 0; }
     // sudden death: any hit that lands kills, and from 2026-10-15 a hit soaked to 0 too; status ticks still need to hurt
-    const sd = suddenDeath ? (d=> d>0 || (amount > 0 && factor !== 0 && !tick)) : null;
+    const sd = suddenDeath ? (d=> d>0 || (amount > 0 && factor !== 0 && !tick)) : null, hpWas = card.hp;
     const out = applyDamage(card, dmg, {dmgType, crush, poisonTick: (dmgType === 'poison' || dmgType === 'bleed') && !attDefId /* ENG15 (Z6); 2026-11-06 (package UI23 #18, owner: "bleed, poison both pierce through shield"): a Bleed tick too */, mods, noteHit: true, punishBy: tick ? undefined : attUid, suddenDeath: sd,
       killerUid: attUid, killerDefId: attDefId, wake: true /* Asleep breaks on any flat/ranged damage too */, shell: !en20Tick /* Shell triggers on arrows and every other hit too (2026-10-12) */, ignite: !!attDefId && !tick /* ENG20: a unit's shot or skill lights; field fire and ticks don't */}).dmg;
     if(card.equipment && !tick && amount > 0) eq2Wear(card, dmgType === 'acid' ? EQ2_DEF.acidWear : EQ2_DEF.hitWear, dmgType === 'acid' ? 'acid' : 'hit'); // EQ2 (2026-10-24): a shot, bolt or smack wears it too (a status tick does not)
+    if(dmgType === 'poison' && hpWas > 0 && !(card.hp > 0)) notePoisonDeath(card); // DAUNT2 (2026-11-24): Bloom's 'poisonkill'
     return out;
   }
   // Bulwark (2026-09-17): sums every live Bulwark stack on the DEFENDING side's own board —
@@ -4263,8 +4272,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(L('tide') && attDefId != null && !(CARD_DEFS[card.defId] && CARD_DEFS[card.defId].effects && CARD_DEFS[card.defId].effects.evasive) && tideEvades(card, CARD_DEFS[attDefId])) return rnd() >= 0.5;
     // Canopy Cover (EN5, 2026-10-24): under the trees a ground unit dodges a shot or a skill like Evasive (one roll; not on top of Evasive)
     if(!dfx.evasive && dfx.canopyCover && L('canopyCover') && en5CanopyCover(card)){ lastMissReason = 'canopyCover'; return rnd() >= 0.5; }
-    return L('evasive') && !heldFast(card) /* ENG15 (2026-10-31, Y3): Bola's Pin or a Lasso: no Evasive dodge */ ? evasiveGate(card) : true;
+    return L('evasive') && !heldFast(card) /* ENG15 (2026-10-31, Y3): Bola's Pin or a Lasso: no Evasive dodge */ && !(attDefId != null && keenNoseVs((CARD_DEFS[attDefId]||{}).effects, dfx)) /* DAUNT2 */ ? evasiveGate(card) : true;
   }
+  // Keen Sense (2026-10-14): it smells out a grounded target (Sonar: flyers too): Thick Fog, Shadow, ash and sand don't make it miss one. DAUNT2
+  // (2026-11-24, owner 23:30: "Keen sense also lets you hit camouflaged things. (Camouflage is the kind of the same as evasive)"): nor does Evasive's dodge,
+  // the camouflage kind of SK1_HIDING (no card has a Camouflage skill of its own).
+  function keenNoseVs(ad, dd){ return (!!(ad && ad.keenSense) && !(dd && dd.flying)) || !!(ad && ad.sonar); }
   // Combat dodges (2026-10-02), each an independent 1-in-2 roll, so they stack multiplicatively:
   //   Swift  — dodges combat attacks from non-Swift attackers
   //   Flying — dodges combat attacks from non-Flying attackers
@@ -4302,7 +4315,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     //   only when it comes from above or afar: a Flying attacker (en5FromAbove) or a thrown Boomerang / Bananarang. A ground unit's
     //   melee swing is no longer dodged. Shots and skills (dodgeCheck) are ranged, so they keep the 1-in-2 roll.
     const cc5 = !!dd.canopyCover && L('canopyCover') && en5CanopyCover(defCard) && en5FromAbove(ad);
-    if(singleTarget && !webbed && ((dd.evasive && L('evasive') && !held) || (L('prey') && preyAlert(defCard)) || (L('tide') && tideEvades(defCard, CARD_DEFS[attCard.defId])) || (L('canopy') && canopySwift(dd)) || cc5) && !ad.fencing && rnd() < (dd.evasive && defCard.boon === 'snowVeil' ? 2/3 : 0.5)){ lastMissReason = dd.evasive ? 'evasive' : canopySwift(dd) ? 'canopy' : cc5 ? 'canopyCover' : 'evasive'; if(dd.evasive && defCard.boon === 'snowVeil') boonFire(defCard, 'dodge'); return false; } // 2 in 3: Snow Veil, a selfish boon (2026-10-24, DF3) // + Prey (2026-10-16)
+    if(singleTarget && !webbed && ((dd.evasive && L('evasive') && !held && !keenNoseVs(ad, dd) /* DAUNT2: Keen Sense finds an Evasive unit */) || (L('prey') && preyAlert(defCard)) || (L('tide') && tideEvades(defCard, CARD_DEFS[attCard.defId])) || (L('canopy') && canopySwift(dd)) || cc5) && !ad.fencing && rnd() < (dd.evasive && defCard.boon === 'snowVeil' ? 2/3 : 0.5)){ lastMissReason = dd.evasive ? 'evasive' : canopySwift(dd) ? 'canopy' : cc5 ? 'canopyCover' : 'evasive'; if(dd.evasive && defCard.boon === 'snowVeil') boonFire(defCard, 'dodge'); return false; } // 2 in 3: Snow Veil, a selfish boon (2026-10-24, DF3) // + Prey (2026-10-16)
     if(dd.swift && L('swift') && !webbed && !ad.swift && !ad.fencing && rnd() < 0.5){ lastMissReason = 'swift'; return false; }
     // High Canopy (2026-10-16, user: "Flying loses its benefit"): under the treetops a Flyer has nowhere to fly off to: no Flying dodge.
     // ENG27 (2026-11-06, owner item 11): the flying meter (flyLevelOf). Anti-air's swing hits only a Flying / Mach unit (100%) and the bramble:
@@ -4318,8 +4331,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(defCard.smoke > 0 && L('smoke') && !ad.sonar && rnd() < 0.5){ lastMissReason = 'smoke'; return false; } // Sonar (2026-10-16) hears through smoke
     // Illusory (raid bosses only): dodges this share of combat attacks, e.g. 0.667 = 2 in 3.
     if(dd.illusory && L('illusory') && rnd() < dodgeChance(dd.illusory)){ lastMissReason = 'illusory'; return false; }
-    // Keen Sense (2026-10-14): it smells out a grounded target: Thick Fog and Shadow don't make it miss one.
-    const keenNose = (!!ad.keenSense && !dd.flying) || !!ad.sonar; // Sonar (2026-10-16): Keen Sense that hears flyers too
+    const keenNose = keenNoseVs(ad, dd);
     const relictSwing = !!(ad.relict || dd.relict); // ENG24 (RELICT-1): the field's fog, ash and sand neither hide a Relict nor blind it
     if(!relictSwing && !keenNose && L('fog') && fogMiss(attCard)){ lastMissReason = 'fog'; return false; } // Thick Fog field (2026-10-09)
     if(!relictSwing && ashyNow() && L('ashy') && !ad.darksight && !keenNose && rnd() < 0.2){ lastMissReason = 'ashy'; return false; } // Ashy (2026-10-17): the ash cloud, 1 in 5
@@ -9210,7 +9222,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function aiBloomOdds(bc, pl){
     if(!bc || typeof bc !== 'object') return 0; const w = bloomCopyConds(bc); if(!w.length) return 0;
     const cyc = phaseActive(), tidal = getTide() !== null;
-    const p = k=> k === 'kill' ? 0.4 : bloomCond(k) ? 1 : (cyc && ['night', 'day', 'twilight', 'sunny', 'dark'].includes(k)) || (tidal && ['tide', 'ebb', 'wet'].includes(k)) ? 0.45 : 0.05;
+    const p = k=> k === 'kill' || k === 'poisonkill' /* DAUNT2 */ ? 0.4 : bloomCond(k) ? 1 : (cyc && ['night', 'day', 'twilight', 'sunny', 'dark'].includes(k)) || (tidal && ['tide', 'ebb', 'wet'].includes(k)) ? 0.45 : 0.05;
     const ps = w.map(p); let o = bc.mode === 'or' ? 1 - ps.reduce((t, x)=> t * (1 - x), 1) : ps.reduce((t, x)=> t * x, 1);
     if(pl && (pl.lumber||0) < bloomCopyLumber(bc)) o *= 0.6;
     return o;
