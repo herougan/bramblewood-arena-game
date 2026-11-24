@@ -1,0 +1,4 @@
+
+smoke: 1 passed, 0 failed, 6 skipped (passed before on identical inputs) · 3s · slowest: card-pass-2026-10-19 3s
+failing tests: tests/.last-failures.txt (0)
+EXIT 0

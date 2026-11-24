@@ -1,0 +1,62 @@
+
+✗ skir1-2026-11-11 (exit 1, 16.8s) — last lines:
+    ✗ 7-2: 7 different cards (5-6)
+    ✗ 7-2: K14 (compost-grub x2)
+    ✗ 14-1: K14 (tasmanian-devil x4)
+    ✗ 14-3: K14 (tasmanian-devil x4)
+    ✗ 14-4: K14 (tasmanian-devil x4)
+    ✗ 14-6: K14 (tasmanian-devil x4)
+    ✗ 15-1: K14 (bramblewood-lynx x3)
+    ✗ 15-2: K14 (hoopoe-herald x2)
+    ✗ 15-4: K14 (bramblewood-lynx x3)
+    ✗ 19-2: K14 (pinecone-sapper x4)
+    ✗ 7-A-2: compost-grub is from the fight's pool (its map's list, its own first-clear cards or leaders, in the rarity cap)
+    ✗ 7-A-3: compost-grub is from the fight's pool (its map's list, its own first-clear cards or leaders, in the rarity cap)
+    ✗ 7-A-3: K14 (compost-grub x3)
+    ✗ 7-A-4: compost-grub is from the fight's pool (its map's list, its own first-clear cards or leaders, in the rarity cap)
+    ✗ 7-A-4: K14 (compost-grub x3)
+    ✗ 7-A-5: compost-grub is from the fight's pool (its map's list, its own first-clear cards or leaders, in the rarity cap)
+    ✗ m1: its decks show 0 cost1 card(s) (the pools hold 2; minimum 4)
+    ✗ m1: its decks show 3 wait1 card(s) (the pools hold 5; minimum 4)
+    ✗ m1: its decks show 1 status card(s) (the pools hold 2; minimum 2)
+    ✗ mw: its decks show 0 plain card(s) (the pools hold 2; minimum 2)
+    ✗ mh: its decks show 0 plain card(s) (the pools hold 1; minimum 2)
+    ✗ mt: its decks show 0 plain card(s) (the pools hold 1; minimum 2)
+    ✗ m11: its decks show 1 cost0 card(s) (the pools hold 2; minimum 3)
+    ✗ my: hoopoe-herald in 5 of 5 fights besides the ones that keep it (at most 4)
+  skir1: 5682 passed, 26 failed
+
+✗ road-rarity-2026-10-16 (exit 1, 6.7s) — last lines:
+  ✗ 2. 20-A-4 (dungeon, Map 20) fields ashmantle-fiend (unique), cap epic
+  road-rarity-2026-10-16: 1 failed
+
+✗ bal7-2026-10-28 (exit 1, 212.8s) — last lines:
+    ✓ ENG12-2 control: an awake unit swings in that round (1 hits)
+    ✓ ENG12-2 a sleeping Counterattack unit, woken by the hit, does not counter that round (foe Health 100)
+    ✓ ENG12-2 ... and counters the next round (foe Health 96)
+    ✓ ENG12-2 the wake marks the round (_wokeRound) and dozing() reads it
+    ✓ CONTENT4-4 mt carries mapField field:'frozen'
+    ✓ CONTENT4-4 mt: every fight's fightRules has the frost, or the fight's own field (7 fights)
+    ✓ CONTENT4-4 m6 carries mapField field:'frozen'
+    ✓ CONTENT4-4 m6: every fight's fightRules has the frost, or the fight's own field (8 fights)
+    ✓ CONTENT4-4 m22 carries mapField field:'frozen'
+    ✓ CONTENT4-4 m22: every fight's fightRules has the frost, or the fight's own field (8 fights)
+    ✓ CONTENT4-4 23 fights play Frigid by their rules (23)
+    ✓ CONTENT4-4 the engine starts a fight with rules.field frozen on
+    ✓ FIN2-2 Give Shield a point = 0.8 x +1 Health given (0.4 = 0.8 x 0.5)
+    ✓ FIN2-2 Bulwark a point = the owner's 9 x 0.8 (4.67; SKILL2 since)
+    ✓ FIN2-2 re-fit ancient-sloth-titan 2/28 -> 2/31
+    ✓ FIN2-2 re-fit muskrat-lodgekeeper 1/5 -> 1/7
+    ✓ M2 cardCheckPool takes pack cards with cardObtainMap <= upTo
+    ✓ M3 no card with a source and in play is flagged unattainable (0; 25 only on the tutorial / endless / tower lists, out of play)
+    ✗ M3 every card out of play carries the flag (LISTFIX1; yeti, poison-dart-croaker, quill-volley, snow-owl-sentinel, mangrove-kingfisher, shimmerwing-stag, fen-mink, grave-grin-hyena, talon-archer, magma-wraith, thorny-devil, fennec-fox, lone-grey-wolf, bramble-hoglet, colossal-squid, lyrebird-mimic, razorbill, pyrenean-desman, truffle-piglet, mangrove-manatee, great-barracuda)
+    ✗ K14 every covered fight follows the rule (260 fights; breaking: 1-5 7-2 14-1 14-3 14-4 14-6 15-1 15-2 15-4 19-2 21-1 21-2 21-3 21-4 21-5 21-6 22-8 23-5 1-A-1 1-A-2 1-A-3 1-A-4 1-A-5 2-A-1 2-A-2 2-A-3 2-A-4 2-A-5 2-A-6 2-A-7 19-A-2 19-A-3 19-A-4 19-A-5 19-A-6 19-A-7 19-A-8 19-A-9 19-A-10 7-A-2 7-A-3 7-A-4 14-A-1 14-A-2 14-A-3 14-A-5 20-A-3 20-A-4 20-A-5 20-A-6 20-B-3 20-B-4 11-A-4 17-A-1 17-A-2 17-A-3 17-A-4 0-B-1 0-B-2 0-B-3 0-B-4)
+    ✓ K14 the changed decks kept their size (126 decks, 491 copies moved)
+    ✓ K14 no fight lost its leader ()
+    ✓ CONTENT4-1 not applied: the map lists are the owner's 11-13 picks under the unique-card limits (765 entries; off his picks: )
+  
+  bal7: 24/26 passed
+
+tests: 5 passed, 3 failed, 0 skipped (passed before on identical inputs) · 213s · slowest: bal7-2026-10-28 213s, pro-2026-10-23 117s, skir1-2026-11-11 17s
+failing tests: tests/.last-failures.txt (3)
+EXIT 1

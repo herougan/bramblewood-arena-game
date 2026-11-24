@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-24 Package ROADFIX3 (Map 8 and The Mycelium Deep after Map 8's new reference deck)
+- **Road:** 9 enemy decks take list swaps (leaders, first-clear cards, sizes kept; no Shield, Health or enemy-level change; no new off-list card), each in band on seeds 9100 and 5100 (400 games): 8-3 Cinder Vents 66 -> 78.5 (target 80; it takes 8-4's Stalactite Pill Bugs, so Map 8 still holds the card in 6 fights), 8-4 89 -> 80.5 (75), 8-5 68.5 -> 60 (60), 8-8 56 -> 45 (40), The Mycelium Deep 7-A-1..5 from 98 / 91 / 87.5 / 84 / 70 to 93 / 72 / 70 / 65 / 37 (targets 90 / 70 / 70 / 60 / 40). 6-3 unchanged: no legal deck reaches its band (all 95 read). 8-7 left for owner call REFIT20-1. Test pins: content3 (18-4 normal Sandstorm), skir1 / bal7 (6-3 Constrictor Coil x2).
+- Road totals (Maps 0-20, seeds 9100): 168 in band / 178 within 10 / 9 beyond 20 -> 177 / 185 / 6 of 208 (main 132 / 136 / 2, side 45 / 49 / 4). Details: `docs/balance/roadfix3-2026-11-24.md`.
+
 ## 2026-11-24 Package REFIT20 (the owner's 11-22 21:28 road calls)
 - **Road:** Thistlewood 1-2, 1-3, 1-4: your bramble starts at the enemy's Health + Shield (7 / 8 / 7, was 15; REFIT15-3 a): 95-98% -> 83-87%, in band. 18-4 Sandstorm blows a normal storm, not a blinding one (REFIT13-3 b): 92 -> 66 (target 62). 18-7 Sand Widow Queen loses its Sandstorm (Scorching kept) and takes list swaps (REFIT13-4 a): 76 -> 37 / 46 (target 40). 6-3 Toad Chorus may hold 2 copies of one pool card (REFIT11-2 a): 67.5 -> 70 (target 80, still under). Map 8's reference deck carries Worker Ant x4 instead of Muskrat Lodgekeeper x4 and 8-7 has its Collapsed Mine back (REFIT13-1 a): Map 8 fights 12-21 points easier, but 8-7 drops to 25% (target 60; the item's Health 4 is under the 60% floor) and the 7-A side map (which plays Map 8's deck) goes too easy. Readings at 400 games on seeds 9100 and 5100.
 - Road totals (Maps 0-20, seeds 9100): 166 in band / 176 within 10 / 9 beyond 20 -> 168 / 178 / 9 of 208 (main 128 / 133 / 2, side 40 / 45 / 7). Details: `docs/balance/refit20-2026-11-24.md`.

@@ -1,0 +1,41 @@
+
+✗ pale-desert-2026-10-19 (exit 1, 42.7s) — last lines:
+    ✗ 3. 18-A-6: first-clear Gold and Dust
+    ✗ 3. 18-A-7: first-clear Gold and Dust
+    ✗ 3. 18-A-8: first-clear Gold and Dust
+    ✗ 3. 18-A-9: first-clear Gold and Dust
+    ✗ 4. stonedrop-vulture (it had no source) is a Pale Desert reward now (or package RP moved it on), within budget
+    ✗ 5. 18-A-1: the stored measure is current (re-run with --measure after changing the fight, its cards or the reference deck)
+    ✗ 5. 18-A-1 (skirmish): 100.0% over 120 games, target 90% (82-98), a listed honest gap
+    ✗ 5. 18-A-2: the stored measure is current (re-run with --measure after changing the fight, its cards or the reference deck)
+    ✗ 5. 18-A-2 (skirmish): 100.0% over 120 games, target 86% (78-94), a listed honest gap
+    ✗ 5. 18-A-3: the stored measure is current (re-run with --measure after changing the fight, its cards or the reference deck)
+    ✗ 5. 18-A-3 (skirmish): 100.0% over 120 games, target 81% (73-89), a listed honest gap
+    ✗ 5. 18-A-4: the stored measure is current (re-run with --measure after changing the fight, its cards or the reference deck)
+    ✗ 5. 18-A-4 (skirmish): 100.0% over 120 games, target 77% (69-85), a listed honest gap
+    ✗ 5. 18-A-5: the stored measure is current (re-run with --measure after changing the fight, its cards or the reference deck)
+    ✗ 5. 18-A-5 (skirmish): 99.2% over 120 games, target 73% (65-81), a listed honest gap
+    ✗ 5. 18-A-6: the stored measure is current (re-run with --measure after changing the fight, its cards or the reference deck)
+    ✗ 5. 18-A-6 (skirmish): 100.0% over 120 games, target 69% (61-77), a listed honest gap
+    ✗ 5. 18-A-7: the stored measure is current (re-run with --measure after changing the fight, its cards or the reference deck)
+    ✗ 5. 18-A-7 (skirmish): 92.5% over 120 games, target 64% (56-72), a listed honest gap
+    ✗ 5. 18-A-8: the stored measure is current (re-run with --measure after changing the fight, its cards or the reference deck)
+    ✗ 5. 18-A-8 (elite): 90.0% over 120 games, target 60% (52-68), a listed honest gap
+    ✗ 5. 18-A-9: the stored measure is current (re-run with --measure after changing the fight, its cards or the reference deck)
+    ✗ 5. 18-A-9 (boss): 83.3% over 120 games, target 40% (30-49), a listed honest gap
+    ✗ 5. 18-A-9 live (30 games): 53% vs stored 83%
+  pale-desert-2026-10-19: 29 of 196 failed
+
+✗ side1-2026-11-12 (exit 1, 11.9s) — last lines:
+  ✗ 6. card power: every card in play on the 11-12 lists has a row (hedgehog-scout, lotus-frog, glowworm-cluster, electric-ray, spitting-cobra)
+  side1-2026-11-12: 1 of 48 failed
+
+✗ winrate-panel-2026-10-19 (exit 1, 136.7s) — last lines:
+  419 fights on every map checked, slowest map mm 10268 ms, 109 s so far
+    Maps 8 and 12: Map 0's deck at Lv 0 wins 29%, m24's (Map 24 deck) at Lv 4.62 84%
+    ✗ Map 23: the report's deck is the game's deck
+  FAIL 1 of 974
+
+tests: 0 passed, 3 failed, 0 skipped (passed before on identical inputs) · 137s · slowest: winrate-panel-2026-10-19 137s, pale-desert-2026-10-19 43s, side1-2026-11-12 12s
+failing tests: tests/.last-failures.txt (3)
+EXIT 1
