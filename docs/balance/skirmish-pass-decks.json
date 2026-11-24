@@ -273,13 +273,14 @@
      "n": 4
     },
     {
-     "id": "muskrat-lodgekeeper",
-     "name": "Muskrat Lodgekeeper",
+     "id": "worker-ant",
+     "name": "Worker Ant",
      "n": 4
     }
    ],
    "level": 0,
-   "generated": "2026-10-28"
+   "generated": "2026-10-28",
+   "edited": "2026-11-24 (REFIT20, REFIT13-1 a): Muskrat Lodgekeeper x4 -> Worker Ant x4 by hand; score not re-read"
   },
   "9": {
    "pool": 70,
