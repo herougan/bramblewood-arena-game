@@ -14,10 +14,10 @@ ok(/poison:'Poison' \/\* ENG33; 2026-11-18 \(UIFIN\)/.test(src) && /name:'Poison
 const fk = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/design/redesign3-2026-11-17.json'), 'utf8')).focus;
 const m = /const MAP_FOCUS_SKILLS = (\{[^;]*\});/.exec(src); const cfg = m && eval('(' + m[1] + ')');
 // 2026-11-22 (TESTFIX9): the owner's later table moves, applied to the design file's keys: FOCUS2 (Map 5 Bleed -> Leech 'sap', Map 6 Leech -> Bleed),
-// NOC7 (Nocturnal Map 4 -> Map 7), MAPADD1-1 a (Map 5 + Poison Barbs, Map 8 + Evasive)
+// NOC7 (Nocturnal Map 4 -> Map 7), MAPADD1-1 a (Map 5 + Poison Barbs, Map 8 + Evasive); 2026-11-24 (DAUNT2): Map 6 + Intimidate, Map 11 + Daunt
 const fkNow = f=>{ let k = f.skills.map(s=> s.key === 'arrowFlaming' ? 'fireArrow' : s.key);
   if(f.map === 5) k = k.map(x=> x === 'bleed' ? 'sap' : x).concat('poisonBarbs'); if(f.map === 6) k = k.map(x=> x === 'sap' || x === 'leech' ? 'bleed' : x);
-  if(f.map === 4) k = k.filter(x=> x !== 'nocturnal'); if(f.map === 7 && !k.includes('nocturnal')) k = k.concat('nocturnal'); if(f.map === 8) k = k.concat('evasive'); return k; };
+  if(f.map === 4) k = k.filter(x=> x !== 'nocturnal'); if(f.map === 7 && !k.includes('nocturnal')) k = k.concat('nocturnal'); if(f.map === 8) k = k.concat('evasive'); if(f.map === 6) k = k.concat('intimidate'); if(f.map === 11) k = k.concat('daunt'); return k; };
 const bad6 = cfg ? fk.filter(f=> f.map >= 0 && f.map <= 20).filter(f=> JSON.stringify(cfg[f.map]) !== JSON.stringify(fkNow(f))).map(f=> f.map + ': ' + cfg[f.map] + ' vs ' + fkNow(f)) : ['no table'];
 ok(!bad6.length, '6 MAP_FOCUS_SKILLS = REDESIGN3 focus keys + the owner\'s later moves (' + bad6.join('; ') + ')');
 console.log(fail ? 'FAIL ' + fail : 'ok uifin'); process.exit(fail ? 1 : 0);

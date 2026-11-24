@@ -115,7 +115,7 @@ const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.jso
 { const fc = by('fungal-colossus'), pb = by('puffball-bombardier'), lf = by('lotus-frog'), nv = by('nectar-vintner'), pa = by('pond-algae'), tb = by('test-skill-bloom');
   const w = c=> JSON.stringify(c.effects.bloomCopy);
   ok(w(fc) === JSON.stringify({when:['wet','sunny'], mode:'and', lumber:1}), '10. Fungal Colossus: Bloom (Wet & Sunny + 1 Lumber)');
-  ok(w(pb) === JSON.stringify({when:['wet','kill'], mode:'and'}), '10. Puffball Bombardier: Bloom (Wet & Killed an enemy)');
+  ok(w(pb) === JSON.stringify({when:['wet','poisonkill'], mode:'and'}), '10. Puffball Bombardier: Bloom (Wet & Poison kill)'); // 2026-11-24 (DAUNT2, owner 23:25): a poison kill, not any kill
   // 2026-11-18 (TESTFIX): FOLD6 (REDESIGN3) made Lotus Frog a Nocturnal pouncer without Bloom; only the no-Bloom-When half still applies to it
 ok((w(lf) === JSON.stringify({when:['tide','night'], mode:'and'}) || (redesigned('lotus-frog') && !lf.effects.bloomCopy)) && !lf.effects.bloomWhen, '10. Lotus Frog: Bloom (Tide & Night) or none since the redesign, no Bloom When');
   ok(nv.effects.nursing === 1 /* 2026-11-18 (TESTFIX): SKAUD1 writes Healing as {v, who}; ENG52 (owner 21:06 "Just leave Nursing"): Nursing 1 */ && nv.effects.healing == null && nv.effects.bloom == null, '10. Nectar Vintner: Nursing 1 (was Healing), no Bloom');
