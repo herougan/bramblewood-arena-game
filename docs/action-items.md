@@ -8,6 +8,11 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-24 23:17 Owner calls
+- Owner: "new skill amphibian - park the name for now." Parked skill name: Amphibian (no design yet).
+- Owner: "if daunt is very similar to scare, then just use scare for now. bittern will be the first card with scare." Daunt (its hits cut the target's Attack by N, stacking) and Scare (a unit hitting it attacks for N less, biggest counts) do the same thing from opposite ends, so:
+- [ ] SCARE1: Daunt -> Scare on Cave Warlord, Golden Eagle Diver, Skull Vulture, Sphinx and Crown-of-Thorns Star's level skill (the "lasting" Daunt = Weaken on Reef Shark and Cinder Hornet stays); Booming Bittern (Scare 1) is the first Scare card: Scare is New! on its map (table row) and no earlier map shows it; budget check (Scare is priced above Daunt); then re-measure the road. ENG16-1 (Daunt stacking) becomes moot.
+
 ## 11-24 22:29 Owner list (21 items, mobile screenshots of the live 11-22 build)
 - Note: several screenshots show the live 11-22 build; MAPUI2 (merged skill list, consolidated pills, colour order) and ECON1 (5-card packs) are in the unreleased batch.
 - [ ] FIXPACK1 (#1, #7, #10, #12, #13, #15, #20): Codex synced across devices for one account + a toggle to stop grouping by advancement when sorting; Achievements "Card Rewards" button becomes Claim all, unlocked on one quiet map in 9-16, and multi-card claims no longer skip rewards; Conquest map opens where the player last was (player icon on the last node, even if lost); Fumarole Ibex shows Map 14 though it is from Map 20; sign-in window: close it and show the main loading circle, buttons inert; vault How it works: "Dungeon Rules" then "Multiplayer Rules"; remove The Tidelock Vault from More ways to play

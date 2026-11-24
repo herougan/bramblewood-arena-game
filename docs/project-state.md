@@ -318,3 +318,6 @@ Not decisions yet: they are the owner's words, turned into action items G1-G26. 
 
 - Dated owner-note ids (#nn, 10-25 17:53) refer to the note list in `docs/action-items.md`, not to `docs/decisions.json`.
 - `docs/skirmish-tuning-guide.md` section "Where sources disagree" lists older win-rate targets and rarity constants the game has superseded; the game's code wins.
+
+## Parked skill names
+- **Amphibian** (owner 2026-11-24 23:17: "new skill amphibian - park the name for now"): name kept for a future skill; no design yet.
