@@ -232807,6 +232807,167 @@
    "statBase": 19,
    "measuredAt": "2026-11-22T10:56:43.370Z",
    "seconds": 21
+  },
+  "global@eng16|corrode=1": {
+   "key": "corrode=1",
+   "ctx": "global@eng16",
+   "bramble": 15,
+   "id": "corrode",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 2,
+   "cards": [
+    "leopard-slug",
+    "hawthorn-shieldbug"
+   ],
+   "fights": 1000,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 1000,
+     "m": 1.6374,
+     "lo": 1.3511,
+     "hi": 1.9795
+    }
+   ],
+   "fingerprint": "318b9dd340b8",
+   "canonRate": {
+    "m": 0.0311,
+    "lo": 0.0288,
+    "hi": 0.0333
+   },
+   "statRate": {
+    "m": 0.0336,
+    "lo": 0.0299,
+    "hi": 0.0374
+   },
+   "kappa": {
+    "m": 1.0809,
+    "lo": 0.9639,
+    "hi": 1.1957
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0092,
+    "worthStat": {
+     "m": 0.273,
+     "lo": 0.0426,
+     "hi": 0.4817
+    }
+   },
+   "test": {
+    "effects": {
+     "corrode": 1
+    },
+    "gain": 0.0512,
+    "worth": {
+     "m": 1.6468,
+     "lo": 1.4636,
+     "hi": 1.846
+    },
+    "worthRuler": {
+     "m": 1.6374,
+     "lo": 1.3511,
+     "hi": 1.9795
+    },
+    "worthStat": {
+     "m": 1.5236,
+     "lo": 1.3189,
+     "hi": 1.7649
+    },
+    "price": 2.9,
+    "net": -1.2626,
+    "verdict": "over-priced",
+    "between": [
+     "shell 2 (0.57)",
+     "quick (2.23)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-24T00:50:30.710Z",
+   "seconds": 689
+  },
+  "global@eng16|corrode=2": {
+   "key": "corrode=2",
+   "ctx": "global@eng16",
+   "bramble": 15,
+   "id": "corrode",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 0,
+   "cards": [],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 2.8584,
+     "lo": 2.5647,
+     "hi": 3.4194
+    }
+   ],
+   "fingerprint": "318b9dd340b8",
+   "canonRate": {
+    "m": 0.0293,
+    "lo": 0.0246,
+    "hi": 0.0349
+   },
+   "statRate": {
+    "m": 0.0358,
+    "lo": 0.0273,
+    "hi": 0.0444
+   },
+   "kappa": {
+    "m": 1.2238,
+    "lo": 0.9809,
+    "hi": 1.4569
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0108,
+    "worthStat": {
+     "m": 0.3023,
+     "lo": -0.1439,
+     "hi": 0.7123
+    }
+   },
+   "test": {
+    "effects": {
+     "corrode": 2
+    },
+    "gain": 0.0862,
+    "worth": {
+     "m": 2.9458,
+     "lo": 2.4542,
+     "hi": 3.3845
+    },
+    "worthRuler": {
+     "m": 2.8584,
+     "lo": 2.5647,
+     "hi": 3.4194
+    },
+    "worthStat": {
+     "m": 2.407,
+     "lo": 1.8571,
+     "hi": 3.0548
+    },
+    "price": 3.85,
+    "net": -0.9916,
+    "verdict": "over-priced",
+    "between": [
+     "regen 2 (2.9)",
+     "pounce 2 (2.96)"
+    ]
+   },
+   "statBase": 19,
+   "measuredAt": "2026-11-24T00:14:34.788Z",
+   "seconds": 23
   }
  }
 }

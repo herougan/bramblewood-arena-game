@@ -1,0 +1,7 @@
+pipeline measure: OK in 11.5min  -> docs/balance/pipeline/measure-2026-11-24-0839.json
+counts: items 1, measured 1, reused 0, stopped early 0, fights saved 0, left (--minutes) 0
+cache: 0 reused, 1 measured
+changed 1:
+  corrode=1 worth 1.8308 -> 1.6374 [1.3511, 1.9795] at 1000 fights, price on carriers 2.9
+FLAGGED 1:
+  corrode=1: over-priced: worth 1.6374 against 2.9 on the carriers
