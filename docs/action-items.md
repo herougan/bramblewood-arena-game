@@ -27,6 +27,7 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - [ ] UISWEEP-1..5 add (#8, #9, #14): mobile vertical space (Codex first; nav 2 rows on mobile; horizontal scroll within reason; all pages); the page flip pivots from the right origin; Arena page: a simple nav with sub-tabs (PvE elsewhere), controls inside the tent
 - [ ] FX/3D (#2, #3): status of the 3D effects upgrades and lag smoothing, then suggested effects; the "3D cards" (read as ART17 living card art unless the owner says otherwise)
 - [ ] #11 skill list colour order: check against MAPUI2 (in the batch) and fix what remains
+- [ ] TESTFIX11 (after DAUNT2): full run after the 11-24 release (build bda3a33dea6c): 417 passed, 58 failed (docs/tests/full-fail-2026-11-24-release.txt; was 38 on 11-22). Today's packages (CARDS1, ENG16, MAPUI2, ROADFIX2/3, REFIT20, ECON1, MP1, REWARD3) and machine load (a road measure ran alongside; e5det / fin2 hit 600 s); fix by cause, real bugs reported.
 
 ## 11-23 23:39 Owner list ("Extra, as the following requires very high effort")
 - Order: STATE2 (item 5: "take a step back, summarise the current state, before moving forward ... Then make wholistic changes") first; ART16 / CARDS1 / ENG (Corrode+Daunt) / card-design skill in parallel; then MAPUI2, then UISWEEP; ART17 after ART16.
