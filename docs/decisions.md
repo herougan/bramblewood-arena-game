@@ -4,6 +4,64 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**REFIT20-1. 8-7 with its Mine back is far too hard** · Decide · Balance · asked 2026-11-24
+- With the Map 8 reference deck change, 8-7 got its Mine back and you now win 24% (target 60). Without the Mine it reads 57-60%. The item's own Health 4 is under the 60% floor (REFIT13-5 b), and Health may not change past Map 1, so it keeps Health 8.
+  - a) 8-7 without the Mine
+  - b) Mine with Health 4 (an exception to the floor)
+  - c) Keep the Mine, re-fit 8-7's deck by swaps
+- **Default:** a
+
+**ROADFIX2-1. Corrode is worth less now that it refreshes** · Decide · Balance · asked 2026-11-24
+- Your 11-22 price, 2.9 (SKM3-1), was measured when Corrode stacked. Since ENG16 it refreshes. Re-measured over 1,000 fights, Corrode 1 is worth 1.64 (range 1.35-1.98), down from 2.90. Corrode 2 reads 2.86 against its 3.85. The price now sits above the whole range, so Corrode carriers are priced too high and can take more stats.
+  - a) Price Corrode at the new reading (about 1.6), then refit its carriers (Claude runs price + refit)
+  - b) Keep 2.9
+- **Default:** a
+
+**UISWEEP-1. One top bar everywhere** · Decide · UI · asked 2026-11-24
+- One bar on every page except the fight HUD: ↩ back first, a slot for the page's own buttons, then a fixed core of 🏠 Home, Map, Settings, Energy, Account. Feedback moves into the one Settings panel; the acorn tile leaves the bar. Conquest keeps its shortcuts in the slot.
+  - a) Yes, as proposed
+  - b) Keep Feedback on the bar
+  - c) Keep today's bars
+- **Default:** a
+
+**UISWEEP-2. Transitions: curtain for places, quick fade elsewhere** · Decide · UI · asked 2026-11-24
+- Going to a place (shops, Shop↔Premium, Camp...) closes the curtain, swaps behind it, then opens: 880 ms the first time, 420 ms on repeat visits, and a tap skips it. Other pages fade through in 280 ms (replacing the 3D page turn); pop-ups open in 200 ms and close in 140 ms.
+  - a) Yes
+  - b) Curtain everywhere
+  - c) Fades only, no curtain
+- **Default:** a
+
+**UISWEEP-3. Two screen-width breakpoints** · Decide · UI · asked 2026-11-24
+- The style guide says one breakpoint; the CSS has 33. Proposed: 560 px (phones) and 900 px (wide layouts), and the style guide amended.
+  - a) 560 and 900
+  - b) One breakpoint only (900)
+- **Default:** a
+
+**CARDS1-1. Map 4's row has Fork, but no octopus is on Map 4** · Decide · Cards · asked 2026-11-24
+- Fork is now on octopus cards only (your 11-23 call). Map 4's table row keeps Fork, but no card on Map 4's list carries it, so the Map cards window shows Fork as To add.
+  - a) Put an octopus card on Map 4's list (Kraken Spawnling, your Yes pick)
+  - b) Take Fork out of Map 4's row
+  - c) A new Map 4 octopus card (Claude drafts it)
+- **Default:** a
+
+**ENG16-1. Daunt: keep stacking, or refresh like Corrode?** · Decide · Rules · asked 2026-11-24
+- Corrode stacked past its rule (a unit hit every round lost Attack without end); it now refreshes to the larger value and fades 1 a round. Daunt stacks by your 10-12 rule ("reduced by N multiple times"): one Daunt 2 unit hitting every round cuts 4 Attack. Its pip now shows the real total.
+  - a) Keep Daunt stacking (10-12 rule)
+  - b) Daunt refreshes like Corrode
+- **Default:** a
+
+**STATE2-1. One Home icon** · Decide · UI · asked 2026-11-24
+- Three Home buttons exist, and Camp pages show two at once. The UI sweep keeps one Home button everywhere.
+  - a) 🏠 house (10-24)
+  - b) 🌰 acorn (10-19)
+- **Default:** a
+
+**STATE2-2. One back button style** · Decide · UI · asked 2026-11-24
+- Seven back-button styles exist; five screens show two backs at once. The sweep uses one. The Nest and Shop show a text button "← Back to the map".
+  - a) One ↩ icon button with a tooltip everywhere
+  - b) ↩ everywhere, but keep the text on the Nest and Shop
+- **Default:** a
+
 **MP1-1. How hard should the Tidelock Vault be?** · Decide · Multiplayer · asked 2026-11-23
 - Map 16 decks clear all 5 parts 73% of the time on Auto; parts 1-4 are won 95-100%. Solo with the CPU ally clears as often as two players. Default: every part's bramble x2 (measured 49%) and the CPU ally plays a stage-2 deck.
   - a) About 50% full clear
@@ -1096,7 +1154,7 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
   - a) Always on the strip (as built).
   - b) Only while you're in the shop.
 - **Default:** a
-- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: NAV1 (11-17) made Shop a page with Shop / Premium tabs; the strip is the Camp bar.
+- **Outcome:** Claude's call (owner 11-19 22:18: settle the easy decisions): Closed as superseded: NAV1 (11-17) made Shop a page with Shop / Premium tabs; the strip is the Camp bar. Superseded by NAV1 (noted 2026-11-24, STATE2).
 
 **UI51-1. Season crossfade on the map: keep it?** · Decide · UI · asked 2026-11-13 · decided 2026-11-19
 - The conquest paw prints are off. Moving between seasons on the map still crossfades the colours.
