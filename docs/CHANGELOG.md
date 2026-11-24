@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-24 Package ROADFIX2 (road decks after ENG16 / CARDS1)
+- **Road:** 33 enemy decks of Maps 0-20 take list swaps toward the road curve (leaders, first-clear cards, sizes kept; no Shield, Health or enemy-level change; no new off-list card). Each was kept only in band, or 2+ points nearer, on both seed sets 9100 and 5100 (400 games); 11 more were tried and reverted. Biggest moves: 0-3 43 -> 63 (target 60), 9-5 44 -> 68 (66), 14-6 50 -> 65 (65), 8-4 56 -> 77 (75), 10-2 / 10-3 down from 91-95 into band, 18-1 100 -> 92 (90).
+- Road totals (Maps 0-20, seeds 9100): 139 in band / 160 within 10 / 13 beyond 20 -> 166 / 176 / 9 of 208. Still out: Map 18 (both maps too easy; no legal swap helps: REFIT13-3/4 in REFIT20), Map 8 (too hard after the Gallery Orb-Weaver redesign: REFIT13-1 a in REFIT20), Map 1 (REFIT15-3 a in REFIT20). Corrode re-measured under the refresh rule (price unchanged). Details: `docs/balance/roadfix2-2026-11-24.md`.
+
 ## 2026-11-24 Package TESTFIX10 (tests left red by today's packages)
 - **Pins re-set to the SKMPRICE 11-22 prices:** eng12 (Diurnal 0.55, Owl Nocturnal 5.42, Catfish 8.24), eng22 (Fortify 9.06), eng28 (Offspring copy 0.02), eng33 (Bulwark 4.67 x N^0.62), eng40 (Metal Hoard x0.04). eng13 reads the ECON1 first-clear pay; eng50 lets the known out-of-band Bar-headed Goose Leader through; card-pool reports its 13 old drifted checks as known drift (the same 13 fail before CARDS1).
 - **One real data bug, from CARDS1:** Shoal Shark carried the old key `swift: true` beside the fused `speed: {kind: swift}` form (eng35 / eng39 "fold tool has nothing left to fold"). Folded to `effects.speed = {kind: "swift"}` in `canonical/cards.json`; no stat or skill changed.

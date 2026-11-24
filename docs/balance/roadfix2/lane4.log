@@ -1,0 +1,13 @@
+start {"dune-jackal":4,"dust-devil-kestrel":2,"pale-oryx":3,"roadrunner-courier":4,"dromedary":2} 90.3
+round 1: cur 91.7/90.3; 19 legal, 19 read + 14 predicted (of 27); top: -1 roadrunner-courier -2 pale-oryx +1 dune-jackal +2 dromedary 83.3/90 | -1 pale-oryx +1 dune-jackal 83.3/90.3 | -2 pale-oryx +1 dune-jackal +1 roadrunner-courier 83.3/90.3 | -1 roadrunner-courier +1 dune-jackal 85/90.7 | -1 pale-oryx -1 dromedary +1 dune-jackal +1 roadrunner-courier 83.3/92.3
+no nearer move
+RESULT 18-A-3 {"dune-jackal":4,"dust-devil-kestrel":2,"pale-oryx":3,"roadrunner-courier":4,"dromedary":2} 90.3 {} moves:  problems: []
+start {"barrel-cactus":3,"dromedary":1,"roadrunner-courier":4,"sand-widow":3,"horned-lizard":4} 87.3
+round 1: cur 85/87.3; 27 legal, 27 read + 14 predicted (of 42); top: -1 sand-widow +1 dromedary 83.3/89.3 | -1 barrel-cactus +1 sand-widow 83.3/89.7 | -1 roadrunner-courier +1 pale-oryx 83.3/90.7 | -2 roadrunner-courier +2 dromedary 80/93.3 | -2 roadrunner-courier -1 barrel-cactus +3 dromedary 80/95.3
+no nearer move
+RESULT 18-A-5 {"barrel-cactus":3,"dromedary":1,"roadrunner-courier":4,"sand-widow":3,"horned-lizard":4} 87.3 {} moves:  problems: []
+start {"barrel-cactus":3,"dune-jackal":3,"horned-lizard":4,"quicksand-queen":2,"sand-widow":4} 54.7
+round 1: cur 55/54.7; 34 legal, 34 read + 14 predicted (of 58); top: -1 sand-widow +1 dune-jackal 55/55 | -1 sand-widow +1 dromedary 56.7/57 | -2 sand-widow +1 dune-jackal +1 dromedary 56.7/57.3 | -1 sand-widow +1 pale-oryx 56.7/61.3 | -3 dune-jackal +3 pale-oryx 53.3/64.7
+no nearer move
+RESULT 18-A-9 {"barrel-cactus":3,"dune-jackal":3,"horned-lizard":4,"quicksand-queen":2,"sand-widow":4} 54.7 {} moves:  problems: []
+LANE 4 DONE

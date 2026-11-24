@@ -1,0 +1,15 @@
+start {"glacier-yak":4,"ice-crevasse-wolf":3,"snow-ermine":3,"arctic-tern":4,"harbor-seal":4,"elderhorn-monarch":1} 64.3
+round 1: cur 58.3/64.3; 13 legal, 13 read + 14 predicted (of 34); top: -1 ice-crevasse-wolf +1 snow-ermine 65/66 | -1 arctic-tern +1 snow-ermine 65/63.7 | -1 ice-crevasse-wolf -4 harbor-seal +1 snow-ermine +4 ringed-seal 71.7/63.3 | -1 arctic-tern -4 harbor-seal +1 snow-ermine +4 ringed-seal 66.7/63 | -4 harbor-seal +4 ringed-seal 68.3/60.7
+round 2: cur 65/66; 13 legal, 13 read + 14 predicted (of 34); top: -1 arctic-tern +1 ice-crevasse-wolf 65/63.7 | -4 harbor-seal +4 ringed-seal 71.7/63.3 | -4 harbor-seal -1 arctic-tern +4 ringed-seal +1 ice-crevasse-wolf 66.7/63 | -4 harbor-seal -1 snow-ermine +4 ringed-seal +1 ice-crevasse-wolf 68.3/60.7 | -1 elderhorn-monarch +1 cataphract-destrier 66.7/58.7
+no nearer move
+RESULT 17-4 {"glacier-yak":4,"ice-crevasse-wolf":2,"snow-ermine":4,"arctic-tern":4,"harbor-seal":4,"elderhorn-monarch":1} 66 {} moves: -1 ice-crevasse-wolf +1 snow-ermine problems: []
+start {"camouflage-frog":2,"fishing-cat":3,"hoopoe-herald":3,"mosquito-cloud":2,"canopy-sloth-guardian":2} 84.3
+round 1: cur 80/84.3; 43 legal, 43 read + 14 predicted (of 28); top: -1 mosquito-cloud +1 amber-cicada 90/89.7 | -2 fishing-cat +2 proboscis-monkey 90/92.7 | -2 camouflage-frog -2 fishing-cat +2 amber-cicada +2 proboscis-monkey 90/87 | -1 fishing-cat +1 canopy-sloth-guardian 90/93.3 | -1 camouflage-frog -2 fishing-cat +1 canopy-sloth-guardian +2 proboscis-monkey 90/93.7
+RESULT 14-A-1 {"camouflage-frog":2,"fishing-cat":3,"hoopoe-herald":3,"mosquito-cloud":1,"canopy-sloth-guardian":2,"amber-cicada":1} 89.7 {} moves: -1 mosquito-cloud +1 amber-cicada problems: []
+start {"cave-olm":3,"fruit-bat":1,"gallery-orb-weaver":4,"glow-worm":3,"stalactite-golem":2,"whip-spider":1} 82.7
+round 1: cur 80/82.7; 48 legal, 48 read + 14 predicted (of 48); top: -4 gallery-orb-weaver +1 stalactite-golem +3 whip-spider 90/90.7 | -1 fruit-bat +1 blind-cave-fish 91.7/89 | -1 cave-olm +1 whip-spider 91.7/83.7 | -1 glow-worm +1 cave-olm 90/82 | -1 cave-olm +1 glow-worm 90/80.7
+RESULT 8-A-1 {"cave-olm":3,"fruit-bat":1,"glow-worm":3,"stalactite-golem":3,"whip-spider":4} 90.7 {} moves: -4 gallery-orb-weaver +1 stalactite-golem +3 whip-spider problems: []
+start {"beachcomber-sanderling":1,"feral-tomcat":3,"hawk-arrowkeeper":4,"peak-condor":4,"kittiwake-flock":3,"pika-hoarder":1} 63
+round 1: cur 63.3/63; 114 legal, 86 read + 14 predicted (of 28); top: -3 kittiwake-flock +1 gull-thief +2 beachcomber-sanderling 58.3/59 | -1 kittiwake-flock +1 fiddler-crab-swarm 61.7/65.3 | -2 hawk-arrowkeeper +2 chipmunk-skirmisher 58.3/65.7 | -3 kittiwake-flock +1 limpet-clinger +2 pika-hoarder 60/74 | -1 beachcomber-sanderling -3 kittiwake-flock +1 feral-tomcat +1 limpet-clinger +2 pika-hoarder 60/74.7
+RESULT 3-6 {"beachcomber-sanderling":3,"feral-tomcat":3,"hawk-arrowkeeper":4,"peak-condor":4,"pika-hoarder":1,"gull-thief":1} 59 {} moves: -3 kittiwake-flock +1 gull-thief +2 beachcomber-sanderling problems: []
+LANE 3 DONE

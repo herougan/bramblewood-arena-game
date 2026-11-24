@@ -1,0 +1,34 @@
+{"key":"0-3","deck":{"chipmunk-forager":3,"house-cat":4,"bee-forager":4,"pond-trout":3,"ant-scout":2,"earthworm":4}}
+{"key":"4-4","deck":{"duck-paddler":1,"grass-snake":3,"kittiwake-flock":1,"muskrat-lodgekeeper":3,"beaver-lumberjack":3,"pond-algae":4}}
+{"key":"9-3","deck":{"banded-sea-krait":3,"sunbittern-strider":3,"fiddler-crab-swarm":1,"mangrove-mudskipper":2,"horseshoe-crab":3}}
+{"key":"10-3","deck":{"orca-vanguard":4,"reef-shark":2,"riptide-eel":4,"sea-turtle-elder":1,"kraken-spawnling":4,"clownfish-scout":2}}
+{"key":"10-5","deck":{"coral-current-eel":2,"crown-of-thorns-star":2,"kraken-spawnling":4,"reef-shark":3,"dolphin-knight":1}}
+{"key":"10-7","deck":{"conch-crawler":1,"kraken-spawnling":2,"orca-vanguard":2,"reef-shark":1,"riptide-eel":3,"giant-clam":3,"clownfish-scout":2}}
+{"key":"9-5","deck":{"fishing-cat":3,"horseshoe-crab":4,"mangrove-monitor":2,"proboscis-monkey":4,"electric-ray":2,"anhinga-spearbird":2}}
+{"key":"13-7","deck":{"beaver-feller":4,"bramblewood-lynx":3,"marsh-mallow-hare":1,"slow-worm":1,"monarch-wingblade":3,"tasmanian-devil":3,"amber-cicada":1}}
+{"key":"10-2","deck":{"dolphin-knight":1,"ironclaw-fiddler":1,"kraken-spawnling":4,"reef-shark":2,"sea-turtle-elder":4,"clownfish-scout":2}}
+{"key":"10-6","deck":{"ironclaw-fiddler":1,"kraken-spawnling":4,"orca-vanguard":2,"riptide-eel":2,"clownfish-scout":2}}
+{"key":"14-6","deck":{"hollow-belly-rat":1,"hoopoe-herald":4,"marula-elephant":4,"spitting-cobra":3,"tasmanian-devil":4,"bramble-sprout":1}}
+{"key":"18-1","deck":{"barkplate-beetle":1,"bison-bulldozer":1,"caustic-scorpion":3,"dune-jackal":4,"roadrunner-courier":4,"meerkat-sentry":4}}
+{"key":"18-3","deck":{"armadillo-guard":4,"caustic-scorpion":4,"worker-ant":1,"mouse-sapper":1,"barrel-cactus":1,"meerkat-sentry":4}}
+{"key":"14-A-5","deck":{"amber-cicada":2,"bramblewood-macaque":3,"hoopoe-herald":4,"jaguar-stalker":2,"canopy-sloth-guardian":4,"dhole-matriarch":1}}
+{"key":"8-2","deck":{"blind-cave-fish":4,"gallery-orb-weaver":4,"stalactite-golem":4,"star-nosed-mole":3,"rot-swollen-carcass":1}}
+{"key":"8-5","deck":{"cave-olm":1,"gallery-orb-weaver":3,"hawthorn-shieldbug":1,"stalactite-golem":5,"sulfur-cinder-moth":1,"blind-cave-fish":5}}
+{"key":"8-4","deck":{"gallery-orb-weaver":3,"hawthorn-shieldbug":1,"rot-swollen-carcass":1,"stalactite-golem":3,"cave-olm":4}}
+{"key":"9-2","deck":{"proboscis-monkey":4,"sunbittern-strider":1,"mangrove-mudskipper":3,"electric-ray":1,"nutria-reedcutter":1,"mangrove-monitor":2}}
+{"key":"2-4","deck":{"conch-herald":1,"oystercatcher":2,"salvager-hermit-crab":4,"gull-thief":4,"pincushion-urchin":4,"conch-crawler":4}}
+{"key":"2-B-4","deck":{"gallery-orb-weaver":2,"limpet-clinger":3,"octopus-tactician":1,"pincushion-urchin":4,"trash-panda-trickster":4}}
+{"key":"9-4","deck":{"alley-cat":1,"mangrove-mudskipper":3,"reef-shark":2,"anhinga-spearbird":4,"horseshoe-crab":5,"fiddler-crab-swarm":1}}
+{"key":"9-6","deck":{"mangrove-monitor":4,"mangrove-mudskipper":3,"nutria-reedcutter":1,"reef-shark":2,"voltaic-eel":3,"electric-ray":3,"fiddler-crab-swarm":1}}
+{"key":"2-A-6","deck":{"lodge-engineer":4,"muskrat-reedgatherer":1,"pond-algae":1,"old-sturgeon":2,"raft-spider":2}}
+{"key":"10-4","deck":{"giant-clam":4,"ironclaw-fiddler":1,"orca-vanguard":2,"riptide-eel":3,"sea-turtle-elder":4}}
+{"key":"10-8","deck":{"ironclaw-fiddler":1,"orca-vanguard":4,"riptide-eel":4,"sea-turtle-elder":2,"clownfish-scout":4,"conch-crawler":1,"crown-of-thorns-star":1}}
+{"key":"1-A-1","deck":{"ant-scout":2,"cottontail":1,"dormouse":1,"bee-forager":2,"chipmunk-cavalry":4}}
+{"key":"1-A-4","deck":{"ant-scout":2,"bee-forager":2,"dormouse":1,"meadow-rabbit":3,"chipmunk-cavalry":3}}
+{"key":"4-1","deck":{"beaver-lumberjack":4,"snapstick-turtle":1,"muskrat-lodgekeeper":2,"water-shrew":3,"platypus-spur":2,"slow-worm":1}}
+{"key":"5-A-3","deck":{"bog-leech":2,"constrictor-coil":1,"mangrove-mudskipper":4,"newt-doctor":4,"peat-cutter-vole":1}}
+{"key":"3-2","deck":{"beachcomber-sanderling":3,"puffin-diver":1,"hawk-arrowkeeper":3,"gannet-nestweaver":4,"gull-thief":1}}
+{"key":"17-4","deck":{"glacier-yak":4,"ice-crevasse-wolf":2,"snow-ermine":4,"arctic-tern":4,"harbor-seal":4,"elderhorn-monarch":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":66,"seed2":12300,"games":300},"moves":["-1 ice-crevasse-wolf +1 snow-ermine"]}
+{"key":"14-A-1","deck":{"camouflage-frog":2,"fishing-cat":3,"hoopoe-herald":3,"mosquito-cloud":1,"canopy-sloth-guardian":2,"amber-cicada":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":89.7,"seed2":12300,"games":300},"moves":["-1 mosquito-cloud +1 amber-cicada"]}
+{"key":"8-A-1","deck":{"cave-olm":3,"fruit-bat":1,"glow-worm":3,"stalactite-golem":3,"whip-spider":4},"shieldOverride":null,"hqHp":null,"tune":{"w2":90.7,"seed2":12300,"games":300},"moves":["-4 gallery-orb-weaver +1 stalactite-golem +3 whip-spider"]}
+{"key":"3-6","deck":{"beachcomber-sanderling":3,"feral-tomcat":3,"hawk-arrowkeeper":4,"peak-condor":4,"pika-hoarder":1,"gull-thief":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":59,"seed2":12300,"games":300},"moves":["-3 kittiwake-flock +1 gull-thief +2 beachcomber-sanderling"]}

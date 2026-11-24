@@ -1,0 +1,38 @@
+[
+ {
+  "key": "3-6",
+  "target": 60,
+  "lo": 52,
+  "hi": 68,
+  "b9": 69.8,
+  "b5": 65.5,
+  "a9": 67,
+  "a5": 61.8,
+  "keep": true,
+  "why": "in band on both"
+ },
+ {
+  "key": "14-A-1",
+  "target": 90,
+  "lo": 82,
+  "hi": 98,
+  "b9": 81.8,
+  "b5": 86.3,
+  "a9": 84,
+  "a5": 85.3,
+  "keep": true,
+  "why": "in band on both"
+ },
+ {
+  "key": "8-A-1",
+  "target": 90,
+  "lo": 82,
+  "hi": 98,
+  "b9": 80.5,
+  "b5": 82.8,
+  "a9": 92.8,
+  "a5": 91.8,
+  "keep": true,
+  "why": "in band on both"
+ }
+]
