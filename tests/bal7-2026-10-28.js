@@ -89,7 +89,9 @@ const G = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G, MAPS = G.CONQUE
   ok(unflagged.length === 0, `M3 every card out of play carries the flag (LISTFIX1; ${unflagged.map(c=> c.id).join(', ') || 'all'})`); }
 
 // ---- K14: skirmish decks, non-map-unique cards at most 1 copy each and 6 in all ---------------------------------------------------------
-{ const K = require(path.join(ROOT, 'tools', 'bal7_k14_decks_2026_10_28.js')), F = K.fights(), bad = F.filter(f=> K.violations(f, f.n.deck).length);
+// 2026-11-24 (ROADFIX3): REFIT11-2 a (owner 11-22 21:28) lets 6-3 Toad Chorus carry one pool card at 2 copies (REFIT20: Constrictor Coil x2)
+{ const K14_OK = { '6-3': ['constrictor-coil x2'] };
+  const K = require(path.join(ROOT, 'tools', 'bal7_k14_decks_2026_10_28.js')), F = K.fights(), bad = F.filter(f=> K.violations(f, f.n.deck).filter(v=> !(K14_OK[f.key] || []).includes(v)).length);
   ok(F.length > 200 && !bad.length, `K14 every covered fight follows the rule (${F.length} fights${bad.length ? '; breaking: ' + bad.map(f=> f.key).join(' ') : ''})`);
   const plan = J('docs/balance/bal7-k14-plan-2026-10-28.json');
   ok(plan.summary.changed > 100 && plan.rows.filter(r=> r.changed).every(r=> Object.values(r.before).reduce((a, b)=> a + b, 0) === Object.values(r.after).reduce((a, b)=> a + b, 0)), `K14 the changed decks kept their size (${plan.summary.changed} decks, ${plan.summary.copiesMoved} copies moved)`);

@@ -155,7 +155,8 @@ ok(by['marsh-mallow-hare'].effects.cure && by['sphagnum-vole'].effects.cure, 'C1
 ok(/firstCard:"sleepless-shrew"/.test(line('7-4')) && by['sleepless-shrew'].effects.wakeful, 'G5 7-4 (before 7-5) pays the Wakeful Sleepless Shrew');
 ok(/"tide":true/.test(line('5-A-2')) && /"tide":true/.test(line('10-A-2')), 'BAL3-1 5-A-2 and 10-A-2 have the Tide');
 ok(['2-A-1', '2-A-2', '2-A-3', '2-A-4', '2-A-5', '2-A-6', '2-A-7'].every(k=> /"field":"rain"/.test(line(k))), 'C5 Lilypad Reach has constant Rain');
-ok(/"sandstorm":"blind"/.test(line('18-4')), 'C4 18-4 blows the blinding Sandstorm');
+// 2026-11-24 (ROADFIX3): REFIT13-3 b (owner 11-22 21:28) replaced C4's blinding storm on 18-4 with a normal Sandstorm, Sand Veil boon kept (REFIT20)
+ok(/rules:\{[^}]*"sandstorm":true/.test(line('18-4')) && !/"sandstorm":"blind"/.test(line('18-4')), 'REFIT13-3 b 18-4 blows a normal Sandstorm (was C4\'s blinding storm)');
 ok(['mist-net-otter', 'clap-net-trapper'].every(id=> by[id].rarity === 'common' && by[id].source.tier === 11 && !by[id].source.side), 'C2 two Otter faction Commons with anti-air');
 ok(['gale-swift', 'static-fennec'].every(id=> by[id].effects.storm), 'C4 the Storm cards');
 ok(by['mother-carrier'].archetypes.includes('Platform') && by['mother-carrier'].archetypes.includes('Structure') && by['mother-carrier'].rarity === 'heroic' && by['mother-carrier'].effects.fletcher, 'E16 the Mother Carrier: a Heroic Hummingbird Platform with Fletcher (Arrow Master)');

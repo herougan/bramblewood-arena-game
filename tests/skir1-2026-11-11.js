@@ -69,7 +69,9 @@ for (const m of L.maps()) for (const n of L.fightsOf(m)) {
   ids.forEach(id => ok(f.pool.includes(id) || SIDE2_OPEN[code], `${code}: ${id} is from the fight's pool (its map's list, its own first-clear cards or leaders, in the rarity cap)`));
   ok(ids.length >= f.dMin && ids.length <= f.dMax, `${code}: ${ids.length} different cards (${f.dMin}-${f.dMax})`);
   ids.forEach(id => ok(d[id] <= f.cap(id), `${code}: ${id} x${d[id]} within its cap ${f.cap(id)}`));
-  ok(!f.k14(d).length || SIDE2_OPEN[code], `${code}: K14 (${f.k14(d).join('; ')})`);
+  // 2026-11-24 (ROADFIX3): REFIT11-2 a (owner 11-22 21:28) lets 6-3 Toad Chorus carry one pool card at 2 copies (REFIT20: Constrictor Coil x2)
+  const K14_OK = { '6-3': ['constrictor-coil x2'] };
+  ok(!f.k14(d).filter(x => !(K14_OK[code] || []).includes(x)).length || SIDE2_OPEN[code], `${code}: K14 (${f.k14(d).join('; ')})`);
   if (f.unlock < 21) ids.forEach(id => ok(!M.stone(D[id]), `${code}: no Stone card before Map 21 (${id})`));
   G.NODE_MAP_HINT.set(n, m.id); const now = G.skirmishLeadersOf(n, m.id) || [];
   ok(p.stoneLeader || p.leaders0.some(f.cutOut) || p.leaders0.some(id => !f.pool.includes(id)) /* 2026-11-12 (SKIR3): a SKIR1 leader off the fight's 11-12 pool (back in play elsewhere) cannot lead here */ || JSON.stringify(now) === JSON.stringify(p.leaders0), `${code}: its leaders are kept (${p.leaders0} -> ${now})`);

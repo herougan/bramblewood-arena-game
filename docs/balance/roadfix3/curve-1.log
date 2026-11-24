@@ -1,0 +1,6 @@
+fights off the road curve to tune 5
+8-3 66 -> target 80 : 81 green [{"type":"swap","out":"cave-olm","inn":"stalactite-golem","k":2},{"type":"swap","out":"rot-swollen-carcass","inn":"stalactite-golem","k":1}] null null
+8-5 68.5 -> target 60 : 61 green [{"type":"swap","out":"blind-cave-fish","inn":"gallery-orb-weaver","k":1},{"type":"swap","out":"blind-cave-fish","inn":"glow-worm","k":4,"whole":true,"kIn":4}] null null
+7-A-1 98.5 -> target 90 : 92 green [{"type":"swap","out":"rot-swollen-carcass","inn":"bombardier-beetle","k":2}] null null
+7-A-3 87.5 -> target 70 : 68 green [{"type":"swap","out":"rot-swollen-carcass","inn":"bombardier-beetle","k":1}] null null
+7-A-5 70 -> target 40 : 41 green [{"type":"swap","out":"hawthorn-shieldbug","inn":"leopard-slug","k":2}] null null

@@ -1,0 +1,6 @@
+fights off the road curve to tune 5
+6-3 70 -> target 80 : 80 green [{"type":"swap","out":"camouflage-frog","inn":"constrictor-coil","k":2}] null null
+8-4 88.8 -> target 75 : 75 green [{"type":"swap","out":"cave-olm","inn":"glow-worm","k":2}] null null
+8-8 55.8 -> target 40 : 36 green [{"type":"swap","out":"rot-swollen-carcass","inn":"glow-worm","k":1}] null null
+7-A-2 91.3 -> target 70 : 73 green [{"type":"swap","out":"hawthorn-shieldbug","inn":"fungus-gnat-cloud","k":4,"whole":true,"kIn":4},{"type":"swap","out":"fungus-gnat-cloud","inn":"earthworm","k":2}] null null
+7-A-4 84 -> target 60 : 57 green [{"type":"swap","out":"rot-swollen-carcass","inn":"fungus-gnat-cloud","k":2}] null null
