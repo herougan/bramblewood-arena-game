@@ -94,5 +94,21 @@
   "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a tiny cute glass frog with a see-through belly showing its little red heart, a bright leaf-green back with small yellow dots, big forward-facing pale eyes, clinging with sticky toe pads to the underside of a wide leaf, natural animal anatomy, not anthropomorphic, no hands, anatomically correct frog: one small body, four legs with round sticky toe pads, no tail, rainy cloud-forest background with big dripping leaves, a stream below and soft misty light, a full scenic background filling the whole frame, no text",
   "why": "see-through belly with red heart shows front on, four toe-pad legs",
   "file": "new/glass-frog.png"
+ },
+ {
+  "group": "new",
+  "id": "red-panda",
+  "variant": "A",
+  "prompt": "(full text in PixelLab gallery) red panda sitting on a mossy bamboo-forest branch, front view, ringed tail visible, natural anatomy 4 legs 1 tail",
+  "why": "front view, tail ringed and visible",
+  "file": "new/red-panda.png"
+ },
+ {
+  "group": "new",
+  "id": "giant-tube-worm",
+  "variant": "C",
+  "prompt": "(full text in PixelLab gallery) giant tube worms: white tubes with red plumes at a hydrothermal vent with glow, no limbs",
+  "why": "red plumes, vent glow",
+  "file": "new/giant-tube-worm.png"
  }
 ]

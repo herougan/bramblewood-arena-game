@@ -16,5 +16,7 @@ Art only; card data comes in a later package. Art: `art/staging/art16/new/<slug>
 | kakapo | Flightless nocturnal parrot of New Zealand, critically endangered, moss camouflage | Mossback Kakapo | Forest; Bird | rare | Flightless, tough, tied to a rare-card feel (few left) |
 | tapir | Rainforest browser with a flexible snout; swims and wades; ancient lineage | Saddle Tapir | Rainforest, River; Mammal | uncommon | Calm river tank that wades through water fields freely |
 | glass-frog | Frog with a see-through belly that shows its beating heart | Glassbelly Frog | Rainforest, River; Frog | common | Tiny frog whose see-through body reveals enemy Stealth |
+| red-panda | Bamboo-forest climber of the eastern Himalaya, ringed tail used as a blanket | Ringtail Red Panda | Bamboo / Forest, Mountains; Mammal | uncommon | Tree-perch sniper that gets harder to hit on forest fields |
+| giant-tube-worm | Vent worm up to 2.4 m with no mouth or gut; lives on bacteria in 80 C vents | Ventplume Tube Worm | Volcano, Ocean deep; Worm | rare | Rooted tank that grows stronger beside heat fields |
 
-Not generated (stopped when the pane lost its connection): gharial, giant tube worm, red panda (queued, not collected). Real-life common animals were not given extra cards in this package.
+Not generated: gharial (next run). Real-life common animals were not given extra cards in this package.

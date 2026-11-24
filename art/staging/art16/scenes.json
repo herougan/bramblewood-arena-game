@@ -20,5 +20,70 @@
   "bgVariant": "B",
   "floorVariant": "A",
   "size": "128 px sheet cell shown at 256 px, square (the 16:9 sizes cost the same 10 generations for 1 image, so 4-up 128 px was used)"
+ },
+ {
+  "slug": "desert",
+  "fit": "Desert maps (dune / oasis fields)",
+  "bg": "scenes/desert-bg.png",
+  "floor": "scenes/desert-floor.png",
+  "bgVariant": "A",
+  "floorVariant": "A",
+  "bgPrompt": "see PixelLab gallery (ART16b run 2026-11-24); same template as cave/kelp: Pokemon-style pixel art battle backdrop, empty open middle ground, no creatures, no people, no text, full scenic background",
+  "floorPrompt": "same template as cave/kelp floor: high three-quarter ground texture, flat open middle, no creatures, no text",
+  "size": "128 px sheet cell shown at 256 px, square"
+ },
+ {
+  "slug": "volcano",
+  "fit": "Volcano / ember fields",
+  "bg": "scenes/volcano-bg.png",
+  "floor": "scenes/volcano-floor.png",
+  "bgVariant": "A",
+  "floorVariant": "A",
+  "bgPrompt": "see PixelLab gallery (ART16b run 2026-11-24); same template as cave/kelp: Pokemon-style pixel art battle backdrop, empty open middle ground, no creatures, no people, no text, full scenic background",
+  "floorPrompt": "same template as cave/kelp floor: high three-quarter ground texture, flat open middle, no creatures, no text",
+  "size": "128 px sheet cell shown at 256 px, square"
+ },
+ {
+  "slug": "tundra",
+  "fit": "Tundra / frozen fields",
+  "bg": "scenes/tundra-bg.png",
+  "floor": "scenes/tundra-floor.png",
+  "bgVariant": "D",
+  "floorVariant": "A",
+  "bgPrompt": "see PixelLab gallery (ART16b run 2026-11-24); same template as cave/kelp: Pokemon-style pixel art battle backdrop, empty open middle ground, no creatures, no people, no text, full scenic background",
+  "floorPrompt": "same template as cave/kelp floor: high three-quarter ground texture, flat open middle, no creatures, no text",
+  "size": "128 px sheet cell shown at 256 px, square"
+ },
+ {
+  "slug": "swamp",
+  "fit": "Swamp / bog fields (Mudbank)",
+  "bg": "scenes/swamp-bg.png",
+  "floor": "scenes/swamp-floor.png",
+  "bgVariant": "C",
+  "floorVariant": "B",
+  "bgPrompt": "see PixelLab gallery (ART16b run 2026-11-24); same template as cave/kelp: Pokemon-style pixel art battle backdrop, empty open middle ground, no creatures, no people, no text, full scenic background",
+  "floorPrompt": "same template as cave/kelp floor: high three-quarter ground texture, flat open middle, no creatures, no text",
+  "size": "128 px sheet cell shown at 256 px, square"
+ },
+ {
+  "slug": "reef",
+  "fit": "Coral Reef / shallows",
+  "bg": "scenes/reef-bg.png",
+  "floor": "scenes/reef-floor.png",
+  "bgVariant": "A",
+  "floorVariant": "A",
+  "bgPrompt": "see PixelLab gallery (ART16b run 2026-11-24); same template as cave/kelp: Pokemon-style pixel art battle backdrop, empty open middle ground, no creatures, no people, no text, full scenic background",
+  "floorPrompt": "same template as cave/kelp floor: high three-quarter ground texture, flat open middle, no creatures, no text",
+  "size": "128 px sheet cell shown at 256 px, square"
+ },
+ {
+  "slug": "canopy",
+  "fit": "Jungle canopy / Canopy fields (floor not yet made)",
+  "bg": "scenes/canopy-bg.png",
+  "floor": null,
+  "bgVariant": "B",
+  "floorVariant": null,
+  "bgPrompt": "see PixelLab gallery",
+  "size": "128 px sheet cell shown at 256 px, square"
  }
 ]
