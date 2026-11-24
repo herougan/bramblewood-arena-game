@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// 2026-11-24 (package ROADFIX3): REFIT20's copy below, for 6-3's whole space (--maxmove 18) after post1124c; bands from post1124c, logs here.
+// 2026-11-24 (package ROADFIX3): REFIT20's copy below, for 6-3's whole space (--maxmove 18) and 8-3 after post1124c; bands from post1124c, logs
+// here; --fx <jsonl>: the other fights' accepted decks in place for the map lines (a problem the live deck has is not counted).
 // 2026-11-24 (package REFIT20, REFIT11-2 a): REFIT11's whole-space read (docs/balance/refit11/enum_2026_11_20.js), copied, with the owner's
 // 11-22 21:28 call on 6-3: one pool card that K14 caps at 1 copy may hold 2 (--allow2). Every deck of the fight's size from its pool that
 // passes tools/legal1 problemsFull() (size, distinct cards, copy caps, leaders, map lines), K14's "<id> x2" for ONE carried card excused,
@@ -15,7 +16,12 @@ const band = fs.readFileSync(path.resolve(ROOT, arg('--bands', 'docs/balance/ski
 const carried = id => f.U && !f.U.has(id) && !f.L0.includes(id);
 const leadersOf = d => { const nn = Object.assign({}, n, { deck: d }); G.NODE_MAP_HINT.set(nn, m.id); return JSON.stringify(G.skirmishLeadersOf(nn, m.id) || []); }, lead0 = leadersOf(n.deck);
 const S = L.size(n.deck);
-const problems = d => { let p = X.problemsFull(code, d, {}); const two = Object.keys(d).filter(id => carried(id) && d[id] === 2);
+const FX = {}; if (arg('--fx')) fs.readFileSync(arg('--fx'), 'utf8').trim().split('\n').filter(Boolean).map(JSON.parse).forEach(x => { if (x.deck && x.key !== code) FX[x.key] = x.deck; });
+// --wasfx <jsonl>: the decks the live deck's own problems are read with (default --fx); a joint move (8-3 takes Stalactite Golem, another
+// fight gives it up) reads WAS without the partner's new deck, so the partner's usage line counts against every deck that keeps the card
+const WFX = {}; if (arg('--wasfx', arg('--fx'))) fs.readFileSync(arg('--wasfx', arg('--fx')), 'utf8').trim().split('\n').filter(Boolean).map(JSON.parse).forEach(x => { if (x.deck && x.key !== code) WFX[x.key] = x.deck; });
+const WAS = X.problemsFull(code, n.deck, WFX);
+const problems = d => { let p = X.problemsFull(code, d, FX).filter(x => !WAS.includes(x) || x === 'constrictor-coil x2'); const two = Object.keys(d).filter(id => carried(id) && d[id] === 2);
   if (ALLOW2 && two.length === 1) p = p.filter(x => x !== `${two[0]} x2`); return p; };
 const legal = d => L.size(d) === S && !problems(d).length && leadersOf(d) === lead0;
 const dist = (p, q) => [...new Set(Object.keys(p).concat(Object.keys(q)))].reduce((t, id) => t + Math.max(0, (q[id] || 0) - (p[id] || 0)), 0);
@@ -25,7 +31,7 @@ const rec = (i, d, left) => { if (left === 0) { if (Object.keys(d).length >= f.d
 rec(0, {}, S);
 console.log(code, 'target', T, 'start', JSON.stringify(start), out.length, 'legal decks within', MAXMV, 'copies', ALLOW2 ? '(one carried card at 2 allowed)' : '');
 const win = (d, g, s) => { const nn = Object.assign({}, n, { deck: d }); G.NODE_MAP_HINT.set(nn, m.id); return Math.round(G.simulateReferenceFight(m.id, nn, g, { seed0: s }).win * 1000) / 10; };
-const LOG = path.join(__dirname, `enum-${code}.jsonl`), SCR = path.join(__dirname, `enum-${code}-screen.jsonl`), done = new Map();
+const TAG = arg('--tag', ''), LOG = path.join(__dirname, `enum-${code}${TAG}.jsonl`), SCR = path.join(__dirname, `enum-${code}${TAG}-screen.jsonl`), done = new Map();
 if (fs.existsSync(SCR)) fs.readFileSync(SCR, 'utf8').trim().split('\n').filter(Boolean).map(JSON.parse).forEach(x => { if (x.g1 === G1 && x.seed1 === S1) done.set(L.keyOf(x.deck), x.w1); });
 out.forEach(d => { const k = L.keyOf(d); if (done.has(k)) { d.__w1 = done.get(k); return; } const deck = Object.assign({}, d); d.__w1 = win(deck, G1, S1); fs.appendFileSync(SCR, JSON.stringify({ deck, w1: d.__w1, g1: G1, seed1: S1 }) + '\n'); });
 out.sort((p, q) => Math.abs(p.__w1 - T) - Math.abs(q.__w1 - T));

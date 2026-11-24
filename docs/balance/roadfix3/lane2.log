@@ -1,0 +1,5 @@
+start {"bombardier-beetle":4,"fungal-colossus":1,"hawthorn-shieldbug":4,"planarian-splitter":3,"earthworm":2,"compost-grub":2} 91
+round 1: cur 95/91; 27 legal, 27 read + 14 predicted (of 36); top: -4 hawthorn-shieldbug +4 fungus-gnat-cloud 71.7/64.3 | -3 planarian-splitter -2 hawthorn-shieldbug +3 leopard-slug +2 fungal-colossus 81.7/75.7 | -3 planarian-splitter +3 leopard-slug 80/77 | -1 hawthorn-shieldbug -3 planarian-splitter +1 fungal-colossus +3 leopard-slug 80/78 | -1 hawthorn-shieldbug +1 fungal-colossus 85/90.3
+round 2: cur 71.7/64.3; 27 legal, 27 read + 14 predicted (of 39); top: -1 planarian-splitter +1 fungal-colossus 71.7/69.3 | -1 bombardier-beetle +1 planarian-splitter 71.7/67.7 | -1 fungus-gnat-cloud +1 fungal-colossus 68.3/73.3 | -1 planarian-splitter +1 fungus-gnat-cloud 68.3/63 | -1 bombardier-beetle -1 fungus-gnat-cloud +1 planarian-splitter +1 fungal-colossus 70/77.3
+RESULT 7-A-2 {"bombardier-beetle":4,"fungal-colossus":2,"planarian-splitter":2,"earthworm":2,"compost-grub":2,"fungus-gnat-cloud":4} 69.3 {} moves: -4 hawthorn-shieldbug +4 fungus-gnat-cloud ; -1 planarian-splitter +1 fungal-colossus problems: []
+LANE 2 DONE

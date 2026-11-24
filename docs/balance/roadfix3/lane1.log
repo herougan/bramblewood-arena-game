@@ -1,0 +1,9 @@
+start {"blind-cave-fish":4,"cave-olm":4,"gallery-orb-weaver":4,"rot-swollen-carcass":1,"sulfur-cinder-moth":1} 61.7
+round 1: cur 65/61.7; 29 legal, 29 read + 14 predicted (of 34); top: -1 cave-olm +1 hawthorn-shieldbug 73.3/70.3 | -1 blind-cave-fish +1 hawthorn-shieldbug 71.7/66.7 | -1 cave-olm -1 rot-swollen-carcass +1 sulfur-cinder-moth +1 hawthorn-shieldbug 75/64.7 | -1 blind-cave-fish -1 gallery-orb-weaver +1 hawthorn-shieldbug +1 sulfur-cinder-moth 76.7/64.3 | -1 cave-olm +1 sulfur-cinder-moth 73.3/61
+round 2: cur 73.3/70.3; 21 legal, 21 read + 14 predicted (of 36); top: -1 blind-cave-fish +1 cave-olm 71.7/66.7 | -1 rot-swollen-carcass +1 sulfur-cinder-moth 75/64.7 | -1 blind-cave-fish -1 gallery-orb-weaver +1 cave-olm +1 sulfur-cinder-moth 76.7/64.3 | -1 rot-swollen-carcass -1 blind-cave-fish +1 sulfur-cinder-moth +1 cave-olm 75/61.3 | -1 hawthorn-shieldbug +1 sulfur-cinder-moth 73.3/61
+no nearer move
+RESULT 8-3 {"blind-cave-fish":4,"cave-olm":3,"gallery-orb-weaver":4,"rot-swollen-carcass":1,"sulfur-cinder-moth":1,"hawthorn-shieldbug":1} 70.3 {} moves: -1 cave-olm +1 hawthorn-shieldbug problems: []
+start {"echo-screecher":2,"gallery-orb-weaver":4,"hawthorn-shieldbug":1,"stalactite-golem":4,"cave-olm":2,"rot-swollen-carcass":1,"corpse-flower-beetle":1} 54.7
+round 1: cur 46.7/54.7; 25 legal, 25 read + 14 predicted (of 45); top: -1 corpse-flower-beetle +1 sulfur-cinder-moth 38.3/42 | -2 gallery-orb-weaver +2 cave-olm 41.7/43 | -1 corpse-flower-beetle +1 echo-screecher 43.3/44 | -1 corpse-flower-beetle +1 glow-worm 43.3/35.7 | -1 rot-swollen-carcass +1 echo-screecher 43.3/46
+RESULT 8-8 {"echo-screecher":2,"gallery-orb-weaver":4,"hawthorn-shieldbug":1,"stalactite-golem":4,"cave-olm":2,"rot-swollen-carcass":1,"sulfur-cinder-moth":1} 42 {} moves: -1 corpse-flower-beetle +1 sulfur-cinder-moth problems: []
+LANE 1 DONE
