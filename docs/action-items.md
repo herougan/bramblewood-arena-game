@@ -8,6 +8,17 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-24 22:29 Owner list (21 items, mobile screenshots of the live 11-22 build)
+- Note: several screenshots show the live 11-22 build; MAPUI2 (merged skill list, consolidated pills, colour order) and ECON1 (5-card packs) are in the unreleased batch.
+- [ ] FIXPACK1 (#1, #7, #10, #12, #13, #15, #20): Codex synced across devices for one account + a toggle to stop grouping by advancement when sorting; Achievements "Card Rewards" button becomes Claim all, unlocked on one quiet map in 9-16, and multi-card claims no longer skip rewards; Conquest map opens where the player last was (player icon on the last node, even if lost); Fumarole Ibex shows Map 14 though it is from Map 20; sign-in window: close it and show the main loading circle, buttons inert; vault How it works: "Dungeon Rules" then "Multiplayer Rules"; remove The Tidelock Vault from More ways to play
+- [ ] PACKFX1 (#4, #5, #6): pack opener: New! (new and locked) vs Get! (seen, not owned); the flipping card shows only its back (no mirrored labels); a rarity glint (<0.3 s, chance rises with rarity, ~99% from Epic; glint colour biased to the true rarity; anchor: 10% above Unique)
+- [ ] DUNGEON2 (#16, #17, #19): stage clear: enemies die, next wave spawns, 3 GY cards to the deck (Ecclesia cards: may instead move 3 exile -> GY); the stage-to-stage transition (ground scrolls under you, lanterns pass at the sides for one World 1 dungeon), no lag; camera zooms out slowly when the back row goes live; grade emblem reward animation (shine, spin)
+- [ ] RAIDCAM1 (#21): raid camera starts zoomed out beyond the 3-player view then slowly zooms in (keep the player's saved zoom-out); the 3-player zoom-out ends ~4% tighter
+- [ ] INSPIRE2 (#18): Inspire powers the unit's whole next move (every hit of Cleave / Archer, up to 3+1 hits); not spent if it did not act; then re-measure
+- [ ] UISWEEP-1..5 add (#8, #9, #14): mobile vertical space (Codex first; nav 2 rows on mobile; horizontal scroll within reason; all pages); the page flip pivots from the right origin; Arena page: a simple nav with sub-tabs (PvE elsewhere), controls inside the tent
+- [ ] FX/3D (#2, #3): status of the 3D effects upgrades and lag smoothing, then suggested effects; the "3D cards" (read as ART17 living card art unless the owner says otherwise)
+- [ ] #11 skill list colour order: check against MAPUI2 (in the batch) and fix what remains
+
 ## 11-23 23:39 Owner list ("Extra, as the following requires very high effort")
 - Order: STATE2 (item 5: "take a step back, summarise the current state, before moving forward ... Then make wholistic changes") first; ART16 / CARDS1 / ENG (Corrode+Daunt) / card-design skill in parallel; then MAPUI2, then UISWEEP; ART17 after ART16.
 - [ ] STATE2: current-state review (screens, navigation, systems, data, art), feeds UISWEEP
