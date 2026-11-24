@@ -4762,8 +4762,19 @@
  "Reward at {code}": "Recompensa em {code}",
  "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "Sua primeira vitória completa de hoje paga inteira; as seguintes pagam 20%. Dois jogadores: +25%.",
  "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "A paga completa de hoje já foi: as partidas pagam 20% até amanhã. Dois jogadores: +25%.",
- "Its hits set Corrode to {n} if lower; it fades 1 a round.": "Seus golpes elevam a Corrosão a {n} se for menor; ela cai 1 por rodada.",
  "Gold: levels met on this map. Dark: below 1 or above 10.": "Ouro: níveis deste mapa. Escuro: abaixo de 1 ou acima de 10.",
  "Red / blue = to add": "Vermelho / azul = a adicionar",
- "Black / red = to remove": "Preto / vermelho = remover"
+ "Black / red = to remove": "Preto / vermelho = remover",
+ "Intimidate": "Ameaça",
+ "The enemy facing it attacks for {n} less.": "O inimigo à frente ataca com {n} de Ataque a menos.",
+ "Works while it is on the board, Ready or not. Attacks only, not skills. Intimidate and Majesty on one enemy don't add up: the biggest counts.": "Funciona enquanto está no tabuleiro, Pronta ou não. Só ataques, não habilidades. Ameaça e Majestade no mesmo inimigo não se somam: conta a maior.",
+ "Darkness, Blind and Evasive (camouflage) don't make it miss grounded units; it can't be Blinded.": "A Escuridão, a Cegueira e Esquiva (camuflagem) não a fazem falhar unidades em terra; não pode ficar Cega.",
+ "Keen Sense: Darkness, Blind and Evasive don't make it miss grounded units": "Sentidos apurados: a Escuridão, a Cegueira e Esquiva não a fazem falhar unidades em terra",
+ "It also finds grounded units through Thick Fog, Shadow, ash and sandstorms. A flying unit still dodges it.": "Também encontra unidades em terra através da Névoa densa, da Sombra, das cinzas e das tempestades de areia. Uma unidade voadora ainda se esquiva.",
+ "Its hits leave Corrode {n}: {n} less Attack, fading 1 a round after the last hit.": "Seus golpes deixam Corrosão {n}: {n} de Ataque a menos, que cai 1 por rodada após o último golpe.",
+ "A Corroded unit has that much less Attack, never below 0. A new hit sets it to the larger value; it never adds up.": "Uma unidade corroída tem esse tanto de Ataque a menos, nunca abaixo de 0. Um novo golpe a eleva ao valor maior; nunca se soma.",
+ "has that much less Attack; fades 1 a round after its last hit.": "tem esse tanto de Ataque a menos; cai 1 por rodada após o último golpe.",
+ "has {n} less Attack; fades 1 a round after its last hit.": "tem {n} de Ataque a menos; cai 1 por rodada após o último golpe.",
+ "Poison kill": "Morte por veneno",
+ "Poison kill: an enemy unit died of poison while this unit was on the board": "Morte por veneno: uma unidade inimiga morreu de veneno enquanto esta unidade estava no tabuleiro"
 }

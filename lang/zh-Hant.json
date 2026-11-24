@@ -4761,8 +4761,19 @@
  "Reward at {code}": "獎勵於 {code}",
  "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "今天首次通關可獲全額獎勵；之後的挑戰只得 20%。雙人：+25%。",
  "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "今天的全額獎勵已領取：明天之前的挑戰只得 20%。雙人：+25%。",
- "Its hits set Corrode to {n} if lower; it fades 1 a round.": "它的命中將腐蝕設為 {n}（若更低）；每回合衰減 1。",
  "Gold: levels met on this map. Dark: below 1 or above 10.": "金色：此地圖的等級。暗色：低於 1 或高於 10。",
  "Red / blue = to add": "紅 / 藍 = 待新增",
- "Black / red = to remove": "黑 / 紅 = 待移除"
+ "Black / red = to remove": "黑 / 紅 = 待移除",
+ "Intimidate": "威嚇",
+ "The enemy facing it attacks for {n} less.": "面對它的敵人攻擊時攻擊力 -{n}。",
+ "Works while it is on the board, Ready or not. Attacks only, not skills. Intimidate and Majesty on one enemy don't add up: the biggest counts.": "只要在場上就生效，無論是否就緒。只影響攻擊，不影響技能。威嚇與威儀作用於同一敵人時不疊加：取最大值。",
+ "Darkness, Blind and Evasive (camouflage) don't make it miss grounded units; it can't be Blinded.": "黑暗、致盲和閃避（偽裝）不會讓它對地面單位落空；它不會被致盲。",
+ "Keen Sense: Darkness, Blind and Evasive don't make it miss grounded units": "敏銳感知：黑暗、致盲和閃避不會讓它對地面單位落空",
+ "It also finds grounded units through Thick Fog, Shadow, ash and sandstorms. A flying unit still dodges it.": "它也能穿過濃霧、暗影、灰燼和沙暴找到地面單位。飛行單位仍可閃避它。",
+ "Its hits leave Corrode {n}: {n} less Attack, fading 1 a round after the last hit.": "它的命中留下腐蝕 {n}：攻擊力 -{n}，最後一次命中後每回合衰減 1。",
+ "A Corroded unit has that much less Attack, never below 0. A new hit sets it to the larger value; it never adds up.": "被腐蝕的單位攻擊力降低相應數值，不低於 0。新的命中將其設為較大值；不會疊加。",
+ "has that much less Attack; fades 1 a round after its last hit.": "攻擊力降低相應數值；最後一次命中後每回合衰減 1。",
+ "has {n} less Attack; fades 1 a round after its last hit.": "攻擊力 -{n}；最後一次命中後每回合衰減 1。",
+ "Poison kill": "毒殺",
+ "Poison kill: an enemy unit died of poison while this unit was on the board": "毒殺：此單位在場時，有敵方單位死於中毒"
 }

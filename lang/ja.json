@@ -4761,8 +4761,19 @@
  "Reward at {code}": "{code}の報酬",
  "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "今日の最初の完全クリアは報酬が満額。以降は20%。2人プレイ：+25%。",
  "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "今日の満額報酬は受け取り済み：明日まで報酬は20%。2人プレイ：+25%。",
- "Its hits set Corrode to {n} if lower; it fades 1 a round.": "命中すると腐食を{n}まで引き上げる（低い場合）。毎ラウンド1減る。",
  "Gold: levels met on this map. Dark: below 1 or above 10.": "金：このマップのレベル。暗：1 未満または 10 超。",
  "Red / blue = to add": "赤 / 青 = 追加予定",
- "Black / red = to remove": "黒 / 赤 = 削除予定"
+ "Black / red = to remove": "黒 / 赤 = 削除予定",
+ "Intimidate": "威嚇",
+ "The enemy facing it attacks for {n} less.": "向かい合う敵は攻撃力-{n}で攻撃する。",
+ "Works while it is on the board, Ready or not. Attacks only, not skills. Intimidate and Majesty on one enemy don't add up: the biggest counts.": "準備完了かどうかに関係なく、場にいる間は働く。攻撃のみで、スキルには効かない。同じ敵への威嚇と威厳は合算されず、最大のものだけが数える。",
+ "Darkness, Blind and Evasive (camouflage) don't make it miss grounded units; it can't be Blinded.": "闇、盲目、回避（擬態）でも地上ユニットへの攻撃は外れない。盲目にならない。",
+ "Keen Sense: Darkness, Blind and Evasive don't make it miss grounded units": "鋭い感覚：闇、盲目、回避でも地上ユニットへの攻撃は外れない",
+ "It also finds grounded units through Thick Fog, Shadow, ash and sandstorms. A flying unit still dodges it.": "濃霧、影、灰、砂嵐の中でも地上ユニットを見つける。飛行ユニットは通常どおり回避する。",
+ "Its hits leave Corrode {n}: {n} less Attack, fading 1 a round after the last hit.": "命中すると腐食{n}を残す：攻撃力-{n}。最後の命中の後、毎ラウンド1減る。",
+ "A Corroded unit has that much less Attack, never below 0. A new hit sets it to the larger value; it never adds up.": "腐食したユニットはその分だけ攻撃力が下がる（0未満にはならない）。新たな命中で大きい方の値になり、合算はされない。",
+ "has that much less Attack; fades 1 a round after its last hit.": "その分だけ攻撃力が下がる。最後の命中の後、毎ラウンド1減る。",
+ "has {n} less Attack; fades 1 a round after its last hit.": "攻撃力-{n}。最後の命中の後、毎ラウンド1減る。",
+ "Poison kill": "毒で撃破",
+ "Poison kill: an enemy unit died of poison while this unit was on the board": "毒で撃破：このユニットが場にいる間に、敵ユニットが毒で倒れた"
 }

@@ -608,13 +608,13 @@ const BLOOM_COND_NAMES = {tide:'Tide', ebb:'Ebb', night:'Night', day:'Day', twil
 // this card"; 17:34: "Bloom hasn't changed"; 19:30: "bloom only gives the new one +1/+1, not itself"): effects.bloomCopy = {when, mode, lumber} (the engine's bloomCopyPass). Its conditions are
 // Bloom's plus 'kill' (it has killed an enemy unit), and it may cost Lumber: "Bloom (Wet & Sunny + 1 Lumber)". The editor's text form is
 // the same words: "Wet & Sunny + 1 Lumber", "Wet & Kill".
-const BLOOM_COPY_COND_NAMES = Object.assign({}, BLOOM_COND_NAMES, {kill: TX('ui.bl-cond-kill')});
+const BLOOM_COPY_COND_NAMES = Object.assign({}, BLOOM_COND_NAMES, {kill: TX('ui.bl-cond-kill'), poisonkill: TX('ui.daunt2-bl-cond-poisonkill') /* DAUNT2 (2026-11-24): an enemy died of poison */});
 function bloomCopyWhenText(bc){ bc = bc || {}; const w = (Array.isArray(bc.when) ? bc.when : [bc.when]).filter(Boolean).map(k=> BLOOM_COPY_COND_NAMES[k] || k);
   const L = Math.max(0, Math.round(Number(bc.lumber) || 0)); return (w.join(bc.mode === 'or' ? ' or ' : ' & ') || '?') + (L ? ' + ' + TX('ui.bl-lumber', {n: L}) : ''); }
 function bloomCopyLabel(bc){ return TX('ui.bl-head', {when: bloomCopyWhenText(bc)}); }
 // ENG19 (2026-11-02, owner 22:26: "Bloom's text needs tooltip on how to fill. E.g. Wet and Dark and Something dies."): what each of a card's own
 // Bloom conditions means (the engine's bloomCond / bloomCopyOn), for the chip's tooltip and the skill line: "Blooms when all of these hold: ...".
-const ENG19_BLOOM_KEYS = ['tide', 'ebb', 'night', 'day', 'twilight', 'wind', 'wet', 'dark', 'heat', 'frost', 'fullmoon', 'rain', 'sunny', 'kill'];
+const ENG19_BLOOM_KEYS = ['tide', 'ebb', 'night', 'day', 'twilight', 'wind', 'wet', 'dark', 'heat', 'frost', 'fullmoon', 'rain', 'sunny', 'kill', 'poisonkill' /* DAUNT2 */];
 function eng19BloomFillText(bc){ bc = bc || {}; const w = (Array.isArray(bc.when) ? bc.when : [bc.when]).filter(Boolean).map(x=> String(x).toLowerCase().replace(/\s+/g, ''));
   if(!w.length) return ''; const parts = w.map(k=> ENG19_BLOOM_KEYS.includes(k) ? TX('ui.eng19-bc-' + k) : (BLOOM_COPY_COND_NAMES[k] || k));
   const L = Math.max(0, Math.round(Number(bc.lumber) || 0)); if(L) parts.push(TX('ui.eng19-bloom-lumber', {n: L}));
@@ -623,10 +623,10 @@ function eng19BloomFillText(bc){ bc = bc || {}; const w = (Array.isArray(bc.when
 function eng19GrantShieldText(t){ t = t || {}; const out = [];
   [['amount', 'self'], ['adjacent', 'adjacent'], ['surrounding', 'surrounding'], ['allies', 'allies']].forEach(([f, k])=>{ const n = Number(t[f]); if(n > 0) out.push(TX('ui.eng19-gs-' + k, {n})); });
   return out.join(', '); }
-function bloomCopyToText(bc){ bc = bc || {}; const w = (Array.isArray(bc.when) ? bc.when : [bc.when]).filter(Boolean).map(k=> k === 'kill' ? 'Kill' : (BLOOM_COND_NAMES[k] || k)); const L = Math.max(0, Math.round(Number(bc.lumber) || 0));
+function bloomCopyToText(bc){ bc = bc || {}; const w = (Array.isArray(bc.when) ? bc.when : [bc.when]).filter(Boolean).map(k=> k === 'kill' ? 'Kill' : k === 'poisonkill' ? 'Poison kill' /* DAUNT2 */ : (BLOOM_COND_NAMES[k] || k)); const L = Math.max(0, Math.round(Number(bc.lumber) || 0));
   return (w.join(bc.mode === 'or' ? ' or ' : ' & ')) + (L ? ` + ${L} Lumber` : ''); }
 function parseBloomCopyText(v){ if(v && typeof v === 'object' && !Array.isArray(v)) return v.when ? v : null;
-  let t = String(v||'').toLowerCase().replace(/full moon/g, 'fullmoon').replace(/killed an enemy|killed|kills?/g, ' kill ');
+  let t = String(v||'').toLowerCase().replace(/full moon/g, 'fullmoon').replace(/poison\s*kill\w*/g, ' poisonkill ').replace(/\b(killed an enemy|killed|kills?)\b/g, ' kill '); // DAUNT2 (2026-11-24): + Poison kill
   const lm = t.match(/(\d+)\s*lumber/); t = t.replace(lm ? lm[0] : '', ' ');
   const when = Object.keys(BLOOM_COPY_COND_NAMES).filter(k=> new RegExp('\\b' + k + '\\b').test(t)); if(!when.length) return null;
   const out = {when, mode: /\bor\b/.test(t) ? 'or' : 'and'}; if(lm && Number(lm[1]) > 0) out.lumber = Number(lm[1]); return out; }
@@ -1156,7 +1156,7 @@ const PASSIVE_DEFS = [
   {key:'siege', category:'passive', label:'Siege', kind:'number', min:0, desc:v=>`Deals ${v} bonus flat damage whenever its attack lands directly on the enemy bramble.`},
   // Corrode (2026-09-17): the third of the three new status effects — a stacking debuff like
   // Poison/Bleed, but saps effective Attack instead of dealing damage, and decays 1 stack/round.
-  {key:'corrode', category:'passive', label:'Corrode', kind:'number', min:0, desc:v=>`Every landed attack adds ${v} Corrode.`},
+  {key:'corrode', category:'passive', label:'Corrode', kind:'number', min:0, desc:v=> TX('ui.cards1-corrode', {n: v}), codexNote:TX('ui.daunt2-corrode-codex')}, // DAUNT2 (2026-11-24, owner 23:25: "What does corrode do"): ENG16's refresh rule, and what it does
   // 2026-10-12 (09:11): two new passives. The first had no name ("____ N"): Daunt is a working name.
   {key:'daunt', category:'passive', label:'Daunt', kind:'number', min:0, desc:v=> TX('ui.ui31-daunt', {n: v})}, // UI31 (2026-11-07, owner 10:25 #1): says when it triggers (every hit it lands, as the engine does)
   {key:'recoil', category:'passive', label:'Recoil', kind:'number', min:0, desc:v=>`Every attack also deals ${v} damage to itself.`},
@@ -1287,7 +1287,7 @@ const PASSIVE_DEFS = [
   // codexNote the Skills Codex adds). Chain Lightning (user: "Voltaic Eel should have chain lighting as well"): Electricity's longer cousin.
   {key:'electricity', category:'passive', label:'Electricity', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits arc: the spark jumps to one enemy unit adjacent to the target for ${v||1} lightning damage.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'},
   {key:'chainLightning', category:'passive', label:'Chain Lightning', kind:'number', min:1, defaultValue:2, desc:v=>`Its hits loose chain lightning: the bolt jumps from the target to an enemy unit adjacent to it, then on to one more, never the same unit twice. Each unit it jumps to takes ${numOr(v, 2)} lightning damage.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'},
-  {key:'keenSense', category:'passive', label:'Keen Sense', kind:'boolean', desc:()=>`It senses what it can't see: Darkness, Pitch Black and Blind don't make it miss a unit that isn't flying (or the bramble), and nothing can Blind it. Its nose also finds grounded units through Thick Fog and Shadow.`},
+  {key:'keenSense', category:'passive', label:'Keen Sense', kind:'boolean', desc:()=> TX('ui.daunt2-keen-sense'), codexNote:TX('ui.daunt2-keen-codex')}, // DAUNT2 (2026-11-24, owner 23:30): it finds Evasive (camouflaged) units too
   // 2026-10-14 (seventh pass). Psychic (user: "Psychic Damage: it's a skill rather than a type like Normal and Magic."); Smoke Bomb
   // (user: "Throws a smoke bomb at an ally or enemy (random). If ally, then the ally has smoke-evade. If enemy, the enemy has blind.
   // This is an evergreen skill. It happens 50% of the time every turn. (The banana and bananarang and boomerang ones are all
@@ -1996,6 +1996,8 @@ PASSIVE_DEFS.push(
   {key:'pearl', category:'passive', label:TX('ui.skn-pearl'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.eng19-pearl', {n: numOr(v, 1)}), codexNote:TX('ui.eng19-pearl-codex')}, // ENG19: On Ready, once
   // Majesty N (ENG19, 2026-11-02, owner #13; decision ENG19-1, option a): the enemy units facing it swing at -N Attack (the engine's majestyCut). On no card yet.
   {key:'majesty', category:'passive', label:TX('ui.skn-majesty'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.eng19-majesty', {n: numOr(v, 1)}), codexNote:TX('ui.eng19-majesty-codex')},
+  // Intimidate N (DAUNT2, 2026-11-24, owner 23:21): the enemy facing it (its own column) swings at -N while it stands, Ready or not (the engine's majestyCut)
+  {key:'intimidate', category:'passive', label:TX('ui.skn-intimidate'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-intimidate', {n: numOr(v, 2)}), codexNote:TX('ui.sk-intimidate-codex')},
   {key:'coppice', category:'passive', label:TX('ui.skn-coppice'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.en8-coppice', {n: numOr(v, 1)}), codexNote:TX('ui.en8-coppice-codex')},
   {key:'driftwood', category:'passive', label:TX('ui.skn-driftwood'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.en8-driftwood', {n: numOr(v, 1)}), codexNote:TX('ui.en8-driftwood-codex')},
   {key:'magicArmor', category:'passive', label:TX('ui.skn-magic-armor'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.en8-magic-armor', {n: numOr(v, 1)}), codexNote:TX('ui.en8-magic-armor-codex')});
@@ -2004,7 +2006,7 @@ sk1Patch(PASSIVE_DEFS, 'salvage', {kind:'number', min:1, defaultValue:1, desc:v=
 // P24-16 (Armor is physical only) and P24-15 (a Guardian never steps in for a Thorns unit): the two lines say so
 sk1Patch(PASSIVE_DEFS, 'armor', {desc:v=> TX('ui.en8-armor', {n: v})});
 sk1Patch(PASSIVE_DEFS, 'guardian', {desc:()=> TX('ui.en8-guardian')});
-Object.assign(SKILL_ICON, {pearl:'⚪', majesty:'👑' /* ENG19 */, stonecutter:'⛏️', prospector:'🪙', felling:'🪓', pearlBed:'🦪', coppice:'🌳', driftwood:'🪵', magicArmor:'🔮'});
+Object.assign(SKILL_ICON, {pearl:'⚪', majesty:'👑' /* ENG19 */, intimidate:'👺' /* DAUNT2 (2026-11-24): a fearsome mask; 😤 is Defiance's and Riled's */, stonecutter:'⛏️', prospector:'🪙', felling:'🪓', pearlBed:'🦪', coppice:'🌳', driftwood:'🪵', magicArmor:'🔮'});
 // A card's mysterySkills (EN8, owner 21:20 #7: "one of the fodder skills can be a ? for now"): those skills read "?" on the card and in its
 // detail until their era (the Cocoon's Chrysalis: the Evomax maps). The rules still hold them (no evolute exists before Map 20).
 function en8Mystery(def, k){ return !!(def && Array.isArray(def.mysterySkills) && def.mysterySkills.includes(k)) && (!SKILL_REVEAL_MAP[k] || skillHiddenNow(k)); } // ENG9 (2026-10-26): a gated skill (SKILL_REVEAL_MAP) follows its gate
@@ -3099,7 +3101,7 @@ const SKILL_COUNTERS = {
   flying: ['reach', 'boomerang'],
   armor: ['pierce', 'perforate', 'poison', 'puncture'],
   shell: ['pierce', 'perforate'],
-  evasive: ['sweep', 'fork', 'fencing'], // Fencing (2026-10-14): Evasive can't dodge it
+  evasive: ['sweep', 'fork', 'fencing', 'keenSense' /* DAUNT2 (2026-11-24, owner 23:30) */], // Fencing (2026-10-14): Evasive can't dodge it
   stealth: ['guardian'],
   swarm: ['sweep', 'fork', 'defiance'],
   poison: ['cure'], // 2026-10-18: heals no longer remove Poison; Cure does
@@ -3116,7 +3118,7 @@ const STATUS_KEYWORDS = [
   {k:'poison', re:/\b(venom(?:ed|s)?|envenom(?:ed|s)?|poison(?:ed|s)?)\b/gi /* ENG33: Venom */, name:'Poison', c:'#3fa535', text:TX('ui.st-poison'), codex:TX('ui.stx-poison')} /* 2026-10-18 (package D): terse */,
   {k:'bleed', re:/\b(bleed(?:ing|s)?|bled)\b/gi, name:'Bleed', c:'#d0344a', text:TX('ui.st-bleed')} /* 2026-10-18 (package D): terse */,
   {k:'decay', re:/\b(decay(?:ing|s)?)\b/gi, name:'Decay', c:'#8d8a2e', text:'at the start of each round, takes damage and loses Attack equal to its stacks.'},
-  {k:'corrode', re:/\b(corrode[ds]?)\b/gi, name:'Corrode', c:'#b8732c', text:'deals that much less Attack; loses 1 stack each round.'},
+  {k:'corrode', re:/\b(corrode[ds]?)\b/gi, name:'Corrode', c:'#b8732c', text:TX('ui.daunt2-corrode-st')}, // DAUNT2 (2026-11-24): ENG16's refresh rule
   {k:'freeze', re:/\b(freez(?:e|es|ing)|frozen)\b/gi, /* + Freezes (2026-10-16 skill audit) */ name:'Frozen', c:'#3d9fd8', text:'can’t attack, and its Wait doesn’t tick down.'},
   {k:'sleep', re:/\b(sleep|asleep)\b/gi, name:'Asleep', c:'#8a78d0', text:TX('ui.st-sleep')} /* 2026-10-18 (package D): Sleep N stacks up to N+1 */,
   {k:'paralyze', re:/\b(paraly[sz]ed?)\b/gi, name:'Paralyzed', c:'#c9a417', text:'each round, a coin flip decides whether it can act.'},
@@ -3392,7 +3394,7 @@ Object.assign(SKILL_TEXT, {
   shield: v=> `Arrives with ${numOr(v, 1)} Shield: temporary Health that soaks damage first.`,
   electricity: v=> `Its hits arc to a unit adjacent to the target for ${numOr(v, 1)} lightning damage.`, // 2026-10-17: no wet note (Wet is a general rule)
   chainLightning: v=> `Its hits chain lightning on through 2 more enemy units adjacent to the target, ${numOr(v, 2)} lightning damage each.`, // 2026-10-17
-  keenSense: v=> `Darkness and Blind don't make it miss grounded units; it can't be Blinded.`,
+  keenSense: v=> TX('ui.daunt2-keen-sense'), // DAUNT2 (2026-11-24, owner 23:30): Evasive (camouflage) too
 });
 // W2 skills (2026-10-16): the one-line card text. Defaults as in PASSIVE_DEFS (W2_DEF in the engine).
 Object.assign(SKILL_TEXT, {
@@ -7319,7 +7321,7 @@ const LIVE_STATUS_ROWS = [
   ['toxin', 'toxin', 'Toxin', n=> `takes ${n} damage every round. It never wears off and can’t be cured.`, true],
   ['bleed', 'bleed', 'Bleed', n=> TX('ui.ls-bleed', {n}), true], // 2026-10-18 (package D): terse
   ['decay', 'decay', 'Decay', n=> `at upkeep, takes ${n} damage and loses ${n} Attack.`, true],
-  ['corrode', 'corrode', 'Corrode', n=> `deals ${n} less Attack; loses 1 stack each round.`, true],
+  ['corrode', 'corrode', 'Corrode', n=> TX('ui.daunt2-corrode-ls', {n}), true], // DAUNT2 (2026-11-24)
   ['wither', null, 'Wither', (n, c)=> `loses ${n} max Health at upkeep${c.witherLeft ? ` for ${c.witherLeft} more round${c.witherLeft === 1 ? '' : 's'}` : ''}, and can’t be healed.`, true],
   ['exposed', 'exposed', 'Exposed', n=> TX('ui.ls-exposed', {n, s: n === 1 ? '' : 's'}), true], // 2026-10-18 (package D): terse
   ['scar', 'scar', 'Scar', n=> `takes ${n} more damage from every hit.`, true],
@@ -10283,6 +10285,7 @@ const eng28PipSeen = new Map(); let eng28PipSrc = null;
 function eng28PipHandled(k){ if(eng28PipSeen.has(k)) return eng28PipSeen.get(k);
   if(eng28PipSrc == null){ try{ eng28PipSrc = String(abilityBadges) + String(triggerBadges) + JSON.stringify(CHIP_FALLBACK_SKILLS); }catch(e){ eng28PipSrc = ''; } }
   const esc = k.replace(/[$]/g, '\\$'), r = new RegExp('\\be\\.' + esc + '\\b|[\'"]' + esc + '[\'"]').test(eng28PipSrc); eng28PipSeen.set(k, r); return r; }
+function eng28PipTip(k, v, e, num){ const p = skillDefOf(k); if(!p || !p.label) return ''; try{ return p.label + (num !== '' ? ' ' + num : '') + ': ' + skillText(p, v, e); }catch(_){ return p.label; } }
 function eng28GenericPips(e, out, bopts, n1){
   try{ const params = (typeof BramblewoodBudget !== 'undefined' && BramblewoodBudget.PARAMS) || [];
     Object.keys(e || {}).forEach(k=>{ const v = e[k]; if(k === 'triggers' || !skillValOn(v) || ENG28_PIP_OPT_OUT.has(k) || params.includes(k) || UI18_NOT_SKILL.has(k)) return;
@@ -10291,7 +10294,7 @@ function eng28GenericPips(e, out, bopts, n1){
       // 2026-11-07 (owner 07:40: "Why does fleetfoot' have 2 quick symbols on it?"): the source scan above misses pips drawn through a shared path
       // (Quick's ab-quick), so a skill whose icon is already among this card's pips gets no second one
       if(out.some(h=> String(h).includes(`data-ik="${k}"`) || String(h).includes(`ab-${k}"`))) return;
-      const num = typeof v === 'number' || /^\d+$/.test(String(v)) ? n1(v) : '', tip = (()=>{ try{ return p.label + (num !== '' ? ' ' + num : '') + ': ' + skillText(p, v, e); }catch(_){ return p.label; } })();
+      const num = typeof v === 'number' || /^\d+$/.test(String(v)) ? n1(v) : '', tip = eng28PipTip(k, v, e, num);
       out.push(`<span class="ab-sk eng28-pip" data-sk="${k}" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">${iconHTML(k, SKILL_ICON[k] || '✦')}${num}</span>`); });
   }catch(err){}
 }
@@ -10421,7 +10424,7 @@ function abilityBadges(d, bopts){
     out.push(`<span class="ab-sk ab-delivery" data-sk="${k}" title="${escapeAttr(t)}" aria-label="${escapeAttr(t)}">${iconHTML('delivery', '📦')}${n}</span>`); });
   if(e.electricity) out.push(`<span title="Electricity ${numOr(e.electricity, 1)}: its hits arc to a unit adjacent to the target">${iconHTML('electricity', '🔌')}${n1(numOr(e.electricity, 1))}</span>`); // 2026-10-17: no wet note
   if(e.chainLightning) out.push(`<span class="ab-chain-lightning" title="Chain Lightning ${numOr(e.chainLightning, 2)}: its hits chain lightning on through 2 more enemy units adjacent to the target">${iconHTML('chain-lightning', '🌩️')}${n1(numOr(e.chainLightning, 2))}</span>`); // 2026-10-17
-  if(e.keenSense && !eng28DarkPipOff(bopts)) out.push(`<span title="Keen Sense: Darkness and Blind don't make it miss grounded units">${iconHTML('keen-sense', '👃')}</span>`);
+  if(e.keenSense && !eng28DarkPipOff(bopts)) out.push(`<span title="${escapeAttr(TX('ui.daunt2-keen-pip'))}">${iconHTML('keen-sense', '👃')}</span>`); // DAUNT2 (2026-11-24): + Evasive
   // 2026-10-14 (seventh pass): Psychic, Smoke Bomb.
   if(e.psychic) out.push(`<span class="ab-psychic" title="Psychic ${numOr(e.psychic, 1)}: its hits also deal ${numOr(e.psychic, 1)} psychic damage through Armor, Shield, Shell and Ghost">${iconHTML('psychic', '💭')}${n1(numOr(e.psychic, 1))}</span>`);
   // 2026-10-15: Ice Arrow, Twin Shot, Volley, the Bolts and Chilli.
@@ -10547,8 +10550,8 @@ function abilityBadges(d, bopts){
     if(k === 'remember' && en20RememberSpent(bopts)) return; // ENG20-1 (2026-11-02): a used Remember's pip is gone
     if(k === 'magic') return; // 2026-10-21 (package BX, owner: "For magic units, dont have to have the magic context label since it's obvious from their attack label")
     const ui7NoNum = !!(bopts && bopts.live) && k === 'regen'; // 2026-10-31 (package UI7, owner Y1): Regeneration on a board card is the icon alone (the value is in the tooltip)
-    const ui7Tip = ui7NoNum ? escapeAttr(TX('ui.ui7-regen-tip', {n: v})) : '';
-    out.push(`<span class="ab-sk${zeitLitNow(k, bopts) ? ' zeit-live' : ''}" data-sk="${k}"${ui7NoNum ? ` title="${ui7Tip}" aria-label="${ui7Tip}"` : ''}>${iconHTML(k, SKILL_ICON[k] || '✦')}${!ui7NoNum && (typeof v === 'number' || /^\d+$/.test(String(v))) ? n1(v) : ''}</span>`); });
+    const num = !ui7NoNum && (typeof v === 'number' || /^\d+$/.test(String(v))) ? n1(v) : '', ui7Tip = escapeAttr(ui7NoNum ? TX('ui.ui7-regen-tip', {n: v}) : eng28PipTip(k, v, e, num)); // DAUNT2 (2026-11-24, owner 23:25: Corrode's tooltip): every chip says what it does, as the ENG28 pips
+    out.push(`<span class="ab-sk${zeitLitNow(k, bopts) ? ' zeit-live' : ''}" data-sk="${k}"${ui7Tip ? ` title="${ui7Tip}" aria-label="${ui7Tip}"` : ''}>${iconHTML(k, SKILL_ICON[k] || '✦')}${num}</span>`); });
   eng28GenericPips(e, out, bopts, n1); // ENG28 (2026-11-07, owner 23:35 #9): every other skill gets its pip by default
   out.push(...triggerBadges(d, bopts && bopts.live).filter(Boolean)); // a spent trigger that has faded is gone, not an empty slot
   // UIQ2 (2026-11-21, owner 22:03 #3: "do not show the ? mystery skill as a context pip ... do not show things irrelevant to the battlefield as
@@ -10751,7 +10754,7 @@ const SKMAP_PAST = [ // [label, "map skills | map skills"]; a name that is on th
 // 2026-11-22 (package NOC7, owner 13:22 SGT): Nocturnal moves from Map 4 to Map 7 (the Morel Hollow; Leopard Slug + Glow-worm Cluster carry it); only the first 3 of a map's keys show.
 // 2026-11-22 (MAPRM1): the owner's sheet, Special / Faction column (11-22 13:22), by skill name; these are not flagged "To remove" on their map
 const MAP_SPECIAL_SKILL_NAMES = {1: ['Esprit'], 2: ['Loyal'], 3: ['Fencing'], 4: ['Trident', 'Octolash'], 5: ['Bulwark'], 6: ['Smoke Bomb'], 7: ['Broodmother'], 11: ['Fletcher'], 12: ['Dynamite'], 13: ['Carnage'], 14: ['Siege'], 15: ['Fortify']};
-const MAP_FOCUS_SKILLS = {0: ['swarm', 'flying', 'nursing'], 1: ['thorns', 'guardian', 'inspiring', 'foraging', 'diurnal'], 2: ['armor', 'pierce', 'shield', 'tide', 'crabClaws'], 3: ['pounce', 'swift', 'arrow'], 4: ['bloomCopy', 'meiosis', 'delivery', 'fork'], 5: ['forestry', 'sap', 'poison', 'poisonBarbs'], 6: ['bleed', 'parasite', 'strangle'], 7: ['carrion', 'corrode', 'sleepPowder', 'poisonPowder', 'nocturnal'], 8: ['darksight', 'web', 'illuminate', 'keenSense', 'evasive'], 9: ['trident', 'electricity', 'regen'], 10: ['weaken', 'wave'], 11: ['paralysisPowder'], 12: ['siege', 'recoil', 'stealth', 'bulldoze'], 13: ['harbinger', 'twinStrike', 'repair'], 14: ['mighty', 'pack', 'snipe', 'exploit'], 15: ['overwhelm', 'ambush', 'sweep'], 16: ['sturdy', 'reach'], 17: ['momentum', 'offspring'], 18: ['trap', 'expose'], 19: ['fireArrow'], 20: ['fireBolt']}; // 2026-11-18 (UIFIN): REDESIGN3 v2 focus skills (docs/design/redesign3-2026-11-17.json focus[].skills keys, Maps 0-20; mapFocusKeys shows the first 3); was REDESIGN2's 11-16 draft. 2026-11-19 (TESTFIX7): Map 19 'arrowFlaming' (the design file's key) -> 'fireArrow', the game's key for Arrow (Flaming); no skill has the old key, so Map 19's focus matched no card 2026-11-20 (FOCUS2, owner 00:39: "Put bleed in 6 and leech in 5"): Map 5 Bleed -> Leech (sap), Map 6 Leech -> Bleed; nothing dropped 2026-11-22 (MAPADD1-1 a, owner 21:28): Map 5 + Poison Barbs, Map 8 + Evasive (the 11-22 sheet); the 11-20 Leech / Bleed swap stays
+const MAP_FOCUS_SKILLS = {0: ['swarm', 'flying', 'nursing'], 1: ['thorns', 'guardian', 'inspiring', 'foraging', 'diurnal'], 2: ['armor', 'pierce', 'shield', 'tide', 'crabClaws'], 3: ['pounce', 'swift', 'arrow'], 4: ['bloomCopy', 'meiosis', 'delivery', 'fork'], 5: ['forestry', 'sap', 'poison', 'poisonBarbs'], 6: ['bleed', 'parasite', 'strangle', 'intimidate'], 7: ['carrion', 'corrode', 'sleepPowder', 'poisonPowder', 'nocturnal'], 8: ['darksight', 'web', 'illuminate', 'keenSense', 'evasive'], 9: ['trident', 'electricity', 'regen'], 10: ['weaken', 'wave'], 11: ['paralysisPowder', 'daunt'], 12: ['siege', 'recoil', 'stealth', 'bulldoze'], 13: ['harbinger', 'twinStrike', 'repair'], 14: ['mighty', 'pack', 'snipe', 'exploit'], 15: ['overwhelm', 'ambush', 'sweep'], 16: ['sturdy', 'reach'], 17: ['momentum', 'offspring'], 18: ['trap', 'expose'], 19: ['fireArrow'], 20: ['fireBolt']}; // 2026-11-18 (UIFIN): REDESIGN3 v2 focus skills (docs/design/redesign3-2026-11-17.json focus[].skills keys, Maps 0-20; mapFocusKeys shows the first 3); was REDESIGN2's 11-16 draft. 2026-11-19 (TESTFIX7): Map 19 'arrowFlaming' (the design file's key) -> 'fireArrow', the game's key for Arrow (Flaming); no skill has the old key, so Map 19's focus matched no card 2026-11-20 (FOCUS2, owner 00:39: "Put bleed in 6 and leech in 5"): Map 5 Bleed -> Leech (sap), Map 6 Leech -> Bleed; nothing dropped 2026-11-22 (MAPADD1-1 a, owner 21:28): Map 5 + Poison Barbs, Map 8 + Evasive (the 11-22 sheet); the 11-20 Leech / Bleed swap stays 2026-11-24 (DAUNT2): Map 6 + Intimidate (owner 23:21: "for bittern, use intimidate 2"; Booming Bittern's first map); Map 11 + Daunt (owner 11-25 00:13: "daunt can stay, at eeyrie heights")
 let mapFocusCfg = null;
 function mapFocusKeys(n){ const c = mapFocusCfg && mapFocusCfg[n]; return (Array.isArray(c) ? c : MAP_FOCUS_SKILLS[n] || []).slice(0, 3); }
 // the focus skills of a map id (a main map only; a side map has none), as a Set
@@ -10808,7 +10811,7 @@ function bookFirstMapHTML(e){
 }
 function bookEntryHTML(e){
   const show = e.ch === 'sk' && !e.hint ? `<button type="button" class="bk-show" data-bkskill="${escapeAttr(e.key)}">🔎 ${escapeHtml(TX('ui.book-show-cards'))}</button>` : ''; // 2026-10-18 (package C, owner 23:21)
-  return `<article class="bk-entry${e.hint ? ' is-hint' : ''}"><div class="bk-ico" aria-hidden="true">${e.icon || '?'}</div><div class="bk-txt"><h4>${escapeHtml(e.name)}${legendaryTagHTML(e) /* 2026-10-18 (owner 23:05) */}${bookFirstMapHTML(e)}</h4><p>${e.html}</p>${e.ans ? `<p class="bk-ans">${_t('Answered by')}: ${e.ans}</p>` : ''}${show}</div></article>`;
+  return `<article class="bk-entry${e.hint ? ' is-hint' : ''}"><div class="bk-ico" data-sk="${escapeAttr(e.key || '')}" aria-hidden="true">${e.icon || '?'}</div><div class="bk-txt"><h4>${escapeHtml(e.name)}${legendaryTagHTML(e) /* 2026-10-18 (owner 23:05) */}${bookFirstMapHTML(e)}</h4><p>${e.html}</p>${e.ans ? `<p class="bk-ans">${_t('Answered by')}: ${e.ans}</p>` : ''}${show}</div></article>`;
 }
 const BOOK_CHAPTERS = [{ch:'sk', icon:'📘', title:()=> TX('ui.book-skills')}, {ch:'st', icon:'🌀', title:()=> TX('ui.codex-statuses'), sub:()=> TX('ui.codex-statuses-sub')}, {ch:'fx', icon:'🗺️', title:()=> TX('ui.book-field-effects')}];
 function renderSkillBook(body){
@@ -40377,7 +40380,7 @@ function showFacing(uid, opts){
     const defsNow = getCardDefs();
     f.foes.forEach(u=>{ const t = boardCardEl(u); if(!t) return; t.classList.add('is-faced'); const tr = t.getBoundingClientRect();
       const fc = [1,2].map(p=> allCardsOnBoard(m.players[p]).find(c=> String(c.uid)===String(u))).find(Boolean);
-      const sc = fc && defsNow[fc.defId] && defsNow[fc.defId].effects && defsNow[fc.defId].effects.scare;
+      const fe = fc && defsNow[fc.defId] && defsNow[fc.defId].effects, sc = fe && (fe.scare || fe.intimidate); // DAUNT2 (2026-11-24): Intimidate trembles the line too
       html += sc ? wavy(cx(tr), cy(tr)) : line(cx(tr), cy(tr)); });
     // Sweep / Fork (2026-10-12, user: "The attack lines preview should show 3-lines. the two other lines are sub-lines and are
     // a bit thinner"): with one unit in front, two thinner lines go to the slots either side of it (empty or not).
@@ -56505,7 +56508,7 @@ function renderVfxForEvent(ev){
     // own projectile travelling to the target (below) as the visual cue for "this card just
     // acted" — that's enough; they no longer also lunge.
     // Scare (2026-10-10, user: "the attacking line is wobbly - to represent the fear"): an attack aimed at a Scare unit trembles.
-    const scaredOf = (()=>{ try{ const td = ev.targetDefId && getCardDefs()[ev.targetDefId]; return !!(td && td.effects && td.effects.scare) && ev.type!=='hitHQ'; }catch(e){ return false; } })();
+    const scaredOf = (()=>{ try{ const td = ev.targetDefId && getCardDefs()[ev.targetDefId]; return !!(td && td.effects && (td.effects.scare || td.effects.intimidate /* DAUNT2 */)) && ev.type!=='hitHQ'; }catch(e){ return false; } })();
     if(ev._cleave === 'L') cleaveSwingStart(ev, isMine); // one swing for the whole Cleave (2026-10-15)
     // Pounce (2026-10-15, user: "After playing, the card just lands ON the enemy it would hit, then it jumps back."): the pounce
     // hit is a leap onto its target (SkillFX.pounceOnto), landing as the damage lands, then a hop home.

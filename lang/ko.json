@@ -4763,8 +4763,19 @@
  "Reward at {code}": "{code} 보상",
  "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "오늘 첫 완전 클리어는 보상 전액, 이후는 20%. 2인 플레이: +25%.",
  "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "오늘의 전액 보상은 받았습니다: 내일까지 보상은 20%. 2인 플레이: +25%.",
- "Its hits set Corrode to {n} if lower; it fades 1 a round.": "명중하면 부식이 {n}보다 낮을 때 {n}으로 올라요. 매 라운드 1씩 줄어요.",
  "Gold: levels met on this map. Dark: below 1 or above 10.": "금색: 이 맵의 레벨. 어두움: 1 미만 또는 10 초과.",
  "Red / blue = to add": "빨강 / 파랑 = 추가 예정",
- "Black / red = to remove": "검정 / 빨강 = 제거 예정"
+ "Black / red = to remove": "검정 / 빨강 = 제거 예정",
+ "Intimidate": "위협",
+ "The enemy facing it attacks for {n} less.": "맞은편 적은 공격력이 {n} 낮은 채로 공격합니다.",
+ "Works while it is on the board, Ready or not. Attacks only, not skills. Intimidate and Majesty on one enemy don't add up: the biggest counts.": "준비 여부와 상관없이 보드에 있는 동안 작동해요. 공격에만 적용되고 스킬에는 적용되지 않아요. 한 적에게 위협과 위엄은 합산되지 않고 가장 큰 값만 적용돼요.",
+ "Darkness, Blind and Evasive (camouflage) don't make it miss grounded units; it can't be Blinded.": "어둠, 실명, 회피(위장)로 지상 유닛을 빗맞히지 않아요. 실명에 걸리지 않아요.",
+ "Keen Sense: Darkness, Blind and Evasive don't make it miss grounded units": "예리한 감각: 어둠, 실명, 회피로 지상 유닛을 빗맞히지 않아요",
+ "It also finds grounded units through Thick Fog, Shadow, ash and sandstorms. A flying unit still dodges it.": "짙은 안개, 그림자, 재, 모래폭풍 속에서도 지상 유닛을 찾아내요. 비행 유닛은 여전히 피할 수 있어요.",
+ "Its hits leave Corrode {n}: {n} less Attack, fading 1 a round after the last hit.": "명중하면 부식 {n}을 남겨요: 공격력 -{n}, 마지막 명중 후 매 라운드 1씩 줄어요.",
+ "A Corroded unit has that much less Attack, never below 0. A new hit sets it to the larger value; it never adds up.": "부식된 유닛은 그만큼 공격력이 낮아져요(0 아래로는 내려가지 않아요). 새 명중은 더 큰 값으로 맞출 뿐 합산되지 않아요.",
+ "has that much less Attack; fades 1 a round after its last hit.": "그만큼 공격력이 낮아져요. 마지막 명중 후 매 라운드 1씩 줄어요.",
+ "has {n} less Attack; fades 1 a round after its last hit.": "공격력이 {n} 낮아져요. 마지막 명중 후 매 라운드 1씩 줄어요.",
+ "Poison kill": "독 처치",
+ "Poison kill: an enemy unit died of poison while this unit was on the board": "독 처치: 이 유닛이 보드에 있는 동안 적 유닛이 독으로 쓰러짐"
 }

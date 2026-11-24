@@ -4761,8 +4761,19 @@
  "Reward at {code}": "Récompense en {code}",
  "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "Votre première victoire complète du jour paie en entier ; les suivantes paient 20 %. À deux joueurs : +25 %.",
  "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "La victoire du jour à plein tarif est faite : les parties paient 20 % jusqu'à demain. À deux joueurs : +25 %.",
- "Its hits set Corrode to {n} if lower; it fades 1 a round.": "Ses coups portent la Corrosion à {n} si elle est plus basse ; elle baisse de 1 par round.",
  "Gold: levels met on this map. Dark: below 1 or above 10.": "Or : niveaux de cette carte. Sombre : sous 1 ou au-dessus de 10.",
  "Red / blue = to add": "Rouge / bleu = à ajouter",
- "Black / red = to remove": "Noir / rouge = à retirer"
+ "Black / red = to remove": "Noir / rouge = à retirer",
+ "Intimidate": "Menace",
+ "The enemy facing it attacks for {n} less.": "L’ennemi en face attaque avec {n} d’Attaque en moins.",
+ "Works while it is on the board, Ready or not. Attacks only, not skills. Intimidate and Majesty on one enemy don't add up: the biggest counts.": "Agit tant qu’elle est sur le plateau, Prête ou non. Les attaques seulement, pas les compétences. Menace et Majesté sur un même ennemi ne s’additionnent pas : la plus forte compte.",
+ "Darkness, Blind and Evasive (camouflage) don't make it miss grounded units; it can't be Blinded.": "Les Ténèbres, l’Aveuglement et Insaisissable (camouflage) ne lui font pas rater les unités au sol ; elle ne peut pas être aveuglée.",
+ "Keen Sense: Darkness, Blind and Evasive don't make it miss grounded units": "Sens aiguisé : les Ténèbres, l’Aveuglement et Insaisissable ne lui font pas rater les unités au sol",
+ "It also finds grounded units through Thick Fog, Shadow, ash and sandstorms. A flying unit still dodges it.": "Elle trouve aussi les unités au sol à travers le Brouillard épais, l’Ombre, la cendre et les tempêtes de sable. Une unité volante l’esquive toujours.",
+ "Its hits leave Corrode {n}: {n} less Attack, fading 1 a round after the last hit.": "Ses coups laissent Corrosion {n} : {n} d’Attaque en moins, qui baisse de 1 par round après le dernier coup.",
+ "A Corroded unit has that much less Attack, never below 0. A new hit sets it to the larger value; it never adds up.": "Une unité corrodée a autant d’Attaque en moins, jamais sous 0. Un nouveau coup la porte à la valeur la plus haute ; elle ne s’additionne jamais.",
+ "has that much less Attack; fades 1 a round after its last hit.": "a autant d’Attaque en moins ; baisse de 1 par round après son dernier coup.",
+ "has {n} less Attack; fades 1 a round after its last hit.": "a {n} d’Attaque en moins ; baisse de 1 par round après son dernier coup.",
+ "Poison kill": "Mort par poison",
+ "Poison kill: an enemy unit died of poison while this unit was on the board": "Mort par poison : une unité ennemie est morte du poison pendant que cette unité était sur le plateau"
 }

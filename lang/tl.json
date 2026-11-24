@@ -4761,8 +4761,19 @@
  "Reward at {code}": "Gantimpala sa {code}",
  "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "Buong bayad ang una mong buong panalo ngayon; 20% na lang ang mga susunod. Dalawang manlalaro: +25%.",
  "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "Nakuha mo na ang buong bayad ngayon: 20% ang bayad ng mga takbo hanggang bukas. Dalawang manlalaro: +25%.",
- "Its hits set Corrode to {n} if lower; it fades 1 a round.": "Itinatakda ng mga tama nito ang Kalawang sa {n} kung mas mababa; bumababa ito ng 1 bawat round.",
  "Gold: levels met on this map. Dark: below 1 or above 10.": "Ginto: mga antas sa mapang ito. Madilim: mas mababa sa 1 o higit sa 10.",
  "Red / blue = to add": "Pula / asul = idagdag",
- "Black / red = to remove": "Itim / pula = tanggalin"
+ "Black / red = to remove": "Itim / pula = tanggalin",
+ "Intimidate": "Pagbabanta",
+ "The enemy facing it attacks for {n} less.": "Ang kalabang kaharap nito ay umaatake nang {n} na mas mababang Atake.",
+ "Works while it is on the board, Ready or not. Attacks only, not skills. Intimidate and Majesty on one enemy don't add up: the biggest counts.": "Gumagana habang nasa board ito, Handa man o hindi. Atake lang, hindi kakayahan. Hindi nagsasama ang Pagbabanta at Kamahalan sa iisang kalaban: ang pinakamalaki ang bilang.",
+ "Darkness, Blind and Evasive (camouflage) don't make it miss grounded units; it can't be Blinded.": "Hindi ito pinasasablay ng Dilim, Bulag at Mailap (pagbabalatkayo) sa mga yunit sa lupa; hindi ito mabubulag.",
+ "Keen Sense: Darkness, Blind and Evasive don't make it miss grounded units": "Matalas na Pandama: hindi ito pinasasablay ng Dilim, Bulag at Mailap sa mga yunit sa lupa",
+ "It also finds grounded units through Thick Fog, Shadow, ash and sandstorms. A flying unit still dodges it.": "Nahahanap din nito ang mga yunit sa lupa sa Makapal na Ulap, Anino, abo at bagyo ng buhangin. Nakakaiwas pa rin ang lumilipad na yunit.",
+ "Its hits leave Corrode {n}: {n} less Attack, fading 1 a round after the last hit.": "Nag-iiwan ang mga tama nito ng Kalawang {n}: {n} na mas mababang Atake, bumababa ng 1 bawat round pagkatapos ng huling tama.",
+ "A Corroded unit has that much less Attack, never below 0. A new hit sets it to the larger value; it never adds up.": "Ang yunit na may Kalawang ay may ganoong kababang Atake, hindi bababa sa 0. Itinatakda ito ng bagong tama sa mas malaking halaga; hindi ito nagsasama.",
+ "has that much less Attack; fades 1 a round after its last hit.": "may ganoong kababang Atake; bumababa ng 1 bawat round pagkatapos ng huling tama.",
+ "has {n} less Attack; fades 1 a round after its last hit.": "may {n} na mas mababang Atake; bumababa ng 1 bawat round pagkatapos ng huling tama.",
+ "Poison kill": "Patay sa lason",
+ "Poison kill: an enemy unit died of poison while this unit was on the board": "Patay sa lason: may kalabang yunit na namatay sa lason habang nasa board ang yunit na ito"
 }

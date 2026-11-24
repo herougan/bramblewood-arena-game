@@ -4762,8 +4762,19 @@
  "Reward at {code}": "Ricompensa a {code}",
  "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "La tua prima vittoria completa di oggi paga per intero; le successive pagano il 20%. In due giocatori: +25%.",
  "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "La paga piena di oggi è già riscossa: le partite pagano il 20% fino a domani. In due giocatori: +25%.",
- "Its hits set Corrode to {n} if lower; it fades 1 a round.": "I suoi colpi portano la Corrosione a {n} se è più bassa; cala di 1 a round.",
  "Gold: levels met on this map. Dark: below 1 or above 10.": "Oro: livelli di questa mappa. Scuro: sotto 1 o sopra 10.",
  "Red / blue = to add": "Rosso / blu = da aggiungere",
- "Black / red = to remove": "Nero / rosso = da togliere"
+ "Black / red = to remove": "Nero / rosso = da togliere",
+ "Intimidate": "Minaccia",
+ "The enemy facing it attacks for {n} less.": "Il nemico di fronte attacca con {n} di Attacco in meno.",
+ "Works while it is on the board, Ready or not. Attacks only, not skills. Intimidate and Majesty on one enemy don't add up: the biggest counts.": "Funziona finché è sul campo, Pronta o no. Solo attacchi, non abilità. Minaccia e Maestà sullo stesso nemico non si sommano: conta la più alta.",
+ "Darkness, Blind and Evasive (camouflage) don't make it miss grounded units; it can't be Blinded.": "Oscurità, Accecamento ed Elusiva (mimetismo) non le fanno mancare le unità a terra; non può essere Accecata.",
+ "Keen Sense: Darkness, Blind and Evasive don't make it miss grounded units": "Fiuto acuto: Oscurità, Accecamento ed Elusiva non le fanno mancare le unità a terra",
+ "It also finds grounded units through Thick Fog, Shadow, ash and sandstorms. A flying unit still dodges it.": "Trova anche le unità a terra nella Nebbia fitta, nell’Ombra, nella cenere e nelle tempeste di sabbia. Un’unità volante la schiva ancora.",
+ "Its hits leave Corrode {n}: {n} less Attack, fading 1 a round after the last hit.": "I suoi colpi lasciano Corrosione {n}: {n} di Attacco in meno, che cala di 1 a round dopo l’ultimo colpo.",
+ "A Corroded unit has that much less Attack, never below 0. A new hit sets it to the larger value; it never adds up.": "Un’unità corrosa ha altrettanto Attacco in meno, mai sotto 0. Un nuovo colpo la porta al valore più alto; non si somma mai.",
+ "has that much less Attack; fades 1 a round after its last hit.": "ha altrettanto Attacco in meno; cala di 1 a round dopo l’ultimo colpo.",
+ "has {n} less Attack; fades 1 a round after its last hit.": "ha {n} di Attacco in meno; cala di 1 a round dopo l’ultimo colpo.",
+ "Poison kill": "Morte per veleno",
+ "Poison kill: an enemy unit died of poison while this unit was on the board": "Morte per veleno: un’unità nemica è morta di veleno mentre questa unità era sul campo"
 }

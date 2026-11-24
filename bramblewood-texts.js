@@ -3937,12 +3937,23 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rw3-elsewhere": "Reward at {code}",
   "ui.mp1-gd-pay-full": "Your first clear today pays in full; later runs pay 20%. Two players: +25%.",
   "ui.mp1-gd-pay-used": "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.",
-  "ui.cards1-corrode": "Its hits set Corrode to {n} if lower; it fades 1 a round.",
+  "ui.cards1-corrode": "Its hits leave Corrode {n}: {n} less Attack, fading 1 a round after the last hit.",
   "ui.mapui2-pill-codex": "Codex",
   "ui.mapui2-lv": "Level",
   "ui.mapui2-lv-tip": "Gold: levels met on this map. Dark: below 1 or above 10.",
   "ui.mapui2-leg-add": "Red / blue = to add",
-  "ui.mapui2-leg-rem": "Black / red = to remove"
+  "ui.mapui2-leg-rem": "Black / red = to remove",
+  "ui.skn-intimidate": "Intimidate",
+  "ui.sk-intimidate": "The enemy facing it attacks for {n} less.",
+  "ui.sk-intimidate-codex": "Works while it is on the board, Ready or not. Attacks only, not skills. Intimidate and Majesty on one enemy don't add up: the biggest counts.",
+  "ui.daunt2-keen-sense": "Darkness, Blind and Evasive (camouflage) don't make it miss grounded units; it can't be Blinded.",
+  "ui.daunt2-keen-pip": "Keen Sense: Darkness, Blind and Evasive don't make it miss grounded units",
+  "ui.daunt2-keen-codex": "It also finds grounded units through Thick Fog, Shadow, ash and sandstorms. A flying unit still dodges it.",
+  "ui.daunt2-corrode-codex": "A Corroded unit has that much less Attack, never below 0. A new hit sets it to the larger value; it never adds up.",
+  "ui.daunt2-corrode-st": "has that much less Attack; fades 1 a round after its last hit.",
+  "ui.daunt2-corrode-ls": "has {n} less Attack; fades 1 a round after its last hit.",
+  "ui.daunt2-bl-cond-poisonkill": "Poison kill",
+  "ui.eng19-bc-poisonkill": "Poison kill: an enemy unit died of poison while this unit was on the board"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

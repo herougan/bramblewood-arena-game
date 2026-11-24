@@ -4762,8 +4762,19 @@
  "Reward at {code}": "Hadiah di {code}",
  "Your first clear today pays in full; later runs pay 20%. Two players: +25%.": "Kemenangan penuh pertamamu hari ini dibayar penuh; berikutnya dibayar 20%. Dua pemain: +25%.",
  "Today's full-pay clear is done: runs pay 20% until tomorrow. Two players: +25%.": "Bayaran penuh hari ini sudah diambil: permainan dibayar 20% sampai besok. Dua pemain: +25%.",
- "Its hits set Corrode to {n} if lower; it fades 1 a round.": "Serangannya menetapkan Korosi menjadi {n} jika lebih rendah; turun 1 per ronde.",
  "Gold: levels met on this map. Dark: below 1 or above 10.": "Emas: level di peta ini. Gelap: di bawah 1 atau di atas 10.",
  "Red / blue = to add": "Merah / biru = tambahkan",
- "Black / red = to remove": "Hitam / merah = hapus"
+ "Black / red = to remove": "Hitam / merah = hapus",
+ "Intimidate": "Intimidasi",
+ "The enemy facing it attacks for {n} less.": "Musuh di depannya menyerang dengan Serangan {n} lebih rendah.",
+ "Works while it is on the board, Ready or not. Attacks only, not skills. Intimidate and Majesty on one enemy don't add up: the biggest counts.": "Berlaku selama ada di papan, Siap atau tidak. Hanya serangan, bukan kemampuan. Intimidasi dan Keagungan pada satu musuh tidak dijumlahkan: yang terbesar yang dihitung.",
+ "Darkness, Blind and Evasive (camouflage) don't make it miss grounded units; it can't be Blinded.": "Kegelapan, Buta, dan Mengelak (kamuflase) tidak membuatnya meleset dari unit darat; ia tidak bisa dibutakan.",
+ "Keen Sense: Darkness, Blind and Evasive don't make it miss grounded units": "Indra Tajam: Kegelapan, Buta, dan Mengelak tidak membuatnya meleset dari unit darat",
+ "It also finds grounded units through Thick Fog, Shadow, ash and sandstorms. A flying unit still dodges it.": "Ia juga menemukan unit darat menembus Kabut Tebal, Bayangan, abu, dan badai pasir. Unit terbang tetap bisa mengelak.",
+ "Its hits leave Corrode {n}: {n} less Attack, fading 1 a round after the last hit.": "Serangannya meninggalkan Korosi {n}: Serangan {n} lebih rendah, turun 1 per ronde setelah serangan terakhir.",
+ "A Corroded unit has that much less Attack, never below 0. A new hit sets it to the larger value; it never adds up.": "Unit yang terkorosi punya Serangan lebih rendah sebanyak itu, tidak pernah di bawah 0. Serangan baru menetapkannya ke nilai yang lebih besar; tidak pernah dijumlahkan.",
+ "has that much less Attack; fades 1 a round after its last hit.": "Serangannya lebih rendah sebanyak itu; turun 1 per ronde setelah serangan terakhir.",
+ "has {n} less Attack; fades 1 a round after its last hit.": "Serangannya {n} lebih rendah; turun 1 per ronde setelah serangan terakhir.",
+ "Poison kill": "Mati karena racun",
+ "Poison kill: an enemy unit died of poison while this unit was on the board": "Mati karena racun: unit musuh mati karena racun saat unit ini ada di papan"
 }
