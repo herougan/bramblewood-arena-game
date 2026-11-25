@@ -4,6 +4,30 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**TESTFIX11-1. Cinder Gecko over its Level 10 cap** · Decide · Cards · asked 2026-11-26
+- Map changes moved Cinder Gecko from Map 22 to Map 8's list, so its budget shrank; its Level 10 line is now 2% over.
+  - a) Re-fit its Level 10 to Map 8
+  - b) Accept 2% over
+- **Default:** a
+
+**TESTFIX11-2. Liege price** · Decide · Skills · asked 2026-11-26
+- Today's skill-price change moved Assault only; Liege is still priced at 0.3x the old Assault.
+  - a) Move Liege with Assault
+  - b) Keep
+- **Default:** a
+
+**TESTFIX11-3. Hedgerow Shrew = Dormouse** · Decide · Cards · asked 2026-11-26
+- The Maps 0-6 card vet made Hedgerow Shrew identical to Dormouse (stats and skills).
+  - a) Redesign the Shrew
+  - b) Keep both
+- **Default:** a
+
+**TESTFIX11-4. Alley Cat's pack** · Decide · Packs · asked 2026-11-26
+- Alley Cat is in Pack 4; your earlier list (#10) said Pack 1.
+  - a) Pack 1
+  - b) Pack 4
+- **Default:** a
+
 **SKILLS3-9. Status tokens: one off each upkeep** · Decide · Skills · asked 2026-11-26
 - Vulnerable, Feeble, Mighty (deals x2) and Sturdy (takes x0.5) are tokens. While any remain, every hit counts; one comes off each upkeep; hits spend none (today Vulnerable is spent per hit). New tokens add, up to 3.
   - a) as written
@@ -332,13 +356,6 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 - Offline, a guest can't open Shop packs today ("Sign in to open packs"), because packs are server-checked.
   - a) Require Steam sign-in for packs (no change offline).
   - b) Allow offline pack opening for guests (local only, no cloud sync).
-- **Default:** a
-
-**ENG16-1. Quicksand: N, timing, exemptions and homes** · Decide · Field · asked 2026-11-02
-- Owner 11-02 (JJ19): "new field effect Quicksand: a creature ending its turn under N Health dies" (owner asleep: "Decisions - you decide"). (Owner 11-24 23:21 keeps Daunt and moves Scare cards to Daunt, so this is open again.)
-  - a) N = 2 (a unit left on 1 Health sinks), checked at the end of every round from round 2 (after the fighting and ticks, before the round's death sweep), Flyers and Structures spared, paused by Field Breaker; on The Glass Dunes (every fight) and the Pale Desert's boss, the Quicksand Queen (18-A-9)
-  - b) N = 3
-  - c) checked at the start of each round, like the other field ticks
 - **Default:** a
 
 ## Decided
@@ -3791,6 +3808,14 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
   - a) Map 40+: own cards to their caps, then one carried card at a time (earlier maps' list cards in the cap, lower rarity first, nearest map first). Cut cards: each copy to the nearest card of the fight's own list (Lumber, Wait, 2A + H, rarity), K14 kept, sizes kept.
 - **Default:** a
 - **Outcome:** a) Built: tools/bal9/lib_bal9.js fillDeckToSize, used by the BPRO build (tools/opt/bpro2) from Map 40. 100 cut cards out of 160 road decks and 58 PRO decks (under DECK1's 6/4 rule; 0-B-PRO-3 dropped to replaced); the BPRO decks were rebuilt from the lists. The road was not re-measured: run the road check (skirmish_pass measure) with the batch.
+
+**ENG16-1. Quicksand: N, timing, exemptions and homes** · Decide · Field · asked 2026-11-02 · decided 2026-11-02
+- Owner 11-02 (JJ19): "new field effect Quicksand: a creature ending its turn under N Health dies" (owner asleep: "Decisions - you decide").
+  - a) N = 2 (a unit left on 1 Health sinks), checked at the end of every round from round 2 (after the fighting and ticks, before the round's death sweep), Flyers and Structures spared, paused by Field Breaker; on The Glass Dunes (every fight) and the Pale Desert's boss, the Quicksand Queen (18-A-9)
+  - b) N = 3
+  - c) checked at the start of each round, like the other field ticks
+- **Default:** a
+- **Outcome:** a) Coordinator call (ENG16): N = 2, end of round from round 2 ("from round 2" like the other field effects), the same exemptions as Tangled Roots / Grasping Briars (Flyers above it; Structures). Fights can set a number (quicksand: 3). Homes: The Glass Dunes (mapField) and 18-A-9 the Quicksand Queen. Art borrows the Sandstorm scene until it has its own.
 
 **ENG16-2. A field effect or combination of its own on every map (JJ18)** · Decide · Field · asked 2026-11-02 · decided 2026-11-02
 - Owner 11-02 (JJ18): "which maps lack a field effect or combo of their own; give each one (e.g. Aerie Vault: thunderstorm)". 12 maps shared their map-level set with another map. docs/balance/field-uniqueness-2026-11-02.md.
