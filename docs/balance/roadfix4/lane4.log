@@ -1,0 +1,5 @@
+start {"sworn-shieldbearer":4,"warhorse-charger":2,"grass-viper":4,"village-miller":1,"pronghorn-racer":3,"elderhorn-monarch":2} 82
+round 1: cur 85/82; 89 legal, 89 read + 14 predicted (of 26); top: -2 elderhorn-monarch +1 tasmanian-devil +1 warhorse-charger 56.7/64.7 | -2 elderhorn-monarch +1 mosquito-cloud +1 warhorse-charger 61.7/65.3 | -2 elderhorn-monarch +1 plains-zebra +1 warhorse-charger 66.7/66.7 | -2 elderhorn-monarch +2 warhorse-charger 65/71.3 | -2 warhorse-charger -2 pronghorn-racer +1 tasmanian-devil +1 pronghorn-racer +2 boreal-elk 65/81.7
+round 2: cur 56.7/64.7; 67 legal, 67 read + 14 predicted (of 37); top: -1 pronghorn-racer +1 mosquito-cloud 60/65.3 | -1 pronghorn-racer +1 cataphract-destrier 61.7/65.7 | -1 tasmanian-devil +1 pronghorn-racer 58.3/65.7 | -1 village-miller +1 plains-zebra 60/66.3 | -1 tasmanian-devil -1 village-miller +1 pronghorn-racer +1 plains-zebra 60/67.3
+no nearer move
+RESULT 15-6 {"sworn-shieldbearer":4,"warhorse-charger":3,"grass-viper":4,"village-miller":1,"pronghorn-racer":3,"tasmanian-devil":1} 64.7 {} moves: -2 elderhorn-monarch +1 tasmanian-devil +1 warhorse-charger problems: []
