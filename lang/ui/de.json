@@ -118,7 +118,6 @@
  "A baobab older than any map. The herds shelter under it at noon.": "Ein Affenbrotbaum, älter als jede Karte. Mittags suchen die Herden in seinem Schatten Schutz.",
  "A beaver-built lodge of racks and pegs. Every blade in it is oiled and labelled, and every archer who walks past leaves with straighter arrows.": "Eine Biberhütte voller Gestelle und Haken. Jede Klinge darin ist geölt und beschriftet, und jeder Bogenschütze, der vorbeikommt, geht mit geraderen Pfeilen.",
  "A Beer every Monday, and one for each of the first two weekly quest tiers you finish.": "Ein Bier jeden Montag und eins für jede der ersten zwei Wochenauftragsstufen, die du abschließt.",
- "A beetle made of shadow, with one cold light in its tail. Where it hovers over the willows, the fallen don't stay in the ground.": "Ein Käfer aus Schatten mit einem kalten Licht im Hinterleib. Wo er über den Weiden schwebt, bleiben die Gefallenen nicht in der Erde.",
  "A bill like an orange chisel, made for opening what wants to stay shut.": "Ein Schnabel wie ein oranger Meißel, gemacht, um zu öffnen, was zu bleiben will.",
  "A bitten gold coin": "Eine angebissene Goldmünze",
  "A black cairn": "Ein schwarzer Steinmann",
@@ -313,7 +312,6 @@
  "A very short fuse dressed up as forest litter.": "Eine sehr kurze Lunte, als Waldstreu verkleidet.",
  "a volley arrow 🏹": "einen Salvenpfeil 🏹",
  "A walking tower with a howdah on top and two archers inside who never agree on a target.": "Ein wandelnder Turm mit einer Sänfte obendrauf und zwei Bogenschützen darin, die sich nie auf ein Ziel einigen.",
- "A walking watchtower of oak and moss. Takes its time. The enemy usually doesn’t.": "Ein wandelnder Wachturm aus Eiche und Moos. Lässt sich Zeit. Der Gegner meistens nicht.",
  "A wall of horns that simply refuses to move.": "Eine Wand aus Hörnern, die sich schlicht nicht bewegen will.",
  "A wandering merchant": "Ein wandernder Händler",
  "A wandering merchant is out on the map today.": "Heute ist ein wandernder Händler auf der Karte unterwegs.",
@@ -2909,7 +2907,6 @@
  "Playing as guest — sign in to sync": "Als Gast unterwegs — melde dich an zum Abgleichen",
  "Playing as guest — sign in to sync and fight": "Als Gast unterwegs — melde dich an zum Abgleichen und Kämpfen",
  "Plop! Gone under the bank before the heron has even turned its head.": "Plopp! Unter der Uferkante verschwunden, bevor der Reiher auch nur den Kopf dreht.",
- "Pockets full of moss, mint and something nobody should eat raw.": "Taschen voller Moos, Minze und etwas, das niemand roh essen sollte.",
  "Points south. The whole flock gets stronger just for following.": "Zeigt nach Süden. Der ganze Schwarm wird stärker, nur weil er folgt.",
  "Poison applied": "Verteiltes Gift",
  "Poison Bolt": "Giftbolzen",
@@ -3106,7 +3103,6 @@
  "Root Cellar": "Wurzelkeller",
  "Root Gate": "Wurzeltor",
  "Root Snare": "Wurzelschlinge",
- "Rooted so deep the ground itself seems to be taking the hit.": "So tief verwurzelt, dass der Boden selbst den Treffer einzustecken scheint.",
  "Roots older than the castle it now leans protectively over, and just as slow to give anything up.": "Wurzeln, älter als die Burg, über die es sich jetzt schützend beugt, und genauso langsam darin, etwas herzugeben.",
  "Roster": "Mitglieder",
  "Rotting Roots": "Faulende Wurzeln",
@@ -4918,5 +4914,10 @@
  "〰️ {v1} lifts {v2}, but it's boxed in: it bobs in place.": "〰️ {v1} hebt {v2} an, aber sie ist eingekeilt: Sie schaukelt auf der Stelle.",
  "〰️ {v1} slams {v2} {v3} into the unit beside it!": "〰️ {v1} schleudert {v2} {v3} gegen die Einheit daneben!",
  "＋ Add": "＋ Hinzufügen",
- "＋ Befriend": "＋ Anfreunden"
+ "＋ Befriend": "＋ Anfreunden",
+ "It leaves the barn without a sound. The first the mouse knows of it is the last.": "Sie verlässt die Scheune lautlos. Die Maus merkt es erst im letzten Moment.",
+ "She rolls up first and the hoglets tuck in behind. Nothing gets past the spines or the mother.": "Sie rollt sich zuerst ein, die Jungen kuscheln sich dahinter. An Stacheln und Mutter kommt keiner vorbei.",
+ "It sinks until only the eyes show. Then the death roll, and the swamp is quiet again.": "Es sinkt, bis nur die Augen zu sehen sind. Dann der Todesrollen, und der Sumpf ist wieder still.",
+ "One cold green light over the reeds at night. Everything that follows it ends up in the water.": "Ein kaltes grünes Licht über dem Schilf in der Nacht. Wer ihm folgt, landet im Wasser.",
+ "One honey-coloured clump on a log. Underneath it is a single creature the size of a forest.": "Ein honigfarbener Büschel auf einem Baumstamm. Darunter liegt ein einziges Wesen, so groß wie ein Wald."
 }

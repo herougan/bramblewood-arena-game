@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-25 Package CARDVET1a (owner 11-25 00:22: "Vet through each card ... trigger->actions ... more active skills ... more realistic animals")
+- **Maps 0-6 vetted (116 cards):** 94 kept, 5 tweaked, 12 redesigned, 5 real-animal swaps. Active designs (On Play / On Ready trigger, Pounce, Arrow, Intimidate, Delivery, Parasite) 12 -> 21 of 116. Doc: `docs/design/cardvet1a-2026-11-25.md`.
+- **Real animals first:** Ent -> Barn Owl (flying, On Play strike), Cypress Root Lurker -> Black Caiman, Willow-o'-Wisp -> Marsh Firefly (art needs a redo: `docs/art/real1-requests.md`); Heron Hag -> The Grey Heron, Venomlord Serpent -> Gaboon Viper, Phoenix Mushrooms -> Honey Fungus (renames, art already fits).
+- **Trigger designs:** Strangler Fig (On Play Wait +2 on both neighbours), Hedgehog Matron (On Play Shield x2), Lucky Hopper (On Play draw), Trash Panda (On Play Lumber), Cottonmouth Matriarch (On Play Poison), Hawk Arrowkeeper (Arrow 2), Lodge Engineer (Delivery), Puddle Hopper (Intimidate).
+- **Skills no Maps 0-20 row uses left the cards:** Herbalist, Immunity, Fog, Harden, Rainrunner, Timbered, Bounty, Salvage, Venom Master, Enfeeble, Crepuscular, Cure, Dive. Eight owner-edited cards changed for that reason only (listed in the doc). Texts: 8 names, 5 flavours in 12 packs. Card matrix golden updated. Not run: nothing applied live.
+
 ## 2026-11-25 Package MAPEXEC1 (owner 11-25 00:22: "execute those recommendations")
 - **Map lists follow the Map skill table:** Claude's swaps are applied to `canonical/map-pools.json`: 57 list edits (8 cards in, 17 moves, 32 drops; a dated note each in `_changes`), Maps 1-20. Table (Maps 0-20): New! with 2+ carriers 34 -> 44, with 1 carrier 22 -> 17, shown earlier 4 -> 0, To remove 35 -> 6 (kept on purpose, reasons in the Map cards window), To add 7 -> 6 (Shield, Fork, Leech, Poison Barbs, Pack, Momentum: no placed card fits; Fork stays open, CARDS1-1).
 - **Eyrie Heights' "72 skills" was the endless dungeon's list:** the dungeon (`muc`, 91 cards) counted as the map's other cards. Map 11 now shows 20 (2 New!, 10 from its 16 cards, 8 side-map / special), was 74. "Claude's swaps" rows disappear once the list already holds the change.

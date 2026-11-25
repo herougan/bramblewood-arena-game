@@ -31,7 +31,7 @@ const DES = {
   'hawk-arrowkeeper': {set: {effects: {flying: true, diurnal: true, arrow: 2}}, fit: 0.25},
   // --- Map 5
   'cottonmouth-matriarch': {set: {effects: {poison: 1, triggers: [SPAWN({do: 'poison', amount: 2, who: 'enemy', sub: 'adjacent'})]}}, fit: 0.15},
-  'raft-spider': {set: {effects: {tide: true, poison: 1, pounce: 2}}, fit: 0.43}, // the raft spider pounces on prey that ripples the water
+  // raft-spider: tried Pounce 2 (11-25), reverted: Poison would leave Level 1 and Map 5's Venomous row would drop from 2 carriers to 1
   'bog-leech': {set: {effects: {sap: 1}}, fit: 0.12},
   'cypress-root-lurker': {set: {name: 'Black Caiman', icon: '🐊', animal: 'caiman', species: ['Reptile'], archetypes: ['Swamp', 'Reptile'], flavor: 'It sinks until only the eyes show. Then the death roll, and the swamp is quiet again.'}, owner: true, art: 'Cypress Root Lurker (a plant that is an alligator) becomes a black caiman: a huge black caiman half-submerged in dark swamp water at dusk, cypress knees and hanging moss behind, generically menacing'},
   // --- Map 6 and its side map (mm)

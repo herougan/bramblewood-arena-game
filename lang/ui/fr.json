@@ -118,7 +118,6 @@
  "A baobab older than any map. The herds shelter under it at noon.": "Un baobab plus vieux que toutes les cartes. Les troupeaux s’abritent dessous à midi.",
  "A beaver-built lodge of racks and pegs. Every blade in it is oiled and labelled, and every archer who walks past leaves with straighter arrows.": "Un abri de castor fait de râteliers et de chevilles. Chaque lame y est huilée et étiquetée, et chaque archer qui passe repart avec des flèches plus droites.",
  "A Beer every Monday, and one for each of the first two weekly quest tiers you finish.": "Une Bière chaque lundi, et une pour chacun des deux premiers paliers de quêtes hebdomadaires terminés.",
- "A beetle made of shadow, with one cold light in its tail. Where it hovers over the willows, the fallen don't stay in the ground.": "Un scarabée fait d’ombre, avec une lumière froide au bout de l’abdomen. Là où il plane au-dessus des saules, les morts ne restent pas sous terre.",
  "A bill like an orange chisel, made for opening what wants to stay shut.": "Un bec comme un ciseau orange, fait pour ouvrir ce qui veut rester fermé.",
  "A bitten gold coin": "Une pièce d’or mordue",
  "A black cairn": "Un cairn noir",
@@ -313,7 +312,6 @@
  "A very short fuse dressed up as forest litter.": "Une mèche très courte déguisée en litière forestière.",
  "a volley arrow 🏹": "une flèche de salve 🏹",
  "A walking tower with a howdah on top and two archers inside who never agree on a target.": "Une tour ambulante avec un palanquin au sommet et deux archers dedans qui ne sont jamais d’accord sur la cible.",
- "A walking watchtower of oak and moss. Takes its time. The enemy usually doesn’t.": "Une tour de guet ambulante de chêne et de mousse. Prend son temps. L’ennemi, en général, non.",
  "A wall of horns that simply refuses to move.": "Un mur de cornes qui refuse tout simplement de bouger.",
  "A wandering merchant": "Un marchand ambulant",
  "A wandering merchant is out on the map today.": "Un marchand ambulant parcourt la carte aujourd’hui.",
@@ -2909,7 +2907,6 @@
  "Playing as guest — sign in to sync": "Partie en invité — connectez-vous pour synchroniser",
  "Playing as guest — sign in to sync and fight": "Partie en invité — connectez-vous pour synchroniser et combattre",
  "Plop! Gone under the bank before the heron has even turned its head.": "Plouf ! Disparu sous la berge avant que le héron ait tourné la tête.",
- "Pockets full of moss, mint and something nobody should eat raw.": "Les poches pleines de mousse, de menthe et de quelque chose que personne ne devrait manger cru.",
  "Points south. The whole flock gets stronger just for following.": "Pointe vers le sud. Toute la volée se renforce rien qu’en suivant.",
  "Poison applied": "Poison appliqué",
  "Poison Bolt": "Carreau de poison",
@@ -3106,7 +3103,6 @@
  "Root Cellar": "Cave à racines",
  "Root Gate": "Porte des racines",
  "Root Snare": "Collet de racines",
- "Rooted so deep the ground itself seems to be taking the hit.": "Si profondément enraciné que le sol lui-même semble encaisser le coup.",
  "Roots older than the castle it now leans protectively over, and just as slow to give anything up.": "Des racines plus vieilles que le château sur lequel il se penche protecteur, et tout aussi lentes à céder quoi que ce soit.",
  "Roster": "Membres",
  "Rotting Roots": "Racines pourrissantes",
@@ -4918,5 +4914,10 @@
  "〰️ {v1} lifts {v2}, but it's boxed in: it bobs in place.": "〰️ {v1} soulève {v2}, mais elle est coincée : elle tangue sur place.",
  "〰️ {v1} slams {v2} {v3} into the unit beside it!": "〰️ {v1} projette {v2} {v3} contre l’unité d’à côté !",
  "＋ Add": "＋ Ajouter",
- "＋ Befriend": "＋ Se lier d’amitié"
+ "＋ Befriend": "＋ Se lier d’amitié",
+ "It leaves the barn without a sound. The first the mouse knows of it is the last.": "Elle quitte la grange sans un bruit. La souris ne la remarque qu'au dernier instant.",
+ "She rolls up first and the hoglets tuck in behind. Nothing gets past the spines or the mother.": "Elle se met en boule la première, et les petits se serrent derrière. Rien ne passe les piquants ni la mère.",
+ "It sinks until only the eyes show. Then the death roll, and the swamp is quiet again.": "Elle s'enfonce jusqu'à ne laisser voir que les yeux. Puis la vrille mortelle, et le marais se tait.",
+ "One cold green light over the reeds at night. Everything that follows it ends up in the water.": "Une froide lueur verte au-dessus des roseaux, la nuit. Tout ce qui la suit finit dans l'eau.",
+ "One honey-coloured clump on a log. Underneath it is a single creature the size of a forest.": "Une touffe couleur miel sur une bûche. Dessous, un seul être grand comme une forêt."
 }

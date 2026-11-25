@@ -32,7 +32,7 @@
    "expect":[{"event":"thorns","min":1}]},
 
   {"name":"Bleed ticks on the bled card", "rounds":8, "hqHp":{"A":60,"B":60},
-   "A":[{"id":"bog-leech","hp":200}], "B":[{"id":"ent","hp":200,"wait":0}],
+   "A":[{"id":"swamp-alligator","hp":200,"wait":0}], "B":[{"id":"duck-paddler","hp":200,"wait":0}],
    "expect":[{"event":"bleedTick","min":1}]},
 
   {"name":"A dead card leaves the board", "rounds":6, "hqHp":{"A":60,"B":60},

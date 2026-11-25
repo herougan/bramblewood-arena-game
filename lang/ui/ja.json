@@ -118,7 +118,6 @@
  "A baobab older than any map. The herds shelter under it at noon.": "どんな地図よりも古いバオバブ。昼には群れがその下で日差しを避ける。",
  "A beaver-built lodge of racks and pegs. Every blade in it is oiled and labelled, and every archer who walks past leaves with straighter arrows.": "ビーバーが建てた、棚と木釘だらけの小屋。刃はどれも油を引かれ札がつき、前を通る射手はみな、まっすぐな矢を手に去っていく。",
  "A Beer every Monday, and one for each of the first two weekly quest tiers you finish.": "毎週月曜にビール1杯、さらに週間クエストの最初の2段階をそれぞれ達成するたびに1杯。",
- "A beetle made of shadow, with one cold light in its tail. Where it hovers over the willows, the fallen don't stay in the ground.": "影でできた甲虫で、しっぽに冷たい光をひとつ灯している。それが柳の上を漂うところでは、倒れた者が土の中にとどまらない。",
  "A bill like an orange chisel, made for opening what wants to stay shut.": "オレンジ色のノミのような嘴。閉じていたいものをこじ開けるためのもの。",
  "A bitten gold coin": "噛み跡のある金貨",
  "A black cairn": "黒いケルン",
@@ -313,7 +312,6 @@
  "A very short fuse dressed up as forest litter.": "落ち葉に化けた、とても短い導火線。",
  "a volley arrow 🏹": "斉射の矢 🏹",
  "A walking tower with a howdah on top and two archers inside who never agree on a target.": "てっぺんに象かごを載せた歩く塔。中の弓兵二人は、標的について一度も意見が合わない。",
- "A walking watchtower of oak and moss. Takes its time. The enemy usually doesn’t.": "オークと苔でできた歩く見張り塔。のんびりしている。敵のほうは、たいていそうではない。",
  "A wall of horns that simply refuses to move.": "ただ動こうとしない角の壁。",
  "A wandering merchant": "さすらいの商人",
  "A wandering merchant is out on the map today.": "今日はさすらいの商人がマップに出ています。",
@@ -2909,7 +2907,6 @@
  "Playing as guest — sign in to sync": "ゲストでプレイ中 — サインインで同期",
  "Playing as guest — sign in to sync and fight": "ゲストでプレイ中 — サインインで同期して戦える",
  "Plop! Gone under the bank before the heron has even turned its head.": "ポチャン！サギが振り向く前に、もう土手の下へ消えている。",
- "Pockets full of moss, mint and something nobody should eat raw.": "ポケットには苔とミントと、誰も生で食べるべきでないもの。",
  "Points south. The whole flock gets stronger just for following.": "南を指す。ついていくだけで、群れ全体が強くなる。",
  "Poison applied": "与えた毒",
  "Poison Bolt": "毒ボルト",
@@ -3106,7 +3103,6 @@
  "Root Cellar": "根の地下室",
  "Root Gate": "根の門",
  "Root Snare": "根の罠",
- "Rooted so deep the ground itself seems to be taking the hit.": "根が深すぎて、地面そのものが攻撃を受け止めているように見える。",
  "Roots older than the castle it now leans protectively over, and just as slow to give anything up.": "今は守るように覆いかぶさっているお城より古い根。そして同じくらい、何かを手放すのが遅い。",
  "Roster": "メンバー一覧",
  "Rotting Roots": "腐った根",
@@ -4918,5 +4914,10 @@
  "〰️ {v1} lifts {v2}, but it's boxed in: it bobs in place.": "〰️ {v1}が{v2}を持ち上げたが、挟まれていてその場で揺れるだけ。",
  "〰️ {v1} slams {v2} {v3} into the unit beside it!": "〰️ {v1}が{v2}を{v3}へ隣のユニットに叩きつけた！",
  "＋ Add": "＋ 追加",
- "＋ Befriend": "＋ 友だちになる"
+ "＋ Befriend": "＋ 友だちになる",
+ "It leaves the barn without a sound. The first the mouse knows of it is the last.": "音もなく納屋を出る。ネズミが気づいたときには、もう遅い。",
+ "She rolls up first and the hoglets tuck in behind. Nothing gets past the spines or the mother.": "母がまず丸まり、子どもたちはその後ろに潜り込む。針も母も、誰も越えられない。",
+ "It sinks until only the eyes show. Then the death roll, and the swamp is quiet again.": "目だけを残して沈む。そして死のロール。沼は再び静まり返る。",
+ "One cold green light over the reeds at night. Everything that follows it ends up in the water.": "夜のアシの上に、冷たい緑の光がひとつ。ついていくものは皆、水に落ちる。",
+ "One honey-coloured clump on a log. Underneath it is a single creature the size of a forest.": "丸太の上に蜜色のひと塊。その下には、森ほどの大きさの一つの生き物がいる。"
 }

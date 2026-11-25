@@ -68,7 +68,8 @@ ok(/BramblewoodBudget\.levelBonusAt\(b, L/.test(app) && /d\.levelBonus \? JSON\.
 
 // ---- 5. unlocks
 const moved = cards.filter(c=> /LVL10 \(owner 21:22\)/.test(c.creatorNote || ''));
-ok(moved.length === report.unlockCards.all && moved.length > 50, `5. ${moved.length} cards moved skills off Level 1 (the report's ${report.unlockCards.all})`);
+ok(moved.length >= report.unlockCards.all && moved.length > 50, // 2026-11-25 (CARDVET1a): >= (was ===): the card-vet pass re-ran the generator for redesigned cards (91 now; the report is the 11-18 run's 89)
+   `5. ${moved.length} cards moved skills off Level 1 (the report's ${report.unlockCards.all})`);
 ok(moved.every(c=> Object.keys(c.levelSkills || {}).every(L=> +L >= 2 && +L <= 10)), '5. every moved skill arrives at Level 2-10'); // 2026-11-22 (TESTFIX4): the owner removed Bison Bulldozer's only moved skill (SKIN3 11-20)
 const late3 = moved.filter(c=> Object.keys(c.levelSkills || {}).length >= 2 && Math.max(...Object.keys(c.levelSkills || {}).map(Number)) < 7).length, third = moved.filter(c=> Object.keys(c.levelSkills || {}).length >= 2).length;
 ok(third <= late3 + 3, `5. a third skill at Level 7+ is rare (${third - late3} of ${third})`);
