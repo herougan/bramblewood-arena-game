@@ -4,6 +4,151 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**ROADFIX4-1. Reference decks after the card vet** · Decide · Balance · asked 2026-11-25
+- Ibex Rockcaller (Maps 12-20) and Tide Seahorse (Maps 10-16) sit in the reference decks; their redesign moved those maps 10-30 points. The road is now re-fit to them (179 in band). Changing them moves Maps 10-20 again.
+  - a) Keep the reference decks
+  - b) Re-pick them, then re-fit
+  - c) Retune the two cards
+- **Default:** a
+
+**ROADFIX4-2. Map 17 too hard (Harbor Seal)** · Decide · Balance · asked 2026-11-25
+- 17-3, 17-6, 17-7, 17-8 are too hard since Harbor Seal grew from 1/9 to 2/13. No legal swap on Map 17's list gets nearer.
+  - a) Add a card to Map 17's list for swaps
+  - b) Trim Harbor Seal
+  - c) Relax Map 17's usage rule
+  - d) Leave
+- **Default:** a
+
+**ROADFIX4-3. Out of band with no legal fix** · Decide · Balance · asked 2026-11-25
+- Too easy: 15-3, 15-4, 18-2, 10-A-1, 10-A-3. Too hard: 2-2 (53 vs 80). Their map lists hold no nearer deck. (19-5 and 19-6 wait on TESTFIX9-2.)
+  - a) Allow one off-list card in these decks
+  - b) Leave until the next list review
+- **Default:** b
+
+**SKILLS3-2. What On Pitch means** · Decide · Skills · asked 2026-11-25
+- Today a board unit reacts when you pitch any card; the pitched card's own trigger only gains resources. Proposed: 🃏 "When pitched: X" runs any action, and the board reaction becomes Cache N.
+  - a) both
+  - b) the card's own only
+  - c) the board reaction only
+- **Default:** a
+
+**SKILLS3-3. Rend and Embrittle On Play** · Decide · Skills · asked 2026-11-25
+- ⬆️ Rend 1 replaces Exploit on Map 14 (Stoat Cutthroat, Savanna Cheetah); ⬆️ Embrittle 1 joins Map 18 (Glasswing Moth). On Hit forms stay on Maps 21+ (2x on every hit is too strong early).
+  - a) both
+  - b) Embrittle only
+  - c) neither
+- **Default:** a
+
+**SKILLS3-4. Dogfighter N** · Decide · Skills · asked 2026-11-25
+- Its hits deal N more to Flying and Mach units. Map 3: Great Skua (added), Peregrine Stooper (from Level 2).
+  - a) Map 3
+  - b) Map 16 (Owl Sentinel, Upside-Down Bat)
+  - c) not now
+- **Default:** a
+
+**SKILLS3-5. Carnage back on Maps 0-20** · Decide · Skills · asked 2026-11-25
+- Today's map changes moved Dust Hyena, the last Carnage card, to Map 22. Raven Scout becomes Map 13's Special; Dust Hyena returns to Map 14; Map 22 drops Carnage.
+  - a) both
+  - b) Raven Scout only
+  - c) Dust Hyena only
+- **Default:** a
+
+**SKILLS3-6. Payoffs: one card each** · Decide · Skills · asked 2026-11-25
+- Fletcher, Broodmother, Deadly Poison, Venom Master, Hemorrhage, Detonate, Proliferate, Herbalist, Armourer: one rare card each, on a side map, a map's Special or as a rare booster card (doc table B).
+  - a) as listed
+  - b) one each, placements kept
+  - c) not now
+- **Default:** a
+
+**SKILLS3-7. Elements and Wet** · Decide · Skills · asked 2026-11-25
+- Each element = damage + at most one status (fire Burn, frost Frozen, acid 1 Corrode; poison stacks only). Wet is yes/no: shock +1 to a Wet unit and 1 to every Wet unit chained to it; water puts Burn out; fire ends Wet and lights nothing. Counters stay on Poison, Bleed, Burn, Vulnerable; the rest show a badge.
+  - a) Wet ends on fire or dry weather
+  - b) also each round out of water
+  - c) keep Wet counters
+- **Default:** a
+
+**SKILLS3-8. Pack additions** · Decide · Packs · asked 2026-11-25
+- 8, 10 and 8 rare-and-up real animals from no map list join Packs 1-3 (doc table D; no cold animals in Pack 1).
+  - a) as listed
+  - b) I pick in the Pack Editor
+  - c) not now
+- **Default:** a
+
+**CARDVET1-1. Gaur: far under budget** · Decide · Cards · asked 2026-11-25
+- Gaur (was Granite Ox Golem, Maps 19-21) runs 51-82% of budget: the table prices its On Play stun on all foes low. Fitting it by formula gives a 6/29 rare, a big jump. Left as it was.
+  - a) Raise the stun-all price in the skill table (affects every such card)
+  - b) Hand-fit Gaur's stats
+  - c) Leave it
+- **Default:** a
+
+**CARDVET1-2. Marine Iguana breathes fire?** · Decide · Cards · asked 2026-11-25
+- Magma Salamander became the Marine Iguana and kept its fire bolt, the Map 20 Cinder skill (no real animal breathes fire). Cinder has only two carriers.
+  - a) Keep the fire bolt
+  - b) Find another Cinder carrier; the iguana gets a non-fire skill
+- **Default:** a
+
+**CARDVET1-3. Later-map skills on early lists** · Decide · Cards · asked 2026-11-25
+- Barkplate Beetle, Quill-Thorn Boar (Recoil, Map 12) and Bramblewood Lynx (Twin Strike, Map 13) sit on Map 0's side list; Raccoon Nightcrew (Stealth, Map 12) on Map 2's; Matamata (Ambush, Map 15) on Map 5's; Orca Vanguard (Cleave, Map 15) on Map 10.
+  - a) Move the cards to their skill's map
+  - b) Give them skills from their own map's row
+  - c) Keep
+- **Default:** b
+
+**CARDVET1-4. Plain owner-edited bodies** · Decide · Cards · asked 2026-11-25
+- Platypus (vanilla 4/5, Maps 0/4/5), Dolphin Outrider (Tide only, Maps 2/3/10), Clover Butterfly and Jackrabbit Sprinter have no active skill. You edited Platypus and Dolphin, so the vet left them.
+  - a) Give them active designs (e.g. Platypus: On Play Poison)
+  - b) Keep as they are
+- **Default:** a
+
+**CARDVET1-5. Rot-Swollen Carcass is not an animal** · Decide · Cards · asked 2026-11-25
+- Map 7's Rot-Swollen Carcass is a dead body with maggots, not a real animal.
+  - a) Swap to Blowfly Maggots (rename, new art)
+  - b) Keep
+- **Default:** a
+
+**MAPEXEC1-1. Copy the 57 list changes into your Map cards picks? (needs "apply it")** · Decide · Maps · asked 2026-11-25
+- The game's map lists (the file) now carry 57 changes. Your Map cards window's Yes/No picks live in 22 cloud rows that the game never reads; they still show the old picks. supabase/proposed/mapexec1-2026-11-25.sql updates them to match, in one transaction with a read-back. Nothing runs until you say "apply it".
+  - a) Apply it (your picks match the game's lists)
+  - b) Keep your picks as they are (they then differ from the game)
+- **Default:** a
+
+**MAPEXEC1-2. Bludgeon, Acid, Rainrunner: in no map's row** · Decide · Maps · asked 2026-11-25
+- Ironclaw Fiddler (Bludgeon), Caustic Scorpion (Acid) and Puddle Skimmer (Rainrunner) carry skills that no map's row has, so they show To remove. Kept for now.
+  - a) Add each skill to the row of the map the card sits on
+  - b) Drop the cards from Maps 0-20 lists
+  - c) Redesign their skills (card vet)
+- **Default:** c
+
+**MAPEXEC1-3. Place three awaiting cards to fill To add rows** · Decide · Maps · asked 2026-11-25
+- Bog Shrew (Leech, Map 5), Bog Lungfish (Regenerate, Map 9) and Mire Rat (Pack, Map 14) wait for a place. Putting them on those lists gives the rows their missing carriers.
+  - a) Place all three
+  - b) Leave them; find other carriers
+- **Default:** a
+
+**DAUNT2-1. Keen Sense now ignores Evasive (Camouflage isn't a skill yet)** · Decide · Rules · asked 2026-11-25
+- Camouflage is only a name in the code, on no card. Reading "camouflaged" as Evasive: Keen Sense now ignores a grounded Evasive unit's dodge (flyers still dodge). Cards affected: Owl Sentinel, Quarry Mole, Oilbird, Cave Swiftlet vs Evasive cards.
+  - a) Keep: Keen Sense ignores grounded Evasive
+  - b) Undo, and make Camouflage its own skill that Keen Sense ignores
+- **Default:** a
+
+**W2PLAN-1. Maps 21-40: 40 new skills, or 47?** · Decide · Skills · asked 2026-11-25
+- Maps 0-20 introduce 67 new skills. Your "30% less" would be 47, but the two-new-skills-a-map rule allows only 40 on 20 maps. The proposal uses 40 (40% fewer; 25 of them active, 5 high-wait payoffs).
+  - a) Keep 40 (two a map)
+  - b) A third skill on 7 maps, from a listed reserve, to reach 47
+- **Default:** a
+
+**W2PLAN-2. When elemental and magic skills start** · Decide · Skills · asked 2026-11-25
+- Proposed: elemental creatures' skills from Map 21, magic from Map 50+ (so World 2 stays mostly real and elemental).
+  - a) As tabled
+  - b) Preview Shade and Ghost in the 30s
+- **Default:** a
+
+**W2PLAN-3. If the war maps move to 30+** · Decide · Skills · asked 2026-11-25
+- Your 10-29 / 10-30 notes may move the war maps past 30. Each row in the proposal follows its map's theme.
+  - a) Rows follow their themes wherever the maps land
+  - b) Re-plan now on the 10-30 list
+- **Default:** a
+
 **REFIT20-1. 8-7 with its Mine back is far too hard** · Decide · Balance · asked 2026-11-24
 - With the Map 8 reference deck change, 8-7 got its Mine back and you now win 24% (target 60). Without the Mine it reads 57-60%. The item's own Health 4 is under the 60% floor (REFIT13-5 b), and Health may not change past Map 1, so it keeps Health 8.
   - a) 8-7 without the Mine
@@ -44,8 +189,8 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
   - c) A new Map 4 octopus card (Claude drafts it)
 - **Default:** a
 
-**ENG16-1. Daunt: keep stacking, or refresh like Corrode?** · Decide · Rules · asked 2026-11-24
-- Corrode stacked past its rule (a unit hit every round lost Attack without end); it now refreshes to the larger value and fades 1 a round. Daunt stacks by your 10-12 rule ("reduced by N multiple times"): one Daunt 2 unit hitting every round cuts 4 Attack. Its pip now shows the real total.
+**ENG16B-1. Daunt: keep stacking, or refresh like Corrode?** · Decide · Rules · asked 2026-11-24
+- Corrode stacked past its rule (a unit hit every round lost Attack without end); it now refreshes to the larger value and fades 1 a round. Daunt stacks by your 10-12 rule ("reduced by N multiple times"): one Daunt 2 unit hitting every round cuts 4 Attack. Its pip now shows the real total. (Owner 11-24 23:21 keeps Daunt and moves Scare cards to Daunt, so this is open again.)
   - a) Keep Daunt stacking (10-12 rule)
   - b) Daunt refreshes like Corrode
 - **Default:** a
@@ -168,7 +313,22 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
   - b) Allow offline pack opening for guests (local only, no cloud sync).
 - **Default:** a
 
+**ENG16-1. Quicksand: N, timing, exemptions and homes** · Decide · Field · asked 2026-11-02
+- Owner 11-02 (JJ19): "new field effect Quicksand: a creature ending its turn under N Health dies" (owner asleep: "Decisions - you decide"). (Owner 11-24 23:21 keeps Daunt and moves Scare cards to Daunt, so this is open again.)
+  - a) N = 2 (a unit left on 1 Health sinks), checked at the end of every round from round 2 (after the fighting and ticks, before the round's death sweep), Flyers and Structures spared, paused by Field Breaker; on The Glass Dunes (every fight) and the Pale Desert's boss, the Quicksand Queen (18-A-9)
+  - b) N = 3
+  - c) checked at the start of each round, like the other field ticks
+- **Default:** a
+
 ## Decided
+
+**SKILLS3-1. Trigger icons** · Decide · Skills · asked 2026-11-25 · decided 2026-11-25
+- On Play shows ⬆️ (was ⚡), On Death 💀, On Pitch 🃏 (was ♻️) on cards, chips and the Codex.
+  - a) all three
+  - b) ⬆️ only
+  - c) keep today's
+- **Default:** a
+- **Outcome:** Owner 2026-11-25 20:31: "arrow up emoji for ON PLAY", "(skull emoji)" for On Death, "ON PITCH (black card)": a. Built with SKILLS3.
 
 **SKWK6-2. Two too-strong decks fit only if they share more cards** · Decide · Balance · asked 2026-11-22 · decided 2026-11-22
 - 2-B-BPRO-2 (81.5%) and 10-A-BPRO-2 (53.5%) should beat the reference ladder 15-30%. Under the 10-shared-copies rule no change helps. Re-tunes ready: up to 13 shared, 31% and 21.5%; up to 12, 60.5% and 21.5%.
@@ -3610,14 +3770,6 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
   - a) Map 40+: own cards to their caps, then one carried card at a time (earlier maps' list cards in the cap, lower rarity first, nearest map first). Cut cards: each copy to the nearest card of the fight's own list (Lumber, Wait, 2A + H, rarity), K14 kept, sizes kept.
 - **Default:** a
 - **Outcome:** a) Built: tools/bal9/lib_bal9.js fillDeckToSize, used by the BPRO build (tools/opt/bpro2) from Map 40. 100 cut cards out of 160 road decks and 58 PRO decks (under DECK1's 6/4 rule; 0-B-PRO-3 dropped to replaced); the BPRO decks were rebuilt from the lists. The road was not re-measured: run the road check (skirmish_pass measure) with the batch.
-
-**ENG16-1. Quicksand: N, timing, exemptions and homes** · Decide · Field · asked 2026-11-02 · decided 2026-11-02
-- Owner 11-02 (JJ19): "new field effect Quicksand: a creature ending its turn under N Health dies" (owner asleep: "Decisions - you decide").
-  - a) N = 2 (a unit left on 1 Health sinks), checked at the end of every round from round 2 (after the fighting and ticks, before the round's death sweep), Flyers and Structures spared, paused by Field Breaker; on The Glass Dunes (every fight) and the Pale Desert's boss, the Quicksand Queen (18-A-9)
-  - b) N = 3
-  - c) checked at the start of each round, like the other field ticks
-- **Default:** a
-- **Outcome:** a) Coordinator call (ENG16): N = 2, end of round from round 2 ("from round 2" like the other field effects), the same exemptions as Tangled Roots / Grasping Briars (Flyers above it; Structures). Fights can set a number (quicksand: 3). Homes: The Glass Dunes (mapField) and 18-A-9 the Quicksand Queen. Art borrows the Sandstorm scene until it has its own.
 
 **ENG16-2. A field effect or combination of its own on every map (JJ18)** · Decide · Field · asked 2026-11-02 · decided 2026-11-02
 - Owner 11-02 (JJ18): "which maps lack a field effect or combo of their own; give each one (e.g. Aerie Vault: thunderstorm)". 12 maps shared their map-level set with another map. docs/balance/field-uniqueness-2026-11-02.md.
