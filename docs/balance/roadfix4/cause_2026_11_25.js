@@ -3,11 +3,15 @@
 // (default 24aceba7b, the post1124d measure) and that sits in the fight's enemy deck or its map reference deck, the fight is played with that
 // one card back at its old entry (a child process reads cards.json through a patched fs.readFileSync, so the game itself is untouched), and
 // with every such card back ("all"); the rest of the move is the engine (DAUNT2). Seeds 9100 + 37g, as the road measure.
-//   node docs/balance/roadfix4/cause_2026_11_25.js CODE [CODE ...] [--games 400] [--rev 24aceba7b] [--json out.json]
+//   node docs/balance/roadfix4/cause_2026_11_25.js CODE [CODE ...] [--games 400] [--rev 24aceba7b] [--app-rev 3b9f9428e] [--json out.json]
 'use strict';
 const fs = require('fs'), path = require('path'), cp = require('child_process'), ROOT = path.resolve(__dirname, '..', '..', '..');
 const a = process.argv.slice(2), arg = (k, d) => { const i = a.indexOf(k); return i >= 0 ? a[i + 1] : d; };
 const GAMES = +arg('--games', 400), REV = arg('--rev', '24aceba7b');
+// --app-rev <rev>: the road decks (arena_app.js) as at that commit (e.g. 3b9f9428e, the decks post1125 measured), read through the same patch
+if (arg('--app-rev') && !process.env.RF4_APP) { const f = path.join(require('os').tmpdir(), 'rf4-app-' + process.pid + '.js');
+  fs.writeFileSync(f, cp.execSync(`git show ${arg('--app-rev')}:arena_app.js`, { cwd: ROOT, maxBuffer: 1 << 30 })); process.env.RF4_APP = f; process.on('exit', () => { try { fs.unlinkSync(f); } catch (e) {} }); }
+if (process.env.RF4_APP) { const rd0 = fs.readFileSync; fs.readFileSync = function (p) { if (String(p) === path.join(ROOT, 'arena_app.js')) arguments[0] = process.env.RF4_APP; return rd0.apply(fs, arguments); }; }
 if (process.env.RF4_CHILD) { // child: REVERT=<ids>, CODES=<codes>; prints one JSON line {code: win}
   const ids = (process.env.REVERT || '').split(',').filter(Boolean), old = JSON.parse(fs.readFileSync(process.env.RF4_OLD, 'utf8')), rd = fs.readFileSync;
   fs.readFileSync = function (p, o) { const s = rd.apply(fs, arguments); if (String(p).endsWith(path.join('canonical', 'cards.json')) && ids.length) {
