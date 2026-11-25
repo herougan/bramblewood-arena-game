@@ -48,7 +48,8 @@ const table = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-cos
   const p11 = {rarity: 'common', wait: 1, cost: 1}, v = ctx.priced({}, p11), a = ctx.priced({armor: 1}, p11), N0 = BB.nAt(BB.baseOf(p11), 1);
   ok(Math.abs(v.q - N0 * BB.DEFAULTS.plainBonus) < 0.02, `2. a vanilla Wait 1 Lumber 1 common has N(1) × the plain bonus in stats (${v.q.toFixed(2)})`);
   ok(Math.abs(a.q - (N0 - a.S)) < 0.02 && a.S > 0, `2. an Armor 1 unit gives up its S ${a.S} (${a.q.toFixed(2)} points)`);
-  const f = ctx.priced({swift: true}, p11); ok(Math.abs(f.q - (f.N - f.S) / 1.5) < 0.02, '2. a half-miss skill divides the stat points by 1.5 (Swift; BF12: Evasive 1.37, Shadow 1.1)');
+  // 2026-11-25 (TESTFIX11): SKMPRICE (SKM4-1 b) measured Swift's half-miss multiplier at 1.23 (was the default 1.5); Evasive 1.18, Shadow 1.1
+  const f = ctx.priced({swift: true}, p11), mS = BB.missMultOf({swift: true}, BB.DEFAULTS); ok(mS === 1.23 && Math.abs(f.q - (f.N - f.S) / mS) < 0.02, `2. a half-miss skill divides the stat points by its multiplier (Swift ${mS}, SKMPRICE; Evasive 1.18, Shadow 1.1)`);
   // 2026-11-04 (TESTFIX1): BAL14-2 (DEC1, 2026-11-03) set Flying's multiplier to its bramble-15 measure, x1.19 (was BF10's 1.39, then 1.17); read from the budget
   const BBm = require(path.join(ROOT, 'bramblewood-budget.js')), fm = BBm.missMultFor('flying');
   const fl = ctx.priced({flying: true}, p11); ok(Math.abs(fl.q - (fl.N - fl.S) / fm) < 0.02, `2. Flying divides them by its multiplier (${fm}; BF10 2026-10-23: 1.39)`);

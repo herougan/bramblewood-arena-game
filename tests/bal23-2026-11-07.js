@@ -15,7 +15,8 @@ const near = (a, b, e) => Math.abs(a - b) <= (e || 1e-6);
 // ---- 1. the plan ----
 const p = S.planOf(), table = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')), priced = new Set(table.skills.map(e => e.id));
 ok(p.cards > 100, 'plan: Maps 0-20 hold ' + p.cards + ' cards');
-ok(p.items.length >= 150 && p.items.length <= 400, 'plan: ' + p.items.length + ' points a level (150-400 expected)');
+// 2026-11-25 (TESTFIX11): CARDVET1a/b/c took the skills no Maps 0-20 row uses off the cards, so the plan is smaller (134 on 11-25)
+ok(p.items.length >= 100 && p.items.length <= 400, 'plan: ' + p.items.length + ' points a level (100-400 expected)');
 ok(p.items.every(x => x.n === true || (typeof x.n === 'number' && x.n >= 1 && (x.key === 'shield' || x.n <= S.CAP))), 'plan: a numbered point above the cap of ' + S.CAP);
 ok(S.CAP === 4, 'plan: the cap is 4');
 const sh = p.items.filter(x => x.key === 'shield').map(x => x.n);
