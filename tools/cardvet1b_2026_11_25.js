@@ -30,7 +30,7 @@ const DES = {
   'eyrie-warden': {set: {effects: {flying: true, pounce: 3}}, fit: true}, // Twin Shot is on no row; its flavour is a strike from above before it is noticed: Pounce
   'ibex-rockcaller': {set: {effects: {daunt: 1, pounce: 2}}, fit: true}, // Avalanche is on no row; the ledge-leaper that makes the slope listen: Daunt (Map 11 row) + Pounce
   // --- Map 13 (mr)
-  'sergeant-bramblefox': {set: {effects: {pounce: 2, inspiring: 1}}, fit: true}, // a rare vanilla 3/12 on Map 13: "barks the orders, then runs in first anyway"
+  'sergeant-bramblefox': {set: {effects: {pounce: 2, inspiring: 1}}, fit: true, core: 'pounce'}, // a rare vanilla 3/12 on Map 13: "barks the orders, then runs in first anyway"
 };
 module.exports = {DES};
 if(require.main === module){

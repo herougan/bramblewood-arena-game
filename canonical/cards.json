@@ -21204,9 +21204,9 @@
     "test": false,
     "uuid": "5bdfb30a-7f27-4f01-92cc-a80d0752b4a5",
     "wait": 0,
-    "attack": 3,
+    "attack": 2,
     "flavor": "Barks the orders, then runs in first anyway.",
-    "health": 12,
+    "health": 11,
     "locked": true,
     "rarity": "rare",
     "resist": [],
@@ -21216,7 +21216,9 @@
       "node": "13-2"
     },
     "dmgType": "physical",
-    "effects": {},
+    "effects": {
+      "pounce": 2
+    },
     "species": [
       "Canid"
     ],
@@ -21287,16 +21289,21 @@
         "Who taught you to march?"
       ]
     },
-    "creatorNote": "2026-10-19 retune (server override folded): was 4/8 heroic (live server version of 2026-10-12; well under: 2A+H+S 49% -> 71% of N 32.55). 2026-10-19 halve (BF5): was 6/11. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/6. 2026-10-22 (package SK, owner 09:52): Heroic -> Rare and moved from Map 0 (0-4) to the leader of 13-2 Fox Run (Map 13, the Redwood Deep: the Greenhood Band's foxes), re-fitted by the formula at Rare and Map 13: 4/12 -> 3/10. 2026-10-22 BF7 re-fit (half-miss x1.5 on the stats only, Fragile x0.7 on the caps, the four pass III cuts): 3/10 -> 3/11. 2026-10-24 BAL2 re-fit (DF-1: Map term 0.2 a map, first main-line map): 3/11 -> 3/13. 2026-10-31 BUDGET2 re-fit (3A + H, N x 1.13; owner RECOST1-6): was 3/13 (cap-1 use 0.98 of N under 2A + H, 1 under 3A + H, now 0.96).",
+    "creatorNote": "2026-10-19 retune (server override folded): was 4/8 heroic (live server version of 2026-10-12; well under: 2A+H+S 49% -> 71% of N 32.55). 2026-10-19 halve (BF5): was 6/11. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/6. 2026-10-22 (package SK, owner 09:52): Heroic -> Rare and moved from Map 0 (0-4) to the leader of 13-2 Fox Run (Map 13, the Redwood Deep: the Greenhood Band's foxes), re-fitted by the formula at Rare and Map 13: 4/12 -> 3/10. 2026-10-22 BF7 re-fit (half-miss x1.5 on the stats only, Fragile x0.7 on the caps, the four pass III cuts): 3/10 -> 3/11. 2026-10-24 BAL2 re-fit (DF-1: Map term 0.2 a map, first main-line map): 3/11 -> 3/13. 2026-10-31 BUDGET2 re-fit (3A + H, N x 1.13; owner RECOST1-6): was 3/13 (cap-1 use 0.98 of N under 2A + H, 1 under 3A + H, now 0.96). 2026-11-25 (CARDVET1b, owner 00:22 vet pass): was 1/0 3/12 {}; now 1/0 2/8 {\"pounce\":2,\"inspiring\":1}. 2026-11-18 LVL10 (owner 21:22): inspiring from Level 6; Level 1 re-fit 2/8 -> 2/11.",
+    "levelSkills": {
+      "6": {
+        "inspiring": 1
+      }
+    },
     "levelBonus": {
       "4": {
-        "health": 2
+        "health": 1
       },
       "7": {
-        "health": 2
+        "health": 1
       },
       "10": {
-        "attack": 1
+        "health": 2
       }
     }
   },
