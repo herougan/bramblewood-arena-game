@@ -4275,13 +4275,10 @@
  "Starpath-only card": "Kartu khusus jalur bintang",
  "Rainforest": "Hutan hujan",
  "Savanna": "Sabana",
- "Card Rewards": "Hadiah Kartu",
- "{n} ready": "{n} siap",
  "Card reward x{n}": "Hadiah kartu x{n}",
  "Cards received x{n}": "Kartu diterima x{n}",
  "Face-down card, likely {rarity}": "Kartu tertutup, kemungkinan {rarity}",
  "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "Pencapaian yang memberi kartu. Kartu diambil dari kumpulan faksi saat diklaim.",
- "No card achievements match this filter.": "Tidak ada pencapaian kartu yang cocok dengan filter ini.",
  "NEW! flagged": "BARU! ditandai",
  "Carried flagged": "Terbawa ditandai",
  "Target for Map {n}: {t} (decision THEME6-1). Change it for this map; clear it to go back.": "Target Peta {n}: {t} (keputusan THEME6-1). Ubah untuk peta ini; kosongkan untuk kembali.",
@@ -4784,5 +4781,6 @@
  "{v1} card{s} collected": "{v1} kartu terkumpul",
  "{v1} more pack{s} to open": "{v1} paket lagi untuk dibuka",
  "Own 50 different cards": "Miliki 50 kartu berbeda",
- "The Caldera Wyrm": "Naga Kaldera"
+ "The Caldera Wyrm": "Naga Kaldera",
+ "Claim all": "Klaim semua"
 }

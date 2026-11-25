@@ -14117,7 +14117,7 @@ function ui27RevealAchvCards(){
   const got = [...new Set(ui27AchvCardsPending.splice(0))].filter(id=>{ try{ return !!getCardDefs()[id]; }catch(e){ return false; } });
   if(!got.length) return Promise.resolve(0);
   const rich = fxAtLeast('low') && !reducedMotion() && hasGsap();
-  const shown = rich ? playRewardReveal({rewardCardIds: got}) : ui27StillCardsReveal(got);
+  const shown = rich ? playRewardReveal({rewardCardIds: got}).then(full=> full ? 0 : ui27StillCardsReveal(got)) /* 2026-11-26 (FIXPACK1): a tap skips the reveal, so every card is then shown together */ : ui27StillCardsReveal(got);
   return Promise.resolve(shown).catch(()=>{}).then(()=>{ try{ showToast(TX('toast.card-added-to-your-collection', {n: got.length, s: got.length===1?'':'s'}), 'ok'); }catch(e){} return got.length; });
 }
 function ui27StillCardsReveal(ids){
@@ -14141,16 +14141,12 @@ function achievementRewardChipsHTML(reward, achvId){
 function achievementFactionCards(achvId){ try{ return (FACTION_REWARD_TRACK.achievements || {})[achvId] | 0; }catch(e){ return 0; } }
 function achievementFactionChipHTML(achvId){ const n = achievementFactionCards(achvId); return n ? `<span class="hud-pill achv-faction-chip">${escapeHtml(TX('ui.rp-achv-faction-chip', {n}))}</span>` : ''; }
 // UI36_ACHVCARDS:BEGIN
-// 2026-11-08 (package UI36, owner 10:52 #13: "Achievement page. We need a filter to filter out achievements that produces cards ... Card Rewards ... These kind will be the
-// most highly sought after ones."): the "🃏 Card Rewards" toggle on the Achievements page. An achievement gives cards through FACTION_REWARD_TRACK.achievements (N faction
-// cards drawn from the faction pool when it is claimed); no achievement gives an egg or a Starpath mark today (marks come from the Wildpaths trails). Which card is drawn is
-// only known at the claim, so an unclaimed row shows N face-down chips tinted with the rarity the pool's pattern will give next, and a claimed row shows the cards it gave
-// (kept per browser in ui36AchvCards; a row claimed before this package shows N plain face-down chips).
-const UI36_CARDS_KEY = 'bramblewood_arena_achv_cards_v1', UI36_ONLY_KEY = 'bramblewood_achv_cards_only_v1';
+// 2026-11-08 (package UI36): the card rows of the Achievements page (the Card Rewards filter became Claim all, FIXPACK1). An achievement gives cards through
+// FACTION_REWARD_TRACK.achievements (N faction cards drawn from the faction pool when it is claimed). Which card is drawn is only known at the claim, so an unclaimed row
+// shows N face-down chips tinted with the rarity the pool's pattern will give next, and a claimed row shows the cards it gave (kept per browser in ui36AchvCards).
+const UI36_CARDS_KEY = 'bramblewood_arena_achv_cards_v1';
 function ui36AchvCards(){ try{ const o = JSON.parse(localStorage.getItem(UI36_CARDS_KEY) || '{}'); return o && typeof o === 'object' && !Array.isArray(o) ? o : {}; }catch(e){ return {}; } }
 function ui36SaveAchvCards(id, ids){ try{ const o = ui36AchvCards(); o[id] = (o[id] || []).concat(ids); localStorage.setItem(UI36_CARDS_KEY, JSON.stringify(o)); }catch(e){} }
-let achvCardsOnly = (()=>{ try{ return localStorage.getItem(UI36_ONLY_KEY) === '1'; }catch(e){ return false; } })();
-function ui36SetCardsOnly(on){ achvCardsOnly = !!on; try{ localStorage.setItem(UI36_ONLY_KEY, on ? '1' : '0'); }catch(e){} }
 function ui36AchvCardCount(def){ return achievementFactionCards(def.id) + (Array.isArray(def.cardIds) ? def.cardIds.length : 0); } // def.cardIds: a future fixed card (egg / hatchling / mark)
 // the rarities the next n set rewards will most likely be (factionSetPick's own rarity step, run forward; a Leader slot can still replace one)
 function ui36NextRarities(n){
@@ -14179,15 +14175,15 @@ function ui36CardsRowHTML(def, st){
 // UI36_ACHVCARDS:END
 const ACHV_CATS = [['battle','⚔️','Battles'], ['road','🗺️','The road'], ['boss','👑','Bosses and raids'], ['collection','🗂️','Collection'], ['forge','🔨','The Forge']];
 const ACHV_TIER = {1:'Bronze', 2:'Silver', 3:'Gold', 4:'Dragon'};
+const ACHV_CLAIM_ALL_MAP = 15; // 2026-11-26 (FIXPACK1, owner 11-24 #10): Claim all (was the Card Rewards filter) opens on Map 15, a quiet map (only a free pack and the 4th deck slot)
 let achvFilter = 'all';
 function achievementsPanelHTML(){
   const ctx = achievementContext();
   const rows = ACHIEVEMENT_DEFS.map(def=> ({def, st: achievementStatus(def, ctx)}));
   const claimed = rows.filter(r=> r.st.claimed).length, ready = rows.filter(r=> r.st.claimable).length, total = rows.length;
   const pct = Math.round(claimed / Math.max(1, total) * 100);
-  const cardTotal = rows.filter(r=> ui36AchvCardCount(r.def) > 0).length, cardReady = rows.filter(r=> ui36AchvCardCount(r.def) > 0 && r.st.claimable).length;
-  const show0 = r=> achvFilter === 'all' || (achvFilter === 'ready' && r.st.claimable) || (achvFilter === 'open' && !r.st.complete) || (achvFilter === 'done' && r.st.claimed);
-  const show = r=> show0(r) && (!achvCardsOnly || ui36AchvCardCount(r.def) > 0); // 2026-11-08 (UI36): the Card Rewards toggle narrows whatever the status filter shows
+  const show = r=> achvFilter === 'all' || (achvFilter === 'ready' && r.st.claimable) || (achvFilter === 'open' && !r.st.complete) || (achvFilter === 'done' && r.st.claimed);
+  const claimAllOpen = adminModeEnabled || playerMapReach() >= ACHV_CLAIM_ALL_MAP;
   const tile = ({def, st})=>{ const p = Math.round((st.current/def.target)*100), tier = def.tier || 1;
     const state = (st.claimed ? 'is-claimed' : st.claimable ? 'is-ready' : st.current > 0 ? 'is-going' : 'is-locked') + (ui36AchvCardCount(def) ? (st.claimed ? ' has-card' : ' has-card is-card-hot') : '');
     return `<article class="achv-tile ${state} tier-${tier}" aria-label="${escapeAttr(def.title)}: ${st.claimed ? 'claimed' : st.claimable ? 'ready to claim' : st.current + ' of ' + def.target}">
@@ -14203,16 +14199,14 @@ function achievementsPanelHTML(){
     <header class="achv-head">
       <div class="achv-ring" style="--p:${pct}" aria-hidden="true"><span><b>${claimed}</b><small>of ${total}</small></span></div>
       <div class="achv-head-txt"><h2>🏆 Achievements</h2><p class="panel-sub">${claimed} of ${total} claimed${ready ? ` · <b>${ready} ready to claim</b>` : ''}</p></div>
-      ${ready > 1 ? `<button type="button" class="btn primary achv-claim-all" id="achvClaimAll">🎁 Claim all ${ready}</button>` : ''}
     </header>
-    ${cardTotal ? `<button type="button" class="achv-cardbtn${achvCardsOnly ? ' is-on' : ''}${cardReady ? ' has-ready' : ''}" id="achvCardsBtn" aria-pressed="${achvCardsOnly}" title="${escapeAttr(TX('ui.ui36-cards-tip'))}"><span class="acb-ico" aria-hidden="true">🃏</span><span class="acb-txt">${escapeHtml(TX('ui.ui36-card-rewards'))}</span><b class="acb-n">${cardTotal}</b>${cardReady ? `<small class="acb-ready">${escapeHtml(TX('ui.ui36-n-ready', {n: cardReady}))}</small>` : ''}</button>` : ''}
+    <button type="button" class="achv-cardbtn${claimAllOpen && ready ? ' has-ready' : ''}" id="achvClaimAll" ${claimAllOpen && ready ? '' : 'disabled'}><span class="acb-ico" aria-hidden="true">${claimAllOpen ? '🎁' : '🔒'}</span><span class="acb-txt">${escapeHtml(TX('ui.ui36-card-rewards'))}</span>${claimAllOpen ? `<b class="acb-n">${ready}</b>` : `<small class="acb-ready">${escapeHtml(TX('ui.pg-map-n', {n: ACHV_CLAIM_ALL_MAP}))}</small>`}</button>
     <div class="achv-filters" role="group" aria-label="Show">${f('all', 'All', total)}${f('ready', 'Ready', ready)}${f('open', 'In progress', rows.filter(r=> !r.st.complete).length)}${f('done', 'Claimed', claimed)}</div>
-    ${groups || `<p class="panel-sub achv-empty">${achvCardsOnly ? escapeHtml(TX('ui.ui36-none')) : 'Nothing here yet.'}</p>`}
+    ${groups || `<p class="panel-sub achv-empty">Nothing here yet.</p>`}
   </div>`;
 }
 function wireAchievementsPanel(){
   const redraw = ()=>{ const panel = document.querySelector('.achievements-panel'); if(panel) panel.outerHTML = achievementsPanelHTML(); try{ if(window.renderTopbar) renderTopbar(); }catch(e){} wireAchievementsPanel(); };
-  { const cb = document.getElementById('achvCardsBtn'); if(cb) cb.onclick = ()=>{ ui36SetCardsOnly(!achvCardsOnly); redraw(); try{ const nb = document.getElementById('achvCardsBtn'); if(nb) nb.focus(); }catch(e){} }; }
   document.querySelectorAll('[data-achv-filter]').forEach(b=> b.onclick = ()=>{ achvFilter = b.dataset.achvFilter; redraw(); });
   { const all = document.getElementById('achvClaimAll'); if(all) all.onclick = ()=>{ let n = 0; const sum = {}; ACHIEVEMENT_DEFS.forEach(d=>{ if(claimAchievement(d.id)){ n++; Object.entries(d.reward||{}).forEach(([k, v])=> sum[k] = (sum[k]||0) + v); } }); if(!n) return; rewardRush(all.getBoundingClientRect(), sum, {big:true}); showToast(TX('toast.claimed-achievements', {n}), 'ok'); redraw(); ui27RevealAchvCards(); /* UI27 #12 */ }; }
   document.querySelectorAll('.achv-claim-btn').forEach(btn=>{
@@ -50367,9 +50361,9 @@ function playRewardReveal(m){
     const finish = natural=>{ if(done) return; done = true; timers.forEach(clearTimeout); document.removeEventListener('keydown', onKey, true);
       if(natural === true && unlocks.length){
         stage.querySelectorAll('.rr-token').forEach(tk=> gsap.to(tk, {opacity:0, scale:.92, duration:.3, ease:'power1.in'}));
-        resolve(); gsap.to(stage, {opacity:0, duration:.3, delay:.05, onComplete:()=> stage.remove()});
+        resolve(true); gsap.to(stage, {opacity:0, duration:.3, delay:.05, onComplete:()=> stage.remove()});
         return; }
-      gsap.to(stage, {opacity:0, duration:.18, onComplete:()=> stage.remove()}); setTimeout(resolve, 120); };
+      gsap.to(stage, {opacity:0, duration:.18, onComplete:()=> stage.remove()}); setTimeout(()=> resolve(natural === true), 120); }; // 2026-11-26 (FIXPACK1): true = played to the end, false = skipped
     const onKey = e=>{ if(e.key==='Tab') return; e.preventDefault(); finish(); };
     stage.addEventListener('pointerdown', finish); document.addEventListener('keydown', onKey, true);
     let t = 0;

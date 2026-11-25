@@ -4274,13 +4274,10 @@
  "Starpath-only card": "Card ng landas ng bituin lamang",
  "Rainforest": "Rainforest",
  "Savanna": "Sabana",
- "Card Rewards": "Mga Gantimpalang Card",
- "{n} ready": "{n} handa na",
  "Card reward x{n}": "Gantimpalang card x{n}",
  "Cards received x{n}": "Mga natanggap na card x{n}",
  "Face-down card, likely {rarity}": "Nakataob na card, malamang {rarity}",
  "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "Mga achievement na nagbibigay ng card. Hinuhugot ito sa faction pool mo kapag kinuha mo.",
- "No card achievements match this filter.": "Walang achievement na may card na tugma sa filter na ito.",
  "NEW! flagged": "BAGO! na may marka",
  "Carried flagged": "Dala na may marka",
  "Target for Map {n}: {t} (decision THEME6-1). Change it for this map; clear it to go back.": "Target para sa Mapa {n}: {t} (desisyon THEME6-1). Palitan para sa mapang ito; burahin para bumalik.",
@@ -4783,5 +4780,6 @@
  "{v1} card{s} collected": "{v1} card na nakolekta",
  "{v1} more pack{s} to open": "{v1} pang pack na bubuksan",
  "Own 50 different cards": "Magkaroon ng 50 magkakaibang card",
- "The Caldera Wyrm": "Ang Wyrm ng Kaldera"
+ "The Caldera Wyrm": "Ang Wyrm ng Kaldera",
+ "Claim all": "Kunin lahat"
 }

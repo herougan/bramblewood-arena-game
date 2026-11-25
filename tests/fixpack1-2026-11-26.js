@@ -76,6 +76,26 @@ const cq = n=> JSON.stringify({completed: Array.from({length: n}, (_, i)=> 'm1:0
   ok(/\$\{codexSeparateAllowed\(\) \? `<button type="button" class="btn small \$\{codexGrouped\(\)/.test(src), '1. the Separated / All together button shows for admins too');
   ok(/const view = !\(codexGrouped\(\) && codexSeparateAllowed\(\)\) \? 'all' : adminModeEnabled \? \(codexFilter\.groupBy \|\| 'advance'\) : 'bands';/.test(src), '1. All together draws one list in the chosen sort');
 
+  // ======================================================================= 2. Achievements: Claim all (Map 15), every card shown
+  { const f = src.slice(src.indexOf('function achievementsPanelHTML'), src.indexOf('function wireAchievementsPanel'));
+    ok(/const ACHV_CLAIM_ALL_MAP = 15;/.test(src) && /const claimAllOpen = adminModeEnabled \|\| playerMapReach\(\) >= ACHV_CLAIM_ALL_MAP;/.test(f), '2. Claim all opens on Map 15 (admins always)');
+    ok(/id="achvClaimAll" \$\{claimAllOpen && ready \? '' : 'disabled'\}/.test(f) && /TX\('ui\.pg-map-n', \{n: ACHV_CLAIM_ALL_MAP\}\)/.test(f), '2. locked or nothing ready: disabled; locked names Map 15');
+    ok((f.match(/achvClaimAll/g) || []).length === 1 && !/Claim all \$\{ready\}/.test(f), '2. one Claim all button (the header copy is gone)');
+    const spots = src.slice(src.indexOf('const FEATURE_SPOTS = ['), src.indexOf('\n];', src.indexOf('const FEATURE_SPOTS = [')));
+    ok(!/mapNumber:15\b/.test(spots), '2. Map 15 is quiet: no other feature opens there');
+    const texts = fs.readFileSync(path.join(ROOT, 'bramblewood-texts.js'), 'utf8');
+    ok(/"ui\.ui36-card-rewards": "Claim all"/.test(texts) && !/ui\.ui36-n-ready|ui\.ui36-none/.test(texts + src), '2. the label is "Claim all"; the filter\'s texts are gone');
+    ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(c=>{ const d = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', c + '.json'), 'utf8')); ok(d['Claim all'] && d['Claim all'] !== 'Claim all' && !('Card Rewards' in d), '2. ' + c + ' translates Claim all'); });
+    // a tap skips the won-card reveal: the still window then shows every card; a reveal played to the end shows nothing more
+    for(const full of [false, true]){
+      const C = {getCardDefs: ()=> ({a: {}, b: {}, c: {}}), fxAtLeast: ()=> true, reducedMotion: ()=> false, hasGsap: ()=> true, still: null, showToast(){}, TX: k=> k, Promise, Set,
+        playRewardReveal: ()=> Promise.resolve(full)};
+      vm.runInNewContext('const ui27AchvCardsPending = ["a", "b", "c"];\nfunction ui27StillCardsReveal(ids){ still = ids; return Promise.resolve(); }\n' + fnSrc('ui27RevealAchvCards') + '\nthis.go = ui27RevealAchvCards;', C);
+      const nGot = await C.go();
+      ok(nGot === 3 && (full ? C.still === null : (C.still || []).join() === 'a,b,c'), `2. multi-card claim, reveal ${full ? 'played out: no extra window' : 'skipped: all 3 cards shown together'}`);
+    }
+    ok(/setTimeout\(\(\)=> resolve\(natural === true\), 120\)/.test(fnSrc('playRewardReveal')) && /resolve\(true\); gsap\.to\(stage/.test(fnSrc('playRewardReveal')), '2. playRewardReveal tells a skip from a full play'); }
+
   console.log(fail ? `fixpack1: ${fail} of ${n} checks failed` : `fixpack1: all ${n} checks passed`);
   process.exit(fail ? 1 : 0);
 })();

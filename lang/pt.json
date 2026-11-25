@@ -4275,13 +4275,10 @@
  "Starpath-only card": "Carta exclusiva da trilha estelar",
  "Rainforest": "Floresta tropical",
  "Savanna": "Savana",
- "Card Rewards": "Recompensas de cartas",
- "{n} ready": "{n} prontas",
  "Card reward x{n}": "Recompensa de cartas x{n}",
  "Cards received x{n}": "Cartas recebidas x{n}",
  "Face-down card, likely {rarity}": "Carta virada, provavelmente {rarity}",
  "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "Conquistas que dão uma carta. Ela sai do seu conjunto de facção ao resgatar.",
- "No card achievements match this filter.": "Nenhuma conquista com carta corresponde a este filtro.",
  "NEW! flagged": "NOVA! marcadas",
  "Carried flagged": "Trazidas marcadas",
  "Target for Map {n}: {t} (decision THEME6-1). Change it for this map; clear it to go back.": "Meta do mapa {n}: {t} (decisão THEME6-1). Mude-a para este mapa; apague para voltar.",
@@ -4784,5 +4781,6 @@
  "{v1} card{s} collected": "{v1} carta(s) coletada(s)",
  "{v1} more pack{s} to open": "Mais {v1} pacote(s) para abrir",
  "Own 50 different cards": "Tem 50 cartas diferentes",
- "The Caldera Wyrm": "A Serpe da Caldeira"
+ "The Caldera Wyrm": "A Serpe da Caldeira",
+ "Claim all": "Receber tudo"
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// 2026-11-08 (package UI36, owner 10:52 #13): the Achievements page's "Card Rewards" filter.
+// 2026-11-08 (package UI36, owner 10:52 #13): the Achievements page's card rows (the "Card Rewards" filter became Claim all, FIXPACK1).
 // 1 every achievement that gives a card is found from FACTION_REWARD_TRACK, 2 the panel wiring (button, count, filter composes, remembered in try/catch), 3 claim records the cards,
 // 4 texts in 12 packs, 5 build is current.
 // Browser: tests/e2e/ui36_2026_11_08.py (both widths, screenshots in docs/screens/ui36/).
@@ -21,12 +21,10 @@ const app = rd('arena_app.js'), texts = rd('bramblewood-texts.js'), tpl = rd('ar
 
 // 2. panel wiring
 { const f = app.slice(app.indexOf('function achievementsPanelHTML'), app.indexOf('function wireAchievementsPanel'));
-  ok(/id="achvCardsBtn"/.test(f) && /aria-pressed="\$\{achvCardsOnly\}"/.test(f), 'a toggle button with aria-pressed');
-  ok(/TX\('ui\.ui36-card-rewards'\)/.test(f) && /acb-n">\$\{cardTotal\}/.test(f), 'label from a TX key and the count');
-  ok(/const show = r=> show0\(r\) && \(!achvCardsOnly \|\| ui36AchvCardCount\(r\.def\) > 0\)/.test(f), 'the toggle narrows whatever the status filter shows');
+  // 2026-11-26 (FIXPACK1, owner 11-24 #10): the Card Rewards filter became Claim all (opens on Map 15); tests/fixpack1-2026-11-26.js checks it
+  ok(/id="achvClaimAll"/.test(f) && /TX\('ui\.ui36-card-rewards'\)/.test(f) && /acb-n">\$\{ready\}/.test(f), 'the button is Claim all: label from a TX key and the ready count');
+  ok(!/achvCardsOnly/.test(app), 'no cards-only filter left');
   ok(/is-card-hot/.test(f) && /ui36CardsRowHTML\(def, st\)/.test(f), 'unclaimed card rows are highlighted and carry the card chips');
-  ok(/wireAchievementsPanel[\s\S]*achvCardsBtn/.test(app) && /ui36SetCardsOnly\(!achvCardsOnly\)/.test(app), 'the click toggles and redraws');
-  ok(/try\{ return localStorage\.getItem\(UI36_ONLY_KEY\) === '1'; \}catch/.test(app) && /try\{ localStorage\.setItem\(UI36_ONLY_KEY/.test(app), 'the choice is stored per viewer inside try/catch');
   ok(/\.achv-cardbtn\{/.test(tpl) && /\.achv-tile\.has-card\.is-card-hot/.test(tpl), 'CSS for the button and the highlight'); }
 
 // 3. claim records the cards
@@ -34,10 +32,10 @@ const app = rd('arena_app.js'), texts = rd('bramblewood-texts.js'), tpl = rd('ar
   ok(/ui36SaveAchvCards\(id, got\)/.test(f), 'claiming remembers the cards the row gave'); }
 
 // 4. texts
-{ const keys = ['card-rewards', 'n-ready', 'cards-prize', 'cards-got', 'next-card', 'cards-tip', 'none'].map(k=> 'ui.ui36-' + k);
+{ const keys = ['card-rewards', 'cards-prize', 'cards-got', 'next-card', 'cards-tip'].map(k=> 'ui.ui36-' + k);
   const en = {}; keys.forEach(k=>{ const m = texts.match(new RegExp('"' + k + '": "((?:[^"\\\\]|\\\\.)*)"')); ok(!!m, k + ' in bramblewood-texts.js'); if(m) en[k] = m[1]; });
   CODES.forEach(c=>{ const d = JSON.parse(rd('lang/' + c + '.json')); keys.forEach(k=>{ if(en[k]) ok(d[en[k]] && d[en[k]] !== en[k], c + ' translates ' + k); }); }); }
 
 // 5. build is current
-ok(rd('index.html').includes('achvCardsBtn'), 'index.html carries the button (rebuilt)');
+ok(rd('index.html').includes('id="achvClaimAll"'), 'index.html carries the button (rebuilt)');
 console.log(fail ? 'FAIL ' + fail : 'ok', pass + ' checks'); process.exit(fail ? 1 : 0);

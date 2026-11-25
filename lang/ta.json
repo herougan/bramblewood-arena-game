@@ -4276,13 +4276,10 @@
  "Starpath-only card": "நட்சத்திரப் பாதைக்கு மட்டுமான அட்டை",
  "Rainforest": "மழைக்காடு",
  "Savanna": "புல்வெளி",
- "Card Rewards": "அட்டை பரிசுகள்",
- "{n} ready": "{n} தயார்",
  "Card reward x{n}": "அட்டை பரிசு x{n}",
  "Cards received x{n}": "பெற்ற அட்டைகள் x{n}",
  "Face-down card, likely {rarity}": "கவிழ்த்த அட்டை, பெரும்பாலும் {rarity}",
  "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "அட்டை தரும் சாதனைகள். பெறும்போது உங்கள் பிரிவு தொகுப்பிலிருந்து எடுக்கப்படும்.",
- "No card achievements match this filter.": "இந்த வடிகட்டிக்கு பொருந்தும் அட்டை சாதனை இல்லை.",
  "NEW! flagged": "புதியது! குறித்தவை",
  "Carried flagged": "கொண்டுவரப்பட்டவை குறித்தவை",
  "Target for Map {n}: {t} (decision THEME6-1). Change it for this map; clear it to go back.": "வரைபடம் {n}-க்கான இலக்கு: {t} (முடிவு THEME6-1). இந்த வரைபடத்துக்கு மாற்றவும்; அழித்தால் பழையது.",
@@ -4785,5 +4782,6 @@
  "{v1} card{s} collected": "{v1} அட்டைகள் சேகரிக்கப்பட்டன",
  "{v1} more pack{s} to open": "திறக்க இன்னும் {v1} பொதிகள்",
  "Own 50 different cards": "50 வெவ்வேறு அட்டைகளை வைத்திரு",
- "The Caldera Wyrm": "எரிமலைவாய் நாகம்"
+ "The Caldera Wyrm": "எரிமலைவாய் நாகம்",
+ "Claim all": "அனைத்தையும் பெறு"
 }

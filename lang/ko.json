@@ -4276,13 +4276,10 @@
  "Starpath-only card": "별의 길 전용 카드",
  "Rainforest": "열대우림",
  "Savanna": "사바나",
- "Card Rewards": "카드 보상",
- "{n} ready": "{n}개 수령 가능",
  "Card reward x{n}": "카드 보상 x{n}",
  "Cards received x{n}": "받은 카드 x{n}",
  "Face-down card, likely {rarity}": "뒷면 카드, 아마도 {rarity}",
  "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "카드를 주는 업적입니다. 수령할 때 진영 풀에서 뽑습니다.",
- "No card achievements match this filter.": "이 필터에 맞는 카드 업적이 없습니다.",
  "NEW! flagged": "NEW! 표시",
  "Carried flagged": "이월 표시",
  "Target for Map {n}: {t} (decision THEME6-1). Change it for this map; clear it to go back.": "맵 {n} 목표: {t} (결정 THEME6-1). 이 맵에서 바꿀 수 있고, 지우면 되돌아갑니다.",
@@ -4785,5 +4782,6 @@
  "{v1} card{s} collected": "카드 {v1}장 수집",
  "{v1} more pack{s} to open": "열 팩 {v1}개 남음",
  "Own 50 different cards": "서로 다른 카드 50장 보유",
- "The Caldera Wyrm": "칼데라 거룡"
+ "The Caldera Wyrm": "칼데라 거룡",
+ "Claim all": "모두 받기"
 }
