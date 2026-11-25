@@ -18,7 +18,15 @@ const biomeOfMap = {}; U.maps.forEach(m => { biomeOfMap[m.id] = m.biome; });
 // new-card concepts where no existing card fits: "<map no>:<skill key>" -> {name, animal, family, element, rarity, role}
 const CONCEPTS = {
   '2:shield': { name: 'Tideline Chiton', animal: 'chiton', family: 'mollusc', element: 'physical', rarity: 'common', role: 'A plated chiton clamped to a tide rock: a small body with Shield and no other skill (only the Armadillo Guard, a desert card from Map 18, carries Shield now).' },
+  '5:poisonBarbs': { name: 'Spiny Bullhead', animal: 'bullhead catfish', family: 'fish', element: 'physical', rarity: 'common', role: 'A swamp catfish with venom-tipped fin spines: Poison Barbs, no other skill (2026-11-25, MAPEXEC1: the only Poison Barbs cards are sea creatures and the Rootworm Colony, a side-map reward).' },
   '17:momentum': { name: 'Floe Wolverine', animal: 'wolverine', family: 'mustelid', element: 'physical', rarity: 'rare', role: 'A tundra scrapper that finishes what the cold started: Momentum, no other skill (no card carries Momentum yet).' } };
+// 2026-11-25 (MAPEXEC1): To remove carriers that stay on purpose ("<mapId>:<cardId>" -> why): the row skill needs this card, or no list can take it (an owner call)
+const KEEPS = {
+  'm8:booming-bittern': 'Map 6\'s only Intimidate carrier (the DAUNT2 row skill); its Enfeeble tile stays To remove until a second Intimidate card exists',
+  'm8:lamprey': 'one of Map 6\'s two Parasite carriers (a row skill needs 2+); its Leech tile stays To remove until a Leech card is placed on Map 5 (Bog Shrew awaits placement)',
+  'mu:glowworm-cluster': 'Map 7\'s second Nocturnal carrier (a row skill needs 2+); its Prayer tile stays To remove until another fitting Nocturnal card exists',
+  'mk:ironclaw-fiddler': 'no table row has Bludgeon and no other list fits it: kept, owner call (add Bludgeon to a row or drop the card)',
+  'md:caustic-scorpion': 'no table row has Acid and no other list fits it: kept, owner call (add Acid to a row or drop the card)' };
 const slug = s => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 (async () => {
   const pw = require('playwright'), b = await pw.chromium.launch(), p = await b.newPage();
@@ -27,9 +35,9 @@ const slug = s => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^
     const defs = getCardDefs(), all = mainConquestMaps(), carry = (d, k) => { const e = (d && d.effects) || {}; return e[k] != null && e[k] !== false && e[k] !== 0; };
     const lists = all.map((m, n) => ({ n, id: m.id, ids: (mpEntry(m.id).cards || []).filter(i => defs[i]), sub: [].concat(...Object.values(mpEntry(m.id).submaps || {}).map(l => l || [])) }));
     const cards = {}; Object.keys(defs).forEach(id => { const d = defs[id]; const bad = !!(d.token || d.test || d.pool || (d.unattainable && !d.awaitingSource) || d.hero || d.derivedFrom || d.cardType || (d.faction && d.faction !== 'base') || cardKindOf(d) === 'baby' || isEasterEgg(d));
-      cards[id] = { bad, awaiting: !!d.awaitingSource, name: d.name, rarity: d.rarity || 'common', step: roadRarityStep(d.rarity), keys: Object.keys(d.effects || {}).filter(k => k !== 'triggers' && carry(d, k)) }; });
+      cards[id] = { bad, awaiting: !!d.awaitingSource, src: (d.source && d.source.kind) || '', tier: d.source && d.source.tier, name: d.name, rarity: d.rarity || 'common', step: roadRarityStep(d.rarity), keys: Object.keys(d.effects || {}).filter(k => k !== 'triggers' && carry(d, k)) }; });
     const maps = lists.slice(0, 21).map(r => { const row = (MAP_FOCUS_SKILLS[r.n] || []), tg = ui37Targets(r.id);
-      const add = row.filter(k => !r.ids.some(i => carry(defs[i], k)) && skillDefOf(k)).map(k => ({ key: k, name: codexSkillName(k) }));
+      const add = row.map(k => ({ k, have: r.ids.filter(i => carry(defs[i], k)).length })).filter(x => x.have < 2 && skillDefOf(x.k)).map(x => ({ key: x.k, name: codexSkillName(x.k), have: x.have })); // 2026-11-25 (MAPEXEC1): a row skill with 0 OR 1 carrier (the table wants 2+)
       pk1OpenMapCards(r.id); const rm = [...document.querySelectorAll('#ui19McSkills .is-focus-remove')].map(li => li.dataset.ui19Skill); const o = document.getElementById('pk1MapCardsOverlay'); if (o) o.remove();
       return { n: r.n, id: r.id, name: r.name = all[r.n].name, cap: roadRevealedCap(r.n), capStep: roadRarityStep(roadRevealedCap(r.n)), row, list: r.ids, target: tg.n || 0,
         add, rm: rm.map(k => ({ key: k, name: codexSkillName(k), carriers: r.ids.filter(i => carry(defs[i], k)) })) }; });
@@ -48,26 +56,30 @@ const slug = s => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^
   const theme = (id, n) => { const u = units[id] || {}, bio = u.biomes || [], mb = biomeOfMap[G.lists[n].id]; let s = 0; const why = [];
     if (bio.includes(mb)) { s += 6; why.push('a ' + String(mb).replace(/-/g, ' ') + ' creature'); } else if (bio.some(x => (KIN[mb] || []).includes(x) || (KIN[x] || []).includes(mb))) { s += 2; why.push('near ' + String(mb).replace(/-/g, ' ')); }
     const ag = u.animalGroup || u.animal; if (ag && fam(n).has(ag)) { s += 3; why.push('the ' + ag + ' family of the map\'s list'); } return { s, why: why.join(', ') }; };
-  const usable = (id, n) => G.cards[id] && !G.cards[id].bad && G.cards[id].step <= G.maps[n].capStep && id !== 'moonlit-hare';
+  // 2026-11-25 (MAPEXEC1): also never a Starter, a skirmish / map-node reward (never a pack card), a faction-pool (tier 11 / 99) card, or one over its budget at the earlier map (an awaiting-placement card stays a suggestion: only a Yes places it; tools/mapexec1_2026_11_25.js applies placed cards only)
+const SC = require('./skill_costs.js'), T = SC.make(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8'))), FULL = {}; JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')).forEach(c => { FULL[c.id] = c; });
+const OBT = (() => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'card-obtain-maps.json'), 'utf8')).maps || {}; } catch (e) { return {}; } })();
+const budgetOk = (id, n) => { const c = FULL[id], cur = OBT[id], at = cur ? Math.min(cur, n) : n; if (!c) return false; const lv = SC.levelOf ? SC.levelOf(c) : 1; try { return T.budget(Object.assign({}, c, { obtainMap: at }), { level: lv }).ok || (cur != null && at === cur && !T.budget(c, { level: lv }).ok); } catch (e) { return false; } };
+const usable = (id, n) => G.cards[id] && !G.cards[id].bad && G.cards[id].rarity !== 'starter' && G.cards[id].src !== 'map' && ![11, 99].includes(+G.cards[id].tier) && G.cards[id].step <= G.maps[n].capStep && id !== 'moonlit-hare' && budgetOk(id, n);
   // candidates for Map n that carry skill k
   const addCands = (n, k) => Object.keys(G.cards).filter(id => G.cards[id].keys.includes(k) && usable(id, n) && !(mainOf[id] || []).some(x => x < n) && !(mainOf[id] || []).includes(n)).map(id => { const t = theme(id, n), m = mainOf[id] || [], later = m.filter(x => x > n), side = sideOf[id] || [];
     const src = G.cards[id].awaiting ? 'new card awaiting placement' : m.length ? 'moves from Map ' + later[0] + ' (carried there)' : side.length ? 'from the side maps of Map ' + side[0] : 'on no list';
     const pri = G.cards[id].awaiting || !m.length && !side.length ? 3 : m.length ? 1 : 2, bad = clean(id, n) ? 0 : 1;
     return { id, s: t.s - bad * 8 + pri * 0.5 - Math.abs(G.cards[id].step - G.maps[n].capStep) * 0.3, t, src, bad, why: [t.why, G.cards[id].rarity, src].filter(Boolean).join(' · ') }; }).filter(x => x.t.s >= 2 && !x.bad).sort((a, b) => b.s - a.s || a.id.localeCompare(b.id));
-  const replace = (n, gone) => { const k = new Set(gone), m = G.maps[n]; return Object.keys(G.cards).filter(id => !G.cards[id].bad && G.cards[id].step <= m.capStep && !m.list.includes(id) && !(mainOf[id] || []).length && clean(id, n) && id !== 'moonlit-hare' && !(sideOf[id] || []).length)
+  const replace = (n, gone) => { const k = new Set(gone), m = G.maps[n]; return Object.keys(G.cards).filter(id => usable(id, n) && !m.list.includes(id) && !(mainOf[id] || []).length && clean(id, n) && id !== 'moonlit-hare' && !(sideOf[id] || []).length)
     .map(id => ({ id, t: theme(id, n) })).filter(x => x.t.s >= 5).sort((a, b) => b.t.s - a.t.s || a.id.localeCompare(b.id)).slice(0, 2).map(x => ({ id: x.id, why: x.t.why + ' · ' + G.cards[x.id].rarity + ' · on no list' })); };
   const own = m => m.list.filter(i => Math.min(...mainOf[i]) === m.n && !(G.maps[m.n].rmGone || []).includes(i)).length, maps = [], out0 = n => maps[n], tot = { add: 0, addCards: 0, addConcept: 0, rm: 0, rmMove: 0, rmKeep: 0, rmDrop: 0, rmStuck: 0 };
   G.maps.forEach(m => {
     const out = { n: m.n, id: m.id, name: m.name, cap: m.cap, list: m.list.length, newHere: own(m), target: m.target, add: [], remove: [] };
-    m.add.forEach(a => { tot.add++; const c = addCands(m.n, a.key).slice(0, 4);
-      if (c.length >= 1) { tot.addCards++; out.add.push({ key: a.key, skill: a.name, cards: c.map(x => ({ id: x.id, name: nm(x.id), rarity: G.cards[x.id].rarity, why: x.why })), yes: c.map(x => [m.id, x.id]), why: a.name + ' is in Map ' + m.n + '\'s table row and no card on the list carries it' }); }
-      else { const cc = CONCEPTS[m.n + ':' + a.key]; tot.addConcept++; out.add.push({ key: a.key, skill: a.name, cards: [], concept: cc ? Object.assign({ id: 'concept-' + slug(cc.name), mapId: m.id, mapNo: m.n, skill: a.key }, cc) : null, why: 'no existing card carries ' + a.name + ' and fits Map ' + m.n + '\'s theme and rarity cap' }); } });
+    m.add.forEach(a => { tot.add++; const c = addCands(m.n, a.key).slice(0, a.have ? 2 : 4);
+      if (c.length >= 1) { tot.addCards++; out.add.push({ key: a.key, skill: a.name, have: a.have, cards: c.map(x => ({ id: x.id, name: nm(x.id), rarity: G.cards[x.id].rarity, why: x.why })), yes: c.map(x => [m.id, x.id]), why: a.name + ' is in Map ' + m.n + '\'s table row and no card on the list carries it' }); }
+      else if (a.have) { tot.add--; } else { const cc = CONCEPTS[m.n + ':' + a.key]; tot.addConcept++; out.add.push({ key: a.key, skill: a.name, cards: [], open: !cc /* 2026-11-25 (MAPEXEC1): no concept on purpose (Map 4 Fork: octopi only, CARDS1-1 is open) */, concept: cc ? Object.assign({ id: 'concept-' + slug(cc.name), mapId: m.id, mapNo: m.n, skill: a.key }, cc) : null, why: 'no existing card carries ' + a.name + ' and fits Map ' + m.n + '\'s theme and rarity cap' }); } });
     const left = new Set(); // cards leaving this map
     m.rm.forEach(r => { r.carriers.forEach(id => { tot.rm++; const rows = rowMaps(r.key), sc = G.cards[id].step;
       let B = rows.filter(x => x > m.n)[0]; if (B == null) B = rows.filter(x => x < m.n).pop();
       const other = (G.lists.filter(l => l.n !== m.n && l.ids.some(i => i !== id && G.cards[i] && G.cards[i].keys.includes(r.key))).map(l => l.n)), atB = B != null ? G.lists[B].ids.filter(i => G.cards[i] && G.cards[i].keys.includes(r.key)) : [];
       let kind, why, to = null, also = null, late = false, self = false;
-      const bAdd = B != null && B < m.n && out0(B).add.some(a => a.key === r.key && (a.cards.length || a.concept));
+      const bAdd = B != null && B < m.n && out0(B).add.some(a => a.key === r.key && !a.have && (a.cards.length || a.concept));
       if (bAdd) { kind = 'keep'; to = B; }
       else if ((mainOf[id] || []).some(x => x > m.n && (B != null ? x >= B : x > 20))) { kind = 'drop'; also = mainOf[id].find(x => x > m.n && (B != null ? x >= B : x > 20)); self = true; } // another list that is not itself a To remove (the row's map or later; no row: outside the table)
       else if (B != null && sc <= G.maps[B].capStep && clean(id, B) && theme(id, B).s >= 2) { kind = 'move'; to = B; }
@@ -76,8 +88,9 @@ const slug = s => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^
       else if (kind === 'move') { tot.rmMove++; why = id && (nm(id) + ' carries ' + r.name + '; Map ' + to + '\'s table row has it, so it shows there as intended'); }
       else if (kind === 'drop') { tot.rmDrop++; why = self ? nm(id) + ' is already on Map ' + also + '\'s list, so it is not lost; ' + r.name + ' is not meant to be New! on Map ' + m.n : nm(id) + ' carries ' + r.name + ', which Map ' + also + '\'s list shows too; here it is New! outside the table row, so the card leaves the list (no later map fits it)'; }
       else { tot.rmStuck++; why = r.name + ' is in no map\'s table row and no other list shows it, so any list holding ' + nm(id) + ' marks it To remove; dropping it is the only fix from the cards'; }
+      const kp = KEEPS[m.id + ':' + id]; if (kp) { if (kind === 'move') tot.rmMove--; else if (kind === 'drop') tot.rmDrop--; else if (kind === 'stuck') tot.rmStuck--; else if (kind === 'keep') tot.rmKeep--; kind = 'keep'; to = null; tot.rmKeep++; why = nm(id) + ': ' + kp; } // MAPEXEC1
       left.add(id);
-      out.remove.push({ key: r.key, skill: r.name, card: id, cardName: nm(id), kind, to, also, text: kind === 'keep' ? 'keep ' + nm(id) + ' on Map ' + m.n + ' (Map ' + to + ' adds ' + r.name + ' first)' : kind === 'move' ? 'move ' + nm(id) + ' from Map ' + m.n + ' to Map ' + to + ' (' + (rows.includes(to) ? 'its row has ' + r.name : 'a later map, outside the table, that fits ' + nm(id)) + ')' : kind === 'drop' ? 'drop ' + nm(id) + ' from Map ' + m.n + (self ? ' (also on Map ' + also + ')' : ' (Map ' + also + ' shows ' + r.name + ' too)') : 'drop ' + nm(id) + ' from Map ' + m.n + ' (no row has ' + r.name + ')', why,
+      out.remove.push({ key: r.key, skill: r.name, card: id, cardName: nm(id), kind, to, also, text: kind === 'keep' ? 'keep ' + nm(id) + ' on Map ' + m.n + (to != null ? ' (Map ' + to + ' adds ' + r.name + ' first)' : '') : kind === 'move' ? 'move ' + nm(id) + ' from Map ' + m.n + ' to Map ' + to + ' (' + (rows.includes(to) ? 'its row has ' + r.name : 'a later map, outside the table, that fits ' + nm(id)) + ')' : kind === 'drop' ? 'drop ' + nm(id) + ' from Map ' + m.n + (self ? ' (also on Map ' + also + ')' : ' (Map ' + also + ' shows ' + r.name + ' too)') : 'drop ' + nm(id) + ' from Map ' + m.n + ' (no row has ' + r.name + ')', why,
         yes: kind === 'move' ? [[G.lists[to].id, id]] : [], no: kind === 'keep' ? [] : [[m.id, id]] }); }); });
     const seen = {}; out.remove = out.remove.filter(x => { const o = seen[x.card]; x.keys = [x.key]; if (!o) { seen[x.card] = x; return true; } o.keys.push(x.key); o.skill += ', ' + x.skill; return false; }); // one row per card; its skills joined
     const lost = new Set(out.remove.map(x => x.card)).size, rep = lost && own(m) - out.remove.filter(x => x.kind !== 'keep' && Math.min(...mainOf[x.card]) === m.n).length < m.target ? replace(m.n, [...left]) : [];
