@@ -15,7 +15,7 @@ const fn = (src, name)=>{ const i = src.indexOf('function ' + name + '('); if(i 
 ok((app.match(/\nfunction forgeBaseDef\(/g) || []).length === 1 && !/Object\.assign/.test(fn(app, 'forgeBaseDef')) && /id in liveCards/.test(fn(app, 'forgeBaseDef')), '#5 forgeBaseDef is one lookup, no copy');
 ok(/!loadDialogueFlags\(\)\['seen:forge_cobble_intro'\] && r\.offsetParent !== null/.test(fn(app, 'renderForge')), '#5 the seen flag is read before offsetParent (no forced layout)');
 // #1 #2
-ok(/cardObtainMap\(c\)/.test(fn(app, 'cardFirstMapHTML')) && /cardMapListsOf\(c\)/.test(fn(app, 'cardFirstMapHTML')) && /cardFirstMapHTML\(c\)/.test(fn(app, 'renderEditorInner')) && /pk1OpenMapCards\(b\.dataset\.ui52Map\)/.test(app), '#1 the editor shows the first map and opens its Map cards');
+ok(/const n = f\.n;/.test(fn(app, 'cardFirstMapHTML')) /* 2026-11-26 (FIXPACK1): the list's own map number */ && /cardMapListsOf\(c\)/.test(fn(app, 'cardFirstMapHTML')) && /cardFirstMapHTML\(c\)/.test(fn(app, 'renderEditorInner')) && /pk1OpenMapCards\(b\.dataset\.ui52Map\)/.test(app), '#1 the editor shows the first map and opens its Map cards');
 ok(/adminModeEnabled/.test(fn(app, 'bookFirstMapHTML')) && /cardObtainMap\(d\)/.test(fn(app, 'skillFirstMaps')) && /\.bk-maps-toggle\{position:absolute;/.test(tpl), '#2 admin skill-map toggle, overlaid (absolute)');
 // #3
 ok(/const CODEX_TURN_MS = 760/.test(app) && /pg-leaf-mid/.test(fn(app, 'codexLeafTurn')) && /--pg-turn-ms:760ms/.test(tpl) && !/pgOneFwd|pg-leaf-open/.test(tpl + fn(app, 'codexLeafTurn')), '#3 the turn is 760 ms; one page turns the two-face leaf about its middle');
@@ -52,7 +52,7 @@ async function browser(){
       const t = `@${w}`;
       // #1 the editor's first map
       const ed = await pg.evaluate(`(async()=>{ adminModeEnabled = true; openCardEditor('bramblewood-lynx'); await new Promise(r=> setTimeout(r, 300)); const btn = document.querySelector('#editorOverlay .ui52-first-map');
-        const n = cardObtainMap(rawCardDef('bramblewood-lynx') || getCardDefs()['bramblewood-lynx']); const txt = btn ? btn.textContent : ''; if(btn) btn.click(); await new Promise(r=> setTimeout(r, 400));
+        const n = cardMapListsOf(rawCardDef('bramblewood-lynx') || getCardDefs()['bramblewood-lynx'])[0].n; /* 2026-11-26 (FIXPACK1): the first list's own map number */ const txt = btn ? btn.textContent : ''; if(btn) btn.click(); await new Promise(r=> setTimeout(r, 400));
         const ov = document.getElementById('pk1MapCardsOverlay'), open = !!ov && !ov.hidden; if(ov){ ov.hidden = true; ov.innerHTML = ''; } closeCardEditor(); return {txt, n, open}; })()`);
       ok(new RegExp('Map ' + ed.n + '\\b').test(ed.txt) && ed.open, `${t} #1 the editor shows "Map ${ed.n}" and opens that map's cards (${JSON.stringify(ed)})`);
       // #2 #4 the skills book

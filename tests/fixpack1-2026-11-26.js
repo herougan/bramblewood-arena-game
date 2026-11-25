@@ -103,6 +103,14 @@ const cq = n=> JSON.stringify({completed: Array.from({length: n}, (_, i)=> 'm1:0
     vm.runInNewContext(`const LAST_MAP_KEY = 'bramblewood_last_map_v1'; var mapResumeTried = false, conquestSelectedMap = 'm1', conquestSelectedNodeKey = null;\n${fnSrc('loadLastMap')}\n${fnSrc('resumeLastMap')}\nthis.go = ()=> [resumeLastMap(), conquestSelectedMap];`, R);
     const r = R.go(); ok(r[0] === true && r[1] === 'mf', '3. no record: the furthest open map (healMapProgress), not Map 0'); }
 
+  // ======================================================================= 4. the card's first-map chip: its list's own map number
+  { const f = fnSrc('cardFirstMapHTML');
+    ok(/const n = f\.n;/.test(f) && !/cardObtainMap/.test(f), '4. the chip names its list\'s own map number (was cardObtainMap: Fumarole Ibex "Map 14 · Eye of the Volcano", a Map 20 side map)');
+    const C = {TX: (k, o)=> k === 'ui.pg-map-n' ? 'Map ' + o.n : k, escapeHtml: s=> String(s), escapeAttr: s=> String(s), cardObtainMap: ()=> 14, cardOtherMapsHTML: ()=> '',
+      cardMapListsOf: ()=> [{loc: 'me', kind: 'side', n: 20}], mpMapById: id=> ({id, name: 'Eye of the Volcano', icon: ''})};
+    vm.runInNewContext(f + '\nthis.h = cardFirstMapHTML({id: "fumarole-ibex"});', C);
+    ok(/Map 20 · Eye of the Volcano/.test(C.h) && !/Map 14/.test(C.h), '4. Fumarole Ibex reads "Map 20 · Eye of the Volcano (side)" (' + C.h.replace(/<[^>]+>/g, '').trim() + ')'); }
+
   console.log(fail ? `fixpack1: ${fail} of ${n} checks failed` : `fixpack1: all ${n} checks passed`);
   process.exit(fail ? 1 : 0);
 })();

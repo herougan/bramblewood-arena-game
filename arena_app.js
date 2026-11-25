@@ -12479,15 +12479,14 @@ function mountEditorSide(modal){
   });
   refresh();
 }
-// 2026-11-13 (package UI52, owner 11:50 #1): where the card first appears on the maps: cardObtainMap (the source of canonical/card-obtain-maps.json, DF-1);
-// the button opens the Map cards view of the map whose list names it (cardFirstMapList), else of that main map
+// 2026-11-13 (package UI52, owner 11:50 #1): the first map list that names the card, with that list's own map number; the button opens its Map cards view.
+// 2026-11-26 (FIXPACK1): the number was cardObtainMap (DF-1's budget map, e.g. Pack 3's first map), so 129 cards read another map's number beside the list's name
 function cardFirstMapHTML(c){
   if(!c || !c.id) return '';
   const all = cardMapListsOf(c), f = all[0], m = f ? mpMapById(f.loc) : null;
   // 2026-11-20 (package UIQ3, owner 00:22): chips follow the lists only; a card in no list (obtain source alone) reads "no map", and the row is one wrapper that ceRefreshMapChips re-renders
   if(!m) return `<span id="ceMapChips" class="ce-map-chips"><span class="ui52-first-map is-none">🗺️ ${escapeHtml(TX('ui.ui52-first-map-none'))}</span></span>`;
-  let n = 0; try{ n = cardObtainMap(c); }catch(e){}
-  if(!(n > 0)) n = f.n; // 2026-11-18 (MAPLIST1): a card nothing hands out yet (cardObtainMap 0) reads its list's map number; an obtainable card keeps where it is obtained (DF-1)
+  const n = f.n;
   return `<span id="ceMapChips" class="ce-map-chips"><button type="button" class="btn small ghost ui52-first-map is-first" data-ui52-map="${escapeAttr(m.id)}" title="${escapeAttr(TX('ui.ui52-first-map-tip'))}">🗺️ ${escapeHtml(TX('ui.pg-map-n', {n}))} · ${escapeHtml((m.icon ? m.icon + ' ' : '') + m.name)}${f.kind ? ' (' + escapeHtml(TX(f.kind === 'side' ? 'ui.maplist1-side' : 'ui.maplist1-special')) + ')' : ''}</button>${cardOtherMapsHTML(all.slice(1))}</span>`;
 }
 // 2026-11-20 (UIQ3, coordinator: the owner reads a map's list as his Yes picks): the lists that hold the card, in road order. A map or side map with a map-picks row
