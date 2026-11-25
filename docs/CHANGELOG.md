@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-25 Package ROADFIX4 (road re-fit after DAUNT2, MAPEXEC1, CARDVET1)
+- **Road measured (Maps 0-20, 400 games):** the card changes took the road from 177 in band / 185 within 10 / 6 beyond 20 (`post1124d`) to 122 / 131 / 28 (`post1125`). Causes, one old card back at a time: the Map reference decks' Ibex Rockcaller (Maps 12-20, harder) and Tide Seahorse (Maps 10-16, easier), Harbor Seal (Map 17), Sleepless Shrew (Map 7, 7-A), Carrion Beetle (20-A), Dust-devil Kestrel (Map 18), Salvager Hermit Crab (Map 2).
+- **64 enemy decks re-fit by list swaps** (leaders, first-clear cards, sizes kept; no Shield, Health, level or card change; no new off-list card), each kept only in band or 2+ points nearer on seeds 9100 and 5100: **179 / 183 / 7** (`post1125b`). 14 proposals failed the reads (5 of their fights fixed later by the search) and 3 changed a leader (re-fit with it kept). Owner calls: the reference decks after CARDVET1b, Map 17's Harbor Seal, 19-5 / 19-6's Honey Badger Fury, 2-2. Doc: `docs/balance/roadfix4-2026-11-25.md`.
+
 ## 2026-11-25 Package CARDVET1c (owner 11-25 00:22 vet pass, Maps 14-20 incl. side maps)
 - **Maps 14-20 vetted (142 cards, 2 done in 1a):** 117 kept, 2 tweaked, 12 redesigned, 9 real-animal swaps. Active designs 23 -> 30 of 142. Map table (Maps 0-20) counts unchanged (44 / 17 / 0 / 6, no carrier lost; Acid left "To remove"). Doc: `docs/design/cardvet1c-2026-11-25.md`.
 - **Real animals first (owner named three):** Magma Salamander -> Marine Iguana, Magma Rhino -> Cape Buffalo, The Caldera Wyrm -> The Caldera Komodo (an oversized Komodo dragon); also Fire Drake Hatchling -> Komodo Hatchling, Granite Ox Golem -> Gaur, Brimstone Hound -> African Wild Dog, Ember Revenant -> Cassowary, Malachite Golem -> Glyptodon, Sandstorm Roc -> Griffon Vulture. Art needs a redo: `docs/art/real1-requests.md`.
