@@ -24,7 +24,7 @@ const DES = {
   'lucky-hopper': {set: {cost: 1, wait: 0, effects: {triggers: [SPAWN({do: 'drawCard', count: 1})]}}, fit: 0.1},
   'puddle-skimmer': {set: {effects: {speed: {kind: 'swift'}}}, fit: 0.3, owner: true},
   // --- Map 2 side maps (mp, mg)
-  'lodge-engineer': {set: {effects: {forestry: 1, delivery: 1}}, fit: 0.25},
+  'lodge-engineer': {set: {effects: {forestry: 1, delivery: 1}}, fit: 0.25, core: 'delivery'},
   'trash-panda-trickster': {set: {wait: 0, effects: {nocturnal: 1, triggers: [SPAWN({do: 'gain', resource: 'lumber', amount: 1})]}}, fit: 0.6},
   'salvager-hermit-crab': {set: {effects: {armor: 2, triggers: [SPAWN({do: 'gain', resource: 'lumber', amount: 1})]}}, fit: 0.08},
   // --- Map 3 (special list)
