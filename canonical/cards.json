@@ -8230,14 +8230,21 @@
     "cost": 0,
     "wait": 1,
     "attack": 1,
-    "health": 10,
+    "health": 11,
     "archetypes": [
       "Cave",
       "Insect"
     ],
     "effects": {
       "nocturnal": true,
-      "prayer": 1
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "gain",
+          "resource": "lumber",
+          "amount": 1
+        }
+      ]
     },
     "flavor": "Lights the tunnel and, somehow, the collection plate.",
     "locked": true,
@@ -8250,26 +8257,23 @@
       "Insect"
     ],
     "animal": "glowworm",
-    "creatorNote": "2026-10-19 retune (v5 L/10): was 2/6 (well under: 2A+H+S 46.3% -> 66.6% of N 29.55). 2026-10-19 halve (BF5): was 3/10. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 1/4. 2026-10-21 human pass I (owner's hub skill costs): 1/9 -> 1/10. 2026-11-22 (NOC7, owner 13:22): placed on Map 7 (Morel Hollow) as its second Nocturnal carrier; stats kept.",
+    "creatorNote": "2026-10-19 retune (v5 L/10): was 2/6 (well under: 2A+H+S 46.3% -> 66.6% of N 29.55). 2026-10-19 halve (BF5): was 3/10. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 1/4. 2026-10-21 human pass I (owner's hub skill costs): 1/9 -> 1/10. 2026-11-22 (NOC7, owner 13:22): placed on Map 7 (Morel Hollow) as its second Nocturnal carrier; stats kept. 2026-11-25 (CARDVET1b, owner 00:22 vet pass): was 0/1 1/10 {\"nocturnal\":true,\"prayer\":1}; now 0/1 1/11 {\"nocturnal\":true,\"triggers\":[{\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":1}]}.",
     "awaitingSource": true,
-    "levelBonus": {
-      "4": {
-        "health": 1
-      },
-      "7": {
-        "health": 2,
-        "skills": {
-          "prayer": 2
-        }
-      },
-      "10": {
-        "health": 2
-      }
-    },
     "source": {
       "kind": "pack",
       "tier": 2,
       "map": "mu"
+    },
+    "levelBonus": {
+      "4": {
+        "health": 2
+      },
+      "7": {
+        "health": 2
+      },
+      "10": {
+        "health": 2
+      }
     }
   },
   {
@@ -46320,7 +46324,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 2,
-    "health": 7,
+    "health": 8,
     "rarity": "common",
     "archetypes": [
       "Forest",
@@ -46331,7 +46335,8 @@
     ],
     "animal": "shrew",
     "effects": {
-      "wakeful": true
+      "nocturnal": 1,
+      "poison": 1
     },
     "flavor": "A shrew that sleeps starves by morning. This one stopped trying years ago, and the spores just make it sneeze.",
     "numericId": 9167,
@@ -46342,16 +46347,21 @@
       "tier": 2,
       "map": "mu"
     },
-    "creatorNote": "2026-10-26 (package CONTENT3) placed in Pack 2, mu: The Morel Hollow (Map 7): Wakeful, the Sleep-immune card before 7-5's Spore Cloud (owner G5); 7-4's first-clear card. Fit: the formula line on its 2:6 shape, 3/9 (95% of N 16.24, S 0.5). 2026-10-28 BAL7 M1 re-balance (contribution 6.9, +8.8 vs its band): 3/9 -> 2/7.",
+    "creatorNote": "2026-10-26 (package CONTENT3) placed in Pack 2, mu: The Morel Hollow (Map 7): Wakeful, the Sleep-immune card before 7-5's Spore Cloud (owner G5); 7-4's first-clear card. Fit: the formula line on its 2:6 shape, 3/9 (95% of N 16.24, S 0.5). 2026-10-28 BAL7 M1 re-balance (contribution 6.9, +8.8 vs its band): 3/9 -> 2/7. 2026-11-25 (CARDVET1b, owner 00:22 vet pass): was 0/1 2/7 {\"wakeful\":true}; now 0/1 2/8 {\"nocturnal\":1,\"poison\":1}.",
     "levelBonus": {
       "4": {
-        "health": 2
+        "health": 1
       },
-      "7": {
-        "attack": 1
+      "6": {
+        "skills": {
+          "poison": 2
+        }
       },
       "10": {
-        "health": 2
+        "health": 1,
+        "skills": {
+          "poison": 3
+        }
       }
     }
   },
