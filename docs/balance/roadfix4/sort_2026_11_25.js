@@ -10,7 +10,11 @@ const X = require(path.join(ROOT, 'tools', 'legal1', 'lib_legal_2026_11_15.js'))
 const a = process.argv.slice(2), arg = (k, d) => { const i = a.indexOf(k); return i >= 0 ? a[i + 1] : d; };
 const raw = {}; fs.readFileSync(a[0], 'utf8').trim().split('\n').filter(Boolean).map(JSON.parse).forEach(x => { raw[x.key] = x; });
 const offGain = (code, d) => { const { n, f } = X.byCode[code]; return Object.keys(d).filter(id => !f.pool.includes(id) && (d[id] || 0) > (n.deck[id] || 0)); };
-const newP = (code, d, fx) => { const was = X.problemsFull(code, X.byCode[code].n.deck, {}); return X.problemsFull(code, d, fx).filter(p => !was.includes(p)); };
+// a lesser form of a problem the live deck already has (K14 "<id> x3" from x4, fewer non-unique copies, a lower usage count) is not new
+const worseOf = p => { let m; if ((m = p.match(/^(.*) x(\d+)$/)) && !p.startsWith('kept card')) return [m[1] + ' x#', +m[2]];
+  if ((m = p.match(/^(\d+) non-unique copies$/))) return ['# non-unique copies', +m[1]]; if ((m = p.match(/^(.* usage \S+) (\d+)>(\d+)$/))) return [m[1] + ' #>' + m[3], +m[2]]; return null; };
+const isNew = (p, was) => { if (was.includes(p)) return false; const w = worseOf(p); return !w || !was.some(q => { const v = worseOf(q); return v && v[0] === w[0] && v[1] >= w[1]; }); };
+const newP = (code, d, fx) => { const was = X.problemsFull(code, X.byCode[code].n.deck, {}); return X.problemsFull(code, d, fx).filter(p => isNew(p, was)); };
 const take = {}, rest = [];
 for (const x of Object.values(raw)) {
   const d = x.deck, live = X.byCode[x.key].n.deck, changed = d && JSON.stringify(Object.entries(d).sort()) !== JSON.stringify(Object.entries(live).sort());
