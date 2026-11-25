@@ -4774,5 +4774,13 @@
  "has that much less Attack; fades 1 a round after its last hit.": "hat so viel weniger Angriff; sinkt nach dem letzten Treffer um 1 pro Runde.",
  "has {n} less Attack; fades 1 a round after its last hit.": "hat {n} weniger Angriff; sinkt nach dem letzten Treffer um 1 pro Runde.",
  "Poison kill": "Gifttod",
- "Poison kill: an enemy unit died of poison while this unit was on the board": "Gifttod: eine gegnerische Einheit ist an Gift gestorben, während diese Einheit auf dem Feld war"
+ "Poison kill: an enemy unit died of poison while this unit was on the board": "Gifttod: eine gegnerische Einheit ist an Gift gestorben, während diese Einheit auf dem Feld war",
+ "Pick a part to fight": "Wähle einen Teil zum Kämpfen",
+ "{v1}/{v2} cleared": "{v1}/{v2} geschafft",
+ "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} geschafft",
+ "Cleared": "Geschafft",
+ "{v1} card{s} collected": "{v1} Karte(n) gesammelt",
+ "{v1} more pack{s} to open": "Noch {v1} Pack(s) zu öffnen",
+ "Own 50 different cards": "Besitze 50 verschiedene Karten",
+ "The Caldera Wyrm": "Der Calderawurm"
 }

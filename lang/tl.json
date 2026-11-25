@@ -4775,5 +4775,13 @@
  "has that much less Attack; fades 1 a round after its last hit.": "may ganoong kababang Atake; bumababa ng 1 bawat round pagkatapos ng huling tama.",
  "has {n} less Attack; fades 1 a round after its last hit.": "may {n} na mas mababang Atake; bumababa ng 1 bawat round pagkatapos ng huling tama.",
  "Poison kill": "Patay sa lason",
- "Poison kill: an enemy unit died of poison while this unit was on the board": "Patay sa lason: may kalabang yunit na namatay sa lason habang nasa board ang yunit na ito"
+ "Poison kill: an enemy unit died of poison while this unit was on the board": "Patay sa lason: may kalabang yunit na namatay sa lason habang nasa board ang yunit na ito",
+ "Pick a part to fight": "Pumili ng bahaging lalabanan",
+ "{v1}/{v2} cleared": "{v1}/{v2} natapos",
+ "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} natapos",
+ "Cleared": "Natapos",
+ "{v1} card{s} collected": "{v1} card na nakolekta",
+ "{v1} more pack{s} to open": "{v1} pang pack na bubuksan",
+ "Own 50 different cards": "Magkaroon ng 50 magkakaibang card",
+ "The Caldera Wyrm": "Ang Wyrm ng Kaldera"
 }

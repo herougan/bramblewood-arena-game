@@ -89,7 +89,8 @@ const fn = name=>{ let i = src.indexOf(`\nfunction ${name}(`); if(i < 0) throw n
     ok(t('Next: Thistlewood at Gate') != null, `${c}: "Next: {v1} at {v2}" still matches a name with " at " in it`);
     const cl = t('Thistlewood 4/5 cleared'); ok(cl && !/cleared/.test(cl) && /4\/5|4\/5/.test(cl), `${c}: "Thistlewood 4/5 cleared" is translated (${cl})`);
     const cc = t('48 cards collected'); ok(cc && !/collected/.test(cc) && cc.includes('48'), `${c}: "48 cards collected" is translated (${cc})`);
-    const sp = t('Clear Sable Swampmire / The Morel Hollow'); ok(sp && !/^Clear /.test(sp), `${c}: the side-map pointer "Clear A / B" is translated (${sp})`);
+    // 2026-11-25 (TESTFIX11): the "Clear A / B" pointer left the code before 11-22; the side-map entrance reads "{cave} — Clear {map} to open" (subMapEntrancesHTML)
+    const sp = t('Mossy Burrow — Clear Sable Swampmire to open'); ok(sp && !/Clear /.test(sp) && /Mossy Burrow/.test(sp), `${c}: the side-map pointer "<cave> — Clear <map> to open" is translated (${sp})`);
     ok(t('Cleared') && t('Cleared') !== 'Cleared', `${c}: "Cleared"`);
   });
   const es = createTranslator(Object.assign({}, rd('lang/ui/es.json'), rd('lang/es.json')));

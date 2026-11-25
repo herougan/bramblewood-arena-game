@@ -4775,5 +4775,13 @@
  "has that much less Attack; fades 1 a round after its last hit.": "その分だけ攻撃力が下がる。最後の命中の後、毎ラウンド1減る。",
  "has {n} less Attack; fades 1 a round after its last hit.": "攻撃力-{n}。最後の命中の後、毎ラウンド1減る。",
  "Poison kill": "毒で撃破",
- "Poison kill: an enemy unit died of poison while this unit was on the board": "毒で撃破：このユニットが場にいる間に、敵ユニットが毒で倒れた"
+ "Poison kill: an enemy unit died of poison while this unit was on the board": "毒で撃破：このユニットが場にいる間に、敵ユニットが毒で倒れた",
+ "Pick a part to fight": "戦う部位を選ぶ",
+ "{v1}/{v2} cleared": "{v1}/{v2} 制覇",
+ "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} 制覇",
+ "Cleared": "制覇",
+ "{v1} card{s} collected": "{v1}枚のカードを入手",
+ "{v1} more pack{s} to open": "開けるパックがあと{v1}個",
+ "Own 50 different cards": "異なるカードを50種持つ",
+ "The Caldera Wyrm": "カルデラのワーム"
 }

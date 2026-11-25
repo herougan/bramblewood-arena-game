@@ -4775,5 +4775,13 @@
  "has that much less Attack; fades 1 a round after its last hit.": "攻擊力降低相應數值；最後一次命中後每回合衰減 1。",
  "has {n} less Attack; fades 1 a round after its last hit.": "攻擊力 -{n}；最後一次命中後每回合衰減 1。",
  "Poison kill": "毒殺",
- "Poison kill: an enemy unit died of poison while this unit was on the board": "毒殺：此單位在場時，有敵方單位死於中毒"
+ "Poison kill: an enemy unit died of poison while this unit was on the board": "毒殺：此單位在場時，有敵方單位死於中毒",
+ "Pick a part to fight": "選擇要挑戰的部位",
+ "{v1}/{v2} cleared": "已通關 {v1}/{v2}",
+ "{v1} — {v2}/{v3} cleared": "{v1} — 已通關 {v2}/{v3}",
+ "Cleared": "已通關",
+ "{v1} card{s} collected": "已收集 {v1} 張卡牌",
+ "{v1} more pack{s} to open": "還有 {v1} 個卡包要開",
+ "Own 50 different cards": "擁有 50 種不同的卡牌",
+ "The Caldera Wyrm": "火山口巨龍"
 }

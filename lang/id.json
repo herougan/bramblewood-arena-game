@@ -4776,5 +4776,13 @@
  "has that much less Attack; fades 1 a round after its last hit.": "Serangannya lebih rendah sebanyak itu; turun 1 per ronde setelah serangan terakhir.",
  "has {n} less Attack; fades 1 a round after its last hit.": "Serangannya {n} lebih rendah; turun 1 per ronde setelah serangan terakhir.",
  "Poison kill": "Mati karena racun",
- "Poison kill: an enemy unit died of poison while this unit was on the board": "Mati karena racun: unit musuh mati karena racun saat unit ini ada di papan"
+ "Poison kill: an enemy unit died of poison while this unit was on the board": "Mati karena racun: unit musuh mati karena racun saat unit ini ada di papan",
+ "Pick a part to fight": "Pilih bagian untuk dilawan",
+ "{v1}/{v2} cleared": "{v1}/{v2} diselesaikan",
+ "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} diselesaikan",
+ "Cleared": "Selesai",
+ "{v1} card{s} collected": "{v1} kartu terkumpul",
+ "{v1} more pack{s} to open": "{v1} paket lagi untuk dibuka",
+ "Own 50 different cards": "Miliki 50 kartu berbeda",
+ "The Caldera Wyrm": "Naga Kaldera"
 }

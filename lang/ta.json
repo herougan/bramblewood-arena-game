@@ -4777,5 +4777,13 @@
  "has that much less Attack; fades 1 a round after its last hit.": "அவ்வளவு குறைந்த தாக்குதல்; கடைசித் தாக்குதலுக்குப் பின் சுற்றுக்கு 1 குறையும்.",
  "has {n} less Attack; fades 1 a round after its last hit.": "{n} குறைந்த தாக்குதல்; கடைசித் தாக்குதலுக்குப் பின் சுற்றுக்கு 1 குறையும்.",
  "Poison kill": "நஞ்சுக் கொலை",
- "Poison kill: an enemy unit died of poison while this unit was on the board": "நஞ்சுக் கொலை: இந்த அலகு பலகையில் இருந்தபோது ஒரு எதிரி அலகு நஞ்சால் இறந்தது"
+ "Poison kill: an enemy unit died of poison while this unit was on the board": "நஞ்சுக் கொலை: இந்த அலகு பலகையில் இருந்தபோது ஒரு எதிரி அலகு நஞ்சால் இறந்தது",
+ "Pick a part to fight": "போரிட ஒரு பகுதியைத் தேர்ந்தெடு",
+ "{v1}/{v2} cleared": "{v1}/{v2} முடிந்தது",
+ "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} முடிந்தது",
+ "Cleared": "முடிந்தது",
+ "{v1} card{s} collected": "{v1} அட்டைகள் சேகரிக்கப்பட்டன",
+ "{v1} more pack{s} to open": "திறக்க இன்னும் {v1} பொதிகள்",
+ "Own 50 different cards": "50 வெவ்வேறு அட்டைகளை வைத்திரு",
+ "The Caldera Wyrm": "எரிமலைவாய் நாகம்"
 }

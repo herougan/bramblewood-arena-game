@@ -4777,5 +4777,13 @@
  "has that much less Attack; fades 1 a round after its last hit.": "그만큼 공격력이 낮아져요. 마지막 명중 후 매 라운드 1씩 줄어요.",
  "has {n} less Attack; fades 1 a round after its last hit.": "공격력이 {n} 낮아져요. 마지막 명중 후 매 라운드 1씩 줄어요.",
  "Poison kill": "독 처치",
- "Poison kill: an enemy unit died of poison while this unit was on the board": "독 처치: 이 유닛이 보드에 있는 동안 적 유닛이 독으로 쓰러짐"
+ "Poison kill: an enemy unit died of poison while this unit was on the board": "독 처치: 이 유닛이 보드에 있는 동안 적 유닛이 독으로 쓰러짐",
+ "Pick a part to fight": "싸울 부위를 골라요",
+ "{v1}/{v2} cleared": "{v1}/{v2} 클리어",
+ "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} 클리어",
+ "Cleared": "클리어",
+ "{v1} card{s} collected": "카드 {v1}장 수집",
+ "{v1} more pack{s} to open": "열 팩 {v1}개 남음",
+ "Own 50 different cards": "서로 다른 카드 50장 보유",
+ "The Caldera Wyrm": "칼데라 거룡"
 }

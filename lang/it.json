@@ -4776,5 +4776,13 @@
  "has that much less Attack; fades 1 a round after its last hit.": "ha altrettanto Attacco in meno; cala di 1 a round dopo l’ultimo colpo.",
  "has {n} less Attack; fades 1 a round after its last hit.": "ha {n} di Attacco in meno; cala di 1 a round dopo l’ultimo colpo.",
  "Poison kill": "Morte per veleno",
- "Poison kill: an enemy unit died of poison while this unit was on the board": "Morte per veleno: un’unità nemica è morta di veleno mentre questa unità era sul campo"
+ "Poison kill: an enemy unit died of poison while this unit was on the board": "Morte per veleno: un’unità nemica è morta di veleno mentre questa unità era sul campo",
+ "Pick a part to fight": "Scegli una parte da combattere",
+ "{v1}/{v2} cleared": "{v1}/{v2} superate",
+ "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} superate",
+ "Cleared": "Superata",
+ "{v1} card{s} collected": "{v1} carte raccolte",
+ "{v1} more pack{s} to open": "Altre {v1} bustine da aprire",
+ "Own 50 different cards": "Possiedi 50 carte diverse",
+ "The Caldera Wyrm": "La Serpe della Caldera"
 }

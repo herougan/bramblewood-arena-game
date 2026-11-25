@@ -4774,5 +4774,13 @@
  "has that much less Attack; fades 1 a round after its last hit.": "tiene esa cantidad de Ataque menos; baja 1 por ronda tras su último golpe.",
  "has {n} less Attack; fades 1 a round after its last hit.": "tiene {n} de Ataque menos; baja 1 por ronda tras su último golpe.",
  "Poison kill": "Muerte por veneno",
- "Poison kill: an enemy unit died of poison while this unit was on the board": "Muerte por veneno: una unidad enemiga murió por veneno mientras esta unidad estaba en el tablero"
+ "Poison kill: an enemy unit died of poison while this unit was on the board": "Muerte por veneno: una unidad enemiga murió por veneno mientras esta unidad estaba en el tablero",
+ "Pick a part to fight": "Elige una parte contra la que luchar",
+ "{v1}/{v2} cleared": "{v1}/{v2} superados",
+ "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} superados",
+ "Cleared": "Superado",
+ "{v1} card{s} collected": "{v1} carta{s} reunida{s}",
+ "{v1} more pack{s} to open": "Quedan {v1} sobre{s} por abrir",
+ "Own 50 different cards": "Ten 50 cartas distintas",
+ "The Caldera Wyrm": "La Sierpe de la caldera"
 }

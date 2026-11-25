@@ -49,7 +49,8 @@ ok(!/label:'On Heal(ed)?'|label:'On Ally Healed'/.test(app), '6. no On Heal / On
 ok(['onHeal', 'onHealed', 'onAllyHealed'].every(k=> /Nurse/.test(costs.triggers.find(t=> t.id === k).label)), '6. skill-costs.json labels follow');
 { const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
   CODES.forEach(c=>{ const m = JSON.parse(R('lang/' + c + '.json')), u = JSON.parse(R('lang/ui/' + c + '.json'));
-    ok(m['Armoured Shield'] && ['On Nurse', 'On Nursed', 'On Ally Nursed', 'Nursed'].every(k=> u[k]), `texts: ${c} has Armoured Shield and the Nurse triggers`); }); }
+    // 2026-11-25 (TESTFIX11): 'Nursed' is the admin trigger editor's sub-label (TRIGGER_FAMILIES), which tools/i18n_ui.py never translates
+    ok(m['Armoured Shield'] && ['On Nurse', 'On Nursed', 'On Ally Nursed'].every(k=> u[k]), `texts: ${c} has Armoured Shield and the Nurse triggers`); }); }
 
 // ---- budget: N's multiplier sees the Level 0 / 1 skills (forge-curve check 1)
 { const diff = cards.filter(SC.measured).filter(c=> c.levelSkills).filter(c=> Math.abs(T.budgetN(c) - T.budget(c).N) > 1e-9).map(c=> c.id);
