@@ -100,3 +100,8 @@ start {"cataphract-destrier":4,"mallard-marauder":3,"stoat-cutthroat":3,"village
 round 1: cur 98.3/95.3; 21 legal, 21 read + 14 predicted (of 28); top: -1 plains-zebra +1 fawn-scout 95/95 | -1 plains-zebra +1 siege-rhino 95/95.3 | -1 plains-zebra +1 tasmanian-devil 95/96.7 | -1 plains-zebra +1 mosquito-cloud 96.7/96.7 | -1 plains-zebra +1 boreal-elk 96.7/97.3
 no nearer move
 RESULT 15-3 {"cataphract-destrier":4,"mallard-marauder":3,"stoat-cutthroat":3,"village-miller":3,"grass-viper":4,"plains-zebra":1} 95.3 {} moves:  problems: []
+start {"bramblewood-lynx":3,"pronghorn-racer":3,"stoat-cutthroat":2,"village-miller":4,"grass-viper":3,"siege-rhino":2} 86.7
+round 1: cur 86.7/86.7; 40 legal, 40 read + 14 predicted (of 30); top: -1 pronghorn-racer +1 grass-viper 78.3/85.3 | -1 bramblewood-lynx +1 grass-viper 80/85.3 | -1 stoat-cutthroat +1 grass-viper 80/87 | -2 stoat-cutthroat +1 grass-viper +1 pronghorn-racer 78.3/87.3 | -1 bramblewood-lynx -1 stoat-cutthroat +1 grass-viper +1 pronghorn-racer 80/88.3
+round 2: cur 78.3/85.3; 45 legal, 45 read + 14 predicted (of 26); top: -1 bramblewood-lynx +1 pronghorn-racer 80/85.3 | -1 pronghorn-racer +1 stoat-cutthroat 78.3/87 | -1 stoat-cutthroat +1 pronghorn-racer 80/87 | -2 stoat-cutthroat +2 pronghorn-racer 78.3/87.3 | -1 bramblewood-lynx +1 stoat-cutthroat 80/87.7
+no nearer move
+RESULT 15-4 {"bramblewood-lynx":3,"pronghorn-racer":2,"stoat-cutthroat":2,"village-miller":4,"grass-viper":4,"siege-rhino":2} 85.3 {} moves: -1 pronghorn-racer +1 grass-viper problems: []
