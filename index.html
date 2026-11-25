@@ -7835,7 +7835,12 @@
   .po2-rar{position:absolute; left:50%; bottom:-14px; z-index:7; transform:translateX(-50%) scale(.6); opacity:0; white-space:nowrap; pointer-events:none;
     font:900 15px/1 'Baloo 2',system-ui,sans-serif; letter-spacing:.08em; text-transform:uppercase; color:#fff; padding:5px 14px; border-radius:999px;
     background:linear-gradient(135deg, var(--rarity-a), var(--rarity-b)); box-shadow:0 4px 14px rgba(0,0,0,.45), 0 0 18px var(--rarity-a); text-shadow:0 1px 2px rgba(0,0,0,.6); transition:opacity .25s, transform .35s cubic-bezier(.2,1.4,.4,1);}
-  .po2-card.is-revealed .po2-rar{opacity:1; transform:translateX(-50%) scale(1);}
+  .po2-card.is-revealed .po2-rar{opacity:1; transform:translateX(-50%) scale(1); transition-delay:.55s;} /* 2026-11-26 (PACKFX1): the label waits for the turn to end */
+  /* 2026-11-26 (PACKFX1): the rarity glint: a soft band sweeps the revealed card once (.26 s, translate only, clipped by this box) */
+  .po2-glint{position:absolute; inset:0; z-index:8; overflow:hidden; border-radius:6%; pointer-events:none;}
+  .po2-glint::before{content:''; position:absolute; top:-10%; bottom:-10%; left:0; width:40%; background:linear-gradient(90deg, transparent, var(--glint, #fff), transparent); opacity:.75; transform:skewX(-14deg); translate:-120% 0; animation:po2Glint .26s ease-out forwards;}
+  @keyframes po2Glint{to{translate:320% 0;}}
+  @media (prefers-reduced-motion: reduce){ .po2-glint{display:none;} } html[data-fx="none"] .po2-glint{display:none;}
   .po2-card.is-revealed .po2-front{box-shadow:0 0 0 3px var(--rarity-a), 0 0 40px 10px color-mix(in srgb, var(--rarity-a) 55%, transparent);}
   /* NEW!: a yellow border that flashes, then fades away (the NEW! tag stays) */
   .po2-card.is-new-moment .po2-front{animation:po2NewBorder 1.4s ease-out forwards !important;}
@@ -59837,7 +59842,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '1950c933f591', BUILD_CARD_HASH = 'f60d509855dfc5f50eddbeed63d10bcd2a5e0a691271928a31e1d7cbdb072047';
+const BUILD_ID = '4965b9a4306c', BUILD_CARD_HASH = 'f60d509855dfc5f50eddbeed63d10bcd2a5e0a691271928a31e1d7cbdb072047';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
@@ -118049,6 +118054,14 @@ function packCoverArt(pack, k){
 const PACK_JACKPOT_CHANCE = 0.002, PACK_GLOW_CHANCE = 0.55;
 const SPARK_STEP = {special:2, devlegendary:8, devancient:10, eventlegendary:8, eventrare:2, starter:0, common:0, uncommon:1, quest:1, rare:2, veryrare:3, superrare:4, epic:5, heroic:6, unique:7, questunique:7, legendary:8, mythic:9, ancient:10};
 function sparkChance(rarity){ return Math.min(1, 0.001 * Math.pow(2, SPARK_STEP[rarity||'common'] || 0)); }
+/* 2026-11-26 (PACKFX1, owner 11-24 22:29 #6): the glint on a revealed pack card (under 0.3 s). Chance by tier, from Common up, one clear step each:
+   starter 5% | common 10% | uncommon 20% | quest 25% | rare 35% | very rare 50% | super rare 72% | epic and every tier above 99%
+   (the owner's anchor "Unique is 10% above the one below it" cannot hold: 99% is reached at Epic, so Heroic and Unique both sit at the 99% cap).
+   Colour: the card's own rarity at Epic and up; below that 3 times in 10 it leans one step up or down, so a glint hints but can mislead a little. */
+const PACK_GLINT_P = [5, 10, 20, 25, 35, 50, 72, 99];
+function packGlint(rarity, rnd){ rnd = rnd || Math.random; const t = Math.max(0, RARITY_TIER_BANDS.indexOf(rarity || 'common'));
+  if(rnd() * 100 >= PACK_GLINT_P[Math.min(t, 7)]) return null;
+  return RARITY_TIER_BANDS[t < 7 && rnd() < 0.3 ? Math.max(1, t + (rnd() < 0.5 ? -1 : 1)) : t]; }
 function rollPackGlow(results, defs){
   const tierOf = id=> RARITY_TIER_BANDS.indexOf((defs[id] && defs[id].rarity) || 'common');
   const best = Math.max(0, ...results.map(r=> tierOf(r.id)));
@@ -119025,7 +119038,7 @@ function openPackAnimation(pack, opened, opts){
     return `<button type="button" class="po2-card ${teaseOf(r.id)} ${r.isNew?'is-new':''}" data-i="${i}" style="--rarity-a:${rA}; --rarity-b:${rB}" aria-label="Card ${i+1} of ${o.results.length}, face down">
       ${'' /* 2026-10-30 (package CS-C): the card is the Detail card, face down (its own backing, 2026-10-16) until it is revealed; once it is up it
            tilts and turns with a sideways drag (enter() mounts it), a tap still moves on */}${detailCardHTML(d, {tag:'span', face:'back', focus:false, tile: poTile(Object.assign({}, d, {locked:false}), {editable:false, extraClass: pullClass(r, d)}) + (r.shiny ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''), alias:{spin:'po2-flip', front:'po2-front', back:'po2-back'}})}
-      ${r.isNew || r.seenNew ? `<span class="po2-new" aria-hidden="true">${r.seenNew ? `<b>${escapeHtml(TX('results.new'))}</b>` : ''}${r.isNew ? `<b class="ui23-get${r.seenNew ? ' ui23-late' : ''}">${escapeHtml(TX('ui.ui23-get'))}</b>` : ''}</span>` : ''}${r.count > 1 ? `<span class="po2-stackn" aria-label="${r.count} copies">×${r.count}</span>` : ''}${r.bonusCopy ? `<span class="po2-bonus-copy" aria-hidden="true">${poTile(Object.assign({}, d, {locked:false}), {editable:false, extraClass: pullClass(r, d)})}</span><span class="po2-bonus-tag" aria-hidden="true"><b>Bonus!</b><small>+1 copy</small></span>` : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
+      ${r.isNew || r.seenNew ? `<span class="po2-new" aria-hidden="true">${r.seenNew ? `<b>${escapeHtml(TX('results.new'))}</b>` : `<b class="ui23-get">${escapeHtml(TX('ui.ui23-get'))}</b>`}</span>` : '' /* 2026-11-26 (PACKFX1): one label: New! (never seen) or Get! (seen, not owned) */}${r.count > 1 ? `<span class="po2-stackn" aria-label="${r.count} copies">×${r.count}</span>` : ''}${r.bonusCopy ? `<span class="po2-bonus-copy" aria-hidden="true">${poTile(Object.assign({}, d, {locked:false}), {editable:false, extraClass: pullClass(r, d)})}</span><span class="po2-bonus-tag" aria-hidden="true"><b>Bonus!</b><small>+1 copy</small></span>` : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
       <span class="po2-rar" aria-hidden="true">${escapeHtml(rarityLabelOf(d.rarity||'common'))}</span>
     </button>`; }).join('');
   let deckO = null;
@@ -119074,13 +119087,15 @@ function openPackAnimation(pack, opened, opts){
       const sp = sparkChance(d.rarity);
       if(Math.random() < sp/2){ c.classList.add('is-superspark'); burst(c, ['🌟','💎','✨','🌈','✨'], 46); sfx('rareRise', true); }
       else if(Math.random() < sp){ c.classList.add('is-spark'); burst(c, ['✨','⭐','✨'], 24); sfx('gold'); }
+      { const gl = !reduce && fxAtLeast('low') && !reducedMotion() ? packGlint(d.rarity) : null; // 2026-11-26 (PACKFX1): one translate-only sweep after the turn
+        if(gl) later(()=>{ if(!c.isConnected) return; const e = document.createElement('span'); e.className = 'po2-glint'; e.setAttribute('aria-hidden', 'true'); e.style.setProperty('--glint', rarityStops(gl)[0]); e.addEventListener('animationend', ()=> e.remove()); c.appendChild(e); }, 560); }
       autoNext(()=> collect(c), deckO.isPile ? 1700 : (r.bonusCopy ? 3800 : 3000));
       c.setAttribute('aria-label', `${d.name}${r.isNew ? ', new card' : ''}${r.bonusCopy ? ', bonus: a second copy' : ''}`);
       // 2026-10-17 (user: "the graphics it shows is two blank cards get slapped atop of the card i got - instead, it should be bonus! then a
       // card that looks the same comes out from the back."): "Bonus!" pops, and the identical copy slides out from behind the card.
       if(r.bonusCopy) later(()=>{ if(!c.isConnected) return; c.classList.add('is-bonus'); sfx('unlockChime'); burst(c, ['✨','➕','✨'], 14); }, r.isNew ? 1100 : 650);
-      if(r.isNew){
-        later(()=>{ c.classList.add('is-new-moment'); sfx('unlockChime'); burst(c, ['✨','🌟','🎉','🐾'], 22); overlay.classList.add('po2-flash'); }, 380);
+      if(r.isNew || r.seenNew){
+        later(()=>{ c.classList.add('is-new-moment'); sfx('unlockChime'); burst(c, ['✨','🌟','🎉','🐾'], 22); overlay.classList.add('po2-flash'); }, 600); // 2026-11-26 (PACKFX1): after the turn (.55 s), so no label shows on a card that is still turning
         later(()=> overlay.classList.remove('po2-flash'), 900);
         hint.textContent = featureUnlockedSafe('nest') ? 'New card! It’s in your Nest now.' : 'New card! It’s in your collection now.'; // 2026-10-15: no Nest talk before the Nest
       } else {

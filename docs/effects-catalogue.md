@@ -2100,3 +2100,7 @@ Already in the game under these or other names (skipped):
 - **Bloom condition Poison kill** (`poisonkill`): an enemy died of poison (any poison tick) while the unit stood on the board (`notePoisonDeath` in `damageCardFlat`). Puffball: Bloom (Wet & Poison kill).
 - **Keen Sense** also skips a grounded target's Evasive dodge (`keenNoseVs`, in `combatHitLands` and `dodgeCheck`).
 - **Corrode**'s texts: its hits leave Corrode N (refreshed to the larger, ENG16): N less Attack, fading 1 a round after the last hit.
+
+## 2026-11-26 additions (package PACKFX1)
+- **Pack card glint** (`packGlint`, `.po2-glint`): once a pack card has turned face up, a soft band sweeps across it in 0.26 s (one `translate` animation, clipped by its own box, removed at the end). Chance by rarity: starter 5, common 10, uncommon 20, quest 25, rare 35, very rare 50, super rare 72, Epic and above 99 (%). Colour: the card's rarity at Epic and up; below that 3 in 10 lean one step up or down. None with reduced motion or Effects off. Lab: Cards table, "Pack card glint".
+- The pack card's labels (rarity pill, New! / Get! stamp) wait until the turn ends; the stamp is one label, New! (never seen) or Get! (seen, not owned).

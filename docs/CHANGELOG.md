@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-26 Package PACKFX1 (owner 11-24 22:29 #4 #5 #6)
+- **Pack opener labels:** one label per card: **New!** when the card was never seen, **Get!** when it was seen but not owned (both used to stack). Both stamps and the rarity pill now wait until the turn ends, so nothing shows on a card that is still turning.
+- **Rarity glint:** a 0.26 s band sweeps the revealed card (one `translate` animation). Chance by rarity: starter 5, common 10, uncommon 20, quest 25, rare 35, very rare 50, super rare 72, Epic and up 99 (%); the colour is the card's rarity, but below Epic 3 in 10 lean one step up or down. None with reduced motion or Effects off. Flip CPU unchanged (about 170 ms before and after, headless, 1.8 s window). Test `tests/packfx1-2026-11-26.js`.
+
 ## 2026-11-26 Package FIXPACK1 (owner 11-24 22:29 #1, #7, #10, #12, #13, #15, #20; 11-25 00:16)
 - **Codex across devices (#1):** a progress push reads the cloud's merged lists first (seen, discovered, claims, card stats; only those keys) and folds them in; no read, no write. A sign-in pull that leaves this device ahead pushes on the next tick (it used to mark the merged list as sent). The filters, sort and view toggles (`bramblewood_ui_filters_v1`, Separated, All by ID, Base level / My best) ride the blob and are read back after a pull. Admins get the Separated / All together toggle (grouped by default; All together = one list in the chosen sort). Test: `tests/fixpack1-2026-11-26.js`.
 - **Achievements (#10):** the 🃏 Card Rewards filter is now **🎁 Claim all** (`ui.ui36-card-rewards` reworded in 12 packs; the header copy, the filter and its 2 texts removed), locked with "Map 15" until the player reaches **Map 15** (no feature spot there; only a free pack and the 4th deck slot). A tap that skips the won-card reveal now ends on the still window of every card claimed (`playRewardReveal` resolves `true` only when played out).

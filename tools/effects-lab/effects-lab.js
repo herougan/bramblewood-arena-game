@@ -171,7 +171,7 @@
 
   // ---- full list
   const ALL = [
-    ['Cards', 'Holo foil (pearl, rainbow, cosmos)', 'live', 'Nest, card detail, pack reveals'], ['Cards', 'Gold-leaf rim with sliding streak', 'live', 'Legendary+ cards'], ['Cards', 'Parchment name scroll', 'live', 'Every card'],
+    ['Cards', 'Holo foil (pearl, rainbow, cosmos)', 'live', 'Nest, card detail, pack reveals'], ['Cards', 'Pack card glint (rarity band, 0.26 s)', 'live', 'Pack reveal'], ['Cards', 'Gold-leaf rim with sliding streak', 'live', 'Legendary+ cards'], ['Cards', 'Parchment name scroll', 'live', 'Every card'],
     ['Cards', 'Enamel cost/Wait pills, dark stat chips', 'live', 'Every card'], ['Cards', 'Hero card ring and badge; level-up ring', 'live', 'Hero Hall'], ['Cards', 'Materia burst', 'live', 'Hero Hall, Forge bench'], ['Cards', 'Shine sweep', 'part', 'New cards, rewards'],
     ['Cards', 'Embossed gold lettering', 'idea', 'Legendary names'], ['Cards', 'Stained glass', 'idea', 'Grace cards'], ['Cards', 'Pixel shatter', 'idea', 'Token deaths, Exile'], ['Cards', 'Frost creep', 'idea', 'Frozen status'], ['Cards', 'Chromatic glitch', 'idea', 'Shock, Devilry'],
     ['Combat', 'Damage numbers (gradient, outlined, typed)', 'live', 'All hits and ticks'], ['Combat', 'Attack lunge with wind-up', 'live', 'Every attack'], ['Combat', 'Impact squash and recoil', 'live', 'Melee hits'], ['Combat', 'Hit-stop on heavy blows', 'live', 'Hits of 8+, bramble hits'],

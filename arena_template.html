@@ -7787,7 +7787,12 @@
   .po2-rar{position:absolute; left:50%; bottom:-14px; z-index:7; transform:translateX(-50%) scale(.6); opacity:0; white-space:nowrap; pointer-events:none;
     font:900 15px/1 'Baloo 2',system-ui,sans-serif; letter-spacing:.08em; text-transform:uppercase; color:#fff; padding:5px 14px; border-radius:999px;
     background:linear-gradient(135deg, var(--rarity-a), var(--rarity-b)); box-shadow:0 4px 14px rgba(0,0,0,.45), 0 0 18px var(--rarity-a); text-shadow:0 1px 2px rgba(0,0,0,.6); transition:opacity .25s, transform .35s cubic-bezier(.2,1.4,.4,1);}
-  .po2-card.is-revealed .po2-rar{opacity:1; transform:translateX(-50%) scale(1);}
+  .po2-card.is-revealed .po2-rar{opacity:1; transform:translateX(-50%) scale(1); transition-delay:.55s;} /* 2026-11-26 (PACKFX1): the label waits for the turn to end */
+  /* 2026-11-26 (PACKFX1): the rarity glint: a soft band sweeps the revealed card once (.26 s, translate only, clipped by this box) */
+  .po2-glint{position:absolute; inset:0; z-index:8; overflow:hidden; border-radius:6%; pointer-events:none;}
+  .po2-glint::before{content:''; position:absolute; top:-10%; bottom:-10%; left:0; width:40%; background:linear-gradient(90deg, transparent, var(--glint, #fff), transparent); opacity:.75; transform:skewX(-14deg); translate:-120% 0; animation:po2Glint .26s ease-out forwards;}
+  @keyframes po2Glint{to{translate:320% 0;}}
+  @media (prefers-reduced-motion: reduce){ .po2-glint{display:none;} } html[data-fx="none"] .po2-glint{display:none;}
   .po2-card.is-revealed .po2-front{box-shadow:0 0 0 3px var(--rarity-a), 0 0 40px 10px color-mix(in srgb, var(--rarity-a) 55%, transparent);}
   /* NEW!: a yellow border that flashes, then fades away (the NEW! tag stays) */
   .po2-card.is-new-moment .po2-front{animation:po2NewBorder 1.4s ease-out forwards !important;}
