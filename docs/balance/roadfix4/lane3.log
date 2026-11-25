@@ -9,3 +9,4 @@ round 1: cur 3.3/4.7; 16 legal, 16 read + 14 predicted (of 37); top: -1 pinecone
 round 2: cur 20/21.3; 16 legal, 16 read + 14 predicted (of 37); top: -1 honey-badger-fury +1 magma-salamander 21.7/18.3 | -1 stalactite-golem +1 sulfur-cinder-moth 26.7/17.7 | -1 stalactite-golem +1 armadillo-guard 16.7/17 | -1 obsidian-scorpion +1 magma-salamander 25/16.3 | -1 grindstone-boar +1 magma-salamander 18.3/13.7
 no nearer move
 RESULT 19-6 {"cinder-hornet":4,"obsidian-scorpion":3,"grindstone-boar":4,"honey-badger-fury":4,"magma-salamander":1,"elderhorn-monarch":1,"stalactite-golem":1} 21.3 {} moves: -1 pinecone-sapper -1 armadillo-guard +1 elderhorn-monarch +1 stalactite-golem problems: []
+LANE 3 DONE

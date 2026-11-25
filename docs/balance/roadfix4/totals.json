@@ -1145,9 +1145,9 @@
  },
  "post1125b": {
   "fights": 208,
-  "green": 180,
+  "green": 179,
   "within10": 183,
-  "beyond20": 8,
+  "beyond20": 7,
   "meanWin": 68.1,
   "worst": [
    {
@@ -1201,9 +1201,9 @@
     "name": "Ashen Spurn",
     "fights": 6,
     "green": 4,
-    "meanAbsGap": 9.5,
-    "meanGap": -9.5,
-    "beyond20": 1
+    "meanAbsGap": 8.8,
+    "meanGap": -8.8,
+    "beyond20": 0
    },
    {
     "map": "m2",
@@ -1217,6 +1217,17 @@
     "beyond20": 0
    },
    {
+    "map": "ml",
+    "mapNo": 15,
+    "side": false,
+    "name": "The Long Grass",
+    "fights": 7,
+    "green": 4,
+    "meanAbsGap": 8.4,
+    "meanGap": 6.8,
+    "beyond20": 0
+   },
+   {
     "map": "mr",
     "mapNo": 13,
     "side": false,
@@ -1225,17 +1236,6 @@
     "green": 6,
     "meanAbsGap": 8,
     "meanGap": 8,
-    "beyond20": 0
-   },
-   {
-    "map": "ml",
-    "mapNo": 15,
-    "side": false,
-    "name": "The Long Grass",
-    "fights": 7,
-    "green": 5,
-    "meanAbsGap": 7.8,
-    "meanGap": 4.6,
     "beyond20": 0
    }
   ],
@@ -1291,9 +1291,9 @@
     "name": "Ashen Spurn",
     "fights": 6,
     "green": 4,
-    "meanAbsGap": 9.5,
-    "meanGap": -9.5,
-    "beyond20": 1
+    "meanAbsGap": 8.8,
+    "meanGap": -8.8,
+    "beyond20": 0
    },
    {
     "map": "m2",
@@ -1307,6 +1307,17 @@
     "beyond20": 0
    },
    {
+    "map": "ml",
+    "mapNo": 15,
+    "side": false,
+    "name": "The Long Grass",
+    "fights": 7,
+    "green": 4,
+    "meanAbsGap": 8.4,
+    "meanGap": 6.8,
+    "beyond20": 0
+   },
+   {
     "map": "mr",
     "mapNo": 13,
     "side": false,
@@ -1315,17 +1326,6 @@
     "green": 6,
     "meanAbsGap": 8,
     "meanGap": 8,
-    "beyond20": 0
-   },
-   {
-    "map": "ml",
-    "mapNo": 15,
-    "side": false,
-    "name": "The Long Grass",
-    "fights": 7,
-    "green": 5,
-    "meanAbsGap": 7.8,
-    "meanGap": 4.6,
     "beyond20": 0
    },
    {
@@ -1635,13 +1635,6 @@
     "win": 99.5,
     "target": 77.1,
     "gap": 22
-   },
-   {
-    "code": "19-6",
-    "map": "m3",
-    "win": 18.3,
-    "target": 40,
-    "gap": -22
    },
    {
     "code": "17-7",

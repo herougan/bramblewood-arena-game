@@ -1,9 +1,9 @@
 
-✗ road-rarity-2026-10-16 (exit 1, 1.9s) — last lines:
+✗ road-rarity-2026-10-16 (exit 1, 2.3s) — last lines:
   ✗ 2. 20-A-4 (dungeon, Map 20) fields ashmantle-fiend (unique), cap epic
   road-rarity-2026-10-16: 1 failed
 
-✗ pro-2026-10-23 (exit 1, 37.5s) — last lines:
+✗ pro-2026-10-23 (exit 1, 36.3s) — last lines:
     ✗ 1b. 15-BPRO-2: every card on ml's list (off: dust-hyena, hoopoe-herald)
     ✗ 1b. 15-BPRO-3: every card on ml's list (off: village-miller)
     ✗ 1b. 15-WPRO-2: every card on ml's list (off: dust-hyena, sworn-shieldbearer)
@@ -30,5 +30,5 @@
     ✗ 1b. 20-WPRO-1: every card on m11's list (off: honey-badger-fury)
   pro: 193/2974 FAILED
 
-tests: 3 passed, 2 failed, 0 skipped (passed before on identical inputs) · 37s · slowest: pro-2026-10-23 37s, ref5-2026-10-30 4s, ref6-2026-11-11 2s
+tests: 3 passed, 2 failed, 0 skipped (passed before on identical inputs) · 36s · slowest: pro-2026-10-23 36s, ref5-2026-10-30 4s, ref6-2026-11-11 3s
 failing tests: tests/.last-failures.txt (2)

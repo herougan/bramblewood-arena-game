@@ -42,13 +42,13 @@
 | 13-5 | 1 Grass Snake, 1 Slow-worm -> 1 Pika Hoarder, 1 Amber Cicada | 70 (62-78) | 83.5 -> 77.5 | 82.8 -> 76.3 | search |
 | 13-7 | 1 Marsh-mallow Hare, 1 Slow-worm -> 1 Tasmanian Devil, 1 Grass Snake | 60 (52-68) | 70 -> 66.3 | 75.8 -> 66.5 | search |
 | 13-2 | 1 Amber Cicada, 3 Monarch Wingblade -> 1 Pika Hoarder, 3 Bramblewood Lynx | 85 (77-93) | 93.3 -> 87.8 | 91.3 -> 84.5 | search |
-| 15-6 | 1 Warhorse Charger -> 1 Fawn Scout | 60 (52-68) | 78.8 -> 54.5 | 81.8 -> 57.5 | search |
+| 15-6 | 2 Elderhorn Monarch -> 1 Warhorse Charger, 1 Tasmanian Devil | 60 (52-68) | 78.8 -> 69.3 | 81.8 -> 67.8 | search |
 | 15-2 | 2 Gilded Roadwarden, 1 Tasmanian Devil -> 2 Siege Rhino, 1 Fawn Scout | 84 (76-92) | 96 -> 86.8 | 96.3 -> 87 | search |
 | 5-A-3 | 2 Bog Leech, 3 Mangrove Mudskipper -> 3 Peat-cutter Vole, 2 Nutria Reedcutter | 60 (52-68) | 75.5 -> 68.5 | 72.5 -> 65.8 | search |
 | 5-A-2 | 2 Swamp Alligator -> 2 River Carp | 65 (57-73) | 79.3 -> 70.3 | 74 -> 63.8 | search |
 | 16-7 | 1 Raft Spider -> 1 Farm Dog | 40 (30-49) | 52.3 -> 49.5 | 52.3 -> 47.8 | search |
-| 19-2 | 4 Pinecone Sapper, 1 Armadillo Guard -> 1 Quillback Elder, 3 Obsidian Scorpion, 1 Elderhorn Monarch | 82.5 (74.5-90.5) | 45.3 -> 75.3 | 41.8 -> 74.5 | search |
-| 19-6 | 1 Armadillo Guard, 1 Pinecone Sapper -> 1 Elderhorn Monarch, 1 Caldera Snow Leopard | 40 (30-49) | 5.3 -> 18.3 | 5.8 -> 16 | search |
+| 19-2 | 1 Glacier Yak, 4 Pinecone Sapper, 4 Fire Salamander, 1 Armadillo Guard -> 4 Cinder Hornet, 1 Elderhorn Monarch, 4 Basalt Boar, 1 Stalactite Pill Bug | 82.5 (74.5-90.5) | 45.3 -> 74.8 | 41.8 -> 72.8 | search |
+| 19-6 | 1 Armadillo Guard, 1 Pinecone Sapper -> 1 Elderhorn Monarch, 1 Stalactite Pill Bug | 40 (30-49) | 5.3 -> 23.3 | 5.8 -> 18 | search |
 | 18-4 | 5 Meerkat Sentry -> 1 Armadillo Guard, 4 Sunbittern Strider | 62 (54-70) | 24.8 -> 54.3 | 23 -> 53 | search |
 | 18-3 | 2 Caustic Scorpion, 1 Worker Ant, 1 Mouse Sapper, 1 Barrel Cactus -> 1 Chipmunk Forager, 4 Horned Lizard | 78 (70-86) | 91 -> 82 | 91.3 -> 81 | search |
 | 20-A-2 | 1 Obsidian Scorpion, 1 Honey Badger Fury -> 1 Ancient Sloth Titan, 1 Stalactite Pill Bug | 81.3 (73.3-89.3) | 46.3 -> 86 | 46.5 -> 85.8 | search |
@@ -83,3 +83,6 @@ Rejected:
 | 2-1 | 1 Pincushion Urchin -> 1 Conch Crawler | 90 (82-98) | 79.3 -> 78.3 | 76.8 -> 72 | search |
 | 2-A-4 | 1 Water Shrew -> 1 Lodge Engineer | 72 (64-80) | 63.5 -> 62.3 | 68 -> 68 | search |
 | 18-A-4 | 2 Dromedary -> 2 Roadrunner Courier | 77.1 (69.1-85.1) | 99.5 -> 99.5 | 99.5 -> 99.5 | search |
+| 15-6 | 1 Warhorse Charger -> 1 Fawn Scout | 60 (52-68) | 78.8 -> 54.5 | 81.8 -> 57.5 | search | changed the Auto leader (skir1)
+| 19-2 | 4 Pinecone Sapper, 1 Armadillo Guard -> 1 Quillback Elder, 3 Obsidian Scorpion, 1 Elderhorn Monarch | 82.5 (74.5-90.5) | 45.3 -> 75.3 | 41.8 -> 74.5 | search | changed the Auto leader (skir1)
+| 19-6 | 1 Armadillo Guard, 1 Pinecone Sapper -> 1 Elderhorn Monarch, 1 Caldera Snow Leopard | 40 (30-49) | 5.3 -> 18.3 | 5.8 -> 16 | search | changed the Auto leader (skir1)
