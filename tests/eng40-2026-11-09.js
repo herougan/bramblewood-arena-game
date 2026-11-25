@@ -93,9 +93,11 @@ const swing = (e, P, c, ev)=>{ ev = ev || []; e.debugAttack(P, so, c.uid, {}, ev
 
 // ================= 5. Flora are not Elementals =================
 { const cards = J('canonical/cards.json'), TX = require('../bramblewood-taxonomy.js');
-  const ids = ['ent', 'bramble-sprout', 'thornvine-lasher', 'elder-willow', 'strangler-vine', 'cypress-root-lurker', 'pinecone-sapper'];
+  // 2026-11-25 (TESTFIX11): CARDVET1 made three of the seven animals: Ent -> Barn Owl (Bird), Cypress Root Lurker -> Black Caiman (Reptile), Pinecone Sapper a pangolin (Mammal)
+  ok(['ent', 'cypress-root-lurker', 'pinecone-sapper'].every(id=> { const c = cards.find(x=> x.id === id); return c && !(c.species || []).includes('Plant') && !TX.isA(c, 'Elemental'); }), 'the Barn Owl, Black Caiman and Pinecone Sapper are animals now (CARDVET1a / 1c)');
+  const ids = ['bramble-sprout', 'thornvine-lasher', 'elder-willow', 'strangler-vine'];
   const cs = ids.map(id=> cards.find(c=> c.id === id));
-  ok(cs.every(c=> c && JSON.stringify(c.species) === '["Plant"]' && c.subtype === 'plant'), 'the seven plant cards are species Plant');
+  ok(cs.every(c=> c && JSON.stringify(c.species) === '["Plant"]' && c.subtype === 'plant'), 'the four plant cards are species Plant');
   ok(cs.every(c=> !TX.isA(c, 'Elemental') && TX.isA(c, 'Flora')), 'none is an Elemental; all are Flora');
   ok(!cards.some(c=> (c.species || []).includes('Elemental') && c.subtype === 'plant'), 'no plant-subtype card is species Elemental');
   // Nature's Force (+N/+N to your Elementals) no longer lifts them

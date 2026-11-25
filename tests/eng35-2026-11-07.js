@@ -163,7 +163,8 @@ for(const code of ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'z
   ok(/sapHealOf\(e, dmg\)/.test(rd('bramblewood-engine.js')) && (rd('bramblewood-engine.js').match(/sapHealOf\(/g) || []).length === 6, 'every Leech heal reads sapHealOf (the swing, Cleave, flank, the bramble, the skill hits)');
   const tail = app.slice(app.indexOf("SKILL_TEXT.sap = (v, n, e)"));
   ok(/kind: 'number', blankOk: true, defaultValue: true/.test(tail) && /e\.sap = x > 0 \? x : true/.test(tail) && /s\.kind==='number' && s\.blankOk/.test(app), 'editor: an optional number field, blank saves the plain Leech');
-  ok(cards.filter(c=> (c.effects || {}).sap !== undefined).every(c=> c.effects.sap === true), 'existing Leech cards unchanged (plain)'); }
+  // 2026-11-25 (TESTFIX11): CARDVET1a's Bog Leech is the first numbered Leech (Leech 1; Leech 2 at Level 7)
+  ok(cards.filter(c=> (c.effects || {}).sap !== undefined).every(c=> c.effects.sap === true || (c.id === 'bog-leech' && c.effects.sap === 1)), 'existing Leech cards unchanged (plain), the Bog Leech Leech 1 (CARDVET1a)'); }
 // workbook, docs
 const wb = rd('tools/export_workbook_2026_11_07.py');
 ok(/Parameters \(default, stat version, ability version\)/.test(wb) && /if s\['key'\] in alias: continue/.test(wb), 'the workbook\'s Skills tab: one row per fused skill, a Parameters column');

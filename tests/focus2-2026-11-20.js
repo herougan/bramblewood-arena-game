@@ -92,8 +92,10 @@ const dealt = (f, uid)=> f.evs.map(ev=> ev.filter(x=> x.type === 'hit' && x.attU
   ok(f5.skills.some(s=> s.key === 'sap') && !f5.skills.some(s=> s.key === 'bleed') && f6.skills.some(s=> s.key === 'bleed') && !f6.skills.some(s=> s.key === 'sap'), '5. the REDESIGN3 design file follows'); }
 
 // ================= 6. carriers, prices, delivery, counters =================
-const CARRIERS = {harden: ['ladybird-guard', 'sworn-shieldbearer'], embolden: ['meerkat-sentry'], enfeeble: ['booming-bittern'], brittle: ['glacier-wolf-pack']};
+// 2026-11-25 (TESTFIX11): CARDVET1a took Harden off the Ladybird Guard (Poison Barbs 1) and Enfeeble off the Bittern (no Maps 0-20 row uses them)
+const CARRIERS = {harden: ['sworn-shieldbearer'], embolden: ['meerkat-sentry'], enfeeble: [], brittle: ['glacier-wolf-pack']};
 { const cards = J('canonical/cards.json'), by = Object.fromEntries(cards.map(c=> [c.id, c]));
+  ok(!by['ladybird-guard'].effects.harden && by['ladybird-guard'].effects.poisonBarbs === 1 && !by['booming-bittern'].effects.enfeeble, '6. CARDVET1a: Ladybird Guard Poison Barbs 1 (no Harden), Bittern without Enfeeble');
   const SC = require('../tools/skill_costs.js'), T = SC.make(J('canonical/skill-costs.json')), BB = require('../bramblewood-budget.js');
   const pct = d=> Math.max(...[1, SC.levelOf(d)].map(L=> { const b = T.budget(d, {level: L}); return Math.max(b.x1 / b.N, b.x2 / b.N2); })) * 100;
   Object.entries(CARRIERS).forEach(([k, ids])=> ids.forEach(id=>{ const d = by[id];
@@ -113,7 +115,8 @@ const CARRIERS = {harden: ['ladybird-guard', 'sworn-shieldbearer'], embolden: ['
 
 // ================= 7. Suggested picks =================
 { const src = rd('arena_app.js'), sg = JSON.parse(src.match(/const UI47_SUGGEST = (\{.*?\});/)[1]), ids = new Set(J('canonical/cards.json').map(c=> c.id));
-  ok(JSON.stringify(sg.mw) === JSON.stringify(['bog-shrew', 'vampire-bat']) && JSON.stringify(sg.m8) === JSON.stringify(['bog-leech', 'bloodworm']), `7. Suggested: Map 5 ${sg.mw}, Map 6 ${sg.m8}`);
+  // 2026-11-25 (TESTFIX11): CARDVET1a made the Bog Leech a Leech (Sap) card, so Map 6's Bleed suggestion keeps the Bloodworm only
+  ok(JSON.stringify(sg.mw) === JSON.stringify(['bog-shrew', 'vampire-bat']) && JSON.stringify(sg.m8) === JSON.stringify(['bloodworm']), `7. Suggested: Map 5 ${sg.mw}, Map 6 ${sg.m8}`);
   ok(['mw', 'm8'].every(k=> sg[k].length >= 1 && sg[k].length <= 3 && sg[k].every(id=> ids.has(id))), '7. 1-3 real cards a map');
   const cards = J('canonical/cards.json'), by = Object.fromEntries(cards.map(c=> [c.id, c]));
   ok(sg.mw.every(id=> by[id].effects.sap) && sg.m8.every(id=> by[id].effects.bleed), '7. Map 5\'s carry Leech, Map 6\'s Bleed');

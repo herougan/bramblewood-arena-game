@@ -121,7 +121,8 @@ function windRound(id, want, wallId){ for(let s = 1; s <= 80; s++){ const {e, P}
 
 // ---- The Ironclaw Fiddler -----------------------------------------------------------------------------------------------------
 { const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json'), 'utf8')), c = cards.find(x=> x.id === 'ironclaw-fiddler');
-  ok(c && c.rarity === 'rare' && c.effects.bludgeon && c.effects.tide && (c.effects.armor === 1 || redesigned('ironclaw-fiddler') /* 2026-11-18 (TESTFIX): the redesign gave it Regeneration 1 for Armor */) && (c.awaitingSource || /RW5, owner 22:23/.test(c.creatorNote || '') /* 2026-10-23 (package RW5): placed in Maps 0-9 by tools/rw5_place_new_cards_2026_10_23.js */), 'the Ironclaw Fiddler: Rare, Tide, Bludgeon, Armor 1, awaiting its source');
+  // 2026-11-25 (TESTFIX11): CARDVET1b made it Crab Claws + Intimidate 1 (Bludgeon is on no Maps 0-20 row)
+  ok(c && c.rarity === 'rare' && !c.effects.bludgeon && c.effects.crabClaws && c.effects.intimidate === 1 && c.effects.tide && (c.awaitingSource || /RW5, owner 22:23/.test(c.creatorNote || '') /* 2026-10-23 (package RW5): placed in Maps 0-9 by tools/rw5_place_new_cards_2026_10_23.js */), 'the Ironclaw Fiddler: Rare, Tide, Crab Claws, Intimidate 1 (CARDVET1b), placed');
   ok(c && c.fx && c.fx.play === 'crabClack' && c.fx.attack === 'crabClaw', 'its looks: crabClack on play, crabClaw on attack');
   ok(c && new Set(cards.map(x=> x.numericId)).size === cards.length, 'numericIds stay unique');
   if(!process.argv.includes('--world=half')) process.argv.push('--world=half');

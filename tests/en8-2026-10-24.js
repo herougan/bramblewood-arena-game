@@ -177,6 +177,8 @@ for(const lv of [0, 1, 2]){
   C.NEW.forEach(s=>{ const c = by[s.id], m = s.place[0], on = (pools[m].cards || []).includes(s.id); ok(c && !c.faction && (on === (T2[m] || []).includes(s.id) || on === picked11(m, s.id) || on === picked12(m, s.id)) && c.source && c.source.map === m, `${s.id}: its source is ${m}, its place on ${m}'s list follows THEME2, no faction`); });
   // 2026-11-18 (TESTFIX): SKAUD1 merged or removed Stonecutter, Prospector, Felling and Driftwood (docs/design/skaud1-2026-11-17.json): no carrier owed
   const RETIRED = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/design/skaud1-2026-11-17.json'), 'utf8')).skills.filter(x=> ['merge', 'remove'].includes(x.verdict)).map(x=> x.key));
+  // 2026-11-25 (TESTFIX11): CARDVET1a took Salvage off its carriers (no Maps 0-20 row uses it; docs/design/cardvet1a-2026-11-25.md); it stays priced and in the engine
+  RETIRED.add('salvage'); ok(!cards.some(c=> c.effects && c.effects.salvage && !c.pool && !c.awaitingSource), 'Salvage is on no placed card (CARDVET1a)');
   const skills = ['stonecutter', 'prospector', 'felling', 'pearlBed', 'coppice', 'driftwood', 'scavenge', 'salvage', 'magicArmor'].filter(k=> !RETIRED.has(k));
   skills.forEach(k=> ok(cards.some(c=> c.effects && (c.effects[k] || (k === 'pearlBed' && (c.effects.pearl || c.effects.deliveryRes === 'pearl')) /* 2026-11-06 (ENG27, ENG25-6): Delivery {Pearl} */) && !c.pool && !c.awaitingSource), `a placed card carries ${k}`)); // 2026-11-03 (DEC1, ENG19-3): the Shellfish carry Pearl (Pearl Bed's old once rule) now
   const pearls = c=> c.effects.pearl || (c.effects.delivery && c.effects.deliveryRes === 'pearl'); // 2026-11-06 (ENG27, owner ENG25-6): Delivery {Pearl x1}

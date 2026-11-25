@@ -70,9 +70,9 @@ const tx = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, app = rd('aren
 // ---- ENG9-5 Flora and Mushroom --------------------------------------------------------------------------------------------------------
 { const TX = require(path.join(ROOT, 'bramblewood-taxonomy.js'));
   ['fungal-colossus', 'puffball-bombardier', 'phoenix-mushrooms'].forEach(id=> ok(cid[id] && cid[id].archetypes.includes('Mushroom') && !cid[id].archetypes.includes('Fungi'), `ENG9-5 ${id} has the type Mushroom`));
-  ok(TX.isA(cid['fungal-colossus'], 'Flora') && TX.isA(cid['ent'], 'Flora') && TX.isA(cid['rafflesia'], 'Flora'), 'ENG9-5 a Mushroom, a Tree and a Flower all count as Flora');
+  ok(TX.isA(cid['fungal-colossus'], 'Flora') && TX.isA(cid['elder-willow'], 'Flora') && TX.isA(cid['rafflesia'], 'Flora'), 'ENG9-5 a Mushroom, a Tree and a Flower all count as Flora'); // 2026-11-25 (TESTFIX11): the Tree is Elder Willow (the Ent is the Barn Owl, CARDVET1a)
   ok(TX.phylumOf('Fungi') === 'Flora' && TX.phylumOf('Plant') === 'Flora', 'ENG9-5 Flora is the phylum of Plant and Fungi');
-  ok(cid['ent'].archetypes.includes('Tree') && cid['rafflesia'].archetypes.includes('Flower') && cid['strangler-vine'].archetypes.includes('Vine'), 'ENG9-5 Flora cards carry their type (Tree, Flower, Vine)');
+  ok(cid['elder-willow'].archetypes.includes('Tree') && cid['rafflesia'].archetypes.includes('Flower') && cid['strangler-vine'].archetypes.includes('Vine'), 'ENG9-5 Flora cards carry their type (Tree, Flower, Vine)');
   ok(['Tree', 'Fruit', 'Flower', 'Mushroom'].every(t=> TX.name(t) === t && TX.ancestors(t).has('flora')), 'ENG9-5 Tree, Fruit, Flower, Mushroom sit under Flora');
   ok(/Tree:'🌳', Fruit:'🍎', Flower:'🌸', Vine:'🌱', Mushroom:'🍄'/.test(app), 'ENG9-5 the filters show the Flora types with icons'); }
 
@@ -142,7 +142,8 @@ const hook = (P, pid, p, host)=>{ const pl = P[pid]; ['left', 'center', 'right']
   ok(d && d.dmg === 3 && h0 - host.hp === 3, `PROP1-3 Gorge: a hooked Parasite feeds again at round end, at half its Attack (5 -> ${d && d.dmg})`);
   const {e: e2, P: P2} = mk(132); const host2 = put(e2, P2, 2, 'x-wall', 0), l = put(e2, P2, 1, 'x-leech', 1); hook(P2, 1, l, host2); const ev2 = []; e2.endOfRoundUpkeep(P2, so, {}, ev2);
   ok(!ev2.some(x=> x.type === 'parasiteDrain'), 'PROP1-3 ... a plain Parasite does not');
-  ok(require('./lib/redesign.js').skillsAt10('gangrenous-leech').parasite && require('./lib/redesign.js').skillsAt10('gangrenous-leech').fester /* 2026-11-19 (TESTFIX6): LVL10, Parasite at Level 2, Gorge at 6 */ && by.fester.value === 2.8 && by.fester.label === 'Gorge', 'PROP1-3 the Gangrenous Leech is a Parasite with Gorge (2.8)'); }
+  // 2026-11-25 (TESTFIX11): CARDVET1b took Gorge off the Gangrenous Leech (no Maps 0-20 row uses it); Gorge stays in the engine and the price table
+  ok(require('./lib/redesign.js').skillsAt10('gangrenous-leech').parasite && !require('./lib/redesign.js').skillsAt10('gangrenous-leech').fester && by.fester.value === 2.8 && by.fester.label === 'Gorge', 'PROP1-3 the Gangrenous Leech is a Parasite (Gorge 2.8 on no card since CARDVET1b)'); }
 
 // ---- PROP1-4 the threshold skills -----------------------------------------------------------------------------------------------------------
 { const on = (c, k)=> String(c._en5On || '').split(',').includes(k);
