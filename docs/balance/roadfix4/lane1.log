@@ -71,3 +71,7 @@ round 2: cur 75/74.3; 64 legal, 64 read + 14 predicted (of 33); top: -1 slow-wor
 round 3: cur 71.7/73.3; 58 legal, 58 read + 14 predicted (of 42); top: -1 owl-nightwatch +1 monarch-wingblade 70/73.7 | -1 pika-hoarder -1 tasmanian-devil +1 badger-lumberjack +1 monarch-wingblade 68.3/78.3 | -1 pika-hoarder +1 badger-lumberjack 71.7/79 | -1 owl-nightwatch -1 pika-hoarder +1 monarch-wingblade +1 badger-lumberjack 70/79.3 | -1 tasmanian-devil -1 pika-hoarder +1 monarch-wingblade +1 anhinga-spearbird 71.7/82.3
 no nearer move
 RESULT 13-6 {"beaver-feller":4,"feral-tomcat":1,"grizzly-vanguard":1,"monarch-wingblade":2,"tasmanian-devil":4,"owl-nightwatch":4,"pika-hoarder":1} 73.3 {} moves: -3 pine-marten +3 owl-nightwatch ; -1 slow-worm -1 monarch-wingblade +1 pika-hoarder +1 owl-nightwatch problems: []
+start {"beaver-feller":4,"bramblewood-lynx":2,"monarch-wingblade":3,"owl-nightwatch":4,"redwood-woodpecker":1,"tasmanian-devil":4,"amber-cicada":1} 58
+round 1: cur 63.3/58; 57 legal, 57 read + 14 predicted (of 35); top: -1 monarch-wingblade +1 bramblewood-lynx 55/57.7 | -1 amber-cicada +1 bramblewood-lynx 51.7/58.3 | -3 monarch-wingblade +1 pika-hoarder +2 redwood-woodpecker 53.3/58.3 | -3 monarch-wingblade -1 owl-nightwatch +1 pika-hoarder +2 redwood-woodpecker +1 bramblewood-lynx 51.7/58.7 | -1 beaver-feller +1 redwood-woodpecker 55/58.7
+no nearer move
+RESULT 13-8 {"beaver-feller":4,"bramblewood-lynx":2,"monarch-wingblade":3,"owl-nightwatch":4,"redwood-woodpecker":1,"tasmanian-devil":4,"amber-cicada":1} 58 {} moves:  problems: []

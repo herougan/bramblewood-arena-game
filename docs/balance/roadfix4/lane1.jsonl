@@ -17,3 +17,4 @@
 {"key":"10-A-3","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":77.7,"seed2":12300,"games":300},"moves":[]}
 {"key":"10-A-1","deck":{"coral-current-eel":1,"kraken-spawnling":1,"mantis-shrimp":1,"orca-vanguard":4,"sea-turtle-elder":3},"shieldOverride":null,"hqHp":null,"tune":{"w2":98.7,"seed2":12300,"games":300},"moves":["-2 kraken-spawnling +2 sea-turtle-elder"]}
 {"key":"13-6","deck":{"beaver-feller":4,"feral-tomcat":1,"grizzly-vanguard":1,"monarch-wingblade":2,"tasmanian-devil":4,"owl-nightwatch":4,"pika-hoarder":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":73.3,"seed2":12300,"games":300},"moves":["-3 pine-marten +3 owl-nightwatch","-1 slow-worm -1 monarch-wingblade +1 pika-hoarder +1 owl-nightwatch"]}
+{"key":"13-8","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":58,"seed2":12300,"games":300},"moves":[]}
