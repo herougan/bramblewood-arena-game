@@ -96,6 +96,13 @@ const cq = n=> JSON.stringify({completed: Array.from({length: n}, (_, i)=> 'm1:0
     }
     ok(/setTimeout\(\(\)=> resolve\(natural === true\), 120\)/.test(fnSrc('playRewardReveal')) && /resolve\(true\); gsap\.to\(stage/.test(fnSrc('playRewardReveal')), '2. playRewardReveal tells a skip from a full play'); }
 
+  // ======================================================================= 3. Conquest: back where you were, on any device, after a loss too
+  { const w = world({}); ok(w.$.PROGRESS_KEYS.includes('bramblewood_last_map_v1'), '3. the last map and fight ride the progress blob'); }
+  ok(/if\(c13Test\) matchState\.adminTest = true;[^\n]*\n  else \{ conquestSelectedMap = mapId; conquestSelectedNodeKey = nodeKey; rememberLastMap\(mapId, nodeKey\); \}/.test(fnSrc('startConquestMatch')), '3. a conquest fight, however it was started, selects and records its fight (the pawn stands there after a loss)');
+  { const R = {localStorage: fakeStorage(), CONQUEST_MAPS: [{id: 'm1'}, {id: 'mf'}, {id: 'mb'}], isMapUnlocked: m=> m.id !== 'mb', loadConquestProgress: ()=> ({}), dungeonHiddenFromPlayer: ()=> false, healMapProgress: ()=> ({id: 'mf'}), JSON};
+    vm.runInNewContext(`const LAST_MAP_KEY = 'bramblewood_last_map_v1'; var mapResumeTried = false, conquestSelectedMap = 'm1', conquestSelectedNodeKey = null;\n${fnSrc('loadLastMap')}\n${fnSrc('resumeLastMap')}\nthis.go = ()=> [resumeLastMap(), conquestSelectedMap];`, R);
+    const r = R.go(); ok(r[0] === true && r[1] === 'mf', '3. no record: the furthest open map (healMapProgress), not Map 0'); }
+
   console.log(fail ? `fixpack1: ${fail} of ${n} checks failed` : `fixpack1: all ${n} checks passed`);
   process.exit(fail ? 1 : 0);
 })();

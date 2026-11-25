@@ -26,15 +26,17 @@ const mem = ()=>{ const o = {}; return {getItem: k=> (k in o ? o[k] : null), set
     return {loadLastMap, rememberLastMap, resumeLastMap, set sel(v){ conquestSelectedMap = v; }, get sel(){ return conquestSelectedMap; }, set node(v){ conquestSelectedNodeKey = v; }, again(){ mapResumeTried = false; }};`;
   const CONQUEST_MAPS = [{id:'m1'}, {id:'mf'}, {id:'mb'}, {id:'dun', hiddenDungeon:true}];
   let unlocked = {m1:true, mf:true};
-  const mk = ()=> new Function('localStorage', 'CONQUEST_MAPS', 'isMapUnlocked', 'loadConquestProgress', 'dungeonHiddenFromPlayer', 'let conquestSelectedMap = CONQUEST_MAPS[0].id, conquestSelectedNodeKey = null;\n' + code)(ls, CONQUEST_MAPS, m=> !!unlocked[m.id], ()=> ({completed:[]}), m=> !!m.hiddenDungeon);
+  // 2026-11-26 (FIXPACK1): no usable record falls back to the furthest open main map (healMapProgress), not Map 0
+  const far = ()=> CONQUEST_MAPS.filter(m=> !m.hiddenDungeon && unlocked[m.id]).pop() || null;
+  const mk = ()=> new Function('localStorage', 'CONQUEST_MAPS', 'isMapUnlocked', 'loadConquestProgress', 'dungeonHiddenFromPlayer', 'healMapProgress', 'let conquestSelectedMap = CONQUEST_MAPS[0].id, conquestSelectedNodeKey = null;\n' + code)(ls, CONQUEST_MAPS, m=> !!unlocked[m.id], ()=> ({completed:[]}), m=> !!m.hiddenDungeon, far);
   ok(!!fnSrc('resumeLastMap') && /const LAST_MAP_KEY = 'bramblewood_last_map_v1'/.test(src), '1. resumeLastMap and its key exist');
-  let r = mk(); ok(r.resumeLastMap() === false && r.sel === 'm1', '1. nothing remembered: Map 0 as before');
+  let r = mk(); ok(r.resumeLastMap() === true && r.sel === 'mf', '1. nothing remembered: the furthest open map (FIXPACK1)');
   ls.setItem('bramblewood_last_map_v1', JSON.stringify({map:'mf', node:'1-2'})); r = mk(); ok(r.resumeLastMap() === true && r.sel === 'mf', '1. a remembered open map is restored');
   ok(r.resumeLastMap() === false, '1. only the first draw restores (a player who then picks Map 0 is not pulled back)');
   r = mk(); r.sel = 'mb'; ok(r.resumeLastMap() === false && r.sel === 'mb', '1. a map somebody already chose this session is left alone');
-  ls.setItem('bramblewood_last_map_v1', JSON.stringify({map:'mb', node:null})); r = mk(); ok(r.resumeLastMap() === false && r.sel === 'm1', '1. a remembered map that is still locked is not opened');
-  ls.setItem('bramblewood_last_map_v1', JSON.stringify({map:'dun', node:null})); unlocked.dun = true; r = mk(); ok(r.resumeLastMap() === false && r.sel === 'm1', '1. a hidden daily dungeon is not restored');
-  ls.setItem('bramblewood_last_map_v1', '{oops'); r = mk(); ok(r.resumeLastMap() === false, '1. a corrupt value is ignored');
+  ls.setItem('bramblewood_last_map_v1', JSON.stringify({map:'mb', node:null})); r = mk(); ok(r.resumeLastMap() === true && r.sel === 'mf', '1. a remembered map that is still locked is not opened (the furthest open one is)');
+  ls.setItem('bramblewood_last_map_v1', JSON.stringify({map:'dun', node:null})); unlocked.dun = true; r = mk(); ok(r.resumeLastMap() === true && r.sel === 'mf', '1. a hidden daily dungeon is not restored');
+  ls.setItem('bramblewood_last_map_v1', '{oops'); r = mk(); ok(r.resumeLastMap() === true && r.sel === 'mf', '1. a corrupt value is ignored');
   r.rememberLastMap('mf', '1-3'); ok(JSON.parse(ls.getItem('bramblewood_last_map_v1')).node === '1-3', '1. rememberLastMap writes the map and the fight'); }
 { const f = fnSrc('placeMapPawn');
   ok(/rememberLastMap\(map\.id, target\)/.test(f), '1. the pawn\'s fight is remembered whenever it is placed');

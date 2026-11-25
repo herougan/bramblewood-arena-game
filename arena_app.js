@@ -19497,6 +19497,7 @@ const PROGRESS_MERGE_KEYS = {
 PROGRESS_KEYS.push(SEEN_KEY); PROGRESS_MERGE_KEYS[SEEN_KEY] = PROGRESS_MERGE_KEYS['bramblewood_arena_discovered'];
 // 2026-11-26 (FIXPACK1): the Codex's (and every page's) filters, sort and view toggles follow the account too; the newer blob wins
 PROGRESS_KEYS.push(UI_FILTERS_KEY, 'bramblewood_codex_separate', 'bramblewood_codex_flat_v1', CODEX_LEVEL_KEY);
+PROGRESS_KEYS.push('bramblewood_last_map_v1'); // 2026-11-26 (FIXPACK1): the Conquest map and fight you last stood at (LAST_MAP_KEY, spelled out: declared further down)
 // 2026-11-26 (FIXPACK1): the merged keys (seen, discovered, claims, card stats) take the cloud's entries before every push and on every pull,
 // so one device's push never drops what another added. True when this device holds entries the cloud lacks (it should push).
 function progressUnionCloud(cloud){
@@ -27058,10 +27059,11 @@ function resumeLastMap(){
   if(mapResumeTried) return false; mapResumeTried = true;
   try{
     if(conquestSelectedMap !== CONQUEST_MAPS[0].id || conquestSelectedNodeKey) return false; // somebody already chose a map this session
-    const last = loadLastMap(); if(!last) return false;
-    const m = CONQUEST_MAPS.find(x=> x.id === last.map); if(!m || (typeof dungeonHiddenFromPlayer === 'function' && dungeonHiddenFromPlayer(m))) return false;
-    if(!isMapUnlocked(m, loadConquestProgress())) return false;
-    conquestSelectedMap = m.id; return true;
+    // 2026-11-26 (FIXPACK1): no usable record (a new device before its first pull, a map since locked): the furthest open main map, not Map 0
+    const last = loadLastMap(), m = last && CONQUEST_MAPS.find(x=> x.id === last.map);
+    const ok = m && !(typeof dungeonHiddenFromPlayer === 'function' && dungeonHiddenFromPlayer(m)) && isMapUnlocked(m, loadConquestProgress());
+    const to = ok ? m : healMapProgress(); if(!to) return false;
+    conquestSelectedMap = to.id; return true;
   }catch(e){ return false; }
 }
 function completeConquestNode(node, rank){
@@ -34246,6 +34248,7 @@ function startConquestMatch(mapId, nodeKey, opts){
     leaderDefId: battleMode==='gladiator' ? null : refPlay ? (refPlay.leader && getCardDefs()[refPlay.leader] ? refPlay.leader : null) /* PREF: the set's leader */ : matchLeaderId(),
     leaderUid: battleMode==='gladiator' && players[1].gladiatorLeaderUid!=null ? players[1].gladiatorLeaderUid : null};
   if(c13Test) matchState.adminTest = true; // 2026-11-07 (CONTENT13): no rewards, drops, XP, rank or progress
+  else { conquestSelectedMap = mapId; conquestSelectedNodeKey = nodeKey; rememberLastMap(mapId, nodeKey); } // 2026-11-26 (FIXPACK1): back on the map (or another device), the pawn stands at this fight, won or lost
   if(refPlay){ matchState.adminTest = true; matchState.refDeck = {set: refPlay.set, label: refPlay.multi ? refPlay.label : refSetLabelTX(refPlay.set), mapNo: refPlay.mapNo, level: refPlay.level, pick: refPlay.pick || null};
     /* 2026-10-31 (package UI10, owner EE3): no toast when a reference deck is dealt (REF5 showed which of the map's decks) */ } // 2026-10-25 (package PREF): no rewards, a REF tag
   if(node.kind === 'dungeon'){ const cfg = dungeonConfig(node), waves = dungeonWaves(node); matchState.dungeon = {cfg, waves, wave:0, startRound:1};
