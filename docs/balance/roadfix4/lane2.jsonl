@@ -19,3 +19,4 @@
 {"key":"4-3","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":52.3,"seed2":12300,"games":300},"moves":[]}
 {"key":"14-A-4","deck":{"bramblewood-macaque":2,"canopy-sloth-guardian":4,"fishing-cat":2,"hercules-beetle":1,"hoopoe-herald":3,"jaguar-stalker":2,"mosquito-cloud":2},"shieldOverride":null,"hqHp":null,"tune":{"w2":60,"seed2":12300,"games":300},"moves":["-2 hercules-beetle +2 mosquito-cloud","-1 bramblewood-macaque +1 fishing-cat"]}
 {"key":"1-A-4","deck":{"ant-scout":2,"bee-forager":2,"dormouse":1,"meadow-rabbit":4,"cottontail":2},"shieldOverride":null,"hqHp":null,"tune":{"w2":59.7,"seed2":12300,"games":300},"moves":["-3 chipmunk-cavalry +2 cottontail +1 meadow-rabbit"]}
+{"key":"2-A-4","deck":{"shoal-shark":1,"water-shrew":1,"old-sturgeon":4,"lodge-engineer":3,"raft-spider":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":71,"seed2":12300,"games":300},"moves":["-1 water-shrew +1 lodge-engineer"]}

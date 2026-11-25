@@ -79,3 +79,6 @@ RESULT 14-A-4 {"bramblewood-macaque":2,"canopy-sloth-guardian":4,"fishing-cat":2
 start {"ant-scout":2,"bee-forager":2,"dormouse":1,"meadow-rabbit":3,"chipmunk-cavalry":3} 67.7
 round 1: cur 61.7/67.7; 26 legal, 26 read + 14 predicted (of 35); top: -3 chipmunk-cavalry +2 cottontail +1 meadow-rabbit 60/59.7 | -2 bee-forager +2 honey-bee 60/59 | -2 chipmunk-cavalry +1 meadow-rabbit +1 cottontail 60/61.3 | -1 chipmunk-cavalry +1 cottontail 60/62.7 | -1 ant-scout +1 meadow-rabbit 60/64.3
 RESULT 1-A-4 {"ant-scout":2,"bee-forager":2,"dormouse":1,"meadow-rabbit":4,"cottontail":2} 59.7 {} moves: -3 chipmunk-cavalry +2 cottontail +1 meadow-rabbit problems: []
+start {"shoal-shark":1,"water-shrew":2,"old-sturgeon":4,"lodge-engineer":2,"raft-spider":1} 66
+round 1: cur 76.7/66; 44 legal, 44 read + 14 predicted (of 47); top: -1 water-shrew +1 lodge-engineer 71.7/71 | -1 old-sturgeon +1 water-shrew 71.7/62 | -1 raft-spider +1 beaver-lumberjack 73.3/61.3 | -1 raft-spider -1 water-shrew +1 beaver-lumberjack +1 shoal-shark 73.3/52 | -1 raft-spider -1 lodge-engineer +1 duck-paddler +1 beaver-lumberjack 71.7/50
+RESULT 2-A-4 {"shoal-shark":1,"water-shrew":1,"old-sturgeon":4,"lodge-engineer":3,"raft-spider":1} 71 {} moves: -1 water-shrew +1 lodge-engineer problems: []
