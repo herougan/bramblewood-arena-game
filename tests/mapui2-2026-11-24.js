@@ -12,7 +12,8 @@ const app = rd('arena_app.js'), tpl = rd('arena_template.html');
 
 // ---- 1. static
 ok(/mapui2-2026-11-24/.test(rd('tests/run-all.sh')), '1. run-all.sh lists this test');
-ok(/MAPUI2/.test(rd('docs/CHANGELOG.md').slice(0, 8000)), '1. CHANGELOG entry at the top');
+// 2026-11-25 (TESTFIX11): later packages push the entry down; the check is that the package's dated entry is there
+ok(/^## 2026-11-24 Package MAPUI2\b/m.test(rd('docs/CHANGELOG.md')), '1. CHANGELOG entry (## 2026-11-24 Package MAPUI2)');
 ok(fs.existsSync(path.join(ROOT, 'docs/design/mapui2-2026-11-24.md')), '1. the design doc exists');
 ok(/typeof MAP_SPECIAL_SKILL_NAMES !== 'undefined' \? MAP_SPECIAL_SKILL_NAMES : \{\}/.test(app), '1. MAP_SPECIAL_SKILL_NAMES is read behind a typeof guard');
 ok(/constrict:'⛓️'/.test(app) && /swift:'🥾'/.test(app) && /onDeathSpawn:'🐛'/.test(app), '1. Constrict ⛓️, Swift 🥾, Progeny 🐛');

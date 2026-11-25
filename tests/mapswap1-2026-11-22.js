@@ -13,7 +13,8 @@ const app = rd('arena_app.js');
 
 // ---- 1. static
 ok(/mapswap1-2026-11-22/.test(rd('tests/run-all.sh')), '1. run-all.sh lists this test');
-ok(/MAPSWAP1/.test(rd('docs/CHANGELOG.md').slice(0, 20000)), '1. CHANGELOG entry at the top');
+// 2026-11-25 (TESTFIX11): later packages push the entry down; the check is that the package's dated entry is there
+ok(/^## 2026-11-22 Package MAPSWAP1\b/m.test(rd('docs/CHANGELOG.md')), '1. CHANGELOG entry (## 2026-11-22 Package MAPSWAP1)');
 ok(fs.existsSync(path.join(ROOT, 'docs/design/mapswap1-2026-11-22.md')), '1. the design doc exists');
 ok(/const MAP_SWAPS = __MAP_SWAPS__;/.test(app) && /__MAP_SWAPS__/.test(rd('assemble_arena.py')), '1. the build inlines the suggestions');
 ok(/ui37SetFlag\(m, id, 'yes'\)/.test(app) && /ui37SetFlag\(m, id, 'no'\)/.test(app), '1. Yes goes through ui37SetFlag');
@@ -52,7 +53,7 @@ async function browser() {
       t.none.forEach(k => { nAdd++; ok(m.add.some(a => a.key === k && (a.cards.length || a.concept || a.open)), `3. Map ${t.n}: To add ${k} is covered`); });
       ok(m.add.filter(a => !a.have).length === t.none.length, `3. Map ${t.n}: no extra or missing To add items (${m.add.filter(a => !a.have).length} vs ${t.none.length})`); // 2026-11-25 (MAPEXEC1): the file also holds row skills with ONE carrier (have 1)
       t.rm.forEach(r => r.carriers.forEach(c => { nRm++; ok(m.remove.some(x => x.card === c && x.keys.includes(r.key)), `3. Map ${t.n}: To remove ${r.key} / ${c} is resolved`); })); });
-    ok(nAdd >= 5 && nRm >= 6, `3. the table's items are all there (${nAdd} to add, ${nRm} to remove)`); // 2026-11-24 (DAUNT2): 35, Map 11's Daunt (Golden Eagle) is on its row now (owner 11-25 00:13); 2026-11-25 (MAPEXEC1): the swaps are applied, so 6 to add and 6 kept To remove tiles are left
+    ok(nAdd >= 5 && nRm >= 2, `3. the table's items are all there (${nAdd} to add, ${nRm} to remove)`); // 2026-11-25 (TESTFIX11): CARDVET1a/b/c took the unused row skills off their carriers, so 2 To remove items are left; // 2026-11-24 (DAUNT2): 35, Map 11's Daunt (Golden Eagle) is on its row now (owner 11-25 00:13); 2026-11-25 (MAPEXEC1): the swaps are applied, so 6 to add and 6 kept To remove tiles are left
     // carriers and caps
     const bad = await pg.evaluate(S0 => { const defs = getCardDefs(), carry = (d, k) => { const e = (d && d.effects) || {}; return e[k] != null && e[k] !== false && e[k] !== 0; }, out = [];
       S0.maps.forEach(m => { const cap = roadRarityStep(roadRevealedCap(m.n)); m.add.forEach(a => { a.cards.forEach(c => { const d = defs[c.id]; if (!d) out.push(m.n + ' missing ' + c.id); else { if (!carry(d, a.key)) out.push(m.n + ' ' + c.id + ' lacks ' + a.key); if (roadRarityStep(d.rarity) > cap) out.push(m.n + ' ' + c.id + ' over the cap'); } });

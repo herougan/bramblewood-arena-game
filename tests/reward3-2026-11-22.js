@@ -11,7 +11,8 @@ const app = rd('arena_app.js');
 
 // ---- 1. static
 ok(/reward3-2026-11-22/.test(rd('tests/run-all.sh')), '1. run-all.sh lists this test');
-ok(/REWARD3/.test(rd('docs/CHANGELOG.md').slice(0, 8000)), '1. CHANGELOG entry at the top');
+// 2026-11-25 (TESTFIX11): later packages push the entry down; the check is that the package's dated entry is there
+ok(/^## 2026-11-22 Package REWARD3\b/m.test(rd('docs/CHANGELOG.md')), '1. CHANGELOG entry (## 2026-11-22 Package REWARD3)');
 ok(fs.existsSync(path.join(ROOT, 'docs/design/reward3-2026-11-22.md')), '1. design doc');
 ok(/__cfg:reward3/.test(app) && /applyCloudReward3\(r\)/.test(app), '1. the cloud row is written and read');
 const tx = rd('bramblewood-texts.js'), keys = [...new Set((app.match(/ui\.rw3-(?!rt-)[a-z-]+/g) || []))];
