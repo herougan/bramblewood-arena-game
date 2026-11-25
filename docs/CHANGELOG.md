@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-24 Package DAUNT2 (owner 11-24 23:21 / 23:25 / 23:30, 11-25 00:13)
+- **Scare -> Daunt (same N, level steps too):** Yeti 2, White Dragon 3, Lurking Dread 2, Frillneck Duelist 1 (Level 3), Ashmantle Fiend 2, Whale Shark 1. Scare stays in the engine, on no card.
+- **New skill Intimidate N (👺):** the enemy facing it (its own column) attacks for N less while it stands, Ready or not; with Majesty on the same foe the biggest counts; attacks only, never below 0 (`majestyCut` at reach 0). Booming Bittern: Scare 1 -> Intimidate 2 (Level 7: 3). New! on Map 6; Daunt New! on Map 11 (Golden Eagle; no earlier main map shows it). Price measured 2.27 x N^0.79 (Intimidate 2: 3.93 [3.10, 4.95]; the Majesty-derived 2.18 x N^0.80 sat inside).
+- **Puffball:** Bloom (Wet & Poison kill): an enemy has to die of poison while it is on the board, not any kill. Budget odds as Kill, so its price stays.
+- **Keen Sense** hits grounded Evasive (camouflaged) units; a flying one still dodges. The Codex lists Keen Sense as an answer to Evasive.
+- **Looks and texts:** the poison attack label is green (the purple plate is kept, unused); Poison Powder's 🍄 is green in pips, map skill tiles and the Codex; Corrode's card line, Codex note, keyword note and status line say what it does (N less Attack, refreshed not added, fades 1 a round after the last hit); every skill chip on a card has a tooltip. 12 packs.
+- Budget: no changed card leaves its band (Yeti 100%+ -> 96%, back in); under the 85% Level 10 target: White Dragon 80%, Lurking Dread 78%, Frillneck Duelist 76% (was 79%). Card matrix: 495 golden diffs, all in fights with these cards, accepted. Road: Maps 6, 7, 8, 11 and 16 fights with these cards move (re-measure).
+
 ## 2026-11-24 Package ROADFIX3 (Map 8 and The Mycelium Deep after Map 8's new reference deck)
 - **Road:** 9 enemy decks take list swaps (leaders, first-clear cards, sizes kept; no Shield, Health or enemy-level change; no new off-list card), each in band on seeds 9100 and 5100 (400 games): 8-3 Cinder Vents 66 -> 78.5 (target 80; it takes 8-4's Stalactite Pill Bugs, so Map 8 still holds the card in 6 fights), 8-4 89 -> 80.5 (75), 8-5 68.5 -> 60 (60), 8-8 56 -> 45 (40), The Mycelium Deep 7-A-1..5 from 98 / 91 / 87.5 / 84 / 70 to 93 / 72 / 70 / 65 / 37 (targets 90 / 70 / 70 / 60 / 40). 6-3 unchanged: no legal deck reaches its band (all 95 read). 8-7 left for owner call REFIT20-1. Test pins: content3 (18-4 normal Sandstorm), skir1 / bal7 (6-3 Constrictor Coil x2).
 - Road totals (Maps 0-20, seeds 9100): 168 in band / 178 within 10 / 9 beyond 20 -> 177 / 185 / 6 of 208 (main 132 / 136 / 2, side 45 / 49 / 4). Details: `docs/balance/roadfix3-2026-11-24.md`.
