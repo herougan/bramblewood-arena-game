@@ -4685,7 +4685,6 @@
  "Intro": "導入",
  "This map's keyword skill": "このマップのキーワードスキル",
  "Red = new here": "赤 = ここで新登場",
- "Blue = suggested, not on these cards": "青 = 提案、このカードにはない",
  "Grey = carried": "灰 = 所持",
  "Learns a skill at Level {n}": "Lv{n}でスキルを覚える",
  "Not unlocked yet": "まだ解放されていません",
@@ -4782,5 +4781,9 @@
  "The Caldera Wyrm": "カルデラのワーム",
  "Claim all": "すべて受け取る",
  "Dungeon Rules": "ダンジョンのルール",
- "Multiplayer Rules": "マルチプレイのルール"
+ "Multiplayer Rules": "マルチプレイのルール",
+ "Suggest New!": "提案 NEW!",
+ "On no earlier map: adding it here makes it New!": "前のマップにない:ここで加えるとNEW!",
+ "Blue, red edge = suggest New!": "青・赤枠 = 提案 NEW!",
+ "Blue = suggested, carried": "青 = 提案、所持"
 }

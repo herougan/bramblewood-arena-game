@@ -138,6 +138,23 @@ const cq = n=> JSON.stringify({completed: Array.from({length: n}, (_, i)=> 'm1:0
     const ai = src.indexOf('\nfunction renderArenaSubTabInner('), arena = src.slice(ai, src.indexOf('\nfunction ', ai + 10)); // its template strings defeat fnSrc's brace count
     ok(!/openCoopBtn|gdThemedName/.test(arena) && !/function arenaCoopOpen/.test(src) && /pl2ArenaTabsHTML\(\)/.test(arena), '7. The Tidelock Vault is off "More ways to play" (the Co-op tab still opens it)'); }
 
+  // ======================================================================= 8. Map cards: blue tiles split into Suggest New! (on no earlier map) and Suggested (carried)
+  { const grab = name=> fnSrc(name);
+    const mc = ['ui19McSkillRows', 'ui19McEarlierSkillKeys', 'ui19McSkillText', 'ui19McSkillsHTML', 'ui28SugPillHTML', 'ui30SuggPillHTML', 'ui30SuggTilesHTML'].map(grab).join('\n');
+    const defs = {a: {id: 'a', effects: {swarm: true, flying: true}}, c: {id: 'c', effects: {}}};
+    const S = {swarm: {label: 'Swarm', desc: ()=> 's'}, flying: {label: 'Flying', desc: ()=> 'f'}, thorns: {label: 'Thorns', desc: ()=> 't'}, regen: {label: 'Regen', desc: ()=> 'r'}};
+    const C = {ui18CardSkillKeys: d=> Object.keys(d.effects).map(k=> ({key: k, lvl: 0})), skillDefOf: k=> S[k], skillText: (p, v)=> p.desc(v), SKILL_ICON: {}, escapeHtml: s=> String(s), escapeAttr: s=> String(s),
+      TX: (k, v)=> ({'ui.fp1-sug-new': 'Suggest New!', 'ui.ui28-suggested': 'Suggested'})[k] || k, mapNumberOf: id=> ({m0: 0, m1: 1})[id], mainConquestMaps: ()=> [{id: 'm0'}, {id: 'm1'}],
+      mapPoolSections: id=> [{key: 'cards', ids: id === 'm0' ? ['a'] : []}],
+      ui24McRecs: ()=> [{key: 'swarm', p: S.swarm, card: 'X', why: ''}, {key: 'thorns', p: S.thorns, card: 'Y', why: ''}], ui30McSugg: ()=> new Map([['flying', ''], ['regen', '']])};
+    vm.createContext(C); vm.runInContext(mc + '\nthis.html = ui19McSkillsHTML("m1", ["c"], ' + JSON.stringify(defs) + ', ()=> true, "m1", []);', C);
+    const tile = k=> (C.html.match(new RegExp('<li class="([^"]*)"[^>]*data-(?:ui24-rec|ui19-skill)="' + k + '"[\\s\\S]*?</li>')) || []);
+    const t = k=> tile(k)[0] || '', cls = k=> tile(k)[1] || '';
+    ok(/is-sug-new/.test(cls('thorns')) && /Suggest New!/.test(t('thorns')) && /is-sug-new/.test(cls('regen')) && /Suggest New!/.test(t('regen')), '8. a recommendation and an intro pick on no earlier map: red-edged tile, "Suggest New!" pill');
+    ok(!/is-sug-new/.test(cls('swarm')) && />Suggested</.test(t('swarm')) && !/is-sug-new/.test(cls('flying')) && />Suggested</.test(t('flying')), '8. ones already met on an earlier map: plain blue "Suggested" (carried)');
+    ok(/is-sugnew/.test(C.html) && /ui\.fp1-leg-sug-new/.test(C.html), '8. the legend names Suggest New!');
+    ok(/is-claude-pick\$\{sugCls\(r\.key\)\}/.test(fnSrc('ui19McSkillsHTML')) && /sugPill\(TX\('ui\.ui34-pick-tip'[^)]*\), r\.key\)/.test(fnSrc('ui19McSkillsHTML')), '8. Claude\'s picks (ui34ClaudePicks) follow the same rule'); }
+
   console.log(fail ? `fixpack1: ${fail} of ${n} checks failed` : `fixpack1: all ${n} checks passed`);
   process.exit(fail ? 1 : 0);
 })();

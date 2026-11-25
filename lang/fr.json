@@ -4685,7 +4685,6 @@
  "Intro": "Intro",
  "This map's keyword skill": "La compétence-clé de cette carte",
  "Red = new here": "Rouge = nouveau ici",
- "Blue = suggested, not on these cards": "Bleu = suggéré, pas sur ces cartes",
  "Grey = carried": "Gris = portée",
  "Learns a skill at Level {n}": "Apprend une compétence au niv. {n}",
  "Not unlocked yet": "Pas encore débloqué",
@@ -4782,5 +4781,9 @@
  "The Caldera Wyrm": "Le Wyrm de la caldeira",
  "Claim all": "Tout réclamer",
  "Dungeon Rules": "Règles du donjon",
- "Multiplayer Rules": "Règles multijoueur"
+ "Multiplayer Rules": "Règles multijoueur",
+ "Suggest New!": "Suggéré NOUVEAU !",
+ "On no earlier map: adding it here makes it New!": "Sur aucune carte précédente : l’ajouter ici le rend NOUVEAU !",
+ "Blue, red edge = suggest New!": "Bleu, bord rouge = suggéré NOUVEAU !",
+ "Blue = suggested, carried": "Bleu = suggéré, porté"
 }

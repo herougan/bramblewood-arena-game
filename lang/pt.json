@@ -4686,7 +4686,6 @@
  "Intro": "Intro",
  "This map's keyword skill": "A habilidade-chave deste mapa",
  "Red = new here": "Vermelho = novo aqui",
- "Blue = suggested, not on these cards": "Azul = sugerida, não está nestas cartas",
  "Grey = carried": "Cinza = presente",
  "Learns a skill at Level {n}": "Aprende uma habilidade no nível {n}",
  "Not unlocked yet": "Ainda não desbloqueado",
@@ -4783,5 +4782,9 @@
  "The Caldera Wyrm": "A Serpe da Caldeira",
  "Claim all": "Receber tudo",
  "Dungeon Rules": "Regras da masmorra",
- "Multiplayer Rules": "Regras multijogador"
+ "Multiplayer Rules": "Regras multijogador",
+ "Suggest New!": "Sugerida NOVO!",
+ "On no earlier map: adding it here makes it New!": "Em nenhum mapa anterior: adicioná-la aqui a torna NOVO!",
+ "Blue, red edge = suggest New!": "Azul, borda vermelha = sugerida NOVO!",
+ "Blue = suggested, carried": "Azul = sugerida, presente"
 }

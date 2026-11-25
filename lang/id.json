@@ -4686,7 +4686,6 @@
  "Intro": "Intro",
  "This map's keyword skill": "Skill kunci peta ini",
  "Red = new here": "Merah = baru di sini",
- "Blue = suggested, not on these cards": "Biru = disarankan, tidak ada di kartu ini",
  "Grey = carried": "Abu-abu = dibawa",
  "Learns a skill at Level {n}": "Mempelajari skill di Level {n}",
  "Not unlocked yet": "Belum terbuka",
@@ -4783,5 +4782,9 @@
  "The Caldera Wyrm": "Naga Kaldera",
  "Claim all": "Klaim semua",
  "Dungeon Rules": "Aturan ruang bawah tanah",
- "Multiplayer Rules": "Aturan multipemain"
+ "Multiplayer Rules": "Aturan multipemain",
+ "Suggest New!": "Saran BARU!",
+ "On no earlier map: adding it here makes it New!": "Tidak ada di peta sebelumnya: menambahkannya di sini membuatnya BARU!",
+ "Blue, red edge = suggest New!": "Biru, tepi merah = saran BARU!",
+ "Blue = suggested, carried": "Biru = disarankan, dibawa"
 }

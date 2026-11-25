@@ -4684,7 +4684,6 @@
  "Intro": "Intro",
  "This map's keyword skill": "La habilidad clave de este mapa",
  "Red = new here": "Rojo = nuevo aquí",
- "Blue = suggested, not on these cards": "Azul = sugerida, no está en estas cartas",
  "Grey = carried": "Gris = presente",
  "Learns a skill at Level {n}": "Aprende una habilidad en el nivel {n}",
  "Not unlocked yet": "Aún no desbloqueado",
@@ -4781,5 +4780,9 @@
  "The Caldera Wyrm": "La Sierpe de la caldera",
  "Claim all": "Reclamar todo",
  "Dungeon Rules": "Reglas de la mazmorra",
- "Multiplayer Rules": "Reglas multijugador"
+ "Multiplayer Rules": "Reglas multijugador",
+ "Suggest New!": "Sugerida ¡NUEVO!",
+ "On no earlier map: adding it here makes it New!": "En ningún mapa anterior: añadirla aquí la hace ¡NUEVO!",
+ "Blue, red edge = suggest New!": "Azul, borde rojo = sugerida ¡NUEVO!",
+ "Blue = suggested, carried": "Azul = sugerida, presente"
 }

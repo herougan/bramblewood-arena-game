@@ -95,7 +95,8 @@ async function browser(){
         ok(!r.noteText, `@${w} Map ${num}: the standing note is gone`);
         ok(r.addInSpecial && !r.addInBar, `@${w} Map ${num}: Add card to SPECIAL is in the SPECIAL section`);
         ok(r.gap !== null && r.gap <= 8, `@${w} Map ${num}: the button row is ${r.gap}px under the subtitle`);
-        if(num === 0) ok(r.pillTexts.length >= 1 && r.pillTexts.every(t=> t === 'Suggested'), `@${w} Map 0: the Suggested pill shows on a grey tile`);
+        // 2026-11-26 (FIXPACK1): on Map 0 no skill was met earlier, so a suggestion reads "Suggest New!" (Suggested = carried from an earlier map)
+        if(num === 0) ok(r.pillTexts.length >= 1 && r.pillTexts.every(t=> t === 'Suggested' || t === 'Suggest New!'), `@${w} Map 0: the Suggested / Suggest New! pill shows (${r.pillTexts.join(', ')})`);
       }
       // the Cut / Keep toggle still flips and keeps the tooltip
       const t = await pg.evaluate(`(()=>{ const o = document.getElementById('pk1MapCardsOverlay'), b = o.querySelector('[data-rv-act=cut]'); const tip = b.title; b.click(); const after = o.querySelector('[data-rv-act=cut]'); return {pressed: after.getAttribute('aria-pressed'), tip: after.title === tip}; })()`);

@@ -4685,7 +4685,6 @@
  "Intro": "Intro",
  "This map's keyword skill": "Ang keyword skill ng mapang ito",
  "Red = new here": "Pula = bago rito",
- "Blue = suggested, not on these cards": "Asul = mungkahi, wala sa mga card na ito",
  "Grey = carried": "Abo = dala",
  "Learns a skill at Level {n}": "Matututo ng skill sa Level {n}",
  "Not unlocked yet": "Hindi pa na-unlock",
@@ -4782,5 +4781,9 @@
  "The Caldera Wyrm": "Ang Wyrm ng Kaldera",
  "Claim all": "Kunin lahat",
  "Dungeon Rules": "Mga patakaran ng piitan",
- "Multiplayer Rules": "Mga patakaran ng multiplayer"
+ "Multiplayer Rules": "Mga patakaran ng multiplayer",
+ "Suggest New!": "Mungkahi BAGO!",
+ "On no earlier map: adding it here makes it New!": "Wala sa naunang mapa: kapag idinagdag dito, BAGO! ito",
+ "Blue, red edge = suggest New!": "Asul, pulang gilid = mungkahi BAGO!",
+ "Blue = suggested, carried": "Asul = mungkahi, dala"
 }

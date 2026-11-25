@@ -38,7 +38,7 @@ async function browser(){
         greenNoPill: tiles.filter(t=> has(t, 'is-have') && !pills(t).some(x=> /Suggested|Counter|Sugg|Intro/.test(x))).length,
         intro: tiles.filter(t=> pills(t).includes('Suggested')).length}; })()`);
     if(process.env.UIQ2_DEBUG) console.log(r.dump.join('\n'));
-    ok(r.n > 0 && r.legend === 5, 'the panel has tiles and a five-part legend: New!, To add, To remove, Suggested, Carried (' + r.n + ')');
+    ok(r.n > 0 && r.legend === 6, 'the panel has tiles and a six-part legend: New!, To add, To remove, Suggest New!, Suggested, Carried (' + r.n + ')'); // 2026-11-26 (FIXPACK1): + Suggest New!
     ok(r.gold === 0, 'no tile is gold (is-intro)');
     ok(r.newTiles.length > 0 && r.newTiles.every(Boolean) && r.newNoRed === 0, 'every NEW! tile is red and every red tile says NEW! (' + r.newTiles.length + ')');
     ok(r.blueCarried === 0, 'a blue tile is never also red, green or grey');

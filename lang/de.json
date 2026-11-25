@@ -4684,7 +4684,6 @@
  "Intro": "Intro",
  "This map's keyword skill": "Der Schlüssel-Skill dieser Karte",
  "Red = new here": "Rot = neu hier",
- "Blue = suggested, not on these cards": "Blau = vorgeschlagen, nicht auf diesen Karten",
  "Grey = carried": "Grau = vorhanden",
  "Learns a skill at Level {n}": "Lernt auf Stufe {n} eine Fähigkeit",
  "Not unlocked yet": "Noch nicht freigeschaltet",
@@ -4781,5 +4780,9 @@
  "The Caldera Wyrm": "Der Calderawurm",
  "Claim all": "Alle abholen",
  "Dungeon Rules": "Verlies-Regeln",
- "Multiplayer Rules": "Mehrspieler-Regeln"
+ "Multiplayer Rules": "Mehrspieler-Regeln",
+ "Suggest New!": "Vorschlag NEU!",
+ "On no earlier map: adding it here makes it New!": "Auf keiner früheren Karte: hier hinzugefügt ist es NEU!",
+ "Blue, red edge = suggest New!": "Blau, roter Rand = Vorschlag NEU!",
+ "Blue = suggested, carried": "Blau = vorgeschlagen, vorhanden"
 }

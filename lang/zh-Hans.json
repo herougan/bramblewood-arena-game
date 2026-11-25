@@ -4685,7 +4685,6 @@
  "Intro": "引入",
  "This map's keyword skill": "本地图的关键词技能",
  "Red = new here": "红 = 此处新增",
- "Blue = suggested, not on these cards": "蓝 = 建议,不在这些卡上",
  "Grey = carried": "灰 = 已携带",
  "Learns a skill at Level {n}": "在 {n} 级学会一项技能",
  "Not unlocked yet": "尚未解锁",
@@ -4782,5 +4781,9 @@
  "The Caldera Wyrm": "火山口巨龙",
  "Claim all": "全部领取",
  "Dungeon Rules": "地牢规则",
- "Multiplayer Rules": "多人规则"
+ "Multiplayer Rules": "多人规则",
+ "Suggest New!": "建议 新!",
+ "On no earlier map: adding it here makes it New!": "之前的地图都没有:加在这里就是新!",
+ "Blue, red edge = suggest New!": "蓝,红边 = 建议 新!",
+ "Blue = suggested, carried": "蓝 = 建议,已携带"
 }

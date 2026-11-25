@@ -15489,8 +15489,12 @@ html[data-fx="none"] .map-node.is-lair-final:not(.done), html[data-fx="none"] .f
 .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-carried, .pk1-mc-overlay .ui19-sk-list .ui19-sk.is-other{border-color:var(--surface-border); border-style:solid; background:color-mix(in srgb, #8a8f99 16%, var(--bg)); color:var(--ink); opacity:1;}
 .uiq2-legend .is-add{border-color:#2f6fd0; border-left-color:#c62828; background:linear-gradient(90deg, color-mix(in srgb, #c62828 40%, var(--bg)) 50%, color-mix(in srgb, #2f6fd0 40%, var(--bg)) 50%);}
 .uiq2-legend .is-rem{border-color:#c62828; border-left-color:#555; background:linear-gradient(90deg, #2b2b2b 50%, color-mix(in srgb, #c62828 60%, var(--bg)) 50%); color:#fff;}
-.uiq2-legend{grid-template-columns:repeat(5, auto);}
+.uiq2-legend{grid-template-columns:repeat(3, auto);}
 @media (max-width:560px){ .uiq2-legend{grid-template-columns:1fr 1fr;} }
+/* 2026-11-26 (FIXPACK1, owner 11-25 00:16): Suggest New! (on no earlier map: adding it makes it New!) = blue with a red edge and its own pill; Suggested (carried) stays plain blue */
+.pk1-mc-overlay .ui19-sk-list .ui19-sk.is-sug-new{border-color:#c62828; box-shadow:inset 3px 0 0 #c62828;}
+.ui28-sug.is-sug-new{background:#2f6fd0; box-shadow:0 0 0 1.5px #c62828;}
+.uiq2-legend .is-sugnew{border-color:#c62828; box-shadow:inset 3px 0 0 #c62828; background:color-mix(in srgb, #3b7de0 24%, var(--bg));}
 .ui35-pill.is-cx{background:#2f6fd0; color:#fff;}
 .mui2-lv{display:flex; flex-wrap:wrap; align-items:center; gap:3px; margin:6px 0 2px;}
 .mui2-lv-t{font:800 10.5px/1 'Baloo 2',system-ui,sans-serif; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-muted); margin-right:3px;}
@@ -49554,7 +49558,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=1bc8c62368", "es": "assets/lang/es.js?v=e6e9bbde40", "fr": "assets/lang/fr.js?v=af0566308f", "id": "assets/lang/id.js?v=2a77e74a92", "it": "assets/lang/it.js?v=ca1a357b97", "ja": "assets/lang/ja.js?v=e7668f0578", "ko": "assets/lang/ko.js?v=e196b512e2", "pt": "assets/lang/pt.js?v=20bbd52a05", "ta": "assets/lang/ta.js?v=b46d7e515c", "tl": "assets/lang/tl.js?v=28b1c5c09a", "zh-Hans": "assets/lang/zh-Hans.js?v=9780250fcb", "zh-Hant": "assets/lang/zh-Hant.js?v=9657d1ba2a"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=03714666fb", "es": "assets/lang/es.js?v=6921192f60", "fr": "assets/lang/fr.js?v=900b5a6a88", "id": "assets/lang/id.js?v=8187090c47", "it": "assets/lang/it.js?v=5608a27ecc", "ja": "assets/lang/ja.js?v=d09adb1b2e", "ko": "assets/lang/ko.js?v=ab922c818d", "pt": "assets/lang/pt.js?v=162ffa80fc", "ta": "assets/lang/ta.js?v=4e6ff82e55", "tl": "assets/lang/tl.js?v=2981a73782", "zh-Hans": "assets/lang/zh-Hans.js?v=05ee4a296a", "zh-Hant": "assets/lang/zh-Hant.js?v=1094f00170"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -53542,7 +53546,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.uiq2-pill-intro": "Intro",
   "ui.uiq2-pill-intro-tip": "This map's keyword skill",
   "ui.uiq2-leg-new": "Red = new here",
-  "ui.uiq2-leg-sugg": "Blue = suggested, not on these cards",
+  "ui.uiq2-leg-sugg": "Blue = suggested, carried",
   "ui.uiq2-leg-carried": "Grey = carried",
   "ui.skn-empower": "Empower",
   "ui.skn-harden": "Harden",
@@ -53633,7 +53637,10 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.daunt2-bl-cond-poisonkill": "Poison kill",
   "ui.eng19-bc-poisonkill": "Poison kill: an enemy unit died of poison while this unit was on the board",
   "ui.fp1-dungeon-rules": "Dungeon Rules",
-  "ui.fp1-multiplayer-rules": "Multiplayer Rules"
+  "ui.fp1-multiplayer-rules": "Multiplayer Rules",
+  "ui.fp1-sug-new": "Suggest New!",
+  "ui.fp1-sug-new-tip": "On no earlier map: adding it here makes it New!",
+  "ui.fp1-leg-sug-new": "Blue, red edge = suggest New!"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -59830,7 +59837,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '6460ee5d66e2', BUILD_CARD_HASH = 'f60d509855dfc5f50eddbeed63d10bcd2a5e0a691271928a31e1d7cbdb072047';
+const BUILD_ID = '1950c933f591', BUILD_CARD_HASH = 'f60d509855dfc5f50eddbeed63d10bcd2a5e0a691271928a31e1d7cbdb072047';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
@@ -90396,15 +90403,19 @@ function ui30McSugg(mapId){
   try{ if(!mapId || (typeof mpIsSub === 'function' && mpIsSub(mapId))) return new Map(); const src = (typeof MAP_INTRO_SUGG !== 'undefined' && MAP_INTRO_SUGG) ? MAP_INTRO_SUGG : {};
     const out = new Map(); (src[mapId] || []).forEach(e=>{ if(e && e.skill && !out.has(e.skill) && (typeof skillDefOf !== 'function' || skillDefOf(e.skill))) out.set(e.skill, e.why || ''); }); return out; }catch(e){ return new Map(); }
 }
-function ui30SuggPillHTML(key, sugg){
+// 2026-11-26 (FIXPACK1, owner 11-25 00:16): a suggested skill on no earlier map would be New! here: its own "Suggest New!" pill (blue, red ring) and a red-edged tile;
+// one already met on an earlier map would be carried: the plain blue "Suggested"
+function ui28SugPillHTML(tip, isNew){ const t = isNew ? TX('ui.fp1-sug-new-tip') + ' · ' + tip : tip;
+  return ` <i class="ui28-sug${isNew ? ' is-sug-new' : ''}" title="${escapeAttr(t)}" aria-label="${escapeAttr(t)}">${escapeHtml(TX(isNew ? 'ui.fp1-sug-new' : 'ui.ui28-suggested'))}</i>`; }
+function ui30SuggPillHTML(key, sugg, early){
   if(!sugg || !sugg.has(key)) return ''; const why = sugg.get(key), tip = TX('ui.ui30-sugg-intro-tip') + (why ? ': ' + why : '');
-  return ` <i class="ui28-sug" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">${escapeHtml(TX('ui.ui28-suggested'))}</i>`; // 2026-11-24 (MAPUI2): Sugg. Intro is the Suggested pill
+  return ui28SugPillHTML(tip, !!early && !early.has(key)); // 2026-11-24 (MAPUI2): Sugg. Intro is the Suggested pill
 }
-function ui30SuggTilesHTML(sugg, shown){
+function ui30SuggTilesHTML(sugg, shown, early){
   if(!sugg || !sugg.size) return ''; let h = '';
   sugg.forEach((why, key)=>{ if(shown.has(key)) return; const p = skillDefOf(key); if(!p) return; let text = ''; try{ text = ui19McSkillText({key, fx: {[key]: true}}); }catch(e){}
     const ctx = TX('ui.ui30-sugg-missing') + (why ? ' (' + why + ')' : ''); // ENG35 (2026-11-07): one line; the text and why go in the hover window
-    h += `<li class="ui19-sk ui30-sugg-tile" data-ui19-skill="${escapeAttr(key)}" data-ui30-sugg="1" ${typeof eng35TileAttrs === 'function' ? eng35TileAttrs(key, p.label, text, ctx) : `title="${escapeAttr(p.label + (text ? ': ' + text : '') + (why ? ' (' + why + ')' : ''))}"`}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml((typeof SKILL_ICON !== 'undefined' && SKILL_ICON[key]) || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(p.label)}</b>${ui30SuggPillHTML(key, sugg)}</span></li>`; });
+    h += `<li class="ui19-sk ui30-sugg-tile${early && !early.has(key) ? ' is-sug-new' : ''}" data-ui19-skill="${escapeAttr(key)}" data-ui30-sugg="1" ${typeof eng35TileAttrs === 'function' ? eng35TileAttrs(key, p.label, text, ctx) : `title="${escapeAttr(p.label + (text ? ': ' + text : '') + (why ? ' (' + why + ')' : ''))}"`}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml((typeof SKILL_ICON !== 'undefined' && SKILL_ICON[key]) || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(p.label)}</b>${ui30SuggPillHTML(key, sugg, early)}</span></li>`; });
   return h;
 }
 // UI30_SUGG:END
@@ -90596,7 +90607,8 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId, otherIds){
   // recommendations are ONE list of one-line tiles, the kind shown by a pill (Main / Counter / Suggested / Sugg. Intro / NEW!); the hover says what the skill does. Others stays its own group.
   const pill = (cls, key, tipKey, tipArgs)=> ` <i class="ui35-pill is-${cls}" title="${escapeAttr(TX(tipKey, tipArgs))}">${escapeHtml(TX(key))}</i>`;
   const cxo = typeof ui35CodexOf === 'function' ? ui35CodexOf(mapId || top) : null, cx = k=> cxo && cxo.map.has(k) ? pill('cx', 'ui.mapui2-pill-codex', 'ui.ui35-pill-cx' + cxo.map.get(k) + '-tip') : ''; // UI35 #22; 2026-11-24 (MAPUI2): Codex sig. / Codex side are one Codex pill (the hover says which)
-  const sugPill = tip=> ` <i class="ui28-sug" title="${escapeAttr(tip)}">${escapeHtml(TX('ui.ui28-suggested'))}</i>`;
+  const sugNew = k=> !early.has(k), sugCls = k=> sugNew(k) ? ' is-sug-new' : ''; // 2026-11-26 (FIXPACK1): Suggest New! (on no earlier map) vs Suggested (carried)
+  const sugPill = (tip, k)=> typeof ui28SugPillHTML === 'function' ? ui28SugPillHTML(tip, sugNew(k)) : ` <i class="ui28-sug" title="${escapeAttr(tip)}">${escapeHtml(TX('ui.ui28-suggested'))}</i>`;
   // 2026-11-22 (MAPRM1, owner 23:05: "if a skill is \"New!\" but shouldn't be ... make it half red, half dark grey - with a pill \"to remove\""): New! on a main map but not in its table row (MAP_FOCUS_SKILLS)
   const rmTbl = tbl0, rmSp = new Set((((typeof MAP_SPECIAL_SKILL_NAMES !== 'undefined' ? MAP_SPECIAL_SKILL_NAMES : {})[mapNumberOf(mapId || top)]) || []).map(x=> x.toLowerCase())); // 2026-11-24 (MAPUI2): typeof guard, tests lift this function alone
   const isRm = r=> !!(rmTbl.size && r.isNew && !r.outside && !rmTbl.has(r.key) && !rmSp.has(String(r.p && r.p.label || '').toLowerCase())); // a skill in the map's Special / Faction column is not to remove
@@ -90609,14 +90621,14 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId, otherIds){
   let ctr = []; try{ ctr = typeof ui34CounterRows === 'function' ? ui34CounterRows(flaggedMain, defs, have) : []; }catch(e){ ctr = []; }
   const ctrKeys = new Set(ctr.map(r=> r.key));
   const recs = recs0.filter(r=>{ if(have.has(r.key) || ctrKeys.has(r.key) || seenRec.has(r.key)) return false; seenRec.add(r.key); return true; });
-  const rli = r=> `<li class="ui19-sk is-rec" data-ui24-rec="${escapeAttr(r.key)}" ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui24-rec-tip', {card: r.card}) + (r.why ? ' (' + r.why + ')' : ''), r.p.label + ': ' + TX('ui.ui24-rec-for', {card: r.card}))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${sugPill(TX('ui.ui24-rec-tip', {card: r.card}) + (r.why ? ' (' + r.why + ')' : ''))}</span></li>`;
-  const kwMissing = kw && !have.has(kw) && !ctrKeys.has(kw) && skillDefOf(kw) ? `<li class="ui19-sk is-sugg" data-ui19-skill="${escapeAttr(kw)}" ${tipA(kw, skillDefOf(kw).label, ui19McSkillText({key: kw, fx: {[kw]: true}}), TX('ui.ui24-intro-missing'))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[kw] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(skillDefOf(kw).label)}</b>${sugPill(TX('ui.ui24-intro-missing'))}</span></li>` : '';
+  const rli = r=> `<li class="ui19-sk is-rec${sugCls(r.key)}" data-ui24-rec="${escapeAttr(r.key)}" ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui24-rec-tip', {card: r.card}) + (r.why ? ' (' + r.why + ')' : ''), r.p.label + ': ' + TX('ui.ui24-rec-for', {card: r.card}))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${sugPill(TX('ui.ui24-rec-tip', {card: r.card}) + (r.why ? ' (' + r.why + ')' : ''), r.key)}</span></li>`;
+  const kwMissing = kw && !have.has(kw) && !ctrKeys.has(kw) && skillDefOf(kw) ? `<li class="ui19-sk is-sugg${sugCls(kw)}" data-ui19-skill="${escapeAttr(kw)}" ${tipA(kw, skillDefOf(kw).label, ui19McSkillText({key: kw, fx: {[kw]: true}}), TX('ui.ui24-intro-missing'))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[kw] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(skillDefOf(kw).label)}</b>${sugPill(TX('ui.ui24-intro-missing'), kw)}</span></li>` : '';
   const suggShown = new Set([...have, ...ctrKeys, ...(kwMissing ? [kw] : []), ...recs.map(r=> r.key)]);
-  const suggTiles = typeof ui30SuggTilesHTML === 'function' ? ui30SuggTilesHTML(sugg, suggShown) : ''; // 2026-11-07 (UI30 #16): a pick no tile shows yet
+  const suggTiles = typeof ui30SuggTilesHTML === 'function' ? ui30SuggTilesHTML(sugg, suggShown, early) : ''; // 2026-11-07 (UI30 #16): a pick no tile shows yet
   // 2026-11-08 (package UI34 item 3, owner 23:49: up to 15 Claude recommendations per map where sensible): the blue group tops up to 15 with the skills of Claude's picked cards for this map (ui34ClaudePicks) that no tile shows yet
   const suggMissingN = [...sugg.keys()].filter(k=> !suggShown.has(k) && skillDefOf(k)).length, blueRoom = Math.max(0, 15 - recs.length - (kwMissing ? 1 : 0) - suggMissingN);
   let picks = []; try{ picks = typeof ui34ClaudePicks === 'function' && blueRoom ? ui34ClaudePicks(mapId || top, defs, new Set([...suggShown, ...sugg.keys(), ...(kw ? [kw] : [])]), blueRoom) : []; }catch(e){ picks = []; }
-  const pickTiles = picks.map(r=> `<li class="ui19-sk is-rec is-claude-pick" data-ui34-pick="${escapeAttr(r.key)}" ${tipA(r.key, r.p.label, ui19McSkillText({key: r.key, fx: {[r.key]: true}}), TX('ui.ui34-pick-tip', {card: r.card, theme: r.theme || '-'}), r.p.label + ': ' + TX('ui.ui24-rec-for', {card: r.card}))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${sugPill(TX('ui.ui34-pick-tip', {card: r.card, theme: r.theme || '-'}))}</span></li>`).join('');
+  const pickTiles = picks.map(r=> `<li class="ui19-sk is-rec is-claude-pick${sugCls(r.key)}" data-ui34-pick="${escapeAttr(r.key)}" ${tipA(r.key, r.p.label, ui19McSkillText({key: r.key, fx: {[r.key]: true}}), TX('ui.ui34-pick-tip', {card: r.card, theme: r.theme || '-'}), r.p.label + ': ' + TX('ui.ui24-rec-for', {card: r.card}))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${sugPill(TX('ui.ui34-pick-tip', {card: r.card, theme: r.theme || '-'}), r.key)}</span></li>`).join('');
   const cxShown = new Set([...suggShown, ...sugg.keys(), ...picks.map(r=> r.key)]);
   const cxTiles = cxo ? [...cxo.map.keys()].filter(k=> !cxShown.has(k)).map(k=>{ const p = skillDefOf(k); let text = ''; try{ text = ui19McSkillText({key: k, fx: {[k]: true}}); }catch(e){}
     const ctx = TX('ui.ui35-codex-ctx'); return `<li class="ui19-sk is-rec ui35-codex-tile" data-ui35-codex="${escapeAttr(k)}" data-ui19-skill="${escapeAttr(k)}" ${typeof eng35TileAttrs === 'function' ? eng35TileAttrs(k, p.label, text, ctx) : `title="${escapeAttr(p.label + (text ? ': ' + text : ''))}"`}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml((typeof SKILL_ICON !== 'undefined' && SKILL_ICON[k]) || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(p.label)}</b>${cx(k)}</span></li>`; }).join('') : ''; // UI35 #22: a Codex pick no tile shows yet
@@ -90627,7 +90639,7 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId, otherIds){
   ; // 2026-11-08 (UI35 #6): how many skills this map introduces (the owner wants 2-3 on a main map, 0-1 on a side map)
   const tileN = flaggedMain.length + focusAdd.length + ctr.length + (cxTiles ? 1 : 0) + (kwMissing ? 1 : 0) + (suggTiles ? 1 : 0) + recs.length + picks.length + flaggedOther.length;
   // 2026-11-24 (MAPUI2 #6 #8): ONE list, no "Other skills" subtitle: red (New!, To remove), red / blue (To add), blue (Suggested, Counter, Codex), grey (carried, then the side-map and special skills); the level bar under it
-  const legend = [['new', TX('ui.uiq2-leg-new')], ['add', TX('ui.mapui2-leg-add')], ['rem', TX('ui.mapui2-leg-rem')], ['sugg', TX('ui.uiq2-leg-sugg')], ['carried', TX('ui.uiq2-leg-carried')]];
+  const legend = [['new', TX('ui.uiq2-leg-new')], ['add', TX('ui.mapui2-leg-add')], ['rem', TX('ui.mapui2-leg-rem')], ['sugnew', TX('ui.fp1-leg-sug-new')], ['sugg', TX('ui.uiq2-leg-sugg')], ['carried', TX('ui.uiq2-leg-carried')]]; // 2026-11-26 (FIXPACK1): + Suggest New!
   return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small> <small class="ui35-newn${newN ? ' has-new' : ''}" data-ui35-new="${newN}" title="${escapeAttr(TX('ui.ui35-new-count-tip'))}">${escapeHtml(TX('ui.ui35-new-count', {n: newN}))}</small></h3>${tileN ? `<p class="uiq2-legend">${legend.map(([k, t])=> `<span class="is-${k}">${escapeHtml(t)}</span>`).join('')}</p><ul class="ui19-sk-list">${flaggedMain.filter(r=> r.isNew && !r.late).map(li).join('')}${addTiles}${ctrTiles}${kwMissing}${suggTiles}${recs.map(rli).join('')}${pickTiles}${cxTiles}${flaggedMain.filter(r=> !r.isNew && !r.late).map(li).join('')}${flaggedOther.filter(r=> !r.late).map(li).join('')}${flagged.filter(r=> r.late).map(li).join('') /* 2026-11-16 (UX8, owner 23:35 #2): a skill no carrier has yet at its map level is not in the map: listed last */}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}${typeof mapui2BarHTML === 'function' ? mapui2BarHTML(mapId || top) : ''}${typeof ms1SwapsHTML === 'function' ? ms1SwapsHTML(mapId || top, defs) : ''}</section>`;
 }
 // UI19_MC_SKILLS:END

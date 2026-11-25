@@ -44,6 +44,66 @@
    "zh-Hant": "多人規則",
    "ja": "マルチプレイのルール",
    "ko": "멀티플레이 규칙"
+  },
+  "ui.fp1-sug-new": {
+   "en": "Suggest New!",
+   "fr": "Suggéré NOUVEAU !",
+   "de": "Vorschlag NEU!",
+   "es": "Sugerida ¡NUEVO!",
+   "it": "Suggerita NUOVO!",
+   "pt": "Sugerida NOVO!",
+   "tl": "Mungkahi BAGO!",
+   "ta": "பரிந்துரை புதியது!",
+   "id": "Saran BARU!",
+   "zh-Hans": "建议 新!",
+   "zh-Hant": "建議 新!",
+   "ja": "提案 NEW!",
+   "ko": "추천 NEW!"
+  },
+  "ui.fp1-sug-new-tip": {
+   "en": "On no earlier map: adding it here makes it New!",
+   "fr": "Sur aucune carte précédente : l’ajouter ici le rend NOUVEAU !",
+   "de": "Auf keiner früheren Karte: hier hinzugefügt ist es NEU!",
+   "es": "En ningún mapa anterior: añadirla aquí la hace ¡NUEVO!",
+   "it": "Su nessuna mappa precedente: aggiungerla qui la rende NUOVO!",
+   "pt": "Em nenhum mapa anterior: adicioná-la aqui a torna NOVO!",
+   "tl": "Wala sa naunang mapa: kapag idinagdag dito, BAGO! ito",
+   "ta": "முந்தைய வரைபடம் எதிலும் இல்லை: இங்கே சேர்த்தால் புதியது!",
+   "id": "Tidak ada di peta sebelumnya: menambahkannya di sini membuatnya BARU!",
+   "zh-Hans": "之前的地图都没有:加在这里就是新!",
+   "zh-Hant": "之前的地圖都沒有:加在這裡就是新!",
+   "ja": "前のマップにない:ここで加えるとNEW!",
+   "ko": "이전 맵에 없음: 여기에 추가하면 NEW!"
+  },
+  "ui.fp1-leg-sug-new": {
+   "en": "Blue, red edge = suggest New!",
+   "fr": "Bleu, bord rouge = suggéré NOUVEAU !",
+   "de": "Blau, roter Rand = Vorschlag NEU!",
+   "es": "Azul, borde rojo = sugerida ¡NUEVO!",
+   "it": "Blu, bordo rosso = suggerita NUOVO!",
+   "pt": "Azul, borda vermelha = sugerida NOVO!",
+   "tl": "Asul, pulang gilid = mungkahi BAGO!",
+   "ta": "நீலம், சிவப்பு ஓரம் = பரிந்துரை புதியது!",
+   "id": "Biru, tepi merah = saran BARU!",
+   "zh-Hans": "蓝,红边 = 建议 新!",
+   "zh-Hant": "藍,紅邊 = 建議 新!",
+   "ja": "青・赤枠 = 提案 NEW!",
+   "ko": "파랑, 빨간 테두리 = 추천 NEW!"
+  },
+  "ui.uiq2-leg-sugg": {
+   "en": "Blue = suggested, carried",
+   "fr": "Bleu = suggéré, porté",
+   "de": "Blau = vorgeschlagen, vorhanden",
+   "es": "Azul = sugerida, presente",
+   "it": "Blu = suggerita, presente",
+   "pt": "Azul = sugerida, presente",
+   "tl": "Asul = mungkahi, dala",
+   "ta": "நீலம் = பரிந்துரை, உள்ளது",
+   "id": "Biru = disarankan, dibawa",
+   "zh-Hans": "蓝 = 建议,已携带",
+   "zh-Hant": "藍 = 建議,已攜帶",
+   "ja": "青 = 提案、所持",
+   "ko": "파랑 = 추천, 보유"
   }
  }
 }

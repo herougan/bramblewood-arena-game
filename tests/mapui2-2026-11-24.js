@@ -76,7 +76,7 @@ async function browser() {
     ok(C.venomPills === 0 && C.thornsPills === 0, '2. a New! or To remove tile wears no Suggested / Sugg. Intro / Intro / Main pill');
     ok(!C.regenLo && C.regenHi, '2. a skill a card learns at level 3 is in the list at 3 and not at 1');
     ok(C.m4venomPills === '0,0', '2. Map 4 Venomous carried by a card wears no Suggested: ' + C.m4venomPills);
-    ok(C.heads === 0 && /is-new,is-add,is-rem,is-sugg,is-carried/.test(C.legend), '2. one list; the legend names New!, To add, To remove, Suggested, Carried: ' + C.legend);
+    ok(C.heads === 0 && /is-new,is-add,is-rem,is-sugnew,is-sugg,is-carried/.test(C.legend) /* 2026-11-26 (FIXPACK1): + Suggest New! */, '2. one list; the legend names New!, To add, To remove, Suggest New!, Suggested, Carried: ' + C.legend);
 
     // the rewards of the map only
     const R = await pg.evaluate(() => { adminModeEnabled = true; const maps = mainConquestMaps(); const res = []; maps.slice(0, 12).forEach(m => { const own = new Set((m.nodes || []).map(x => skirmishCode(m.id, x.key))); pk1OpenMapCards(m.id);

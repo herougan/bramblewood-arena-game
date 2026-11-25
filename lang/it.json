@@ -4686,7 +4686,6 @@
  "Intro": "Intro",
  "This map's keyword skill": "L'abilità chiave di questa mappa",
  "Red = new here": "Rosso = nuovo qui",
- "Blue = suggested, not on these cards": "Blu = suggerita, non su queste carte",
  "Grey = carried": "Grigio = presente",
  "Learns a skill at Level {n}": "Impara un'abilità al livello {n}",
  "Not unlocked yet": "Non ancora sbloccato",
@@ -4783,5 +4782,9 @@
  "The Caldera Wyrm": "La Serpe della Caldera",
  "Claim all": "Riscuoti tutto",
  "Dungeon Rules": "Regole del dungeon",
- "Multiplayer Rules": "Regole multigiocatore"
+ "Multiplayer Rules": "Regole multigiocatore",
+ "Suggest New!": "Suggerita NUOVO!",
+ "On no earlier map: adding it here makes it New!": "Su nessuna mappa precedente: aggiungerla qui la rende NUOVO!",
+ "Blue, red edge = suggest New!": "Blu, bordo rosso = suggerita NUOVO!",
+ "Blue = suggested, carried": "Blu = suggerita, presente"
 }

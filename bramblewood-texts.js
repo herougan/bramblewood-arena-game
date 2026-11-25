@@ -3861,7 +3861,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.uiq2-pill-intro": "Intro",
   "ui.uiq2-pill-intro-tip": "This map's keyword skill",
   "ui.uiq2-leg-new": "Red = new here",
-  "ui.uiq2-leg-sugg": "Blue = suggested, not on these cards",
+  "ui.uiq2-leg-sugg": "Blue = suggested, carried",
   "ui.uiq2-leg-carried": "Grey = carried",
   "ui.skn-empower": "Empower",
   "ui.skn-harden": "Harden",
@@ -3952,7 +3952,10 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.daunt2-bl-cond-poisonkill": "Poison kill",
   "ui.eng19-bc-poisonkill": "Poison kill: an enemy unit died of poison while this unit was on the board",
   "ui.fp1-dungeon-rules": "Dungeon Rules",
-  "ui.fp1-multiplayer-rules": "Multiplayer Rules"
+  "ui.fp1-multiplayer-rules": "Multiplayer Rules",
+  "ui.fp1-sug-new": "Suggest New!",
+  "ui.fp1-sug-new-tip": "On no earlier map: adding it here makes it New!",
+  "ui.fp1-leg-sug-new": "Blue, red edge = suggest New!"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
