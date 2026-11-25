@@ -167,7 +167,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   const df1 = (tier, mapN, rarity)=> Math.max(Math.min({1: 0, 2: 7, 3: 14}[tier], mapN), ({uncommon: 1, rare: 5, veryrare: 10, superrare: 20})[rarity] || 0); // 2026-10-24 (package BAL2, DF-1): a pack card's map is the first main-line map it can be had on (its pack: Pack 1 Map 0, 2 Map 7, 3 Map 14, or its pool map if earlier), not its pool map
   // BAL2 (DF-1): their stats are the BAL2 re-fit's line where it moved them (the map term changed)
   const bal2 = x=> /2026-10-24 BAL2 re-fit/.test(x.creatorNote || '');
-  const MOVED = {'lodge-engineer': ['mp', 1, 6, '3/12' /* 2026-10-24 (package EN5): Timbered, re-fitted 3/13 -> 3/12 */], 'mallard-marauder': ['mg', 2, 7, '2/5'], 'ember-tetra': ['m2', 1, 4, '2/6']};
+  const MOVED = {'lodge-engineer': ['mp', 1, 6, '3/14' /* 2026-11-25 (TESTFIX11): CARDVET1a redesigned it 3/14 Delivery 1, Forestry at Level 9 (EN5's 3/12 Timbered line before) */], 'mallard-marauder': ['mg', 2, 7, '2/5'], 'ember-tetra': ['m2', 1, 4, '2/6']};
   // 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05): the card's place (and the obtain map that follows) is THEME2's; its budget is still checked
   const T2 = Object.fromEntries(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/theme2-proposal-2026-10-28.json'), 'utf8')).maps.filter(m=> !m.skipped).map(m=> [m.key, m.proposed]));
   Object.entries(MOVED).forEach(([id, [map, tier, n, line]])=>{ const x = c(id), b = T.budget(x, {level: 1}); const top = map === 'm2' ? pools.m2.cards : pools.mb.submaps[map] || [];
