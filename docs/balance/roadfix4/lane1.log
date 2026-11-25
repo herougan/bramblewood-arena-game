@@ -119,3 +119,8 @@ RESULT 5-A-3 {"constrictor-coil":1,"mangrove-mudskipper":1,"newt-doctor":4,"peat
 start {"bog-leech":2,"cypress-root-lurker":1,"matamata":2,"newt-doctor":4,"river-carp":3,"swamp-alligator":2} 76.7
 round 1: cur 76.7/76.7; 70 legal, 70 read + 14 predicted (of 40); top: -2 swamp-alligator +2 river-carp 66.7/65 | -2 swamp-alligator +2 constrictor-coil 66.7/63.7 | -2 swamp-alligator +2 peat-cutter-vole 63.3/63.7 | -2 matamata -1 swamp-alligator +2 constrictor-coil +1 river-carp 66.7/73.3 | -1 bog-leech -1 swamp-alligator +1 cypress-root-lurker +1 river-carp 66.7/73.3
 RESULT 5-A-2 {"bog-leech":2,"cypress-root-lurker":1,"matamata":2,"newt-doctor":4,"river-carp":5} 65 {} moves: -2 swamp-alligator +2 river-carp problems: []
+start {"dhole-matriarch":2,"owl-sentinel":4,"raft-spider":1,"snowshoe-hare":4,"sworn-shieldbearer":1,"taiga-lynx":3,"woodland-caribou":4,"siege-rhino":1} 51.3
+round 1: cur 45/51.3; 42 legal, 42 read + 14 predicted (of 46); top: -1 raft-spider +1 farm-dog 40/43.7 | -4 owl-sentinel +4 upside-down-bat 41.7/45 | -1 raft-spider +1 whip-spider 41.7/45 | -1 raft-spider +1 cone-cutter-squirrel 38.3/31 | -4 snowshoe-hare +4 whip-spider 41.7/50.7
+round 2: cur 40/43.7; 42 legal, 42 read + 14 predicted (of 49); top: -1 sworn-shieldbearer -1 farm-dog +1 golden-eagle-diver +1 upside-down-bat 40/45.7 | -1 siege-rhino +1 cone-cutter-squirrel 41.7/33.3 | -1 sworn-shieldbearer +1 mallard-halberdier 41.7/51.3 | -4 woodland-caribou +4 boreal-elk 41.7/52.7 | -1 sworn-shieldbearer +1 pinecone-sapper 40/56
+no nearer move
+RESULT 16-7 {"dhole-matriarch":2,"owl-sentinel":4,"snowshoe-hare":4,"sworn-shieldbearer":1,"taiga-lynx":3,"woodland-caribou":4,"siege-rhino":1,"farm-dog":1} 43.7 {} moves: -1 raft-spider +1 farm-dog problems: []
