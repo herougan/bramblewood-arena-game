@@ -38,6 +38,7 @@ const PARTS_MIN = 3, PARTS_MAX = 5;
 const DUNGEONS = {
   hollow: {id: 'hollow', nameKey: 'ui.ar3-dungeon-name', icon: '🌊', players: 2, layout: 'rows', roundCap: 20, poolFloor: 3,
     blurbKey: 'ui.dungeon1-blurb-hollow', art: 'crushingdepths', tint: ['#123a52', '#0b1f2e'], mapNumber: 16,
+    transit: 'lanterns', // 2026-11-26 (DUNGEON2, owner #17): between parts the ground scrolls and lanterns pass (the page's dungeon2Travel); the first dungeon to have it
     // the party's bramble: every player's bramble Health added up (the raid's merged bramble); the vault's scaled by the party (D49 steps)
     healthScale: [1, 1.7, 2.3, 2.8],
     // 2026-11-23 (package MP1, decision MP1-1 a: "about 50% full clear"): every part's bramble x2 (was 24 / 26 / 21 / 25 / 28). Map 16 decks
@@ -126,7 +127,7 @@ function partsOf(typeId){ return typeOf(typeId).floors.length; }
 // ---- DUNGEON1 (2026-11-12, owner 23:47 note 21): the parts of one run on one board.
 // "After completing a map, instead of going out - it stays in the map, then a big title w/ banner scrolls by, Part N: ... Then enemies spawn
 // out as if the enemy player had free 3-5 turns (they come in with wait). Only after completing all, does it count."
-// The party (its board, hands, decks, bramble Health) carries over; so do the enemy's survivors. The enemy gets the next part's bramble
+// The party (its board, hands, decks, bramble Health) carries over; the enemy's survivors die (DUNGEON2). The enemy gets the next part's bramble
 // (its Health at the party's scale), deck (shuffled by the run's seed) and a fresh hand of 3; then FREE_TURNS units arrive from that deck
 // (a boss part's boss first), each with at least ARRIVAL_WAIT_MIN Wait; even arrivals go to the front row, odd ones to the middle row
 // (the other row when one is full), nearest the centre. They arrived during the free turns, so no On Spawn fires for them (as a daily
@@ -154,6 +155,7 @@ function advancePart(T){
   const prev = partRecord(T, true), t = typeOf(T.typeId), idx = T.floorIdx + 1, f = t.floors[idx];
   const rnd = mulberry32(mixSeed(T.seed, idx + 1, 0xD1A9));
   T.floorIdx = idx; T.floorKey = f.key; T.over = null; T.reason = null;
+  const cleared = clearEnemies(T); // 2026-11-26 (DUNGEON2): the stage clear's first beat
   // the next part's bramble, deck and hand (the old hand goes to the Graveyard, as a daily dungeon's new bramble does)
   const hp = Math.max(10, Math.round(T.bh(f.castle) * T.scale));
   P2.hq.hp = P2.hq.maxHp = hp; P2.hq.shield = 0; if(P2.hq.maxShield != null) P2.hq.maxShield = 0;
@@ -178,10 +180,31 @@ function advancePart(T){
     arrivals.push({uid: c.uid, defId: id, row, slot: c.slot, wait: c.wait});
   });
   E.draw(P2, 3, 'B', T.stats, []);
+  const recycled = []; for(let s = 0; s < T.n; s++) recycled.push(recycleSeat(T, s, rnd)); // DUNGEON2: the third beat
   // the part's own clock and its bookkeeping
   T.cap = T.round + t.roundCap; T.partStart = T.round + 1; T.partHp = hp; T.lostAt = partyLost(T);
-  T.lastAdvance = {idx, freeTurns, arrivals, prev};
+  T.lastAdvance = {idx, freeTurns, arrivals, prev, cleared, recycled};
   return T.lastAdvance;
+}
+// 2026-11-26 (DUNGEON2, owner 11-24 #16: stage clear = the enemies left die, the next wave spawns, 3 Graveyard cards back to your deck).
+// The enemies left die without On Death (the part is over); their cards go to the enemy's Graveyard. A cage keeps its leader.
+function clearEnemies(T){
+  const P2 = T.players[2], out = [], gone = (c, row)=>{ out.push({uid: c.uid, defId: c.defId, row, slot: c.slot}); if(!c.token && !c.bloomCopy) P2.graveyard.push({defId: c.defId}); };
+  ['left', 'center', 'right'].forEach(k=>{ P2.row[k] = P2.row[k].filter(c=>{ if(!c || c.gap || !(c.hp > 0) || c.cageOf) return true; gone(c, 0); return false; }); });
+  (P2.reserve || []).forEach((rw, r)=> Object.keys(rw).forEach(sl=>{ const c = rw[sl]; if(c && c.hp > 0 && !c.cageOf){ gone(c, r + 1); delete rw[sl]; } }));
+  T.E.syncSlots(P2); return out;
+}
+// Each seat takes back STAGE_RECYCLE of its own cards (its deck list's copies, newest first) from the shared Graveyard, shuffled into its deck
+// by the part's seed. A mostly-Ecclesia deck (owner: "may instead") moves that many of its exiled cards back to the Graveyard when it has any.
+const STAGE_RECYCLE = 3;
+function ecclesiaDeck(T, s){ const d = T.seats[s].deck; let n = 0, e = 0; Object.keys(d).forEach(id=>{ n += d[id]; if(T.E.isEcclesiaDef(id)) e += d[id]; }); return n > 0 && e * 2 >= n; }
+function recycleSeat(T, s, rnd){
+  const P1 = T.players[1], own = Object.assign({}, T.seats[s].deck);
+  const take = list=>{ const out = []; for(let i = list.length - 1; i >= 0 && out.length < STAGE_RECYCLE; i--){ const id = list[i] && list[i].defId; if(own[id] > 0){ own[id]--; out.push(list.splice(i, 1)[0].defId); } } return out; };
+  if(ecclesiaDeck(T, s)){ const ids = take(P1.exile); if(ids.length){ ids.forEach(id=> P1.graveyard.push({defId: id})); return {seat: s, from: 'exile', ids}; } }
+  const ids = take(P1.graveyard);
+  withSeat(T, s, pl=> ids.forEach(id=> pl.deck.splice(Math.floor(rnd() * (pl.deck.length + 1)), 0, id)));
+  return {seat: s, from: 'graveyard', ids};
 }
 // The run's pay (note 21): f = parts won / parts; RUN_PAY_BANDS gives the multiplier. The full rewards are every part's pay as a won
 // part (its overwhelm figure x the rank it was won with; a part not won counts at x1), so a cleared run pays what its parts paid before.
@@ -743,7 +766,7 @@ function defsHash(defs, ids){ const list = [...new Set(ids)].sort().map(id=>{ co
 function roomCardIds(decks){ const ids = new Set(); Object.values(DUNGEONS).forEach(dg=> dg.floors.forEach(f=>{ Object.keys(f.deck).forEach(id=> ids.add(id)); if(f.boss) ids.add(f.boss.base); })); (decks || []).forEach(d=> Object.keys(d || {}).forEach(id=> ids.add(id))); return [...ids]; }
 
 const api = {DUNGEONS, ENERGY_COST, COLS, SEAT_KEYS, TEXT_KEYS, PING_MS, DROP_MS, BATCH_MS, RANK_MULT, PAY,
-  PARTS_MIN, PARTS_MAX, FREE_TURNS, ARRIVAL_WAIT_MIN, RUN_PAY_BANDS, partsOf, allOverlays, hasNextPart, advancePart, partRecord, partyLost, runFactor, runPay, /* DUNGEON1 */
+  PARTS_MIN, PARTS_MAX, FREE_TURNS, ARRIVAL_WAIT_MIN, RUN_PAY_BANDS, partsOf, allOverlays, hasNextPart, advancePart, partRecord, partyLost, runFactor, runPay, /* DUNGEON1 */ STAGE_RECYCLE, clearEnemies, recycleSeat, ecclesiaDeck, /* DUNGEON2 */
   typeOf, playersOf, rowOfSeat, seatOfRow, floorDef, floorOverlay, bossIdOf, createTable, coopEngine, withSeat, seatData, leadSeat, unitAt, ownerOf, rowLegalSlots, allCells,
   seatDone, checkAct, applyAct, cpuChoice, cpuActs, headlessRound, finishRound, noteRoundEnd, tableHash, applyHeadless, tableFor, unsupportedCard, noSlotCard,
   rankFor, floorPay, cardPool, createHub, broadcastChannelTransport, supabaseTransport, createSession, newRoomCode, defsHash, roomCardIds, mulberry32, mixSeed};

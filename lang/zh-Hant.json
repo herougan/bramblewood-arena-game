@@ -4785,5 +4785,8 @@
  "Suggest New!": "建議 新!",
  "On no earlier map: adding it here makes it New!": "之前的地圖都沒有:加在這裡就是新!",
  "Blue, red edge = suggest New!": "藍,紅邊 = 建議 新!",
- "Blue = suggested, carried": "藍 = 建議,已攜帶"
+ "Blue = suggested, carried": "藍 = 建議,已攜帶",
+ "Part won: the enemies left die and 3 cards from your Graveyard go back into your deck (an Ecclesia deck: 3 exiled cards back to the Graveyard).": "本部分獲勝：剩餘敵人死亡，你墓地中的 3 張牌回到牌組（教會牌組：3 張放逐的牌回到墓地）。",
+ "{n} from your Graveyard back to your deck": "{n} 張從墓地回到牌組",
+ "{n} exiled back to your Graveyard": "{n} 張放逐的牌回到墓地"
 }

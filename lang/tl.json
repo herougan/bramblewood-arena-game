@@ -4785,5 +4785,8 @@
  "Suggest New!": "Mungkahi BAGO!",
  "On no earlier map: adding it here makes it New!": "Wala sa naunang mapa: kapag idinagdag dito, BAGO! ito",
  "Blue, red edge = suggest New!": "Asul, pulang gilid = mungkahi BAGO!",
- "Blue = suggested, carried": "Asul = mungkahi, dala"
+ "Blue = suggested, carried": "Asul = mungkahi, dala",
+ "Part won: the enemies left die and 3 cards from your Graveyard go back into your deck (an Ecclesia deck: 3 exiled cards back to the Graveyard).": "Panalo ang bahagi: mamamatay ang natitirang kalaban at babalik sa deck mo ang 3 card mula sa Libingan (Ecclesia deck: 3 na-exile na card pabalik sa Libingan).",
+ "{n} from your Graveyard back to your deck": "{n} mula sa Libingan pabalik sa deck mo",
+ "{n} exiled back to your Graveyard": "{n} na-exile pabalik sa Libingan"
 }

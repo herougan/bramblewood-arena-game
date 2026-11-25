@@ -4786,5 +4786,8 @@
  "Suggest New!": "Saran BARU!",
  "On no earlier map: adding it here makes it New!": "Tidak ada di peta sebelumnya: menambahkannya di sini membuatnya BARU!",
  "Blue, red edge = suggest New!": "Biru, tepi merah = saran BARU!",
- "Blue = suggested, carried": "Biru = disarankan, dibawa"
+ "Blue = suggested, carried": "Biru = disarankan, dibawa",
+ "Part won: the enemies left die and 3 cards from your Graveyard go back into your deck (an Ecclesia deck: 3 exiled cards back to the Graveyard).": "Bagian menang: musuh yang tersisa mati dan 3 kartu dari Kuburanmu kembali ke dek (dek Ecclesia: 3 kartu terbuang kembali ke Kuburan).",
+ "{n} from your Graveyard back to your deck": "{n} dari Kuburan kembali ke dek",
+ "{n} exiled back to your Graveyard": "{n} terbuang kembali ke Kuburan"
 }

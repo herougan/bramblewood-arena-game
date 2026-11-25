@@ -28687,6 +28687,37 @@ function dungeon1PartBanner(T){
   return new Promise(res=> setTimeout(()=>{ el.remove(); res(); }, DUNGEON1_BANNER_MS));
 }
 const DUNGEON1_BANNER_MS = 2600; // the ribbon's whole pass (its CSS animation runs the same 2.6 s)
+// 2026-11-26 (DUNGEON2, owner 11-24 #16 #17): a stage clear plays in order: the enemies left die (dungeon2Clear), the ground scrolls with the banner
+// (dungeon2Travel), the next part's units come in (the final render), then each player's cards fly from the Graveyard to the deck (dungeon2Recycle).
+function dungeon2Clear(m){
+  const a = m.coop.T.lastAdvance, list = (a && a.cleared) || []; if(!list.length) return Promise.resolve();
+  list.forEach((c, i)=> setTimeout(()=>{ if(matchState === m) fightSafe(()=> deathVfx(c.uid), 'deathVfx'); }, i * 90));
+  return sleep(animMs().death + list.length * 90 + 200);
+}
+// The ground scrolls under the party and lanterns pass at the sides (a dungeon with transit 'lanterns'): one layer under the cards, transform and
+// opacity only. None with reduced motion or Effects off (the banner still fades).
+function dungeon2Travel(m){
+  const bf = document.getElementById('battlefieldEl'); if(!bf || gdType(m.coop.T.typeId).transit !== 'lanterns' || reducedMotion() || fxLevel() === 'none') return;
+  bf.querySelectorAll(':scope > .dg2-travel').forEach(e=> e.remove());
+  const el = document.createElement('div'); el.className = 'dg2-travel'; el.setAttribute('aria-hidden', 'true');
+  el.innerHTML = '<i class="dg2-ground"></i>' + ['l', 'r'].map(k=> `<i class="dg2-lamps is-${k}">${'<b>🏮</b>'.repeat(4)}</i>`).join('');
+  bf.prepend(el); setTimeout(()=> el.remove(), DUNGEON1_BANNER_MS + 100);
+}
+// My seat's cards back to my deck (or, for an Ecclesia deck, from the Removal Zone to the Graveyard): card backs fly pile to pile, then a lane note.
+function dungeon2Recycle(m){
+  const a = m.coop.T.lastAdvance, r = a && (a.recycled || [])[m.coop.seat]; if(!r || !r.ids.length) return Promise.resolve();
+  const exile = r.from === 'exile', from = document.getElementById(exile ? 'deckWidgetBottom' : 'dropDiscard'), to = document.getElementById(exile ? 'dropDiscard' : 'deckWidgetBottom');
+  fightSafe(()=> battleToast(TX(exile ? 'ui.dungeon2-exile-back' : 'ui.dungeon2-deck-back', {n: r.ids.length}), 'ok', 'recycle'), 'battleToast');
+  const fr = from && from.getBoundingClientRect(), tr = to && to.getBoundingClientRect();
+  if(!fr || !tr || !(fr.width > 0) || !(tr.width > 0) || !document.body.animate || reducedMotion() || fxLevel() === 'none') return Promise.resolve();
+  const dx = tr.left - fr.left + (tr.width - fr.width) / 2, dy = tr.top - fr.top + (tr.height - fr.height) / 2, k = 1 / Math.max(.25, Number(m.speedMult) || 1);
+  return Promise.all(r.ids.map((id, i)=> new Promise(res=>{
+    const c = document.createElement('div'); c.className = 'overdraw-fly ' + cardBackClass(id); c.innerHTML = '<span>🌰</span>'; c.setAttribute('aria-hidden', 'true');
+    Object.assign(c.style, {left: (fr.left + fr.width / 2 - 28) + 'px', top: (fr.top + fr.height / 2 - 38) + 'px'}); document.body.appendChild(c);
+    const an = c.animate([{transform: 'translate(0,0) scale(.85)', opacity: 0}, {transform: `translate(${dx / 2}px, ${dy / 2 - 70}px) scale(1)`, opacity: 1, offset: .45}, {transform: `translate(${dx}px, ${dy}px) scale(.8)`, opacity: .9}],
+      {duration: Math.round(620 * k), delay: Math.round(i * 160 * k), easing: 'cubic-bezier(.3,.7,.4,1)', fill: 'both'});
+    const end = ()=>{ c.remove(); res(); }; an.onfinish = end; an.oncancel = end; })));
+}
 // Note 20: "The multi-beatdowns in multiplayer maps - too fast between creatures. Column attacks in a row should slow down by 2x, relative
 // to the main selected speed. Column-by-column attacks should slow down by abit. But if it's already following normal single player c-by-c
 // speed, then its ok." In a group dungeon (rows a side, m.coop) a middle / back-row strike (volleyHit / volleyCastle) took the generic
@@ -28895,7 +28926,7 @@ function gdLobbyHTML(){
       <p class="dg1-rules">${escapeHtml(TX('ui.dungeon1-rules'))}</p>
       <details class="dg1-more"><summary>${escapeHtml(TX('ui.dungeon1-more'))}</summary>${'' /* 2026-11-26 (FIXPACK1, owner 11-24 #20): two sections, the dungeon's rules then the multiplayer ones */}
         <h4 class="dg1-more-h">${escapeHtml(TX('ui.fp1-dungeon-rules'))}</h4>
-        <ul><li>${escapeHtml(TX('ui.dungeon1-carry'))}</li><li>${escapeHtml(TX('ui.dungeon1-arrive', {min: CoopM.FREE_TURNS[0], max: CoopM.FREE_TURNS[1]}))}</li><li>${escapeHtml(TX('ui.dungeon1-rows'))}</li>
+        <ul><li>${escapeHtml(TX('ui.dungeon1-carry'))}</li><li>${escapeHtml(TX('ui.dungeon1-arrive', {min: CoopM.FREE_TURNS[0], max: CoopM.FREE_TURNS[1]}))}</li><li>${escapeHtml(TX('ui.dungeon1-rows'))}</li><li>${escapeHtml(TX('ui.dungeon2-clear')) /* 2026-11-26 (DUNGEON2) */}</li>
           <li class="gd-deckline">🃏 ${escapeHtml(TX('ui.ar3-deck-line', {n: deckTotal(publicDeck(myDeckCounts))}))} · ⚡ ${escapeHtml(TX('ui.ar3-energy-line', {n: gdCost()}))}</li></ul>
         <p class="dg1-pay"><span>${escapeHtml(TX('ui.dungeon1-pay-title'))}</span>${pay}</p>
         <h4 class="dg1-more-h">${escapeHtml(TX('ui.fp1-multiplayer-rules'))}</h4>
@@ -48010,6 +48041,8 @@ async function resolveRoundCore(opts){
   if(m.coop && over && !dungeonAdvanced && m.forcedWinner == null && m.players[1].hq.hp > 0 && m.players[2].hq.hp <= 0 && fightSafe(()=> dungeon1Advance(m), 'dungeon1Advance')){
     over = false; dungeonAdvanced = true;
     fightSafe(gdRenderCoopBar, 'gdRenderCoopBar'); // the bar names the new part at once
+    await dungeon2Clear(m); if(matchState !== m) return; // 2026-11-26 (DUNGEON2): the enemies left die first, then the travel with the banner
+    fightSafe(()=> dungeon2Travel(m), 'dungeon2Travel');
     await dungeon1PartBanner(m.coop.T); if(matchState !== m) return;
     try{ updateHqHpDisplay('B'); const castle = hqTileEl('B'); if(castle){ castle.classList.remove('castle-pop'); void castle.offsetWidth; castle.classList.add('castle-pop'); } }catch(e){}
   }
@@ -48024,7 +48057,7 @@ async function resolveRoundCore(opts){
   // controls re-enable, and any resolving-gated check, before that entrance is even visible.
   if(finalRender && finalRender.hadNewEntrants) await sleep(420);
   if(over) revealBoardCardsAtEnd();
-  if(dungeonAdvanced){ try{ dungeonWaveVfx(m); }catch(e){} await sleep(900); }
+  if(dungeonAdvanced){ try{ dungeonWaveVfx(m); }catch(e){} await sleep(900); if(m.coop) await dungeon2Recycle(m); } // + DUNGEON2: then the Graveyard -> deck flight
   requestAnimationFrame(()=> settleStrayBoardCards()); setTimeout(settleStrayBoardCards, 900); // a frame later, once the final render's Flip has started (2026-10-15)
   // Auto-draw (2026-10-03): nobody has anything left to play and the board hasn't changed for
   // STALL_ROUNDS_FOR_DRAW rounds, or the match reached DRAW_ROUND_CAP. Skipped in the tutorial.

@@ -1,0 +1,27 @@
+{
+ "tx": {
+  "ui.dungeon2-clear": {"en": "Part won: the enemies left die and 3 cards from your Graveyard go back into your deck (an Ecclesia deck: 3 exiled cards back to the Graveyard).",
+   "fr": "Partie gagnée : les ennemis restants meurent et 3 cartes de ton Cimetière retournent dans ton deck (deck Ecclesia : 3 cartes exilées retournent au Cimetière).",
+   "de": "Teil gewonnen: Die übrigen Gegner sterben, 3 Karten aus deinem Friedhof kommen zurück in dein Deck (Ecclesia-Deck: 3 verbannte Karten zurück in den Friedhof).",
+   "es": "Parte ganada: los enemigos restantes mueren y 3 cartas de tu Cementerio vuelven a tu mazo (mazo de Ecclesia: 3 cartas exiliadas vuelven al Cementerio).",
+   "it": "Parte vinta: i nemici rimasti muoiono e 3 carte del tuo Cimitero tornano nel mazzo (mazzo Ecclesia: 3 carte esiliate tornano al Cimitero).",
+   "pt": "Parte ganha: os inimigos restantes morrem e 3 cartas do teu Cemitério voltam ao baralho (baralho Ecclesia: 3 cartas exiladas voltam ao Cemitério).",
+   "tl": "Panalo ang bahagi: mamamatay ang natitirang kalaban at babalik sa deck mo ang 3 card mula sa Libingan (Ecclesia deck: 3 na-exile na card pabalik sa Libingan).",
+   "ta": "பகுதி வெற்றி: மீதமுள்ள எதிரிகள் இறப்பர்; உங்கள் கல்லறையிலிருந்து 3 அட்டைகள் அடுக்குக்குத் திரும்பும் (எக்லீசியா அடுக்கு: நாடுகடத்திய 3 அட்டைகள் கல்லறைக்கு).",
+   "id": "Bagian menang: musuh yang tersisa mati dan 3 kartu dari Kuburanmu kembali ke dek (dek Ecclesia: 3 kartu terbuang kembali ke Kuburan).",
+   "zh-Hans": "本部分获胜：剩余敌人死亡，你墓地中的 3 张牌回到卡组（教会卡组：3 张放逐的牌回到墓地）。",
+   "zh-Hant": "本部分獲勝：剩餘敵人死亡，你墓地中的 3 張牌回到牌組（教會牌組：3 張放逐的牌回到墓地）。",
+   "ja": "パート勝利：残った敵は倒れ、墓地のカード3枚がデッキに戻る（エクレシアのデッキ：除外したカード3枚が墓地に戻る）。",
+   "ko": "부 승리: 남은 적은 쓰러지고 무덤의 카드 3장이 덱으로 돌아갑니다 (에클레시아 덱: 추방된 카드 3장이 무덤으로)."},
+  "ui.dungeon2-deck-back": {"en": "♻️ {n} from your Graveyard back to your deck",
+   "fr": "♻️ {n} de ton Cimetière retournent dans ton deck", "de": "♻️ {n} aus deinem Friedhof zurück ins Deck", "es": "♻️ {n} de tu Cementerio vuelven a tu mazo",
+   "it": "♻️ {n} dal Cimitero tornano nel mazzo", "pt": "♻️ {n} do Cemitério voltam ao baralho", "tl": "♻️ {n} mula sa Libingan pabalik sa deck mo",
+   "ta": "♻️ கல்லறையிலிருந்து {n} அடுக்குக்குத் திரும்பின", "id": "♻️ {n} dari Kuburan kembali ke dek", "zh-Hans": "♻️ {n} 张从墓地回到卡组",
+   "zh-Hant": "♻️ {n} 張從墓地回到牌組", "ja": "♻️ 墓地から{n}枚がデッキに戻った", "ko": "♻️ 무덤에서 {n}장이 덱으로"},
+  "ui.dungeon2-exile-back": {"en": "♻️ {n} exiled back to your Graveyard",
+   "fr": "♻️ {n} exilées retournent au Cimetière", "de": "♻️ {n} verbannte zurück in den Friedhof", "es": "♻️ {n} exiliadas vuelven al Cementerio",
+   "it": "♻️ {n} esiliate tornano al Cimitero", "pt": "♻️ {n} exiladas voltam ao Cemitério", "tl": "♻️ {n} na-exile pabalik sa Libingan",
+   "ta": "♻️ நாடுகடத்திய {n} கல்லறைக்குத் திரும்பின", "id": "♻️ {n} terbuang kembali ke Kuburan", "zh-Hans": "♻️ {n} 张放逐的牌回到墓地",
+   "zh-Hant": "♻️ {n} 張放逐的牌回到墓地", "ja": "♻️ 除外した{n}枚が墓地に戻った", "ko": "♻️ 추방된 {n}장이 무덤으로"}
+ }
+}

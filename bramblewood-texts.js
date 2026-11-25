@@ -3955,7 +3955,10 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.fp1-multiplayer-rules": "Multiplayer Rules",
   "ui.fp1-sug-new": "Suggest New!",
   "ui.fp1-sug-new-tip": "On no earlier map: adding it here makes it New!",
-  "ui.fp1-leg-sug-new": "Blue, red edge = suggest New!"
+  "ui.fp1-leg-sug-new": "Blue, red edge = suggest New!",
+  "ui.dungeon2-clear": "Part won: the enemies left die and 3 cards from your Graveyard go back into your deck (an Ecclesia deck: 3 exiled cards back to the Graveyard).",
+  "ui.dungeon2-deck-back": "♻️ {n} from your Graveyard back to your deck",
+  "ui.dungeon2-exile-back": "♻️ {n} exiled back to your Graveyard"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

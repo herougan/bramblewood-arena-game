@@ -4785,5 +4785,8 @@
  "Suggest New!": "提案 NEW!",
  "On no earlier map: adding it here makes it New!": "前のマップにない:ここで加えるとNEW!",
  "Blue, red edge = suggest New!": "青・赤枠 = 提案 NEW!",
- "Blue = suggested, carried": "青 = 提案、所持"
+ "Blue = suggested, carried": "青 = 提案、所持",
+ "Part won: the enemies left die and 3 cards from your Graveyard go back into your deck (an Ecclesia deck: 3 exiled cards back to the Graveyard).": "パート勝利：残った敵は倒れ、墓地のカード3枚がデッキに戻る（エクレシアのデッキ：除外したカード3枚が墓地に戻る）。",
+ "{n} from your Graveyard back to your deck": "墓地から{n}枚がデッキに戻った",
+ "{n} exiled back to your Graveyard": "除外した{n}枚が墓地に戻った"
 }

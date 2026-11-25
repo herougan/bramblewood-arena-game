@@ -4785,5 +4785,8 @@
  "Suggest New!": "Suggéré NOUVEAU !",
  "On no earlier map: adding it here makes it New!": "Sur aucune carte précédente : l’ajouter ici le rend NOUVEAU !",
  "Blue, red edge = suggest New!": "Bleu, bord rouge = suggéré NOUVEAU !",
- "Blue = suggested, carried": "Bleu = suggéré, porté"
+ "Blue = suggested, carried": "Bleu = suggéré, porté",
+ "Part won: the enemies left die and 3 cards from your Graveyard go back into your deck (an Ecclesia deck: 3 exiled cards back to the Graveyard).": "Partie gagnée : les ennemis restants meurent et 3 cartes de ton Cimetière retournent dans ton deck (deck Ecclesia : 3 cartes exilées retournent au Cimetière).",
+ "{n} from your Graveyard back to your deck": "{n} de ton Cimetière retournent dans ton deck",
+ "{n} exiled back to your Graveyard": "{n} exilées retournent au Cimetière"
 }
