@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-25 Package CARDVET1c (owner 11-25 00:22 vet pass, Maps 14-20 incl. side maps)
+- **Maps 14-20 vetted (142 cards, 2 done in 1a):** 117 kept, 2 tweaked, 12 redesigned, 9 real-animal swaps. Active designs 23 -> 30 of 142. Map table (Maps 0-20) counts unchanged (44 / 17 / 0 / 6, no carrier lost; Acid left "To remove"). Doc: `docs/design/cardvet1c-2026-11-25.md`.
+- **Real animals first (owner named three):** Magma Salamander -> Marine Iguana, Magma Rhino -> Cape Buffalo, The Caldera Wyrm -> The Caldera Komodo (an oversized Komodo dragon); also Fire Drake Hatchling -> Komodo Hatchling, Granite Ox Golem -> Gaur, Brimstone Hound -> African Wild Dog, Ember Revenant -> Cassowary, Malachite Golem -> Glyptodon, Sandstorm Roc -> Griffon Vulture. Art needs a redo: `docs/art/real1-requests.md`.
+- **Active designs and row skills:** Caustic Scorpion (Pounce + Corrode, no Acid), Dust-devil Kestrel / Grindstone Boar / Honey Badger Fury (Pounce), Pack Mule (Delivery), Glacier Yak (On Play +2 Wait), Hoopoe Herald (Inspiring), Nightjar Drifter, Harbor Seal, Carrion Beetle, Ash Moth, The Contradiction. Skills no row uses left the cards: Herald, Freeze, Dive, Acid, Tornado, Crepuscular, Undead, Shell, Festering, Immolation, Pitchfork, Last Stand, Rage, Bounty. Texts: 9 names, 9 flavours in 12 packs. Card matrix golden updated.
+
 ## 2026-11-25 Package CARDVET1b (owner 11-25 00:22 vet pass, Maps 7-13 incl. side maps)
 - **Maps 7-13 vetted (118 cards, 4 done in 1a):** 99 kept, 2 tweaked, 10 redesigned, 3 real-animal swaps. Active designs 19 -> 27 of 118. Map table (Maps 0-20) counts unchanged (44 / 17 / 0 / 6, no carrier lost). Doc: `docs/design/cardvet1b-2026-11-25.md`.
 - **Real animals first:** Kraken Spawnling -> Giant Pacific Octopus, Yeti -> Wild Yak, Wound Reaver -> Gila Monster (art needs a redo: `docs/art/real1-requests.md`).
