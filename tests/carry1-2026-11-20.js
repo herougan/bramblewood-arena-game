@@ -36,7 +36,9 @@ targets.forEach(t => { const l = PICKS[t.id] || [], E = earlier(t.n, t.side), ow
     ok(e && C.has(e.id), `1. ${t.id}: ${e && e.id} is a card`);
     ok(typeof e.why === 'string' && e.why.trim() && e.why.trim().split(/\s+/).length <= 8, `1. ${t.id}: ${e.id}'s why is 1-8 words`);
     ok(E.has(e.id), `1. ${t.id}: ${e.id} comes from an earlier map (no pick from a later one)`);
-    ok(!own.has(e.id), `1. ${t.id}: ${e.id} is not already on its list or flags`);
+    // 2026-11-25 (TESTFIX11): MAPEXEC1 moved some picks onto the list itself (a dated _changes note in canonical/map-pools.json); those were carried before it
+    const placed = (J('canonical/map-pools.json')._changes || []).some(c=> /MAPEXEC1 (move|add)/.test(c) && c.includes(' ' + e.id + ' ') && new RegExp('to ' + t.id + ':').test(c));
+    ok(!own.has(e.id) || placed, `1. ${t.id}: ${e.id} is not already on its list or flags${placed ? ' (MAPEXEC1 placed it there)' : ''}`);
   });
   ok(new Set(l.map(e => e.id)).size === l.length, `1. ${t.id}: no pick twice`);
 });

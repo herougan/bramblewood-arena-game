@@ -45,7 +45,8 @@ async function browser(){
       ui37SetFlag('mw', id, 'no'); out.no = mapIds();
       if(had) ui37Picks.mw = had; else delete ui37Picks.mw; ui37Save(); ceRefreshMapChips(); out.after = chips(); out.imgs1 = document.querySelectorAll('#ceMapChips img.emoji').length;
       closeCardEditor(); return out; })()`);
-    ok(r.before.length >= 2 && /Map 5\b/.test(r.before[0]), 'before: the lists of Map 5 and later (' + JSON.stringify(r.before) + ')');
+    // 2026-11-25 (TESTFIX11): MAPEXEC1 dropped the Black Caiman off Map 5's main list (it stays on Map 6's), so its chips start at Map 6
+    ok(r.before.length >= 2 && /Map 6\b/.test(r.before[0]), 'before: the lists of Map 6 and later (' + JSON.stringify(r.before) + ')');
     ok(r.none.length === 1 && /No map|no map/i.test(r.none[0]) || r.none.length === 1 && !/Map \d/.test(r.none[0]), 'removed from every list: only the no-map pill (' + JSON.stringify(r.none) + ')');
     ok(r.one.length === 1 && /Map 6\b/.test(r.one[0]), 'added to Map 6: one chip, Map 6 (' + JSON.stringify(r.one) + ')');
     ok(r.two.length === 2 && /Map 6\b/.test(r.two[0]) && /Map 7\b/.test(r.two[1]) && /Special/i.test(r.two[1]), 'added to Map 7 Special: two chips in road order (' + JSON.stringify(r.two) + ')');
