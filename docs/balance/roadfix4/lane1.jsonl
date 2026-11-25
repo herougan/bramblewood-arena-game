@@ -25,3 +25,4 @@
 {"key":"15-6","deck":{"sworn-shieldbearer":4,"warhorse-charger":1,"grass-viper":4,"village-miller":1,"pronghorn-racer":3,"elderhorn-monarch":2,"fawn-scout":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":59,"seed2":12300,"games":300},"moves":["-1 warhorse-charger +1 fawn-scout"]}
 {"key":"15-3","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":95.3,"seed2":12300,"games":300},"moves":[]}
 {"key":"15-4","deck":{"bramblewood-lynx":3,"pronghorn-racer":2,"stoat-cutthroat":2,"village-miller":4,"grass-viper":4,"siege-rhino":2},"shieldOverride":null,"hqHp":null,"tune":{"w2":85.3,"seed2":12300,"games":300},"moves":["-1 pronghorn-racer +1 grass-viper"]}
+{"key":"15-2","deck":{"border-collie":4,"stoat-cutthroat":3,"village-miller":4,"hoopoe-herald":2,"siege-rhino":2,"fawn-scout":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":86.7,"seed2":12300,"games":300},"moves":["-2 cataphract-destrier -1 tasmanian-devil +2 siege-rhino +1 fawn-scout"]}
