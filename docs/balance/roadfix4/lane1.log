@@ -60,3 +60,8 @@ start {"blue-ringed-octopus":1,"mantis-shrimp":1,"riptide-eel":4,"reef-shark":1,
 round 1: cur 76.7/77.7; 27 legal, 27 read + 14 predicted (of 43); top: -1 reef-shark +1 orca-vanguard 76.7/80.3 | -1 riptide-eel +1 mantis-shrimp 81.7/83.3 | -1 riptide-eel +1 reef-shark 80/84 | -2 giant-clam +2 blue-ringed-octopus 81.7/84 | -2 riptide-eel +1 reef-shark +1 mantis-shrimp 80/87.7
 no nearer move
 RESULT 10-A-3 {"blue-ringed-octopus":1,"mantis-shrimp":1,"riptide-eel":4,"reef-shark":1,"giant-clam":4} 77.7 {} moves:  problems: []
+start {"coral-current-eel":1,"kraken-spawnling":3,"mantis-shrimp":1,"orca-vanguard":4,"sea-turtle-elder":1} 100
+round 1: cur 100/100; 24 legal, 24 read + 14 predicted (of 41); top: -2 kraken-spawnling +2 sea-turtle-elder 98.3/98.7 | -1 mantis-shrimp +1 reef-shark 98.3/99.3 | -2 kraken-spawnling +2 mantis-shrimp 98.3/99.7 | -1 coral-current-eel +1 reef-shark 98.3/100 | -1 coral-current-eel +1 riptide-eel 98.3/100
+round 2: cur 98.3/98.7; 24 legal, 24 read + 14 predicted (of 41); top: -1 mantis-shrimp +1 reef-shark 98.3/98 | -2 orca-vanguard +2 coral-current-eel 98.3/98 | -1 orca-vanguard +1 mantis-shrimp 98.3/98.3 | -1 coral-current-eel +1 riptide-eel 98.3/99.3 | -1 coral-current-eel +1 reef-shark 98.3/100
+no nearer move
+RESULT 10-A-1 {"coral-current-eel":1,"kraken-spawnling":1,"mantis-shrimp":1,"orca-vanguard":4,"sea-turtle-elder":3} 98.7 {} moves: -2 kraken-spawnling +2 sea-turtle-elder problems: []
