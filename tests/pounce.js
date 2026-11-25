@@ -19,6 +19,7 @@ e.debugSpawnCard(P, so, 1, 'pc-pouncer', 'left', {}, ev);
 ok(before - t.hp === 4, `the target took ${before - t.hp} (want 4) though the pouncer is still Waiting`);
 ok(ev.some(x=> x.type==='pounce' && x.amount===4), 'a pounce event is recorded');
 // every card that still dealt on-play damage through a trigger now uses the keyword instead
-const left = Object.values(H.loadCardDefs()).filter(d=> !String(d.id).startsWith('test-') && ((d.effects||{}).triggers||[]).some(x=> x.on==='onSpawn' && x.do==='damage'));
+// 2026-11-25 (TESTFIX11): the Barn Owl (id ent, CARDVET1a) strikes a random enemy On Play, which Pounce (the unit in front) can't say
+const left = Object.values(H.loadCardDefs()).filter(d=> !String(d.id).startsWith('test-') && !(d.id === 'ent' && d.name === 'Barn Owl') && ((d.effects||{}).triggers||[]).some(x=> x.on==='onSpawn' && x.do==='damage'));
 ok(left.length === 0, `cards with an on-play damage trigger left: ${left.map(d=> d.id).join(', ')}`);
 console.log(`pounce: ${fail} failure(s)`); process.exit(fail ? 1 : 0);

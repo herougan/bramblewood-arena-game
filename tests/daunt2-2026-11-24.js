@@ -63,9 +63,11 @@ const WANT = {yeti: 2, 'white-dragon': 3, 'lurking-dread': 2, 'ashmantle-fiend':
 Object.entries(WANT).forEach(([id, v])=> ok(by(id).effects.daunt === v, `1. ${id}: Daunt ${v} (was Scare ${v})`));
 ok(JSON.stringify(by('frillneck-duelist').levelSkills) === JSON.stringify({3: {daunt: 1}}), '1. Frillneck Duelist: Daunt 1 at Level 3');
 ok(by('yeti').levelBonus['4'].skills.daunt === 3 && by('yeti').levelBonus['10'].skills.daunt === 4 && by('white-dragon').levelBonus['10'].skills.daunt === 15, '1. the level steps carry Daunt at the same N');
-{ const b = by('booming-bittern'); ok(b.effects.intimidate === 2 && b.effects.enfeeble === 1 && !b.effects.scare, '2. Booming Bittern: Intimidate 2 and Enfeeble 1');
+// 2026-11-25 (TESTFIX11): CARDVET1a took Enfeeble off the Bittern (no Maps 0-20 row uses it) and gave Puddle Hopper Intimidate 1; CARDVET1b gave the Ironclaw Fiddler Intimidate 1
+{ const b = by('booming-bittern'); ok(b.effects.intimidate === 2 && !b.effects.enfeeble && !b.effects.scare, '2. Booming Bittern: Intimidate 2 (Enfeeble off, CARDVET1a)');
   ok(b.levelBonus['7'].skills && b.levelBonus['7'].skills.intimidate === 3, '2. Booming Bittern: Intimidate 3 at Level 7 (was Scare 2)');
-  ok(!cards.some(c=> c.id !== 'booming-bittern' && /"intimidate"/.test(JSON.stringify([c.effects || {}, c.levelSkills || {}, c.levelBonus || {}]))), '2. no other card has Intimidate'); }
+  { const it = cards.filter(c=> /"intimidate"/.test(JSON.stringify([c.effects || {}, c.levelSkills || {}, c.levelBonus || {}]))).map(c=> c.id).sort();
+    ok(it.join() === 'booming-bittern,ironclaw-fiddler,puddle-hopper', '2. Intimidate: the Bittern, Puddle Hopper and the Ironclaw Fiddler only (CARDVET1a/b): ' + it.join()); } }
 const app = rd('arena_app.js'), eng = rd('bramblewood-engine.js'), tpl = rd('arena_template.html');
 { const m = /const MAP_FOCUS_SKILLS = (\{[^;]*?\});/.exec(app), T = m ? Function('return ' + m[1])() : {};
   ok((T[6] || []).includes('intimidate') && !Object.keys(T).some(k=> k !== '6' && T[k].includes('intimidate')), '2. Intimidate is on Map 6\'s row of the map skill table only');

@@ -89,7 +89,8 @@ for(const [id, n] of [['e33-bul1', 1], ['e33-bul2', 2], ['e33-bul3', 3]]){ const
   ok(!cards.some(c=> c.effects && 'venomous' in c.effects), 'no card carries the old Venomous');
   for(const [id, n] of [['platypus-spur', 2], ['water-shrew', 1], ['giant-water-bug', 2], ['banded-sea-krait', 2]]) ok(by[id].effects.poison === n || redesigned(id) /* 2026-11-18 (TESTFIX): the redesign re-set it */, `${id}: Venomous ${n} (key poison)`);
   for(const id of ['grass-snake', 'slow-worm', 'phoenix-mushrooms']) ok((by[id].effects.thanatosis === true || redesigned(id)) /* 2026-11-18 (TESTFIX): the redesign re-set it */ && !by[id].effects.undead, `${id}: Thanatosis (or re-set by the redesign), no Undead`);
-  for(const id of ['cinder-skeleton', 'ember-revenant']) ok(by[id].effects.undead === true, `${id}: real undead keep Undead`);
+  for(const id of ['cinder-skeleton']) ok(by[id].effects.undead === true, `${id}: real undead keep Undead`); // 2026-11-25 (TESTFIX11): ember-revenant is the Cassowary now (CARDVET1c)
+  ok(by['ember-revenant'].name === 'Cassowary' && !by['ember-revenant'].effects.undead, 'ember-revenant: the Cassowary (CARDVET1c) is no undead');
   ok(!cards.some(c=> c.effects && c.effects.poisonous), 'Poisonous is on no card'); }
 { const sk = J('canonical/skill-costs.json').skills, s = id=> sk.find(x=> x.id === id);
   ok(s('thanatosis') && s('thanatosis').scale === 'fixed' && s('thanatosis').value === 2, 'Thanatosis priced 2.0');
