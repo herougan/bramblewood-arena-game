@@ -15095,12 +15095,12 @@ async function gsiHandleCredential(response, rawNonce){
   } finally { cloudAuthBusyAdd(-1); }
 }
 // mounts Google's button in `host`; resolves true when drawn, false when the script is unavailable (the caller then shows the redirect button)
-async function gsiMountButton(host, onDone, onError){
+async function gsiMountButton(host, onDone, onError, onStart){
   if(!host || !sbClient) return false;
   let g; try{ g = await gsiLoad(); }catch(e){ return false; }
   try{
     const raw = gsiRandomNonce(), hashed = await gsiSha256Hex(raw);
-    g.accounts.id.initialize({client_id: GOOGLE_CLIENT_ID, nonce: hashed, callback: async resp=>{ try{ await gsiHandleCredential(resp, raw); onDone && onDone(); }catch(err){ onError && onError(err); } }});
+    g.accounts.id.initialize({client_id: GOOGLE_CLIENT_ID, nonce: hashed, callback: async resp=>{ onStart && onStart(); /* 2026-11-26 (FIXPACK1): Google answered; the sign-in window closes now */ try{ await gsiHandleCredential(resp, raw); onDone && onDone(); }catch(err){ onError && onError(err); } }});
     host.innerHTML = ''; g.accounts.id.renderButton(host, {type: 'standard', theme: 'outline', size: 'large', text: 'signin_with', shape: 'pill', logo_alignment: 'left', width: Math.max(200, Math.min(400, Math.round(host.getBoundingClientRect().width) || 320))});
     return true;
   }catch(e){ return false; }
@@ -15172,42 +15172,46 @@ function authErrorText(err, mode){
 function wireAuthForm(prefix, onSuccess){
   const msgEl = document.getElementById(prefix+'Msg');
   const showMsg = (text, isError)=>{ if(!msgEl) return; msgEl.hidden = false; msgEl.textContent = text; msgEl.classList.toggle('error', !!isError); };
+  // 2026-11-26 (FIXPACK1, owner 11-24 #15): while a sign-in is checked and its save loads, the gate window hides at once (an error brings it back with the message),
+  // the entrance's loading circle shows (cloudAuthBusy) and the form is inert; a Profile page form (no window) says it is loading
+  const formEl = document.getElementById(prefix + 'AuthForm'), gate = formEl && formEl.closest('#authGateOverlay'); let workingOn = false;
+  const working = on=>{ if(on === workingOn) return; workingOn = on; if(formEl) formEl.inert = on; if(gate) gate.hidden = on; cloudAuthBusyAdd(on ? 1 : -1);
+    if(on && !gate) showMsg(TX('ui.ui12-loading-save'), false); else if(!on && !gate && msgEl && !msgEl.classList.contains('error')) msgEl.hidden = true;
+    const sp = document.getElementById('splashScreen'); if(on && gate && (!sp || sp.hidden)) showToast(TX('ui.ui12-loading-save')); };
   const g = document.getElementById(prefix+'GoogleBtn');
   if(g) g.addEventListener('click', async ()=>{ if(g.disabled) return; try{ await cloudSignInWithGoogle(); }catch(err){ showMsg(authErrorText(err), true); } });
   // 2026-10-31 (UI10, AUTH1): Google's own button first; the redirect button above becomes the small "Other sign-in" link, or stays the main button if the script can't load
   { const host = document.getElementById(prefix + 'GsiHost');
     if(g && host && !g.disabled){ g.hidden = true; // no flash of the old button while the script loads
-      gsiMountButton(host, ()=>{ onSuccess('login'); }, err=> showMsg(authErrorText(err), true)).then(ok=>{
+      gsiMountButton(host, ()=>{ working(false); onSuccess('login'); }, err=>{ working(false); showMsg(authErrorText(err), true); }, ()=> working(true)).then(ok=>{
         if(!document.body.contains(g)) return;
         if(ok){ g.classList.remove('gsi-btn'); g.classList.add('auth-other-link'); g.textContent = TX('ui.ui10-other-signin'); g.hidden = false; host.hidden = false; }
         else { host.hidden = true; g.hidden = false; } }); } }
   const vals = ()=> ({email:(document.getElementById(prefix+'Email')||{}).value?.trim()||'', password:(document.getElementById(prefix+'Password')||{}).value||''});
-  const busy = on=> ['LoginBtn','CreateBtn'].forEach(k=>{ const b = document.getElementById(prefix+k); if(b) b.disabled = on; });
   const form = document.getElementById(prefix+'EmailForm');
   if(form) form.addEventListener('submit', async e=>{
     e.preventDefault();
     const {email, password} = vals();
     if(!email || !password){ showMsg('Enter your email and password.', true); return; }
     if(!confirm(TX('dialog.logging-in-loads-that-account-s'))) return;
-    busy(true);
-    try{ await cloudSignIn(email, password); matchHistoryList = null; onSuccess('login'); }
-    catch(err){ showMsg(authErrorText(err,'login'), true); }
-    finally{ busy(false); }
+    working(true);
+    try{ await cloudSignIn(email, password); matchHistoryList = null; working(false); onSuccess('login'); }
+    catch(err){ working(false); showMsg(authErrorText(err,'login'), true); }
   });
   const create = document.getElementById(prefix+'CreateBtn');
   if(create) create.addEventListener('click', async ()=>{
     const {email, password} = vals();
     if(!email || password.length<8){ showMsg('Enter an email and a password of 8+ characters.', true); return; }
-    busy(true);
+    working(true);
     try{
       const data = await cloudLinkEmail(email, password);
+      working(false);
       // Supabase hides "email taken" on sign-up (anti-enumeration) by returning a user with no
       // identities — that's the "this email already belongs to an account" case (often a Google one).
       if(data && data.user && Array.isArray(data.user.identities) && data.user.identities.length===0){ showMsg(authErrorText({message:'already registered'}), true); return; }
       if(data && !data.session && data.user && !data.user.email_confirmed_at){ showMsg(TX('ui.fix3-confirm-email'), false); return; } // FIX3 (G7): the link brings you back here, signed in
       onSuccess('create');
-    }catch(err){ showMsg(authErrorText(err,'create'), true); }
-    finally{ busy(false); }
+    }catch(err){ working(false); showMsg(authErrorText(err,'create'), true); }
   });
 }
 // Signed-in Google accounts can add a password, so the same account also works with email Login.

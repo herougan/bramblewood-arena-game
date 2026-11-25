@@ -463,6 +463,10 @@
   .ui12-auth-wait{margin:10px auto 0; font-weight:800; font-size:13.5px; text-align:center; color:#eaf6d6; text-shadow:0 1px 2px rgba(0,0,0,.6);}
   .ui12-auth-wait:not([hidden])::before{content:''; display:inline-block; width:12px; height:12px; margin-right:8px; vertical-align:-1px; border-radius:50%; border:2px solid rgba(234,246,214,.35); border-top-color:#eaf6d6; animation:ui12Spin .8s linear infinite;}
   @keyframes ui12Spin{to{transform:rotate(360deg)}}
+  /* 2026-11-26 (FIXPACK1): a sign-in form that is working is inert (the gate window hides; a Profile form shows a loading line) */
+  .auth-form[inert]{opacity:.6; cursor:progress;}
+  .auth-form[inert] .cloud-link-msg:not(.error):not([hidden])::before{content:''; display:inline-block; width:11px; height:11px; margin-right:7px; vertical-align:-1px; border-radius:50%; border:2px solid color-mix(in srgb, currentColor 30%, transparent); border-top-color:currentColor; animation:ui12Spin .8s linear infinite;}
+  @media (prefers-reduced-motion: reduce){ .auth-form[inert] .cloud-link-msg::before{animation:none;} }
   @media (prefers-reduced-motion: reduce){ .ui12-auth-wait:not([hidden])::before{animation:none;} }
   .entrance .ui12-locked, .name-prompt .ui12-locked{opacity:.55; cursor:progress; filter:saturate(.6);}
   /* 2026-10-31 (package UI12, GG10): a skirmish deck's rank, 1 (strongest, gold) to 5+ (grey), as a small hex like the rank emblem */

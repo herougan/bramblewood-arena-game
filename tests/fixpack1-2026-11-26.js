@@ -111,6 +111,23 @@ const cq = n=> JSON.stringify({completed: Array.from({length: n}, (_, i)=> 'm1:0
     vm.runInNewContext(f + '\nthis.h = cardFirstMapHTML({id: "fumarole-ibex"});', C);
     ok(/Map 20 · Eye of the Volcano/.test(C.h) && !/Map 14/.test(C.h), '4. Fumarole Ibex reads "Map 20 · Eye of the Volcano (side)" (' + C.h.replace(/<[^>]+>/g, '').trim() + ')'); }
 
+  // ======================================================================= 5. sign-in window: closes at once, loading circle, inert while working
+  for(const outcome of ['ok', 'wrong']){
+    const el = id=>{ const e = {id, hidden: false, inert: false, disabled: false, value: '', textContent: '', _h: {}, classList: {s: new Set(), toggle(c, on){ on ? this.s.add(c) : this.s.delete(c); }, contains(c){ return this.s.has(c); }},
+      addEventListener(t, f){ this._h[t] = f; }, closest: ()=> null}; return e; };
+    const overlay = el('authGateOverlay'), form = el('authGateAuthForm'); form.closest = sel=> sel === '#authGateOverlay' ? overlay : null;
+    const els = {authGateOverlay: overlay, authGateAuthForm: form, authGateMsg: el('authGateMsg'), authGateEmailForm: el('authGateEmailForm'), authGateEmail: Object.assign(el('e'), {value: 'a@b.c'}), authGatePassword: Object.assign(el('p'), {value: 'pw123456'}), authGateCreateBtn: el('c'), splashScreen: Object.assign(el('splashScreen'), {hidden: false})};
+    let release; const C = {document: {getElementById: id=> els[id] || null}, TX: k=> k, confirm: ()=> true, busy: 0, cloudAuthBusyAdd(d){ C.busy = Math.max(0, C.busy + d); }, showToast(){},
+      authErrorText: ()=> 'Wrong email or password.', matchHistoryList: 1, cloudSignIn: ()=> new Promise((res, rej)=>{ release = ()=> outcome === 'ok' ? res({}) : rej(new Error('invalid login credentials')); }), done: null, Promise};
+    vm.runInNewContext(fnSrc('wireAuthForm') + '\nwireAuthForm("authGate", m=>{ done = m; });', C);
+    const p = els.authGateEmailForm._h.submit({preventDefault(){}});
+    ok(overlay.hidden === true && form.inert === true && C.busy === 1, `5. ${outcome}: on submit the window closes at once, the loading circle runs (busy ${C.busy}) and the form is inert`);
+    release(); await p;
+    if(outcome === 'ok') ok(C.done === 'login' && C.busy === 0 && form.inert === false, '5. signed in: the caller takes over (the gate closes for good), nothing left busy');
+    else ok(C.done === null && overlay.hidden === false && form.inert === false && C.busy === 0 && els.authGateMsg.textContent === 'Wrong email or password.' && els.authGateMsg.classList.contains('error'), '5. wrong password: the window comes back with the message');
+  }
+  ok(/callback: async resp=>\{ onStart && onStart\(\);/.test(fnSrc('gsiMountButton')) && /\(\)=> working\(true\)\)\.then/.test(fnSrc('wireAuthForm')), '5. Google\'s button: the window closes as soon as Google answers');
+
   console.log(fail ? `fixpack1: ${fail} of ${n} checks failed` : `fixpack1: all ${n} checks passed`);
   process.exit(fail ? 1 : 0);
 })();
