@@ -4662,7 +4662,6 @@
  "These {n} go with you": "இந்த {n} உன்னுடன் வரும்",
  "Level {n} reward: {name}": "நிலை {n} பரிசு: {name}",
  "{a} more in this set, {b} after": "இங்கே இன்னும் {a}, பிறகு {b}",
- "Team up with friends in a dungeon": "நண்பர்களுடன் சேர்ந்து நிலவறைக்குச் செல்லுங்கள்",
  "When played, your other units get +{n}/+{n} for the fight.": "விளையாடும்போது, உன் மற்ற அலகுகள் போருக்கு +{n}/+{n} பெறும்.",
  "An Every Turn trigger: every turn it is Ready, from its first. It mills Lumber you hold (1 becomes 2); with no Lumber nothing happens. Lumberjack adds to it.": "ஒவ்வொரு திருப்பத் தூண்டி: தயாராக இருக்கும் ஒவ்வொரு திருப்பத்திலும், முதலிலிருந்தே. உங்களிடம் உள்ள மரத்தை அறுக்கும் (1 என்பது 2 ஆகும்); மரம் இல்லையெனில் ஒன்றும் நடக்காது. மரவெட்டி இதனுடன் சேரும்.",
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "விலையுடன் கூடிய ஒவ்வொரு திருப்பத் தூண்டி: அது செயல்படும்போது மட்டுமே மரம் செலுத்தப்படும். அலகுகள் பராமரிப்பு வரிசையில் செயல்படும், எனவே முதலில் செயல்படும் கல்குவாரி ஒரு உருக்காலைக்கு ஊட்டலாம்.",
@@ -4783,5 +4782,7 @@
  "{v1} more pack{s} to open": "திறக்க இன்னும் {v1} பொதிகள்",
  "Own 50 different cards": "50 வெவ்வேறு அட்டைகளை வைத்திரு",
  "The Caldera Wyrm": "எரிமலைவாய் நாகம்",
- "Claim all": "அனைத்தையும் பெறு"
+ "Claim all": "அனைத்தையும் பெறு",
+ "Dungeon Rules": "நிலவறை விதிகள்",
+ "Multiplayer Rules": "பலர் விளையாட்டு விதிகள்"
 }

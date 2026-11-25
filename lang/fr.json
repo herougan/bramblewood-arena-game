@@ -4660,7 +4660,6 @@
  "These {n} go with you": "Ces {n} partent avec vous",
  "Level {n} reward: {name}": "Récompense niveau {n} : {name}",
  "{a} more in this set, {b} after": "{a} de plus ici, {b} après",
- "Team up with friends in a dungeon": "Faites équipe avec vos amis dans un donjon",
  "When played, your other units get +{n}/+{n} for the fight.": "Une fois jouée, vos autres unités gagnent +{n}/+{n} pour le combat.",
  "An Every Turn trigger: every turn it is Ready, from its first. It mills Lumber you hold (1 becomes 2); with no Lumber nothing happens. Lumberjack adds to it.": "Un déclencheur Chaque tour : chaque tour où elle est Prête, dès le premier. Elle scie le Bois que vous détenez (1 devient 2) ; sans Bois, il ne se passe rien. Bûcheronne s'y ajoute.",
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "Un déclencheur Chaque tour avec un prix : le Bois n'est payé que s'il se déclenche. Les unités agissent dans l'ordre de l'Entretien : une Carrière qui agit d'abord peut nourrir une Fonderie.",
@@ -4781,5 +4780,7 @@
  "{v1} more pack{s} to open": "Encore {v1} paquet{s} à ouvrir",
  "Own 50 different cards": "Posséder 50 cartes différentes",
  "The Caldera Wyrm": "Le Wyrm de la caldeira",
- "Claim all": "Tout réclamer"
+ "Claim all": "Tout réclamer",
+ "Dungeon Rules": "Règles du donjon",
+ "Multiplayer Rules": "Règles multijoueur"
 }

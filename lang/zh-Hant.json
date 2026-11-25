@@ -4660,7 +4660,6 @@
  "These {n} go with you": "這 {n} 張跟你走",
  "Level {n} reward: {name}": "{n} 級獎勵：{name}",
  "{a} more in this set, {b} after": "本組還有 {a} 包，之後 {b} 包",
- "Team up with friends in a dungeon": "與好友組隊闖地下城",
  "When played, your other units get +{n}/+{n} for the fight.": "打出時，你的其他單位在本場戰鬥中獲得+{n}/+{n}。",
  "An Every Turn trigger: every turn it is Ready, from its first. It mills Lumber you hold (1 becomes 2); with no Lumber nothing happens. Lumberjack adds to it.": "每回合觸發：每個處於可進行狀態的回合都會觸發，從第一回合起。它會鋸切你持有的木材（1 變成 2）；沒有木材則無事發生。伐木工的加成會疊加。",
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "帶代價的每回合觸發：只有真正觸發時才支付木材。單位按維持階段的順序行動，所以先行動的採石可以供給冶煉。",
@@ -4781,5 +4780,7 @@
  "{v1} more pack{s} to open": "還有 {v1} 個卡包要開",
  "Own 50 different cards": "擁有 50 種不同的卡牌",
  "The Caldera Wyrm": "火山口巨龍",
- "Claim all": "全部領取"
+ "Claim all": "全部領取",
+ "Dungeon Rules": "地牢規則",
+ "Multiplayer Rules": "多人規則"
 }

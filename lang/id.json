@@ -4661,7 +4661,6 @@
  "These {n} go with you": "{n} kartu ini ikut denganmu",
  "Level {n} reward: {name}": "Hadiah Level {n}: {name}",
  "{a} more in this set, {b} after": "{a} lagi di sini, {b} setelahnya",
- "Team up with friends in a dungeon": "Berduet dengan teman di dungeon",
  "When played, your other units get +{n}/+{n} for the fight.": "Saat dimainkan, unitmu yang lain mendapat +{n}/+{n} selama pertarungan.",
  "An Every Turn trigger: every turn it is Ready, from its first. It mills Lumber you hold (1 becomes 2); with no Lumber nothing happens. Lumberjack adds to it.": "Pemicu Tiap Giliran: setiap giliran saat Siap, sejak yang pertama. Ia menggergaji Kayu yang kamu pegang (1 menjadi 2); tanpa Kayu tidak terjadi apa-apa. Penebang menambahkannya.",
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "Pemicu Tiap Giliran dengan harga: Kayu hanya dibayar saat pemicu berjalan. Unit bertindak sesuai urutan pemeliharaan, jadi Tambang Batu yang bertindak dulu bisa memasok Peleburan.",
@@ -4782,5 +4781,7 @@
  "{v1} more pack{s} to open": "{v1} paket lagi untuk dibuka",
  "Own 50 different cards": "Miliki 50 kartu berbeda",
  "The Caldera Wyrm": "Naga Kaldera",
- "Claim all": "Klaim semua"
+ "Claim all": "Klaim semua",
+ "Dungeon Rules": "Aturan ruang bawah tanah",
+ "Multiplayer Rules": "Aturan multipemain"
 }

@@ -4661,7 +4661,6 @@
  "These {n} go with you": "Queste {n} vengono con te",
  "Level {n} reward: {name}": "Premio livello {n}: {name}",
  "{a} more in this set, {b} after": "{a} ancora qui, {b} dopo",
- "Team up with friends in a dungeon": "Fai squadra con gli amici in un dungeon",
  "When played, your other units get +{n}/+{n} for the fight.": "Quando giocata, le tue altre unità ottengono +{n}/+{n} per tutto lo scontro.",
  "An Every Turn trigger: every turn it is Ready, from its first. It mills Lumber you hold (1 becomes 2); with no Lumber nothing happens. Lumberjack adds to it.": "Un innesco Ogni turno: ogni turno in cui è Pronta, dal primo. Segano il Legname che hai (1 diventa 2); senza Legname non succede nulla. Boscaiola si somma.",
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "Un innesco Ogni turno con un prezzo: il Legno si paga solo se scatta. Le unità agiscono nell'ordine del mantenimento, quindi una Cava che agisce prima può rifornire una Fonderia.",
@@ -4782,5 +4781,7 @@
  "{v1} more pack{s} to open": "Altre {v1} bustine da aprire",
  "Own 50 different cards": "Possiedi 50 carte diverse",
  "The Caldera Wyrm": "La Serpe della Caldera",
- "Claim all": "Riscuoti tutto"
+ "Claim all": "Riscuoti tutto",
+ "Dungeon Rules": "Regole del dungeon",
+ "Multiplayer Rules": "Regole multigiocatore"
 }

@@ -5,8 +5,9 @@ const fs = require('fs'), path = require('path');
 const rd = f=> fs.readFileSync(path.join(__dirname, '..', f), 'utf8');
 const t = rd('arena_template.html'), a = rd('arena_app.js'), x = rd('bramblewood-texts.js');
 let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  x', m); } };
-ok(/arenaCoopOpen\(\) \? tile\('openCoopBtn'/.test(a) && /x\.key === 'coop'\); if\(sp\) sp\.go\(\)/.test(a), '1. Arena tile opens FEATURE_SPOTS coop, only when open');
-ok(x.includes('ui.dec19-coop-tip'), '2. tip text keyed');
+// 2026-11-26 (FIXPACK1, owner 11-24 #7): The Tidelock Vault left "More ways to play" (the map spot and the Co-op pane still open it)
+ok(!/openCoopBtn|arenaCoopOpen/.test(a), '1. no vault tile on the Arena\'s More ways to play');
+ok(!x.includes('ui.dec19-coop-tip'), '2. its tip text is gone');
 ok(/#atmoTint\{z-index:90;\}/.test(t) && /\.topbar-wrap\{position:relative; z-index:95;\}/.test(t), '3. tint under topbar (95) and dialogs (600)');
 ok(/body\.in-fight #atmoTint\{[^}]*z-index:9000/.test(t), '4. fight board still tinted');
 ok(/mine && matchState && to\)\{ ui16PitchToGrave\(/.test(a), '5. overdraw arcs via the pitch flight');

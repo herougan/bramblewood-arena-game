@@ -24994,7 +24994,6 @@ function renderArenaSubTabInner(body, title){
         <div class="ar3-modes">
           ${tile('startVsAiBtn', '🤖', 'Quick Battle', "You vs the computer, under today's rules · costs no Energy", '', 'is-hero')}
           ${tile('startVsPcBtn', '👥', 'Pass &amp; Play', 'Two players, one device')}
-          ${arenaCoopOpen() ? tile('openCoopBtn', '👥', escapeHtml(gdThemedName()), TX('ui.dec19-coop-tip')) : ''}${'' /* 2026-11-19 (package DEC19-UI, REL1-4 b): the Group Dungeon's entry on the Arena, once open */}
           ${tabOpen('gauntlet') ? tile('startGauntletBtn', '🏅', 'Gauntlet', `Win ${GAUNTLET_GOAL} in a row; one loss starts you over`, `<span class="ar3-mode-line">🔥 ${streak}/${GAUNTLET_GOAL}</span>`) : ''}
           <div class="ar3-mode is-caged" id="cagedPanel" title="Your leader is caged on the enemy board, 4 slots to the right. Break the cage to free it.">
             <span class="ar3-mode-ico" aria-hidden="true">⛓️</span><span class="ar3-mode-lbl">Caged Fight</span>
@@ -25013,7 +25012,6 @@ function renderArenaSubTabInner(body, title){
   $('startVsAiBtn').addEventListener('click', ()=> startMatch('ai'));
   { const abBtn = $('openAutobattleBtn'); if(abBtn) abBtn.addEventListener('click', ()=>{ playSubTab = 'autobattle'; renderPlay(); }); }
   $('startVsPcBtn').addEventListener('click', ()=> startMatch('pc'));
-  { const cb = $('openCoopBtn'); if(cb) cb.addEventListener('click', ()=>{ const sp = FEATURE_SPOTS.find(x=> x.key === 'coop'); if(sp) sp.go(); }); }
   { const pvpBtn = $('startPvpBtn'); if(pvpBtn) pvpBtn.addEventListener('click', ()=> startMatch('pvp', {standard:false})); }
   { const sp = $('startPvpStdBtn'); if(sp) sp.addEventListener('click', ()=> startMatch('pvp', {standard:true})); }
   { const gb = $('startGauntletBtn'); if(gb) gb.addEventListener('click', ()=> startMatch('gauntlet')); }
@@ -28403,7 +28401,6 @@ function dailyDungeonsOpen(){ try{ return !!(dungeonsAdminView() || unlockedDail
 // 👥 spot on Map GD_OPEN_AFTER_MAP after its last fight (FEATURE_SPOTS 'coop', pl2OpenCoopPop). Was: dailyDungeonsOpen() || gdPlayerOpen().
 function dungeonsTabOpen(){ try{ return dungeonsAdminView(); }catch(e){ return false; } }
 let pl2ArenaPane = 'modes';
-function arenaCoopOpen(){ try{ return gdPlayerOpen(); }catch(e){ return false; } } // 2026-11-19 (package DEC19-UI, REL1-4 b): open after Map GD_OPEN_AFTER_MAP
 function pl2CoopPaneOn(){ try{ return pl2ArenaPane === 'coop' && gdPlayerOpen(); }catch(e){ return false; } }
 function pl2ArenaTabsHTML(){
   let open = false; try{ open = gdPlayerOpen(); }catch(e){} if(!open) return '';
@@ -28896,11 +28893,13 @@ function gdLobbyHTML(){
       <p class="gd-people-line" id="gdPeople">${gdPeopleHTML(gdRoomCounts() || {fixed: true})} <span class="gd-note">${escapeHtml(kindNote)}</span></p>
       ${GD.kind === 'solo' ? '' : `<div class="gd-code-row"><span>${escapeHtml(TX('ui.ar3-code-label'))}</span><b class="gd-code" id="gdCode">${escapeHtml(GD.code)}</b><button type="button" class="btn small" data-gd-act="copy">📋 ${escapeHtml(TX('ui.ar3-copy'))}</button></div>`}
       <p class="dg1-rules">${escapeHtml(TX('ui.dungeon1-rules'))}</p>
-      <details class="dg1-more"><summary>${escapeHtml(TX('ui.dungeon1-more'))}</summary>
+      <details class="dg1-more"><summary>${escapeHtml(TX('ui.dungeon1-more'))}</summary>${'' /* 2026-11-26 (FIXPACK1, owner 11-24 #20): two sections, the dungeon's rules then the multiplayer ones */}
+        <h4 class="dg1-more-h">${escapeHtml(TX('ui.fp1-dungeon-rules'))}</h4>
         <ul><li>${escapeHtml(TX('ui.dungeon1-carry'))}</li><li>${escapeHtml(TX('ui.dungeon1-arrive', {min: CoopM.FREE_TURNS[0], max: CoopM.FREE_TURNS[1]}))}</li><li>${escapeHtml(TX('ui.dungeon1-rows'))}</li>
-          <li class="coop2-how">${escapeHtml(TX('ui.coop2-how'))}</li>
           <li class="gd-deckline">🃏 ${escapeHtml(TX('ui.ar3-deck-line', {n: deckTotal(publicDeck(myDeckCounts))}))} · ⚡ ${escapeHtml(TX('ui.ar3-energy-line', {n: gdCost()}))}</li></ul>
-        <p class="dg1-pay"><span>${escapeHtml(TX('ui.dungeon1-pay-title'))}</span>${pay}</p></details>
+        <p class="dg1-pay"><span>${escapeHtml(TX('ui.dungeon1-pay-title'))}</span>${pay}</p>
+        <h4 class="dg1-more-h">${escapeHtml(TX('ui.fp1-multiplayer-rules'))}</h4>
+        <ul><li class="coop2-how">${escapeHtml(TX('ui.coop2-how'))}</li></ul></details>
       ${friends}
     </div>
     <footer class="gd-foot">

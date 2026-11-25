@@ -4660,7 +4660,6 @@
  "These {n} go with you": "この{n}枚が一緒に行く",
  "Level {n} reward: {name}": "レベル{n}の報酬：{name}",
  "{a} more in this set, {b} after": "このセットにあと{a}、その後{b}",
- "Team up with friends in a dungeon": "仲間とダンジョンに挑もう",
  "When played, your other units get +{n}/+{n} for the fight.": "プレイ時、この戦闘の間、味方の他のユニットは+{n}/+{n}を得る。",
  "An Every Turn trigger: every turn it is Ready, from its first. It mills Lumber you hold (1 becomes 2); with no Lumber nothing happens. Lumberjack adds to it.": "毎ターンのトリガー：準備OKの間、最初のターンから毎ターン発動する。持っている木材を製材する（1が2になる）。木材がなければ何も起きない。木こりの効果が加算される。",
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "代償つきの毎ターンのトリガー：実際に誘発したときだけ木材を払う。ユニットはアップキープの順に動くので、先に動く採石場が精錬所に供給できる。",
@@ -4781,5 +4780,7 @@
  "{v1} more pack{s} to open": "開けるパックがあと{v1}個",
  "Own 50 different cards": "異なるカードを50種持つ",
  "The Caldera Wyrm": "カルデラのワーム",
- "Claim all": "すべて受け取る"
+ "Claim all": "すべて受け取る",
+ "Dungeon Rules": "ダンジョンのルール",
+ "Multiplayer Rules": "マルチプレイのルール"
 }

@@ -11339,6 +11339,7 @@
 .dg1-more{border-radius:12px; background:rgba(0,0,0,.2); border:1px solid var(--gd-line); padding:6px 12px; font-size:13px;}
 .dg1-more summary{cursor:pointer; font-weight:800; padding:4px 0; color:rgba(243,234,216,.9);}
 .dg1-more ul{margin:4px 0 8px; padding-left:18px; display:grid; gap:4px; color:rgba(243,234,216,.82);}
+.dg1-more-h{margin:8px 0 2px; font:800 13px/1.3 'Baloo 2',system-ui,sans-serif; color:rgba(243,234,216,.95);} /* 2026-11-26 (FIXPACK1): Dungeon Rules / Multiplayer Rules */
 .dg1-pay{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 6px; font-size:12px;}
 .dg1-pay > span:first-child{font-weight:800; margin-right:4px;}
 .dg1-pay-cell{padding:2px 8px; border-radius:999px; background:rgba(241,207,90,.12);} .dg1-pay-cell b{color:#ffe7a8;}
@@ -49553,7 +49554,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=cd835956e5", "es": "assets/lang/es.js?v=2c33662b7e", "fr": "assets/lang/fr.js?v=18d44a6e39", "id": "assets/lang/id.js?v=72a009375a", "it": "assets/lang/it.js?v=bd157b966d", "ja": "assets/lang/ja.js?v=05cfd09571", "ko": "assets/lang/ko.js?v=9cd5a55750", "pt": "assets/lang/pt.js?v=2dcdad4c16", "ta": "assets/lang/ta.js?v=5acd49ff4b", "tl": "assets/lang/tl.js?v=0878d9aee5", "zh-Hans": "assets/lang/zh-Hans.js?v=4b0a8daf6c", "zh-Hant": "assets/lang/zh-Hant.js?v=6aea2f14b6"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=1bc8c62368", "es": "assets/lang/es.js?v=e6e9bbde40", "fr": "assets/lang/fr.js?v=af0566308f", "id": "assets/lang/id.js?v=2a77e74a92", "it": "assets/lang/it.js?v=ca1a357b97", "ja": "assets/lang/ja.js?v=e7668f0578", "ko": "assets/lang/ko.js?v=e196b512e2", "pt": "assets/lang/pt.js?v=20bbd52a05", "ta": "assets/lang/ta.js?v=b46d7e515c", "tl": "assets/lang/tl.js?v=28b1c5c09a", "zh-Hans": "assets/lang/zh-Hans.js?v=9780250fcb", "zh-Hant": "assets/lang/zh-Hant.js?v=9657d1ba2a"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -53536,7 +53537,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rel3-xp": "+{n} XP",
   "ui.rel3-level": "Level {n}!",
   "ui.uifin2-pile-split": "{a} more in this set, {b} after",
-  "ui.dec19-coop-tip": "Team up with friends in a dungeon",
   "ui.uiq1-learns": "Learns a skill at a higher level",
   "ui.uiq1-locked": "Not unlocked yet",
   "ui.uiq2-pill-intro": "Intro",
@@ -53631,7 +53631,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.daunt2-corrode-st": "has that much less Attack; fades 1 a round after its last hit.",
   "ui.daunt2-corrode-ls": "has {n} less Attack; fades 1 a round after its last hit.",
   "ui.daunt2-bl-cond-poisonkill": "Poison kill",
-  "ui.eng19-bc-poisonkill": "Poison kill: an enemy unit died of poison while this unit was on the board"
+  "ui.eng19-bc-poisonkill": "Poison kill: an enemy unit died of poison while this unit was on the board",
+  "ui.fp1-dungeon-rules": "Dungeon Rules",
+  "ui.fp1-multiplayer-rules": "Multiplayer Rules"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -59828,7 +59830,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '9ab9e3e23b22', BUILD_CARD_HASH = 'f60d509855dfc5f50eddbeed63d10bcd2a5e0a691271928a31e1d7cbdb072047';
+const BUILD_ID = '6460ee5d66e2', BUILD_CARD_HASH = 'f60d509855dfc5f50eddbeed63d10bcd2a5e0a691271928a31e1d7cbdb072047';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
@@ -80575,7 +80577,6 @@ function renderArenaSubTabInner(body, title){
         <div class="ar3-modes">
           ${tile('startVsAiBtn', '🤖', 'Quick Battle', "You vs the computer, under today's rules · costs no Energy", '', 'is-hero')}
           ${tile('startVsPcBtn', '👥', 'Pass &amp; Play', 'Two players, one device')}
-          ${arenaCoopOpen() ? tile('openCoopBtn', '👥', escapeHtml(gdThemedName()), TX('ui.dec19-coop-tip')) : ''}${'' /* 2026-11-19 (package DEC19-UI, REL1-4 b): the Group Dungeon's entry on the Arena, once open */}
           ${tabOpen('gauntlet') ? tile('startGauntletBtn', '🏅', 'Gauntlet', `Win ${GAUNTLET_GOAL} in a row; one loss starts you over`, `<span class="ar3-mode-line">🔥 ${streak}/${GAUNTLET_GOAL}</span>`) : ''}
           <div class="ar3-mode is-caged" id="cagedPanel" title="Your leader is caged on the enemy board, 4 slots to the right. Break the cage to free it.">
             <span class="ar3-mode-ico" aria-hidden="true">⛓️</span><span class="ar3-mode-lbl">Caged Fight</span>
@@ -80594,7 +80595,6 @@ function renderArenaSubTabInner(body, title){
   $('startVsAiBtn').addEventListener('click', ()=> startMatch('ai'));
   { const abBtn = $('openAutobattleBtn'); if(abBtn) abBtn.addEventListener('click', ()=>{ playSubTab = 'autobattle'; renderPlay(); }); }
   $('startVsPcBtn').addEventListener('click', ()=> startMatch('pc'));
-  { const cb = $('openCoopBtn'); if(cb) cb.addEventListener('click', ()=>{ const sp = FEATURE_SPOTS.find(x=> x.key === 'coop'); if(sp) sp.go(); }); }
   { const pvpBtn = $('startPvpBtn'); if(pvpBtn) pvpBtn.addEventListener('click', ()=> startMatch('pvp', {standard:false})); }
   { const sp = $('startPvpStdBtn'); if(sp) sp.addEventListener('click', ()=> startMatch('pvp', {standard:true})); }
   { const gb = $('startGauntletBtn'); if(gb) gb.addEventListener('click', ()=> startMatch('gauntlet')); }
@@ -83984,7 +83984,6 @@ function dailyDungeonsOpen(){ try{ return !!(dungeonsAdminView() || unlockedDail
 // 👥 spot on Map GD_OPEN_AFTER_MAP after its last fight (FEATURE_SPOTS 'coop', pl2OpenCoopPop). Was: dailyDungeonsOpen() || gdPlayerOpen().
 function dungeonsTabOpen(){ try{ return dungeonsAdminView(); }catch(e){ return false; } }
 let pl2ArenaPane = 'modes';
-function arenaCoopOpen(){ try{ return gdPlayerOpen(); }catch(e){ return false; } } // 2026-11-19 (package DEC19-UI, REL1-4 b): open after Map GD_OPEN_AFTER_MAP
 function pl2CoopPaneOn(){ try{ return pl2ArenaPane === 'coop' && gdPlayerOpen(); }catch(e){ return false; } }
 function pl2ArenaTabsHTML(){
   let open = false; try{ open = gdPlayerOpen(); }catch(e){} if(!open) return '';
@@ -84477,11 +84476,13 @@ function gdLobbyHTML(){
       <p class="gd-people-line" id="gdPeople">${gdPeopleHTML(gdRoomCounts() || {fixed: true})} <span class="gd-note">${escapeHtml(kindNote)}</span></p>
       ${GD.kind === 'solo' ? '' : `<div class="gd-code-row"><span>${escapeHtml(TX('ui.ar3-code-label'))}</span><b class="gd-code" id="gdCode">${escapeHtml(GD.code)}</b><button type="button" class="btn small" data-gd-act="copy">📋 ${escapeHtml(TX('ui.ar3-copy'))}</button></div>`}
       <p class="dg1-rules">${escapeHtml(TX('ui.dungeon1-rules'))}</p>
-      <details class="dg1-more"><summary>${escapeHtml(TX('ui.dungeon1-more'))}</summary>
+      <details class="dg1-more"><summary>${escapeHtml(TX('ui.dungeon1-more'))}</summary>${'' /* 2026-11-26 (FIXPACK1, owner 11-24 #20): two sections, the dungeon's rules then the multiplayer ones */}
+        <h4 class="dg1-more-h">${escapeHtml(TX('ui.fp1-dungeon-rules'))}</h4>
         <ul><li>${escapeHtml(TX('ui.dungeon1-carry'))}</li><li>${escapeHtml(TX('ui.dungeon1-arrive', {min: CoopM.FREE_TURNS[0], max: CoopM.FREE_TURNS[1]}))}</li><li>${escapeHtml(TX('ui.dungeon1-rows'))}</li>
-          <li class="coop2-how">${escapeHtml(TX('ui.coop2-how'))}</li>
           <li class="gd-deckline">🃏 ${escapeHtml(TX('ui.ar3-deck-line', {n: deckTotal(publicDeck(myDeckCounts))}))} · ⚡ ${escapeHtml(TX('ui.ar3-energy-line', {n: gdCost()}))}</li></ul>
-        <p class="dg1-pay"><span>${escapeHtml(TX('ui.dungeon1-pay-title'))}</span>${pay}</p></details>
+        <p class="dg1-pay"><span>${escapeHtml(TX('ui.dungeon1-pay-title'))}</span>${pay}</p>
+        <h4 class="dg1-more-h">${escapeHtml(TX('ui.fp1-multiplayer-rules'))}</h4>
+        <ul><li class="coop2-how">${escapeHtml(TX('ui.coop2-how'))}</li></ul></details>
       ${friends}
     </div>
     <footer class="gd-foot">

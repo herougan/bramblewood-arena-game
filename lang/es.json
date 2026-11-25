@@ -4659,7 +4659,6 @@
  "These {n} go with you": "Estas {n} van contigo",
  "Level {n} reward: {name}": "Premio nivel {n}: {name}",
  "{a} more in this set, {b} after": "{a} más aquí, {b} después",
- "Team up with friends in a dungeon": "Une fuerzas con amigos en una mazmorra",
  "When played, your other units get +{n}/+{n} for the fight.": "Al jugarse, tus otras unidades ganan +{n}/+{n} durante el combate.",
  "An Every Turn trigger: every turn it is Ready, from its first. It mills Lumber you hold (1 becomes 2); with no Lumber nothing happens. Lumberjack adds to it.": "Un disparador Cada turno: cada turno que está Lista, desde el primero. Asierra la Madera que tienes (1 se vuelve 2); sin Madera no pasa nada. Leñadora se suma.",
  "An Every Turn trigger with a price: the Lumber is paid only when it goes off. Units act in upkeep order, so a Quarry acting first can feed a Smelter.": "Un disparador Cada turno con precio: la Madera solo se paga si se activa. Las unidades actúan en el orden del Mantenimiento, así que una Cantera que actúa antes puede alimentar una Fundición.",
@@ -4780,5 +4779,7 @@
  "{v1} more pack{s} to open": "Quedan {v1} sobre{s} por abrir",
  "Own 50 different cards": "Ten 50 cartas distintas",
  "The Caldera Wyrm": "La Sierpe de la caldera",
- "Claim all": "Reclamar todo"
+ "Claim all": "Reclamar todo",
+ "Dungeon Rules": "Reglas de la mazmorra",
+ "Multiplayer Rules": "Reglas multijugador"
 }

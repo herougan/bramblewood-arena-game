@@ -128,6 +128,16 @@ const cq = n=> JSON.stringify({completed: Array.from({length: n}, (_, i)=> 'm1:0
   }
   ok(/callback: async resp=>\{ onStart && onStart\(\);/.test(fnSrc('gsiMountButton')) && /\(\)=> working\(true\)\)\.then/.test(fnSrc('wireAuthForm')), '5. Google\'s button: the window closes as soon as Google answers');
 
+  // ======================================================================= 6. vault How it works: Dungeon Rules, then Multiplayer Rules; 7. no vault on More ways to play
+  { const lob = fnSrc('gdLobbyHTML'), i = lob.indexOf("TX('ui.fp1-dungeon-rules')"), j = lob.indexOf("TX('ui.fp1-multiplayer-rules')"), k = lob.indexOf("TX('ui.coop2-how')"), c = lob.indexOf("TX('ui.dungeon1-carry')");
+    ok(i > 0 && c > i && j > c && k > j && lob.indexOf('</details>', k) > k, '6. How it works: Dungeon Rules (carry, arrive, rows, deck, rewards), then Multiplayer Rules (rows per player)');
+    const texts = fs.readFileSync(path.join(ROOT, 'bramblewood-texts.js'), 'utf8');
+    ok(/"ui\.fp1-dungeon-rules": "Dungeon Rules"/.test(texts) && /"ui\.fp1-multiplayer-rules": "Multiplayer Rules"/.test(texts), '6. the two headings are TX keys');
+    ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(cd=>{ const d = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', cd + '.json'), 'utf8'));
+      ok(d['Dungeon Rules'] && d['Multiplayer Rules'] && !('Team up with friends in a dungeon' in d), '6/7. ' + cd + ' translates both headings; the vault tile\'s text is gone'); });
+    const ai = src.indexOf('\nfunction renderArenaSubTabInner('), arena = src.slice(ai, src.indexOf('\nfunction ', ai + 10)); // its template strings defeat fnSrc's brace count
+    ok(!/openCoopBtn|gdThemedName/.test(arena) && !/function arenaCoopOpen/.test(src) && /pl2ArenaTabsHTML\(\)/.test(arena), '7. The Tidelock Vault is off "More ways to play" (the Co-op tab still opens it)'); }
+
   console.log(fail ? `fixpack1: ${fail} of ${n} checks failed` : `fixpack1: all ${n} checks passed`);
   process.exit(fail ? 1 : 0);
 })();

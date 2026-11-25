@@ -3856,7 +3856,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rel3-xp": "+{n} XP",
   "ui.rel3-level": "Level {n}!",
   "ui.uifin2-pile-split": "{a} more in this set, {b} after",
-  "ui.dec19-coop-tip": "Team up with friends in a dungeon",
   "ui.uiq1-learns": "Learns a skill at a higher level",
   "ui.uiq1-locked": "Not unlocked yet",
   "ui.uiq2-pill-intro": "Intro",
@@ -3951,7 +3950,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.daunt2-corrode-st": "has that much less Attack; fades 1 a round after its last hit.",
   "ui.daunt2-corrode-ls": "has {n} less Attack; fades 1 a round after its last hit.",
   "ui.daunt2-bl-cond-poisonkill": "Poison kill",
-  "ui.eng19-bc-poisonkill": "Poison kill: an enemy unit died of poison while this unit was on the board"
+  "ui.eng19-bc-poisonkill": "Poison kill: an enemy unit died of poison while this unit was on the board",
+  "ui.fp1-dungeon-rules": "Dungeon Rules",
+  "ui.fp1-multiplayer-rules": "Multiplayer Rules"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
