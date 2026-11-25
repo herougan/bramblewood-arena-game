@@ -1,5 +1,64 @@
 {
  "_about": "Per-map card pools (owner 2026-10-22). One entry per main map, three tiers: \"cards\" (the MAP tier), \"submaps\" (each side map's whole list, one list each: its own cards + the ones it carries) and \"special\" (the cards added through a skirmish deck editor's + Load any card; one list for the map and its submaps' fights). A main-map fight draws from cards + special; a submap fight from that submap + special (2026-10-29 LISTFIX1, decision APPLY1-1: no longer the parent's cards too). Shape: tools/lib_map_pools.js. Fold the admin's live edits back with tools/fold_map_pools.js.",
+ "_changes": [
+  "2026-11-25 MAPEXEC1 move pika-hoarder from mc to m2: Delivery is in Map 4's table row (not Map 3's): the carrier moves to the map whose row has the skill, so Delivery is New! on Map 4 with two carriers",
+  "2026-11-25 MAPEXEC1 drop puddle-skimmer off mf: no row has Rainrunner; the owner's Yes picks already leave it off Map 1 and Map 2",
+  "2026-11-25 MAPEXEC1 drop puddle-skimmer off mb: no row has Rainrunner; the card is also on Map 2 and the owner's Yes picks already leave it off both lists",
+  "2026-11-25 MAPEXEC1 drop water-shrew off m8: Evasive is in Map 8's row; the shrew leaves Maps 4 and 6 so Evasive is New! on Map 8 first",
+  "2026-11-25 MAPEXEC1 add anvil-thrush on mb: Pierce is in Map 2's table row (one carrier on the list): the songbird family of the map's list · common · moves from Map 11 (carried there)",
+  "2026-11-25 MAPEXEC1 drop pincushion-urchin off mb: Poison Barbs: Pincushion Urchin is already on Map 10's list, so it is not lost; Poison Barbs is not meant to be New! on Map 2",
+  "2026-11-25 MAPEXEC1 drop water-shrew off m2: Evasive: Water Shrew carries Evasive, which Map 6's list shows too; here it is New! outside the table row, so the card leaves the list (no later map fits it)",
+  "2026-11-25 MAPEXEC1 move slow-worm from m2 to m22: Slow: Slow-worm carries Slow; Map 22's table row has it, so it shows there as intended",
+  "2026-11-25 MAPEXEC1 drop mosquito-cloud off mw: Bleed: Mosquito Cloud is already on Map 6's list, so it is not lost; Bleed is not meant to be New! on Map 5",
+  "2026-11-25 MAPEXEC1 drop alley-cat off mw: Bleed, Twin Strike: Alley Cat is already on Map 9's list, so it is not lost; Bleed is not meant to be New! on Map 5",
+  "2026-11-25 MAPEXEC1 move swamp-alligator from mw to m8: Bleed: Swamp Alligator carries Bleed; Map 6's table row has it, so it shows there as intended",
+  "2026-11-25 MAPEXEC1 drop cypress-root-lurker off mw: Constrict: Cypress Root Lurker is already on Map 6's list, so it is not lost; Constrict is not meant to be New! on Map 5",
+  "2026-11-25 MAPEXEC1 move marsh-mallow-hare from mw to m21: Cure: Marsh-mallow Hare carries Cure; Map 21's table row has it, so it shows there as intended",
+  "2026-11-25 MAPEXEC1 move newt-doctor from mw to m21: Herbalist: Newt Doctor carries Herbalist; Map 21's table row has it, so it shows there as intended",
+  "2026-11-25 MAPEXEC1 move rot-swollen-carcass from mu to m22: Progeny: Rot-Swollen Carcass carries Progeny; Map 22's table row has it, so it shows there as intended",
+  "2026-11-25 MAPEXEC1 add cinder-gecko on m4: Evasive is in Map 8's table row (no carrier on the list): a caves creature · common · moves from Map 22 (carried there)",
+  "2026-11-25 MAPEXEC1 move star-nosed-mole from m4 to m24: Purblind: Star-nosed Mole carries Purblind; Map 24's table row has it, so it shows there as intended",
+  "2026-11-25 MAPEXEC1 add mangrove-manatee on mk: Regenerate is in Map 9's table row (no carrier on the list): a mangrove creature · rare · from the side maps of Map 11",
+  "2026-11-25 MAPEXEC1 move proboscis-monkey from mk to m23: Taunt: Proboscis Monkey carries Taunt; Map 23's table row has it, so it shows there as intended",
+  "2026-11-25 MAPEXEC1 add yeti on m10: Daunt is in Map 11's table row (one carrier on the list): near mountain sky · common · from the side maps of Map 11",
+  "2026-11-25 MAPEXEC1 move stonedrop-vulture from m10 to m21: Archer: Stonedrop Vulture carries Archer; Map 21's table row has it, so it shows there as intended",
+  "2026-11-25 MAPEXEC1 move mountain-hare from m10 to m21: Frostbite: Mountain Hare carries Frostbite; Map 21's table row has it, so it shows there as intended",
+  "2026-11-25 MAPEXEC1 drop eyrie-warden off m10: Twin Shot: Eyrie Warden is already on Map 21's list, so it is not lost; Twin Shot is not meant to be New! on Map 11",
+  "2026-11-25 MAPEXEC1 add bison-bulldozer on mh: Bulldoze is in Map 12's table row (one carrier on the list): a maze briar creature · uncommon · moves from Map 23 (carried there)",
+  "2026-11-25 MAPEXEC1 move dust-hyena from m5 to m22: Carnage: Dust Hyena carries Carnage; Map 22's table row has it, so it shows there as intended",
+  "2026-11-25 MAPEXEC1 move meerkat-sentry from m5 to m23: Embolden: Meerkat Sentry carries Embolden; Map 23's table row has it, so it shows there as intended",
+  "2026-11-25 MAPEXEC1 drop hoopoe-herald off m5: Herald: Hoopoe Herald is already on Map 23's list, so it is not lost; Herald is not meant to be New! on Map 14",
+  "2026-11-25 MAPEXEC1 add boreal-elk on ml: Cleave is in Map 15's table row (one carrier on the list): the deer family of the map's list · common · moves from Map 16 (carried there)",
+  "2026-11-25 MAPEXEC1 move sworn-shieldbearer from ml to m23: Harden, Loyal: Sworn Shieldbearer carries Harden; Map 23's table row has it, so it shows there as intended",
+  "2026-11-25 MAPEXEC1 move village-miller from ml to m23: Pitchfork: Village Miller carries Pitchfork; Map 23's table row has it, so it shows there as intended",
+  "2026-11-25 MAPEXEC1 add mallard-halberdier on mt: Reach is in Map 16's table row (one carrier on the list): the duck family of the map's list · rare · moves from Map 24 (carried there)",
+  "2026-11-25 MAPEXEC1 move taiga-lynx from mt to m23: Lone Wolf: Taiga Lynx carries Lone Wolf; Map 23's table row has it, so it shows there as intended",
+  "2026-11-25 MAPEXEC1 drop glacier-yak off m6: Freeze: Glacier Yak is already on Map 21's list, so it is not lost; Freeze is not meant to be New! on Map 17",
+  "2026-11-25 MAPEXEC1 move walrus-icebreaker from m6 to m22: Pulverise: Walrus Icebreaker carries Pulverise; Map 22's table row has it, so it shows there as intended",
+  "2026-11-25 MAPEXEC1 drop honey-badger-fury off m3: Last Stand: Honey Badger Fury is already on Map 21's list, so it is not lost; Last Stand is not meant to be New! on Map 19",
+  "2026-11-25 MAPEXEC1 drop smoke-raccoon off m3: Smoke Bomb: Smokescreen Raccoon is already on Map 21's list, so it is not lost; Smoke Bomb is not meant to be New! on Map 19",
+  "2026-11-25 MAPEXEC1 add bombardier-beetle on m11: Cinder is in Map 20's table row (one carrier on the list): the beetle family of the map's list · uncommon · from the side maps of Map 7",
+  "2026-11-25 MAPEXEC1 drop camouflage-frog off m8: Evasive: Camouflage Frog carries Evasive, which Map 8's list shows too; here it is New! outside the table row, so the card leaves the list (no later map fits it)",
+  "2026-11-25 MAPEXEC1 drop newt-doctor off m8: Herbalist: Newt Doctor is already on Map 21's list, so it is not lost; Herbalist is not meant to be New! on Map 6",
+  "2026-11-25 MAPEXEC1 drop rot-swollen-carcass off m4: Progeny: Rot-Swollen Carcass is already on Map 22's list, so it is not lost; Progeny is not meant to be New! on Map 8",
+  "2026-11-25 MAPEXEC1 drop alley-cat off mk: Twin Strike: Alley Cat is already on Map 23's list, so it is not lost; Twin Strike is not meant to be New! on Map 9",
+  "2026-11-25 MAPEXEC1 move clownfish-scout from m7 to m21: Poison Barbs: Clownfish Scout carries Poison Barbs; Map 21's table row has it, so it shows there as intended",
+  "2026-11-25 MAPEXEC1 drop mountain-hare off mh: Frostbite: Mountain Hare is already on Map 21's list, so it is not lost; Frostbite is not meant to be New! on Map 12",
+  "2026-11-25 MAPEXEC1 drop eyrie-warden off mh: Twin Shot: Eyrie Warden is already on Map 21's list, so it is not lost; Twin Shot is not meant to be New! on Map 12",
+  "2026-11-25 MAPEXEC1 drop marsh-mallow-hare off mr: Cure: Marsh-mallow Hare is already on Map 21's list, so it is not lost; Cure is not meant to be New! on Map 13",
+  "2026-11-25 MAPEXEC1 drop slow-worm off mr: Slow: Slow-worm is already on Map 22's list, so it is not lost; Slow is not meant to be New! on Map 13",
+  "2026-11-25 MAPEXEC1 drop dust-hyena off ml: Carnage: Dust Hyena is already on Map 22's list, so it is not lost; Carnage is not meant to be New! on Map 15",
+  "2026-11-25 MAPEXEC1 drop hoopoe-herald off ml: Herald: Hoopoe Herald is already on Map 23's list, so it is not lost; Herald is not meant to be New! on Map 15",
+  "2026-11-25 MAPEXEC1 drop sworn-shieldbearer off mt: Harden, Loyal: Sworn Shieldbearer is already on Map 23's list, so it is not lost; Harden is not meant to be New! on Map 16",
+  "2026-11-25 MAPEXEC1 drop taiga-lynx off m6: Lone Wolf: Taiga Lynx is already on Map 23's list, so it is not lost; Lone Wolf is not meant to be New! on Map 17",
+  "2026-11-25 MAPEXEC1 drop meerkat-sentry off md: Embolden, Pack: Meerkat Sentry is already on Map 23's list, so it is not lost; Embolden is not meant to be New! on Map 18",
+  "2026-11-25 MAPEXEC1 drop glacier-yak off m3: Freeze: Glacier Yak is already on Map 21's list, so it is not lost; Freeze is not meant to be New! on Map 19",
+  "2026-11-25 MAPEXEC1 drop walrus-icebreaker off m3: Pulverise: Walrus Icebreaker is already on Map 22's list, so it is not lost; Pulverise is not meant to be New! on Map 19",
+  "2026-11-25 MAPEXEC1 drop honey-badger-fury off m11: Last Stand: Honey Badger Fury is already on Map 21's list, so it is not lost; Last Stand is not meant to be New! on Map 20",
+  "2026-11-25 MAPEXEC1 drop camouflage-frog off mu: Evasive: Camouflage Frog carries Evasive, which Map 8's list shows too; here it is New! outside the table row, so the card leaves the list (no later map fits it)",
+  "2026-11-25 MAPEXEC1 drop pincushion-urchin off m7: Poison Barbs: Pincushion Urchin carries Poison Barbs, which Map 21's list shows too; here it is New! outside the table row, so the card leaves the list (no later map fits it)",
+  "2026-11-25 MAPEXEC1 drop mountain-hare off mt: Frostbite: Mountain Hare is already on Map 21's list, so it is not lost; Frostbite is not meant to be New! on Map 16"
+ ],
  "maps": {
   "m1": {
    "cards": ["ant-scout", "duckling", "duck-paddler", "crossed-eyes", "honey-bee", "earthworm", "house-cat", "silver-minnow", "cottontail", "rabbit-kit", "soldier-ant", "bee-forager", "bee-sentry", "farm-dog", "chipmunk-forager", "worker-ant", "pond-trout"],
@@ -11,14 +70,14 @@
    "special": ["elder-willow", "thorn-shrike"]
   },
   "mf": {
-   "cards": ["bramble-sprout", "terrier-pup", "cricket-drummer", "chipmunk-cavalry", "hedgerow-shrew", "meadow-rabbit", "dormouse", "puddle-skimmer", "soldier-ant", "ant-scout", "bee-knight", "honey-bee", "house-cat", "duck-paddler", "robin-redbreast", "hedgehog-scout"],
+   "cards": ["bramble-sprout", "terrier-pup", "cricket-drummer", "chipmunk-cavalry", "hedgerow-shrew", "meadow-rabbit", "dormouse", "soldier-ant", "ant-scout", "bee-knight", "honey-bee", "house-cat", "duck-paddler", "robin-redbreast", "hedgehog-scout"],
    "submaps": {
     "mq": ["clover-butterfly", "ladybird-guard", "lucky-hopper", "chipmunk-cavalry", "cottontail", "robin-redbreast", "dormouse", "puddle-skimmer", "honey-bee", "bee-forager"]
    },
    "special": ["meadow-rabbit", "cottontail", "ant-scout", "compost-grub", "jackrabbit-sprinter"]
   },
   "mb": {
-   "cards": ["driftwood-crab", "gull-thief", "open-ocean-hermit-crab", "oystercatcher", "pincushion-urchin", "dolphin-knight", "conch-herald", "rock-pool-starfish", "limpet-clinger", "puddle-skimmer", "duck-paddler", "hedgerow-shrew", "robin-redbreast", "conch-crawler"],
+   "cards": ["driftwood-crab", "gull-thief", "open-ocean-hermit-crab", "oystercatcher", "dolphin-knight", "conch-herald", "rock-pool-starfish", "limpet-clinger", "duck-paddler", "hedgerow-shrew", "robin-redbreast", "conch-crawler", "anvil-thrush"],
    "submaps": {
     "mp": ["old-sturgeon", "lodge-engineer", "riverworks-bastion", "beaver-lumberjack", "muskrat-reedgatherer", "muskrat-lodgekeeper", "duck-paddler", "snapstick-turtle", "pond-algae", "raft-spider", "water-shrew"],
     "mg": ["trash-panda-trickster", "octopus-tactician", "raccoon-nightcrew", "gull-thief", "pincushion-urchin", "limpet-clinger", "open-ocean-hermit-crab", "driftwood-crab", "rock-pool-starfish"]
@@ -26,50 +85,50 @@
    "special": ["old-shell", "salvager-hermit-crab"]
   },
   "mc": {
-   "cards": ["cormorant", "fiddler-crab-swarm", "kittiwake-flock", "puffin-diver", "peak-condor", "gannet-nestweaver", "feral-tomcat", "peregrine-stooper", "eagle-sharpshooter", "chipmunk-cavalry", "limpet-clinger", "conch-herald", "gull-thief", "pika-hoarder", "beachcomber-sanderling", "balloon-archer", "chipmunk-skirmisher"],
+   "cards": ["cormorant", "fiddler-crab-swarm", "kittiwake-flock", "puffin-diver", "peak-condor", "gannet-nestweaver", "feral-tomcat", "peregrine-stooper", "eagle-sharpshooter", "chipmunk-cavalry", "limpet-clinger", "conch-herald", "gull-thief", "beachcomber-sanderling", "balloon-archer", "chipmunk-skirmisher"],
    "submaps": {},
    "special": ["hawk-arrowkeeper"]
   },
   "m2": {
-   "cards": ["pond-algae", "slow-worm", "water-shrew", "snapstick-turtle", "shoal-shark", "platypus-spur", "muskrat-lodgekeeper", "grass-snake", "river-mink", "planarian-splitter", "beaver-lumberjack", "kittiwake-flock", "duck-paddler", "conch-crawler", "lotus-frog"],
+   "cards": ["pond-algae", "snapstick-turtle", "shoal-shark", "platypus-spur", "muskrat-lodgekeeper", "grass-snake", "river-mink", "planarian-splitter", "beaver-lumberjack", "kittiwake-flock", "duck-paddler", "conch-crawler", "lotus-frog", "pika-hoarder"],
    "submaps": {},
    "special": ["drowned-matriarch"]
   },
   "mw": {
-   "cards": ["shoal-shark", "newt-doctor", "mosquito-cloud", "platypus-spur", "alley-cat", "marsh-mallow-hare", "mudpuppy", "muskrat-reedgatherer", "swamp-alligator", "raft-spider", "muskrat-lodgekeeper", "snapstick-turtle", "planarian-splitter", "fire-ant-raft", "nutria-reedcutter", "cypress-root-lurker"],
+   "cards": ["shoal-shark", "platypus-spur", "mudpuppy", "muskrat-reedgatherer", "raft-spider", "muskrat-lodgekeeper", "snapstick-turtle", "planarian-splitter", "fire-ant-raft", "nutria-reedcutter"],
    "submaps": {
     "ms": ["peat-cutter-vole", "river-carp", "matamata", "swamp-alligator", "constrictor-coil", "muskrat-reedgatherer", "mudpuppy", "newt-doctor", "nutria-reedcutter", "cypress-root-lurker", "crocodile-ambusher", "cottonmouth-matriarch"]
    },
    "special": ["bog-leech", "old-snapjaw", "hedgehog-herbalist", "mudflat-godwit", "constrictor-coil"]
   },
   "m8": {
-   "cards": ["cypress-root-lurker", "lamprey", "alligator-gar", "camouflage-frog", "booming-bittern", "newt-doctor", "pond-algae", "water-shrew", "mosquito-cloud", "constrictor-coil", "crocodile-ambusher", "barrow-leech-bat"],
+   "cards": ["cypress-root-lurker", "lamprey", "alligator-gar", "booming-bittern", "pond-algae", "mosquito-cloud", "constrictor-coil", "crocodile-ambusher", "barrow-leech-bat", "swamp-alligator"],
    "submaps": {
     "mm": ["bog-leech", "crocodile-ambusher", "meadow-frog", "puddle-hopper", "swamp-alligator", "willow-o-wisp"]
    },
    "special": ["venomlord-serpent", "heron-hag"]
   },
   "mu": {
-   "cards": ["corpse-flower-beetle", "wolf-spider-mother", "fungus-gnat-cloud", "rot-swollen-carcass", "puffball-bombardier", "cypress-root-lurker", "earthworm", "lamprey", "camouflage-frog", "compost-grub", "leopard-slug", "amber-cicada", "hawthorn-shieldbug", "phoenix-mushrooms", "planarian-splitter", "glowworm-cluster"],
+   "cards": ["corpse-flower-beetle", "wolf-spider-mother", "fungus-gnat-cloud", "puffball-bombardier", "cypress-root-lurker", "earthworm", "lamprey", "compost-grub", "leopard-slug", "amber-cicada", "hawthorn-shieldbug", "phoenix-mushrooms", "planarian-splitter", "glowworm-cluster"],
    "submaps": {
     "mz": ["fungal-colossus", "rootworm-colony", "bombardier-beetle", "millipede-hauler", "rot-swollen-carcass", "puffball-bombardier", "fungus-gnat-cloud", "leopard-slug", "compost-grub", "hawthorn-shieldbug", "planarian-splitter", "earthworm"]
    },
    "special": ["sleepless-shrew"]
   },
   "m4": {
-   "cards": ["quarry-mole", "cave-olm", "sulfur-cinder-moth", "star-nosed-mole", "stalactite-golem", "echo-screecher", "giant-cave-huntsman", "gallery-orb-weaver", "corpse-flower-beetle", "rot-swollen-carcass", "wolf-spider-mother", "hawthorn-shieldbug", "driftwood-crab", "glow-worm"],
+   "cards": ["quarry-mole", "cave-olm", "sulfur-cinder-moth", "stalactite-golem", "echo-screecher", "giant-cave-huntsman", "gallery-orb-weaver", "corpse-flower-beetle", "wolf-spider-mother", "hawthorn-shieldbug", "driftwood-crab", "glow-worm", "cinder-gecko"],
    "submaps": {
     "mn": ["whip-spider", "glow-worm", "fruit-bat", "sulfur-cinder-moth", "gallery-orb-weaver", "echo-screecher", "stalactite-golem", "cave-olm", "quarry-mole", "giant-cave-huntsman", "barrow-leech-bat"]
    },
    "special": ["blind-cave-fish", "echo-matriarch", "lantern-spark-fly"]
   },
   "mk": {
-   "cards": ["banded-sea-krait", "mangrove-mudskipper", "mangrove-monitor", "horseshoe-crab", "proboscis-monkey", "ironclaw-fiddler", "fishing-cat", "tide-spirit", "voltaic-eel", "alligator-gar", "booming-bittern", "fiddler-crab-swarm", "driftwood-crab", "alley-cat", "giant-cave-huntsman", "nutria-reedcutter", "anhinga-spearbird", "electric-ray"],
+   "cards": ["banded-sea-krait", "mangrove-mudskipper", "mangrove-monitor", "horseshoe-crab", "ironclaw-fiddler", "fishing-cat", "tide-spirit", "voltaic-eel", "alligator-gar", "booming-bittern", "fiddler-crab-swarm", "driftwood-crab", "giant-cave-huntsman", "nutria-reedcutter", "anhinga-spearbird", "electric-ray", "mangrove-manatee"],
    "submaps": {},
    "special": []
   },
   "m7": {
-   "cards": ["coral-current-eel", "riptide-eel", "krill-swarm", "voltaic-eel", "dolphin-knight", "ironclaw-fiddler", "moon-jelly", "sea-turtle-elder", "reef-shark", "clownfish-scout", "crown-of-thorns-star", "giant-clam", "pincushion-urchin", "conch-crawler", "tide-spirit", "fiddler-crab-swarm"],
+   "cards": ["coral-current-eel", "riptide-eel", "krill-swarm", "voltaic-eel", "dolphin-knight", "ironclaw-fiddler", "moon-jelly", "sea-turtle-elder", "reef-shark", "crown-of-thorns-star", "giant-clam", "conch-crawler", "tide-spirit", "fiddler-crab-swarm"],
    "submaps": {
     "mj": ["blue-ringed-octopus", "mantis-shrimp", "coral-polyp-colony", "riptide-eel", "coral-current-eel", "reef-shark", "moon-jelly", "sea-turtle-elder", "krill-swarm", "giant-clam"],
     "mjd": ["orca-vanguard", "mantis-shrimp", "reef-shark", "riptide-eel", "coral-current-eel", "giant-clam", "sea-turtle-elder", "dolphin-knight", "crown-of-thorns-star", "electric-ray", "blind-cave-fish", "horseshoe-crab", "pincushion-urchin", "old-sturgeon"]
@@ -77,7 +136,7 @@
    "special": ["orca-vanguard", "reef-admiral", "kraken-spawnling"]
   },
   "m10": {
-   "cards": ["stonedrop-vulture", "anvil-thrush", "eagle-owl-quartermaster", "eyrie-warden", "golden-eagle-diver", "chamois-leaper", "mountain-hare", "chipmunk-hoarder", "gannet-nestweaver", "the-gannet-queen", "peregrine-stooper", "pika-hoarder", "peak-condor", "beaver-lumberjack", "eagle-sharpshooter", "kittiwake-flock", "apollo-butterfly", "nightshade-moth"],
+   "cards": ["anvil-thrush", "eagle-owl-quartermaster", "golden-eagle-diver", "chamois-leaper", "chipmunk-hoarder", "gannet-nestweaver", "the-gannet-queen", "peregrine-stooper", "pika-hoarder", "peak-condor", "beaver-lumberjack", "eagle-sharpshooter", "kittiwake-flock", "apollo-butterfly", "nightshade-moth", "yeti"],
    "submaps": {
     "mv": ["sparrow-chick", "apollo-butterfly", "gale-swift", "eyrie-warden", "eagle-owl-quartermaster", "golden-eagle-diver", "the-gannet-queen", "chamois-leaper", "anvil-thrush", "peak-condor", "peregrine-stooper", "ibex-rockcaller"],
     "muc": ["alpha-howler", "ant-warrior", "antlion-pit", "banded-sea-krait", "bison-bulldozer", "border-collie", "bramblewood-lynx", "cave-olm", "cinder-stoker", "clownfish-scout", "colossal-squid", "compost-grub", "cunning-vixen", "dhole-matriarch", "dhole-runner", "dromedary", "dung-beetle", "dust-devil-kestrel", "dust-hyena", "echidna-quillshot", "echo-screecher", "fawn-scout", "fennec-fox", "fox-kit", "frost-hare-sprinter", "frostmoon-howler", "fulmar-spitter", "fungal-colossus", "giant-cave-huntsman", "glacier-wolf-pack", "golden-eagle-diver", "grave-grin-hyena", "great-barracuda", "grizzly-vanguard", "hedge-weasel", "hedgehog-scout", "hollow-oath-keeper", "hoopoe-herald", "kittiwake-flock", "lone-grey-wolf", "lyrebird-mimic", "magma-titan", "mangrove-kingfisher", "mangrove-manatee", "mangrove-monitor", "muskrat-lodgekeeper", "obsidian-scorpion", "old-sturgeon", "owl-nightwatch", "pangolin-roller", "peak-condor", "peregrine-stooper", "planarian-splitter", "platypus-spur", "polar-bear", "porcupine-roller", "puffin-diver", "pyrenean-desman", "quill-volley", "quillguard", "raccoon-bandit", "ravenous-wolverine", "razorbill", "red-billed-chough", "reef-shark", "roadrunner-courier", "savanna-cheetah", "scree-goat", "seed-cache-squirrel", "shimmerwing-stag", "snow-ermine", "snowshoe-hare", "spitting-cobra", "stable-colt", "star-nosed-mole", "stoat-cutthroat", "stone-turtle-warden", "sunbittern-strider", "swift-fox", "swordfish-spearman", "taiga-lynx", "talon-archer", "truffle-piglet", "vampire-bat", "walrus-icebreaker", "warhorse-charger", "weaver-bird", "whip-spider", "wolf-spider-mother", "woodland-caribou", "yeti"]
@@ -85,55 +144,55 @@
    "special": ["gangrenous-leech", "swamp-alligator", "wound-reaver", "great-horned-owl"]
   },
   "mh": {
-   "cards": ["quillguard", "barkplate-beetle", "quill-thorn-boar", "briarback-hedgehog", "cunning-vixen", "mouse-sapper", "fawn-scout", "hollow-belly-rat", "chipmunk-hoarder", "chamois-leaper", "mountain-hare", "eyrie-warden", "anvil-thrush", "alpine-marmot", "quarry-mole", "barrow-leech-bat", "hedgerow-shrew"],
+   "cards": ["quillguard", "barkplate-beetle", "quill-thorn-boar", "briarback-hedgehog", "cunning-vixen", "mouse-sapper", "fawn-scout", "hollow-belly-rat", "chipmunk-hoarder", "chamois-leaper", "anvil-thrush", "alpine-marmot", "quarry-mole", "barrow-leech-bat", "hedgerow-shrew", "bison-bulldozer"],
    "submaps": {},
    "special": ["bison-bulldozer"]
   },
   "mr": {
-   "cards": ["grizzly-vanguard", "badger-lumberjack", "tasmanian-devil", "redwood-woodpecker", "bear-cub", "pine-marten", "bramblewood-lynx", "monarch-wingblade", "feral-tomcat", "pika-hoarder", "beaver-feller", "marsh-mallow-hare", "grass-snake", "slow-worm", "anhinga-spearbird", "amber-cicada", "the-gannet-queen"],
+   "cards": ["grizzly-vanguard", "badger-lumberjack", "tasmanian-devil", "redwood-woodpecker", "bear-cub", "pine-marten", "bramblewood-lynx", "monarch-wingblade", "feral-tomcat", "pika-hoarder", "beaver-feller", "grass-snake", "anhinga-spearbird", "amber-cicada", "the-gannet-queen"],
    "submaps": {},
    "special": ["fox-kit", "owl-nightwatch", "sergeant-bramblefox"]
   },
   "m5": {
-   "cards": ["acacia-giraffe", "meerkat-sentry", "hoopoe-herald", "dust-hyena", "savanna-cheetah", "marula-elephant", "plains-zebra", "bramblewood-macaque", "stoat-cutthroat", "grizzly-vanguard", "tasmanian-devil", "badger-lumberjack", "balloon-archer", "cunning-vixen", "hollow-belly-rat", "river-mink", "bramble-sprout", "crocodile-ambusher", "spitting-cobra"],
+   "cards": ["acacia-giraffe", "savanna-cheetah", "marula-elephant", "plains-zebra", "bramblewood-macaque", "stoat-cutthroat", "grizzly-vanguard", "tasmanian-devil", "badger-lumberjack", "balloon-archer", "cunning-vixen", "hollow-belly-rat", "river-mink", "bramble-sprout", "crocodile-ambusher", "spitting-cobra"],
    "submaps": {
     "my": ["kinkajou-lurker", "jaguar-stalker", "canopy-sloth-guardian", "bramblewood-macaque", "proboscis-monkey", "camouflage-frog", "fishing-cat", "amber-cicada", "mosquito-cloud", "dhole-matriarch"]
    },
    "special": ["hoopoe-herald", "pride-queen", "hercules-beetle"]
   },
   "ml": {
-   "cards": ["pronghorn-racer", "warhorse-charger", "border-collie", "mallard-marauder", "sworn-shieldbearer", "elderhorn-monarch", "siege-rhino", "village-miller", "cataphract-destrier", "hoopoe-herald", "dust-hyena", "savanna-cheetah", "stoat-cutthroat", "plains-zebra", "tasmanian-devil", "bramblewood-lynx", "fawn-scout", "eagle-owl-quartermaster", "mosquito-cloud", "adder-ambusher", "grass-viper"],
+   "cards": ["pronghorn-racer", "warhorse-charger", "border-collie", "mallard-marauder", "elderhorn-monarch", "siege-rhino", "cataphract-destrier", "savanna-cheetah", "stoat-cutthroat", "plains-zebra", "tasmanian-devil", "bramblewood-lynx", "fawn-scout", "eagle-owl-quartermaster", "mosquito-cloud", "adder-ambusher", "grass-viper", "boreal-elk"],
    "submaps": {},
    "special": []
   },
   "mt": {
-   "cards": ["boreal-elk", "woodland-caribou", "cone-cutter-squirrel", "snowshoe-hare", "taiga-lynx", "pinecone-sapper", "mountain-hare", "bear-cub", "sworn-shieldbearer", "siege-rhino", "upside-down-bat", "owl-sentinel", "raft-spider", "puffin-diver", "farm-dog", "golden-eagle-diver", "grizzly-vanguard", "mallard-marauder"],
+   "cards": ["boreal-elk", "woodland-caribou", "cone-cutter-squirrel", "snowshoe-hare", "pinecone-sapper", "bear-cub", "siege-rhino", "upside-down-bat", "owl-sentinel", "raft-spider", "puffin-diver", "farm-dog", "golden-eagle-diver", "grizzly-vanguard", "mallard-marauder", "mallard-halberdier"],
    "submaps": {},
    "special": []
   },
   "m6": {
-   "cards": ["snow-ermine", "ringed-seal", "glacier-yak", "arctic-tern", "walrus-icebreaker", "ice-crevasse-wolf", "polar-bear", "woodland-caribou", "taiga-lynx", "cone-cutter-squirrel", "boreal-elk", "snowshoe-hare", "border-collie", "warhorse-charger", "elderhorn-monarch", "cataphract-destrier", "briarback-hedgehog", "pinecone-sapper"],
+   "cards": ["snow-ermine", "ringed-seal", "arctic-tern", "ice-crevasse-wolf", "polar-bear", "woodland-caribou", "cone-cutter-squirrel", "boreal-elk", "snowshoe-hare", "border-collie", "warhorse-charger", "elderhorn-monarch", "cataphract-destrier", "briarback-hedgehog", "pinecone-sapper"],
    "submaps": {
     "mi": ["greenland-shark", "beluga", "lemming-swarm", "limpet-clinger", "dormouse", "cormorant", "pincushion-urchin", "rock-pool-starfish", "shoal-shark", "giant-clam", "moon-jelly", "riptide-eel", "snow-ermine", "ringed-seal", "glacier-yak", "ice-crevasse-wolf"]
    },
    "special": ["wolfsbane-alpha", "harbor-seal"]
   },
   "md": {
-   "cards": ["frillneck-duelist", "horned-lizard", "caustic-scorpion", "antlion-pit", "roadrunner-courier", "dune-jackal", "armadillo-guard", "sand-widow", "ice-crevasse-wolf", "mouse-sapper", "balloon-archer", "quillguard", "barkplate-beetle", "badger-lumberjack", "gallery-orb-weaver", "chipmunk-forager", "worker-ant", "ant-scout", "savanna-cheetah", "meerkat-sentry", "barrel-cactus"],
+   "cards": ["frillneck-duelist", "horned-lizard", "caustic-scorpion", "antlion-pit", "roadrunner-courier", "dune-jackal", "armadillo-guard", "sand-widow", "ice-crevasse-wolf", "mouse-sapper", "balloon-archer", "quillguard", "barkplate-beetle", "badger-lumberjack", "gallery-orb-weaver", "chipmunk-forager", "worker-ant", "ant-scout", "savanna-cheetah", "barrel-cactus"],
    "submaps": {
     "mpd": ["pale-oryx", "dromedary", "dust-devil-kestrel", "antlion-pit", "dune-jackal", "barrel-cactus", "roadrunner-courier", "horned-lizard", "caustic-scorpion"]
    },
    "special": ["sand-widow", "bison-bulldozer", "nightjar-drifter", "sunbittern-strider", "quicksand-queen", "sandstorm-roc"]
   },
   "m3": {
-   "cards": ["honey-badger-fury", "cinder-hornet", "quillback-elder", "basalt-boar", "smoke-raccoon", "obsidian-scorpion", "caldera-snow-leopard", "sulfur-cinder-moth", "stalactite-golem", "glacier-yak", "walrus-icebreaker", "quillguard", "caustic-scorpion", "horned-lizard", "armadillo-guard", "polar-bear", "dune-jackal", "pinecone-sapper", "elderhorn-monarch", "fire-salamander"],
+   "cards": ["cinder-hornet", "quillback-elder", "basalt-boar", "obsidian-scorpion", "caldera-snow-leopard", "sulfur-cinder-moth", "stalactite-golem", "quillguard", "caustic-scorpion", "horned-lizard", "armadillo-guard", "polar-bear", "dune-jackal", "pinecone-sapper", "elderhorn-monarch", "fire-salamander"],
    "submaps": {
     "m9": ["ember-revenant", "malachite-golem", "grindstone-boar", "peak-condor", "booming-bittern", "stalactite-golem", "star-nosed-mole", "stoat-cutthroat", "obsidian-scorpion", "magma-titan", "smoke-raccoon", "pumice-beetle", "cinder-hornet", "cinder-gecko", "anvilwhisker-otter"]
    },
    "special": []
   },
   "m11": {
-   "cards": ["deep-cave-troll", "fumarole-ibex", "ash-cloud-condor", "magma-salamander", "pack-mule", "pumice-beetle", "ur-elk", "obsidian-scorpion", "basalt-boar", "honey-badger-fury", "quillback-elder", "sand-widow", "stalactite-golem", "cataphract-destrier", "berserker-boar", "eagle-sharpshooter", "crocodile-ambusher", "echo-screecher", "barrow-leech-bat", "nightshade-moth"],
+   "cards": ["deep-cave-troll", "fumarole-ibex", "ash-cloud-condor", "magma-salamander", "pack-mule", "pumice-beetle", "ur-elk", "obsidian-scorpion", "basalt-boar", "quillback-elder", "sand-widow", "stalactite-golem", "cataphract-destrier", "berserker-boar", "eagle-sharpshooter", "crocodile-ambusher", "echo-screecher", "barrow-leech-bat", "nightshade-moth", "bombardier-beetle"],
    "submaps": {
     "me": ["carrion-beetle", "ossuary-lammergeier", "brimstone-hound", "berserker-boar", "basalt-boar", "ur-elk", "magma-salamander", "obsidian-scorpion", "honey-badger-fury"],
     "mx": ["caldera-wyrm", "granite-ox-golem", "magma-titan", "eagle-sharpshooter", "quarry-mole", "cataphract-destrier", "basalt-boar", "cinder-hornet", "obsidian-scorpion", "fire-salamander", "ur-elk", "barrow-leech-bat", "magma-salamander"]
@@ -141,24 +200,24 @@
    "special": ["ancient-sloth-titan", "deep-cave-troll", "stalactite-golem", "vampire-roost", "sulfur-vent-crab", "frillneck-duelist", "the-contradiction", "ash-moth", "fire-drake-hatchling"]
   },
   "m21": {
-   "cards": ["snow-leopard", "mountain-goat-climber", "apollo-butterfly", "red-billed-chough", "alpine-swift", "alpine-salamander", "magma-titan", "glacier-yak", "pack-mule", "peak-condor", "pika-hoarder", "eyrie-warden", "alpine-marmot", "deep-cave-troll", "ossuary-lammergeier", "fumarole-ibex", "honey-badger-fury", "smoke-raccoon", "archerfish", "bar-headed-goose-leader", "strangler-fig-sapling", "pearl-mussel-anchorer", "soft-shell-crab-newmoult"],
+   "cards": ["snow-leopard", "mountain-goat-climber", "apollo-butterfly", "red-billed-chough", "alpine-swift", "alpine-salamander", "magma-titan", "glacier-yak", "pack-mule", "peak-condor", "pika-hoarder", "eyrie-warden", "alpine-marmot", "deep-cave-troll", "ossuary-lammergeier", "fumarole-ibex", "honey-badger-fury", "smoke-raccoon", "archerfish", "bar-headed-goose-leader", "strangler-fig-sapling", "pearl-mussel-anchorer", "soft-shell-crab-newmoult", "marsh-mallow-hare", "newt-doctor", "stonedrop-vulture", "mountain-hare", "clownfish-scout"],
    "submaps": {},
    "special": ["ur-elk", "cinder-hornet", "pumice-beetle"]
   },
   "m22": {
-   "cards": ["rimefire-salamander", "caldera-snow-leopard", "ur-elk", "ice-petrel", "badger-berserker", "cinder-gecko", "cinder-hornet", "rimeheart-colossus", "phoenix-fledgling", "pumice-beetle", "ember-centipede", "ember-jackal", "glacier-wolf-pack", "echidna-quillshot", "tide-spirit", "cinder-skeleton", "ashbone-ghoul", "fossa-ambusher", "osprey-plunger", "opossum-faker", "praying-mantis-striker", "spitfire-sawfly-grubs"],
+   "cards": ["rimefire-salamander", "caldera-snow-leopard", "ur-elk", "ice-petrel", "badger-berserker", "cinder-gecko", "cinder-hornet", "rimeheart-colossus", "phoenix-fledgling", "pumice-beetle", "ember-centipede", "ember-jackal", "glacier-wolf-pack", "echidna-quillshot", "tide-spirit", "cinder-skeleton", "ashbone-ghoul", "fossa-ambusher", "osprey-plunger", "opossum-faker", "praying-mantis-striker", "spitfire-sawfly-grubs", "slow-worm", "rot-swollen-carcass", "dust-hyena", "walrus-icebreaker"],
    "submaps": {
     "mlb": ["badger-sapper", "basalt-boar", "grindstone-boar", "honey-badger-fury", "magma-titan", "ore-smelter-mole"]
    },
    "special": ["rimeheart-colossus", "mole-cricket-megaphone", "glacier-yak", "fumarole-ibex", "obsidian-scorpion", "ash-cloud-condor", "ravenous-wolverine"]
   },
   "m23": {
-   "cards": ["testudo-tortoise", "war-elephant", "badger-trench-digger", "howdah-archers", "beetle-battering-ram", "siege-rhino", "mouse-sapper", "stoat-cutthroat", "eagle-owl-quartermaster", "alley-cat", "border-collie", "bison-bulldozer", "meerkat-burrower", "pangolin-roller", "acacia-giraffe", "hoopoe-herald", "pronghorn-racer", "raccoon-bandit", "tsetse-drainer", "drongo-mocker", "cape-buffalo-bulwark", "secretary-bird-stomper", "rinkhals-spitter"],
+   "cards": ["testudo-tortoise", "war-elephant", "badger-trench-digger", "howdah-archers", "beetle-battering-ram", "siege-rhino", "mouse-sapper", "stoat-cutthroat", "eagle-owl-quartermaster", "alley-cat", "border-collie", "bison-bulldozer", "meerkat-burrower", "pangolin-roller", "acacia-giraffe", "hoopoe-herald", "pronghorn-racer", "raccoon-bandit", "tsetse-drainer", "drongo-mocker", "cape-buffalo-bulwark", "secretary-bird-stomper", "rinkhals-spitter", "proboscis-monkey", "meerkat-sentry", "sworn-shieldbearer", "village-miller", "taiga-lynx"],
    "submaps": {},
    "special": ["marshal-tuskwell", "triumvirate", "pack-mule", "lodge-engineer"]
   },
   "m24": {
-   "cards": ["gilded-swan-knight", "iron-warden", "battlement-heron", "duckling-squadron", "elderhorn-monarch", "mallard-halberdier", "tax-collector-teal", "lodge-engineer", "land-tiller", "balloon-archer", "badger-trench-digger", "ore-smelter-mole", "stoat-cutthroat", "siege-rhino", "beetle-battering-ram", "howdah-archers", "testudo-tortoise", "alley-cat", "border-collie", "raccoon-bandit", "acacia-giraffe"],
+   "cards": ["gilded-swan-knight", "iron-warden", "battlement-heron", "duckling-squadron", "elderhorn-monarch", "mallard-halberdier", "tax-collector-teal", "lodge-engineer", "land-tiller", "balloon-archer", "badger-trench-digger", "ore-smelter-mole", "stoat-cutthroat", "siege-rhino", "beetle-battering-ram", "howdah-archers", "testudo-tortoise", "alley-cat", "border-collie", "raccoon-bandit", "acacia-giraffe", "star-nosed-mole"],
    "submaps": {},
    "special": ["magnate-duck", "caddisfly-casemaker"]
   }

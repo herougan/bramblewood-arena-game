@@ -502,6 +502,7 @@ run node tests/dec19-ui-2026-11-19.js   # 2026-11-19 (package DEC19-UI): Arena c
 run node tests/uiq3-2026-11-20.js   # 2026-11-20 (package UIQ3): card editor map chips list only the lists that hold the card and follow list edits live
 run node tests/carry1-2026-11-20.js   # 2026-11-20 (package CARRY1, owner 00:26): the Map cards window's Carried group = the list's carried cards + the owner's flags + Claude's explicit carry picks (docs/design/carry-picks-2026-11-20.json), no accumulation, no pick from a later map
 run node tests/mapswap1-2026-11-22.js   # 2026-11-22 (package MAPSWAP1, owner 23:08): Claude's swaps in the Map cards window (To add / To remove suggestions, Yes through ui37SetFlag)
+run node tests/mapexec1-2026-11-25.js   # 2026-11-25 (package MAPEXEC1, owner 00:22): swaps applied to map-pools.json, the proposed picks SQL, Eyrie Heights skill count
 run node tests/packset1-2026-11-22.js   # 2026-11-22 (package PACKSET1, owner 22:41): the Pack Editor's All cards (0-20) / (20-40) panels, bonus-card suggestions, ascending pack cuts, side map New! 1-3
 run node tests/reward3-2026-11-22.js   # 2026-11-22 (package REWARD3, owner 22:41): Reward picks (max 2 a map), General Baby drops, Free drops section, x N counts
 run node tests/dec20-skills-2026-11-19.js   # 2026-11-19 (package DEC20-SKILLS, owner 23:47): Illuminate reveals Invisible / Stealth beside it, Embrittle gives Fragile, Empower / Mistwalker names, plain Map 0-1 reward pins retired

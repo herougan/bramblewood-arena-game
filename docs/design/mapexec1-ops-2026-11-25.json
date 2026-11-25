@@ -1,0 +1,515 @@
+[
+ {
+  "kind": "move",
+  "map": "mc",
+  "card": "pika-hoarder",
+  "to": "m2",
+  "why": "Delivery is in Map 4's table row (not Map 3's): the carrier moves to the map whose row has the skill, so Delivery is New! on Map 4 with two carriers",
+  "date": "2026-11-25",
+  "pass": 0
+ },
+ {
+  "kind": "drop",
+  "map": "mf",
+  "card": "puddle-skimmer",
+  "to": null,
+  "why": "no row has Rainrunner; the owner's Yes picks already leave it off Map 1 and Map 2",
+  "date": "2026-11-25",
+  "pass": 0
+ },
+ {
+  "kind": "drop",
+  "map": "mb",
+  "card": "puddle-skimmer",
+  "to": null,
+  "why": "no row has Rainrunner; the card is also on Map 2 and the owner's Yes picks already leave it off both lists",
+  "date": "2026-11-25",
+  "pass": 0
+ },
+ {
+  "kind": "drop",
+  "map": "m8",
+  "card": "water-shrew",
+  "to": null,
+  "why": "Evasive is in Map 8's row; the shrew leaves Maps 4 and 6 so Evasive is New! on Map 8 first",
+  "date": "2026-11-25",
+  "pass": 0
+ },
+ {
+  "kind": "add",
+  "map": "mb",
+  "card": "anvil-thrush",
+  "to": null,
+  "why": "Pierce is in Map 2's table row (one carrier on the list): the songbird family of the map's list · common · moves from Map 11 (carried there)",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "drop",
+  "map": "mb",
+  "card": "pincushion-urchin",
+  "to": null,
+  "why": "Poison Barbs: Pincushion Urchin is already on Map 10's list, so it is not lost; Poison Barbs is not meant to be New! on Map 2",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "drop",
+  "map": "m2",
+  "card": "water-shrew",
+  "to": null,
+  "why": "Evasive: Water Shrew carries Evasive, which Map 6's list shows too; here it is New! outside the table row, so the card leaves the list (no later map fits it)",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "move",
+  "map": "m2",
+  "card": "slow-worm",
+  "to": "m22",
+  "why": "Slow: Slow-worm carries Slow; Map 22's table row has it, so it shows there as intended",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "drop",
+  "map": "mw",
+  "card": "mosquito-cloud",
+  "to": null,
+  "why": "Bleed: Mosquito Cloud is already on Map 6's list, so it is not lost; Bleed is not meant to be New! on Map 5",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "drop",
+  "map": "mw",
+  "card": "alley-cat",
+  "to": null,
+  "why": "Bleed, Twin Strike: Alley Cat is already on Map 9's list, so it is not lost; Bleed is not meant to be New! on Map 5",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "move",
+  "map": "mw",
+  "card": "swamp-alligator",
+  "to": "m8",
+  "why": "Bleed: Swamp Alligator carries Bleed; Map 6's table row has it, so it shows there as intended",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "drop",
+  "map": "mw",
+  "card": "cypress-root-lurker",
+  "to": null,
+  "why": "Constrict: Cypress Root Lurker is already on Map 6's list, so it is not lost; Constrict is not meant to be New! on Map 5",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "move",
+  "map": "mw",
+  "card": "marsh-mallow-hare",
+  "to": "m21",
+  "why": "Cure: Marsh-mallow Hare carries Cure; Map 21's table row has it, so it shows there as intended",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "move",
+  "map": "mw",
+  "card": "newt-doctor",
+  "to": "m21",
+  "why": "Herbalist: Newt Doctor carries Herbalist; Map 21's table row has it, so it shows there as intended",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "move",
+  "map": "mu",
+  "card": "rot-swollen-carcass",
+  "to": "m22",
+  "why": "Progeny: Rot-Swollen Carcass carries Progeny; Map 22's table row has it, so it shows there as intended",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "add",
+  "map": "m4",
+  "card": "cinder-gecko",
+  "to": null,
+  "why": "Evasive is in Map 8's table row (no carrier on the list): a caves creature · common · moves from Map 22 (carried there)",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "move",
+  "map": "m4",
+  "card": "star-nosed-mole",
+  "to": "m24",
+  "why": "Purblind: Star-nosed Mole carries Purblind; Map 24's table row has it, so it shows there as intended",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "add",
+  "map": "mk",
+  "card": "mangrove-manatee",
+  "to": null,
+  "why": "Regenerate is in Map 9's table row (no carrier on the list): a mangrove creature · rare · from the side maps of Map 11",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "move",
+  "map": "mk",
+  "card": "proboscis-monkey",
+  "to": "m23",
+  "why": "Taunt: Proboscis Monkey carries Taunt; Map 23's table row has it, so it shows there as intended",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "add",
+  "map": "m10",
+  "card": "yeti",
+  "to": null,
+  "why": "Daunt is in Map 11's table row (one carrier on the list): near mountain sky · common · from the side maps of Map 11",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "move",
+  "map": "m10",
+  "card": "stonedrop-vulture",
+  "to": "m21",
+  "why": "Archer: Stonedrop Vulture carries Archer; Map 21's table row has it, so it shows there as intended",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "move",
+  "map": "m10",
+  "card": "mountain-hare",
+  "to": "m21",
+  "why": "Frostbite: Mountain Hare carries Frostbite; Map 21's table row has it, so it shows there as intended",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "drop",
+  "map": "m10",
+  "card": "eyrie-warden",
+  "to": null,
+  "why": "Twin Shot: Eyrie Warden is already on Map 21's list, so it is not lost; Twin Shot is not meant to be New! on Map 11",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "add",
+  "map": "mh",
+  "card": "bison-bulldozer",
+  "to": null,
+  "why": "Bulldoze is in Map 12's table row (one carrier on the list): a maze briar creature · uncommon · moves from Map 23 (carried there)",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "move",
+  "map": "m5",
+  "card": "dust-hyena",
+  "to": "m22",
+  "why": "Carnage: Dust Hyena carries Carnage; Map 22's table row has it, so it shows there as intended",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "move",
+  "map": "m5",
+  "card": "meerkat-sentry",
+  "to": "m23",
+  "why": "Embolden: Meerkat Sentry carries Embolden; Map 23's table row has it, so it shows there as intended",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "drop",
+  "map": "m5",
+  "card": "hoopoe-herald",
+  "to": null,
+  "why": "Herald: Hoopoe Herald is already on Map 23's list, so it is not lost; Herald is not meant to be New! on Map 14",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "add",
+  "map": "ml",
+  "card": "boreal-elk",
+  "to": null,
+  "why": "Cleave is in Map 15's table row (one carrier on the list): the deer family of the map's list · common · moves from Map 16 (carried there)",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "move",
+  "map": "ml",
+  "card": "sworn-shieldbearer",
+  "to": "m23",
+  "why": "Harden, Loyal: Sworn Shieldbearer carries Harden; Map 23's table row has it, so it shows there as intended",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "move",
+  "map": "ml",
+  "card": "village-miller",
+  "to": "m23",
+  "why": "Pitchfork: Village Miller carries Pitchfork; Map 23's table row has it, so it shows there as intended",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "add",
+  "map": "mt",
+  "card": "mallard-halberdier",
+  "to": null,
+  "why": "Reach is in Map 16's table row (one carrier on the list): the duck family of the map's list · rare · moves from Map 24 (carried there)",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "move",
+  "map": "mt",
+  "card": "taiga-lynx",
+  "to": "m23",
+  "why": "Lone Wolf: Taiga Lynx carries Lone Wolf; Map 23's table row has it, so it shows there as intended",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "drop",
+  "map": "m6",
+  "card": "glacier-yak",
+  "to": null,
+  "why": "Freeze: Glacier Yak is already on Map 21's list, so it is not lost; Freeze is not meant to be New! on Map 17",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "move",
+  "map": "m6",
+  "card": "walrus-icebreaker",
+  "to": "m22",
+  "why": "Pulverise: Walrus Icebreaker carries Pulverise; Map 22's table row has it, so it shows there as intended",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "drop",
+  "map": "m3",
+  "card": "honey-badger-fury",
+  "to": null,
+  "why": "Last Stand: Honey Badger Fury is already on Map 21's list, so it is not lost; Last Stand is not meant to be New! on Map 19",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "drop",
+  "map": "m3",
+  "card": "smoke-raccoon",
+  "to": null,
+  "why": "Smoke Bomb: Smokescreen Raccoon is already on Map 21's list, so it is not lost; Smoke Bomb is not meant to be New! on Map 19",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "add",
+  "map": "m11",
+  "card": "bombardier-beetle",
+  "to": null,
+  "why": "Cinder is in Map 20's table row (one carrier on the list): the beetle family of the map's list · uncommon · from the side maps of Map 7",
+  "date": "2026-11-25",
+  "pass": 1
+ },
+ {
+  "kind": "drop",
+  "map": "m8",
+  "card": "camouflage-frog",
+  "to": null,
+  "why": "Evasive: Camouflage Frog carries Evasive, which Map 8's list shows too; here it is New! outside the table row, so the card leaves the list (no later map fits it)",
+  "date": "2026-11-25",
+  "pass": 2
+ },
+ {
+  "kind": "drop",
+  "map": "m8",
+  "card": "newt-doctor",
+  "to": null,
+  "why": "Herbalist: Newt Doctor is already on Map 21's list, so it is not lost; Herbalist is not meant to be New! on Map 6",
+  "date": "2026-11-25",
+  "pass": 2
+ },
+ {
+  "kind": "drop",
+  "map": "m4",
+  "card": "rot-swollen-carcass",
+  "to": null,
+  "why": "Progeny: Rot-Swollen Carcass is already on Map 22's list, so it is not lost; Progeny is not meant to be New! on Map 8",
+  "date": "2026-11-25",
+  "pass": 2
+ },
+ {
+  "kind": "drop",
+  "map": "mk",
+  "card": "alley-cat",
+  "to": null,
+  "why": "Twin Strike: Alley Cat is already on Map 23's list, so it is not lost; Twin Strike is not meant to be New! on Map 9",
+  "date": "2026-11-25",
+  "pass": 2
+ },
+ {
+  "kind": "move",
+  "map": "m7",
+  "card": "clownfish-scout",
+  "to": "m21",
+  "why": "Poison Barbs: Clownfish Scout carries Poison Barbs; Map 21's table row has it, so it shows there as intended",
+  "date": "2026-11-25",
+  "pass": 2
+ },
+ {
+  "kind": "drop",
+  "map": "mh",
+  "card": "mountain-hare",
+  "to": null,
+  "why": "Frostbite: Mountain Hare is already on Map 21's list, so it is not lost; Frostbite is not meant to be New! on Map 12",
+  "date": "2026-11-25",
+  "pass": 2
+ },
+ {
+  "kind": "drop",
+  "map": "mh",
+  "card": "eyrie-warden",
+  "to": null,
+  "why": "Twin Shot: Eyrie Warden is already on Map 21's list, so it is not lost; Twin Shot is not meant to be New! on Map 12",
+  "date": "2026-11-25",
+  "pass": 2
+ },
+ {
+  "kind": "drop",
+  "map": "mr",
+  "card": "marsh-mallow-hare",
+  "to": null,
+  "why": "Cure: Marsh-mallow Hare is already on Map 21's list, so it is not lost; Cure is not meant to be New! on Map 13",
+  "date": "2026-11-25",
+  "pass": 2
+ },
+ {
+  "kind": "drop",
+  "map": "mr",
+  "card": "slow-worm",
+  "to": null,
+  "why": "Slow: Slow-worm is already on Map 22's list, so it is not lost; Slow is not meant to be New! on Map 13",
+  "date": "2026-11-25",
+  "pass": 2
+ },
+ {
+  "kind": "drop",
+  "map": "ml",
+  "card": "dust-hyena",
+  "to": null,
+  "why": "Carnage: Dust Hyena is already on Map 22's list, so it is not lost; Carnage is not meant to be New! on Map 15",
+  "date": "2026-11-25",
+  "pass": 2
+ },
+ {
+  "kind": "drop",
+  "map": "ml",
+  "card": "hoopoe-herald",
+  "to": null,
+  "why": "Herald: Hoopoe Herald is already on Map 23's list, so it is not lost; Herald is not meant to be New! on Map 15",
+  "date": "2026-11-25",
+  "pass": 2
+ },
+ {
+  "kind": "drop",
+  "map": "mt",
+  "card": "sworn-shieldbearer",
+  "to": null,
+  "why": "Harden, Loyal: Sworn Shieldbearer is already on Map 23's list, so it is not lost; Harden is not meant to be New! on Map 16",
+  "date": "2026-11-25",
+  "pass": 2
+ },
+ {
+  "kind": "drop",
+  "map": "m6",
+  "card": "taiga-lynx",
+  "to": null,
+  "why": "Lone Wolf: Taiga Lynx is already on Map 23's list, so it is not lost; Lone Wolf is not meant to be New! on Map 17",
+  "date": "2026-11-25",
+  "pass": 2
+ },
+ {
+  "kind": "drop",
+  "map": "md",
+  "card": "meerkat-sentry",
+  "to": null,
+  "why": "Embolden, Pack: Meerkat Sentry is already on Map 23's list, so it is not lost; Embolden is not meant to be New! on Map 18",
+  "date": "2026-11-25",
+  "pass": 2
+ },
+ {
+  "kind": "drop",
+  "map": "m3",
+  "card": "glacier-yak",
+  "to": null,
+  "why": "Freeze: Glacier Yak is already on Map 21's list, so it is not lost; Freeze is not meant to be New! on Map 19",
+  "date": "2026-11-25",
+  "pass": 2
+ },
+ {
+  "kind": "drop",
+  "map": "m3",
+  "card": "walrus-icebreaker",
+  "to": null,
+  "why": "Pulverise: Walrus Icebreaker is already on Map 22's list, so it is not lost; Pulverise is not meant to be New! on Map 19",
+  "date": "2026-11-25",
+  "pass": 2
+ },
+ {
+  "kind": "drop",
+  "map": "m11",
+  "card": "honey-badger-fury",
+  "to": null,
+  "why": "Last Stand: Honey Badger Fury is already on Map 21's list, so it is not lost; Last Stand is not meant to be New! on Map 20",
+  "date": "2026-11-25",
+  "pass": 2
+ },
+ {
+  "kind": "drop",
+  "map": "mu",
+  "card": "camouflage-frog",
+  "to": null,
+  "why": "Evasive: Camouflage Frog carries Evasive, which Map 8's list shows too; here it is New! outside the table row, so the card leaves the list (no later map fits it)",
+  "date": "2026-11-25",
+  "pass": 3
+ },
+ {
+  "kind": "drop",
+  "map": "m7",
+  "card": "pincushion-urchin",
+  "to": null,
+  "why": "Poison Barbs: Pincushion Urchin carries Poison Barbs, which Map 21's list shows too; here it is New! outside the table row, so the card leaves the list (no later map fits it)",
+  "date": "2026-11-25",
+  "pass": 3
+ },
+ {
+  "kind": "drop",
+  "map": "mt",
+  "card": "mountain-hare",
+  "to": null,
+  "why": "Frostbite: Mountain Hare is already on Map 21's list, so it is not lost; Frostbite is not meant to be New! on Map 16",
+  "date": "2026-11-25",
+  "pass": 3
+ }
+]

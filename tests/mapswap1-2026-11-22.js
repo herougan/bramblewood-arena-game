@@ -25,7 +25,7 @@ const tx = rd('bramblewood-texts.js');
 // ---- 2. the file
 const S = J('canonical/map-swap-suggestions.json');
 ok(S.maps.length === 21, '2. one entry per map 0-20');
-S.maps.forEach(m => { m.add.forEach(a => ok(a.cards.length ? a.cards.length <= 4 : (a.concept && a.concept.name && a.concept.rarity && a.concept.role && !/\d\s*\/\s*\d/.test(a.concept.role)), `2. Map ${m.n} ${a.skill}: 1-4 cards or a concept`));
+S.maps.forEach(m => { m.add.forEach(a => ok(a.cards.length ? a.cards.length <= 4 : a.open ? a.key === 'fork' /* 2026-11-25 (MAPEXEC1): Map 4 Fork stays open (CARDS1-1) */ : (a.concept && a.concept.name && a.concept.rarity && a.concept.role && !/\d\s*\/\s*\d/.test(a.concept.role)), `2. Map ${m.n} ${a.skill}: 1-4 cards or a concept`));
   m.remove.forEach(r => ok(r.text && r.why && ['move', 'drop', 'keep', 'stuck'].includes(r.kind), `2. Map ${m.n} ${r.cardName}: a suggested move`)); });
 ok(!JSON.stringify(S).includes('"moonlit-hare"'), '2. Moonlit Hare is never suggested');
 
@@ -49,10 +49,10 @@ async function browser() {
         return { n, id: m.id, rm: rm.map(k => ({ key: k, carriers: ids.filter(i => carry(defs[i], k)) })), row: MAP_FOCUS_SKILLS[n] || [], none: (MAP_FOCUS_SKILLS[n] || []).filter(k => skillDefOf(k) && !ids.some(i => carry(defs[i], k))), cap: roadRarityStep(roadRevealedCap(n)) }; }); });
     let nAdd = 0, nRm = 0;
     T.forEach(t => { const m = S.maps[t.n]; ok(m && m.id === t.id, `3. Map ${t.n} id matches the game`);
-      t.none.forEach(k => { nAdd++; ok(m.add.some(a => a.key === k && (a.cards.length || a.concept)), `3. Map ${t.n}: To add ${k} is covered`); });
-      ok(m.add.length === t.none.length, `3. Map ${t.n}: no extra or missing To add items (${m.add.length} vs ${t.none.length})`);
+      t.none.forEach(k => { nAdd++; ok(m.add.some(a => a.key === k && (a.cards.length || a.concept || a.open)), `3. Map ${t.n}: To add ${k} is covered`); });
+      ok(m.add.filter(a => !a.have).length === t.none.length, `3. Map ${t.n}: no extra or missing To add items (${m.add.filter(a => !a.have).length} vs ${t.none.length})`); // 2026-11-25 (MAPEXEC1): the file also holds row skills with ONE carrier (have 1)
       t.rm.forEach(r => r.carriers.forEach(c => { nRm++; ok(m.remove.some(x => x.card === c && x.keys.includes(r.key)), `3. Map ${t.n}: To remove ${r.key} / ${c} is resolved`); })); });
-    ok(nAdd >= 6 && nRm >= 35, `3. the table's items are all there (${nAdd} to add, ${nRm} to remove)`); // 2026-11-24 (DAUNT2): 35, Map 11's Daunt (Golden Eagle) is on its row now (owner 11-25 00:13)
+    ok(nAdd >= 5 && nRm >= 6, `3. the table's items are all there (${nAdd} to add, ${nRm} to remove)`); // 2026-11-24 (DAUNT2): 35, Map 11's Daunt (Golden Eagle) is on its row now (owner 11-25 00:13); 2026-11-25 (MAPEXEC1): the swaps are applied, so 6 to add and 6 kept To remove tiles are left
     // carriers and caps
     const bad = await pg.evaluate(S0 => { const defs = getCardDefs(), carry = (d, k) => { const e = (d && d.effects) || {}; return e[k] != null && e[k] !== false && e[k] !== 0; }, out = [];
       S0.maps.forEach(m => { const cap = roadRarityStep(roadRevealedCap(m.n)); m.add.forEach(a => { a.cards.forEach(c => { const d = defs[c.id]; if (!d) out.push(m.n + ' missing ' + c.id); else { if (!carry(d, a.key)) out.push(m.n + ' ' + c.id + ' lacks ' + a.key); if (roadRarityStep(d.rarity) > cap) out.push(m.n + ' ' + c.id + ' over the cap'); } });

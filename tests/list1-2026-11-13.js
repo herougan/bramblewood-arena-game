@@ -24,12 +24,14 @@ const dump = J('docs/balance/server-overrides/map-picks-dump-2026-11-13.json').r
 const pools = J('canonical/map-pools.json'), P = pools.maps, ADM = grab('UI47_ADMIN_ADD'), CARDS = J('canonical/cards.json'), C = {}; CARDS.forEach(c => { C[c.id] = c; });
 ok(dump.length >= 30 && dump.every(r => /^__cfg:map-picks:/.test(r.id) && r.data && Array.isArray(r.data.yes)), '1. the dump holds the __cfg:map-picks rows');
 dump.forEach(r => ok(picks[r.data.mapId] && same(picks[r.data.mapId].yes, r.data.yes), `1. ${r.data.mapId}: the picks file is the row's Yes`));
+const MX1 = J('docs/design/mapexec1-ops-2026-11-25.json');
 const parentOf = s => Object.keys(P).find(t => (P[t].submaps || {})[s]);
 Object.entries(picks).forEach(([k, e]) => {
   if (e.sub) { const l = P[parentOf(k)].submaps[k]; ok(e.yes.filter(id => C[id] && !(k === 'm9' && id === 'granite-ox-golem')).every(id => l.includes(id)) /* 2026-11-19 DEC19-DATA (LIST1-1 a): Granite Ox Golem left the Basalt Foundry for Malachite Golem */, `1. side ${k}: every Yes is on its list`); return; }
   // 2026-11-18 (TESTFIX): + BOLT2's moves (owner 11-17 17:32), then FOLD6's list moves and CONTENT13's cards (OWN-1117-3)
   const BOLT2 = { m21: ['archerfish'], m11: ['fire-salamander'] };
-  const want = withListMoves(k, null, e.yes.concat(ADM[k] || []).filter(id => C[id]).concat(k === 'md' ? ['barrel-cactus'] : []).concat((BOLT2[k] || []).filter(id => P[k].cards.includes(id))), P[k].cards);
+  const want0 = withListMoves(k, null, e.yes.concat(ADM[k] || []).filter(id => C[id]).concat(k === 'md' ? ['barrel-cactus'] : []).concat((BOLT2[k] || []).filter(id => P[k].cards.includes(id))), P[k].cards);
+  const want = MX1.reduce((l, o) => o.kind === 'add' ? (o.map === k && !l.includes(o.card) ? l.concat(o.card) : l) : (o.map === k ? l.filter(x => x !== o.card) : o.kind === 'move' && o.to === k && !l.includes(o.card) ? l.concat(o.card) : l), want0); // 2026-11-25 (MAPEXEC1): + the swaps applied to the file (docs/design/mapexec1-ops-2026-11-25.json); the owner's picks rows follow with supabase/proposed/mapexec1-2026-11-25.sql
   ok(same(P[k].cards, want), `1. ${k}: the MAP tier is his Yes + Claude's admin adds (${P[k].cards.filter(x => !want.includes(x)).concat(want.filter(x => !P[k].cards.includes(x))).join(' ')})`);
 });
 const LB = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = LB.G, LP = require(path.join(ROOT, 'tools', 'lib_map_pools.js'));
