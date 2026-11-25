@@ -96,3 +96,7 @@ RESULT 13-2 {"sergeant-bramblefox":3,"slow-worm":1,"tasmanian-devil":4,"owl-nigh
 start {"sworn-shieldbearer":4,"warhorse-charger":2,"grass-viper":4,"village-miller":1,"pronghorn-racer":3,"elderhorn-monarch":2} 82
 round 1: cur 85/82; 131 legal, 53 read + 14 predicted (of 21); top: -1 warhorse-charger +1 fawn-scout 61.7/59 | -3 pronghorn-racer +1 fawn-scout +2 warhorse-charger 58.3/58.7 | -1 warhorse-charger +1 siege-rhino 58.3/61.7 | -3 pronghorn-racer +2 siege-rhino +1 elderhorn-monarch 58.3/56.3 | -1 pronghorn-racer +1 siege-rhino 60/65.3
 RESULT 15-6 {"sworn-shieldbearer":4,"warhorse-charger":1,"grass-viper":4,"village-miller":1,"pronghorn-racer":3,"elderhorn-monarch":2,"fawn-scout":1} 59 {} moves: -1 warhorse-charger +1 fawn-scout problems: []
+start {"cataphract-destrier":4,"mallard-marauder":3,"stoat-cutthroat":3,"village-miller":3,"grass-viper":4,"plains-zebra":1} 95.3
+round 1: cur 98.3/95.3; 21 legal, 21 read + 14 predicted (of 28); top: -1 plains-zebra +1 fawn-scout 95/95 | -1 plains-zebra +1 siege-rhino 95/95.3 | -1 plains-zebra +1 tasmanian-devil 95/96.7 | -1 plains-zebra +1 mosquito-cloud 96.7/96.7 | -1 plains-zebra +1 boreal-elk 96.7/97.3
+no nearer move
+RESULT 15-3 {"cataphract-destrier":4,"mallard-marauder":3,"stoat-cutthroat":3,"village-miller":3,"grass-viper":4,"plains-zebra":1} 95.3 {} moves:  problems: []
