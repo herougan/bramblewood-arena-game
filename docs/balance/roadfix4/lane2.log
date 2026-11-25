@@ -82,3 +82,6 @@ RESULT 1-A-4 {"ant-scout":2,"bee-forager":2,"dormouse":1,"meadow-rabbit":4,"cott
 start {"shoal-shark":1,"water-shrew":2,"old-sturgeon":4,"lodge-engineer":2,"raft-spider":1} 66
 round 1: cur 76.7/66; 44 legal, 44 read + 14 predicted (of 47); top: -1 water-shrew +1 lodge-engineer 71.7/71 | -1 old-sturgeon +1 water-shrew 71.7/62 | -1 raft-spider +1 beaver-lumberjack 73.3/61.3 | -1 raft-spider -1 water-shrew +1 beaver-lumberjack +1 shoal-shark 73.3/52 | -1 raft-spider -1 lodge-engineer +1 duck-paddler +1 beaver-lumberjack 71.7/50
 RESULT 2-A-4 {"shoal-shark":1,"water-shrew":1,"old-sturgeon":4,"lodge-engineer":3,"raft-spider":1} 71 {} moves: -1 water-shrew +1 lodge-engineer problems: []
+start {"coral-current-eel":2,"crown-of-thorns-star":2,"kraken-spawnling":4,"reef-shark":3,"dolphin-knight":1} 82.3
+round 1: cur 83.3/82.3; 77 legal, 77 read + 14 predicted (of 21); top: -1 kraken-spawnling +1 dolphin-knight 73.3/72.3 | -1 kraken-spawnling +1 fiddler-crab-swarm 73.3/76.3 | -4 kraken-spawnling +4 sea-turtle-elder 73.3/69.3 | -1 reef-shark +1 dolphin-knight 73.3/69.3 | -1 coral-current-eel -3 reef-shark +1 conch-crawler +3 riptide-eel 73.3/65
+RESULT 10-5 {"coral-current-eel":2,"crown-of-thorns-star":2,"kraken-spawnling":3,"reef-shark":3,"dolphin-knight":2} 72.3 {} moves: -1 kraken-spawnling +1 dolphin-knight problems: []
