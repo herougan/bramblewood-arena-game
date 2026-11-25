@@ -28322,8 +28322,8 @@
     "icon": "\ud83d\udc3f\ufe0f",
     "cost": 0,
     "wait": 1,
-    "attack": 3,
-    "health": 9,
+    "attack": 2,
+    "health": 8,
     "rarity": "common",
     "species": [
       "Rodent"
@@ -28333,7 +28333,14 @@
       "Mountain"
     ],
     "effects": {
-      "guardian": true
+      "guardian": true,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "grantShield",
+          "allies": 2
+        }
+      ]
     },
     "flavor": "One whistle and the whole burrow is safe. It whistles a lot.",
     "dmgType": "physical",
@@ -28347,7 +28354,7 @@
       "kind": "pack",
       "tier": 2
     },
-    "creatorNote": "2026-10-19 (card pass, package CB): source: 22-1 Snowmelt Switchbacks (skirmish, The Rimefire Caldera) (it fights there; 4 fight(s) field it). 2026-10-19 retune (v5 L/10): was 2/8 (well under: 2A+H+S 39.3% -> 69.5% of N 33.07). 2026-10-19 halve (BF5): was 4/14. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 2/6. 2026-10-22 package DV re-fit (obtain map moved; tools/refit_pass_2026_10_21.js): 3/10 -> 3/8. 2026-10-23 (package RW3): a skirmish-exclusive first-clear card of 11-1 (owner GD2-3: \"Skirmish exclusives have priority. So move the pack cards.\"); was a pack card. 2026-10-24 BAL2 re-fit (DF-1: Map term 0.2 a map, first main-line map): 3/8 -> 3/9. 2026-11-02 BAL9 rewards: reward slot m10:11-1 released (first listed on mh (Map 12), not m10); now a basic-pack card 2026-11-18 (DATAFIX): source map m10 11-1 -> pack tier 2 (reward slots moved to cards new on their map, rarities at the list's cap; rewards-pass, bal9 JJ12).",
+    "creatorNote": "2026-10-19 (card pass, package CB): source: 22-1 Snowmelt Switchbacks (skirmish, The Rimefire Caldera) (it fights there; 4 fight(s) field it). 2026-10-19 retune (v5 L/10): was 2/8 (well under: 2A+H+S 39.3% -> 69.5% of N 33.07). 2026-10-19 halve (BF5): was 4/14. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 2/6. 2026-10-22 package DV re-fit (obtain map moved; tools/refit_pass_2026_10_21.js): 3/10 -> 3/8. 2026-10-23 (package RW3): a skirmish-exclusive first-clear card of 11-1 (owner GD2-3: \"Skirmish exclusives have priority. So move the pack cards.\"); was a pack card. 2026-10-24 BAL2 re-fit (DF-1: Map term 0.2 a map, first main-line map): 3/8 -> 3/9. 2026-11-02 BAL9 rewards: reward slot m10:11-1 released (first listed on mh (Map 12), not m10); now a basic-pack card 2026-11-18 (DATAFIX): source map m10 11-1 -> pack tier 2 (reward slots moved to cards new on their map, rarities at the list's cap; rewards-pass, bal9 JJ12). 2026-11-25 (CARDVET1b, owner 00:22 vet pass): was 0/1 3/9 {\"guardian\":true}; now 0/1 2/8 {\"guardian\":true,\"triggers\":[{\"on\":\"onSpawn\",\"do\":\"grantShield\",\"allies\":2}]}.",
     "levelBonus": {
       "4": {
         "health": 2
