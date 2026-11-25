@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // 2026-11-25 (package ROADFIX4): ROADFIX3's comment tool (docs/balance/roadfix3/comment_2026_11_24.js), copied: writes the dated house-style
 // comment after each applied deck of roadfix4-fixes.jsonl in arena_app.js (the change in card names, the target, before -> after at 400 games
-// on seeds 9100 / 5100, and the card change the move followed). Old decks from the committed arena_app.js before ROADFIX4 (git --rev, default
+// on seeds 9100 / 5100, and the card change the move followed; --a9 / --a5 take a comma list of tags, the last one holding the fight wins). Old decks from the committed arena_app.js before ROADFIX4 (git --rev, default
 // 3b9f9428e); before = post1125 (9100) and roadfix4-pre-s5100 (5100), after = the --a9 / --a5 validation tags (a fight's last line wins).
 // --why <json>: {code: "reason"}. Skips a line that already has its ROADFIX4 note.
 //   node docs/balance/roadfix4/comment_2026_11_25.js --a9 roadfix4-v9100 --a5 roadfix4-v5100 [--rev 3b9f9428e] [--why why.json]
@@ -10,7 +10,7 @@ const fs = require('fs'), path = require('path'), cp = require('child_process'),
 const a = process.argv.slice(2), arg = (k, d) => { const i = a.indexOf(k); return i >= 0 ? a[i + 1] : d; };
 const D = {}; JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')).forEach(c => { D[c.id] = c.name || c.id; });
 const rd = f => fs.existsSync(path.join(ROOT, f)) ? fs.readFileSync(path.join(ROOT, f), 'utf8').split('\n').filter(Boolean).map(JSON.parse) : [];
-const rows = {}, row = (tag, k) => (rows[tag] = rows[tag] || rd(`docs/balance/skirmish-pass-${tag}.jsonl`)).filter(x => x.key === k).pop();
+const rows = {}, row = (tags, k) => tags.split(',').map(tag => (rows[tag] = rows[tag] || rd(`docs/balance/skirmish-pass-${tag}.jsonl`)).filter(x => x.key === k).pop()).filter(Boolean).pop(); // a comma list: the last tag holding the fight wins
 const WHY = arg('--why') ? JSON.parse(fs.readFileSync(path.resolve(ROOT, arg('--why')), 'utf8')) : {};
 const oldSrc = cp.execSync(`git show ${arg('--rev', '3b9f9428e')}:arena_app.js`, { cwd: ROOT, maxBuffer: 1 << 30 }).toString();
 const re = k => new RegExp(`(\\{ ?key:\\s*['"]${k.replace(/-/g, '\\-')}['"],[^\\n]*?deck:(\\{[^}]*\\}))([^\\n]*)`);

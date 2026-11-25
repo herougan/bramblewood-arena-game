@@ -132,3 +132,4 @@ start {"fire-ant-raft":1,"nutria-reedcutter":4,"swamp-alligator":4,"muskrat-reed
 round 1: cur 76.7/75.3; 57 legal, 57 read + 14 predicted (of 48); top: -3 constrictor-coil +3 muskrat-reedgatherer 75/70.7 | -1 constrictor-coil +1 muskrat-reedgatherer 75/68.7 | -2 nutria-reedcutter +1 bog-leech +1 muskrat-reedgatherer 75/67.7 | -1 nutria-reedcutter +1 bog-leech 76.7/66.7 | -1 nutria-reedcutter +1 raft-spider 76.7/63
 no nearer move
 RESULT 5-2 {"fire-ant-raft":1,"nutria-reedcutter":4,"swamp-alligator":4,"muskrat-reedgatherer":1,"constrictor-coil":4} 75.3 {} moves:  problems: []
+LANE 1 DONE
