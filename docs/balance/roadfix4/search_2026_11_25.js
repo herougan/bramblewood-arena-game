@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // 2026-11-25 (package ROADFIX4): ROADFIX3's copy below, for the re-fits after DAUNT2 / MAPEXEC1 / CARDVET1. Changes: log in docs/balance/roadfix4/,
 // bands from the post1125 measure; an off-list card (TESTFIX9-2 open) may lose copies to a list card (a swap toward the fight's own list) but
-// never gains any (ROADFIX3: no change at all); a lesser form of a live problem (isNew) is not new.
+// never gains any (ROADFIX3: no change at all); a lesser form of a live problem (isNew) is not new; the leaders are kept (leadOf).
 // 2026-11-24 (package ROADFIX3): REFIT20's copy below, for the Map 8 / 7-A re-fits after REFIT13-1 a's reference deck. Changes: log in
 // docs/balance/roadfix3/, bands from the post1124c measure, an off-list card (TESTFIX9-2 open) keeps its copies exactly (no gain, no loss).
 // 2026-11-24 (package REFIT20, REFIT13-4 a): ROADFIX2's legal swap search (docs/balance/roadfix2/search_2026_11_24.js), copied for 18-7's
@@ -41,7 +41,10 @@ const worseOf = p => { let m; if ((m = p.match(/^(.*) x(\d+)$/)) && !p.startsWit
 const isNew = (p, was) => { if (was.includes(p)) return false; const w = worseOf(p); return !w || !was.some(q => { const v = worseOf(q); return v && v[0] === w[0] && v[1] >= w[1]; }); };
 
 const legalP = d => X.problemsFull(code, d, fx).filter(p => isNew(p, was)).concat([...new Set(Object.keys(d).concat(Object.keys(n.deck)))].filter(id => !f.pool.includes(id) && (d[id] || 0) > (n.deck[id] || 0)).map(id => id + ' (off-list) gains copies'));
-const legal = d => !legalP(d).length;
+// 2026-11-25 (ROADFIX4, after skir1 caught 15-6 / 19-2 / 19-6): the fight's leaders (skirmishLeadersOf: its showcase or the Auto pick) stay as
+// the live deck has them; a card that would outrank the Auto leader is not a legal swap
+const leadOf = d => { const nn = Object.assign({}, n, { deck: d }); G.NODE_MAP_HINT.set(nn, m.id); return JSON.stringify(G.skirmishLeadersOf(nn, m.id) || []); }, lead0 = leadOf(n.deck);
+const legal = d => !legalP(d).length && leadOf(d) === lead0;
 let node = Object.assign({}, n); const cache = new Map();
 function win(deck, games, seed, nodeOver) { const nn = Object.assign({}, node, nodeOver || {}, { deck }); G.NODE_MAP_HINT.set(nn, m.id);
   const k = L.keyOf(deck) + '|' + games + '|' + seed + '|' + nn.shieldOverride + '|' + nn.hqHp; if (cache.has(k)) return cache.get(k);

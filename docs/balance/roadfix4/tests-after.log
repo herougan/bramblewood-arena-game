@@ -1,0 +1,34 @@
+
+✗ road-rarity-2026-10-16 (exit 1, 1.9s) — last lines:
+  ✗ 2. 20-A-4 (dungeon, Map 20) fields ashmantle-fiend (unique), cap epic
+  road-rarity-2026-10-16: 1 failed
+
+✗ pro-2026-10-23 (exit 1, 37.5s) — last lines:
+    ✗ 1b. 15-BPRO-2: every card on ml's list (off: dust-hyena, hoopoe-herald)
+    ✗ 1b. 15-BPRO-3: every card on ml's list (off: village-miller)
+    ✗ 1b. 15-WPRO-2: every card on ml's list (off: dust-hyena, sworn-shieldbearer)
+    ✗ 1b. 16-PRO-3: every card on mt's list or held by then (off: dust-hyena)
+    ✗ 1b. 16-BPRO-2: every card on mt's list (off: mountain-hare)
+    ✗ 1b. 16-BPRO-3: every card on mt's list (off: sworn-shieldbearer)
+    ✗ 1b. 16-WPRO-1: every card on mt's list (off: sworn-shieldbearer, taiga-lynx)
+    ✗ 1b. 16-WPRO-2: every card on mt's list (off: sworn-shieldbearer)
+    ✗ 1b. 17-BPRO-1: every card on m6's list (off: glacier-yak)
+    ✗ 1b. 17-BPRO-2: every card on m6's list (off: taiga-lynx)
+    ✗ 1b. 17-BPRO-3: every card on m6's list (off: walrus-icebreaker, glacier-yak)
+    ✗ 1b. 17-WPRO-1: every card on m6's list (off: glacier-yak)
+    ✗ 1b. 17-WPRO-2: every card on m6's list (off: glacier-yak, taiga-lynx)
+    ✗ 1b. 19-PRO-1: every card on m3's list or held by then (off: smoke-raccoon)
+    ✗ 1b. 19-PRO-2: every card on m3's list or held by then (off: smoke-raccoon)
+    ✗ 1b. 19-BPRO-1: every card on m3's list (off: smoke-raccoon)
+    ✗ 1b. 19-BPRO-2: every card on m3's list (off: honey-badger-fury)
+    ✗ 1b. 19-BPRO-3: every card on m3's list (off: glacier-yak, walrus-icebreaker)
+    ✗ 1b. 19-WPRO-1: every card on m3's list (off: glacier-yak, honey-badger-fury, smoke-raccoon)
+    ✗ 1b. 19-WPRO-2: every card on m3's list (off: glacier-yak)
+    ✗ 1b. 20-PRO-1: every card on m11's list or held by then (off: honey-badger-fury)
+    ✗ 1b. 20-PRO-3: every card on m11's list or held by then (off: honey-badger-fury)
+    ✗ 1b. 20-BPRO-2: every card on m11's list (off: honey-badger-fury)
+    ✗ 1b. 20-WPRO-1: every card on m11's list (off: honey-badger-fury)
+  pro: 193/2974 FAILED
+
+tests: 3 passed, 2 failed, 0 skipped (passed before on identical inputs) · 37s · slowest: pro-2026-10-23 37s, ref5-2026-10-30 4s, ref6-2026-11-11 2s
+failing tests: tests/.last-failures.txt (2)
