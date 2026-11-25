@@ -124,3 +124,7 @@ round 1: cur 45/51.3; 42 legal, 42 read + 14 predicted (of 46); top: -1 raft-spi
 round 2: cur 40/43.7; 42 legal, 42 read + 14 predicted (of 49); top: -1 sworn-shieldbearer -1 farm-dog +1 golden-eagle-diver +1 upside-down-bat 40/45.7 | -1 siege-rhino +1 cone-cutter-squirrel 41.7/33.3 | -1 sworn-shieldbearer +1 mallard-halberdier 41.7/51.3 | -4 woodland-caribou +4 boreal-elk 41.7/52.7 | -1 sworn-shieldbearer +1 pinecone-sapper 40/56
 no nearer move
 RESULT 16-7 {"dhole-matriarch":2,"owl-sentinel":4,"snowshoe-hare":4,"sworn-shieldbearer":1,"taiga-lynx":3,"woodland-caribou":4,"siege-rhino":1,"farm-dog":1} 43.7 {} moves: -1 raft-spider +1 farm-dog problems: []
+start {"gallery-orb-weaver":1,"gull-thief":1,"limpet-clinger":4,"open-ocean-hermit-crab":4,"pincushion-urchin":3} 75
+round 1: cur 73.3/75; 42 legal, 42 read + 14 predicted (of 40); top: -1 open-ocean-hermit-crab +1 pincushion-urchin 71.7/75.7 | -1 limpet-clinger +1 pincushion-urchin 73.3/71.7 | -1 open-ocean-hermit-crab +1 gull-thief 70/69.7 | -1 gull-thief +1 trash-panda-trickster 70/68.3 | -1 open-ocean-hermit-crab -1 gull-thief +1 pincushion-urchin +1 trash-panda-trickster 78.3/67.7
+no nearer move
+RESULT 2-B-1 {"gallery-orb-weaver":1,"gull-thief":1,"limpet-clinger":4,"open-ocean-hermit-crab":4,"pincushion-urchin":3} 75 {} moves:  problems: []
