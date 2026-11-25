@@ -128,3 +128,7 @@ start {"gallery-orb-weaver":1,"gull-thief":1,"limpet-clinger":4,"open-ocean-herm
 round 1: cur 73.3/75; 42 legal, 42 read + 14 predicted (of 40); top: -1 open-ocean-hermit-crab +1 pincushion-urchin 71.7/75.7 | -1 limpet-clinger +1 pincushion-urchin 73.3/71.7 | -1 open-ocean-hermit-crab +1 gull-thief 70/69.7 | -1 gull-thief +1 trash-panda-trickster 70/68.3 | -1 open-ocean-hermit-crab -1 gull-thief +1 pincushion-urchin +1 trash-panda-trickster 78.3/67.7
 no nearer move
 RESULT 2-B-1 {"gallery-orb-weaver":1,"gull-thief":1,"limpet-clinger":4,"open-ocean-hermit-crab":4,"pincushion-urchin":3} 75 {} moves:  problems: []
+start {"fire-ant-raft":1,"nutria-reedcutter":4,"swamp-alligator":4,"muskrat-reedgatherer":1,"constrictor-coil":4} 75.3
+round 1: cur 76.7/75.3; 57 legal, 57 read + 14 predicted (of 48); top: -3 constrictor-coil +3 muskrat-reedgatherer 75/70.7 | -1 constrictor-coil +1 muskrat-reedgatherer 75/68.7 | -2 nutria-reedcutter +1 bog-leech +1 muskrat-reedgatherer 75/67.7 | -1 nutria-reedcutter +1 bog-leech 76.7/66.7 | -1 nutria-reedcutter +1 raft-spider 76.7/63
+no nearer move
+RESULT 5-2 {"fire-ant-raft":1,"nutria-reedcutter":4,"swamp-alligator":4,"muskrat-reedgatherer":1,"constrictor-coil":4} 75.3 {} moves:  problems: []
