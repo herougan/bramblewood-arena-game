@@ -96,8 +96,9 @@ ok(BB.skillCountOf({poisonPowder:1, poison:1}) === 1, 'Poison Powder sits with t
 ok(Array.isArray(BB.POWDER_FAMILY) && BB.POWDER_FAMILY.slice(0, 2).join() === 'sleepPowder,poisonPowder' /* ENG50 (2026-11-17): + paralysisPowder */, 'the budget exports the powder family');
 { const SC = require('../tools/skill_costs.js'), T = SC.make(J('canonical/skill-costs.json')), S = e=> T.budget({id:'x', attack:1, health:3, effects:e, rarity:'common', level:1});
   const sp1 = S({sleepPowder:1}), sp2 = S({sleepPowder:2}), pp2 = S({poisonPowder:2}), pb2 = S({poisonBolt:2});
-  ok(!sp1.missing.length && sp1.S === 2.5 && sp2.S > sp1.S && sp2.S < 2 * sp1.S, `Sleeping Powder priced: N 1 ${sp1.S}, N 2 ${sp2.S}`);
-  ok(!pp2.missing.length && pp2.S > 0 && pp2.S < pb2.S, `Poison Powder 2 priced a little under Poison Bolt 2 (${pp2.S} < ${pb2.S})`); }
+  // 2026-11-25 (TESTFIX11): SKMPRICE (SKM4-1 b / SKM2-1 a, 1,000 fights) re-measured both powders: Sleeping 4.42 x N^0.42 (was 2.5), Poison 4.22 x N^0.852 (was 3.2 half), now above Poison Bolt 2
+  ok(!sp1.missing.length && sp1.S === 4.42 && sp2.S > sp1.S && sp2.S < 2 * sp1.S, `Sleeping Powder priced: N 1 ${sp1.S}, N 2 ${sp2.S}`);
+  ok(!pp2.missing.length && Math.abs(pp2.S - Math.round(4.22 * Math.pow(2, 0.852) * 100) / 100) < 0.011, `Poison Powder 2 priced from its SKMPRICE measure, 4.22 x 2^0.852 (${pp2.S}; Poison Bolt 2 ${pb2.S})`); }
 { const D = J('canonical/skill-delivery.json'), C = J('canonical/skill-counters.json');
   ok(D.delivery.sleepPowder === 'ranged' && D.delivery.poisonPowder === 'ranged', 'delivery: ranged, as Poison Bolt');
   ok(C.applies.sleepPowder === 'sleep' && C.applies.poisonPowder === 'venom' && C.counters.sleepPowder && C.counters.poisonPowder.counters.some(x=> x.skill === 'evasive'), 'counters: Sleep / Venom, Evasive and the shot counters'); }

@@ -108,7 +108,8 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   // 2026-10-30 RECOST1: Bleed, Gash and Venomous re-priced to their bench worth; the value checked here is then their prevValue
   // 2026-11-04 (TESTFIX1): later dated re-prices keep the old value on the entry: SKILL2 (2026-10-31, BUDGET2-1) as skill2Was, BAL12 (2026-11-02, BAL11-2 a)
   // as prevValue; a value checked here holds if it is the price or the one such a re-price replaced
-  const heldTill = (e, v)=> e && (e.value === v || (/RECOST1|SKILL2|BAL12|BAL14|BAL15/.test(e.appliedAt || '') && (e.prevValue === v || (e.skill2Was && e.skill2Was.value === v))));
+  // 2026-11-25 (TESTFIX11): SKMPRICE (SKM4-1 b, owner 11-22) keeps the price it replaced in skmpriceWas (Venom Master 5.1 -> 0.14)
+  const heldTill = (e, v)=> e && (e.value === v || (e.skmpriceWas && e.skmpriceWas.value === v) || (/RECOST1|SKILL2|BAL12|BAL14|BAL15/.test(e.appliedAt || '') && (e.prevValue === v || (e.skill2Was && e.skill2Was.value === v))));
   ok(Object.keys(want).every(k=> sk(k) && heldTill(sk(k), want[k]) && sk(k).prevValueEN3 != null) && sk('bleed').prevValueEN5 === 2.6 && sk('poison').prevValueEN5 === 2.6, 'the Bleed / Poison family up a tenth (Bleed / Poison re-priced by EN5): ' + Object.keys(want).map(k=> k + ' ' + (sk(k) || {}).value).join(', '));
   ok(ac('poison').value === 1.4 && ac('bleed').value === 1, `the actions: Poison ${ac('poison').value} (1.3), Bleed ${ac('bleed').value} (0.9)`);
   const was32 = (id, v)=> sk(id).value === v || !!(sk(id).bal32Was && sk(id).bal32Was.value === v); // 2026-11-09 (package BAL32, owner BAL31-2/3): re-priced since; the old price is in bal32Was

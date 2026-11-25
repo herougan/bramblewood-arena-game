@@ -126,7 +126,7 @@ const hitsOn = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid
   const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), costs = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')), T = SC.make(costs);
   const sk = id=> costs.skills.find(r=> r.id === id);
   // 2026-11-07 (ENG32): re-priced by the 4-round rule after the rework: plain Dive -1, Dive N -1 + 0.5 N (was 1.25 x N^0.5); the old row is kept as eng32Was
-  ok(sk('dive').eng32Was && sk('dive').eng32Was.value === 1.25 && T.skillCost('dive', true) === -3.3 && Math.abs(T.skillCost('dive', 2) - -1.7) < 0.01 && sk('dive').bal34Was.value === -1, `Dive: plain -3.3, Dive 2 ${T.skillCost('dive', 2)} (2026-11-10 BAL34, measured at 1,000 fights; ENG32's -1 + 0.5 N kept as bal34Was; EN7's 1.25 x N^0.5 as eng32Was)`);
+  ok(sk('dive').eng32Was && sk('dive').eng32Was.value === 1.25 && T.skillCost('dive', true) === -2.41 && sk('dive').skmpriceWas.value === -3.3 && Math.abs(T.skillCost('dive', 2) - -0.81) < 0.01 && sk('dive').bal34Was.value === -1 /* 2026-11-25 (TESTFIX11): SKMPRICE (SKM4-1 b) plain Dive -2.41, BAL34's -3.3 kept in skmpriceWas */, `Dive: plain -2.41, Dive 2 ${T.skillCost('dive', 2)} (SKMPRICE 11-22; 2026-11-10 BAL34 -3.3, measured at 1,000 fights; ENG32's -1 + 0.5 N kept as bal34Was; EN7's 1.25 x N^0.5 as eng32Was)`);
   const base = {id:'q', attack:1, health:10, rarity:'common', effects:{pounce:2, poison:2}}, noP = {id:'q', attack:1, health:10, rarity:'common', effects:{pounce:2}};
   const sP = T.cardS(base.effects, base).S, s0 = T.cardS(noP.effects, noP).S + T.skillCost('poison', 2);
   ok(Math.abs(sP - (s0 + 0.33 * T.skillCost('poison', 2))) < 0.02, `Pounce + Poison 2 pays 0.33 x Poison's price on top (${sP} vs ${s0})`);
@@ -137,7 +137,8 @@ const hitsOn = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid
   const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), by = id=> cards.find(c=> c.id === id);
   const pf = by('puffin-diver'), hs = by('harbor-seal');
   ok(redesigned('puffin-diver') /* 2026-11-18 (TESTFIX): FOLD6 made it a 2/8 Tide 2 pouncer; Dive's carrier checks stay in the scenes */ || (pf.effects.dive === 2 && pf.effects.flying && pf.attack === 2 && pf.health === 5 && T.budget(pf).ok), 'Puffin Diver: Dive 2 (a Flyer: aloft), 2/5, in its budget');
-  ok(hs.effects.dive === 2 && hs.effects.tide && !hs.effects.flying && hs.attack === 1 && hs.health === 9 && T.budget(hs).ok, 'Harbor Seal: Dive 2 (Tide: under), 1/9, in its budget');
+  // 2026-11-25 (TESTFIX11): CARDVET1c redesigned the Harbor Seal 2/13 Tide + Evasive (Dive is on no Maps 0-20 row); Dive's carrier checks stay in the scenes
+  ok(!hs.effects.dive && hs.effects.tide && hs.effects.evasive && !hs.effects.flying && hs.attack === 2 && hs.health === 13 && T.budget(hs).ok, 'Harbor Seal: Tide + Evasive, 2/13, in its budget (CARDVET1c)');
   ok(pf.source && hs.source, 'both are already placed (no new source)'); }
 { const TXT = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT; const strip = s=> String(s).replace(/^[\p{Extended_Pictographic}✀-➿️‍\s]+/u, '');
   const keys = Object.keys(TXT).filter(k=> (/^ui\.(en7-|skn-(arrow|fire-arrow|fire-bolt)-(poison|bleed)|sk-shot-(poison|bleed|tip-codex))/.test(k) || k === 'ui.sk-dive' || k === 'ui.sk-dive-codex') && !/en7-float-(poison|bleed|exposed)/.test(k)); // the number floats need no row; Exposed is the status's own word
