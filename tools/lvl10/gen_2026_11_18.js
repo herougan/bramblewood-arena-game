@@ -64,13 +64,14 @@ function split(pp, a0, h0, aw, A, P){ if(!aw || a0 <= 0) return {da: 0, dh: pp};
   const da = Math.max(0, Math.min(Math.floor(pp / aw), At - A)); return {da, dh: pp - aw * da}; }
 
 // 1. unlocks: which skills leave Level 1, and the Level 1 re-fit
+// 2026-11-25 (CARDVET1a): env CARDVET_CORE names the unit that stays at Level 1 (an On Play trigger as the core), for the card-vet pass
 function stagger(d, fillT){
   const fx = d.effects || {}, b0 = at(d, 1, null), LIGHT = BB.TWO_SKILL_LIGHT || [];
   const units = Object.keys(fx).filter(k=> fx[k] != null && fx[k] !== false && fx[k] !== 0 && !(BB.PARAMS || []).includes(k) && !LIGHT.includes(k) && !(SPL && SPL.rootOf && SPL.rootOf(k) !== k && fx[SPL.rootOf(k)] != null))
     .map(k=>{ const keys = keysOfUnit(fx, k); return {k, keys, price: r2(b0.x1 - at(without(d, keys), 1, null).x1)}; }).filter(u=> u.price > MIN_STEP);
   if(units.length < 2) return null;
   const words = String(d.id).split('-').filter(w=> w.length >= 4), named = units.find(u=> words.some(w=> w.slice(0, 5) === u.k.toLowerCase().slice(0, 5)));
-  const core = named || units.slice().sort((x, y)=> y.price - x.price || (x.k < y.k ? -1 : 1))[0];
+  const core = (process.env.CARDVET_CORE && units.find(u=> u.k === process.env.CARDVET_CORE)) || named || units.slice().sort((x, y)=> y.price - x.price || (x.k < y.k ? -1 : 1))[0];
   const moves = units.filter(u=> u !== core).sort((x, y)=> x.price - y.price || (x.k < y.k ? -1 : 1));
   let c = without(d, moves.flatMap(u=> u.keys));
   const target = fillT * at(c, 1, null).N, {cH, aw} = statCosts(c), P = Math.max(0, Math.floor((target - at(c, 1, null).x1) / cH + 1e-9)), s = split(P, c.attack, c.health, aw, 0, 0);
