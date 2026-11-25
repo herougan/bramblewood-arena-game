@@ -7512,7 +7512,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 0,
-    "health": 10,
+    "health": 12,
     "archetypes": [
       "Coral Reef",
       "Structure"
@@ -7537,23 +7537,31 @@
     ],
     "animal": "coral",
     "subtype": "structure",
-    "creatorNote": "2026-10-19 halve (BF5): was 0/14. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 0/6. 2026-10-24 (package CONTENT2) (owner 13:12 #8, Lumber gatherers per biome): placed in Pack 2, m7: Coral Current (Map 10), reef: its On Ready Lumber card sat in no pool. 2026-10-28 BAL7 M1 re-balance (contribution 9.0, +10.9 vs its band): 0/11 -> 0/9. 2026-11-02 BAL12 rar1: RAR-1 (owner 20:19): Common -> Uncommon 2026-11-03 (package ENG22, owner DESIGN1-6: \"Maybe call it Delivery {}, like Stockpile {}\"): onReadyGold 1 (every Ready turn) -> Delivery {Lumber x1}, every turn (deliveryEvery), same amount and timing. 2026-11-06 (CONTENT12): CONTENT11-3 a: polyps share one skeleton; 0/9 -> 0/9 (budget use 88% -> 97%). 2026-11-02 BAL9 rewards: the skirmish-exclusive reward of m7:10-2 (was electric-ray: first listed on mk (Map 9), not m7); a new card of that map, picked at random (seeded) inside the fight's rare cap 2026-11-18 (DATAFIX): source pack m7 tier 2 -> map m7 10-2 (reward slots moved to cards new on their map, rarities at the list's cap; rewards-pass, bal9 JJ12). 2026-11-18 LVL10 (owner 21:22): meld from Level 3; Level 1 re-fit 0/9 -> 0/10.",
+    "creatorNote": "2026-10-19 halve (BF5): was 0/14. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 0/6. 2026-10-24 (package CONTENT2) (owner 13:12 #8, Lumber gatherers per biome): placed in Pack 2, m7: Coral Current (Map 10), reef: its On Ready Lumber card sat in no pool. 2026-10-28 BAL7 M1 re-balance (contribution 9.0, +10.9 vs its band): 0/11 -> 0/9. 2026-11-02 BAL12 rar1: RAR-1 (owner 20:19): Common -> Uncommon 2026-11-03 (package ENG22, owner DESIGN1-6: \"Maybe call it Delivery {}, like Stockpile {}\"): onReadyGold 1 (every Ready turn) -> Delivery {Lumber x1}, every turn (deliveryEvery), same amount and timing. 2026-11-06 (CONTENT12): CONTENT11-3 a: polyps share one skeleton; 0/9 -> 0/9 (budget use 88% -> 97%). 2026-11-02 BAL9 rewards: the skirmish-exclusive reward of m7:10-2 (was electric-ray: first listed on mk (Map 9), not m7); a new card of that map, picked at random (seeded) inside the fight's rare cap 2026-11-18 (DATAFIX): source pack m7 tier 2 -> map m7 10-2 (reward slots moved to cards new on their map, rarities at the list's cap; rewards-pass, bal9 JJ12). 2026-11-18 LVL10 (owner 21:22): meld from Level 3; Level 1 re-fit 0/9 -> 0/10. 2026-11-25 (CARDVET1b, owner 00:22 vet pass): was 0/1 0/10 {\"tide\":true,\"forestry\":1}; now 0/1 0/10 {\"tide\":true,\"forestry\":1,\"armor\":1}. 2026-11-18 LVL10 (owner 21:22): armor from Level 6; Level 1 re-fit 0/10 -> 0/12.",
     "levelSkills": {
-      "3": {
-        "meld": {
-          "armor": 1
-        }
+      "6": {
+        "armor": 1
       }
     },
     "levelBonus": {
       "4": {
-        "health": 2
+        "health": 1,
+        "skills": {
+          "tide": 3
+        }
       },
       "7": {
         "health": 1
       },
+      "9": {
+        "skills": {
+          "tide": 6
+        }
+      },
       "10": {
-        "health": 2
+        "skills": {
+          "tide": 9
+        }
       }
     }
   },
@@ -10632,19 +10640,19 @@
   },
   {
     "id": "kraken-spawnling",
-    "name": "Kraken Spawnling",
+    "name": "Giant Pacific Octopus",
     "icon": "\ud83d\udc19",
     "cost": 3,
     "wait": 2,
     "attack": 2,
-    "health": 18,
+    "health": 21,
     "archetypes": [
       "Cephalopod"
     ],
     "effects": {
       "fork": true
     },
-    "flavor": "Small for its family. The family is not a useful comparison.",
+    "flavor": "Eight arms, three hearts, and a patience that outlasts every diver who tried to catch it.",
     "dmgType": "physical",
     "resist": [],
     "tags": [],
@@ -10657,15 +10665,20 @@
       "Cephalopod"
     ],
     "animal": "octopus",
-    "creatorNote": "2026-10-17 (balance pass): 9/34 -> 9/31 (budget: over stat budget v3; the Test Lab Fit values; Fork is now one swing). 2026-10-19 (card pass, package CB): source: 10-A-2 The Drowned Deck (skirmish, The Sunken Depths) (it fights there; 5 fight(s) field it). 2026-10-19 retune (v5 L/10): was 9/31 (over budget: 2A+H+S 103.1% -> 99.4% of N 54.46). 2026-10-19 halve (BF5): was 9/29. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/12. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 2/16. 2026-10-21 human pass I (owner's hub skill costs): 3/15 -> 2/12. 2026-10-22 BF7 re-fit (half-miss x1.5 on the stats only, Fragile x0.7 on the caps, the four pass III cuts): 2/12 -> 2/16. 2026-10-23 (package EN, owner EV-6: \"They will be the only NOT-evomax cards with Fodder. Treat all baby-like cards like this. Oh, and they only gain this at lvl1.\"): Stem (Fodder) from Level 1 (levelSkills 1). 2026-10-24 (package EN8) (owner 21:20 #7: \"since evomax is only in play in 20-40, don't introduce stem first\"): Fodder (Stem from Level 1) removed; first obtainable on Map 7. 2026-11-18 LVL10 (owner 21:22): gash from Level 3; Level 1 re-fit 2/16 -> 2/18.",
+    "creatorNote": "2026-10-17 (balance pass): 9/34 -> 9/31 (budget: over stat budget v3; the Test Lab Fit values; Fork is now one swing). 2026-10-19 (card pass, package CB): source: 10-A-2 The Drowned Deck (skirmish, The Sunken Depths) (it fights there; 5 fight(s) field it). 2026-10-19 retune (v5 L/10): was 9/31 (over budget: 2A+H+S 103.1% -> 99.4% of N 54.46). 2026-10-19 halve (BF5): was 9/29. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/12. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 2/16. 2026-10-21 human pass I (owner's hub skill costs): 3/15 -> 2/12. 2026-10-22 BF7 re-fit (half-miss x1.5 on the stats only, Fragile x0.7 on the caps, the four pass III cuts): 2/12 -> 2/16. 2026-10-23 (package EN, owner EV-6: \"They will be the only NOT-evomax cards with Fodder. Treat all baby-like cards like this. Oh, and they only gain this at lvl1.\"): Stem (Fodder) from Level 1 (levelSkills 1). 2026-10-24 (package EN8) (owner 21:20 #7: \"since evomax is only in play in 20-40, don't introduce stem first\"): Fodder (Stem from Level 1) removed; first obtainable on Map 7. 2026-11-18 LVL10 (owner 21:22): gash from Level 3; Level 1 re-fit 2/16 -> 2/18. 2026-11-25 (CARDVET1b, owner 00:22 vet pass): was Kraken Spawnling; was 3/2 2/18 {\"fork\":true}; now 3/2 2/21 {\"fork\":true,\"smokeBomb\":true}. 2026-11-18 LVL10 (owner 21:22): smokeBomb from Level 2; Level 1 re-fit 2/21 -> 2/21.",
     "source": {
       "kind": "pack",
       "tier": 2,
       "map": "m7"
     },
+    "artReview": {
+      "status": "rejected",
+      "reason": "needs-redo (CARDVET1b): Kraken Spawnling (a baby sea monster) becomes a giant Pacific octopus: a large reddish octopus spreading its arms over a rocky kelp bed, dark green water behind, generically menacing",
+      "at": "2026-11-25T01:00:00.000Z"
+    },
     "levelSkills": {
-      "3": {
-        "gash": 3
+      "2": {
+        "smokeBomb": true
       }
     },
     "levelBonus": {
@@ -10673,13 +10686,14 @@
         "health": 1
       },
       "4": {
-        "health": 1
+        "health": 2
       },
       "7": {
-        "health": 3
+        "attack": 1,
+        "health": 1
       },
       "10": {
-        "health": 2
+        "health": 3
       }
     }
   },
@@ -32964,15 +32978,15 @@
     "test": false,
     "uuid": "223b009d-f61a-575b-a1a4-a0bba93db0f4",
     "wait": 1,
-    "attack": 5,
+    "attack": 4,
     "flavor": "It punches so hard the water boils. Sometimes so does its own shell.",
-    "health": 13,
+    "health": 12,
     "locked": true,
     "rarity": "rare",
     "resist": [],
     "dmgType": "physical",
     "effects": {
-      "recoil": 1
+      "pounce": 2
     },
     "species": [
       "Crustacean"
@@ -32987,7 +33001,7 @@
       "Coral Reef",
       "Insect"
     ],
-    "creatorNote": "2026-10-16: one card for Recoil, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; placed 2026-10-16 on 10-7 Eel Nest (Coral Current), its card reward (suggested: Map 21). 2026-10-19 retune (v5 L/10): was 3/10 (well under: 2A+H+S 42.3% -> 65.8% of N 42.57). 2026-10-19 halve (BF5): was 5/16. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 2/8. 2026-10-24 BAL2 re-fit (DF-1: Map term 0.2 a map, first main-line map): 4/12 -> 4/13. 2026-11-18 (CARDPOW2, owner 11-17 23:41 overnight plan): recoil 2 -> 1, 4/13 -> 5/13; budget fill 69.6% -> 89.4% at its level, power -16 (docs/balance/cardpow2-2026-11-18.md).",
+    "creatorNote": "2026-10-16: one card for Recoil, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; placed 2026-10-16 on 10-7 Eel Nest (Coral Current), its card reward (suggested: Map 21). 2026-10-19 retune (v5 L/10): was 3/10 (well under: 2A+H+S 42.3% -> 65.8% of N 42.57). 2026-10-19 halve (BF5): was 5/16. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 2/8. 2026-10-24 BAL2 re-fit (DF-1: Map term 0.2 a map, first main-line map): 4/12 -> 4/13. 2026-11-18 (CARDPOW2, owner 11-17 23:41 overnight plan): recoil 2 -> 1, 4/13 -> 5/13; budget fill 69.6% -> 89.4% at its level, power -16 (docs/balance/cardpow2-2026-11-18.md). 2026-11-25 (CARDVET1b, owner 00:22 vet pass): was 2/1 5/13 {\"recoil\":1}; now 2/1 4/12 {\"pounce\":2}.",
     "devilryCost": 0,
     "mechanicLine": "none",
     "splashEffect": "none",
@@ -33002,7 +33016,10 @@
         "health": 2
       },
       "7": {
-        "attack": 1
+        "attack": 1,
+        "skills": {
+          "pounce": 3
+        }
       },
       "10": {
         "health": 3
