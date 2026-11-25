@@ -70,7 +70,8 @@ const L = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = L.G;
   ok(lv1.swarm && lv1.flying, '2. at Level 1 (copyDefAt / referencePlayerDeck merge levelSkills <= L) it has Flying + Swarm');
   // 2026-10-30 TUT2: owner SKL0-1 "yes definitely": every T-1 / T-2 card is Level 0; a Base card (own level 1) gets its Level 0 copy too
   // 2026-11-02 (ENG18, BASELVL-1): the Duckling is a Baby card, Level 0 already, so it plays as itself (like Earthworm)
-  ok(['earthworm', 'crossed-eyes', 'duckling'].every(id=> c.R.tutorialLevel0Def(id) === null) && ['pond-trout', 'silver-minnow', 'cottontail'].every(id=>{ const o = c.R.tutorialLevel0Def(id); return o && o.level === 0; }), '2. the other six T-1 / T-2 cards: Level 0 (the Base cards as their Level 0 copy, TUT2; Earthworm and Crossed-Eyes are Level 0 already)');
+  // 2026-11-25 (TESTFIX11): CARDS1 (owner 11-23 #6) made the Base starters Level 0 cards (baseLevel 0), so none needs a Level 0 copy
+  ok(['earthworm', 'crossed-eyes', 'duckling', 'pond-trout', 'silver-minnow', 'cottontail'].every(id=> c.R.tutorialLevel0Def(id) === null), '2. the other six T-1 / T-2 cards: Level 0 (the Base cards as their Level 0 copy, TUT2; Earthworm and Crossed-Eyes are Level 0 already)');
   const deck = c.R.tutorialPlainDeck({'bee-knight': 2, duckling: 3}, 1);
   ok(deck['bee-knight~tut0'] === 2 && deck['duckling'] === 3 /* ENG18: Level 0 already */ && !deck['bee-knight'] && overlay['bee-knight~tut0'], '2. the tutorial deck (either side) deals the Level 0 copies');
   ok(/rivalCounts = tutorialPlainDeck\(tutDecks\.rival, st\)/.test(app) && /deckCounts = tutorialPlainDeck\(tutDecks\.mine, st\)/.test(app), '2. both T-1 / T-2 decks go through it');

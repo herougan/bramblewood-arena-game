@@ -44,7 +44,8 @@ T12.forEach(id=>{ const c = byId[id]; ok(!!c, '1. ' + id + ' exists'); if(!c) re
   T12.forEach(id=>{ const z = R.tutorialLevel0Def(id), d = defs[id], fx = z ? z.effects : d.effects;
     const lv = z ? z.level : d.level; ok(lv === 0 && Object.keys(fx || {}).length === 0, `2. ${id}: dealt at Level 0 with no skill (${z ? z.id : 'as is'}, L${lv}, ${JSON.stringify(fx)})`); });
   const pt = R.tutorialLevel0Def('pond-trout'), s0 = G.statsAtLevel(byId['pond-trout'], 0);
-  ok(pt && pt.id === 'pond-trout~tut0' && pt.attack === s0.attack && pt.health === s0.health && pt.hatchling, `2. a Base card (own level 1) gets its Level 0 copy: Pond Trout ${pt && pt.attack}/${pt && pt.health}`);
+  // 2026-11-25 (TESTFIX11): CARDS1 (owner 11-23 #6) made the starters Level 0 cards (baseLevel 0), so the Pond Trout plays as itself
+  ok(pt === null && byId['pond-trout'].baseLevel === 0 && s0.attack === byId['pond-trout'].attack, `2. a Base card is Level 0 itself since CARDS1: no Level 0 copy for the Pond Trout (${pt && pt.id})`);
   ok(R.tutorialLevel0Def('earthworm') === null && R.tutorialLevel0Def('crossed-eyes') === null, '2. a card already at Level 0 with no later skill is dealt as it is');
   // the decks the tutorial deals, both sides (TUTORIAL_CFG_DEFAULT's own)
   const m = /const TUTORIAL_CFG_DEFAULT = \{[^\n]*?myDeck:(\{[^}]*\})[^\n]*?rivalDeck:(\{[^}]*\})[^\n]*?myDeck2:(\{[^}]*\})[^\n]*?rivalDeck2:(\{[^}]*\})/.exec(app);
@@ -77,7 +78,9 @@ ok(/const TUT12_SHOWN = new Set\(\[\]\);/.test(app), '2. the T-1 / T-2 mask has 
   ok(BB.SLOW_S_MULT === 0.85 && BB.slowSMultOf({slow: true}, row) === 0.85 && BB.slowSMultOf({}, row) === 1, '5. bramblewood-budget.js slowSMultOf');
   ok(T.cardS({slow: true}).S === 0 && Math.abs(T.cardS({armor: 1, slow: true}).S - T.cardS({armor: 1}).S * 0.85) < 0.011, `5. Slow alone costs 0; with Armor 1 the S is x0.85 (${T.cardS({armor: 1}).S} -> ${T.cardS({armor: 1, slow: true}).S})`);
   ['ancient-sloth-titan', 'old-growth-tortoise', 'garden-snail'].forEach(id=>{ const c = byId[id]; ok(c && c.effects.slow === true, `5. ${id} has Slow`);
-    const lv = SC.levelOf(c), b = T.budget(c), raw = T.cardS(Object.fromEntries(Object.entries(c.effects).filter(([k])=> k !== 'slow')), c).S;
+    // 2026-11-25 (TESTFIX11): CARDS1 (owner 11-23 #6) made the Garden Snail a Level 0 starter budgeted at Level 1, where its Armor 1 (levelSkills "1") has arrived
+    const fx1 = Object.assign({}, c.effects, ...Object.keys(c.levelSkills || {}).filter(k=> +k <= 1).map(k=> c.levelSkills[k]));
+    const lv = SC.levelOf(c), b = T.budget(c), raw = T.cardS(Object.fromEntries(Object.entries(fx1).filter(([k])=> k !== 'slow')), c).S;
     ok(b.ok && Math.abs(b.S - raw * 0.85) < 0.011, `5. ${id} (Level ${lv}): S ${raw} -> ${b.S}, 2A+H+S ${b.x1} <= N ${b.N}; cap 2 ${b.x2} <= ${b.N2}`); });
   // 2026-11-03 (package ENG22, owner DESIGN1-2): its Armor 1 now arrives at Level 1 (levelSkills "1"); Slow (a drawback) still from Level 0
   ok(!T12.includes('garden-snail') && !(byId['garden-snail'].levelSkills && byId['garden-snail'].levelSkills['1'] && byId['garden-snail'].levelSkills['1'].slow != null), '5. the Garden Snail is not on mtut12: Slow from Level 0'); }
