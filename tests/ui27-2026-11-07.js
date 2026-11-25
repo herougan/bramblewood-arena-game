@@ -86,8 +86,9 @@ async function browser(){
       // 2026-11-12 (SKIR3): Crepuscular and Keen Eye left the list; their early carriers are off the 11-12 map lists, so their maps gate them again
       // 2026-11-16 (coordinator): Esprit left the list: FOLD5 folded the owner's 11-06..11-13 edits, so its early carriers changed and its map gates it again
       // 2026-11-19 (TESTFIX7): FOLD8 folded the owner's 11-18 edits that took Nocturnal off Slow-worm, River Mink and Platypus, the early cards that un-gated it
-      ok(['tide', 'evasive', 'delivery', 'diurnal', 'taunt', 'inspiring', 'reach', 'chrysalis'].every(k=> g.s.includes(k)), `@${w} #11 the skills on cards owned before their map are un-gated (${g.s.join(', ')})`);
-      ok(['frostbite', 'fireArrow', 'molting', 'stem'].every(k=> !g.s.includes(k)), `@${w} #11 skills whose early cards can't be owned keep their gate`);
+      // 2026-11-25 (TESTFIX11): MAPEXEC1's list moves and CARDVET1's redesigns put Frostbite and Molting on cards owned before their maps, and took Taunt's early carriers away
+      ok(['tide', 'evasive', 'delivery', 'diurnal', 'inspiring', 'reach', 'chrysalis', 'frostbite', 'molting'].every(k=> g.s.includes(k)), `@${w} #11 the skills on cards owned before their map are un-gated (${g.s.join(', ')})`);
+      ok(['fireArrow', 'stem', 'taunt'].every(k=> !g.s.includes(k)), `@${w} #11 skills whose early cards can't be owned keep their gate`);
       ok(!g.s.includes('sonar') && !g.s.includes('keenSense'), `@${w} #11 Sonar / Keen Sense keep ENG28's gate`);
       ok(g.far < 1 && !g.tide && g.sonar, `@${w} #11 on a fresh save Tide reads as itself, Sonar is still "?" (hidden: ${g.h.join(', ')})`);
       const own = await pg.evaluate("(()=>{ const defs = Object.assign({}, CARD_DEFS_BASELINE, liveCards), id = Object.keys(defs).find(k=> defs[k].effects && defs[k].effects.sonar && !defs[k].token && !defs[k].test); if(!id) return null; grantCardCopy(id, {}); skillRevealMemo = null; return {id, hidden: skillHiddenNow('sonar')}; })()").catch(e=> ({err: String(e)}));
