@@ -29,4 +29,4 @@ Your table's New Skills column is the game's `MAP_FOCUS_SKILLS` (arena_app.js). 
 | 17 Wolfsbane Tundra | **Momentum** 🟥 on no card: add it<br>**Offspring** ✅ New!, 2 carriers | Offspring: Ringed Seal, Polar Bear | - | same | - |
 | 18 The Glass Dunes | **Trap** 🟨 New!, 1 carrier<br>**Expose** ✅ New!, 2 carriers | Trap: Antlion Pit<br>Expose: Roadrunner Courier, Dune Jackal | Momentum ()<br>Shield (Armadillo Guard) | same | - |
 | 19 Ashen Spurn | **Arrow (Flaming)** ✅ New!, 2 carriers | Arrow (Flaming): Quillback Elder, Fire Salamander | - | same | - |
-| 20 The Sundered Peak | **Cinder** ✅ New!, 2 carriers | Cinder: Magma Salamander, Bombardier Beetle | - | same | - |
+| 20 The Sundered Peak | **Cinder** ✅ New!, 2 carriers | Cinder: Marine Iguana, Bombardier Beetle | - | same | - |

@@ -21,3 +21,21 @@ Same rules. Three swaps; each card keeps its id and carries `artReview` rejected
 | `wound-reaver` | Gila Monster | Heloderma suspectum | Map 11 special list: a heavy orange and black beaded lizard on red rock | "pixel art, heavy orange and black beaded Gila monster on red desert rock, cacti behind, low and menacing, 128x128" |
 
 No redo needed: `tide-spirit` (Tide Seahorse: the art already shows a seahorse; only its skills and species label changed).
+
+## CARDVET1c (Maps 14-20, 2026-11-25)
+
+Same rules (owner 00:22: volcano maps get tough, menacing animals, "the art would have to be generically menacing and not too grassy"; "the caldera wyrm can be an oversized komodo dragon"). Nine swaps; each card keeps its id and carries `artReview` rejected, "needs-redo (CARDVET1c): ...". Dark rock, ash, sand or scree; no grass.
+
+| Card id | New name | Real species | Scene | Prompt sketch |
+|---|---|---|---|---|
+| `magma-salamander` | Marine Iguana | Amblyrhynchus cristatus | Map 20 (The Sundered Peak): a heavy black spiny iguana on jagged lava rock | "pixel art, heavy black spiny marine iguana on jagged dark lava rock, surf and ash haze behind, menacing, 128x128" |
+| `magma-titan` | Cape Buffalo | Syncerus caffer | Maps 19-22 (the Magma Rhino slot): a huge black buffalo with a heavy horn boss, scarred hide | "pixel art, huge black cape buffalo with a heavy boss of horn and a scarred hide on dark ash-grey ground, smoke behind, menacing, 128x128" |
+| `caldera-wyrm` | The Caldera Komodo | Varanus komodoensis (oversized) | Map 20 side map leader (20-B-4): a gigantic scarred Komodo dragon on a crater rim | "pixel art, gigantic scarred Komodo dragon on a black volcanic crater rim, steam vents and red glow behind, menacing, 128x128" |
+| `fire-drake-hatchling` | Komodo Hatchling | Varanus komodoensis (young) | Map 20 special list: a small striped young Komodo on grey rock | "pixel art, small striped green and brown young Komodo dragon on grey volcanic rock, steam behind, menacing, 128x128" |
+| `granite-ox-golem` | Gaur | Bos gaurus | Map 20 side map: a huge dark brown gaur with pale socks on scree | "pixel art, huge muscular dark brown gaur with pale socks and curved horns on dark volcanic scree, menacing, 128x128" |
+| `brimstone-hound` | African Wild Dog | Lycaon pictus | Map 20 side map: a lean mottled painted dog with big round ears | "pixel art, lean mottled black, tan and white African wild dog with large round ears on ash-grey rock, menacing, 128x128" |
+| `ember-revenant` | Cassowary | Casuarius casuarius | Map 19 side map (19-A-10): a tall blue-necked cassowary on ash gravel | "pixel art, tall blue-necked black cassowary with a red wattle on ash-grey volcanic gravel, smoky ridge behind, menacing, 128x128" |
+| `malachite-golem` | Glyptodon | Glyptodon (extinct) | Map 19 side map: a domed tiled-shell glyptodon at a cave mouth | "pixel art, huge domed armoured glyptodon with a tiled shell and short thick legs on grey rock in a dim cave mouth, menacing, 128x128" |
+| `sandstorm-roc` | Griffon Vulture | Gyps fulvus | Map 18 special list (The Glass Dunes): a huge brown vulture gliding over pale dunes | "pixel art, huge brown griffon vulture with broad wings gliding low over pale desert dunes, hazy orange sky, menacing, 128x128" |
+
+No redo needed: `pinecone-sapper` (Mammal, the art shows a pangolin) and `stalactite-golem` (Crustacean, the art shows a pill bug) changed their species label only.
