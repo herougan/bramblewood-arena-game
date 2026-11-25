@@ -68,50 +68,50 @@
   "cards": 957,
   "creatures": 858,
   "tagged": 860,
-  "animals": 380,
+  "animals": 385,
   "groups": 148,
-  "withSubtype": 113,
-  "proposed": 23,
+  "withSubtype": 102,
+  "proposed": 22,
   "subtype": {
    "changeling": 3,
    "conjured": 3,
-   "construct": 8,
-   "elemental": 11,
-   "fiend": 11,
+   "construct": 6,
+   "elemental": 9,
+   "fiend": 10,
    "fungus": 3,
    "ghost": 4,
    "glitch": 1,
    "mutant": 5,
-   "mythic": 16,
-   "plant": 18,
-   "spirit": 7,
+   "mythic": 13,
+   "plant": 17,
+   "spirit": 6,
    "structure": 16,
-   "undead": 5,
+   "undead": 4,
    "were": 2
   },
   "how": {
-   "art": 59,
+   "art": 53,
    "ee": 8,
-   "flavor": 15,
-   "icon": 48,
-   "name": 635,
-   "proposed": 23,
+   "flavor": 14,
+   "icon": 47,
+   "name": 644,
+   "proposed": 22,
    "type": 70
   },
   "topGroups": {
    "otter": 34,
    "hummingbird": 32,
    "fish": 28,
-   "beetle": 22,
+   "beetle": 21,
    "fox": 19,
+   "lizard": 18,
    "turtle": 18,
    "cat": 17,
    "bat": 17,
    "frog": 17,
-   "salamander": 17,
    "rabbit": 16,
    "duck": 16,
-   "lizard": 15,
+   "salamander": 16,
    "wolf": 15,
    "snake": 15,
    "heron": 14,
@@ -134,7 +134,7 @@
  "ownerCalls": [
   {
    "id": "ent",
-   "name": "Ent",
+   "name": "Barn Owl",
    "animal": "owl",
    "subtype": "plant",
    "why": "art is a walking oak giant, no animal; \"a walking watchtower of oak\": proposed: an owl"
@@ -155,24 +155,17 @@
   },
   {
    "id": "venomlord-serpent",
-   "name": "Venomlord Serpent",
+   "name": "Gaboon Viper",
    "animal": "viper",
    "subtype": null,
    "why": "a venomous serpent; proposed: a viper"
   },
   {
    "id": "strangler-vine",
-   "name": "Strangler Vine",
+   "name": "Strangler Fig",
    "animal": "snake",
    "subtype": "plant",
    "why": "art is a tree face; proposed: a snake (\"load-bearing\" coils)"
-  },
-  {
-   "id": "cypress-root-lurker",
-   "name": "Cypress Root Lurker",
-   "animal": "alligator",
-   "subtype": "plant",
-   "why": "art is a root face in the water; proposed: an alligator (lurks in the swamp)"
   },
   {
    "id": "pinecone-sapper",
@@ -349,8 +342,8 @@
   },
   {
    "id": "ent",
-   "name": "Ent",
-   "icon": "🌳",
+   "name": "Barn Owl",
+   "icon": "🦉",
    "creature": true,
    "animal": "owl",
    "group": "owl",
@@ -400,14 +393,14 @@
   },
   {
    "id": "yeti",
-   "name": "Yeti",
-   "icon": "🦣",
+   "name": "Wild Yak",
+   "icon": "🐂",
    "creature": true,
-   "animal": "yeti",
-   "group": "ape",
+   "animal": "yak",
+   "group": "ox",
    "subtype": null,
    "how": "name",
-   "note": "the snow ape"
+   "note": "2026-11-25 (TESTFIX11): CARDVET1b real-animal swap, was Yeti (the snow ape)"
   },
   {
    "id": "scraper-of-skies",
@@ -1240,7 +1233,7 @@
   },
   {
    "id": "venomlord-serpent",
-   "name": "Venomlord Serpent",
+   "name": "Gaboon Viper",
    "icon": "🐍",
    "creature": true,
    "animal": "viper",
@@ -1697,7 +1690,7 @@
   },
   {
    "id": "strangler-vine",
-   "name": "Strangler Vine",
+   "name": "Strangler Fig",
    "icon": "🌿",
    "creature": true,
    "animal": "snake",
@@ -1951,14 +1944,14 @@
   },
   {
    "id": "cypress-root-lurker",
-   "name": "Cypress Root Lurker",
-   "icon": "🌳",
+   "name": "Black Caiman",
+   "icon": "🐊",
    "creature": true,
-   "animal": "alligator",
+   "animal": "caiman",
    "group": "crocodile",
-   "subtype": "plant",
-   "how": "proposed",
-   "note": "art is a root face in the water; proposed: an alligator (lurks in the swamp)"
+   "subtype": null,
+   "how": "name",
+   "note": "2026-11-25 (TESTFIX11): CARDVET1a real-animal swap, was Cypress Root Lurker (a root face, plant)"
   },
   {
    "id": "cave-bat-swarm",
@@ -2013,13 +2006,14 @@
   },
   {
    "id": "magma-salamander",
-   "name": "Magma Salamander",
+   "name": "Marine Iguana",
    "icon": "🦎",
    "creature": true,
-   "animal": "salamander",
-   "group": "salamander",
+   "animal": "marine iguana",
+   "group": "lizard",
    "subtype": "elemental",
-   "how": "name"
+   "how": "name",
+   "note": "2026-11-25 (TESTFIX11): CARDVET1c renamed it Marine Iguana; elemental kept while CARDVET1-2 (fire breath) is open"
   },
   {
    "id": "ash-cloud-condor",
@@ -2053,13 +2047,14 @@
   },
   {
    "id": "fire-drake-hatchling",
-   "name": "Fire Drake Hatchling",
-   "icon": "🐉",
+   "name": "Komodo Hatchling",
+   "icon": "🦎",
    "creature": true,
-   "animal": "dragon",
-   "group": "dragon",
-   "subtype": "mythic",
-   "how": "art"
+   "animal": "komodo dragon",
+   "group": "lizard",
+   "subtype": null,
+   "how": "name",
+   "note": "2026-11-25 (TESTFIX11): CARDVET1c real-animal swap, was Fire Drake Hatchling (mythic)"
   },
   {
    "id": "taiga-lynx",
@@ -2214,14 +2209,14 @@
   },
   {
    "id": "wound-reaver",
-   "name": "Wound Reaver",
-   "icon": "🗡️",
+   "name": "Gila Monster",
+   "icon": "🦎",
    "creature": true,
-   "animal": "lizard",
+   "animal": "gila monster",
    "group": "lizard",
-   "subtype": "elemental",
-   "how": "art",
-   "note": "a lava lizard"
+   "subtype": null,
+   "how": "name",
+   "note": "2026-11-25 (TESTFIX11): CARDVET1b real-animal swap, was Wound Reaver (a lava lizard, elemental)"
   },
   {
    "id": "war-drum-mandrill",
@@ -2345,14 +2340,14 @@
   },
   {
    "id": "sandstorm-roc",
-   "name": "Sandstorm Roc",
+   "name": "Griffon Vulture",
    "icon": "🦅",
    "creature": true,
-   "animal": "eagle",
-   "group": "eagle",
-   "subtype": "mythic",
-   "how": "icon",
-   "note": "the roc: a giant eagle"
+   "animal": "vulture",
+   "group": "vulture",
+   "subtype": null,
+   "how": "name",
+   "note": "2026-11-25 (TESTFIX11): CARDVET1c real-animal swap, was Sandstorm Roc (a giant eagle, mythic)"
   },
   {
    "id": "frost-hare-sprinter",
@@ -2466,7 +2461,7 @@
   },
   {
    "id": "kraken-spawnling",
-   "name": "Kraken Spawnling",
+   "name": "Giant Pacific Octopus",
    "icon": "🐙",
    "creature": true,
    "animal": "octopus",
@@ -2617,14 +2612,14 @@
   },
   {
    "id": "magma-titan",
-   "name": "Magma Rhino",
-   "icon": "🗿",
+   "name": "Cape Buffalo",
+   "icon": "🐃",
    "creature": true,
-   "animal": "rhino",
-   "group": "rhino",
-   "subtype": "elemental",
+   "animal": "cape buffalo",
+   "group": "buffalo",
+   "subtype": null,
    "how": "name",
-   "note": "2026-11-02 CONTENT6 (owner: no pure elementals): renamed from Magma Titan (was proposed: a gorilla); art (a lava golem) queued for a lava rhino"
+   "note": "2026-11-25 (TESTFIX11): CARDVET1c real-animal swap, was Magma Rhino (a lava rhino, elemental)"
   },
   {
    "id": "phoenix-fledgling",
@@ -4205,14 +4200,14 @@
   },
   {
    "id": "brimstone-hound",
-   "name": "Brimstone Hound",
-   "icon": "🐕‍🦺",
+   "name": "African Wild Dog",
+   "icon": "🐕",
    "creature": true,
-   "animal": "dog",
+   "animal": "wild dog",
    "group": "dog",
-   "subtype": "fiend",
-   "how": "art",
-   "note": "a black hellhound (Devil type)"
+   "subtype": null,
+   "how": "name",
+   "note": "2026-11-25 (TESTFIX11): CARDVET1c real-animal swap, was Brimstone Hound (a hellhound, fiend)"
   },
   {
    "id": "blackmass-acolyte",
@@ -4723,7 +4718,7 @@
   },
   {
    "id": "heron-hag",
-   "name": "The Heron Hag",
+   "name": "The Grey Heron",
    "icon": "🦩",
    "creature": true,
    "animal": "heron",
@@ -5067,14 +5062,14 @@
   },
   {
    "id": "willow-o-wisp",
-   "name": "Willow-o'-Wisp",
+   "name": "Marsh Firefly",
    "icon": "🪲",
    "creature": true,
-   "animal": "beetle",
+   "animal": "firefly",
    "group": "beetle",
-   "subtype": "spirit",
-   "how": "flavor",
-   "note": "\"a beetle made of shadow\""
+   "subtype": null,
+   "how": "name",
+   "note": "2026-11-25 (TESTFIX11): CARDVET1a real-animal swap, was a shadow beetle (spirit)"
   },
   {
    "id": "cinder-stoker",
@@ -5161,14 +5156,14 @@
   },
   {
    "id": "malachite-golem",
-   "name": "Malachite Golem",
-   "icon": "🗿",
+   "name": "Glyptodon",
+   "icon": "🐢",
    "creature": true,
-   "animal": "beetle",
-   "group": "beetle",
-   "subtype": "construct",
-   "how": "art",
-   "note": "a green malachite beetle"
+   "animal": "glyptodon",
+   "group": "armadillo",
+   "subtype": null,
+   "how": "name",
+   "note": "2026-11-25 (TESTFIX11): CARDVET1c real-animal swap, was Malachite Golem (a malachite beetle, construct)"
   },
   {
    "id": "irradiated-axolotl",
@@ -5349,13 +5344,14 @@
   },
   {
    "id": "caldera-wyrm",
-   "name": "The Caldera Wyrm",
-   "icon": "🐉",
+   "name": "The Caldera Komodo",
+   "icon": "🦎",
    "creature": true,
-   "animal": "dragon",
-   "group": "dragon",
-   "subtype": "mythic",
-   "how": "art"
+   "animal": "komodo dragon",
+   "group": "lizard",
+   "subtype": null,
+   "how": "name",
+   "note": "2026-11-25 (TESTFIX11): CARDVET1c real-animal swap, was The Caldera Wyrm (mythic)"
   },
   {
    "id": "the-contradiction",
@@ -5424,14 +5420,14 @@
   },
   {
    "id": "ember-revenant",
-   "name": "Ember Revenant",
-   "icon": "⚔️",
+   "name": "Cassowary",
+   "icon": "🐦",
    "creature": true,
-   "animal": "boar",
-   "group": "boar",
-   "subtype": "undead",
-   "how": "art",
-   "note": "an armoured burning boar"
+   "animal": "cassowary",
+   "group": "bird",
+   "subtype": null,
+   "how": "name",
+   "note": "2026-11-25 (TESTFIX11): CARDVET1c real-animal swap, was Ember Revenant (a burning boar, undead)"
   },
   {
    "id": "meerkat-wayfarer",
@@ -7574,7 +7570,7 @@
   },
   {
    "id": "hedgehog-herbalist",
-   "name": "Hedgehog Herbalist",
+   "name": "Hedgehog Matron",
    "icon": "🦔",
    "creature": true,
    "animal": "hedgehog",
@@ -9309,7 +9305,7 @@
   },
   {
    "id": "phoenix-mushrooms",
-   "name": "Phoenix Mushrooms",
+   "name": "Honey Fungus",
    "icon": "🍄‍🟫",
    "creature": true,
    "animal": "mushroom",
@@ -9455,14 +9451,14 @@
   },
   {
    "id": "granite-ox-golem",
-   "name": "Granite Ox Golem",
+   "name": "Gaur",
    "icon": "🐂",
    "creature": true,
-   "animal": "ox",
+   "animal": "gaur",
    "group": "ox",
-   "subtype": "construct",
+   "subtype": null,
    "how": "name",
-   "note": "kept as set in cards.json"
+   "note": "2026-11-25 (TESTFIX11): CARDVET1c real-animal swap, was Granite Ox Golem (construct)"
   },
   {
    "id": "bolas-spider",

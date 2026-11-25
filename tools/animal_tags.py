@@ -51,10 +51,10 @@ MANUAL = {
   'stormcaller': ('owl', 'elemental', 'name', '2026-11-02 CONTENT6 (owner: no pure elementals): renamed Stormcaller Owl; art (a storm cloud with eyes) queued for a storm-cloud owl'),
   'ember-wisp': ('firefly', 'elemental', 'name', '2026-11-02 CONTENT6 (owner: no pure elementals): renamed from Ember Wisp; art (a spark with a face) queued for a firefly'),
   'alpine-avalanche': ('polar bear', 'elemental', 'art', 'snow rolling down as a white bear'),
-  'magma-titan': ('rhino', 'elemental', 'name', '2026-11-02 CONTENT6 (owner: no pure elementals): renamed from Magma Titan (was proposed: a gorilla); art (a lava golem) queued for a lava rhino'),
+  'magma-titan': ('cape buffalo', None, 'name', '2026-11-25 (TESTFIX11): CARDVET1c real-animal swap, was Magma Rhino (a lava rhino, elemental)'),
   'rimeheart-colossus': ('mammoth', 'elemental', 'name', '2026-11-02 CONTENT6 (owner: no pure elementals): renamed from Rimeheart Colossus (was proposed: a gorilla); art (an ice and lava giant) queued for a mammoth'),
-  'wound-reaver': ('lizard', 'elemental', 'art', 'a lava lizard'),
-  'magma-salamander': ('salamander', 'elemental', 'name', ''),
+  'wound-reaver': ('gila monster', None, 'name', '2026-11-25 (TESTFIX11): CARDVET1b real-animal swap, was Wound Reaver (a lava lizard, elemental)'),
+  'magma-salamander': ('marine iguana', 'elemental', 'name', '2026-11-25 (TESTFIX11): CARDVET1c renamed it Marine Iguana; elemental kept while CARDVET1-2 (fire breath) is open'),
   'rimefire-salamander': ('salamander', 'elemental', 'name', ''),
   'storm-heron': ('heron', 'elemental', 'name', 'species Bird + Elemental'),
   'shrine-acolyte': ('cat', 'spirit', 'art', 'a pink shrine kitten'),
@@ -63,7 +63,7 @@ MANUAL = {
   'shrine-bell-ringer': ('sparrow', 'spirit', 'art', 'a sparrow ringing the shrine bell'),
   'echo-keeper': ('crow', 'spirit', 'art', 'a crow among candles'),
   'hollow-oath-keeper': ('salamander', 'spirit', 'art', 'a wooden salamander with a glowing face (Flora)'),
-  'willow-o-wisp': ('beetle', 'spirit', 'flavor', '"a beetle made of shadow"'),
+  'willow-o-wisp': ('firefly', None, 'name', '2026-11-25 (TESTFIX11): CARDVET1a real-animal swap, was a shadow beetle (spirit)'),
   'marsh-wisp': ('newt', 'ghost', 'name', '2026-11-02 CONTENT6 (owner: no pure elementals): renamed Wisp Newt; art (a blue wisp) queued for a ghost newt'),
   'the-unremembered': ('heron', 'ghost', 'name', '2026-11-02 CONTENT6 (owner: no pure elementals): renamed Unremembered Heron; art (a faceless water-shade) queued for a ghost heron'),
   'magma-wraith': ('wolf', 'ghost', 'art', 'a wolf of flame'),
@@ -72,11 +72,11 @@ MANUAL = {
   'ashbone-ghoul': ('hyena', 'undead', 'art', 'a burnt canid skeleton; hyena by the skull'),
   'cinder-skeleton': ('horse', 'undead', 'art', 'a horse skeleton'),
   'obsidian-lich': ('lizard', 'undead', 'art', 'a skeletal horned lizard over lava'),
-  'ember-revenant': ('boar', 'undead', 'art', 'an armoured burning boar'),
+  'ember-revenant': ('cassowary', None, 'name', '2026-11-25 (TESTFIX11): CARDVET1c real-animal swap, was Ember Revenant (a burning boar, undead)'),
   # constructs and structures
   'stoneheart-golem': ('tortoise', 'construct', 'name', '2026-11-02 CONTENT6 (owner: no pure elementals): renamed Stoneheart Tortoise (was proposed: a gorilla); art (a stone golem) queued'),
   'stalactite-golem': ('pill bug', 'construct', 'name', '2026-11-02 CONTENT6 (owner: no pure elementals): renamed Stalactite Pill Bug (was proposed: a gorilla); art (a crystal golem) queued'),
-  'malachite-golem': ('beetle', 'construct', 'art', 'a green malachite beetle'),
+  'malachite-golem': ('glyptodon', None, 'name', '2026-11-25 (TESTFIX11): CARDVET1c real-animal swap, was Malachite Golem (a malachite beetle, construct)'),
   'glass-golem': ('armadillo', 'construct', 'art', 'an armadillo with a glass shell'),
   'quarry-troll': ('donkey', 'construct', 'art', 'a donkey of quarried stone'),
   'iron-warden': ('badger', 'construct', 'name', '2026-11-02 CONTENT6 (owner: no pure elementals): renamed Iron Badger; art (a walking suit of iron) queued for an iron-plated badger'),
@@ -94,7 +94,7 @@ MANUAL = {
   'dread-bell': ('bat', 'fiend', 'proposed', 'art is a horned bell with eyes; proposed: a bat (horns like ears, rings in the dark)'),
   'tithe-collector': ('cat', 'fiend', 'art', 'a black cat collecting coins'), 'lurking-dread': ('cat', 'fiend', 'art', 'a black cat-shape in the roots'),
   'puppeteer-imp': ('fox', 'fiend', 'art', 'a fox pulling golden strings'), 'the-sixfold': ('cat', 'fiend', 'art', 'a horned black cat-demon in a ring of runes'),
-  'ashmantle-fiend': ('bat', 'fiend', 'art', 'a bat-winged fire fiend'), 'brimstone-hound': ('dog', 'fiend', 'art', 'a black hellhound (Devil type)'),
+  'ashmantle-fiend': ('bat', 'fiend', 'art', 'a bat-winged fire fiend'), 'brimstone-hound': ('wild dog', None, 'name', '2026-11-25 (TESTFIX11): CARDVET1c real-animal swap, was Brimstone Hound (a hellhound, fiend)'),
   'frog-imp': ('frog', 'conjured', 'name', 'the plague of frogs'), 'fly-imp': ('fly', 'conjured', 'name', 'the plague of flies'),
   # plants and fungi
   'ent': ('owl', 'plant', 'proposed', 'art is a walking oak giant, no animal; "a walking watchtower of oak": proposed: an owl'),
@@ -102,7 +102,7 @@ MANUAL = {
   'thornvine-lasher': ('lizard', 'plant', 'art', 'a lizard-shaped tangle of thorny vine'),
   'elder-willow': ('heron', 'plant', 'proposed', 'art is a willow with a face; proposed: a heron (the willow by the water)'),
   'strangler-vine': ('snake', 'plant', 'proposed', 'art is a tree face; proposed: a snake ("load-bearing" coils)'),
-  'cypress-root-lurker': ('alligator', 'plant', 'proposed', 'art is a root face in the water; proposed: an alligator (lurks in the swamp)'),
+  'cypress-root-lurker': ('caiman', None, 'name', '2026-11-25 (TESTFIX11): CARDVET1a real-animal swap, was Cypress Root Lurker (a root face, plant)'),
   'pinecone-sapper': ('pangolin', 'plant', 'proposed', 'art is a pinecone with eyes; proposed: a pangolin (scales like a cone)'),
   'old-willow-of-the-ford': ('heron', 'plant', 'proposed', 'art is the willow; proposed: a heron, like the Elder Willow'),
   'heartwood-treant': ('bear', 'plant', 'proposed', 'art is a wooden giant; proposed: a bear'),
@@ -113,11 +113,11 @@ MANUAL = {
   'puffball-bombardier': ('toad', 'fungus', 'proposed', 'art is a puffball with a face; proposed: a toad (toadstool)'),
   # mythic, changelings, were-beasts, mutants, glitch
   'red-dragon': ('dragon', 'mythic', 'art', ''), 'white-dragon': ('dragon', 'mythic', 'art', ''), 'blue-dragon': ('dragon', 'mythic', 'art', ''),
-  'green-dragon': ('dragon', 'mythic', 'art', ''), 'black-dragon': ('dragon', 'mythic', 'art', ''), 'fire-drake-hatchling': ('dragon', 'mythic', 'art', ''),
-  'pyroclast-wyrm': ('dragon', 'mythic', 'art', ''), 'caldera-wyrm': ('dragon', 'mythic', 'art', ''),
+  'green-dragon': ('dragon', 'mythic', 'art', ''), 'black-dragon': ('dragon', 'mythic', 'art', ''), 'fire-drake-hatchling': ('komodo dragon', None, 'name', '2026-11-25 (TESTFIX11): CARDVET1c real-animal swap, was Fire Drake Hatchling (mythic)'),
+  'pyroclast-wyrm': ('dragon', 'mythic', 'art', ''), 'caldera-wyrm': ('komodo dragon', None, 'name', '2026-11-25 (TESTFIX11): CARDVET1c real-animal swap, was The Caldera Wyrm (mythic)'),
   'fathom-leviathan': ('whale', 'mythic', 'art', 'a whale-shaped leviathan'), 'grovebearer-dragon-turtle': ('tortoise', 'mythic', 'art', ''),
   'irradiated-couatl': ('snake', 'mythic', 'flavor', 'the feathered serpent'), 'phoenix-fledgling': ('phoenix', 'mythic', 'name', 'a firebird'),
-  'sandstorm-roc': ('eagle', 'mythic', 'icon', 'the roc: a giant eagle'),
+  'sandstorm-roc': ('vulture', None, 'name', '2026-11-25 (TESTFIX11): CARDVET1c real-animal swap, was Sandstorm Roc (a giant eagle, mythic)'),
   'puddle-changeling': ('fox', 'changeling', 'art', 'a fox at a puddle ("looked like a frog yesterday")'), 'hedge-changeling': ('cat', 'changeling', 'art', 'a cat in the hedge'),
   'glass-changeling': ('fox', 'changeling', 'art', 'a fox with glass butterfly wings'),
   'weredog': ('dog', 'were', 'name', ''), 'werebadger': ('badger', 'were', 'name', ''),
@@ -125,7 +125,7 @@ MANUAL = {
   'mirrorhide-mutant': ('goat', 'mutant', 'art', 'a mountain goat'), 'two-headed-calf': ('cow', 'mutant', 'name', ''),
   'missingno': ('bird', 'glitch', 'proposed', 'species Bird; the art reads as a pixel cat: owner call'),
   # animals the name does not name (art / flavor reads)
-  'yeti': ('yeti', None, 'name', 'the snow ape'), 'yeti-chieftain': ('yeti', None, 'name', ''), 'glacial-ape-king': ('ape', None, 'name', ''),
+  'yeti': ('yak', None, 'name', '2026-11-25 (TESTFIX11): CARDVET1b real-animal swap, was Yeti (the snow ape)'), 'yeti-chieftain': ('yeti', None, 'name', ''), 'glacial-ape-king': ('ape', None, 'name', ''),
   'creeper': ('bee', None, 'flavor', '"a green bee with no face"'), 'tardigrade': ('tardigrade', None, 'name', ''),
   'tiny-cave-dweller': ('isopod', None, 'art', 'a round cave crustacean with feelers'), 'conch-herald': ('hermit crab', None, 'icon', 'species Crustacean, blowing a conch'),
   'trojan-raider': ('raccoon', None, 'art', 'a raccoon peeking out of the wooden horse'), 'subterraneaner': ('mole', None, 'art', ''),
@@ -254,7 +254,7 @@ MANUAL = {
   'muskrat-reedgatherer': ('muskrat', None, 'name', 'kept as set in cards.json'),
   'magpie-collector': ('magpie', None, 'name', 'kept as set in cards.json'),
   'mother-carrier': ('hummingbird', 'structure', 'name', 'kept as set in cards.json'),
-  'granite-ox-golem': ('ox', 'construct', 'name', 'kept as set in cards.json'),
+  'granite-ox-golem': ('gaur', None, 'name', '2026-11-25 (TESTFIX11): CARDVET1c real-animal swap, was Granite Ox Golem (construct)'),
   'bolas-spider': ('bolas spider', None, 'name', 'kept as set in cards.json'),
   'anadromous-fry': ('salmon', None, 'name', 'kept as set in cards.json'),
 }
@@ -336,7 +336,8 @@ TYPE_ANIMAL = {'Otter': 'otter', 'Hummingbird': 'hummingbird', 'Bee': 'bee', 'An
   'Worm': 'worm', 'Fish': 'fish', 'Sheep': 'sheep', 'Vulture': 'vulture', 'Ape': 'ape', 'Cephalopod': 'octopus', 'Cetacean': 'whale'}
 
 # the head word for grouping (most groups are the last word; these are not)
-GROUP = {'sea bass': 'fish', 'lungfish': 'fish', 'bumblebee': 'bee', 'cormorant': 'seabird', 'crossbill': 'songbird', 'glow-worm': 'beetle', 'hoatzin': 'bird', 'shoebill': 'heron', # 2026-11-13 (package FIX11): the kept hand tags
+GROUP = {'gila monster': 'lizard', 'marine iguana': 'lizard', 'gaur': 'ox', 'cassowary': 'bird', 'glyptodon': 'armadillo',  # 2026-11-25 (TESTFIX11): CARDVET1's real animals
+  'sea bass': 'fish', 'lungfish': 'fish', 'bumblebee': 'bee', 'cormorant': 'seabird', 'crossbill': 'songbird', 'glow-worm': 'beetle', 'hoatzin': 'bird', 'shoebill': 'heron', # 2026-11-13 (package FIX11): the kept hand tags
   'polar bear': 'bear', 'honey badger': 'badger', 'snow leopard': 'leopard', 'leopard seal': 'seal', 'leopard slug': 'slug', 'sea turtle': 'turtle',
   'box turtle': 'turtle', 'snapping turtle': 'turtle', 'bog turtle': 'turtle', 'tortoise': 'turtle', 'sea krait': 'snake', 'sea snake': 'snake', 'whale shark': 'shark',
   'sperm whale': 'whale', 'humpback whale': 'whale', 'hammerhead shark': 'shark', 'greenland shark': 'shark', 'electric catfish': 'catfish', 'horseshoe crab': 'horseshoe crab',
