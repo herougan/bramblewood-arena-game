@@ -130,7 +130,6 @@
       "Bird"
     ],
     "animal": "owl",
-    "subtype": "plant",
     "source": {
       "kind": "map",
       "id": "mo",
@@ -8744,7 +8743,6 @@
       "Mammal"
     ],
     "animal": "pangolin",
-    "subtype": "plant",
     "source": {
       "kind": "pack",
       "tier": 3,

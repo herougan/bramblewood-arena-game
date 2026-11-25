@@ -70,8 +70,8 @@
   "tagged": 860,
   "animals": 385,
   "groups": 148,
-  "withSubtype": 102,
-  "proposed": 22,
+  "withSubtype": 100,
+  "proposed": 20,
   "subtype": {
    "changeling": 3,
    "conjured": 3,
@@ -83,7 +83,7 @@
    "glitch": 1,
    "mutant": 5,
    "mythic": 13,
-   "plant": 17,
+   "plant": 15,
    "spirit": 6,
    "structure": 16,
    "undead": 4,
@@ -94,8 +94,8 @@
    "ee": 8,
    "flavor": 14,
    "icon": 47,
-   "name": 644,
-   "proposed": 22,
+   "name": 646,
+   "proposed": 20,
    "type": 70
   },
   "topGroups": {
@@ -133,13 +133,6 @@
  },
  "ownerCalls": [
   {
-   "id": "ent",
-   "name": "Barn Owl",
-   "animal": "owl",
-   "subtype": "plant",
-   "why": "art is a walking oak giant, no animal; \"a walking watchtower of oak\": proposed: an owl"
-  },
-  {
    "id": "bramble-sprout",
    "name": "Bramble Sprout",
    "animal": "hedgehog",
@@ -166,13 +159,6 @@
    "animal": "snake",
    "subtype": "plant",
    "why": "art is a tree face; proposed: a snake (\"load-bearing\" coils)"
-  },
-  {
-   "id": "pinecone-sapper",
-   "name": "Pinecone Sapper",
-   "animal": "pangolin",
-   "subtype": "plant",
-   "why": "art is a pinecone with eyes; proposed: a pangolin (scales like a cone)"
   },
   {
    "id": "dread-bell",
@@ -347,9 +333,9 @@
    "creature": true,
    "animal": "owl",
    "group": "owl",
-   "subtype": "plant",
-   "how": "proposed",
-   "note": "art is a walking oak giant, no animal; \"a walking watchtower of oak\": proposed: an owl"
+   "subtype": null,
+   "how": "name",
+   "note": "2026-11-25 (TESTFIX11): CARDVET1a real-animal swap, the Barn Owl (was the Ent, a walking oak, plant)"
   },
   {
    "id": "dolphin-knight",
@@ -2083,9 +2069,9 @@
    "creature": true,
    "animal": "pangolin",
    "group": "pangolin",
-   "subtype": "plant",
-   "how": "proposed",
-   "note": "art is a pinecone with eyes; proposed: a pangolin (scales like a cone)"
+   "subtype": null,
+   "how": "name",
+   "note": "2026-11-25 (TESTFIX11): CARDVET1c made it a Mammal, a pangolin (the art shows one); was plant"
   },
   {
    "id": "snowshoe-hare",
