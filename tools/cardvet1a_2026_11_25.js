@@ -36,7 +36,7 @@ const DES = {
   // --- Map 6 and its side map (mm)
   'booming-bittern': {set: {effects: {intimidate: 2}}, fit: 0.2, owner: true},
   'puddle-hopper': {set: {effects: {tide: true, intimidate: 1}}, fit: 0.28},
-  'willow-o-wisp': {set: {name: 'Marsh Firefly', icon: '🪲', animal: 'firefly', species: ['Insect'], flavor: 'One cold green light over the reeds at night. Everything that follows it ends up in the water.'}, art: 'Willow-o-Wisp (a ghost-light beetle) becomes a marsh firefly: a firefly with a glowing green tail hovering over dark reeds and still swamp water at night, small and dim, generically eerie'},
+  'willow-o-wisp': {set: {name: 'Marsh Firefly', icon: '🪲', animal: 'firefly', species: ['Insect'], flavor: 'One cold green light over the reeds at night. Everything that follows it ends up in the water.'}, fit: 1.3, art: 'Willow-o-Wisp (a ghost-light beetle) becomes a marsh firefly: a firefly with a glowing green tail hovering over dark reeds and still swamp water at night, small and dim, generically eerie'},
   'venomlord-serpent': {set: {name: 'Gaboon Viper'}, note: 'rename only (real viper; the art already shows a venom-dripping viper)', owner: true},
   'heron-hag': {set: {name: 'The Grey Heron'}, note: 'rename only (real heron; the art already shows a grey heron in the mist)', owner: true},
   // --- owner-edited cards whose Level table carries a skill that is on no Maps 0-20 row
