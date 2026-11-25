@@ -68,3 +68,7 @@ RESULT 11-A-3 {"anvil-thrush":3,"gangrenous-leech":2,"ibex-rockcaller":2,"the-ga
 start {"apollo-butterfly":3,"eagle-owl-quartermaster":2,"eyrie-warden":2,"gale-swift":2,"gangrenous-leech":2,"swamp-alligator":3} 89.7
 round 1: cur 95/89.7; 53 legal, 53 read + 14 predicted (of 37); top: -1 eyrie-warden -3 swamp-alligator +2 gangrenous-leech +2 peak-condor 75/75.7 | -1 apollo-butterfly +1 gangrenous-leech 78.3/82.3 | -2 eagle-owl-quartermaster +2 gale-swift 75/83.3 | -2 apollo-butterfly +2 gangrenous-leech 78.3/83.7 | -3 swamp-alligator +2 peak-condor +1 apollo-butterfly 75/87
 RESULT 11-A-2 {"apollo-butterfly":3,"eagle-owl-quartermaster":2,"eyrie-warden":1,"gale-swift":2,"gangrenous-leech":4,"peak-condor":2} 75.7 {} moves: -1 eyrie-warden -3 swamp-alligator +2 gangrenous-leech +2 peak-condor problems: []
+start {"platypus-spur":1,"river-mink":1,"slow-worm":3,"water-shrew":4,"muskrat-lodgekeeper":2,"beaver-lumberjack":3,"pond-algae":1} 52.3
+round 1: cur 43.3/52.3; 98 legal, 98 read + 14 predicted (of 17); top: -2 slow-worm +2 pond-algae 55/53 | -3 slow-worm +3 pika-hoarder 58.3/51.7 | -3 slow-worm -3 beaver-lumberjack +3 pika-hoarder +3 platypus-spur 56.7/49.7 | -3 slow-worm +1 duck-paddler +2 muskrat-lodgekeeper 55/49.3 | -3 slow-worm +1 duck-paddler +2 platypus-spur 55/49
+no nearer move
+RESULT 4-3 {"platypus-spur":1,"river-mink":1,"slow-worm":3,"water-shrew":4,"muskrat-lodgekeeper":2,"beaver-lumberjack":3,"pond-algae":1} 52.3 {} moves:  problems: []
