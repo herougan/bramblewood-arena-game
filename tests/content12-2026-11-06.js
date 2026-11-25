@@ -49,7 +49,8 @@ const CARRY = {'horseshoe-crab': 'relict', 'nautilus-drifter': 'relict', 'leafcu
   'dormouse': 'nocturnal', 'torch': 'illuminate', 'meadow-frog': 'tide', 'caiman-hatchling': 'ambush', 'pike-lancer': 'pierce', 'dolphin-knight': 'sonar', 'irradiated-glow-wyrm': 'irradiated', 'mangrove-mudskipper': 'skitter'};
 Object.entries(CARRY).forEach(([id, k])=>{ ok(by[id] && (by[id].effects[k] != null || redesigned(id)) /* 2026-11-18 (TESTFIX): the redesign re-set its skills (OWN-1117-3) */, `${id} carries ${k}`); ok(inBand(id), `${id} in band`); });
 { const AT10 = require('./lib/redesign.js').skillsAt10; // 2026-11-19 (TESTFIX6): LVL10, the Colony's Meld from Level 3
-  ok(AT10('leafcutter-gardener').meld.quick === true && AT10('coral-polyp-colony').meld.armor === 1, 'Meld {Quick} / Meld {Armor 1}'); }
+  // 2026-11-25 (TESTFIX11): CARDVET1b took Meld off the Coral Polyp Colony (Armor at Level 6 instead); the Leafcutter keeps Meld {Quick}
+  ok(AT10('leafcutter-gardener').meld.quick === true && !AT10('coral-polyp-colony').meld && AT10('coral-polyp-colony').armor === 1, 'Meld {Quick}; the Coral Polyp Colony Armor 1 at Level 6 (CARDVET1b)'); }
 ok(!by['caiman-hatchling'].effects.quick && by['caiman-hatchling'].levelSkills['1'].ambush === 1 && !by['caiman-hatchling'].levelSkills['1'].quick, 'Caiman Hatchling: Ambush 1 at Level 1 too');
 ok(!by['old-sturgeon'].effects.relict && !by['ant-warrior'].effects.meld && !by['fire-ant-raft'].effects.meld, 'the owner\'s cards were not given a skill');
 
