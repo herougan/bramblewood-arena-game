@@ -4,6 +4,27 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**SKILLS3-9. Status tokens: one off each upkeep** · Decide · Skills · asked 2026-11-26
+- Vulnerable, Feeble, Mighty (deals x2) and Sturdy (takes x0.5) are tokens. While any remain, every hit counts; one comes off each upkeep; hits spend none (today Vulnerable is spent per hit). New tokens add, up to 3.
+  - a) as written
+  - b) refresh to the larger, never add
+  - c) also spend one per hit
+- **Default:** a
+
+**SKILLS3-10. The ladder: plain, then On Play, then On Death** · Decide · Skills · asked 2026-11-26
+- Each status skill first appears as its plain On Hit form (debuffs on the unit hit, buffs on an ally beside it); its ⬆️ and 💀 forms come on later maps. Harden / Embolden lose their round-start aura.
+  - a) as written
+  - b) plain buffs go on itself
+  - c) no ladder
+- **Default:** a
+
+**SKILLS3-11. Attunement N – {element}** · Decide · Skills · asked 2026-11-26
+- While it is on the field, your units' attacks of that element deal N more. One rare card per element: Fire Hawk, Ice Fish, Caustic Scorpion, Sperm Whale Elder, Electric Catfish; Venom Master is poison's.
+  - a) "Attunement"
+  - b) "Elemental Mastery"
+  - c) a word per element (Stoke, Deep Chill, Caustic, Undertow, Overcharge)
+- **Default:** a
+
 **ROADFIX4-1. Reference decks after the card vet** · Decide · Balance · asked 2026-11-25
 - Ibex Rockcaller (Maps 12-20) and Tide Seahorse (Maps 10-16) sit in the reference decks; their redesign moved those maps 10-30 points. The road is now re-fit to them (179 in band). Changing them moves Maps 10-20 again.
   - a) Keep the reference decks
@@ -32,11 +53,11 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
   - c) the board reaction only
 - **Default:** a
 
-**SKILLS3-3. Rend and Embrittle On Play** · Decide · Skills · asked 2026-11-25
-- ⬆️ Rend 1 replaces Exploit on Map 14 (Stoat Cutthroat, Savanna Cheetah); ⬆️ Embrittle 1 joins Map 18 (Glasswing Moth). On Hit forms stay on Maps 21+ (2x on every hit is too strong early).
-  - a) both
-  - b) Embrittle only
-  - c) neither
+**SKILLS3-3. x2 / x0.5 statuses and Maps 0-20** · Decide · Skills · asked 2026-11-25
+- Your ladder (plain On Hit, then ⬆️, then 💀) drops SKILLS3's ⬆️ Rend (Map 14) and ⬆️ Embrittle (Map 18); Embrittle merges into Rend; Map 14 keeps Exploit. The four statuses start on Maps 22-23; with tokens lasting rounds, Rend is 2-3x stronger.
+  - a) keep them off Maps 0-20
+  - b) plain Rend Map 14, ⬆️ 18, 💀 20
+  - c) SKILLS3's first plan
 - **Default:** a
 
 **SKILLS3-4. Dogfighter N** · Decide · Skills · asked 2026-11-25
@@ -61,10 +82,10 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 - **Default:** a
 
 **SKILLS3-7. Elements and Wet** · Decide · Skills · asked 2026-11-25
-- Each element = damage + at most one status (fire Burn, frost Frozen, acid 1 Corrode; poison stacks only). Wet is yes/no: shock +1 to a Wet unit and 1 to every Wet unit chained to it; water puts Burn out; fire ends Wet and lights nothing. Counters stay on Poison, Bleed, Burn, Vulnerable; the rest show a badge.
-  - a) Wet ends on fire or dry weather
+- Fire Burn, ice Frozen, acid Corrode, poison Poison, water Wet, electricity none. A hit = damage + its status (poison: stacks only). Water puts Burn out; fire burns Wet off; electricity on Wet +1 and 1 to every Wet unit chained to it; fire and ice cancel. Wet is yes / no.
+  - Wet ends: a) on a fire hit or dry weather
   - b) also each round out of water
-  - c) keep Wet counters
+  - c) keep counters
 - **Default:** a
 
 **SKILLS3-8. Pack additions** · Decide · Packs · asked 2026-11-25
