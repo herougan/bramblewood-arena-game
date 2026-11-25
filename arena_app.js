@@ -34883,7 +34883,7 @@ function ui32McSkillIds(top, mapId, ok){
     let ids = (s.ids || []).filter(ok);
     if(isMain(s)){ try{ const rv = rv1ReviewOf(s, top); if(rv){ const fl = id=> !!rvFlips[top + '|' + s.key + '|' + id], cut = new Set((rv.chosen || []).filter(e=> e && fl(e.id)).map(e=> e.id));
       ids = ids.filter(id=> !cut.has(id)); (rv.maybe || []).concat(rv.cut || []).forEach(e=>{ if(e && fl(e.id) && ok(e.id) && !ids.includes(e.id)) ids.push(e.id); }); } }catch(e){} main.push(...ids); }
-    else other.push(...ids);
+    else if(!(s.sub && MP_PARENT_POOL_SUBS.has(s.sub))) other.push(...ids); // 2026-11-25 (MAPEXEC1, owner 00:22 "Why are there so many skills on Eyrie Heights?"): the endless dungeon's list (muc, 91 cards of the whole collection) is not a map's own cards: its 54 skills inflated Map 11's 'Skills on these cards' from 20 to 74 grey tiles
   });
   rvAddedOf(top).filter(ok).forEach(id=> other.push(id));
   const yes = typeof ui47YesIds === 'function' ? ui47YesIds(top, mapId, ok) : null; // 2026-11-11 (UI47 #2): in the Prospects view only the cards flagged Yes count, not every prospect
@@ -34916,7 +34916,10 @@ function ms1Rows(mapId){
     else if(a.concept) rows.push({sid: m.n + ':a:' + a.key + ':' + a.concept.id, kind: 'concept', skill: a.skill, id: a.concept.id, concept: a.concept, why: a.concept.role, yes: [[m.id, a.concept.id]], no: []}); });
   m.remove.forEach(r=> rows.push({sid: m.n + ':r:' + r.card, kind: r.kind === 'stuck' ? 'drop' : r.kind, to: r.to, skill: r.skill, id: r.card, why: r.text + '. ' + r.why, yes: r.yes, no: r.no}));
   if(m.replace) m.replace.cards.forEach(c=> rows.push({sid: m.n + ':p:' + c.id, kind: 'rep', skill: '', id: c.id, why: c.why, yes: [[m.id, c.id]], no: []}));
-  const done = ms1Done(); return rows.filter(r=> !done[r.sid]);
+  // 2026-11-25 (MAPEXEC1): a row whose change is already in the list (map-pools.json applied it, or the owner's Yes / No match) is gone; a keep row has nothing to match
+  const on = (mid, id)=>{ try{ return ui37FlagOf(mid, id) === 'yes' || mpEntry(mid).cards.includes(id); }catch(e){ return false; } };
+  const matched = r=> r.kind !== 'keep' && r.yes.every(([mid, id])=> on(mid, id)) && r.no.every(([mid, id])=> !on(mid, id));
+  const done = ms1Done(); return rows.filter(r=> !done[r.sid] && !matched(r));
 }
 function ms1SwapsHTML(mapId, defs){
   try{ if(!adminModeEnabled || mpIsSub(mapId)) return ''; const rows = ms1Rows(mapId).filter(r=> r.concept || defs[r.id]); if(!rows.length) return '';

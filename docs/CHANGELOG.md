@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-25 Package MAPEXEC1 (owner 11-25 00:22: "execute those recommendations")
+- **Map lists follow the Map skill table:** Claude's swaps are applied to `canonical/map-pools.json`: 57 list edits (8 cards in, 17 moves, 32 drops; a dated note each in `_changes`), Maps 1-20. Table (Maps 0-20): New! with 2+ carriers 34 -> 44, with 1 carrier 22 -> 17, shown earlier 4 -> 0, To remove 35 -> 6 (kept on purpose, reasons in the Map cards window), To add 7 -> 6 (Shield, Fork, Leech, Poison Barbs, Pack, Momentum: no placed card fits; Fork stays open, CARDS1-1).
+- **Eyrie Heights' "72 skills" was the endless dungeon's list:** the dungeon (`muc`, 91 cards) counted as the map's other cards. Map 11 now shows 20 (2 New!, 10 from its 16 cards, 8 side-map / special), was 74. "Claude's swaps" rows disappear once the list already holds the change.
+- **Owner's picks:** `supabase/proposed/mapexec1-2026-11-25.sql` does the same on the `__cfg:map-picks:*` rows (22 UPDATEs); NOT RUN, waits for "apply it". No `__cfg:map-pools:*` row is live. 99 road fights hold a card taken off its map's list (decks are fixed, re-measure). Doc `docs/design/mapexec1-2026-11-25.md`.
+
 ## 2026-11-24 Package DAUNT2 (owner 11-24 23:21 / 23:25 / 23:30, 11-25 00:13)
 - **Scare -> Daunt (same N, level steps too):** Yeti 2, White Dragon 3, Lurking Dread 2, Frillneck Duelist 1 (Level 3), Ashmantle Fiend 2, Whale Shark 1. Scare stays in the engine, on no card.
 - **New skill Intimidate N (👺):** the enemy facing it (its own column) attacks for N less while it stands, Ready or not; with Majesty on the same foe the biggest counts; attacks only, never below 0 (`majestyCut` at reach 0). Booming Bittern: Scare 1 -> Intimidate 2 (Level 7: 3). New! on Map 6; Daunt New! on Map 11 (Golden Eagle; no earlier main map shows it). Price measured 2.27 x N^0.79 (Intimidate 2: 3.93 [3.10, 4.95]; the Majesty-derived 2.18 x N^0.80 sat inside).
