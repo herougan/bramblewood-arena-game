@@ -10185,7 +10185,7 @@ function triggerIsOff(t, live, d){ return !!(live && (live.wait>0 || live.stunne
 const SPENT_TRIG_MS = 1600;
 function triggerSpent(t, live, trs){
   if(!live) return false;
-  if(t.on === 'onSpawn' || t.on === 'onPitch') return true; // UIQ2 (2026-11-21, owner 22:03 #3): a unit on the board can never be discarded for resources again
+  if(t.on === 'onSpawn' || t.on === 'onDiscard') return true; // 2026-11-25 (TESTFIX11): a unit on the board can never be discarded again (UIQ2); onPitch is its live reaction to your pitches (SKILLS3)
   if(t.on === 'onReady') return (live.wait|0) <= 0;
   if(t.once){ const i = trs.filter(x=> x.on === t.on).indexOf(t); return !!(live.firedOnce && live.firedOnce['once:' + t.on + ':' + i]); }
   return false;

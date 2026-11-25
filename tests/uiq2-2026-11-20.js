@@ -10,7 +10,8 @@ ok(!/is-intro' : ''\}" data-ui19-skill/.test(app) && !/introPill/.test(app), 'In
 ok(/class="uiq2-legend"/.test(app), 'a legend sits above the tiles');
 ok(/UIQ2b[^\n]*\n\.ui19-sk\[data-eng35-key\] \.ui19-sk-main\{white-space:normal/.test(tpl) && /\.uiq2-legend\{display:grid/.test(tpl), 'UIQ2b: pills wrap, legend is a compact grid');
 const T = fs.readFileSync(path.join(ROOT, 'bramblewood-texts.js'), 'utf8');
-ok(['leg-new', 'leg-have', 'leg-sugg', 'leg-carried', 'pill-intro', 'pill-focus'].every(k=> T.includes('"ui.uiq2-' + k + '"')), 'the legend and pill texts exist');
+// 2026-11-25 (TESTFIX11): MAPUI2 (owner 11-23 23:39) dropped the Focus pill and the "have" legend entry; TESTFIX10 removed their keys
+ok(['leg-new', 'leg-sugg', 'leg-carried', 'pill-intro'].every(k=> T.includes('"ui.uiq2-' + k + '"')) && !['leg-have', 'pill-focus'].some(k=> T.includes('"ui.uiq2-' + k + '"')), 'the legend and pill texts exist');
 
 async function browser(){
   let pw; try{ pw = require('playwright'); }catch(e){ try{ pw = require(path.join(require('child_process').execSync('npm root -g').toString().trim(), 'playwright')); }catch(_){ console.log('  (browser part skipped: no playwright)'); return; } }

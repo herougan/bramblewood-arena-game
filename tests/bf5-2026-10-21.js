@@ -30,7 +30,8 @@ ok(BB.nMultOf({}, BB.DEFAULTS) === 1.05, '2. no abilities: x1.05');
 ok(BB.nMultOf({flying: true}, BB.DEFAULTS) === 1.02 && BB.nMultOf({diurnal: true}, BB.DEFAULTS) === 1.02 && BB.nMultOf({tide: true}, BB.DEFAULTS) === 1, '2. only Flying / time of day: x1.02 (Tide since BF8: none)');
 ok(BB.nMultOf({flying: true, poison: 1}, BB.DEFAULTS) === 1, '2. a light ability beside another: x1');
 ok(BB.nMultOf({flying: true, fragile: true}, BB.DEFAULTS) === 1 && BB.fragileUseOf({fragile: true}, BB.DEFAULTS) === 0.7 && BB.fragileUseOf({}, BB.DEFAULTS) === 1, '2. Fragile: no N multiplier (x1 with Flying), fragileUse x0.7 on the caps (BF7, 2026-10-22; was x0.75 on N)');
-const vul = (table.skills || []).find(s=> s.id === 'vulnerable'); ok(vul && vul.value < 0, '2. passive Vulnerable is a negative skill value');
+// 2026-11-25 (TESTFIX11): SKMPRICE (SKM4-1 b, owner 11-22) measured passive Vulnerable at 0 [0, 0.01] (BF5's estimate -1.5 kept as skmpriceWas)
+const vul = (table.skills || []).find(s=> s.id === 'vulnerable'); ok(vul && vul.value <= 0 && vul.skmpriceWas && vul.skmpriceWas.value < 0, '2. passive Vulnerable is never a positive skill value (SKMPRICE: 0, was -1.5)');
 ok(/function sbNMultLine\(d(, warnOnly)?\)/.test(src) /* TESTFIX1: a second parameter since */ && /ui\.budget-lab-nmult/.test(src), '2. the card editor\'s budget panel and the Test Lab show the multipliers');
 
 // 3. two skills at most (special / thematic cards keep more); the owner's ants
@@ -48,7 +49,8 @@ const sc = byId['ant-scout'], so = byId['soldier-ant'], tu = byId['tunnel-ant'];
 ok(sc && JSON.stringify(Object.keys(sc.effects)) === '["swarm"]' && (sc.wait || 0) === 0 && (sc.cost || 0) === 0, '3. Ant Scout: Swarm alone, cheap (Wait 0, Lumber 0)');
 // 2026-11-04 (TESTFIX1): the owner's own live edit of 2026-10-22 (folded by CONTENT3 OVR, 10-26) left it Swarm only
 // 2026-11-19 (TESTFIX6): FOLD7 folded the owner's 11-18 edit: Soldier Ant 3/8 with no skill (Swarm off)
-ok(so && !so.effects.swarm && !so.effects.formation && so.attack === 3 && so.health === 8 && so.wait === 1 && (so.cost || 0) === 0, '3. Soldier Ant: 3/8, no skill, Wait 1 (the owner\'s 11-18 edit, FOLD7)');
+// 2026-11-25 (TESTFIX11): FOLD8 (11-19) folded the owner's later 11-18 edit, Health 7
+ok(so && !so.effects.swarm && !so.effects.formation && so.attack === 3 && so.health === 7 && so.wait === 1 && (so.cost || 0) === 0, '3. Soldier Ant: 3/7, no skill, Wait 1 (the owner\'s 11-18 edits, FOLD7 / FOLD8)');
 ok(tu && tu.effects.swarm && tu.effects.ambush === 2 && tu.wait === 1 && tu.cost === 1, '3. Tunnel Ant: Swarm + Ambush 2, Wait 1, Lumber 1');
 // 2026-11-16 (TESTFIX5): BF6 (10-21, the halved coefficients) took its Poison ("a huntsman spider hunts"); Pounce is the skill it keeps
 ok(byId['giant-cave-huntsman'].effects.pounce != null && /BF6[^.]*took poison/.test(byId['giant-cave-huntsman'].creatorNote || ''), '3. the owner\'s scary spider keeps Pounce (BF6 took Poison)');
@@ -72,7 +74,7 @@ ok(byId.terraumbra.attack === 1 && byId.terraumbra.health === 1, '4. Terraumbra 
 // 5. the brambles halved when a fight is built; the stored numbers stay full-size
 ok(/const BRAMBLE_SCALE = 0\.5;/.test(src) && /function brambleHp\(v\)/.test(src), '5. BRAMBLE_SCALE 0.5 and brambleHp');
 const raids = JSON.parse(read('canonical/raids.json')), g = raids.find(r=> r.id === 'goliath') || raids[0];
-ok(g.bossHpBonusMax === 55 && g.shield === 50 && g.parts.some(p=> p.fight && p.fight.castleHp === 780), '5. raids.json keeps the full-size numbers: 780 (RAIDBAL1 2026-10-30; was 410, B12, BF6) / 55 / Shield 50');
+ok(g.bossHpBonusMax === 55 && g.shield === 50 && g.parts.some(p=> p.fight && p.fight.castleHp === 940), '5. raids.json keeps the full-size numbers: 940 (MP1 #5 2026-11-23; RAIDBAL1 780, was 410, B12, BF6) / 55 / Shield 50'); // 2026-11-25 (TESTFIX11): MP1 #5 raised the Goliath brambles (RAIDBAL1-1 targets)
 ok(/function raidDefScaled\(def\)[\s\S]{0,600}shield: sh\(/.test(src), '5. raidDefScaled halves the raid bramble\'s Shield too (MX, merged in BF5)');
 ok((src.match(/RaidM\.raidShield\(raidDefScaled\(def\), st, (partId|ps\.id)\)/g) || []).length === 3, '5. every raid Shield the game builds or shows goes through raidDefScaled');
 

@@ -26,7 +26,8 @@ ok(/ui21-mapkw-cards'\)\)\} <small>\$\{have\.length\}<\/small>/.test(kw) && /vis
 ok(/roadRarityStep\(defs\[a\]\.rarity\) - roadRarityStep\(defs\[b\]\.rarity\)/.test(fn('ui40Sorted')), 'Keyword: rarity then name, as before');
 // 3 the shared tile
 const plain = fn('ui39PlainTileHTML');
-ok(/function ui39PlainTileHTML\(id, defs, why, x\)/.test(plain) && /x\.mark \|\| ''/.test(plain) && /\$\{pack\}\$\{x\.pills \|\| ''\}/.test(plain) && /data-rv-kind="ui39"/.test(plain) && /large: true, power: true/.test(plain), 'ui39PlainTileHTML: extras, full card, power, redrawn as kind ui39');
+// 2026-11-25 (TESTFIX11): REWARD3 (11-22) puts its 🎁 Reward pill between the pack pill and the extras
+ok(/function ui39PlainTileHTML\(id, defs, why, x\)/.test(plain) && /x\.mark \|\| ''/.test(plain) && /\$\{pack\}\$\{rw3PillHTML\(id, dd\)\}\$\{x\.pills \|\| ''\}/.test(plain) && /data-rv-kind="ui39"/.test(plain) && /large: true, power: true/.test(plain), 'ui39PlainTileHTML: extras, full card, power, redrawn as kind ui39');
 ok(/x\.mark \|\| ''\}\$\{vis4MapCardTilesHTML/.test(plain), 'the mark sits outside the redrawn card element');
 // 4 CSS
 ok(/\.ui40-tile \.rv2-pills\{margin-top:9px/.test(fn('ui40Css')) && /try\{ ui40Css\(\); \}catch\(e\)\{\}/.test(fn('pk1OpenMapCards')), 'CSS injected when the window opens');

@@ -45,12 +45,12 @@ ok(R.RAID_SHIELD_DEFAULT === 50 && goliath.shield === 50, 'the Goliath\'s Shield
     const b = A.buildRaidFullFight(goliath, 'left', f, st, {rng: A.seededRng(1), rand: A.seededRng(2), allies: [], myDeck: {}, recordEvents: false}), q = b.players[2].hq;
     const want = Math.round(25 * s); // 2026-10-21 (BF5): the raid's Shield at BRAMBLE_SCALE 0.5 (raids.json keeps 50)
     ok(q.shield === want && q.maxShield === want && JSON.stringify(q.shieldLayers) === JSON.stringify([want]) && b.raidShield.shield === want, `the built fight's boss bramble at ${s * 100}%: Shield ${q.shield}/${q.maxShield} (want ${want})`);
-    ok(q.hp === 390, `its Health is untouched (780, at BRAMBLE_SCALE 390; got ${q.hp})`); } // 2026-11-04 (REG1): RAIDBAL1 (10-30) raised the Left Tentacle's bramble 410 -> 780 (canonical/raids.json castleHp)
+    ok(q.hp === 470, `its Health is untouched (940, at BRAMBLE_SCALE 470; got ${q.hp})`); } // 2026-11-25 (TESTFIX11): MP1 #5 (11-23, RAIDBAL1-1 targets) raised the Left Tentacle's bramble 780 -> 940 (canonical/raids.json castleHp)
   // the Shield soaks hits first, as on any bramble
   const st = stateAt(goliath, 1), f = R.fightFor(goliath, st, 'left', {});
   const b = A.buildRaidFullFight(goliath, 'left', f, st, {rng: A.seededRng(1), rand: A.seededRng(2), allies: [], myDeck: {}, recordEvents: false});
   ok(/pl\.hq\.shield > 0 && toHp > 0\)\{ const soak = Math\.min\(pl\.hq\.shield, toHp\)/.test(fs.readFileSync(path.join(ROOT, 'bramblewood-engine.js'), 'utf8')), 'the engine spends a bramble\'s Shield before its Health');
-  ok(b.players[2].hq.hp === 390 && b.players[2].hq.shield === 25, 'fresh: 780 Health behind 50 Shield (BF5: halved, 390 behind 25)'); } // 2026-11-04 (REG1): RAIDBAL1's Left 780
+  ok(b.players[2].hq.hp === 470 && b.players[2].hq.shield === 25, 'fresh: 940 Health behind 50 Shield (BF5: halved, 470 behind 25)'); } // 2026-11-25 (TESTFIX11): MP1 #5's Left 940
 ok(/\{ const r = \(RaidM && RaidM\.raidShield\) \? RaidM\.raidShield\(raidDefScaled\(def\), st, partId\) : null; if\(r\)\{ const q = players\[2\]\.hq; q\.shield = r\.shield;/.test(src), 'the one-row raid fight (startRaidPartMatch) gets the Shield too');
 // the editor: "Shield" beside "Energy", raid and part, saved
 ok(/value="\$\{draft\.cost\.energy\|\|4\}"><\/label>\n\s*<label title="[^"]*">Shield<input id="reShield" type="number" min="0" max="999"/.test(src), 'the raid editor: a Shield field right after "Energy per fight"');
@@ -194,7 +194,7 @@ async function browser(){ if(process.env.MX_NO_BROWSER) return;
       await pg.waitForFunction("typeof matchState !== 'undefined' && matchState && matchState.raidFull && document.querySelector('#appWrap.in-match')", null, {timeout: 20000}).catch(()=>{});
       await pg.waitForTimeout(2500);
       const hq = await pg.evaluate("(()=>{ const m = matchState; if(!m) return null; const badges = [...document.querySelectorAll('.castle-shield')].filter(e=> /^\\D*25$/.test(e.textContent.trim()) && e.getBoundingClientRect().width > 0).map(e=> e.className + ':' + e.textContent.trim()); return {shield: m.players[2].hq.shield, max: m.players[2].hq.maxShield, hp: m.players[2].hq.hp, badges}; })()");
-      ok(hq && hq.shield === 25 && hq.max === 25 && hq.hp === 390 /* 2026-11-04 (REG1): RAIDBAL1's Left 780, halved */, `${tag} 1. in the fight: the boss bramble 390 Health + 25 Shield (BF5: 780 + 50 halved) (${JSON.stringify(hq && {shield: hq.shield, max: hq.max, hp: hq.hp})})`);
+      ok(hq && hq.shield === 25 && hq.max === 25 && hq.hp === 470 /* 2026-11-25 (TESTFIX11): MP1 #5's Left 940, halved */, `${tag} 1. in the fight: the boss bramble 470 Health + 25 Shield (BF5: 940 + 50 halved) (${JSON.stringify(hq && {shield: hq.shield, max: hq.max, hp: hq.hp})})`);
       ok(hq && hq.badges.length > 0, `${tag} 1. the board shows 🔷25 on the boss bramble (${hq && hq.badges.join(' | ')})`);
       // the Shield badge and the Health number both readable on the boss's bramble tile (they overlapped on phones at 🔷50 / 350)
       const lap = await pg.evaluate("(()=>{ const s = [...document.querySelectorAll('.castle-shield')].find(e=> e.getBoundingClientRect().width > 0 && /25$/.test(e.textContent.trim())); /* BF5 */ if(!s) return null; const t = s.closest('.card-tile'), hp = t && t.querySelector('.hp'); if(!hp) return {noHp: true}; const a = s.getBoundingClientRect(), b = hp.getBoundingClientRect(); return {tile: Math.round(t.getBoundingClientRect().width), overlap: !(a.right <= b.left || b.right <= a.left || a.bottom <= b.top || b.bottom <= a.top), hp: hp.textContent.trim()}; })()");
