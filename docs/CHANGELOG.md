@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-26 Package FIXPACK1 (owner 11-24 22:29 #1, #7, #10, #12, #13, #15, #20; 11-25 00:16)
+- **Codex across devices (#1):** a progress push reads the cloud's merged lists first (seen, discovered, claims, card stats; only those keys) and folds them in; no read, no write. A sign-in pull that leaves this device ahead pushes on the next tick (it used to mark the merged list as sent). The filters, sort and view toggles (`bramblewood_ui_filters_v1`, Separated, All by ID, Base level / My best) ride the blob and are read back after a pull. Admins get the Separated / All together toggle (grouped by default; All together = one list in the chosen sort). Test: `tests/fixpack1-2026-11-26.js`.
+
 ## 2026-11-25 Package TESTFIX11 (unit suite after DAUNT2, MAPEXEC1, CARDVET1, SKILLS3, ROADFIX4)
 - **Players see:** the Cassowary is no longer Undead (CARDVET1c kept Ember Revenant's `subtype: undead`, so heals hurt it); 13 real-animal cards lose their fantasy type chip (Elemental, Mythic, Fiend, Construct, Spirit, Plant; Barn Owl and Pinecone Sapper included) through `tools/animal_tags.py`'s table (the Marine Iguana keeps Elemental while CARDVET1-2 is open). 8 rows `i18n_ui.py --write` had dropped are back in the 12 main packs ("Pick a part to fight", the map's "N/M cleared", the Nest's "N cards collected", "N more packs to open").
 - **Fixes:** `triggerSpent` greys On Discard on a board unit, not onPitch (SKILLS3 note); Intimidate classed noCounter like Majesty (`skill-counters.json`); Map 6's Bleed suggestion drops the Bog Leech (a Leech card since CARDVET1a). Regenerated copies: `card-obtain-maps.json`, `animal-tags.json`, `bramblewood-taxonomy.js` (5 new animal groups), `unit-themes.json`.

@@ -43,7 +43,7 @@ ok(!G.progressPushAllowed(0, 129, false) && G.progressPushAllowed(129, 129, fals
 // ---------------------------------------------------------------- the app's sync code against a fake cloud
 const FNS = ['isSignedIn', 'cloudSyncSettled', 'cloudPendingNow', 'cloudAuthBusyAdd', 'cloudPendingChanged', 'ui12ScheduleCloudRetry', 'applySessionIdentity', 'applySessionIdentityInner',
   'cloudPullState', 'cloudShardsColumnMissing', 'cloudBlossomsColumnMissing', 'cloudPushCurrencies', 'cloudPushCardLevels', 'cloudCopiesColumnMissing', 'cloudPushDecks', 'cloudPushRating',
-  'liveCanWrite', 'liveTableMissing', 'progressSnapshot', 'snapshotHash', 'progressShrinkOk', 'livePullProgress', 'livePushProgress', 'fix3AfterSignIn', 'gsiHandleCredential',
+  'liveCanWrite', 'liveTableMissing', 'progressSnapshot', 'snapshotHash', 'progressShrinkOk', 'progressUnionCloud' /* 2026-11-26 (FIXPACK1) */, 'livePullProgress', 'livePushProgress', 'fix3AfterSignIn', 'gsiHandleCredential',
   'fix3SignupPending', 'fix3SetSignupPending', 'hasChosenName', 'markNameChosen'];
 function makeWorld(opts){
   opts = opts || {};

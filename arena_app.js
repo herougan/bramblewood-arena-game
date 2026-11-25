@@ -5058,7 +5058,10 @@ function codexSmithSection(){ return {key:'smith', order:[9991,0,0,''], label:TX
 // show everything together. By default its show everything together. AND this toggle to separate is not available till Map
 // 10+. Also, Map 1-20 are combined into one slot ... Then Map 21-40 are combined. Map 41-50... etc. Map 0 cards are combined
 // with the base cards").
-let codexSeparate = (()=>{ try{ return localStorage.getItem('bramblewood_codex_separate') === '1'; }catch(e){ return false; } })();
+function codexSeparateStored(){ try{ const v = localStorage.getItem('bramblewood_codex_separate'); return v == null ? null : v === '1'; }catch(e){ return null; } }
+let codexSeparate = codexSeparateStored();
+/* 2026-11-26 (FIXPACK1): admins get the same toggle (grouped by default; All together = one list in the chosen sort) */
+function codexGrouped(){ return codexSeparate == null ? adminModeEnabled : codexSeparate; }
 // Phyla in the Codex (2026-10-12, user: "Phyla are not indicated, but we need to teach players Phyla. Maybe we, along the way
 // unlock Phyla sorting and filtering in the Codex, 5 maps after Codex"): the Codex opens on Map 7, so phylum sort and filter
 // open on Map 12.
@@ -8170,7 +8173,8 @@ function advancementKey(d){
 // a small icon next to stats. Persisted so it survives switching sub-tabs/filters.
 // 2026-10-18 (package C, owner: "bestiary - look like a card album"): the album is the Codex's default view now; the grid stays as
 // "Compressed" (saved as 'grid') and "Full Art". An old saved 'compressed' was the old default, so it opens on the album too.
-let codexViewMode = (()=>{ const m = uiSticky('codexView').mode; return m === 'full' ? 'full' : m === 'grid' ? 'compressed' : 'album'; })(); // 2026-10-16: kept between visits
+function codexViewModeStored(){ const m = uiSticky('codexView').mode; return m === 'full' ? 'full' : m === 'grid' ? 'compressed' : 'album'; }
+let codexViewMode = codexViewModeStored(); // 2026-10-16: kept between visits
 function codexShell(){
   // 2026-10-15 (user: "Forge is not a submenu of Codex"): the Forge is drawn in this view but is its own page (the Forge
   // shortcut in the top bar), so it gets no Codex sub-tab row at all.
@@ -8419,8 +8423,8 @@ function renderCodex(){
       <select id="cxMechLine" title="Archetype (resource line) filter"><option value="">All archetypes</option>${Object.entries(MECH_LINE_LABEL).filter(([k])=>k!=='none').map(([k,label])=>`<option value="${k}" ${codexFilter.mechLine===k?'selected':''}>${label}</option>`).join('')}</select>
       <select id="cxSort" aria-label="${escapeAttr(TX('ui.tx-sort'))}">${cfSortOptionsHTML(codexFilter.sort, (phylaUnlocked() ? [['phylum', ()=> TX('ui.tx-sort-phylum')]] : []).concat([['advance', ()=> TX('ui.tx-sort-advance')]])) /* 2026-10-21 (package TX): + Level and BR; the deck editors' list */}</select>
       <button type="button" class="btn small" id="cxSortDir">${escapeHtml(cfDirLabel(codexFilter.dir))}</button>
-      ${!adminModeEnabled ? (codexSeparateAllowed() ? `<button type="button" class="btn small ${codexSeparate ? 'primary' : ''}" id="cxSeparate" aria-pressed="${codexSeparate}" title="Split the Codex by where cards come from">${codexSeparate ? '🗂️ Separated' : '🗂️ All together'}</button>` : '') : ''}
-      <select id="cxGroupBy" title="Split the Codex by where cards come from" ${adminModeEnabled ? '' : 'hidden'}>
+      ${codexSeparateAllowed() ? `<button type="button" class="btn small ${codexGrouped() ? 'primary' : ''}" id="cxSeparate" aria-pressed="${codexGrouped()}" title="Split the Codex by where cards come from">${codexGrouped() ? '🗂️ Separated' : '🗂️ All together'}</button>` : ''}
+      <select id="cxGroupBy" title="Split the Codex by where cards come from" ${adminModeEnabled && codexGrouped() ? '' : 'hidden'}>
         <option value="advance" ${(codexFilter.groupBy||'advance')==='advance'?'selected':''}>View by: Advancement</option>
         <option value="tiers" ${codexFilter.groupBy==='tiers'?'selected':''}>View by: Tiers</option>
         <option value="skirmish" ${codexFilter.groupBy==='skirmish'?'selected':''}>View by: Skirmishes</option>
@@ -8443,7 +8447,7 @@ function renderCodex(){
     <div class="${codexViewMode==='album' ? 'al-host' : 'grid-view'} ${codexViewMode==='full'?'full-art':''}" id="codexGrid"></div>
     ${(codexStatsDefs = defs, codexStatsHTML(defs))}`;
   { let t = null; document.getElementById('cxSearch').addEventListener('input', e=>{ codexFilter.q = e.target.value; clearTimeout(t); t = setTimeout(renderCodexGrid, 120); }); } // debounced (2026-10-12: "The codex is still a bit laggy"; 2026-10-18: 120 ms, a draw is cheaper now)
-  { const sep = document.getElementById('cxSeparate'); if(sep) sep.onclick = ()=>{ codexSeparate = !codexSeparate; try{ localStorage.setItem('bramblewood_codex_separate', codexSeparate ? '1' : '0'); }catch(e){} sep.classList.toggle('primary', codexSeparate); sep.setAttribute('aria-pressed', codexSeparate); sep.textContent = codexSeparate ? '🗂️ Separated' : '🗂️ All together'; renderCodexGrid(); }; }
+  { const sep = document.getElementById('cxSeparate'); if(sep) sep.onclick = ()=>{ codexSeparate = !codexGrouped(); try{ localStorage.setItem('bramblewood_codex_separate', codexSeparate ? '1' : '0'); }catch(e){} sep.classList.toggle('primary', codexSeparate); sep.setAttribute('aria-pressed', codexSeparate); sep.textContent = codexSeparate ? '🗂️ Separated' : '🗂️ All together'; const gb = document.getElementById('cxGroupBy'); if(gb) gb.hidden = !(adminModeEnabled && codexSeparate); renderCodexGrid(); }; }
   const cxFT = document.getElementById('cxFiltersToggle');
   if(cxFT) cxFT.onclick = ()=>{ codexFiltersOpen = !codexFiltersOpen; document.getElementById('codexToolbar').classList.toggle('filters-open', codexFiltersOpen); cxFT.setAttribute('aria-expanded', codexFiltersOpen); };
   document.getElementById('cxGroupBy').addEventListener('change', e=>{ codexFilter.groupBy = e.target.value; renderCodexGrid(); });
@@ -8634,6 +8638,8 @@ const codexTileCache = new Map(); // Codex tile HTML by card id, with the key it
 function saveCodexFilters(){ const o = Object.assign({}, codexFilter); delete o.showTest; uiStickySave('codex', o); } // 2026-10-16: kept (uiSticky)
 // 2026-10-14 (user: "have a button to not partition the cards anymore, and arrange by ascending ID. - display 50 by 50"): one flat list by card number.
 let codexFlatById = (()=>{ try{ return localStorage.getItem('bramblewood_codex_flat_v1') === '1'; }catch(e){ return false; } })();
+/* 2026-11-26 (FIXPACK1): the Codex's filters, sort and toggles ride the progress blob (PROGRESS_KEYS); a pulled save is read back here */
+function codexReloadSticky(){ try{ const o = uiSticky('codex'); delete o.showTest; Object.assign(codexFilter, o); codexViewMode = codexViewModeStored(); codexSeparate = codexSeparateStored(); codexFlatById = localStorage.getItem('bramblewood_codex_flat_v1') === '1'; }catch(e){} }
 // CODEX_UX:BEGIN (2026-10-19, package UX; tests/ux-2026-10-19.js evaluates this block)
 // Card types in the Codex (owner 21:36: "Filter in codex for Spells (unused), Equipment (unused), creature units, structure units,
 // Brambles."). A chip row under the toolbar: All, Creatures, Structures, Spells, Equipment, Brambles, each with how many cards the
@@ -8788,7 +8794,7 @@ function renderCodexGrid(keepPage){
   // Codex tiers (2026-10-02): grouped by where a card comes from — Tier 1 (Tutorial, Base & maps
   // 1–10), Pack tier 1, Tier 2 maps, Pack tier 2, …, unsorted, then Events by theme. Inside each
   // group: unlocked first, then locked, each sorted by the chosen sort.
-  const view = adminModeEnabled ? (codexFilter.groupBy || 'advance') : ((codexSeparate && codexSeparateAllowed()) ? 'bands' : 'all');
+  const view = !(codexGrouped() && codexSeparateAllowed()) ? 'all' : adminModeEnabled ? (codexFilter.groupBy || 'advance') : 'bands';
   const groups = new Map();
   ids.forEach(id=>{
     const sec = codexViewSectionOf(defs[id], view);
@@ -19495,6 +19501,21 @@ const PROGRESS_MERGE_KEYS = {
 };
 // 2026-10-18 (package C): the Codex's seen cards follow the account, merged as a union like the discoveries.
 PROGRESS_KEYS.push(SEEN_KEY); PROGRESS_MERGE_KEYS[SEEN_KEY] = PROGRESS_MERGE_KEYS['bramblewood_arena_discovered'];
+// 2026-11-26 (FIXPACK1): the Codex's (and every page's) filters, sort and view toggles follow the account too; the newer blob wins
+PROGRESS_KEYS.push(UI_FILTERS_KEY, 'bramblewood_codex_separate', 'bramblewood_codex_flat_v1', CODEX_LEVEL_KEY);
+// 2026-11-26 (FIXPACK1): the merged keys (seen, discovered, claims, card stats) take the cloud's entries before every push and on every pull,
+// so one device's push never drops what another added. True when this device holds entries the cloud lacks (it should push).
+function progressUnionCloud(cloud){
+  let ahead = false;
+  Object.keys(PROGRESS_MERGE_KEYS).forEach(k=>{ try{
+    const mine = localStorage.getItem(k), theirs = cloud && typeof cloud[k] === 'string' ? cloud[k] : null;
+    const m = theirs == null ? mine : PROGRESS_MERGE_KEYS[k](mine, theirs);
+    if(m != null && m !== mine) localStorage.setItem(k, m);
+    if(m != null && m !== theirs) ahead = true; }catch(e){} });
+  try{ myDiscoveredCardIds = new Set(JSON.parse(localStorage.getItem(DISCOVERED_KEY)||'[]')); }catch(e){}
+  mySeenCardIds = null;
+  return ahead;
+}
 // 2026-10-24 (package H1): the gem sockets (per copy) and the Materia crystals they come from travel together, so a pulled save never
 // has a gem both in a socket and in the bag (the newer blob wins for both).
 PROGRESS_KEYS.push('bramblewood_card_sockets_v1', 'bramblewood_materia_v1');
@@ -19548,7 +19569,8 @@ async function livePullProgress(){
       try{ myDiscoveredCardIds = new Set(JSON.parse(localStorage.getItem(DISCOVERED_KEY)||'[]')); }catch(e){}
       mySeenCardIds = null; // 2026-10-18 (package C): read the merged seen list back (seenCardIds)
       try{ reloadCardSockets(); myMateria = JSON.parse(localStorage.getItem('bramblewood_materia_v1')||'null'); invalidateCardDefs(); }catch(e){} // 2026-10-24 (package H1)
-      LiveData.progressPushedHash = snapshotHash(progressSnapshot());
+      try{ codexReloadSticky(); }catch(e){} // 2026-11-26 (FIXPACK1)
+      LiveData.progressPushedHash = progressUnionCloud(data.data) ? null : snapshotHash(progressSnapshot()); // 2026-11-26 (FIXPACK1): entries the cloud lacks go up on the next tick
       try{ localStorage.setItem(PROGRESS_LOCAL_AT_KEY, String(Date.parse(data.updated_at))); }catch(e){}
       if(!matchState){ try{ if(currentTab==='home') renderHome(); else if(currentTab==='play') renderPlay(); }catch(e){} }
     } else if(cloudSyncSettled()) livePushProgress(true);
@@ -19574,11 +19596,19 @@ function livePushProgress(force){
   LiveData.progressPushedHash = h;
   const now = Date.now(); LiveData.progressPushAt = now; // NET1 (2026-11-12): the 20 s tick waits a minute between sends
   try{ localStorage.setItem(PROGRESS_LOCAL_AT_KEY, String(now)); }catch(e){}
-  // 2026-10-18 (R3-WP3): a failed push forgets its hash, so the 20 s tick sends it again instead of treating it as saved
-  sbClient.from('player_progress').upsert({profile_id: uid, data: (shrinkOk && score < cloudScore) ? Object.assign({}, snap, {bw_progress_shrink_ok: '1'}) : snap, updated_at: new Date(now).toISOString()}) // 2026-11-01: the server guard (guard_progress_shrink, applied 11-01) lets a smaller blob through only with this marker, sent on the one push an admin reset makes
-    .then(({error})=>{ if(liveTableMissing(error)) LiveData.available = false; else if(error && LiveData.progressPushedHash===h) LiveData.progressPushedHash = null;
-        if(!error && uid === cloudUserId){ LiveData.cloudProgress = {uid, score}; if(shrinkOk) try{ localStorage.removeItem(PROGRESS_SHRINK_OK_KEY); }catch(e){} } },
-      ()=>{ if(LiveData.progressPushedHash===h) LiveData.progressPushedHash = null; });
+  // 2026-11-26 (FIXPACK1): the cloud's merged lists are read (only those keys) and folded in first; no read, no write, so nothing shrinks
+  const mk = Object.keys(PROGRESS_MERGE_KEYS), forget = ()=>{ if(LiveData.progressPushedHash===h) LiveData.progressPushedHash = null; };
+  (mk.length ? sbClient.from('player_progress').select(mk.map((k, i)=> 'm' + i + ':data->>' + k).join(',')).eq('profile_id', uid).maybeSingle() : Promise.resolve({data: null}))
+    .then(({data: row, error: rerr})=>{
+      if(rerr){ if(liveTableMissing(rerr)) LiveData.available = false; forget(); return; }
+      if(row) progressUnionCloud(mk.reduce((o, k, i)=>{ o[k] = row['m' + i]; return o; }, {}));
+      const snap2 = progressSnapshot(), h2 = snapshotHash(snap2); if(LiveData.progressPushedHash===h) LiveData.progressPushedHash = h2;
+      // 2026-10-18 (R3-WP3): a failed push forgets its hash, so the 20 s tick sends it again instead of treating it as saved
+      sbClient.from('player_progress').upsert({profile_id: uid, data: (shrinkOk && score < cloudScore) ? Object.assign({}, snap2, {bw_progress_shrink_ok: '1'}) : snap2, updated_at: new Date(now).toISOString()}) // 2026-11-01: the server guard (guard_progress_shrink, applied 11-01) lets a smaller blob through only with this marker, sent on the one push an admin reset makes
+        .then(({error})=>{ if(liveTableMissing(error)) LiveData.available = false; else if(error && LiveData.progressPushedHash===h2) LiveData.progressPushedHash = null;
+            if(!error && uid === cloudUserId){ LiveData.cloudProgress = {uid, score}; if(shrinkOk) try{ localStorage.removeItem(PROGRESS_SHRINK_OK_KEY); }catch(e){} } },
+          ()=>{ if(LiveData.progressPushedHash===h2) LiveData.progressPushedHash = null; });
+    }, forget);
 }
 // 2026-11-12 (package NET1): the blob is up to ~40 KB and went up on any change every 20 s (browsing the Codex changes the seen list); now at most
 // once a minute from the tick, and at once when the tab is hidden or closed, so nothing waits on a device that is put away
