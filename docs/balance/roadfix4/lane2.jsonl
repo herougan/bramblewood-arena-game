@@ -22,3 +22,4 @@
 {"key":"2-A-4","deck":{"shoal-shark":1,"water-shrew":1,"old-sturgeon":4,"lodge-engineer":3,"raft-spider":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":71,"seed2":12300,"games":300},"moves":["-1 water-shrew +1 lodge-engineer"]}
 {"key":"10-5","deck":{"coral-current-eel":2,"crown-of-thorns-star":2,"kraken-spawnling":3,"reef-shark":3,"dolphin-knight":2},"shieldOverride":null,"hqHp":null,"tune":{"w2":72.3,"seed2":12300,"games":300},"moves":["-1 kraken-spawnling +1 dolphin-knight"]}
 {"key":"18-A-7","deck":{"barrel-cactus":2,"dune-jackal":4,"quicksand-queen":2,"roadrunner-courier":3,"horned-lizard":4},"shieldOverride":null,"hqHp":null,"tune":{"w2":91.7,"seed2":12300,"games":300},"moves":["-3 sand-widow +3 dune-jackal","-1 barrel-cactus -1 sand-widow +1 roadrunner-courier +1 horned-lizard"]}
+{"key":"18-A-6","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":92.3,"seed2":12300,"games":300},"moves":[]}
