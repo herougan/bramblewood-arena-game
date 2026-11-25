@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-25 Package CARDVET1b (owner 11-25 00:22 vet pass, Maps 7-13 incl. side maps)
+- **Maps 7-13 vetted (118 cards, 4 done in 1a):** 99 kept, 2 tweaked, 10 redesigned, 3 real-animal swaps. Active designs 19 -> 27 of 118. Map table (Maps 0-20) counts unchanged (44 / 17 / 0 / 6, no carrier lost). Doc: `docs/design/cardvet1b-2026-11-25.md`.
+- **Real animals first:** Kraken Spawnling -> Giant Pacific Octopus, Yeti -> Wild Yak, Wound Reaver -> Gila Monster (art needs a redo: `docs/art/real1-requests.md`).
+- **Active designs:** Ironclaw Fiddler (Crab Claws + Intimidate), Mantis Shrimp / Eyrie Warden / Ibex Rockcaller / Sergeant Bramblefox (Pounce), Glowworm Cluster (On Play Lumber), Alpine Marmot (On Play Shield x2), Gale Swift (Swift), Tide Seahorse (Evasive), Sleepless Shrew (Nocturnal + Poison).
+- **Skills no row uses left the cards:** Prayer, Wakeful, Bludgeon, Gash, Meld, Fester, Rupture, Storm, Twin Shot, Avalanche (and Recoil off Mantis Shrimp). Texts: 3 names, 5 flavours in 12 packs. Card matrix golden updated.
+
 ## 2026-11-25 Package CARDVET1a (owner 11-25 00:22: "Vet through each card ... trigger->actions ... more active skills ... more realistic animals")
 - **Maps 0-6 vetted (116 cards):** 94 kept, 5 tweaked, 12 redesigned, 5 real-animal swaps. Active designs (On Play / On Ready trigger, Pounce, Arrow, Intimidate, Delivery, Parasite) 12 -> 21 of 116. Doc: `docs/design/cardvet1a-2026-11-25.md`.
 - **Real animals first:** Ent -> Barn Owl (flying, On Play strike), Cypress Root Lurker -> Black Caiman, Willow-o'-Wisp -> Marsh Firefly (art needs a redo: `docs/art/real1-requests.md`); Heron Hag -> The Grey Heron, Venomlord Serpent -> Gaboon Viper, Phoenix Mushrooms -> Honey Fungus (renames, art already fits).
