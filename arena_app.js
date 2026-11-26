@@ -9444,6 +9444,7 @@ function codexLeafTurn(host, dir, draw){
   // turns (pg-leaf-mid), so the new page's face comes round with the old one; the real new page waits under it, hidden. Two pages turn about the spine.
   const leaf = document.createElement('div'); leaf.className = 'pg-leaf pg-leaf-two ' + (old.single ? 'pg-leaf-mid ' : '') + dirCls; leaf.setAttribute('aria-hidden', 'true');
   put(leaf, old.geo);
+  if(!old.single){ const L = host.querySelector('.pg-left'), R = host.querySelector('.pg-right'); if(L && R){ const gl = geo(L), gr = geo(R); leaf.style.transformOrigin = ((gl.x + gl.w + gr.x) / 2 - old.geo.x) + 'px 50%'; } } // 2026-11-26 (UISWEEP2, owner 11-24 22:29 #9): pivot on the spine (the middle of the gap between the pages), so the leaf lands exactly on the other page
   old.front.classList.add('pg-face', 'pg-face-front'); Object.assign(old.front.style, {left: '0px', top: '0px', width: '100%', height: '100%'});
   leaf.appendChild(old.front);
   if(dest && !dest.classList.contains('is-blank')){ const back = clone(dest); back.classList.add('pg-face', 'pg-face-back'); Object.assign(back.style, {position: 'absolute', left: '0px', top: '0px', width: '100%', height: '100%', margin: '0'}); leaf.appendChild(back); }

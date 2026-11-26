@@ -12120,11 +12120,11 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .pg-cast{z-index:7; pointer-events:none; opacity:0; border-radius:inherit; animation:pgCast var(--pg-turn-ms) ease-in-out forwards;}
 .pg-cast-fwd{background:linear-gradient(90deg, rgba(0,0,0,.38), rgba(0,0,0,.12) 38%, rgba(0,0,0,0) 70%);}
 .pg-cast-back{background:linear-gradient(270deg, rgba(0,0,0,.38), rgba(0,0,0,.12) 38%, rgba(0,0,0,0) 70%);}
-.pg-leaf-two.pg-leaf-mid{transform-origin:50% 50%; animation-name:pgMidFwd;} .pg-leaf-two.pg-leaf-mid.pg-leaf-back{animation-name:pgMidBack;} /* 2026-11-13 (package UI52): one page turns about its middle and slides aside */
+.pg-leaf-two.pg-leaf-mid{transform-origin:0% 50%; animation-name:pgMidFwd;} .pg-leaf-two.pg-leaf-mid.pg-leaf-back{transform-origin:100% 50%; animation-name:pgMidBack;} /* 2026-11-26 (UISWEEP2, owner 11-24 22:29 #9): one page too turns about its spine edge (left going on, right going back), no longer about its middle; it fades as it swings clear */ /* 2026-11-13 (package UI52): one page turns about its middle and slides aside */
 @keyframes pgTurnFwd{from{transform:perspective(1800px) rotateY(0deg);} to{transform:perspective(1800px) rotateY(-180deg);}}
 @keyframes pgTurnBack{from{transform:perspective(1800px) rotateY(0deg);} to{transform:perspective(1800px) rotateY(180deg);}}
-@keyframes pgMidFwd{from{transform:perspective(1800px) translateX(0) rotateY(0deg);} 50%{transform:perspective(1800px) translateX(-26%) rotateY(-90deg);} to{transform:perspective(1800px) translateX(0) rotateY(-180deg);}}
-@keyframes pgMidBack{from{transform:perspective(1800px) translateX(0) rotateY(0deg);} 50%{transform:perspective(1800px) translateX(26%) rotateY(90deg);} to{transform:perspective(1800px) translateX(0) rotateY(180deg);}}
+@keyframes pgMidFwd{from{transform:perspective(1800px) rotateY(0deg); opacity:1;} 65%{opacity:1;} to{transform:perspective(1800px) rotateY(-180deg); opacity:0;}}
+@keyframes pgMidBack{from{transform:perspective(1800px) rotateY(0deg); opacity:1;} 65%{opacity:1;} to{transform:perspective(1800px) rotateY(180deg); opacity:0;}}
 @keyframes pgShadeIn{to{opacity:1;}}
 @keyframes pgShadeOut{from{opacity:1;} to{opacity:0;}}
 @keyframes pgCast{0%{opacity:0;} 45%{opacity:1;} 100%{opacity:0;}}
@@ -59917,7 +59917,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'e815fb7bd071', BUILD_CARD_HASH = 'f60d509855dfc5f50eddbeed63d10bcd2a5e0a691271928a31e1d7cbdb072047';
+const BUILD_ID = '4509c414e8cd', BUILD_CARD_HASH = 'f60d509855dfc5f50eddbeed63d10bcd2a5e0a691271928a31e1d7cbdb072047';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
@@ -65114,6 +65114,7 @@ function codexLeafTurn(host, dir, draw){
   // turns (pg-leaf-mid), so the new page's face comes round with the old one; the real new page waits under it, hidden. Two pages turn about the spine.
   const leaf = document.createElement('div'); leaf.className = 'pg-leaf pg-leaf-two ' + (old.single ? 'pg-leaf-mid ' : '') + dirCls; leaf.setAttribute('aria-hidden', 'true');
   put(leaf, old.geo);
+  if(!old.single){ const L = host.querySelector('.pg-left'), R = host.querySelector('.pg-right'); if(L && R){ const gl = geo(L), gr = geo(R); leaf.style.transformOrigin = ((gl.x + gl.w + gr.x) / 2 - old.geo.x) + 'px 50%'; } } // 2026-11-26 (UISWEEP2, owner 11-24 22:29 #9): pivot on the spine (the middle of the gap between the pages), so the leaf lands exactly on the other page
   old.front.classList.add('pg-face', 'pg-face-front'); Object.assign(old.front.style, {left: '0px', top: '0px', width: '100%', height: '100%'});
   leaf.appendChild(old.front);
   if(dest && !dest.classList.contains('is-blank')){ const back = clone(dest); back.classList.add('pg-face', 'pg-face-back'); Object.assign(back.style, {position: 'absolute', left: '0px', top: '0px', width: '100%', height: '100%', margin: '0'}); leaf.appendChild(back); }

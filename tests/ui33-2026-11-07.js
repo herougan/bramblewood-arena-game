@@ -19,7 +19,7 @@ ok(/host\._cxTurnEnd/.test(lt) && /pg-face-back/.test(lt) && /pg-face-front/.tes
 ok(/\.pg-leaf-two\{[^}]*preserve-3d[^}]*animation:pgTurnFwd var\(--pg-turn-ms\)/.test(tpl), 'CSS: the two-face leaf turns in 3D');
 ok(/\.pg-leaf-two \.pg-face\{backface-visibility:hidden/.test(tpl) && /\.pg-face-back\{transform:rotateY\(180deg\);?\}/.test(tpl), 'CSS: both faces hide their backs; the back is turned round');
 ok(/@keyframes pgTurnFwd\{[^\n]*rotateY\(-180deg\)/.test(tpl) && /@keyframes pgTurnBack\{[^\n]*rotateY\(180deg\)/.test(tpl), 'CSS: a full 180 degrees both ways');
-ok(/\.pg-leaf-two\.pg-leaf-mid\{transform-origin:50% 50%/.test(tpl) && /@keyframes pgMidFwd\{[^\n]*translateX\(-26%\) rotateY\(-90deg\)[^\n]*rotateY\(-180deg\)/.test(tpl), 'CSS: one page (UI52): the two-face leaf turns about the page middle and slides aside');
+ok(/\.pg-leaf-two\.pg-leaf-mid\{transform-origin:0% 50%/.test(tpl) && /@keyframes pgMidFwd\{[^\n]*rotateY\(-180deg\)/.test(tpl), 'CSS: one page (UI52, spine edge since UISWEEP2): the two-face leaf turns about the spine edge'); // 2026-11-26 (UISWEEP2): was the page middle with a slide
 ok(/prefers-reduced-motion: reduce\)\{[^\n]*\.pg-leaf, \.pg-cast, \.pg-hold\{display:none/.test(tpl), 'CSS: reduced motion hides the leaf');
 ok(/pg-leaf-two/.test(read('tests/run-all.sh')) === false && /ui33-2026-11-07/.test(read('tests/run-all.sh')), 'run-all.sh lists this test');
 
@@ -99,7 +99,7 @@ async function browser(){
               ok(Math.abs(Math.abs(f[50].angle) - 90) <= 30, `${tag} 50%: near edge-on (${f[50].angle} deg)`);
               ok(Math.abs(f[75].angle) > 100 && Math.abs(f[75].angle) < 180 && f[75].back === s.newDest && f[75].back !== s.oldFrom, `${tag} 75%: past edge-on, the back face is the new page (${f[75].angle} deg, ${f[75].back})`);
               if(s.two) ok(s.newReveal !== '' && s.cast === 1, `${tag}: the revealed page holds new content and gets the fold shadow`);
-              else ok(Math.abs(f[50].dx) > 20 && Math.sign(f[50].dx) === -dir && f[25].n === 1 && s.hidden === 0, `${tag}: one leaf slides aside as it turns (${f[50].dx} px at 50%), the real new page is shown again after`);
+              else ok(Math.abs(f[50].dx) <= 1 && f[25].n === 1 && s.hidden === 0, `${tag}: one leaf turns about its spine edge without sliding (${f[50].dx} px at 50%), the real new page is shown again after`); // 2026-11-26 (UISWEEP2): was a slide aside about the middle
             }
             ok(s.left === 0, `${tag}: after the turn no copies are left (${s.left})`);
             if(SHOTS){ // frames for the owner (re-run the turn, pause at each point)
