@@ -107,7 +107,9 @@ function seatOfRow(typeId, row){ const n = playersOf(typeId); return row >= 0 &&
 function noSlotCard(d){ return !!(d && (d.field || d.cardType === 'spell')); }
 // Cards that need a target the co-op table doesn't offer yet (equipment onto a unit, a hazard row, an evolute's base, a Parasite's host,
 // a prayer offering): refused with a note (decision COOP2-3) instead of a half-working play.
-function unsupportedCard(d){ return !!(d && (d.cardType === 'equipment' || d.cardType === 'hazard' || d.evolute || d.parasite || d.cardType === 'materia' || (d.effects && d.effects.prayer))); }
+// 2026-11-27 (package TESTFIX12): the evolute and Parasite flags live in d.effects (the engine's evoStageOf / isParasiteDef); d.evolute /
+// d.parasite were never set, so both passed: a CPU ally's ghost deck (gdFillerDeck) could hold an evolute it can never place, and passed every turn.
+function unsupportedCard(d){ const e = (d && d.effects) || {}; return !!(d && (d.cardType === 'equipment' || d.cardType === 'hazard' || e.evolute || e.evoluteAlpha || e.evoluteOmega || e.parasite || d.cardType === 'materia' || e.prayer)); }
 
 // ---- 2. the table
 function floorDef(typeId, idx){ return typeOf(typeId).floors[idx]; }
