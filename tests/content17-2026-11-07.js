@@ -16,7 +16,7 @@ const ROOT = path.join(__dirname, '..'), R = f=> fs.readFileSync(path.join(ROOT,
 let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  ✗', m); } };
 if(!process.argv.includes('--world=half')) process.argv.push('--world=half');
 const C17 = require(path.join(ROOT, 'tools', 'content17_2026_11_07.js'));
-const RD = require('./lib/redesign.js'), { redesigned, MADE_OBTAINABLE, listAdded } = RD, CHANGED_ADDED = require('./lib/redesign-changed.json').added.length;
+const RD = require('./lib/redesign.js'), { redesigned, MADE_OBTAINABLE, listAdded } = RD;
 const cards = J('canonical/cards.json'), by = Object.fromEntries(cards.map(c=> [c.id, require('../bramblewood-skillparams.js').expandDef(c)])); // ENG39 (2026-11-09): kinds read as their old keys (Ice Arrow is Arrow {type: ice})
 const POOLS = J('canonical/map-pools.json').maps, DELIV = J('canonical/skill-delivery.json'), CN = J('canonical/claude-new-cards.json');
 const LMP = require(path.join(ROOT, 'tools', 'lib_map_pools.js'));
@@ -75,8 +75,12 @@ ok(C17.NEW.length >= 15, `2: ${C17.NEW.length} new cards`);
 const prompts = R('docs/art-style-prompts.md'), BANNED = ['no clothes', 'spiked', 'studded', 'monitor', 'sperm', 'corpse', 'sword', 'spear', 'axe', 'dagger', 'bow and arrow', 'weapon', 'blade', 'trident', 'harpoon', 'sling', 'arrow', 'dart'];
 const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
 const packs = CODES.map(code=> ({code, cards: J(`lang/cards/${code}.json`), ui: J(`lang/ui/${code}.json`), main: J(`lang/${code}.json`)}));
-const firstNew = cards.findIndex(c=> newIds.has(c.id));
-ok(firstNew >= cards.length - C17.NEW.length - 12 - CHANGED_ADDED /* 2026-11-08: room for later packages' appends (ENG37 1, CONTENT18 5); 2026-11-18 (TESTFIX): + CONTENT13's 16 */ && cards.slice(firstNew).every(c=> newIds.has(c.id) || cards.indexOf(c) > firstNew), '2: the new cards are appended at the end');
+// 2026-11-27 (package TESTFIX12): was a count of how many cards may follow ours (every later append broke it: NEWCARDS1's 14), and its
+// second half was always true. Now: our cards are one block in C17.NEW order, every card before it numbered below it (none inserted or
+// moved in), every card after it numbered above it (later appends only).
+const blk = cards.map((c, i)=> newIds.has(c.id) ? i : -1).filter(i=> i >= 0), nids = blk.map(i=> cards[i].numericId);
+ok(blk.length === C17.NEW.length && blk[blk.length - 1] - blk[0] + 1 === blk.length && blk.map(i=> cards[i].id).join() === C17.NEW.map(s=> s.id).join()
+  && cards.slice(0, blk[0]).every(c=> c.numericId < Math.min(...nids)) && cards.slice(blk[blk.length - 1] + 1).every(c=> c.numericId > Math.max(...nids)), '2: the new cards are appended at the end');
 C17.NEW.forEach(s=>{ const c = by[s.id]; ok(!!c, `${s.id}: in cards.json`); if(!c) return;
   ok(c.awaitingSource === true && c.unattainable === true && !c.source, `${s.id}: awaitingSource + unattainable, no source`);
   ok((!listed.has(s.id) || Object.values(SUGGEST).some(l=> l.includes(s.id)) || OWN1113.has(s.id)) && !JSON.stringify(extras).includes('"' + s.id + '"'), `${s.id}: on no list (or a THEME8 suggestion SKIR1 listed, still awaiting the owner's placement) and in no pack's extras`); // 2026-11-11 (LISTFIX3)
