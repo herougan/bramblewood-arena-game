@@ -15764,6 +15764,20 @@ body.bw-in-match .signin-banner{display:none;}
 .dt-charts-fold > summary{display:inline-block; font:700 13px 'Baloo 2',system-ui,sans-serif; padding:4px 10px; margin:4px 0; border-radius:999px; background:color-mix(in srgb, var(--surface-2) 70%, transparent); border:1px solid var(--surface-border);}
 @media (min-width:701px){ .dt-charts-fold > summary{display:none;} }
 @media (max-width:600px){ body[data-tab="play"] .signin-banner{display:none;} /* 2026-11-19 (package REL3): off the map's bottom nodes on a phone */ .vs2.is-raid .vs-start{box-shadow:0 -18px 22px 10px rgba(90,43,34,.94), 0 6px 14px rgba(0,0,0,.4);} }
+/* 2026-11-26 (UISWEEP2, owner 11-24 22:29 #8): phone height. The nav is two rows at most (top bar, then the back / shortcut row), with 4-6 px between rows instead of 16; the Codex sign sits tighter, its page tabs and filter chips are one scrolling row each (the page itself never scrolls sideways); the Achievements head and card button are one slim row each. */
+@media (max-width:700px){
+  .wrap{padding-top:4px;}
+  .topbar{margin-bottom:4px;}
+  .page-back-bar{margin-bottom:6px;}
+  .page-back-bar .pb-back{width:36px; height:36px;}
+  #view-codex.codex-scene:not(.is-forge){padding-top:34px; margin-top:0;}
+  #view-codex.codex-scene:not(.is-forge)::after{top:6px;}
+  .codex-sub-tabs{flex-wrap:nowrap; overflow-x:auto; overscroll-behavior-x:contain; scrollbar-width:none; margin-bottom:8px; padding-bottom:2px;}
+  .codex-sub-tabs::-webkit-scrollbar{display:none;} .codex-sub-tabs > *{flex:none;}
+  .ux-cx-kinds{flex-wrap:nowrap; margin-bottom:6px;} .ux-cx-kinds .ux-cx-level{flex:none;}
+  #view-codex #codexResultCount{display:none;}
+  .achv-head{gap:8px; margin-bottom:6px;} .achv-head-txt{min-width:0;} .achv-cardbtn{margin-bottom:6px; padding:8px 12px;} .achv-filters{margin-bottom:8px;}
+}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
