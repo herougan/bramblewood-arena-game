@@ -180,7 +180,7 @@ function advancePart(T){
     arrivals.push({uid: c.uid, defId: id, row, slot: c.slot, wait: c.wait});
   });
   E.draw(P2, 3, 'B', T.stats, []);
-  const recycled = []; for(let s = 0; s < T.n; s++) recycled.push(recycleSeat(T, s, rnd)); // DUNGEON2: the third beat
+  const recycled = []; [...Array(T.n).keys()].sort((a, b)=> ecclesiaDeck(T, a) - ecclesiaDeck(T, b)).forEach(s=>{ recycled[s] = recycleSeat(T, s, rnd); }); // DUNGEON2: the third beat; an Ecclesia seat's exiled cards land after the others took theirs
   // the part's own clock and its bookkeeping
   T.cap = T.round + t.roundCap; T.partStart = T.round + 1; T.partHp = hp; T.lostAt = partyLost(T);
   T.lastAdvance = {idx, freeTurns, arrivals, prev, cleared, recycled};

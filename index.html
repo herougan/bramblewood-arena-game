@@ -31341,7 +31341,7 @@ function advancePart(T){
     arrivals.push({uid: c.uid, defId: id, row, slot: c.slot, wait: c.wait});
   });
   E.draw(P2, 3, 'B', T.stats, []);
-  const recycled = []; for(let s = 0; s < T.n; s++) recycled.push(recycleSeat(T, s, rnd)); // DUNGEON2: the third beat
+  const recycled = []; [...Array(T.n).keys()].sort((a, b)=> ecclesiaDeck(T, a) - ecclesiaDeck(T, b)).forEach(s=>{ recycled[s] = recycleSeat(T, s, rnd); }); // DUNGEON2: the third beat; an Ecclesia seat's exiled cards land after the others took theirs
   // the part's own clock and its bookkeeping
   T.cap = T.round + t.roundCap; T.partStart = T.round + 1; T.partHp = hp; T.lostAt = partyLost(T);
   T.lastAdvance = {idx, freeTurns, arrivals, prev, cleared, recycled};
@@ -59886,7 +59886,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '74f2b17a1c7c', BUILD_CARD_HASH = 'f60d509855dfc5f50eddbeed63d10bcd2a5e0a691271928a31e1d7cbdb072047';
+const BUILD_ID = '50ba402cadf1', BUILD_CARD_HASH = 'f60d509855dfc5f50eddbeed63d10bcd2a5e0a691271928a31e1d7cbdb072047';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
