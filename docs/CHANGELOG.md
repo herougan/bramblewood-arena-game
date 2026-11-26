@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-26 Package NEWCARDS1 (ART16 species; owner 11-26 21:32 "a series of fun effects")
+- **14 new cards, on no list yet:** Ribbonking Oarfish (Lone Wolf), Moonlit Opah (Heat), Sunbasker Mola (Sturdy, Plenty), Kelpmask Sea Dragon (Invisible, Evasive), Stripeleg Okapi (Keen Sense, Confuse), Pressure Blobfish (Sturdy, Slow), Sling-jaw Goblin Shark (Gash, Cull), Living-fossil Coelacanth (Revive, Darksight; epic), Steppe Saiga (Pack), Mossback Kakapo (On Death: draw 1), Saddle Tapir (On Play: Growth Sprout), Glassbelly Frog (Guardian, Expose), Ringtail Red Panda (Rage, Evasive), Ventplume Tube Worm (Dry, Throng). Nine skills that only The Undercroft held now have a card. Each is inside the budget at every level 1-10; none is on a map, pack or reward until you place it (proposed homes in `docs/design/newcards1-2026-11-26.md`).
+- **Re-art:** Mud Puppy and Plague Gnat Cloud take their ART16 pictures.
+- Files: `canonical/cards.json`, `art/cards/*`, names and flavour in the 12 packs, `tools/newcards1_*`, contact sheet `docs/screens/newcards1/`.
+
 ## 2026-11-26 Package UISWEEP2 (owner 11-24 22:29 #8 #9 #14)
 - **Phone height (#8):** the two nav rows sit 4-6 px apart instead of 16, the Codex sign sits tighter, its page tabs and filter chips are one scrolling row each, the Achievements head is slimmer. The Codex card grid now starts at y 357 (was 517) on a 390 px phone; every page with a back row gains about 38 px.
 - **Page turn (#9):** the Codex leaf pivots on the spine, the middle of the gap between the two pages (it landed 18 px off before), and a single page (phone) turns about its spine edge (left going on, right going back) instead of its middle.

@@ -6729,6 +6729,85 @@
    "forBudget": -20.9
   },
   {
+   "id": "blobfish",
+   "name": "Pressure Blobfish",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 2,
+   "attack": 1,
+   "health": 15,
+   "skills": [
+    "sturdy",
+    "slow"
+   ],
+   "winRate": 69,
+   "advRate": 19.8,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 276,
+   "winRateAll": 69,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 79,
+    "rateAll": 19.8
+   },
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false,
+   "budget": {
+    "N": 21.1,
+    "S": 2.39,
+    "x1": 20.39,
+    "x2": 16.43,
+    "N2": 77.66,
+    "ok": true
+   },
+   "map": 0,
+   "rarityClass": "common",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     156.5
+    ],
+    "day": [
+     94,
+     55.5
+    ],
+    "night": [
+     90,
+     64
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     37
+    ],
+    "day": [
+     94,
+     17
+    ],
+    "night": [
+     90,
+     25
+    ]
+   },
+   "N": 21.1,
+   "scope": "extra",
+   "power": 44.4,
+   "expected": 38.4,
+   "forBudget": 6
+  },
+  {
    "id": "bloodscent-shark",
    "name": "Bloodscent Shark",
    "rarity": "uncommon",
@@ -12895,6 +12974,85 @@
    "power": 35.5,
    "expected": 35.4,
    "forBudget": 0.1
+  },
+  {
+   "id": "coelacanth",
+   "name": "Living-fossil Coelacanth",
+   "rarity": "epic",
+   "cost": 3,
+   "wait": 3,
+   "attack": 4,
+   "health": 24,
+   "skills": [
+    "revive",
+    "keenSense"
+   ],
+   "winRate": 64.9,
+   "advRate": 26.3,
+   "played": 356,
+   "games": 400,
+   "playedShare": 0.89,
+   "wins": 231,
+   "winRateAll": 60.8,
+   "adv": {
+    "played": 335,
+    "games": 400,
+    "playedShare": 0.838,
+    "wins": 88,
+    "rateAll": 22.5
+   },
+   "band": [
+    62,
+    87
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false,
+   "budget": {
+    "N": 42.76,
+    "S": 6.48,
+    "x1": 42.48,
+    "x2": 106.5,
+    "N2": 318.96,
+    "ok": true
+   },
+   "map": 0,
+   "rarityClass": "epic",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     204,
+     136.5
+    ],
+    "day": [
+     76,
+     53.5
+    ],
+    "night": [
+     76,
+     41
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     195,
+     49
+    ],
+    "day": [
+     73,
+     16
+    ],
+    "night": [
+     67,
+     23
+    ]
+   },
+   "N": 42.76,
+   "scope": "extra",
+   "power": 45.6,
+   "expected": 54.2,
+   "forBudget": -8.6
   },
   {
    "id": "coffer-mimic",
@@ -24271,6 +24429,84 @@
    "forBudget": -30.6
   },
   {
+   "id": "giant-tube-worm",
+   "name": "Ventplume Tube Worm",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 3,
+   "attack": 4,
+   "health": 19,
+   "skills": [
+    "dry"
+   ],
+   "winRate": 62.8,
+   "advRate": 14.6,
+   "played": 395,
+   "games": 400,
+   "playedShare": 0.988,
+   "wins": 248,
+   "winRateAll": 62.3,
+   "adv": {
+    "played": 393,
+    "games": 400,
+    "playedShare": 0.983,
+    "wins": 57.5,
+    "rateAll": 14.4
+   },
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false,
+   "budget": {
+    "N": 35.17,
+    "S": 4,
+    "x1": 35,
+    "x2": 80,
+    "N2": 215.78,
+    "ok": true
+   },
+   "map": 0,
+   "rarityClass": "rare",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     214,
+     149.5
+    ],
+    "day": [
+     91,
+     56.5
+    ],
+    "night": [
+     90,
+     42
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     214,
+     32.5
+    ],
+    "day": [
+     91,
+     10
+    ],
+    "night": [
+     88,
+     15
+    ]
+   },
+   "N": 35.17,
+   "scope": "extra",
+   "power": 38.7,
+   "expected": 48.7,
+   "forBudget": -10
+  },
+  {
    "id": "giant-water-bug",
    "name": "Giant Water Bug",
    "rarity": "uncommon",
@@ -24740,6 +24976,85 @@
    "power": 42.8,
    "expected": 41.4,
    "forBudget": 1.4
+  },
+  {
+   "id": "glass-frog",
+   "name": "Glassbelly Frog",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 1,
+   "health": 13,
+   "skills": [
+    "guardian",
+    "expose"
+   ],
+   "winRate": 63.3,
+   "advRate": 18.6,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 253,
+   "winRateAll": 63.3,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 74.5,
+    "rateAll": 18.6
+   },
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false,
+   "budget": {
+    "N": 16.72,
+    "S": 0.18,
+    "x1": 16.18,
+    "x2": 13.01,
+    "N2": 48.77,
+    "ok": true
+   },
+   "map": 0,
+   "rarityClass": "common",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     139.5
+    ],
+    "day": [
+     94,
+     59.5
+    ],
+    "night": [
+     90,
+     54
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     32.5
+    ],
+    "day": [
+     94,
+     21
+    ],
+    "night": [
+     90,
+     21
+    ]
+   },
+   "N": 16.72,
+   "scope": "extra",
+   "power": 41,
+   "expected": 35.2,
+   "forBudget": 5.8
   },
   {
    "id": "glass-golem",
@@ -25599,6 +25914,84 @@
    "power": 60.4,
    "expected": 42.4,
    "forBudget": 18
+  },
+  {
+   "id": "goblin-shark",
+   "name": "Sling-jaw Goblin Shark",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 3,
+   "attack": 5,
+   "health": 16,
+   "skills": [
+    "gash"
+   ],
+   "winRate": 68.1,
+   "advRate": 23.4,
+   "played": 395,
+   "games": 400,
+   "playedShare": 0.988,
+   "wins": 269,
+   "winRateAll": 67.5,
+   "adv": {
+    "played": 393,
+    "games": 400,
+    "playedShare": 0.983,
+    "wins": 92,
+    "rateAll": 23
+   },
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false,
+   "budget": {
+    "N": 35.17,
+    "S": 2.73,
+    "x1": 33.73,
+    "x2": 81.86,
+    "N2": 215.78,
+    "ok": true
+   },
+   "map": 0,
+   "rarityClass": "rare",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     214,
+     160.5
+    ],
+    "day": [
+     91,
+     60.5
+    ],
+    "night": [
+     90,
+     48
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     214,
+     55
+    ],
+    "day": [
+     91,
+     16
+    ],
+    "night": [
+     88,
+     21
+    ]
+   },
+   "N": 35.17,
+   "scope": "extra",
+   "power": 45.8,
+   "expected": 48.7,
+   "forBudget": -2.9
   },
   {
    "id": "gold-throat-elder",
@@ -32486,6 +32879,85 @@
    "forBudget": 7.7
   },
   {
+   "id": "kakapo",
+   "name": "Mossback Kakapo",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 2,
+   "attack": 2,
+   "health": 15,
+   "skills": [
+    "nocturnal",
+    "triggers"
+   ],
+   "winRate": 64,
+   "advRate": 17.6,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 256,
+   "winRateAll": 64,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 70.5,
+    "rateAll": 17.6
+   },
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false,
+   "budget": {
+    "N": 26.58,
+    "S": 4.89,
+    "x1": 25.89,
+    "x2": 35.98,
+    "N2": 123.24,
+    "ok": true
+   },
+   "map": 0,
+   "rarityClass": "rare",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     128.5
+    ],
+    "day": [
+     94,
+     53.5
+    ],
+    "night": [
+     90,
+     74
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     32.5
+    ],
+    "day": [
+     94,
+     11
+    ],
+    "night": [
+     90,
+     27
+    ]
+   },
+   "N": 26.58,
+   "scope": "extra",
+   "power": 40.8,
+   "expected": 42.4,
+   "forBudget": -1.6
+  },
+  {
    "id": "kelpborn-otter",
    "name": "Kelpborn Otter",
    "rarity": "common",
@@ -33732,6 +34204,84 @@
    "power": 22.3,
    "expected": 32.4,
    "forBudget": -10.1
+  },
+  {
+   "id": "leafy-sea-dragon",
+   "name": "Kelpmask Sea Dragon",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 2,
+   "attack": 2,
+   "health": 15,
+   "skills": [
+    "evasive"
+   ],
+   "winRate": 80,
+   "advRate": 30.9,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 320,
+   "winRateAll": 80,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 123.5,
+    "rateAll": 30.9
+   },
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false,
+   "budget": {
+    "N": 25.42,
+    "S": 0,
+    "x1": 24.78,
+    "x2": 35.4,
+    "N2": 112.72,
+    "ok": true
+   },
+   "map": 0,
+   "rarityClass": "uncommon",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     176.5
+    ],
+    "day": [
+     94,
+     71.5
+    ],
+    "night": [
+     90,
+     72
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     63
+    ],
+    "day": [
+     94,
+     29.5
+    ],
+    "night": [
+     90,
+     31
+    ]
+   },
+   "N": 25.42,
+   "scope": "extra",
+   "power": 55.5,
+   "expected": 41.5,
+   "forBudget": 14
   },
   {
    "id": "legate-of-rivergate",
@@ -41697,6 +42247,84 @@
    "forBudget": -30.7
   },
   {
+   "id": "oarfish",
+   "name": "Ribbonking Oarfish",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 3,
+   "attack": 3,
+   "health": 18,
+   "skills": [
+    "loneWolf"
+   ],
+   "winRate": 62.5,
+   "advRate": 17.9,
+   "played": 395,
+   "games": 400,
+   "playedShare": 0.988,
+   "wins": 247,
+   "winRateAll": 62,
+   "adv": {
+    "played": 393,
+    "games": 400,
+    "playedShare": 0.983,
+    "wins": 70.5,
+    "rateAll": 17.6
+   },
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false,
+   "budget": {
+    "N": 35.17,
+    "S": 7.36,
+    "x1": 34.36,
+    "x2": 67.54,
+    "N2": 215.78,
+    "ok": true
+   },
+   "map": 0,
+   "rarityClass": "rare",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     214,
+     148.5
+    ],
+    "day": [
+     91,
+     55.5
+    ],
+    "night": [
+     90,
+     43
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     214,
+     41.5
+    ],
+    "day": [
+     91,
+     11
+    ],
+    "night": [
+     88,
+     18
+    ]
+   },
+   "N": 35.17,
+   "scope": "extra",
+   "power": 40.2,
+   "expected": 48.7,
+   "forBudget": -8.5
+  },
+  {
    "id": "oathsworn-legionary",
    "name": "Oathsworn Legionary",
    "rarity": "uncommon",
@@ -42085,6 +42713,85 @@
    "power": 31.9,
    "expected": 38.3,
    "forBudget": -6.4
+  },
+  {
+   "id": "okapi",
+   "name": "Stripeleg Okapi",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 2,
+   "attack": 3,
+   "health": 14,
+   "skills": [
+    "keenSense",
+    "confuse"
+   ],
+   "winRate": 73,
+   "advRate": 31.4,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 292,
+   "winRateAll": 73,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 125.5,
+    "rateAll": 31.4
+   },
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false,
+   "budget": {
+    "N": 25.42,
+    "S": 1.96,
+    "x1": 24.96,
+    "x2": 42.96,
+    "N2": 112.72,
+    "ok": true
+   },
+   "map": 0,
+   "rarityClass": "uncommon",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     160.5
+    ],
+    "day": [
+     94,
+     64.5
+    ],
+    "night": [
+     90,
+     67
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     70.5
+    ],
+    "day": [
+     94,
+     22
+    ],
+    "night": [
+     90,
+     33
+    ]
+   },
+   "N": 25.42,
+   "scope": "extra",
+   "power": 52.2,
+   "expected": 41.5,
+   "forBudget": 10.7
   },
   {
    "id": "old-growth-tortoise",
@@ -42479,6 +43186,85 @@
    "power": 54.1,
    "expected": 56.1,
    "forBudget": -2
+  },
+  {
+   "id": "opah",
+   "name": "Moonlit Opah",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "attack": 3,
+   "health": 19,
+   "skills": [
+    "heat",
+    "tide"
+   ],
+   "winRate": 59,
+   "advRate": 14.9,
+   "played": 395,
+   "games": 400,
+   "playedShare": 0.988,
+   "wins": 233,
+   "winRateAll": 58.5,
+   "adv": {
+    "played": 393,
+    "games": 400,
+    "playedShare": 0.983,
+    "wins": 58.5,
+    "rateAll": 14.6
+   },
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false,
+   "budget": {
+    "N": 30.2,
+    "S": 1.7,
+    "x1": 29.7,
+    "x2": 57.72,
+    "N2": 159.1,
+    "ok": true
+   },
+   "map": 0,
+   "rarityClass": "rare",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     214,
+     138.5
+    ],
+    "day": [
+     91,
+     50.5
+    ],
+    "night": [
+     90,
+     44
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     214,
+     35.5
+    ],
+    "day": [
+     91,
+     8
+    ],
+    "night": [
+     88,
+     15
+    ]
+   },
+   "N": 30.2,
+   "scope": "extra",
+   "power": 37,
+   "expected": 45,
+   "forBudget": -8
   },
   {
    "id": "open-ocean-hermit-crab",
@@ -50984,6 +51770,84 @@
    "forBudget": -36.1
   },
   {
+   "id": "red-panda",
+   "name": "Ringtail Red Panda",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 2,
+   "attack": 3,
+   "health": 11,
+   "skills": [
+    "evasive"
+   ],
+   "winRate": 89.3,
+   "advRate": 43,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 357,
+   "winRateAll": 89.3,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 172,
+    "rateAll": 43
+   },
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false,
+   "budget": {
+    "N": 25.42,
+    "S": 0,
+    "x1": 23.6,
+    "x2": 38.94,
+    "N2": 112.72,
+    "ok": true
+   },
+   "map": 0,
+   "rarityClass": "uncommon",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     194.5
+    ],
+    "day": [
+     94,
+     79.5
+    ],
+    "night": [
+     90,
+     83
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     86
+    ],
+    "day": [
+     94,
+     34
+    ],
+    "night": [
+     90,
+     52
+    ]
+   },
+   "N": 25.42,
+   "scope": "extra",
+   "power": 66.2,
+   "expected": 41.5,
+   "forBudget": 24.7
+  },
+  {
    "id": "redwood-woodpecker",
    "name": "Redwood Woodpecker",
    "rarity": "uncommon",
@@ -53468,6 +54332,84 @@
    "power": 25,
    "expected": 37.7,
    "forBudget": -12.7
+  },
+  {
+   "id": "saiga",
+   "name": "Steppe Saiga",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "attack": 2,
+   "health": 9,
+   "skills": [
+    "pack"
+   ],
+   "winRate": 70.5,
+   "advRate": 35.3,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 282,
+   "winRateAll": 70.5,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 141,
+    "rateAll": 35.3
+   },
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false,
+   "budget": {
+    "N": 19.87,
+    "S": 4.36,
+    "x1": 19.36,
+    "x2": 22.75,
+    "N2": 68.87,
+    "ok": true
+   },
+   "map": 0,
+   "rarityClass": "common",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     154.5
+    ],
+    "day": [
+     94,
+     64.5
+    ],
+    "night": [
+     90,
+     63
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     79
+    ],
+    "day": [
+     94,
+     26
+    ],
+    "night": [
+     90,
+     36
+    ]
+   },
+   "N": 19.87,
+   "scope": "extra",
+   "power": 52.9,
+   "expected": 37.5,
+   "forBudget": 15.4
   },
   {
    "id": "salamander-pyromancer",
@@ -60637,6 +61579,85 @@
    "forBudget": -26.9
   },
   {
+   "id": "sunfish",
+   "name": "Sunbasker Mola",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 3,
+   "attack": 2,
+   "health": 19,
+   "skills": [
+    "sturdy",
+    "diurnal"
+   ],
+   "winRate": 83.3,
+   "advRate": 39.3,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 333,
+   "winRateAll": 83.3,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 157,
+    "rateAll": 39.3
+   },
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false,
+   "budget": {
+    "N": 30.38,
+    "S": 4.46,
+    "x1": 29.46,
+    "x2": 42.97,
+    "N2": 161,
+    "ok": true
+   },
+   "map": 0,
+   "rarityClass": "uncommon",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     189.5
+    ],
+    "day": [
+     94,
+     78.5
+    ],
+    "night": [
+     90,
+     65
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     75.5
+    ],
+    "day": [
+     94,
+     50.5
+    ],
+    "night": [
+     90,
+     31
+    ]
+   },
+   "N": 30.38,
+   "scope": "extra",
+   "power": 61.3,
+   "expected": 45.2,
+   "forBudget": 16.1
+  },
+  {
    "id": "sunspire-choirmother",
    "name": "Sunspire Choirmother",
    "rarity": "veryrare",
@@ -61885,6 +62906,85 @@
    "power": 8.3,
    "expected": 32.4,
    "forBudget": -24.1
+  },
+  {
+   "id": "tapir",
+   "name": "Saddle Tapir",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 2,
+   "attack": 2,
+   "health": 14,
+   "skills": [
+    "tide",
+    "triggers"
+   ],
+   "winRate": 68,
+   "advRate": 21.6,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 272,
+   "winRateAll": 68,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 86.5,
+    "rateAll": 21.6
+   },
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false,
+   "budget": {
+    "N": 25.42,
+    "S": 4.7,
+    "x1": 24.7,
+    "x2": 33.52,
+    "N2": 112.72,
+    "ok": true
+   },
+   "map": 0,
+   "rarityClass": "uncommon",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     149.5
+    ],
+    "day": [
+     94,
+     66.5
+    ],
+    "night": [
+     90,
+     56
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     41.5
+    ],
+    "day": [
+     94,
+     19
+    ],
+    "night": [
+     90,
+     26
+    ]
+   },
+   "N": 25.42,
+   "scope": "extra",
+   "power": 44.8,
+   "expected": 41.5,
+   "forBudget": 3.3
   },
   {
    "id": "tarantula-hawk",
@@ -69898,6 +70998,26 @@
     "spitting-cobra",
     "the-gannet-queen",
     "voltaic-eel"
+   ]
+  },
+  {
+   "date": "2026-11-26",
+   "games": 400,
+   "cards": [
+    "blobfish",
+    "coelacanth",
+    "giant-tube-worm",
+    "glass-frog",
+    "goblin-shark",
+    "kakapo",
+    "leafy-sea-dragon",
+    "oarfish",
+    "okapi",
+    "opah",
+    "red-panda",
+    "saiga",
+    "sunfish",
+    "tapir"
    ]
   }
  ],
