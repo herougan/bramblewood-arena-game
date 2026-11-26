@@ -39,6 +39,7 @@ GROUP_PARENT = {
   'elephant': 'Megafauna', 'giraffe': 'Megafauna', 'rhino': 'Megafauna',
   'whale': 'Cetacean', 'dolphin': 'Cetacean', 'seal': 'Pinniped', 'walrus': 'Pinniped',
   'mole': 'Mammal', 'shrew': 'Mammal', 'civet': 'Mammal', 'camel': 'Mammal', 'manatee': 'Mammal', 'monotreme': 'Mammal', 'marsupial': 'Mammal',
+  'red panda': 'Mammal', 'tapir': 'Mammal', # 2026-11-27 (TESTFIX12): NEWCARDS1's true animals (a red panda is no bear; a tapir's kin, horse and rhino, sit apart)
   # birds (eagle -> Raptor -> Bird, the owner's example)
   'eagle': 'Raptor', 'hawk': 'Raptor', 'falcon': 'Raptor', 'owl': 'Raptor', 'vulture': 'Raptor',
   'crow': 'Corvid', 'songbird': 'Bird', 'duck': 'Waterfowl', 'seabird': 'Bird', 'gull': 'Seabird', 'tern': 'Seabird', 'pelican': 'Seabird',

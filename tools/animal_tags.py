@@ -257,6 +257,21 @@ MANUAL = {
   'granite-ox-golem': ('gaur', None, 'name', '2026-11-25 (TESTFIX11): CARDVET1c real-animal swap, was Granite Ox Golem (construct)'),
   'bolas-spider': ('bolas spider', None, 'name', 'kept as set in cards.json'),
   'anadromous-fry': ('salmon', None, 'name', 'kept as set in cards.json'),
+  # 2026-11-27 (package TESTFIX12): NEWCARDS1's 14 ART16 species, their true animals (the name guess read okapi / saiga as deer, tapir as boar, red panda as fox)
+  'oarfish': ('oarfish', None, 'name', 'kept as set in cards.json (NEWCARDS1)'),
+  'opah': ('opah', None, 'name', 'kept as set in cards.json (NEWCARDS1)'),
+  'sunfish': ('ocean sunfish', None, 'name', 'kept as set in cards.json (NEWCARDS1)'),
+  'leafy-sea-dragon': ('leafy sea dragon', None, 'name', 'kept as set in cards.json (NEWCARDS1)'),
+  'okapi': ('okapi', None, 'name', 'kept as set in cards.json (NEWCARDS1)'),
+  'blobfish': ('blobfish', None, 'name', 'kept as set in cards.json (NEWCARDS1)'),
+  'goblin-shark': ('goblin shark', None, 'name', 'kept as set in cards.json (NEWCARDS1)'),
+  'coelacanth': ('coelacanth', None, 'name', 'kept as set in cards.json (NEWCARDS1)'),
+  'saiga': ('saiga', None, 'name', 'kept as set in cards.json (NEWCARDS1)'),
+  'kakapo': ('kakapo', None, 'name', 'kept as set in cards.json (NEWCARDS1)'),
+  'tapir': ('tapir', None, 'name', 'kept as set in cards.json (NEWCARDS1)'),
+  'glass-frog': ('glass frog', None, 'name', 'kept as set in cards.json (NEWCARDS1)'),
+  'red-panda': ('red panda', None, 'name', 'kept as set in cards.json (NEWCARDS1)'),
+  'giant-tube-worm': ('giant tube worm', None, 'name', 'kept as set in cards.json (NEWCARDS1)'),
 }
 
 # ---------- name words (longest first) ----------
@@ -336,7 +351,9 @@ TYPE_ANIMAL = {'Otter': 'otter', 'Hummingbird': 'hummingbird', 'Bee': 'bee', 'An
   'Worm': 'worm', 'Fish': 'fish', 'Sheep': 'sheep', 'Vulture': 'vulture', 'Ape': 'ape', 'Cephalopod': 'octopus', 'Cetacean': 'whale'}
 
 # the head word for grouping (most groups are the last word; these are not)
-GROUP = {'gila monster': 'lizard', 'marine iguana': 'lizard', 'gaur': 'ox', 'cassowary': 'bird', 'glyptodon': 'armadillo',  # 2026-11-25 (TESTFIX11): CARDVET1's real animals
+GROUP = {'oarfish': 'fish', 'opah': 'fish', 'ocean sunfish': 'fish', 'blobfish': 'fish', 'coelacanth': 'fish', 'leafy sea dragon': 'seahorse', 'okapi': 'giraffe',  # 2026-11-27 (TESTFIX12): NEWCARDS1
+  'saiga': 'antelope', 'kakapo': 'parrot', 'red panda': 'red panda',
+  'gila monster': 'lizard', 'marine iguana': 'lizard', 'gaur': 'ox', 'cassowary': 'bird', 'glyptodon': 'armadillo',  # 2026-11-25 (TESTFIX11): CARDVET1's real animals
   'sea bass': 'fish', 'lungfish': 'fish', 'bumblebee': 'bee', 'cormorant': 'seabird', 'crossbill': 'songbird', 'glow-worm': 'beetle', 'hoatzin': 'bird', 'shoebill': 'heron', # 2026-11-13 (package FIX11): the kept hand tags
   'polar bear': 'bear', 'honey badger': 'badger', 'snow leopard': 'leopard', 'leopard seal': 'seal', 'leopard slug': 'slug', 'sea turtle': 'turtle',
   'box turtle': 'turtle', 'snapping turtle': 'turtle', 'bog turtle': 'turtle', 'tortoise': 'turtle', 'sea krait': 'snake', 'sea snake': 'snake', 'whale shark': 'shark',

@@ -65,11 +65,11 @@
   }
  ],
  "counts": {
-  "cards": 957,
-  "creatures": 858,
-  "tagged": 860,
-  "animals": 385,
-  "groups": 148,
+  "cards": 971,
+  "creatures": 872,
+  "tagged": 874,
+  "animals": 399,
+  "groups": 150,
   "withSubtype": 100,
   "proposed": 20,
   "subtype": {
@@ -94,21 +94,21 @@
    "ee": 8,
    "flavor": 14,
    "icon": 47,
-   "name": 646,
+   "name": 660,
    "proposed": 20,
    "type": 70
   },
   "topGroups": {
    "otter": 34,
+   "fish": 33,
    "hummingbird": 32,
-   "fish": 28,
    "beetle": 21,
    "fox": 19,
    "lizard": 18,
    "turtle": 18,
+   "frog": 18,
    "cat": 17,
    "bat": 17,
-   "frog": 17,
    "rabbit": 16,
    "duck": 16,
    "salamander": 16,
@@ -126,9 +126,9 @@
    "bear": 11,
    "badger": 11,
    "bee": 10,
+   "worm": 10,
    "deer": 10,
-   "rat": 10,
-   "dog": 9
+   "rat": 10
   }
  },
  "ownerCalls": [
@@ -10103,6 +10103,160 @@
    "group": "crab",
    "subtype": null,
    "how": "name"
+  },
+  {
+   "id": "oarfish",
+   "name": "Ribbonking Oarfish",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "oarfish",
+   "group": "fish",
+   "subtype": null,
+   "how": "name",
+   "note": "kept as set in cards.json (NEWCARDS1)"
+  },
+  {
+   "id": "opah",
+   "name": "Moonlit Opah",
+   "icon": "🐠",
+   "creature": true,
+   "animal": "opah",
+   "group": "fish",
+   "subtype": null,
+   "how": "name",
+   "note": "kept as set in cards.json (NEWCARDS1)"
+  },
+  {
+   "id": "sunfish",
+   "name": "Sunbasker Mola",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "ocean sunfish",
+   "group": "fish",
+   "subtype": null,
+   "how": "name",
+   "note": "kept as set in cards.json (NEWCARDS1)"
+  },
+  {
+   "id": "leafy-sea-dragon",
+   "name": "Kelpmask Sea Dragon",
+   "icon": "🐠",
+   "creature": true,
+   "animal": "leafy sea dragon",
+   "group": "seahorse",
+   "subtype": null,
+   "how": "name",
+   "note": "kept as set in cards.json (NEWCARDS1)"
+  },
+  {
+   "id": "okapi",
+   "name": "Stripeleg Okapi",
+   "icon": "🦌",
+   "creature": true,
+   "animal": "okapi",
+   "group": "giraffe",
+   "subtype": null,
+   "how": "name",
+   "note": "kept as set in cards.json (NEWCARDS1)"
+  },
+  {
+   "id": "blobfish",
+   "name": "Pressure Blobfish",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "blobfish",
+   "group": "fish",
+   "subtype": null,
+   "how": "name",
+   "note": "kept as set in cards.json (NEWCARDS1)"
+  },
+  {
+   "id": "goblin-shark",
+   "name": "Sling-jaw Goblin Shark",
+   "icon": "🦈",
+   "creature": true,
+   "animal": "goblin shark",
+   "group": "shark",
+   "subtype": null,
+   "how": "name",
+   "note": "kept as set in cards.json (NEWCARDS1)"
+  },
+  {
+   "id": "coelacanth",
+   "name": "Living-fossil Coelacanth",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "coelacanth",
+   "group": "fish",
+   "subtype": null,
+   "how": "name",
+   "note": "kept as set in cards.json (NEWCARDS1)"
+  },
+  {
+   "id": "saiga",
+   "name": "Steppe Saiga",
+   "icon": "🦌",
+   "creature": true,
+   "animal": "saiga",
+   "group": "antelope",
+   "subtype": null,
+   "how": "name",
+   "note": "kept as set in cards.json (NEWCARDS1)"
+  },
+  {
+   "id": "kakapo",
+   "name": "Mossback Kakapo",
+   "icon": "🦜",
+   "creature": true,
+   "animal": "kakapo",
+   "group": "parrot",
+   "subtype": null,
+   "how": "name",
+   "note": "kept as set in cards.json (NEWCARDS1)"
+  },
+  {
+   "id": "tapir",
+   "name": "Saddle Tapir",
+   "icon": "🐗",
+   "creature": true,
+   "animal": "tapir",
+   "group": "tapir",
+   "subtype": null,
+   "how": "name",
+   "note": "kept as set in cards.json (NEWCARDS1)"
+  },
+  {
+   "id": "glass-frog",
+   "name": "Glassbelly Frog",
+   "icon": "🐸",
+   "creature": true,
+   "animal": "glass frog",
+   "group": "frog",
+   "subtype": null,
+   "how": "name",
+   "note": "kept as set in cards.json (NEWCARDS1)"
+  },
+  {
+   "id": "red-panda",
+   "name": "Ringtail Red Panda",
+   "icon": "🦊",
+   "creature": true,
+   "animal": "red panda",
+   "group": "red panda",
+   "subtype": null,
+   "how": "name",
+   "note": "kept as set in cards.json (NEWCARDS1)"
+  },
+  {
+   "id": "giant-tube-worm",
+   "name": "Ventplume Tube Worm",
+   "icon": "🪱",
+   "creature": true,
+   "animal": "giant tube worm",
+   "group": "worm",
+   "subtype": null,
+   "how": "name",
+   "note": "kept as set in cards.json (NEWCARDS1)"
   }
  ]
 }
