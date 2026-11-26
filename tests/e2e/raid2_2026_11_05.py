@@ -77,7 +77,7 @@ async def fight(b, w, h):
     st = await pg.evaluate(ST); check(st['z'] > 1.2, f'{tag}: it eased in to the 1.5-rows view (z {st["z"]:.2f})')
     check(await pg.evaluate("!!document.querySelector('.raid-fight-mine .rfm-dmg')"), f'{tag}: your damage is on the frame')
     await shot(pg, f'fight-zoomed-in-{w}.png')
-    await pg.click('.rz-btn'); await pg.wait_for_function("matchState._rz.z < 1.02", timeout=60000)
+    await pg.click(".rz-btn"); await pg.wait_for_function("matchState._rz.z < (matchState._rz.lo || 1) + 0.02", timeout=60000)  # 2026-11-26 (RAIDCAM1): the zoomed-out end is 1.04 in a raid
     check(True, f'{tag}: the button zooms out'); await shot(pg, f'fight-zoomed-out-{w}.png')
     if w > 800:
         c = await pg.evaluate("(()=>{ const r = document.getElementById('battlefieldEl').getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; })()")

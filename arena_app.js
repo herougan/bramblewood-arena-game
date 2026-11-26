@@ -43477,6 +43477,13 @@ const RZ_MS = 650, RZ_OPEN_DELAY = 1100, RZ_MAXZ = 3.2, RZ_MINZ_GAIN = 1.12;
 // 2026-11-26 (DUNGEON2, owner #19): a group dungeon's enemy back row going live eases the camera out (slowly) until that row fits, below 1:1
 // when it must (RZ_MINZ at most): g.lo, the zoomed-out end, is then the zoom that holds the band (1 otherwise).
 const RZ_BACK_MS = 1600, RZ_MINZ = 0.6;
+// 2026-11-26 (RAIDCAM1, owner 11-24 #21): a raid opens zoomed out beyond the 3-player view (RZ_RAID_START of it) and eases in slowly (RZ_RAID_IN_MS) to
+// the focus band, or to the player's own zoom-out when they set one (RZ_SAVE_KEY: how far in, 0 = the zoomed-out end, kept while under 0.97).
+// The raid's zoomed-out end is RZ_RAID_OUT of the 3-player view (4% tighter).
+const RZ_RAID_START = 0.88, RZ_RAID_IN_MS = 2400, RZ_RAID_OUT = 1.04, RZ_SAVE_KEY = 'bramblewood_rz_zoom_v1';
+function rzSaved(){ try{ const k = parseFloat(localStorage.getItem(RZ_SAVE_KEY)); return k >= 0 && k < 0.97 ? k : null; }catch(e){ return null; } }
+function rzRemember(s){ const k = s.max > s.lo ? (s.z - s.lo) / (s.max - s.lo) : 1; try{ if(k >= 0.97) localStorage.removeItem(RZ_SAVE_KEY); else localStorage.setItem(RZ_SAVE_KEY, String(Math.max(0, Math.round(k * 100) / 100))); }catch(e){} }
+function rzOpenZ(g){ const k = rzSaved(); return k == null ? g.zmax : g.lo + k * (g.zmax - g.lo); } // where the opening ends
 // The enemy's back row (its last reserve row) in a group dungeon, once a unit stands in it: its number, else 0. That row joins the zoomed view.
 function rzBackRow(m){ const rs = m && m.coop && m.players && m.players[2].reserve; if(!rs || !rs.length) return 0; const rw = rs[rs.length - 1]; return Object.keys(rw).some(k=> rw[k] && rw[k].hp > 0) ? rs.length : 0; }
 let rzTween = 0, rzWired = false;
@@ -43497,7 +43504,7 @@ function rzGeom(m){
     { const k = rzBackRow(m), eb = k ? r('resEnemy' + k) : null; if(eb) top = Math.min(top, eb.top); } // DUNGEON2: the live enemy back row fits whole
     const xs = [...document.querySelectorAll('#battlefieldInner .board-card[data-uid]')].map(c=>{ const q = c.getBoundingClientRect(); return q.width ? q.left + q.width / 2 : null; }).filter(v=> v != null);
     const xc = xs.length ? (Math.min(...xs) + Math.max(...xs)) / 2 : ir.left + ir.width / 2;
-    const band = Math.max(40, bot - top), fit = Math.min(RZ_MAXZ, F.h / band), lo = rzBackRow(m) ? Math.max(RZ_MINZ, Math.min(1, fit)) : 1;
+    const band = Math.max(40, bot - top), fit = Math.min(RZ_MAXZ, F.h / band), lo = m.raidFull ? RZ_RAID_OUT : rzBackRow(m) ? Math.max(RZ_MINZ, Math.min(1, fit)) : 1;
     return {F, O, L: ir.left, R: ir.right, T: ir.top, B: ir.bottom, top, bot, xc, zmax: Math.max(lo, fit), lo};
   } finally { inner.style.scale = s0; inner.style.translate = t0; }
 }
@@ -43529,7 +43536,8 @@ function rzTo(m, target, ms){
 }
 function rzToggle(m){
   const g = rzGeom(m), s = m._rz; if(!g || !s) return; s.touched = true; s.max = g.zmax;
-  rzTo(m, s.z > g.lo + (g.zmax - g.lo) / 2 ? rzOutView(g) : rzFocus(g, g.zmax), RZ_MS);
+  const out = s.z > g.lo + (g.zmax - g.lo) / 2; rzTo(m, out ? rzOutView(g) : rzFocus(g, g.zmax), RZ_MS);
+  rzRemember({z: out ? g.lo : g.zmax, lo: g.lo, max: g.zmax}); // RAIDCAM1: the next fight opens where you left it
 }
 function rzOutView(g){ return g.lo === 1 ? {z: 1, tx: 0, ty: 0} : rzFocus(g, g.lo); } // the zoomed-out end: 1:1 as laid out, or the band centred at g.lo
 function rzUsable(g){ return g.zmax >= g.lo * RZ_MINZ_GAIN; }
@@ -43552,11 +43560,13 @@ function rzSync(){
   if(widen && s.z > fitZ + 0.001){ rzTo(m, rzFocus(g, fitZ), RZ_BACK_MS); return; }
   const easing = s.twUntil > performance.now();
   if(!usable){ if(!easing && !s.gesture){ Object.assign(s, rzOutView(g)); rzWrite(m); } return; }
-  if((s.z > 1.001 || g.lo !== 1) && !s.gesture && !easing){ const c = rzClamp(g, s.z, s.tx, s.ty); // a new framing keeps the zoom inside the board
+  if((s.z > 1.001 || g.lo !== 1) && s.opened && !s.gesture && !easing){ const c = rzClamp(g, s.z, s.tx, s.ty); // a new framing keeps the zoom inside the board
     if(Math.abs(c.z - s.z) > 0.02) rzTo(m, c, RZ_MS); else { s.z = c.z; s.tx = c.tx; s.ty = c.ty; } } // DUNGEON2: a zoomed-out end that moved is eased to
   rzWrite(m);
   if(!s.opened){ s.opened = true; clearTimeout(m._rzOpenT);
-    m._rzOpenT = setTimeout(()=>{ if(matchState !== m || !rzActive(m) || s.touched || s.gesture) return; const g2 = rzGeom(m); if(g2 && rzUsable(g2)){ s.max = g2.zmax; rzTo(m, rzFocus(g2, g2.zmax), 900); } }, RZ_OPEN_DELAY); }
+    const wide = m.raidFull && !reducedMotion() && fxLevel() !== 'none'; // RAIDCAM1: beyond the 3-player view first (centred), held through the beat
+    if(wide){ const z0 = RZ_RAID_START; Object.assign(s, rzClamp(Object.assign({}, g, {lo: z0}), z0, 0, 0)); s.twUntil = performance.now() + RZ_OPEN_DELAY + 200; rzWrite(m); }
+    m._rzOpenT = setTimeout(()=>{ if(matchState !== m || !rzActive(m) || s.touched || s.gesture) return; const g2 = rzGeom(m); if(g2 && rzUsable(g2)){ s.max = g2.zmax; rzTo(m, rzFocus(g2, rzOpenZ(g2)), wide ? RZ_RAID_IN_MS : 900); } }, RZ_OPEN_DELAY); }
 }
 function rzWire(bf){
   if(bf.dataset.rzWired) return; bf.dataset.rzWired = '1';
@@ -43566,7 +43576,8 @@ function rzWire(bf){
   const apply = (c, z, focal)=>{ // zoom to z about a client point
     const {m, s, g} = c; if(!g) return; const O = g.O, nz = Math.max(g.lo, Math.min(g.zmax, z));
     const tx = (focal.x - O.x) - nz * (focal.x - O.x - s.tx) / s.z, ty = (focal.y - O.y) - nz * (focal.y - O.y - s.ty) / s.z;
-    const r = rzClamp(g, nz, tx, ty); s.z = r.z; s.tx = r.tx; s.ty = r.ty; s.touched = true; rzWrite(m); };
+    const r = rzClamp(g, nz, tx, ty); s.z = r.z; s.tx = r.tx; s.ty = r.ty; s.touched = true; rzWrite(m);
+    clearTimeout(rzRemember._t); rzRemember._t = setTimeout(()=> rzRemember(s), 300); }; // RAIDCAM1: a pinch / ctrl + wheel zoom is remembered too
   bf.addEventListener('wheel', ev=>{
     if(!(ev.ctrlKey || ev.metaKey)) return; const c = gz(); if(!c || !c.g || !rzUsable(c.g)) return;
     ev.preventDefault(); cancelAnimationFrame(rzTween); apply(c, c.s.z * Math.exp(-ev.deltaY * (ev.deltaMode === 1 ? 0.04 : 0.0045)), {x: ev.clientX, y: ev.clientY}); }, {passive: false});
