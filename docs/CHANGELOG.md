@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-26 Package UISWEEP2 (owner 11-24 22:29 #8 #9 #14)
+- **Phone height (#8):** the two nav rows sit 4-6 px apart instead of 16, the Codex sign sits tighter, its page tabs and filter chips are one scrolling row each, the Achievements head is slimmer. The Codex card grid now starts at y 357 (was 517) on a 390 px phone; every page with a back row gains about 38 px.
+- **Page turn (#9):** the Codex leaf pivots on the spine, the middle of the gap between the two pages (it landed 18 px off before), and a single page (phone) turns about its spine edge (left going on, right going back) instead of its middle.
+- **Arena (#14):** a simple nav under the sign (Ranked | Casual, plus Multiplayer once open); the chips, the two PvP buttons, Ranked Live and the trophy sit in one tent panel; Pass & Play and the two-player Caged Fight are on Casual. Quick Battle, Gauntlet, Caged Fight vs the computer and the Autobattler moved to a new Practice tab on the Conquest page (the Gauntlet Gate spot opens it).
+- Files: `arena_app.js`, `arena_template.html`, 4 texts (12 packs), `tests/uisweep2-2026-11-26.js` (+ ui33's two spine checks updated), shots in `docs/screens/uisweep2/`.
+
 ## 2026-11-26 Packages INSPIRE2 + TEXTFIX1 (owner 11-24 22:29 #18; effects list 11-26)
 - **Inspiration powers the whole turn (INSPIRE2):** the +1 a token now counts on every hit of the unit's next turn (its shots and swings in one combat pass): Cleave's side hits, every Arrow shot, an Archer's arrow, Twin Strike's / Frenzy's second swing. Before, only the swing proper and its prongs got it, it was spent by the first swing that landed (so Twin Strike's second swing and the unit's later arrows lost it), and an Archer never got or spent it. It is spent as the pass ends if the turn landed a hit; a unit that did not act (Stunned, Frozen, Asleep), or only missed, keeps it; tokens given after it acted wait for its next turn (the 📯N pip keeps them). A Fast Forward turn is its own turn. Examples at Inspiration 2: Arrow 2 x2 + a 3 swing 9 -> 13; Twin Strike 3 8 -> 10; Archer 2 2 -> 4; Cleave 1's side hit 1 -> 3.
 - Texts (12 packs): the skill line "+1 Attack each on every hit of their next turn", the pip tip and the spend log line. `docs/project-state.md` settled line updated (INSPIRE2).

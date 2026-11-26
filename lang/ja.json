@@ -4791,5 +4791,8 @@
  "{n} exiled back to your Graveyard": "除外した{n}枚が墓地に戻った",
  "Attacking gives adjacent allies {n} Inspiration: +1 Attack each on every hit of their next turn.": "攻撃すると隣接する味方が鼓舞{n}を得る：1つにつき次のターンの全命中で攻撃+1。",
  "Inspiration {n}: +{atk} Attack on every hit of its next turn; kept if it lands none.": "鼓舞{n}：次のターンの全命中で攻撃+{atk}。1つも当たらなければ残る。",
- "spent its Inspiration: +{atk}⚔ on every hit that turn 📯": "鼓舞を使った：そのターンの全命中で+{atk}⚔ 📯"
+ "spent its Inspiration: +{atk}⚔ on every hit that turn 📯": "鼓舞を使った：そのターンの全命中で+{atk}⚔ 📯",
+ "Ranked": "ランク戦",
+ "Casual": "カジュアル",
+ "Back to Practice": "練習に戻る"
 }

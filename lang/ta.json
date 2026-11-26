@@ -4793,5 +4793,8 @@
  "{n} exiled back to your Graveyard": "நாடுகடத்திய {n} கல்லறைக்குத் திரும்பின",
  "Attacking gives adjacent allies {n} Inspiration: +1 Attack each on every hit of their next turn.": "தாக்கும்போது அருகிலுள்ள கூட்டாளிகளுக்கு {n} ஊக்கம்: ஒவ்வொன்றும் அவற்றின் அடுத்த முறையின் ஒவ்வொரு அடிக்கும் +1 தாக்குதல்.",
  "Inspiration {n}: +{atk} Attack on every hit of its next turn; kept if it lands none.": "ஊக்கம் {n}: அடுத்த முறையின் ஒவ்வொரு அடிக்கும் +{atk} தாக்குதல்; எதுவும் படாவிட்டால் இருக்கும்.",
- "spent its Inspiration: +{atk}⚔ on every hit that turn 📯": "தன் ஊக்கத்தைச் செலவழித்தது: அந்த முறையின் ஒவ்வொரு அடிக்கும் +{atk}⚔ 📯"
+ "spent its Inspiration: +{atk}⚔ on every hit that turn 📯": "தன் ஊக்கத்தைச் செலவழித்தது: அந்த முறையின் ஒவ்வொரு அடிக்கும் +{atk}⚔ 📯",
+ "Ranked": "தரவரிசை",
+ "Casual": "சாதாரண",
+ "Back to Practice": "பயிற்சிக்குத் திரும்பு"
 }

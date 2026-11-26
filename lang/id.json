@@ -4792,5 +4792,8 @@
  "{n} exiled back to your Graveyard": "{n} terbuang kembali ke Kuburan",
  "Attacking gives adjacent allies {n} Inspiration: +1 Attack each on every hit of their next turn.": "Saat menyerang, sekutu di sebelahnya mendapat {n} Inspirasi: masing-masing +1 Serangan pada setiap serangan di giliran berikutnya.",
  "Inspiration {n}: +{atk} Attack on every hit of its next turn; kept if it lands none.": "Inspirasi {n}: +{atk} Serangan pada setiap serangan di giliran berikutnya; tetap ada jika tak ada yang kena.",
- "spent its Inspiration: +{atk}⚔ on every hit that turn 📯": "menghabiskan Inspirasinya: +{atk}⚔ pada setiap serangan di giliran itu 📯"
+ "spent its Inspiration: +{atk}⚔ on every hit that turn 📯": "menghabiskan Inspirasinya: +{atk}⚔ pada setiap serangan di giliran itu 📯",
+ "Ranked": "Peringkat",
+ "Casual": "Santai",
+ "Back to Practice": "Kembali ke Latihan"
 }

@@ -15730,6 +15730,18 @@ body.bw-in-match .signin-banner{display:none;}
   #view-codex #codexResultCount{display:none;}
   .achv-head{gap:8px; margin-bottom:6px;} .achv-head-txt{min-width:0;} .achv-cardbtn{margin-bottom:6px; padding:8px 12px;} .achv-filters{margin-bottom:8px;}
 }
+/* 2026-11-26 (UISWEEP2, owner 11-24 22:29 #14): the Arena's nav (Ranked | Casual | Multiplayer) is one pill track on the sand, and every control sits inside one tent panel (.ar3-tent): chips, the PvP pair, the mode tiles. The Practice page uses the same tent. */
+.ar3-scene .pl2-arena-tabs{align-self:center; margin:0; gap:2px; padding:3px; border-radius:999px; background:rgba(22,12,5,.78); border:1px solid rgba(255,220,150,.32); box-shadow:0 3px 8px rgba(0,0,0,.25); max-width:100%; overflow-x:auto; scrollbar-width:none;}
+.ar3-scene .pl2-arena-tabs::-webkit-scrollbar{display:none;}
+.ar3-scene .pl2-arena-tabs .tab-btn{border-radius:999px; color:#fbecd6; padding:6px 14px; white-space:nowrap;}
+.ar3-scene .pl2-arena-tabs .tab-btn:hover{color:#fff;}
+.ar3-scene .pl2-arena-tabs .tab-btn[aria-selected="true"]{background:var(--accent); color:var(--accent-ink);}
+.ar3-tent{display:flex; flex-direction:column; align-items:stretch; gap:12px;}
+.ar3-tent > .ar3-format, .ar3-tent > .ar3-continue{align-self:center;}
+.ar3-tent .ar3-modes{display:flex; flex-wrap:wrap; justify-content:center; gap:10px;}
+.ar3-tent .ar3-mode{flex:1 1 140px; max-width:220px;}
+.ar3-tent .ar3-pvp-note{margin:0; background:transparent; color:var(--ink-muted);}
+@media (max-width:700px){ .ar3-tent{gap:8px; padding:10px 8px;} .ar3-tent .ar3-chips{gap:6px;} .ar3-tent .ar3-deckchip{order:3; flex:1 1 100%; justify-content:center;} .ar3-tent .ar3-pvp{gap:8px;} .ar3-scene .pl2-arena-tabs .tab-btn{padding:5px 12px;} }
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

@@ -18729,9 +18729,12 @@ function deckBreakdownHTML(deckIds, defs){
   return `<div class="dht-list">${rows.map(r=>`<div class="dht-row"><span class="dht-ico">${r.icon}</span><span class="dht-name">${escapeHtml(r.name)}</span><span class="dht-n">×${r.n}</span></div>`).join('')}</div>`;
 }
 // 2026-11-17 (package NAV1, owner OWN-1117-3 23:43): Conquest, Arena (PvP) and Dungeons & Raids are three pages in the Play view; each shows only its own tabs.
-function nav1PlayPage(){ return ['raid','dungeons'].includes(playSubTab) ? 'dr' : ['arena','autobattle'].includes(playSubTab) ? 'arena' : 'conquest'; }
+function nav1PlayPage(){ return ['raid','dungeons'].includes(playSubTab) ? 'dr' : playSubTab === 'arena' ? 'arena' : 'conquest'; } // 2026-11-26 (UISWEEP2): the Autobattler belongs to Practice (Conquest's page) now
 function nav1PlayTabs(){ const pg = nav1PlayPage();
-  return pg === 'dr' ? [tabOpen('raid') && 'raid', dungeonsTabOpen() && 'dungeons'].filter(Boolean) : pg === 'arena' ? [] : (adminModeEnabled || featureUnlocked('testlab')) ? ['conquest', 'sandbox'] : []; }
+  if(pg === 'dr') return [tabOpen('raid') && 'raid', dungeonsTabOpen() && 'dungeons'].filter(Boolean);
+  if(pg === 'arena') return [];
+  const more = [tabOpen('arena') && 'practice', (adminModeEnabled || featureUnlocked('testlab')) && 'sandbox'].filter(Boolean); // 2026-11-26 (UISWEEP2): Conquest | Practice (| Test Lab)
+  return more.length ? ['conquest', ...more] : []; }
 function renderPlay(){
   const root = document.getElementById('view-play');
   syncTextFilterPage(); // 2026-10-18: a new Play sub-tab starts with empty search boxes
@@ -18772,7 +18775,8 @@ function renderPlay(){
                renderDeckSection in Part 8), so the old "Player" sub-tab here — which showed that
                exact same builder — is retired to avoid two different paths to the same screen.
                renderPlayerSubTab itself is untouched and still the fallback below for safety. -->
-          ${nav1PlayTabs().includes('arena') ? `<button class="tab-btn ${(playSubTab==='arena'||playSubTab==='autobattle')?'active':''}" data-playtab="arena" role="tab" aria-selected="${playSubTab==='arena'||playSubTab==='autobattle'}"><span class="tab-emoji">🏟️</span> Arena</button>` : ''}
+          ${nav1PlayTabs().includes('practice') ? `<button class="tab-btn ${(playSubTab==='practice'||playSubTab==='autobattle')?'active':''}" data-playtab="practice" role="tab" aria-selected="${playSubTab==='practice'||playSubTab==='autobattle'}"><span class="tab-emoji">🤖</span> ${escapeHtml(TX('ui.sw2-practice'))}</button>` : ''}
+          ${nav1PlayTabs().includes('arena') ? `<button class="tab-btn ${playSubTab==='arena'?'active':''}" data-playtab="arena" role="tab" aria-selected="${playSubTab==='arena'}"><span class="tab-emoji">🏟️</span> Arena</button>` : ''}
           ${'' /* 2026-10-11 (user: "Raid as a menu item, beside Arena. Autobattler will be in the Arena"): the Autobattler is a tile inside the Arena now, so Raid sits right beside Arena here */}
           ${nav1PlayTabs().includes('raid') ? `<button class="tab-btn ${playSubTab==='raid'?'active':''}" data-playtab="raid" role="tab" aria-selected="${playSubTab==='raid'}"><span class="tab-emoji">🐲</span> ${escapeHtml(raidTabLabel())}</button>` : ''}
           ${'' /* 2026-10-15 (user: "Maybe, it's its own, just another tab in 'Play'."): the daily dungeons */}${nav1PlayTabs().includes('dungeons') ? `<button class="tab-btn ${playSubTab==='dungeons'?'active':''}" data-playtab="dungeons" role="tab" aria-selected="${playSubTab==='dungeons'}"><span class="tab-emoji">🗝️</span> ${escapeHtml(dungeonTabLabel()) /* 2026-10-16 (user: "when you unlock the first daily dungeon, it just says the name aka Murgle. But once you unlock the 2nd, it just says Daily Dungeons") */}</button>` : ''}
@@ -18793,7 +18797,7 @@ function renderPlay(){
                refreshEnergyHud() alongside the topbar original, closes that gap without touching
                the topbar-hiding behavior that gave the map its room in the first place. -->
           <button class="home-nav-btn" id="homeNavBtnPlay" type="button" title="${escapeAttr(TX('ui.back-to-home'))}" aria-label="${escapeAttr(TX('ui.back-to-home'))}"><span class="tab-emoji" aria-hidden="true">🌰</span> ${escapeHtml(TX('ui.nv-home'))}</button>${'' /* 2026-10-19 (package U3): the acorn Home, first in the cluster on Conquest, Arena, Raid and Dungeons */}
-          ${tabOpen('arena') && playSubTab !== 'arena' && playSubTab !== 'autobattle' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="${escapeAttr(TX('ui.u4-arena-tip'))}" aria-label="${escapeAttr(TX('ui.u4-arena-tip'))}"><span class="tab-emoji" aria-hidden="true">🏟️</span> ${escapeHtml(TX('ui.u4-arena'))}</button>` : ''}${playSubTab === 'autobattle' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="${escapeAttr(TX('ui.u4-arena-back'))}" aria-label="${escapeAttr(TX('ui.u4-arena-back'))}">← ${escapeHtml(TX('ui.u4-arena'))}</button>` : ''}
+          ${tabOpen('arena') && playSubTab !== 'arena' && playSubTab !== 'autobattle' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="${escapeAttr(TX('ui.u4-arena-tip'))}" aria-label="${escapeAttr(TX('ui.u4-arena-tip'))}"><span class="tab-emoji" aria-hidden="true">🏟️</span> ${escapeHtml(TX('ui.u4-arena'))}</button>` : ''}${playSubTab === 'autobattle' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="${escapeAttr(TX('ui.sw2-practice-back'))}" aria-label="${escapeAttr(TX('ui.sw2-practice-back'))}">← ${escapeHtml(TX('ui.sw2-practice'))}</button>` : ''}
           ${'' /* 2026-10-19 (package U4, owner 23:34: "there should be a forge shortcut in the top right corner of the screen, together with
                arena and home. Home of course comes first."): Home, Arena, then the Forge (its own 🔨, as in the page bar's shortcuts), once
                the Forge is open. Same trip as PAGE_SHORTCUTS' Forge: the Codex view on its Forge page (switchTab remembers where you came from). */}${tabOpen('forge') ? `<button class="home-nav-btn" id="forgeNavBtnPlay" type="button" title="${escapeAttr(TX('ui.place-forge'))}" aria-label="${escapeAttr(TX('ui.place-forge'))}"><span class="tab-emoji" aria-hidden="true">🔨</span> ${escapeHtml(TX('ui.u4-forge'))}</button>` : ''}
@@ -18843,7 +18847,7 @@ function renderPlay(){
     const backBtn = document.getElementById('homeNavBtnPlay');
     if(backBtn) backBtn.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); switchTab('home'); }); // 2026-10-19 (package U3): the cluster's 🌰 Home (was NV's tab-bar button)
     const arenaBtn = document.getElementById('arenaNavBtnPlay');
-    if(arenaBtn) arenaBtn.addEventListener('click', ()=>{ playSubTab = 'arena'; exitConquestImmersive(); renderPlay(); });
+    if(arenaBtn) arenaBtn.addEventListener('click', ()=>{ playSubTab = playSubTab === 'autobattle' ? 'practice' : 'arena'; exitConquestImmersive(); renderPlay(); }); // 2026-11-26 (UISWEEP2): from the Autobattler it goes back to Practice
     [['nav1MapBtnPlay', 'conquest'], ['nav1DrBtnPlay', 'raid']].forEach(([id, sub])=>{ const b = document.getElementById(id); if(b) b.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} playSubTab = sub; playerStatsOpen = false; if(sub !== 'conquest') exitConquestImmersive(); renderPlay(); }); }); // 2026-11-17 (package NAV1)
     const forgeBtn = document.getElementById('forgeNavBtnPlay'); // 2026-10-19 (package U4): the cluster's Forge
     if(forgeBtn) forgeBtn.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); codexSubTab = 'forge'; switchTab('codex'); });
@@ -18860,13 +18864,15 @@ function renderPlay(){
     if(conquestTabBtn) attachDelayedTooltip(conquestTabBtn, 'Fight your way across a map of preset AI skirmishes with the deck and Bramble you set up in the Deck menu. Beat a Raid Boss to unlock it permanently in the Raid tab.');
     const body = document.getElementById('playSubBody');
     if(['arena','autobattle','raid'].includes(playSubTab) && !tabOpen(playSubTab)) playSubTab = 'conquest';
+    if(playSubTab === 'practice' && !tabOpen('arena')) playSubTab = 'conquest';
     if(playSubTab === 'sandbox' && !adminModeEnabled && !featureUnlocked('testlab')) playSubTab = 'conquest';
     if(playSubTab === 'dungeons' && !dungeonsTabOpen()) playSubTab = 'conquest';
     // 2026-10-10 (user: "if the Arena mode follows the style of the conquest map, full screen with the tab buttons on
     // the bottom, centered, it'll look more consistent. Same for test lab."): the same full-window frame as Conquest.
-    if(playSubTab==='arena' || playSubTab==='sandbox' || playSubTab==='raid' || playSubTab==='dungeons'){ document.body.classList.add('conquest-full', 'play-full'); }
+    if(playSubTab==='arena' || playSubTab==='practice' || playSubTab==='sandbox' || playSubTab==='raid' || playSubTab==='dungeons'){ document.body.classList.add('conquest-full', 'play-full'); }
     if(playSubTab==='dungeons'){ renderDungeonsSubTab(body); placePlayFullHud(); return; } // 2026-10-15
     if(playSubTab==='arena'){ renderArenaSubTab(body); placePlayFullHud(); return; }
+    if(playSubTab==='practice'){ renderPracticeSubTab(body); placePlayFullHud(); return; } // 2026-11-26 (UISWEEP2)
     if(playSubTab==='raid'){ renderRaidSubTab(body); placePlayFullHud(); return; }
     if(playSubTab==='autobattle'){ renderAutobattleSubTab(body); return; }
     // 2026-10-15 (user: "Going to the test lab should play a test tube shake sfx."): on the way in, not on every redraw.
@@ -20378,7 +20384,7 @@ const FEATURE_SPOTS = [
   {key:'wanderer', icon:'🧭', name:'Wanderer’s Camp', mapNumber:13, get map(){ return mapIdAt(13); }, after:null, dialogue:'unlock_wanderer', tabs:[], go:()=> switchTab('shop')},
   // The Tavern (2026-10-13, user D40: "max energy progression is upgraded in a Tavern ... Maybe Map 14 or 16 for now").
   {key:'tavern', icon:'🍺', name:'The Tavern', mapNumber:14, get map(){ return mapIdAt(14); }, after:null, dialogue:'unlock_tavern', tabs:[], go:()=> openTavern()},
-  {key:'gauntlet', icon:'🏅', name:'Gauntlet Gate', mapNumber:16, get map(){ return mapIdAt(16); }, after:null, dialogue:'unlock_gauntlet', tabs:['gauntlet'], go:()=>{ playSubTab = 'arena'; switchTab('play'); }},
+  {key:'gauntlet', icon:'🏅', name:'Gauntlet Gate', mapNumber:16, get map(){ return mapIdAt(16); }, after:null, dialogue:'unlock_gauntlet', tabs:['gauntlet'], go:()=>{ playSubTab = 'practice'; switchTab('play'); } /* 2026-11-26 (UISWEEP2): the Gauntlet is a Practice mode */},
   // Stomping Grounds (2026-10-13, user: "Hero shouldn't be a button. Training them is in a new page! Stomping Grounds! ... one of
   // the maps in 21-25 that's not already oversubscribed"): on Map 21, past its third fight.
   {key:'stomp', icon:'🐾', name:'Stomping Grounds', mapNumber:21, get map(){ return mapIdAt(21); }, get after(){ return nthFightKey(this.map, 3); }, dialogue:'unlock_stomp', tabs:['stomp'], go:()=> switchTab('stomp')},
@@ -24937,7 +24943,7 @@ function wireArenaFieldShowcase(root){
 function arenaPvpPairHTML(){
   const left = pvpTicketsLeft(), nx = msUntilNextPvpTicket(), rk = rankForRating(myRating), sd = loadStandardDeck(), sdN = deckTotal(sd);
   const tk = `<span class="ar3-tk" title="${escapeAttr(TX('ui.ar-tickets-tip', {cap: PVP_TICKETS_PER_DAY}))}"><b>${left}/${PVP_TICKETS_PER_DAY}</b> 🎟️${nx == null ? '' : ` <small>+1 ${clockText(nx)}</small>`}</span>`;
-  return `<section class="ar3-pvp" aria-label="PvP">
+  return `<div class="ar3-pvp" role="group" aria-label="PvP">
     <div class="ar3-pvp-row">
       <button type="button" class="btn primary big ar3-pvp-btn is-collection" id="startPvpBtn" ${left ? '' : 'disabled'} title="${escapeAttr(TX('ui.ar-pvp-collection-tip'))}">
         <span class="ar3-pvp-ico" aria-hidden="true">📚</span><span class="ar3-pvp-lbl">${escapeHtml(TX('ui.ar-pvp-collection'))}</span><span class="ar3-pvp-sub">${escapeHtml(TX('ui.ar-pvp-collection-sub'))}</span></button>
@@ -24946,7 +24952,7 @@ function arenaPvpPairHTML(){
     </div>
     <div class="ar3-pvp-foot">${tk}<span class="ar3-chip" title="Your Arena rank (from your PvP rating)">🏅 <b>${escapeHtml(rk.label)}</b> <small>${Math.round(myRating)}</small></span>
       <button type="button" class="btn small ghost ar3-std-deck ${sdN === DECK_SIZE ? '' : 'is-short'}" id="stdDeckBtn" title="${escapeAttr(TX('ui.ar-std-deck-tip'))}">🃏 ${escapeHtml(TX('ui.ar-std-deck', {n: sdN, size: DECK_SIZE}))}</button></div>
-  </section>`;
+  </div>`;
 }
 function renderArenaSubTab(body){
   if(!body) return;
@@ -24970,63 +24976,81 @@ function renderArenaSubTabInner(body, title){
   const rs = todaysArenaRuleset();
   const msDay = 86400000 - ((Date.now() - new Date().getTimezoneOffset()*60000) % 86400000), hrsLeft = Math.max(1, Math.round(msDay / 3600000));
   let tomorrow = null; try{ tomorrow = dailyPortent(arenaDayNumber() + 1); }catch(e){}
-  const streak = loadGauntletStreak();
   const std = standardFormatOn();
   const head = rs.portent && rs.portent.holiday ? rs.portent.holidayIcon + ' ' + rs.portent.holiday : rs.portent && rs.portent.strange ? '✷ ' + TX('ui.ar-strange-day') : TX('ui.ar-today');
-  // a mode tile: icon and name only; what it is and what it pays are in its tooltip
-  const tile = (id, ico, lbl, tip, extra, cls)=> `<button type="button" class="ar3-mode ${cls || ''}" id="${id}" title="${escapeAttr(tip)}"><span class="ar3-mode-ico" aria-hidden="true">${ico}</span><span class="ar3-mode-lbl">${lbl}</span>${extra || ''}</button>`;
+  // 2026-11-26 (UISWEEP2, owner 11-24 22:29 #14): a simple nav (Ranked | Casual | Multiplayer) under the sign, and every control inside one tent panel; the computer modes live on the Practice page (Conquest's second tab)
+  const pane = sw2ArenaPane(), coop = pane === 'coop';
+  const live = liveQueueing ? `<div class="ar3-modes"><div class="ar3-mode live-queue-status" id="liveQueueStatus"><span class="ar3-mode-ico" aria-hidden="true">🔎</span><span class="ar3-mode-lbl">Searching…</span><span class="ar3-mode-line">Matching by rating</span><button type="button" class="btn small ghost" id="cancelLiveQueueBtn">Cancel</button></div></div>`
+    : `<div class="ar3-modes">${arenaModeTile('startLiveRankedBtn', '⚡', 'Ranked Live', 'Real players, real time · classic rules')}</div>`;
+  const tent = coop ? '' : `<section class="ar3-panel ar3-tent" aria-label="${escapeAttr(title)}">
+        <div class="ar3-chips">
+          <span class="ar3-chip" title="${escapeAttr(CURRENCY_META.laurels.label + ': the Arena’s own reward')}"><span aria-hidden="true">${CURRENCY_META.laurels.glyph}</span> <b>${Number((myCurrencies && myCurrencies.laurels) || 0)}</b></span>
+          <span class="ar3-chip ar3-deckchip">${deckSizeBadgeHTML(myDeckCounts)}</span>
+          <button type="button" class="ar3-chip ar3-chip-btn" id="arenaAchvBtn" title="Achievements" aria-label="Achievements">🏆</button>
+        </div>
+        ${resumable ? `<button type="button" class="btn primary ar3-continue" id="continueAsyncBtn"><span aria-hidden="true">▶️</span> Continue <small>Your saved match</small></button>` : ''}
+        ${pane === 'casual' ? arenaFormatToggleHTML(std) + `<div class="ar3-modes">${arenaModeTile('startVsPcBtn', '👥', 'Pass &amp; Play', 'Two players, one device')}${arenaModeTile('startCagedPcBtn', '⛓️', 'Caged Fight', 'Both leaders are caged on the enemy board, 4 slots to the right. Break the cage to free yours.')}</div>`
+          : arenaPvpPairHTML() + (loadDialogueFlags()['rel2_pvp_seen'] ? '' : `<p class="ar3-pvp-note">${escapeHtml(TX('ui.rel2-pvp-note'))}</p>`) /* 2026-11-19 (package REL2): the first-visit PvP line, until a first match */ + live}
+      </section>`;
   body.innerHTML = `
     <div class="ar3-scene map-theme-marena" data-sign="${escapeAttr('🏟️ ' + (window.i18 ? i18(title) : title))}">
       <i class="ar2-bunting" aria-hidden="true"></i>
       <div class="ar3-motes" aria-hidden="true">${Array.from({length:10}, (_, k)=> `<i style="left:${(k*41)%92 + 4}%; animation-delay:${-((k*1.7)%8).toFixed(1)}s; animation-duration:${8 + (k*0.7)%5}s"></i>`).join('')}</div>
       <h2 class="sr-only">🏟️ ${escapeHtml(title)}</h2>
-      <div class="ar3-chips">
-        <span class="ar3-chip" title="${escapeAttr(CURRENCY_META.laurels.label + ': the Arena’s own reward')}"><span aria-hidden="true">${CURRENCY_META.laurels.glyph}</span> <b>${Number((myCurrencies && myCurrencies.laurels) || 0)}</b></span>
-        <span class="ar3-chip ar3-deckchip">${deckSizeBadgeHTML(myDeckCounts)}</span>
-        <button type="button" class="ar3-chip ar3-chip-btn" id="arenaAchvBtn" title="Achievements" aria-label="Achievements">🏆</button>
-      </div>
-      ${resumable ? `<button type="button" class="btn primary ar3-continue" id="continueAsyncBtn"><span aria-hidden="true">▶️</span> Continue <small>Your saved match</small></button>` : ''}
-      ${arenaPvpPairHTML()}${loadDialogueFlags()['rel2_pvp_seen'] ? '' : `<p class="ar3-pvp-note">${escapeHtml(TX('ui.rel2-pvp-note'))}</p>`}${'' /* 2026-11-19 (package REL2): the first-visit PvP line, until a first match */}
+      ${pl2ArenaTabsHTML() /* PL2 (2026-10-25, PL1-3): Ranked | Casual | Multiplayer */}${tent}
       <section class="ar3-panel ar3-today" aria-label="${escapeAttr(head)}">
         <div class="ar3-today-head"><h3>${escapeHtml(head)}</h3>
           <span class="ar3-today-when" title="${escapeAttr(TX('ui.ar-rules-tip'))}">⏳ ${escapeHtml(TX('ui.ar-new-in', {h: hrsLeft}))}${tomorrow ? ` <span class="ar3-next" title="${escapeAttr('Tomorrow: ' + tomorrow.effects.map(f=> f.name).join(', '))}">→ ${tomorrow.effects.map(f=> f.icon).join('')}</span>` : ''}</span></div>
         <div class="ar3-fields">${arenaFieldShowcaseHTML(rs)}</div>
       </section>
-      ${pl2ArenaTabsHTML() /* PL2 (2026-10-25, PL1-3): Modes | Co-op */}<section class="ar3-panel ar3-modes-panel" aria-label="${escapeAttr(TX('ui.ar-modes'))}"${pl2CoopPaneOn() ? ' hidden' : ''}>
-        <div class="ar3-modes-head"><h3>${escapeHtml(TX('ui.ar-modes'))}</h3>
-          <div class="arena-format ar3-format" role="radiogroup" aria-label="Deck format" title="${escapeAttr(std ? 'Every card at Level 1, no foils. Applies to Quick Battle, Pass & Play, Gauntlet and friend invites.' : 'Your own cards, levels and foils.')}">
-            <button type="button" class="tk-speed-btn ${std?'':'is-on'}" role="radio" aria-checked="${!std}" data-arena-format="collection">📚 Collection</button>
-            <button type="button" class="tk-speed-btn ${std?'is-on':''}" role="radio" aria-checked="${std}" data-arena-format="standard">🃏 Standard</button></div></div>
+    </div>`;
+  arenaWireModes(body, ()=> renderArenaSubTab(body));
+  body.querySelectorAll('[data-pl2-arena]').forEach(b=> b.addEventListener('click', ()=>{ pl2ArenaPane = b.dataset.pl2Arena; renderArenaSubTab(body); })); // PL2 (2026-10-25)
+  wireArenaFieldShowcase(body);
+}
+// 2026-11-26 (UISWEEP2): one wiring for the Arena's and the Practice page's mode buttons (each exists on one of the two)
+function arenaFormatToggleHTML(std){
+  return `<div class="arena-format ar3-format" role="radiogroup" aria-label="Deck format" title="${escapeAttr(std ? 'Every card at Level 1, no foils. Applies to Quick Battle, Pass & Play, Gauntlet and friend invites.' : 'Your own cards, levels and foils.')}">
+    <button type="button" class="tk-speed-btn ${std?'':'is-on'}" role="radio" aria-checked="${!std}" data-arena-format="collection">📚 Collection</button>
+    <button type="button" class="tk-speed-btn ${std?'is-on':''}" role="radio" aria-checked="${std}" data-arena-format="standard">🃏 Standard</button></div>`;
+}
+// a mode tile: icon and name only; what it is and what it pays are in its tooltip
+function arenaModeTile(id, ico, lbl, tip, extra, cls){ return `<button type="button" class="ar3-mode ${cls || ''}" id="${id}" title="${escapeAttr(tip)}"><span class="ar3-mode-ico" aria-hidden="true">${ico}</span><span class="ar3-mode-lbl">${lbl}</span>${extra || ''}</button>`; }
+function arenaWireModes(body, redraw){
+  const $ = id=> document.getElementById(id), on = (id, fn)=>{ const b = $(id); if(b) b.addEventListener('click', fn); };
+  { const ab = $('arenaAchvBtn'); if(ab) ab.addEventListener('click', ()=>{ exitConquestImmersive && exitConquestImmersive(); switchTab('achievements'); }); }
+  body.querySelectorAll('[data-arena-format]').forEach(b=> b.addEventListener('click', ()=>{ setStandardFormat(b.dataset.arenaFormat==='standard'); redraw(); }));
+  on('stdDeckBtn', ()=> openStandardDeckBuilder(redraw));
+  on('startVsAiBtn', ()=> startMatch('ai'));
+  on('openAutobattleBtn', ()=>{ playSubTab = 'autobattle'; renderPlay(); });
+  on('startVsPcBtn', ()=> startMatch('pc'));
+  on('startPvpBtn', ()=> startMatch('pvp', {standard:false}));
+  on('startPvpStdBtn', ()=> startMatch('pvp', {standard:true}));
+  on('startGauntletBtn', ()=> startMatch('gauntlet'));
+  on('startCagedAiBtn', ()=> startMatch('ai', {caged:true}));
+  on('startCagedPcBtn', ()=> startMatch('pc', {caged:true}));
+  on('continueAsyncBtn', resumeAsyncMatch);
+  on('startLiveRankedBtn', findLiveRankedMatch);
+  on('cancelLiveQueueBtn', cancelLiveRankedQueue);
+}
+// 2026-11-26 (UISWEEP2, owner 11-24 22:29 #14: "PvE modes live elsewhere, not in the Arena"): the Practice page, Conquest's second tab: the games against the computer, in one tent panel on the Arena's sand.
+function renderPracticeSubTab(body){
+  if(!body) return;
+  const title = TX('ui.sw2-practice'), std = standardFormatOn();
+  body.innerHTML = `<div class="ar3-scene map-theme-marena" data-sign="${escapeAttr('🤖 ' + (window.i18 ? i18(title) : title))}">
+      <i class="ar2-bunting" aria-hidden="true"></i>
+      <h2 class="sr-only">🤖 ${escapeHtml(title)}</h2>
+      <section class="ar3-panel ar3-tent" aria-label="${escapeAttr(title)}">
+        ${arenaFormatToggleHTML(std)}
         <div class="ar3-modes">
-          ${tile('startVsAiBtn', '🤖', 'Quick Battle', "You vs the computer, under today's rules · costs no Energy", '', 'is-hero')}
-          ${tile('startVsPcBtn', '👥', 'Pass &amp; Play', 'Two players, one device')}
-          ${tabOpen('gauntlet') ? tile('startGauntletBtn', '🏅', 'Gauntlet', `Win ${GAUNTLET_GOAL} in a row; one loss starts you over`, `<span class="ar3-mode-line">🔥 ${streak}/${GAUNTLET_GOAL}</span>`) : ''}
-          <div class="ar3-mode is-caged" id="cagedPanel" title="Your leader is caged on the enemy board, 4 slots to the right. Break the cage to free it.">
-            <span class="ar3-mode-ico" aria-hidden="true">⛓️</span><span class="ar3-mode-lbl">Caged Fight</span>
-            <span class="ar3-mode-acts"><button type="button" class="btn small primary" id="startCagedAiBtn">vs Computer</button><button type="button" class="btn small ghost" id="startCagedPcBtn" title="Both leaders caged">Pass &amp; Play</button></span></div>
-          ${tabOpen('autobattle') ? tile('openAutobattleBtn', '🧩', 'Autobattler', 'Draft a team, then watch it fight') : ''}
-          ${liveQueueing ? `<div class="ar3-mode live-queue-status" id="liveQueueStatus"><span class="ar3-mode-ico" aria-hidden="true">🔎</span><span class="ar3-mode-lbl">Searching…</span><span class="ar3-mode-line">Matching by rating</span><button type="button" class="btn small ghost" id="cancelLiveQueueBtn">Cancel</button></div>`
-            : tile('startLiveRankedBtn', '⚡', 'Ranked Live', 'Real players, real time · classic rules')}
+          ${arenaModeTile('startVsAiBtn', '🤖', 'Quick Battle', "You vs the computer, under today's rules · costs no Energy", '', 'is-hero')}
+          ${tabOpen('gauntlet') ? arenaModeTile('startGauntletBtn', '🏅', 'Gauntlet', `Win ${GAUNTLET_GOAL} in a row; one loss starts you over`, `<span class="ar3-mode-line">🔥 ${loadGauntletStreak()}/${GAUNTLET_GOAL}</span>`) : ''}
+          ${arenaModeTile('startCagedAiBtn', '⛓️', 'Caged Fight', 'Your leader is caged on the enemy board, 4 slots to the right. Break the cage to free it. · vs the computer')}
+          ${tabOpen('autobattle') ? arenaModeTile('openAutobattleBtn', '🧩', 'Autobattler', 'Draft a team, then watch it fight') : ''}
         </div>
       </section>
     </div>`;
-  const $ = id=> document.getElementById(id);
-  { const ab = $('arenaAchvBtn'); if(ab) ab.addEventListener('click', ()=>{ exitConquestImmersive && exitConquestImmersive(); switchTab('achievements'); }); }
-  body.querySelectorAll('[data-arena-format]').forEach(b=> b.addEventListener('click', ()=>{ setStandardFormat(b.dataset.arenaFormat==='standard'); renderArenaSubTab(body); }));
-  { const sb = $('stdDeckBtn'); if(sb) sb.addEventListener('click', ()=> openStandardDeckBuilder(()=> renderArenaSubTab(body))); }
-  body.querySelectorAll('[data-pl2-arena]').forEach(b=> b.addEventListener('click', ()=>{ pl2ArenaPane = b.dataset.pl2Arena; renderArenaSubTab(body); })); // PL2 (2026-10-25)
-  $('startVsAiBtn').addEventListener('click', ()=> startMatch('ai'));
-  { const abBtn = $('openAutobattleBtn'); if(abBtn) abBtn.addEventListener('click', ()=>{ playSubTab = 'autobattle'; renderPlay(); }); }
-  $('startVsPcBtn').addEventListener('click', ()=> startMatch('pc'));
-  { const pvpBtn = $('startPvpBtn'); if(pvpBtn) pvpBtn.addEventListener('click', ()=> startMatch('pvp', {standard:false})); }
-  { const sp = $('startPvpStdBtn'); if(sp) sp.addEventListener('click', ()=> startMatch('pvp', {standard:true})); }
-  { const gb = $('startGauntletBtn'); if(gb) gb.addEventListener('click', ()=> startMatch('gauntlet')); }
-  { const a = $('startCagedAiBtn'); if(a) a.addEventListener('click', ()=> startMatch('ai', {caged:true}));
-    const b = $('startCagedPcBtn'); if(b) b.addEventListener('click', ()=> startMatch('pc', {caged:true})); }
-  if(resumable) $('continueAsyncBtn').addEventListener('click', resumeAsyncMatch);
-  { const liveBtn = $('startLiveRankedBtn'); if(liveBtn) liveBtn.addEventListener('click', findLiveRankedMatch); }
-  { const c = $('cancelLiveQueueBtn'); if(c) c.addEventListener('click', cancelLiveRankedQueue); }
-  wireArenaFieldShowcase(body);
+  arenaWireModes(body, ()=> renderPracticeSubTab(body));
 }
 
 // ==== Conquest / Raid (2026-09-16, per explicit request) ====================================
@@ -28408,10 +28432,11 @@ function dailyDungeonsOpen(){ try{ return !!(dungeonsAdminView() || unlockedDail
 function dungeonsTabOpen(){ try{ return dungeonsAdminView(); }catch(e){ return false; } }
 let pl2ArenaPane = 'modes';
 function pl2CoopPaneOn(){ try{ return pl2ArenaPane === 'coop' && gdPlayerOpen(); }catch(e){ return false; } }
+function sw2ArenaPane(){ return pl2CoopPaneOn() ? 'coop' : pl2ArenaPane === 'casual' ? 'casual' : 'modes'; } // 2026-11-26 (UISWEEP2): the Arena's panes: modes (Ranked), casual, coop (Multiplayer)
 function pl2ArenaTabsHTML(){
-  let open = false; try{ open = gdPlayerOpen(); }catch(e){} if(!open) return '';
-  const on = pl2CoopPaneOn(), b = (k, ico, label, sel)=> `<button type="button" class="tab-btn ${sel ? 'active' : ''}" role="tab" aria-selected="${sel}" data-pl2-arena="${k}"><span class="tab-emoji" aria-hidden="true">${ico}</span> ${escapeHtml(label)}</button>`;
-  return `<div class="pl2-arena-tabs" role="tablist">${b('modes', '⚔️', TX('ui.ar-modes'), !on)}${b('coop', '👥', TX('ui.pl2-coop'), on)}</div>`
+  let open = false; try{ open = gdPlayerOpen(); }catch(e){}
+  const pane = sw2ArenaPane(), on = pane === 'coop', b = (k, ico, label, sel)=> `<button type="button" class="tab-btn ${sel ? 'active' : ''}" role="tab" aria-selected="${sel}" data-pl2-arena="${k}"><span class="tab-emoji" aria-hidden="true">${ico}</span> ${escapeHtml(label)}</button>`;
+  return `<div class="pl2-arena-tabs" role="tablist">${b('modes', '🏅', TX('ui.sw2-ranked'), pane === 'modes')}${b('casual', '👥', TX('ui.sw2-casual'), pane === 'casual')}${open ? b('coop', '🤝', TX('ui.pl2-coop'), on) : ''}</div>`
     + (on ? `<section class="ar3-panel pl2-coop-panel dungeons-panel" aria-label="${escapeAttr(TX('ui.pl2-coop'))}"><div class="dg-list">${groupDungeonCardsHTML() /* DUNGEON1: every open dungeon, a card each */}</div></section>` : '');
 }
 // the map's 👥 spot opens the Group Dungeon's card over the map (its buttons are the same delegated [data-gd-open] ones)

@@ -4790,5 +4790,8 @@
  "{n} exiled back to your Graveyard": "{n} exiliadas vuelven al Cementerio",
  "Attacking gives adjacent allies {n} Inspiration: +1 Attack each on every hit of their next turn.": "Al atacar, da {n} Inspiración a los aliados adyacentes: +1 Ataque cada una en cada golpe de su próximo turno.",
  "Inspiration {n}: +{atk} Attack on every hit of its next turn; kept if it lands none.": "Inspiración {n}: +{atk} de Ataque en cada golpe de su próximo turno; se conserva si no acierta.",
- "spent its Inspiration: +{atk}⚔ on every hit that turn 📯": "gastó su Inspiración: +{atk}⚔ en cada golpe de ese turno 📯"
+ "spent its Inspiration: +{atk}⚔ on every hit that turn 📯": "gastó su Inspiración: +{atk}⚔ en cada golpe de ese turno 📯",
+ "Ranked": "Clasificatoria",
+ "Casual": "Casual",
+ "Back to Practice": "Volver a Práctica"
 }

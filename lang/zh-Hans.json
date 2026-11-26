@@ -4791,5 +4791,8 @@
  "{n} exiled back to your Graveyard": "{n} 张放逐的牌回到墓地",
  "Attacking gives adjacent allies {n} Inspiration: +1 Attack each on every hit of their next turn.": "攻击时，相邻友军获得 {n} 层鼓舞：每层使其下一回合的每次命中 +1 攻击。",
  "Inspiration {n}: +{atk} Attack on every hit of its next turn; kept if it lands none.": "鼓舞 {n}：下一回合每次命中攻击 +{atk}；一次都未命中则保留。",
- "spent its Inspiration: +{atk}⚔ on every hit that turn 📯": "用掉了鼓舞：该回合每次命中 +{atk}⚔ 📯"
+ "spent its Inspiration: +{atk}⚔ on every hit that turn 📯": "用掉了鼓舞：该回合每次命中 +{atk}⚔ 📯",
+ "Ranked": "排位",
+ "Casual": "休闲",
+ "Back to Practice": "返回练习"
 }

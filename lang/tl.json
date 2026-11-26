@@ -4791,5 +4791,8 @@
  "{n} exiled back to your Graveyard": "{n} na-exile pabalik sa Libingan",
  "Attacking gives adjacent allies {n} Inspiration: +1 Attack each on every hit of their next turn.": "Sa pag-atake, binibigyan ang katabing kakampi ng {n} Inspirasyon: +1 Atake bawat isa sa bawat tama ng susunod nilang turn.",
  "Inspiration {n}: +{atk} Attack on every hit of its next turn; kept if it lands none.": "Inspirasyon {n}: +{atk} Atake sa bawat tama ng susunod nitong turn; nananatili kung walang tumama.",
- "spent its Inspiration: +{atk}⚔ on every hit that turn 📯": "ginastos ang Inspirasyon nito: +{atk}⚔ sa bawat tama sa turn na iyon 📯"
+ "spent its Inspiration: +{atk}⚔ on every hit that turn 📯": "ginastos ang Inspirasyon nito: +{atk}⚔ sa bawat tama sa turn na iyon 📯",
+ "Ranked": "Ranked",
+ "Casual": "Kaswal",
+ "Back to Practice": "Bumalik sa Praktis"
 }

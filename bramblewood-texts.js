@@ -178,7 +178,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ar-strange-day": "A strange day",
   "ui.ar-new-in": "New in {h}h",
   "ui.ar-rules-tip": "Every Arena fight today plays under these. Ranked Live plays Standard.",
-  "ui.ar-modes": "More ways to play",
   "ui.ar-group-name": "Multiplayer",
   "ui.ar-log-title": "Match log",
   "ui.ar-log-pve": "PvE",
@@ -1355,7 +1354,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.nv-home": "Home",
   "ui.u4-arena": "Arena",
   "ui.u4-arena-tip": "The Arena",
-  "ui.u4-arena-back": "Back to the Arena",
   "ui.u4-forge": "Forge",
   "ui.ui9-back-to-map": "Back to the map",
   "ui.u4-sort-advance": "Sort: Advancement",
@@ -3958,7 +3956,11 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.fp1-leg-sug-new": "Blue, red edge = suggest New!",
   "ui.dungeon2-clear": "Part won: the enemies left die and 3 cards from your Graveyard go back into your deck (an Ecclesia deck: 3 exiled cards back to the Graveyard).",
   "ui.dungeon2-deck-back": "♻️ {n} from your Graveyard back to your deck",
-  "ui.dungeon2-exile-back": "♻️ {n} exiled back to your Graveyard"
+  "ui.dungeon2-exile-back": "♻️ {n} exiled back to your Graveyard",
+  "ui.sw2-ranked": "Ranked",
+  "ui.sw2-casual": "Casual",
+  "ui.sw2-practice": "Practice",
+  "ui.sw2-practice-back": "Back to Practice"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

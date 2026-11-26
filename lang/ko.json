@@ -4793,5 +4793,8 @@
  "{n} exiled back to your Graveyard": "추방된 {n}장이 무덤으로",
  "Attacking gives adjacent allies {n} Inspiration: +1 Attack each on every hit of their next turn.": "공격하면 인접 아군이 영감 {n}을 얻습니다: 하나당 다음 턴의 모든 명중에 공격 +1.",
  "Inspiration {n}: +{atk} Attack on every hit of its next turn; kept if it lands none.": "고무 {n}: 다음 턴의 모든 명중에 공격 +{atk}; 하나도 안 맞으면 남아요.",
- "spent its Inspiration: +{atk}⚔ on every hit that turn 📯": "고무를 썼어요: 그 턴의 모든 명중에 +{atk}⚔ 📯"
+ "spent its Inspiration: +{atk}⚔ on every hit that turn 📯": "고무를 썼어요: 그 턴의 모든 명중에 +{atk}⚔ 📯",
+ "Ranked": "랭크",
+ "Casual": "캐주얼",
+ "Back to Practice": "연습으로 돌아가기"
 }

@@ -1,0 +1,6 @@
+{"tx": {
+ "ui.sw2-ranked": {"en":"Ranked","fr":"Classé","de":"Gewertet","es":"Clasificatoria","it":"Classificata","pt":"Ranqueada","tl":"Ranked","ta":"தரவரிசை","id":"Peringkat","zh-Hans":"排位","zh-Hant":"排位","ja":"ランク戦","ko":"랭크"},
+ "ui.sw2-casual": {"en":"Casual","fr":"Détente","de":"Freizeit","es":"Casual","it":"Amichevole","pt":"Casual","tl":"Kaswal","ta":"சாதாரண","id":"Santai","zh-Hans":"休闲","zh-Hant":"休閒","ja":"カジュアル","ko":"캐주얼"},
+ "ui.sw2-practice": {"en":"Practice","fr":"Entraînement","de":"Übung","es":"Práctica","it":"Allenamento","pt":"Treino","tl":"Praktis","ta":"பயிற்சி","id":"Latihan","zh-Hans":"练习","zh-Hant":"練習","ja":"練習","ko":"연습"},
+ "ui.sw2-practice-back": {"en":"Back to Practice","fr":"Retour à l'entraînement","de":"Zurück zur Übung","es":"Volver a Práctica","it":"Torna all'allenamento","pt":"Voltar ao Treino","tl":"Bumalik sa Praktis","ta":"பயிற்சிக்குத் திரும்பு","id":"Kembali ke Latihan","zh-Hans":"返回练习","zh-Hant":"返回練習","ja":"練習に戻る","ko":"연습으로 돌아가기"}
+}}
