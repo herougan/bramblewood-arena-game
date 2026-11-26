@@ -7,6 +7,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Texts (12 packs): the skill line "+1 Attack each on every hit of their next turn", the pip tip and the spend log line. `docs/project-state.md` settled line updated (INSPIRE2).
 - **Golden (card matrix), accepted 2026-11-26:** 58 results changed, every one a fight with an Inspiring card: 53 only the event hash (the spend event now comes once at the pass end), 3 a bramble Health (e.g. match111, Gilded Swan Knight in both decks: 26 -> 24), 2 a fight length (squad466 11 -> 10 rounds, squad541 13 -> 14); no winner changed.
 - **Trigger lines without who / sub (TEXTFIX1):** Great Horned Owl's and Cave Warlord's On Ready damage read "Deal 4 damage to >." (the line printed its blank `<<>>` marker: the trigger has no `who`). `triggerPreviewText` now fills the engine's own defaults (an enemy, the one facing it; itself for Buff / Shield / Grant Fast-forward / Exile; an adjacent ally for Harden / Embolden / Grant), so they read "Deal 4 damage to an adjacent opponent". No other card's line changes.
+- **Road re-measure** (`docs/balance/skirmish-pass-post1126i.jsonl`, 400 games, the 93 Maps 0-20 fights with an Inspiring card on either side) against post1125b: mean +0.3 points, largest 6-8 +3.0; no fight left its band, 2-A-4 entered (63.5 -> 64.5); road 179 -> 180 in band, 183 within 10, 7 beyond 20 of 208. Owner call INSPIRE2-1 (every hit, or at most 4 a turn).
 - Test `tests/inspire2-2026-11-26.js`.
 
 ## 2026-11-26 Packages DUNGEON2 + RAIDCAM1 (owner 11-24 22:29 #16 #17 #19 #21)
