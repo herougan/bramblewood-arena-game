@@ -4,6 +4,13 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**ART17-1. Living card art: which way?** · Decide · Art · asked 2026-11-27
+- Abyss Lantern Squid test (frames in docs/perf/art17/frames). A: the art cut into layers (water, squid, glow): depth, a pulsing lantern and spots, drifting motes; 32 KB a card; works only where the creature's colour differs from its scene. B: the flat art with a glow pulse and caustics; no extra art. Both ran without dropped frames. Detail card first, then rare pack reveals.
+  - a) A where the cut is clean, B elsewhere
+  - b) B only
+  - c) neither yet
+- **Default:** a
+
 **COMBO1-1. Poison and Bleed payoffs on the road** · Decide · Cards · asked 2026-11-27
 - No Maps 0-20 card cashes in a Poison or Bleed stack. Bogfire Newt (Detonate: its hit ticks the target's Poison at once) joins Lilypad Reach; Bloodscent Shark (Hemorrhage: doubles the Bleed) joins The Sunken Depths. Side maps: no road fight moves.
   - a) both
