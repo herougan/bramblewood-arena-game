@@ -24,7 +24,7 @@
 
 ## Most-called helpers in arena_app.js (reuse before writing a new one)
 
-`escapeHtml` 1817, `escapeAttr` 1275, `getCardDefs` 620, `numOr` 392, `boardCardEl` 352, `showToast` 308, `reducedMotion` 255, `floatText` 206, `fxAtLeast` 163, `hasGsap` 162, `iconHTML` 153, `cardTileHTML` 136, `switchTab` 119, `fnoise` 106, `mapNumberOf` 96, `sk1Patch` 90, `fightSafe` 90, `denyShake` 87, `loadConquestProgress` 83, `isSignedIn` 78, `conquestNodeId` 76, `fxHook` 73, `renderBoard` 72, `sleep` 71, `hqTileEl` 71, `cardBaseLevel` 71, `viewerHandPid` 61, `grantText` 61, `grantCurrency` 59, `findConquestNode` 58, `baseKind` 57, `mainConquestMaps` 53, `renderPlay` 52, `parseGrantText` 50, `saveCurrencies` 48, `updateCardHpDisplay` 47, `unlockCardForPlayer` 47, `updateCardStatusDisplay` 46, `loadTutorialDone` 46, `loadDialogueFlags` 46, `isMapUnlocked` 45, `deckTotal` 45, `dnFloat` 41, `renderForge` 40, `fxLevel` 40, `animMs` 40, `maxCopiesForRarity` 38, `tabOpen` 37, `mapIdAt` 37, `loadFactionChoice` 36, `cardSourceOf` 36, `loadTutorial2Done` 35, `resolveRound` 33, `pushLog` 33, `featureUnlocked` 33, `dnLogNum` 33, `skillDefOf` 32, `setDialogueFlag` 32, `getCardLevel` 32, `blip` 32
+`escapeHtml` 1860, `escapeAttr` 1305, `getCardDefs` 628, `numOr` 397, `boardCardEl` 352, `showToast` 311, `reducedMotion` 259, `floatText` 206, `fxAtLeast` 164, `hasGsap` 162, `iconHTML` 153, `cardTileHTML` 136, `switchTab` 119, `fnoise` 106, `mapNumberOf` 101, `fightSafe` 95, `sk1Patch` 91, `denyShake` 87, `loadConquestProgress` 83, `isSignedIn` 78, `conquestNodeId` 76, `fxHook` 73, `sleep` 72, `renderBoard` 72, `cardBaseLevel` 72, `hqTileEl` 71, `viewerHandPid` 62, `grantText` 61, `grantCurrency` 59, `findConquestNode` 58, `baseKind` 57, `mainConquestMaps` 53, `renderPlay` 52, `parseGrantText` 50, `saveCurrencies` 48, `updateCardHpDisplay` 47, `unlockCardForPlayer` 47, `updateCardStatusDisplay` 46, `loadTutorialDone` 46, `loadDialogueFlags` 46, `isMapUnlocked` 45, `deckTotal` 45, `fxLevel` 44, `dnFloat` 41, `animMs` 41, `renderForge` 40, `maxCopiesForRarity` 40, `cardSourceOf` 39, `tabOpen` 37, `mapIdAt` 36, `loadFactionChoice` 36, `loadTutorial2Done` 35, `skillDefOf` 34, `resolveRound` 33, `pushLog` 33, `featureUnlocked` 33, `dnLogNum` 33, `setDialogueFlag` 32, `isEasterEgg` 32, `getCardLevel` 32
 
 ## Blocks that tests cut out and evaluate (keep the `NAME:BEGIN` / `NAME:END` lines; edit inside them with care)
 
@@ -44,7 +44,7 @@
 - `BRAMBLES_UX`: ux-2026-10-19.js
 - `DECK_LEADER_SY2`: deck-sync-2026-10-19.js
 - `MATERIA_SOCKET_H1`: h1-2026-10-24.js
-- `SAVE_GUARD_UI12`: ui12-save-guard-2026-10-31.js
+- `SAVE_GUARD_UI12`: fixpack1-2026-11-26.js, ui12-save-guard-2026-10-31.js
 - `PALE_DESERT`: no test names it
 - `C13_ADMIN_SUBMAPS`: content13-2026-11-07.js
 - `NET1_RAID`: net1-2026-11-12.js
@@ -69,5 +69,5 @@
 
 ## Saved state
 
-167 localStorage key constants: `grep -n "_KEY = '" arena_app.js`. The cloud save is the `PROGRESS_KEYS` blob
+170 localStorage key constants: `grep -n "_KEY = '" arena_app.js`. The cloud save is the `PROGRESS_KEYS` blob
 (docs/guides/networking-api.md).

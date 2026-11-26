@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-26 Packages DUNGEON2 + RAIDCAM1 (owner 11-24 22:29 #16 #17 #19 #21)
+- **Stage clear (multiplayer dungeons):** when a part falls, the enemies left die on the board (no On Death; a cage keeps its leader), the banner plays, the next wave arrives, then each player takes 3 of their own cards (newest first) from the shared Graveyard back into their deck, shuffled in by the part's seed (card backs fly Graveyard -> deck, lane note "♻️ 3 from your Graveyard back to your deck"). A deck at least half Ecclesia moves 3 of its exiled cards back to the Graveyard instead, when it has any (DUNGEON2-1). Was: the enemy's survivors carried over. How it works lists the rule (3 TX keys, 12 packs). The vault gets easier than MP1's 49% full clear; nothing retuned (DUNGEON2-2).
+- **Travel (the Tidelock Vault):** with the banner, flagstone seams scroll under the cards and lanterns pass at both sides (2.6 s, small transform / opacity layers; Effects Low: lanterns only; reduced motion / Effects off: none). Headless mean frame, off / on: 390 px 20.1 / 27.7 ms, 1366 px 25.0 / 36.9 ms (software compositing).
+- **Cameras:** a group dungeon's enemy back row with a unit in it is held whole; when it goes live the camera eases out over 1.6 s (below 1:1 if needed). A raid opens at 0.88 of the 3-player view and eases in over 2.4 s to 1.5 rows a side, or to the player's saved zoom-out (button, pinch, ctrl + wheel; `bramblewood_rz_zoom_v1`); its zoomed-out end is 4% tighter (1.04). Reduced motion: no wide start.
+- **Grade emblem:** in the dungeon rewards window it spins in and a shine crosses it (reduced motion: fade; Effects off: still).
+- Test `tests/dungeon2-2026-11-26.js`; `tests/e2e/raid2_2026_11_05.py` expects the 1.04 end. Shots `docs/screens/dungeon2/`.
+
 ## 2026-11-26 Package PACKFX1 (owner 11-24 22:29 #4 #5 #6)
 - **Pack opener labels:** one label per card: **New!** when the card was never seen, **Get!** when it was seen but not owned (both used to stack). Both stamps and the rarity pill now wait until the turn ends, so nothing shows on a card that is still turning.
 - **Rarity glint:** a 0.26 s band sweeps the revealed card (one `translate` animation). Chance by rarity: starter 5, common 10, uncommon 20, quest 25, rare 35, very rare 50, super rare 72, Epic and up 99 (%); the colour is the card's rarity, but below Epic 3 in 10 lean one step up or down. None with reduced motion or Effects off. Flip CPU unchanged (about 170 ms before and after, headless, 1.8 s window). Test `tests/packfx1-2026-11-26.js`.
