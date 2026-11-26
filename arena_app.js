@@ -9870,12 +9870,17 @@ function syncSlotInk(bf){
 const BATTLEFIELD_BG_KEY = 'bramblewood_arena_battlefield_bg';
 function loadBattlefieldBgOverride(){ try{ return localStorage.getItem(BATTLEFIELD_BG_KEY) || 'auto'; }catch(e){ return 'auto'; } }
 function saveBattlefieldBgOverride(v){ try{ localStorage.setItem(BATTLEFIELD_BG_KEY, v); }catch(e){} }
+// 2026-11-27 (SCENES1): ART16 scene per map id (backdrop + floor from art/scenes via assemble_arena.py; .scene-<slug> in the template):
+// cave Caves & Alcoves, kelp Kelp Mangroves, reef Coral Current (+ its Sunken Ferry), swamp Gatorback / Sable, tundra Wolfsbane + Ice Hollow,
+// desert Glass Dunes + Pale Desert, volcano the Ashen Peak (19), Sundered Peak (20) + Eye of the Volcano, canopy backdrop on The Canopy.
+const SCENE_OF_MAP = {m4:'cave', mk:'kelp', m7:'reef', mj:'reef', mw:'swamp', m8:'swamp', m6:'tundra', mi:'tundra', md:'desert', mpd:'desert', m3:'volcano', m11:'volcano', me:'volcano', my:'canopy'};
+const sceneCls = id => SCENE_OF_MAP[id] ? ' scene-' + SCENE_OF_MAP[id] : '';
 function battlefieldMapClass(m){
   const override = loadBattlefieldBgOverride();
   if(override && override!=='auto'){
     if(override==='calm') return 'map-calm';
     const oc = MAP_BATTLEFIELD_CLASS[override] || '';
-    return oc && MAP_ART_IDS.has(override) ? oc + ' has-floor-art' : oc;
+    return oc && MAP_ART_IDS.has(override) ? oc + ' has-floor-art' + sceneCls(override) : oc;
   }
   let mapId = m && m.conquestNode && m.conquestNode.mapId;
   // 2026-10-17 (user: "Is there a thematic background ... for the Arena" / "The raid background is wrong too. it should be deep in the
@@ -9886,7 +9891,7 @@ function battlefieldMapClass(m){
   if(!mapId && m && m.mode !== 'tutorial'){ if(!m.bfMapId){ const ids = Object.keys(MAP_BATTLEFIELD_CLASS).filter(id=> MAP_ART_IDS.has(id) && id !== 'marena' && id !== 'mabyss'); m.bfMapId = ids.length ? ids[Math.floor(Math.random()*ids.length)] : null; } mapId = m.bfMapId; }
   const cls = (mapId && MAP_BATTLEFIELD_CLASS[mapId]) || '';
   if(!cls && m && m.mode === 'tutorial') return 'bf-tutorial'; // 2026-10-18 (owner: "Make the tutorial background a bit greener"): a fresh-green tint (CSS)
-  return cls && MAP_ART_IDS.has((typeof MAP_ART_ALIAS !== 'undefined' && MAP_ART_ALIAS[mapId]) || mapId) ? cls + ' has-floor-art' : cls;
+  return cls && MAP_ART_IDS.has((typeof MAP_ART_ALIAS !== 'undefined' && MAP_ART_ALIAS[mapId]) || mapId) ? cls + ' has-floor-art' + sceneCls(mapId) : cls;
 }
 // 2026-09-29, per explicit request ("change its helper text from 'Not drafted, not bought' to a
 // more ecological description"): the 🔁 spawn-only badge's tooltip used to read as a flat rules

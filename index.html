@@ -1959,6 +1959,18 @@
     linear-gradient(180deg, rgba(0,0,0,.28), rgba(0,0,0,.40)),
     var(--map-art) center / cover no-repeat, #1b2418;}
   .battlefield.has-floor-art *{image-rendering:auto;}
+  /* 2026-11-27 (SCENES1): the ART16 scenes (assemble_arena.py, arena_app.js SCENE_OF_MAP): the scene's floor replaces the map art under the
+     same scrim; its backdrop is a pixelated band along the top that fades into the floor (a pseudo-element below the cards: no layout, no
+     animation, so Effects Low shows the same still image). The Canopy has a backdrop only and keeps its map floor (var() falls back). */
+  .battlefield.has-floor-art[class*="scene-"]{background:
+    radial-gradient(ellipse 120% 90% at 50% 45%, rgba(0,0,0,.18) 0%, rgba(0,0,0,.48) 100%),
+    linear-gradient(180deg, rgba(0,0,0,.28), rgba(0,0,0,.40)),
+    linear-gradient(rgba(0,0,0,var(--scene-dim, 0)), rgba(0,0,0,var(--scene-dim, 0))),
+    var(--scene-floor, var(--map-art)) center / cover no-repeat, #1b2418;}
+  .battlefield.scene-kelp, .battlefield.scene-reef, .battlefield.scene-tundra, .battlefield.scene-desert{--scene-dim:.22;} /* measured: white text on the brightest 5% of these floors was 3.1-3.9:1; with this veil 4.5:1 or better */
+  .battlefield.has-floor-art[class*="scene-"]::before{content:""; position:absolute; left:0; right:0; top:0; height:44%; z-index:-1; pointer-events:none; image-rendering:pixelated;
+    background:linear-gradient(180deg, rgba(0,0,0,calc(.30 + var(--scene-dim, 0))), rgba(0,0,0,calc(.42 + var(--scene-dim, 0)))), var(--scene-bg) center bottom / cover no-repeat;
+    -webkit-mask-image:linear-gradient(180deg, #000 55%, transparent); mask-image:linear-gradient(180deg, #000 55%, transparent);}
   /* 2026-09-21 (explicit bug report: "the map keeps zooming in and out erratically. the zoom out
      should be within the battlefield only.. nothing changes to the outer border"): the zoom-to-fit
      transform (fitBattlefieldZoom(), arena_app.js) used to sit directly on .battlefield itself —
@@ -5179,6 +5191,14 @@
 .map-theme-mpd, .battlefield.map-mpd{--map-art:url(assets/maps/mpd.png?v=0708b72206);}
 .map-theme-tw, .battlefield.map-tw{--map-art:url(assets/maps/tw.png?v=5f8943a395);}
 :root{--forge-art:url(assets/forge/bg.png?v=b8c089d162);--anvil-art:url(assets/forge/anvil.png?v=4135c912ea);}
+.battlefield.scene-cave{--scene-bg:url(assets/scenes/cave-bg.webp?v=934881e709);--scene-floor:url(assets/scenes/cave-floor.webp?v=25dce56ef7);}
+.battlefield.scene-kelp{--scene-bg:url(assets/scenes/kelp-bg.webp?v=8a8a5548a7);--scene-floor:url(assets/scenes/kelp-floor.webp?v=cc73c214bb);}
+.battlefield.scene-reef{--scene-bg:url(assets/scenes/reef-bg.webp?v=eef79c0ea2);--scene-floor:url(assets/scenes/reef-floor.webp?v=114e7beebc);}
+.battlefield.scene-swamp{--scene-bg:url(assets/scenes/swamp-bg.webp?v=4ce5f93437);--scene-floor:url(assets/scenes/swamp-floor.webp?v=1f1059995e);}
+.battlefield.scene-tundra{--scene-bg:url(assets/scenes/tundra-bg.webp?v=8a4780b9f4);--scene-floor:url(assets/scenes/tundra-floor.webp?v=4ece609afa);}
+.battlefield.scene-desert{--scene-bg:url(assets/scenes/desert-bg.webp?v=af041bb2b9);--scene-floor:url(assets/scenes/desert-floor.webp?v=f9d6a363f0);}
+.battlefield.scene-volcano{--scene-bg:url(assets/scenes/volcano-bg.webp?v=7b4f7f4ca1);--scene-floor:url(assets/scenes/volcano-floor.webp?v=a358ca3da1);}
+.battlefield.scene-canopy{--scene-bg:url(assets/scenes/canopy-bg.webp?v=68a37c6241);}
   .conquest-layout[class*="map-theme-"]{image-rendering:pixelated;}
   /* 2026-11-11 (package PERF2, owner 00:06 "the game lags alot - playing effects"): was `.conquest-layout[class*="map-theme-"] *`. A
      [class*=] test left of `*` made every class change on any element (each hit, flash and badge in a fight) restyle that element's whole
@@ -59933,7 +59953,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '82127d3caa10', BUILD_CARD_HASH = 'a66834fc0484abfb2220ea27203bf29de3a23511282b33f6b076b5da8ca7f01b';
+const BUILD_ID = 'fdc52279c103', BUILD_CARD_HASH = 'a66834fc0484abfb2220ea27203bf29de3a23511282b33f6b076b5da8ca7f01b';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
@@ -65556,12 +65576,17 @@ function syncSlotInk(bf){
 const BATTLEFIELD_BG_KEY = 'bramblewood_arena_battlefield_bg';
 function loadBattlefieldBgOverride(){ try{ return localStorage.getItem(BATTLEFIELD_BG_KEY) || 'auto'; }catch(e){ return 'auto'; } }
 function saveBattlefieldBgOverride(v){ try{ localStorage.setItem(BATTLEFIELD_BG_KEY, v); }catch(e){} }
+// 2026-11-27 (SCENES1): ART16 scene per map id (backdrop + floor from art/scenes via assemble_arena.py; .scene-<slug> in the template):
+// cave Caves & Alcoves, kelp Kelp Mangroves, reef Coral Current (+ its Sunken Ferry), swamp Gatorback / Sable, tundra Wolfsbane + Ice Hollow,
+// desert Glass Dunes + Pale Desert, volcano the Ashen Peak (19), Sundered Peak (20) + Eye of the Volcano, canopy backdrop on The Canopy.
+const SCENE_OF_MAP = {m4:'cave', mk:'kelp', m7:'reef', mj:'reef', mw:'swamp', m8:'swamp', m6:'tundra', mi:'tundra', md:'desert', mpd:'desert', m3:'volcano', m11:'volcano', me:'volcano', my:'canopy'};
+const sceneCls = id => SCENE_OF_MAP[id] ? ' scene-' + SCENE_OF_MAP[id] : '';
 function battlefieldMapClass(m){
   const override = loadBattlefieldBgOverride();
   if(override && override!=='auto'){
     if(override==='calm') return 'map-calm';
     const oc = MAP_BATTLEFIELD_CLASS[override] || '';
-    return oc && MAP_ART_IDS.has(override) ? oc + ' has-floor-art' : oc;
+    return oc && MAP_ART_IDS.has(override) ? oc + ' has-floor-art' + sceneCls(override) : oc;
   }
   let mapId = m && m.conquestNode && m.conquestNode.mapId;
   // 2026-10-17 (user: "Is there a thematic background ... for the Arena" / "The raid background is wrong too. it should be deep in the
@@ -65572,7 +65597,7 @@ function battlefieldMapClass(m){
   if(!mapId && m && m.mode !== 'tutorial'){ if(!m.bfMapId){ const ids = Object.keys(MAP_BATTLEFIELD_CLASS).filter(id=> MAP_ART_IDS.has(id) && id !== 'marena' && id !== 'mabyss'); m.bfMapId = ids.length ? ids[Math.floor(Math.random()*ids.length)] : null; } mapId = m.bfMapId; }
   const cls = (mapId && MAP_BATTLEFIELD_CLASS[mapId]) || '';
   if(!cls && m && m.mode === 'tutorial') return 'bf-tutorial'; // 2026-10-18 (owner: "Make the tutorial background a bit greener"): a fresh-green tint (CSS)
-  return cls && MAP_ART_IDS.has((typeof MAP_ART_ALIAS !== 'undefined' && MAP_ART_ALIAS[mapId]) || mapId) ? cls + ' has-floor-art' : cls;
+  return cls && MAP_ART_IDS.has((typeof MAP_ART_ALIAS !== 'undefined' && MAP_ART_ALIAS[mapId]) || mapId) ? cls + ' has-floor-art' + sceneCls(mapId) : cls;
 }
 // 2026-09-29, per explicit request ("change its helper text from 'Not drafted, not bought' to a
 // more ecological description"): the 🔁 spawn-only badge's tooltip used to read as a flat rules

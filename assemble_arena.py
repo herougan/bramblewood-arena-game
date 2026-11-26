@@ -335,6 +335,18 @@ if _missing: raise SystemExit("MAP_ART_IDS in arena_app.js is missing maps that 
 _fg = [(k, SCRATCH + "art/forge/%s.png" % f) for k, f in (("--forge-art", "bg"), ("--anvil-art", "anvil"))]
 _fg = ["%s:url(%s);" % (k, asset_url("forge/" + os.path.basename(fp), open(fp, "rb").read())) for k, fp in _fg if os.path.exists(fp)]
 if _fg: _map_css.append(":root{" + "".join(_fg) + "}")
+# 2026-11-27 (SCENES1): the ART16 battle scenes (art/scenes/<slug>-bg|floor.png, 128 px cells, staged copies in art/staging/art16/scenes/)
+# ship as lossless WebP (a third of the PNG); .scene-<slug> sets --scene-bg / --scene-floor on the battlefield (arena_app.js SCENE_OF_MAP).
+def _scene_webp(fp):
+    from PIL import Image
+    import io as _io
+    b = _io.BytesIO(); Image.open(fp).convert("RGB").save(b, "WEBP", lossless=True, method=6); return b.getvalue()
+for _sl in ("cave", "kelp", "reef", "swamp", "tundra", "desert", "volcano", "canopy"):
+    _vars = ""
+    for _k, _v in (("bg", "--scene-bg"), ("floor", "--scene-floor")):
+        _fp = SCRATCH + "art/scenes/%s-%s.png" % (_sl, _k)
+        if os.path.exists(_fp): _vars += "%s:url(%s);" % (_v, asset_url("scenes/%s-%s.webp" % (_sl, _k), _scene_webp(_fp), "image/webp"))
+    if _vars: _map_css.append(".battlefield.scene-%s{%s}" % (_sl, _vars))
 out = out.replace("/*__MAP_ART_CSS__*/", "\n".join(_map_css), 1)
 # Arrow projectiles (2026-10-04, Arrow / Fire Arrow skills): small pixel-art PNGs from art/fx/.
 for _ph, _fn in (("__ARROW_PNG__", "art/fx/arrow.png"), ("__FIRE_ARROW_PNG__", "art/fx/fire_arrow.png")):
