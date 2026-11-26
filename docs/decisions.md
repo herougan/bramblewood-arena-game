@@ -4,6 +4,41 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**COMBO1-1. Poison and Bleed payoffs on the road** · Decide · Cards · asked 2026-11-27
+- No Maps 0-20 card cashes in a Poison or Bleed stack. Bogfire Newt (Detonate: its hit ticks the target's Poison at once) joins Lilypad Reach; Bloodscent Shark (Hemorrhage: doubles the Bleed) joins The Sunken Depths. Side maps: no road fight moves.
+  - a) both
+  - b) Bogfire Newt only
+  - c) neither
+- **Default:** a
+
+**COMBO1-2. Saddle Tapir on Map 5's list** · Decide · Cards · asked 2026-11-27
+- Its On Play Growth Sprout counts for every Swarm (Ant Scout, Fire Ant Raft, Bee Warden, Wolf Spider Mother); no road card makes sprouts today. 93% of budget at Map 5. Moves Map 5 road fights.
+  - a) Map 5 list
+  - b) Map 5 Special
+  - c) not now
+- **Default:** a
+
+**COMBO1-3. Two Level skills move to Level 1** · Decide · Cards · asked 2026-11-27
+- Eagle-Owl Quartermaster gets Fletcher at Level 1 (was 6), so archer decks work from Map 11; Snow Ermine gets Momentum at Level 1 (was 3), filling Map 17's empty Momentum row. Both inside budget (97%, 86%).
+  - a) both
+  - b) Fletcher only
+  - c) neither
+- **Default:** a
+
+**COMBO1-4. Millipede Hauler on Map 7's list** · Decide · Cards · asked 2026-11-27
+- Its 3 Worker Ants on death feed Carrion and Broodmother, the Ants and Harbinger. Today only The Mycelium Deep holds it (opens after Map 8). 96% of budget at Map 7; moves Map 7 road fights.
+  - a) Map 7 list
+  - b) Map 13 list
+  - c) side map only
+- **Default:** a
+
+**COMBO1-5. Two Map 5 Specials** · Decide · Cards · asked 2026-11-27
+- Peat-cutter Vole (Bulwark, the table's Map 5 Special) and Newt Doctor (Herbalist: every heal +1) join Map 5's Special list, so fort and healer combos don't wait for The Sunken Grove (opens after Map 13).
+  - a) both
+  - b) Vole only
+  - c) neither
+- **Default:** a
+
 **NEWCARDS1-1. Homes for the 14 new species** · Decide · Cards · asked 2026-11-27
 - Oarfish, Opah, Mola, Sea Dragon, Okapi, Blobfish, Goblin Shark, Coelacanth, Saiga, Kakapo, Tapir, Glass Frog, Red Panda, Tube Worm are made, with art, but on no list, pack or reward. The doc proposes a home for each; the combo audit (COMBO1) may pick some for Maps 0-20.
   - a) Wait for COMBO1, then place
