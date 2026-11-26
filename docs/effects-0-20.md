@@ -116,7 +116,7 @@ Every skill and trigger effect on a card that a Maps 0-20 list holds: the 21 mai
 | Effect | What it does (game text) | First seen | Cards | Examples | Notes |
 |---|---|---|---|---|---|
 | 🐜 **Swarm** | +1 Attack for every ally that is Ants. | Map 0 | 7 | Ant Scout, Bee Warden, Bee Warden (L1) … | New! Map 0 |
-| 📯 **Inspiring** | Attacking gives adjacent allies 1 Inspiration: +1 Attack each, spent on their next hit. | The Old Bramble (side 0) | 6 | Cricket Drummer, Robin Redbreast, Conch Herald … | New! Map 1 |
+| 📯 **Inspiring** | Attacking gives adjacent allies 1 Inspiration: +1 Attack each on every hit of their next turn. | The Old Bramble (side 0) | 6 | Cricket Drummer, Robin Redbreast, Conch Herald … | New! Map 1 |
 | 🍼 **Nursing** | Every upkeep, heal a random hurt ally for 1. | Map 0 | 2 | Bee Forager, Newt Doctor | New! Map 0 |
 | 🫐 **Foraging** | +1 Berry each turn. 3 Berries heal your most hurt other ally 3. | Map 0 | 7 | Chipmunk Forager (L1), Hedgerow Shrew, Dormouse … | New! Map 1 |
 | 👑 **Natural Leader** | Can be your Leader. | Map 2 Special | 8 | The Old Shell, The Drowned Matriarch, Old Snapjaw … | side / Special only |
@@ -158,7 +158,7 @@ Every skill and trigger effect on a card that a Maps 0-20 list holds: the 21 mai
 | ⚔️ On Attack | On Attack: Give itself +1 Attack. | Tutorial (side 0) | 2 | Rockslide Ram, Ravenous Wolverine |
 | ✅ On Ready | On Ready: Give every ally 2 Shield (temporary Health). | Map 7 | 1 | Amber Cicada (L3) |
 | ✅ On Ready | On Ready: Deal 3 damage to a random enemy unit. | Map 8 Special | 1 | Echo Matriarch |
-| ✅ On Ready | On Ready: Deal 4 damage to >. | Map 11 Special | 1 | Great Horned Owl |
+| ✅ On Ready | On Ready: Deal 4 damage to an adjacent opponent. | Map 11 Special | 1 | Great Horned Owl |
 | ⬆️ On Play | On Spawn: Stun an adjacent opponent. | Tutorial (side 0) | 2 | Ash Cloud Condor, Gaur |
 | ⬆️ On Play | On Spawn: Gain 1 lumber. | Tutorial (side 0) | 5 | Trash Panda Trickster, Salvager Hermit Crab (L6), Glowworm Cluster |
 | ⬆️ On Play | On Spawn: Deal 3 damage to a random opponent. | The Old Bramble (side 0) | 1 | Barn Owl |

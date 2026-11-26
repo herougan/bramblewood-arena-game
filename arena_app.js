@@ -13364,7 +13364,7 @@ function triggerPreviewText(t){
   // Grant), sub from the old target field, else adjacent (Buff, Debuff, Shield, Cleanse, Mind Control keep their own).
   const who = t.who || ({buff:'self', shield:'self', grantFastForward:'self', exile:'self', harden:'ally', embolden:'ally', grant:'ally'})[t.do] || 'enemy';
   const sub = t.sub || (t.target === 'all' ? 'all' : t.target === 'random' ? 'random' : ['buff', 'debuff', 'shield', 'cleanse', 'mindControl'].includes(t.do) ? t.sub : 'adjacent');
-  const whoTarget = (()=>{ if(who==='self') return 'itself'; if(who==='killer') return 'the unit that killed it';
+  const whoTarget = (()=>{ if(who==='self') return 'itself'; if(t.who==='killer') return 'the unit that killed it';
     const n = t.targets > 1 && sub !== 'all' ? t.targets : 1;
     // Kin (2026-10-18): "a random Kin unit", "an adjacent Kin unit", "2 random Kin units", "all your Kin".
     const noun = {ally: n>1 ? 'allies' : 'ally', enemy: n>1 ? 'opponents' : 'opponent', kin: n>1 ? 'Kin units' : 'Kin unit', any: n>1 ? 'units' : 'unit'}[who];

@@ -59903,7 +59903,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '809e2fafd0f4', BUILD_CARD_HASH = 'f60d509855dfc5f50eddbeed63d10bcd2a5e0a691271928a31e1d7cbdb072047';
+const BUILD_ID = 'e815fb7bd071', BUILD_CARD_HASH = 'f60d509855dfc5f50eddbeed63d10bcd2a5e0a691271928a31e1d7cbdb072047';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
@@ -69020,7 +69020,7 @@ function triggerPreviewText(t){
   // Grant), sub from the old target field, else adjacent (Buff, Debuff, Shield, Cleanse, Mind Control keep their own).
   const who = t.who || ({buff:'self', shield:'self', grantFastForward:'self', exile:'self', harden:'ally', embolden:'ally', grant:'ally'})[t.do] || 'enemy';
   const sub = t.sub || (t.target === 'all' ? 'all' : t.target === 'random' ? 'random' : ['buff', 'debuff', 'shield', 'cleanse', 'mindControl'].includes(t.do) ? t.sub : 'adjacent');
-  const whoTarget = (()=>{ if(who==='self') return 'itself'; if(who==='killer') return 'the unit that killed it';
+  const whoTarget = (()=>{ if(who==='self') return 'itself'; if(t.who==='killer') return 'the unit that killed it';
     const n = t.targets > 1 && sub !== 'all' ? t.targets : 1;
     // Kin (2026-10-18): "a random Kin unit", "an adjacent Kin unit", "2 random Kin units", "all your Kin".
     const noun = {ally: n>1 ? 'allies' : 'ally', enemy: n>1 ? 'opponents' : 'opponent', kin: n>1 ? 'Kin units' : 'Kin unit', any: n>1 ? 'units' : 'unit'}[who];
