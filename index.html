@@ -11376,6 +11376,16 @@
 #rowMine[data-coop-owner]{position:relative;}
 #rowMine[data-coop-owner]::before{content:attr(data-coop-owner); position:absolute; left:8px; top:50%; transform:translateY(-50%); font:800 11px 'Baloo 2',system-ui,sans-serif; letter-spacing:.05em; text-transform:uppercase; opacity:.7; white-space:nowrap; pointer-events:none;}
 .gd-rank.rank-hex.rw-mini{width:34px; height:38px; vertical-align:middle;} .gd-rank.rank-hex.rw-mini b{font-size:18px;}
+/* 2026-11-26 (DUNGEON2, owner #19): the grade emblem awarded in a dungeon's rewards window spins in, then a shine crosses it (rotate / scale /
+   translate only). Reduced motion: a short fade; Effects off: it simply stands there. */
+.gd-rank.dg2-award{animation:dg2Spin .9s cubic-bezier(.2,.9,.3,1.2) .3s both;}
+.gd-rank.dg2-award.rank-SSS{animation:dg2Spin .9s cubic-bezier(.2,.9,.3,1.2) .3s both, sssPulse 1.6s ease-in-out 1.2s infinite;}
+.gd-rank.dg2-award i::before{content:''; position:absolute; inset:0; z-index:1; background:linear-gradient(110deg, transparent 30%, rgba(255,255,255,.9) 50%, transparent 70%); translate:-130% 0; animation:dg2Shine .7s ease-in-out 1.15s both;}
+@keyframes dg2Spin{0%{rotate:-368deg; scale:.2; opacity:0;} 60%{scale:1.3; opacity:1;} 100%{rotate:-8deg; scale:1; opacity:1;}}
+@keyframes dg2Shine{to{translate:130% 0;}}
+@keyframes dg2FadeIn{from{opacity:0;}}
+@media (prefers-reduced-motion: reduce){ .gd-rank.dg2-award, .gd-rank.dg2-award.rank-SSS{animation:dg2FadeIn .3s ease both;} .gd-rank.dg2-award i::before{display:none;} }
+html[data-fx="none"] .gd-rank.dg2-award, html[data-fx="none"] .gd-rank.dg2-award.rank-SSS{animation:none;} html[data-fx="none"] .gd-rank.dg2-award i::before{display:none;}
 /* Irradiation tokens (2026-10-14) and the card details' green "taken by Irradiation" number. */
 .abadge.irradiation{background:rgba(40,70,20,.88); color:#c8ff6a; box-shadow:0 0 6px rgba(160,255,60,.6);}
 .stat-irr{color:#3fbf4a; font-weight:800;}
@@ -59876,7 +59886,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'b4a8e2b3d398', BUILD_CARD_HASH = 'f60d509855dfc5f50eddbeed63d10bcd2a5e0a691271928a31e1d7cbdb072047';
+const BUILD_ID = '6dbb30b31a74', BUILD_CARD_HASH = 'f60d509855dfc5f50eddbeed63d10bcd2a5e0a691271928a31e1d7cbdb072047';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
@@ -84642,8 +84652,8 @@ function gdRewardsShow(){
   const fe = GD.floorEnd, S = GD.s; if(!fe || !S) return; gdRewardsClose();
   const p = fe.pay || {}, won = fe.result === 'won', total = gdPartCount(GD.typeId), nextIdx = (fe.idx | 0) + 1, more = won && nextIdx < total;
   const title = won ? TX('ui.dungeon1-run-cleared', {name: gdThemedName(GD.typeId)}) : fe.reason === 'time' ? TX('ui.ar3-floor-time') : TX('ui.ar3-floor-lost'); // DUNGEON1: the run's end
-  const rank = p.rank ? `<span class="rank-hex rw-mini gd-rank rank-${escapeAttr(p.rank)}" aria-label="${escapeAttr(TX('ui.coop2-rank-aria', {rank: p.rank}))}"><i></i><b>${escapeHtml(p.rank)}</b></span>` : '';
-  let rewards = '';
+  const rank = p.rank ? `<span class="rank-hex rw-mini gd-rank dg2-award rank-${escapeAttr(p.rank)}" aria-label="${escapeAttr(TX('ui.coop2-rank-aria', {rank: p.rank}))}"><i></i><b>${escapeHtml(p.rank)}</b></span>` : '';
+  let rewards = ''; // 2026-11-26 (DUNGEON2, owner #19): the grade emblem (dg2-award) spins in and a shine crosses it as it is awarded
   try{ rewards = rewardsPanelHTML({conquestRewardEarned: {gold: p.gold || 0, dust: p.dust || 0}, rewardCardIds: p.card ? [p.card] : [], discoveredThisMatch: [], conquestEggDrop: p.egg || null, conquestRankEarned: p.rank || null}); }catch(e){ rewards = ''; }
   const next = more && S.isHost ? `<button type="button" class="btn primary big" data-gd-rw="next">⬇️ ${escapeHtml(TX('ui.ar3-continue'))} · ${escapeHtml(gdFloorName(nextIdx))}</button>` : '';
   const ov = document.createElement('div'); ov.className = 'pass-overlay winloss-overlay gd-rw-overlay'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true'); ov.setAttribute('aria-label', title);

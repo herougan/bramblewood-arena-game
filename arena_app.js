@@ -29013,8 +29013,8 @@ function gdRewardsShow(){
   const fe = GD.floorEnd, S = GD.s; if(!fe || !S) return; gdRewardsClose();
   const p = fe.pay || {}, won = fe.result === 'won', total = gdPartCount(GD.typeId), nextIdx = (fe.idx | 0) + 1, more = won && nextIdx < total;
   const title = won ? TX('ui.dungeon1-run-cleared', {name: gdThemedName(GD.typeId)}) : fe.reason === 'time' ? TX('ui.ar3-floor-time') : TX('ui.ar3-floor-lost'); // DUNGEON1: the run's end
-  const rank = p.rank ? `<span class="rank-hex rw-mini gd-rank rank-${escapeAttr(p.rank)}" aria-label="${escapeAttr(TX('ui.coop2-rank-aria', {rank: p.rank}))}"><i></i><b>${escapeHtml(p.rank)}</b></span>` : '';
-  let rewards = '';
+  const rank = p.rank ? `<span class="rank-hex rw-mini gd-rank dg2-award rank-${escapeAttr(p.rank)}" aria-label="${escapeAttr(TX('ui.coop2-rank-aria', {rank: p.rank}))}"><i></i><b>${escapeHtml(p.rank)}</b></span>` : '';
+  let rewards = ''; // 2026-11-26 (DUNGEON2, owner #19): the grade emblem (dg2-award) spins in and a shine crosses it as it is awarded
   try{ rewards = rewardsPanelHTML({conquestRewardEarned: {gold: p.gold || 0, dust: p.dust || 0}, rewardCardIds: p.card ? [p.card] : [], discoveredThisMatch: [], conquestEggDrop: p.egg || null, conquestRankEarned: p.rank || null}); }catch(e){ rewards = ''; }
   const next = more && S.isHost ? `<button type="button" class="btn primary big" data-gd-rw="next">⬇️ ${escapeHtml(TX('ui.ar3-continue'))} · ${escapeHtml(gdFloorName(nextIdx))}</button>` : '';
   const ov = document.createElement('div'); ov.className = 'pass-overlay winloss-overlay gd-rw-overlay'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true'); ov.setAttribute('aria-label', title);
