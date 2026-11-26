@@ -1,0 +1,122 @@
+{
+ "c-control.html 390 x1": {
+  "cpu": 32.68,
+  "script": 6.25,
+  "style_layout": 6.08,
+  "over": 0.0,
+  "frames": 60.0,
+  "mem": 2.98,
+  "layers": 5,
+  "p95": 16.7
+ },
+ "c-control.html 390 x4": {
+  "cpu": 110.46,
+  "script": 16.07,
+  "style_layout": 16.13,
+  "over": 0.0,
+  "frames": 60.0,
+  "mem": 2.98,
+  "layers": 5,
+  "p95": 16.7
+ },
+ "c-control.html 1366 x1": {
+  "cpu": 28.87,
+  "script": 4.79,
+  "style_layout": 4.23,
+  "over": 0.0,
+  "frames": 60.0,
+  "mem": 6.12,
+  "layers": 5,
+  "p95": 16.7
+ },
+ "c-control.html 1366 x4": {
+  "cpu": 91.18,
+  "script": 13.81,
+  "style_layout": 15.23,
+  "over": 0.0,
+  "frames": 60.0,
+  "mem": 6.12,
+  "layers": 5,
+  "p95": 16.7
+ },
+ "a-layered.html 390 x1": {
+  "cpu": 71.5,
+  "script": 6.71,
+  "style_layout": 30.89,
+  "over": 0.28,
+  "frames": 59.83,
+  "mem": 4.71,
+  "layers": 15,
+  "p95": 16.7
+ },
+ "a-layered.html 390 x4": {
+  "cpu": 218.57,
+  "script": 22.13,
+  "style_layout": 68.86,
+  "over": 0.0,
+  "frames": 60.17,
+  "mem": 4.71,
+  "layers": 15,
+  "p95": 16.8
+ },
+ "a-layered.html 1366 x1": {
+  "cpu": 69.49,
+  "script": 6.84,
+  "style_layout": 29.76,
+  "over": 0.0,
+  "frames": 60.0,
+  "mem": 8.27,
+  "layers": 15,
+  "p95": 16.7
+ },
+ "a-layered.html 1366 x4": {
+  "cpu": 217.78,
+  "script": 21.87,
+  "style_layout": 74.01,
+  "over": 0.0,
+  "frames": 60.0,
+  "mem": 8.27,
+  "layers": 15,
+  "p95": 16.7
+ },
+ "b-flat.html 390 x1": {
+  "cpu": 78.81,
+  "script": 7.5,
+  "style_layout": 16.3,
+  "over": 0.0,
+  "frames": 60.0,
+  "mem": 5.69,
+  "layers": 15,
+  "p95": 16.7
+ },
+ "b-flat.html 390 x4": {
+  "cpu": 175.88,
+  "script": 9.88,
+  "style_layout": 38.11,
+  "over": 0.0,
+  "frames": 60.0,
+  "mem": 5.69,
+  "layers": 15,
+  "p95": 16.8
+ },
+ "b-flat.html 1366 x1": {
+  "cpu": 69.24,
+  "script": 4.69,
+  "style_layout": 11.71,
+  "over": 0.0,
+  "frames": 60.0,
+  "mem": 9.49,
+  "layers": 15,
+  "p95": 16.7
+ },
+ "b-flat.html 1366 x4": {
+  "cpu": 203.77,
+  "script": 8.66,
+  "style_layout": 42.32,
+  "over": 0.0,
+  "frames": 60.17,
+  "mem": 9.49,
+  "layers": 15,
+  "p95": 16.7
+ }
+}

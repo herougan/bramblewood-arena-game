@@ -1,0 +1,11 @@
+<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>ART17-T B flat</title>
+<link rel=stylesheet href=card.css>
+<div class=stage id=stage><div class=card id=card><div class=clip>
+ <img class="ly fill" id=flat src=layers/flat256.webp alt="">
+ 
+ 
+</div></div></div>
+<script>
+const card=document.getElementById('card'),stage=document.getElementById('stage');let tx=0,ty=0;
+function frame(t){if(!document.hidden){card.style.transform='rotateY('+Math.sin(t/1900)*10+'deg) rotateX('+(-Math.cos(t/2700)*8)+'deg)'}requestAnimationFrame(frame)}requestAnimationFrame(frame);
+</script>
