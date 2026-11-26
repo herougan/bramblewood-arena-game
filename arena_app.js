@@ -43474,6 +43474,11 @@ function fitBattlefieldZoom(){
 // which stack on the camera's `transform` (fitBattlefieldZoom keeps writing that one), so nothing about the fit or the fight changes.
 // State: m._rz = {z, tx, ty} (z: 1 = zoomed out; tx, ty: screen px). Raids (m.raidFull) and group dungeons (m.coop).
 const RZ_MS = 650, RZ_OPEN_DELAY = 1100, RZ_MAXZ = 3.2, RZ_MINZ_GAIN = 1.12;
+// 2026-11-26 (DUNGEON2, owner #19): a group dungeon's enemy back row going live eases the camera out (slowly) until that row fits, below 1:1
+// when it must (RZ_MINZ at most): g.lo, the zoomed-out end, is then the zoom that holds the band (1 otherwise).
+const RZ_BACK_MS = 1600, RZ_MINZ = 0.6;
+// The enemy's back row (its last reserve row) in a group dungeon, once a unit stands in it: its number, else 0. That row joins the zoomed view.
+function rzBackRow(m){ const rs = m && m.coop && m.players && m.players[2].reserve; if(!rs || !rs.length) return 0; const rw = rs[rs.length - 1]; return Object.keys(rw).some(k=> rw[k] && rw[k].hp > 0) ? rs.length : 0; }
 let rzTween = 0, rzWired = false;
 function rzActive(m){ return !!(m && !m.over && (m.raidFull || m.coop) && matchState === m && document.getElementById('battlefieldInner') && document.getElementById('battlefieldEl')); }
 function bfEffScale(){ const m = matchState, z = m && m._rz && m._rz.z > 0 ? m._rz.z : 1; return (battlefieldScale > 0 ? battlefieldScale : 1) * z; } // the camera's scale times the zoom (for effects drawn inside the board)
@@ -43489,14 +43494,15 @@ function rzGeom(m){
     const re = r('rowEnemy'), rm = r('rowMine'), e1 = r('resEnemy1'), m1 = r('resMine1');
     let top = ir.top, bot = ir.bottom;
     if(re && rm){ top = re.top - 0.5 * (e1 ? e1.height : re.height); bot = rm.bottom + 0.5 * (m1 ? m1.height : rm.height); }
+    { const k = rzBackRow(m), eb = k ? r('resEnemy' + k) : null; if(eb) top = Math.min(top, eb.top); } // DUNGEON2: the live enemy back row fits whole
     const xs = [...document.querySelectorAll('#battlefieldInner .board-card[data-uid]')].map(c=>{ const q = c.getBoundingClientRect(); return q.width ? q.left + q.width / 2 : null; }).filter(v=> v != null);
     const xc = xs.length ? (Math.min(...xs) + Math.max(...xs)) / 2 : ir.left + ir.width / 2;
-    const band = Math.max(40, bot - top), zmax = Math.max(1, Math.min(RZ_MAXZ, F.h / band));
-    return {F, O, L: ir.left, R: ir.right, T: ir.top, B: ir.bottom, top, bot, xc, zmax};
+    const band = Math.max(40, bot - top), fit = Math.min(RZ_MAXZ, F.h / band), lo = rzBackRow(m) ? Math.max(RZ_MINZ, Math.min(1, fit)) : 1;
+    return {F, O, L: ir.left, R: ir.right, T: ir.top, B: ir.bottom, top, bot, xc, zmax: Math.max(lo, fit), lo};
   } finally { inner.style.scale = s0; inner.style.translate = t0; }
 }
 function rzClamp(g, z, tx, ty){
-  z = Math.max(1, Math.min(g.zmax, z)); const F = g.F, O = g.O;
+  z = Math.max(g.lo > 0 ? g.lo : 1, Math.min(g.zmax, z)); const F = g.F, O = g.O;
   const lim = (lo, hi, F0, F1, t, c)=>{ const a = F1 - O[c] - z * (hi - O[c]), b = F0 - O[c] - z * (lo - O[c]); return (hi - lo) * z <= (F1 - F0) ? (a + b) / 2 : Math.max(a, Math.min(b, t)); };
   return {z, tx: lim(g.L, g.R, F.l, F.l + F.w, tx, 'x'), ty: lim(g.T, g.B, F.t, F.t + F.h, ty, 'y')};
 }
@@ -43506,14 +43512,15 @@ function rzFocus(g, z){ // the zoom that centres the focus band (and the units' 
 }
 function rzWrite(m){
   const inner = document.getElementById('battlefieldInner'), bf = document.getElementById('battlefieldEl'), s = m && m._rz; if(!inner || !bf || !s) return;
-  if(s.z > 1.001){ inner.style.scale = String(s.z.toFixed(4)); inner.style.translate = `${s.tx.toFixed(1)}px ${s.ty.toFixed(1)}px`; } else { inner.style.scale = ''; inner.style.translate = ''; }
+  if(Math.abs(s.z - 1) > 0.001){ inner.style.scale = String(s.z.toFixed(4)); inner.style.translate = `${s.tx.toFixed(1)}px ${s.ty.toFixed(1)}px`; } else { inner.style.scale = ''; inner.style.translate = ''; }
   bf.classList.toggle('rz-zoomed', s.z > 1.001);
-  const b = bf.querySelector(':scope > .rz-btn'); if(b){ const inn = s.z > 1 + (s.max - 1) / 2; b.classList.toggle('is-in', inn); b.setAttribute('aria-pressed', inn ? 'true' : 'false'); const t = TX(inn ? 'ui.raid2-zoom-out' : 'ui.raid2-zoom-in'); b.title = t; b.setAttribute('aria-label', t); }
+  const b = bf.querySelector(':scope > .rz-btn'); if(b){ const lo = s.lo || 1, inn = s.z > lo + (s.max - lo) / 2; b.classList.toggle('is-in', inn); b.setAttribute('aria-pressed', inn ? 'true' : 'false'); const t = TX(inn ? 'ui.raid2-zoom-out' : 'ui.raid2-zoom-in'); b.title = t; b.setAttribute('aria-label', t); }
 }
 function rzTo(m, target, ms){
   cancelAnimationFrame(rzTween); const s = m._rz; if(!s) return;
   if(!ms || reducedMotion()){ Object.assign(s, target); rzWrite(m); return; }
   ms = layoutSec(ms / 1000) * 1000; // ANIM1 (note 9): the raid zoom at the layout speed
+  s.twUntil = performance.now() + ms + 50; // DUNGEON2: a board frame inside this window doesn't clamp the zoom (it would snap the ease)
   const from = {z: s.z, tx: s.tx, ty: s.ty}, t0 = performance.now(), ease = t=> t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   const step = now=>{ if(matchState !== m || s.gesture) return; const k = Math.min(1, (now - t0) / ms), e = ease(k);
     s.z = from.z + (target.z - from.z) * e; s.tx = from.tx + (target.tx - from.tx) * e; s.ty = from.ty + (target.ty - from.ty) * e; rzWrite(m);
@@ -43522,26 +43529,34 @@ function rzTo(m, target, ms){
 }
 function rzToggle(m){
   const g = rzGeom(m), s = m._rz; if(!g || !s) return; s.touched = true; s.max = g.zmax;
-  rzTo(m, s.z > 1 + (g.zmax - 1) / 2 ? {z: 1, tx: 0, ty: 0} : rzFocus(g, g.zmax), RZ_MS);
+  rzTo(m, s.z > g.lo + (g.zmax - g.lo) / 2 ? rzOutView(g) : rzFocus(g, g.zmax), RZ_MS);
 }
+function rzOutView(g){ return g.lo === 1 ? {z: 1, tx: 0, ty: 0} : rzFocus(g, g.lo); } // the zoomed-out end: 1:1 as laid out, or the band centred at g.lo
+function rzUsable(g){ return g.zmax >= g.lo * RZ_MINZ_GAIN; }
 // Called with every board frame (fitBattlefieldZoom): puts the zoom back on a rebuilt wrapper, adds the button, and opens the fight
 // zoomed in after its beat.
 function rzSync(){
   const m = matchState; if(!rzActive(m)) return;
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
-  if(!m._rz){ m._rz = {z: 1, tx: 0, ty: 0, max: 1, touched: false}; }
+  if(!m._rz){ m._rz = {z: 1, tx: 0, ty: 0, max: 1, lo: 1, touched: false}; }
   const s = m._rz, g = rzGeom(m); if(!g) return;
-  s.max = g.zmax; const usable = g.zmax >= RZ_MINZ_GAIN;
+  s.max = g.zmax; s.lo = g.lo; const usable = rzUsable(g);
   bf.classList.toggle('rz-on', usable); rzWire(bf);
   let b = bf.querySelector(':scope > .rz-btn');
   if(usable && !b){ b = document.createElement('button'); b.type = 'button'; b.className = 'rz-btn'; b.innerHTML = '<span class="rz-i rz-i-in" aria-hidden="true">🔍</span><span class="rz-i rz-i-out" aria-hidden="true">🔎</span>';
     b.addEventListener('click', ev=>{ ev.stopPropagation(); const mm = matchState; if(rzActive(mm)) rzToggle(mm); }); bf.appendChild(b); }
   else if(!usable && b){ b.remove(); b = null; }
-  if(!usable){ s.z = 1; s.tx = 0; s.ty = 0; rzWrite(m); return; }
-  if(s.z > 1.001 && !s.gesture){ const c = rzClamp(g, s.z, s.tx, s.ty); s.z = c.z; s.tx = c.tx; s.ty = c.ty; } // a new framing keeps the zoom inside the board
+  // DUNGEON2 (owner #19): the enemy's back row just got its first unit: ease out slowly until it fits (never in)
+  const back = rzBackRow(m), widen = !!back && s.back === 0 && !s.gesture; s.back = back;
+  const fitZ = usable ? g.zmax : g.lo;
+  if(widen && s.z > fitZ + 0.001){ rzTo(m, rzFocus(g, fitZ), RZ_BACK_MS); return; }
+  const easing = s.twUntil > performance.now();
+  if(!usable){ if(!easing && !s.gesture){ Object.assign(s, rzOutView(g)); rzWrite(m); } return; }
+  if((s.z > 1.001 || g.lo !== 1) && !s.gesture && !easing){ const c = rzClamp(g, s.z, s.tx, s.ty); // a new framing keeps the zoom inside the board
+    if(Math.abs(c.z - s.z) > 0.02) rzTo(m, c, RZ_MS); else { s.z = c.z; s.tx = c.tx; s.ty = c.ty; } } // DUNGEON2: a zoomed-out end that moved is eased to
   rzWrite(m);
   if(!s.opened){ s.opened = true; clearTimeout(m._rzOpenT);
-    m._rzOpenT = setTimeout(()=>{ if(matchState !== m || !rzActive(m) || s.touched || s.gesture) return; const g2 = rzGeom(m); if(g2 && g2.zmax >= RZ_MINZ_GAIN){ s.max = g2.zmax; rzTo(m, rzFocus(g2, g2.zmax), 900); } }, RZ_OPEN_DELAY); }
+    m._rzOpenT = setTimeout(()=>{ if(matchState !== m || !rzActive(m) || s.touched || s.gesture) return; const g2 = rzGeom(m); if(g2 && rzUsable(g2)){ s.max = g2.zmax; rzTo(m, rzFocus(g2, g2.zmax), 900); } }, RZ_OPEN_DELAY); }
 }
 function rzWire(bf){
   if(bf.dataset.rzWired) return; bf.dataset.rzWired = '1';
@@ -43549,14 +43564,14 @@ function rzWire(bf){
   const pts = new Map(); let pan = null, pinch = null, moved = false;
   const gz = ()=>{ const m = matchState; return rzActive(m) && m._rz ? {m, s: m._rz, g: rzGeom(m)} : null; };
   const apply = (c, z, focal)=>{ // zoom to z about a client point
-    const {m, s, g} = c; if(!g) return; const O = g.O, nz = Math.max(1, Math.min(g.zmax, z));
+    const {m, s, g} = c; if(!g) return; const O = g.O, nz = Math.max(g.lo, Math.min(g.zmax, z));
     const tx = (focal.x - O.x) - nz * (focal.x - O.x - s.tx) / s.z, ty = (focal.y - O.y) - nz * (focal.y - O.y - s.ty) / s.z;
     const r = rzClamp(g, nz, tx, ty); s.z = r.z; s.tx = r.tx; s.ty = r.ty; s.touched = true; rzWrite(m); };
   bf.addEventListener('wheel', ev=>{
-    if(!(ev.ctrlKey || ev.metaKey)) return; const c = gz(); if(!c || !c.g || c.g.zmax < RZ_MINZ_GAIN) return;
+    if(!(ev.ctrlKey || ev.metaKey)) return; const c = gz(); if(!c || !c.g || !rzUsable(c.g)) return;
     ev.preventDefault(); cancelAnimationFrame(rzTween); apply(c, c.s.z * Math.exp(-ev.deltaY * (ev.deltaMode === 1 ? 0.04 : 0.0045)), {x: ev.clientX, y: ev.clientY}); }, {passive: false});
   bf.addEventListener('pointerdown', ev=>{
-    if(ev.target.closest && ev.target.closest('.rz-btn')) return; const c = gz(); if(!c || !c.g || c.g.zmax < RZ_MINZ_GAIN) return;
+    if(ev.target.closest && ev.target.closest('.rz-btn')) return; const c = gz(); if(!c || !c.g || !rzUsable(c.g)) return;
     if(!pts.size) moved = false;
     pts.set(ev.pointerId, {x: ev.clientX, y: ev.clientY});
     if(pts.size === 2){ cancelAnimationFrame(rzTween); const [a, b] = [...pts.values()]; pinch = {d: Math.hypot(a.x - b.x, a.y - b.y) || 1, z: c.s.z}; pan = null; c.s.gesture = true; moved = true;
