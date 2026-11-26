@@ -1,0 +1,50 @@
+<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>ART17-T B flat</title>
+<link rel=stylesheet href=card.css>
+<div class=stage id=stage><div class=card id=card><div class=clip>
+ <img class="ly fill" id=flat src=layers/flat256.webp alt="">
+ <canvas class="ly fill pl" id=glow width=512 height=512></canvas>
+ <canvas class="caus" id=c1 width=192 height=192></canvas>
+ <canvas class="caus" id=c2 width=192 height=192></canvas>
+ <div id=motes></div>
+</div></div></div>
+<script>
+// 2026-11-27 (package ART17-T): no layer split. Once: a luminance/hue key of the flat art makes a bloom canvas (pulsed by CSS opacity),
+// and two procedural caustic tiles are drawn (drifted by CSS transform). The rAF loop only writes the card tilt.
+const q=new URLSearchParams(location.search), RM=matchMedia('(prefers-reduced-motion:reduce)').matches&&!q.has('force');
+const img=document.getElementById('flat');
+function setup(){
+  const s=document.createElement('canvas');s.width=s.height=256;const sc=s.getContext('2d',{willReadFrequently:true});sc.drawImage(img,0,0);
+  const d=sc.getImageData(0,0,256,256),o=sc.createImageData(256,256);
+  for(let i=0;i<d.data.length;i+=4){const r=d.data[i],g=d.data[i+1],b=d.data[i+2],mx=Math.max(r,g,b),L=.3*r+.59*g+.11*b;
+    const cyan=(b>r+40&&g>r+20)?1:0, k=Math.max(0,Math.min(1,(L-120)/80))*cyan; // bright blue-green only: lure, spots
+    o.data[i]=Math.min(255,r+60);o.data[i+1]=Math.min(255,g+50);o.data[i+2]=Math.min(255,b+30);o.data[i+3]=k*255}
+  sc.putImageData(o,0,0);
+  const g=document.getElementById('glow').getContext('2d');
+  g.imageSmoothingEnabled=false;g.globalAlpha=.55;g.drawImage(s,0,0,512,512);
+  g.globalAlpha=.5;g.filter='blur(14px)';g.drawImage(s,0,0,512,512);g.filter='blur(5px)';g.drawImage(s,0,0,512,512);
+  // caustics: sum of two sine lattices, thresholded to thin bright lines, tileable at 192
+  for(const [id,ph] of [['c1',0],['c2',1.7]]){const c=document.getElementById(id).getContext('2d'),im=c.createImageData(192,192),T=Math.PI*2/192;
+    for(let y=0;y<192;y++)for(let x=0;x<192;x++){
+      const v=Math.sin(T*(3*x+2*y)+ph+1.3*Math.sin(T*(2*y-x)*2))+Math.sin(T*(2*x-3*y)+ph*2+1.1*Math.sin(T*(x+y)*3));
+      const a=Math.max(0,1-Math.abs(v)*1.6);const i=(y*192+x)*4;im.data[i]=150;im.data[i+1]=235;im.data[i+2]=255;im.data[i+3]=a*a*255}
+    c.putImageData(im,0,0);}
+}
+img.complete?setup():img.onload=setup;
+document.getElementById('c1').style.animation='cdrift 14s linear infinite alternate';
+document.getElementById('c2').style.animation='cdrift2 19s linear infinite alternate';
+if(RM)document.querySelectorAll('.caus').forEach(e=>e.style.display='none');
+for(let i=0;i<7;i++){const m=document.createElement('i');m.className='mote';m.style.cssText=`--x:${8+i*13}%;--d:${8+i%3*2.5}s;--dl:${-i*1.7}s;--dx:${(i%2?-1:1)*(14+i*3)}px`;document.getElementById('motes').appendChild(m)}
+document.getElementById('motes').style.cssText='position:absolute;inset:0';
+const card=document.getElementById('card'),stage=document.getElementById('stage');
+let px=0,py=0,tx=0,ty=0,ptr=false,rect=null;
+stage.addEventListener('pointerenter',()=>{rect=stage.getBoundingClientRect();ptr=true});
+stage.addEventListener('pointermove',e=>{if(!rect)return;px=(e.clientX-rect.left)/rect.width*2-1;py=(e.clientY-rect.top)/rect.height*2-1});
+stage.addEventListener('pointerleave',()=>{ptr=false;rect=null});
+function frame(t){
+  if(document.hidden){requestAnimationFrame(frame);return}
+  if(!ptr){px=Math.sin(t/1900);py=Math.cos(t/2700)*.8}
+  tx+=(px-tx)*.12;ty+=(py-ty)*.12;
+  card.style.transform=`rotateY(${tx*10}deg) rotateX(${-ty*10}deg)`;
+  requestAnimationFrame(frame)}
+if(!RM)requestAnimationFrame(frame);
+</script>

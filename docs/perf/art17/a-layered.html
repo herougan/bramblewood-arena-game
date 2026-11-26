@@ -1,0 +1,30 @@
+<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>ART17-T A layered</title>
+<link rel=stylesheet href=card.css>
+<div class=stage id=stage><div class=card id=card><div class=clip>
+ <img class="ly" id=bg src=layers/bg.webp alt="">
+ <img class="ly pl" id=gl src=layers/glow_lure.webp alt="">
+ <img class="ly" id=body src=layers/body.webp alt="">
+ <img class="ly pb" id=gb src=layers/glow_body.webp alt="">
+ <div id=motes></div>
+</div></div></div>
+<script>
+// 2026-11-27 (package ART17-T): one rAF loop writes transform on 5 elements; glow pulses and motes are CSS (compositor only).
+const q=new URLSearchParams(location.search), RM=matchMedia('(prefers-reduced-motion:reduce)').matches&&!q.has('force');
+const card=document.getElementById('card'),stage=document.getElementById('stage');
+const par=[['bg',1],['gl',1],['body',2.4],['gb',2.4],['motes',3.4]].map(([id,k])=>[document.getElementById(id),k]);
+for(let i=0;i<7;i++){const m=document.createElement('i');m.className='mote';m.style.cssText=`--x:${8+i*13}%;--d:${8+i%3*2.5}s;--dl:${-i*1.7}s;--dx:${(i%2?-1:1)*(14+i*3)}px`;document.getElementById('motes').appendChild(m)}
+document.getElementById('motes').style.cssText='position:absolute;inset:0;will-change:transform';
+let px=0,py=0,tx=0,ty=0,ptr=false,rect=null;
+stage.addEventListener('pointerenter',()=>{rect=stage.getBoundingClientRect();ptr=true});
+stage.addEventListener('pointermove',e=>{if(!rect)return;px=(e.clientX-rect.left)/rect.width*2-1;py=(e.clientY-rect.top)/rect.height*2-1});
+stage.addEventListener('pointerleave',()=>{ptr=false;rect=null});
+function frame(t){
+  if(document.hidden){requestAnimationFrame(frame);return}
+  if(!ptr){px=Math.sin(t/1900);py=Math.cos(t/2700)*.8}
+  tx+=(px-tx)*.12;ty+=(py-ty)*.12;
+  card.style.transform=`rotateY(${tx*10}deg) rotateX(${-ty*10}deg)`;
+  const w=stage.offsetWidth/400;
+  for(const [el,k] of par)el.style.transform=`translate3d(${-tx*3.2*k*w}px,${-ty*3.2*k*w}px,0)`;
+  requestAnimationFrame(frame)}
+if(!RM)requestAnimationFrame(frame);
+</script>
