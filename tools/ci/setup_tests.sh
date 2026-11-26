@@ -7,7 +7,9 @@ PW=1.56.0
 sudo mkdir -p /opt/pw-browsers && sudo chown "$(id -u)" /opt/pw-browsers
 npm install -g --no-fund --no-audit "playwright@$PW"
 # 2026-11-16 (coordinator): versions as on the dev machine (mapfx1 compares painter output); markdown for the hub tests
-python3 -m pip install --quiet "playwright==$PW" "pillow==12.3.0" "numpy==2.5.3" "openpyxl==3.1.5" "markdown==3.11"
+# 2026-11-27 (package TESTFIX12): scipy too: tools/map_fx_spots_2026_10_31.py's ponds() imports it, and without it every pond map was
+# skipped ("error No module named scipy"), so mapfx1's MAP_FX_SPOTS check failed on CI only
+python3 -m pip install --quiet "playwright==$PW" "pillow==12.3.0" "numpy==2.5.3" "scipy==1.18.1" "openpyxl==3.1.5" "markdown==3.11"
 PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers "$(npm root -g)/playwright/cli.js" install --with-deps chromium-headless-shell
 test -x /opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell || { echo "Chromium is not at the path the tests name"; ls /opt/pw-browsers; exit 1; }
 { echo "NODE_PATH=$(npm root -g)"; echo "PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers"; } >> "${GITHUB_ENV:-/dev/null}"
