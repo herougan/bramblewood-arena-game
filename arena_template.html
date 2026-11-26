@@ -1967,7 +1967,7 @@
     linear-gradient(180deg, rgba(0,0,0,.28), rgba(0,0,0,.40)),
     linear-gradient(rgba(0,0,0,var(--scene-dim, 0)), rgba(0,0,0,var(--scene-dim, 0))),
     var(--scene-floor, var(--map-art)) center / cover no-repeat, #1b2418;}
-  .battlefield.scene-kelp, .battlefield.scene-reef, .battlefield.scene-tundra, .battlefield.scene-desert{--scene-dim:.22;} /* measured: white text on the brightest 5% of these floors was 3.1-3.9:1; with this veil 4.5:1 or better */
+  .battlefield.scene-kelp, .battlefield.scene-reef, .battlefield.scene-tundra, .battlefield.scene-desert{--scene-dim:.22;} .battlefield.scene-tundra{--scene-dim:.30;} /* measured: white text on the brightest 5% of these floors was 3.1-3.9:1; with this veil 4.5:1 or better */
   .battlefield.has-floor-art[class*="scene-"]::before{content:""; position:absolute; left:0; right:0; top:0; height:44%; z-index:-1; pointer-events:none; image-rendering:pixelated;
     background:linear-gradient(180deg, rgba(0,0,0,calc(.30 + var(--scene-dim, 0))), rgba(0,0,0,calc(.42 + var(--scene-dim, 0)))), var(--scene-bg) center bottom / cover no-repeat;
     -webkit-mask-image:linear-gradient(180deg, #000 55%, transparent); mask-image:linear-gradient(180deg, #000 55%, transparent);}

@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-27 Package SCENES1 (ART16 battle scenes on the battlefield)
+- **Battle scenes (player-visible):** fights on Caves & Alcoves, the Kelp Mangroves, Coral Current (and the Sunken Ferry), Gatorback Swamp, Sable Swampmire, Wolfsbane Tundra, the Ice Hollow, the Glass Dunes, the Pale Desert, the Ashen Peak, the Sundered Peak and the Eye of the Volcano now stand on the new pixel-art floor, with the scene's backdrop fading in along the top; The Canopy gets its backdrop over its old floor. Kelp, reef, tundra and desert carry a dim veil so card and lane text keeps 4.5:1 or better. Same still image at Effects Low; no layout change.
+- **Build:** `art/scenes/` (128 px cells, staging copies kept) -> lossless WebP `assets/scenes/` (86 KB for 15 files) via `.battlefield.scene-<slug>` custom properties; `SCENE_OF_MAP` in arena_app.js maps map ids; test `tests/scenes1-2026-11-27.js`.
+
 ## 2026-11-27 Package TESTFIX12 (6 new GitHub failures on batch-1023e, run 45856779514)
 - **Dungeon CPU ally (player-visible):** `unsupportedCard` (bramblewood-coop.js) read `d.evolute` / `d.parasite`, but the flags live in `d.effects`, so COOP2-3's refusal missed both. A solo or group run's CPU ally deck (gdFillerDeck) held an evolute in about 15% of seeds (75 / 500); it can never be placed on a free cell, so the ally passed every turn from then on. Parasites played as plain units. Both are now refused and kept out of the ally's deck. dungeon1's solo stall came from this: NEWCARDS1 re-drew the test deck with Gale Sprite. DUNGEON2's stage clear is fine (dungeon1 passes 99/99 on the old cards).
 - **Animal tags:** NEWCARDS1's 14 cards keep their true animals through `tools/animal_tags.py`'s table (its name guess read okapi / saiga as deer, tapir as boar, red panda as fox); groups fish, seahorse, giraffe, antelope, parrot, red panda; `bramblewood-taxonomy.js` regenerated with parents for red panda and tapir.
