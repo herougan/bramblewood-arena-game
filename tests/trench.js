@@ -27,7 +27,10 @@ for(let i=0;i<15;i++){
     const r = run(pid, i);
     r.snapshots.forEach(s=> s.notes.forEach(n=>{ if(n.kind==='roll') rolls++; if(n.kind==='smack') smacks++; if(n.kind==='sweep') sweeps++; if(n.kind==='round' && n.wallDmg>0) wallHits++; }));
     // the wall is one pool: every snapshot's wall ≤ max and never rises
-    let last = Infinity; r.snapshots.forEach(s=>{ check(s.wall.hp <= last, `${pid}#${i}: wall HP went up`); last = s.wall.hp; });
+    // 2026-11-27 (package TESTFIX12): unless a row's deck holds Repair / Rebuild, which rebuild the bramble (the wall) by rule. NEWCARDS1's
+    // 14 cards re-drew the ghost decks and #8's middle row now fields Beaver Feller (Repair 2): the wall rose 39 -> 45. Only #8 has one.
+    const mends = rowsFor(i).some(row=> Object.keys(row.deck).some(id=>{ const e = (defs[id] && defs[id].effects) || {}; return e.repair || e.rebuild || (e.triggers||[]).some(t=> t && t.do==='rebuild'); }));
+    let last = Infinity; r.snapshots.forEach(s=>{ check(s.wall.hp <= s.wall.max, `${pid}#${i}: wall above its max`); check(s.wall.hp <= last || mends, `${pid}#${i}: wall HP went up`); last = s.wall.hp; });
     check(r.snapshots.every(s=> s.rows.length===3), `${pid}#${i}: expected 3 rows in every snapshot`);
   });
 }
