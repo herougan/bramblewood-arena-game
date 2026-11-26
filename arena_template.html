@@ -11313,16 +11313,14 @@
 .dg1-pb-text small{font-size:13px; opacity:.85;}
 @keyframes dg1Scroll{0%{transform:translateX(110vw) skewX(-10deg);} 20%{transform:translateX(0) skewX(0);} 80%{transform:translateX(0) skewX(0);} 100%{transform:translateX(-110vw) skewX(10deg);}}
 @keyframes dg1Fade{0%{opacity:0;} 15%{opacity:1;} 85%{opacity:1;} 100%{opacity:0;}}
-/* 2026-11-26 (DUNGEON2, owner #17): the vault's stage-to-stage travel under the cards (dungeon2Travel): flagstone seams scroll down and lanterns
-   pass at the sides; transform / opacity only, so it stays on the compositor. */
-.dg2-travel{position:absolute; inset:0; z-index:-1; overflow:hidden; border-radius:inherit; pointer-events:none; animation:dg1Fade 2.6s ease both;}
-.dg2-ground{position:absolute; left:0; right:0; top:-480px; bottom:0; will-change:transform; animation:dg2Ground 2.6s cubic-bezier(.45,0,.4,1) both;
-  background:repeating-linear-gradient(180deg, transparent 0 114px, rgba(0,0,0,.34) 114px 117px, rgba(160,210,230,.10) 117px 120px), repeating-linear-gradient(90deg, transparent 0 157px, rgba(0,0,0,.2) 157px 160px), linear-gradient(rgba(8,24,36,.42), rgba(8,24,36,.42));}
-.dg2-lamps{position:absolute; top:-100%; height:200%; width:40px; display:flex; flex-direction:column; justify-content:space-around; align-items:center; will-change:transform; animation:dg2Lamps 2.6s cubic-bezier(.45,0,.4,1) both;}
-.dg2-lamps.is-l{left:4px;} .dg2-lamps.is-r{right:4px;}
-.dg2-lamps b{font-size:24px; line-height:1; text-shadow:0 0 10px rgba(255,170,60,.95), 0 0 24px rgba(255,140,40,.6);}
-@keyframes dg2Ground{from{transform:translateY(0);} to{transform:translateY(480px);}}
-@keyframes dg2Lamps{from{transform:translateY(0);} to{transform:translateY(50%);}}
+/* 2026-11-26 (DUNGEON2, owner #17): the vault's stage-to-stage travel under the cards (dungeon2Travel): thin flagstone seams scroll down and
+   lanterns pass at the sides. Each piece is a small layer that fades itself and moves a fixed 480 px (transform / opacity only): a full-size
+   tinted layer or full-height lantern strips cost 10-20 ms a frame at 1366 px in headless Chromium. */
+.dg2-travel{position:absolute; inset:0; z-index:-1; overflow:hidden; pointer-events:none;}
+.dg2-seam, .dg2-lamp{position:absolute; will-change:transform; animation:dg2Pass 2.6s cubic-bezier(.45,0,.4,1) both;}
+.dg2-seam{left:0; right:0; height:3px; background:linear-gradient(90deg, transparent, rgba(0,0,0,.42) 12%, rgba(0,0,0,.42) 88%, transparent); box-shadow:0 3px 0 rgba(160,210,230,.12);}
+.dg2-lamp{font-size:24px; line-height:1; text-shadow:0 0 10px rgba(255,170,60,.95), 0 0 22px rgba(255,140,40,.6);}
+@keyframes dg2Pass{0%{transform:translateY(0); opacity:0;} 15%, 85%{opacity:1;} 100%{transform:translateY(480px); opacity:0;}}
 .board-card.coop-pending{position:relative; display:grid; place-items:center; border-radius:12px; border:2px dashed rgba(232,169,72,.8); background:rgba(232,169,72,.12);}
 .board-card.coop-pending .coop-ghost{opacity:.55; filter:saturate(.6); font-size:28px; line-height:1;}
 .board-card.coop-pending .coop-ghost img{max-width:70%; max-height:70%;}

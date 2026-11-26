@@ -28694,13 +28694,15 @@ function dungeon2Clear(m){
   list.forEach((c, i)=> setTimeout(()=>{ if(matchState === m) fightSafe(()=> deathVfx(c.uid), 'deathVfx'); }, i * 90));
   return sleep(animMs().death + list.length * 90 + 200);
 }
-// The ground scrolls under the party and lanterns pass at the sides (a dungeon with transit 'lanterns'): one layer under the cards, transform and
-// opacity only. None with reduced motion or Effects off (the banner still fades).
+// The ground scrolls under the party and lanterns pass at the sides (a dungeon with transit 'lanterns'): small layers under the cards, transform
+// and opacity only. None with reduced motion or Effects off (the banner still fades).
 function dungeon2Travel(m){
   const bf = document.getElementById('battlefieldEl'); if(!bf || gdType(m.coop.T.typeId).transit !== 'lanterns' || reducedMotion() || fxLevel() === 'none') return;
   bf.querySelectorAll(':scope > .dg2-travel').forEach(e=> e.remove());
   const el = document.createElement('div'); el.className = 'dg2-travel'; el.setAttribute('aria-hidden', 'true');
-  el.innerHTML = '<i class="dg2-ground"></i>' + ['l', 'r'].map(k=> `<i class="dg2-lamps is-${k}">${'<b>🏮</b>'.repeat(4)}</i>`).join('');
+  const n = Math.ceil((bf.clientHeight + 480) / 120); // a seam every 120 px, a lantern a side every 240 px, from 480 px above the frame (the scroll) down
+  const seams = fxLevel() !== 'low'; // Effects Low: the lanterns alone (the full-width seams make the compositor redraw the whole board each frame)
+  el.innerHTML = Array.from({length: n}, (_, i)=> (seams ? `<i class="dg2-seam" style="top:${i * 120 - 480}px"></i>` : '') + (i % 2 ? '' : ['left', 'right'].map(k=> `<b class="dg2-lamp" style="${k}:6px; top:${i * 120 - 420}px">🏮</b>`).join(''))).join('');
   bf.prepend(el); setTimeout(()=> el.remove(), DUNGEON1_BANNER_MS + 100);
 }
 // My seat's cards back to my deck (or, for an Ecclesia deck, from the Removal Zone to the Graveyard): card backs fly pile to pile, then a lane note.
