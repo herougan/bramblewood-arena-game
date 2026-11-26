@@ -4,6 +4,19 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**NEWCARDS1-1. Homes for the 14 new species** · Decide · Cards · asked 2026-11-27
+- Oarfish, Opah, Mola, Sea Dragon, Okapi, Blobfish, Goblin Shark, Coelacanth, Saiga, Kakapo, Tapir, Glass Frog, Red Panda, Tube Worm are made, with art, but on no list, pack or reward. The doc proposes a home for each; the combo audit (COMBO1) may pick some for Maps 0-20.
+  - a) Wait for COMBO1, then place
+  - b) Place as the doc proposes
+  - c) I pick in the Pack Editor
+- **Default:** a
+
+**NEWCARDS1-2. Seven new cards test strong** · Decide · Balance · asked 2026-11-27
+- Against filler decks, Blobfish, Glass Frog, Sea Dragon, Okapi, Red Panda, Saiga and Mola rate "strong" (400 games each), though all are inside the budget caps.
+  - a) Trim them before placing
+  - b) Place, then measure the road
+- **Default:** a
+
 **INSPIRE2-1. Inspiration on many-hit turns: every hit, or at most 4?** · Decide · Rules · asked 2026-11-26
 - Built: Inspiration adds to every hit of the unit's next turn (Cleave's sides, every arrow, Twin Strike's second swing), so a Volley, Octolash or Pitchfork turn takes it on every hit. Your note said 'up to 3+1 hits'; read as an example, not a cap. A turn that only missed still keeps it, as before (ENG21-1).
   - a) Every hit, as built
