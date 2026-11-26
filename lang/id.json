@@ -4789,5 +4789,8 @@
  "Blue = suggested, carried": "Biru = disarankan, dibawa",
  "Part won: the enemies left die and 3 cards from your Graveyard go back into your deck (an Ecclesia deck: 3 exiled cards back to the Graveyard).": "Bagian menang: musuh yang tersisa mati dan 3 kartu dari Kuburanmu kembali ke dek (dek Ecclesia: 3 kartu terbuang kembali ke Kuburan).",
  "{n} from your Graveyard back to your deck": "{n} dari Kuburan kembali ke dek",
- "{n} exiled back to your Graveyard": "{n} terbuang kembali ke Kuburan"
+ "{n} exiled back to your Graveyard": "{n} terbuang kembali ke Kuburan",
+ "Attacking gives adjacent allies {n} Inspiration: +1 Attack each on every hit of their next turn.": "Saat menyerang, sekutu di sebelahnya mendapat {n} Inspirasi: masing-masing +1 Serangan pada setiap serangan di giliran berikutnya.",
+ "Inspiration {n}: +{atk} Attack on every hit of its next turn; kept if it lands none.": "Inspirasi {n}: +{atk} Serangan pada setiap serangan di giliran berikutnya; tetap ada jika tak ada yang kena.",
+ "spent its Inspiration: +{atk}⚔ on every hit that turn 📯": "menghabiskan Inspirasinya: +{atk}⚔ pada setiap serangan di giliran itu 📯"
 }

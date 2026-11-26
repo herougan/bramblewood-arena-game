@@ -4788,5 +4788,8 @@
  "Blue = suggested, carried": "蓝 = 建议,已携带",
  "Part won: the enemies left die and 3 cards from your Graveyard go back into your deck (an Ecclesia deck: 3 exiled cards back to the Graveyard).": "本部分获胜：剩余敌人死亡，你墓地中的 3 张牌回到卡组（教会卡组：3 张放逐的牌回到墓地）。",
  "{n} from your Graveyard back to your deck": "{n} 张从墓地回到卡组",
- "{n} exiled back to your Graveyard": "{n} 张放逐的牌回到墓地"
+ "{n} exiled back to your Graveyard": "{n} 张放逐的牌回到墓地",
+ "Attacking gives adjacent allies {n} Inspiration: +1 Attack each on every hit of their next turn.": "攻击时，相邻友军获得 {n} 层鼓舞：每层使其下一回合的每次命中 +1 攻击。",
+ "Inspiration {n}: +{atk} Attack on every hit of its next turn; kept if it lands none.": "鼓舞 {n}：下一回合每次命中攻击 +{atk}；一次都未命中则保留。",
+ "spent its Inspiration: +{atk}⚔ on every hit that turn 📯": "用掉了鼓舞：该回合每次命中 +{atk}⚔ 📯"
 }

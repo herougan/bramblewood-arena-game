@@ -4788,5 +4788,8 @@
  "Blue = suggested, carried": "青 = 提案、所持",
  "Part won: the enemies left die and 3 cards from your Graveyard go back into your deck (an Ecclesia deck: 3 exiled cards back to the Graveyard).": "パート勝利：残った敵は倒れ、墓地のカード3枚がデッキに戻る（エクレシアのデッキ：除外したカード3枚が墓地に戻る）。",
  "{n} from your Graveyard back to your deck": "墓地から{n}枚がデッキに戻った",
- "{n} exiled back to your Graveyard": "除外した{n}枚が墓地に戻った"
+ "{n} exiled back to your Graveyard": "除外した{n}枚が墓地に戻った",
+ "Attacking gives adjacent allies {n} Inspiration: +1 Attack each on every hit of their next turn.": "攻撃すると隣接する味方が鼓舞{n}を得る：1つにつき次のターンの全命中で攻撃+1。",
+ "Inspiration {n}: +{atk} Attack on every hit of its next turn; kept if it lands none.": "鼓舞{n}：次のターンの全命中で攻撃+{atk}。1つも当たらなければ残る。",
+ "spent its Inspiration: +{atk}⚔ on every hit that turn 📯": "鼓舞を使った：そのターンの全命中で+{atk}⚔ 📯"
 }

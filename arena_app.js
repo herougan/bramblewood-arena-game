@@ -13359,14 +13359,19 @@ function triggerPreviewText(t){
   // field now (see the long comment above ACTION_DEFS). 'self' reads as "itself"; ally/enemy
   // read as "an ally"/"an enemy", qualified by the sub-pick.
   // 2026-10-12 (user: "On Death: Deal 5 fire damage to an adjacent enemy"): plain English targets.
-  const whoTarget = (()=>{ if(t.who==='self') return 'itself'; if(t.who==='killer') return 'the unit that killed it';
-    const n = t.targets > 1 && t.sub !== 'all' ? t.targets : 1;
+  // 2026-11-26 (TEXTFIX1): a trigger saved without who / sub (Great Horned Owl's and Cave Warlord's On Ready damage) read "to <<>>"; the
+  // engine's own defaults fill them now: who enemy (itself for Buff / Shield / Grant Fast-forward / Exile, an ally for Harden / Embolden /
+  // Grant), sub from the old target field, else adjacent (Buff, Debuff, Shield, Cleanse, Mind Control keep their own).
+  const who = t.who || ({buff:'self', shield:'self', grantFastForward:'self', exile:'self', harden:'ally', embolden:'ally', grant:'ally'})[t.do] || 'enemy';
+  const sub = t.sub || (t.target === 'all' ? 'all' : t.target === 'random' ? 'random' : ['buff', 'debuff', 'shield', 'cleanse', 'mindControl'].includes(t.do) ? t.sub : 'adjacent');
+  const whoTarget = (()=>{ if(who==='self') return 'itself'; if(who==='killer') return 'the unit that killed it';
+    const n = t.targets > 1 && sub !== 'all' ? t.targets : 1;
     // Kin (2026-10-18): "a random Kin unit", "an adjacent Kin unit", "2 random Kin units", "all your Kin".
-    const noun = {ally: n>1 ? 'allies' : 'ally', enemy: n>1 ? 'opponents' : 'opponent', kin: n>1 ? 'Kin units' : 'Kin unit', any: n>1 ? 'units' : 'unit'}[t.who];
+    const noun = {ally: n>1 ? 'allies' : 'ally', enemy: n>1 ? 'opponents' : 'opponent', kin: n>1 ? 'Kin units' : 'Kin unit', any: n>1 ? 'units' : 'unit'}[who];
     if(!noun) return FILL;
-    if(t.sub === 'all') return {ally:'all allies', enemy:'all opponents', kin:'all your Kin', any:'every unit'}[t.who];
-    const lead = n > 1 ? n + ' ' : (t.sub === 'furthest' ? 'the ' : (t.sub === 'adjacent' && t.who !== 'any') ? 'an ' : 'a ');
-    const adj = {adjacent:'adjacent ', random: n>1 ? 'random ' : 'random ', furthest:'furthest '}[t.sub] || '';
+    if(sub === 'all') return {ally:'all allies', enemy:'all opponents', kin:'all your Kin', any:'every unit'}[who];
+    const lead = n > 1 ? n + ' ' : (sub === 'furthest' ? 'the ' : (sub === 'adjacent' && who !== 'any') ? 'an ' : 'a ');
+    const adj = {adjacent:'adjacent ', random: n>1 ? 'random ' : 'random ', furthest:'furthest '}[sub] || '';
     return (lead + adj + noun).replace(/^a (adjacent|opponent|ally)/, 'an $1'); })();
   const resourceLabel = {lumber:'lumber', grace:'grace', stone:'stone', devilry:'Dark Point'}[t.resource] || 'lumber';
   const dmgType = t.dmgType || FILL;
@@ -13421,7 +13426,7 @@ function triggerPreviewText(t){
     case 'reduceWaitOfSpawned': doText = `reduce the just-played ally's Wait by ${amt}`; break;
     case 'missile': doText = `deal ${amt} damage to a random enemy unit`; break;
     case 'positionBeam': doText = TX('ui.act-position-beam-desc', {n: amt}); break; // 2026-10-19 (package EE)
-    case 'exile': doText = t.who==='self' ? `exile itself instead of going to the graveyard` : `instantly exile ${whoTarget} to the Removal Zone`; break;
+    case 'exile': doText = who==='self' ? `exile itself instead of going to the graveyard` : `instantly exile ${whoTarget} to the Removal Zone`; break;
     case 'exileSelf': doText = `exile itself instead of going to the graveyard`; break;
     case 'buffAlly': doText = `give an ally +${amt}/+${amt2}`; break;
     case 'swapPositions': doText = `swap two random enemy units' positions`; break;
@@ -46712,7 +46717,7 @@ function pl2InspireFx(ev, rc){
 // ENG21 (2026-11-03): from the engine's own 'inspiredSpent' (a swing that landed a hit), not from any hit / miss of the attacker as before.
 function pl2InspireSpent(ev){
   try{ const m = matchState, rc = m && m.replayCards && m.replayCards[ev.attUid]; if(!rc || !(rc.inspired > 0 || rc.inspTokens > 0)) return;
-    eng21InspNumFx(ev.attUid, 'spend'); rc.inspired = 0; rc.inspTokens = 0; updateCardAtkDisplay(ev.attUid); try{ updateCardStatusDisplay(ev.attUid); }catch(e){} }catch(e){}
+    eng21InspNumFx(ev.attUid, 'spend'); rc.inspired = Math.max(0, (rc.inspired||0) - (ev.amount||0)); rc.inspTokens = Math.max(0, (rc.inspTokens||0) - (ev.tokens||0)); updateCardAtkDisplay(ev.attUid); /* 2026-11-26 (INSPIRE2): spent as the pass ends; tokens given after it acted stay */ try{ updateCardStatusDisplay(ev.attUid); }catch(e){} }catch(e){}
 }
 // ENG21 (2026-11-03, owner 20:28: "There should be a inspiration vfx effect on the card numbers"): the Inspiration pip (📯 and the token count)
 // and the inspiration beat on the unit's Attack number, as tokens are gained (a gold glow that swells and a 📯 that rises off the number) and

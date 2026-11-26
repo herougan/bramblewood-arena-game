@@ -4790,5 +4790,8 @@
  "Blue = suggested, carried": "நீலம் = பரிந்துரை, உள்ளது",
  "Part won: the enemies left die and 3 cards from your Graveyard go back into your deck (an Ecclesia deck: 3 exiled cards back to the Graveyard).": "பகுதி வெற்றி: மீதமுள்ள எதிரிகள் இறப்பர்; உங்கள் கல்லறையிலிருந்து 3 அட்டைகள் அடுக்குக்குத் திரும்பும் (எக்லீசியா அடுக்கு: நாடுகடத்திய 3 அட்டைகள் கல்லறைக்கு).",
  "{n} from your Graveyard back to your deck": "கல்லறையிலிருந்து {n} அடுக்குக்குத் திரும்பின",
- "{n} exiled back to your Graveyard": "நாடுகடத்திய {n} கல்லறைக்குத் திரும்பின"
+ "{n} exiled back to your Graveyard": "நாடுகடத்திய {n} கல்லறைக்குத் திரும்பின",
+ "Attacking gives adjacent allies {n} Inspiration: +1 Attack each on every hit of their next turn.": "தாக்கும்போது அருகிலுள்ள கூட்டாளிகளுக்கு {n} ஊக்கம்: ஒவ்வொன்றும் அவற்றின் அடுத்த முறையின் ஒவ்வொரு அடிக்கும் +1 தாக்குதல்.",
+ "Inspiration {n}: +{atk} Attack on every hit of its next turn; kept if it lands none.": "ஊக்கம் {n}: அடுத்த முறையின் ஒவ்வொரு அடிக்கும் +{atk} தாக்குதல்; எதுவும் படாவிட்டால் இருக்கும்.",
+ "spent its Inspiration: +{atk}⚔ on every hit that turn 📯": "தன் ஊக்கத்தைச் செலவழித்தது: அந்த முறையின் ஒவ்வொரு அடிக்கும் +{atk}⚔ 📯"
 }

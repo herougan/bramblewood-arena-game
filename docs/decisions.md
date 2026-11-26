@@ -4,6 +4,18 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**DUNGEON2-1. Ecclesia stage clear: automatic or a choice?** · Decide · Dungeons · asked 2026-11-26
+- Your note: an Ecclesia deck may move 3 exiled cards back to the Graveyard instead of 3 Graveyard cards to the deck. Built automatic: a deck at least half Ecclesia does it whenever it has exiled cards. Prayer cards are refused in the vault, so few such decks play there.
+  - a) Keep automatic
+  - b) A lobby toggle for Ecclesia decks
+- **Default:** a
+
+**DUNGEON2-2. The vault after the stage clear: re-measure?** · Decide · Balance · asked 2026-11-26
+- Each part now ends with the enemies left dying and 3 cards back into every deck. That makes the Tidelock Vault easier than MP1's 49% full clear (Map 16 decks, Auto). Nothing was retuned.
+  - a) Re-measure with the MP1 run, then retune the brambles
+  - b) Leave it easier
+- **Default:** a
+
 **TESTFIX11-1. Cinder Gecko over its Level 10 cap** · Decide · Cards · asked 2026-11-26
 - Map changes moved Cinder Gecko from Map 22 to Map 8's list, so its budget shrank; its Level 10 line is now 2% over.
   - a) Re-fit its Level 10 to Map 8

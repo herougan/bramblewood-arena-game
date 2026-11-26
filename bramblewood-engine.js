@@ -652,6 +652,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // tokens are expended"): one Inspiration token is +2 Attack (card.inspTokens counts them; card.inspired holds the Attack they add).
   // ENG27 (2026-11-06, owner item 14: "Inspiration only gives +1 attack, not 2. But inspiration N gives N stacks, so effectively +N tokens."): +1 a token.
   const INSPIRE_TOKEN_ATK = 1;
+  /* 2026-11-26 (INSPIRE2, owner 11-24 22:29 #18): Inspiration powers the unit's whole move, its shots and swings in one combat pass (Cleave's
+     side hits, every Arrow / Archer shot, Twin Strike's or Frenzy's second swing), and is spent once that move landed a hit (was: by the first
+     swing that landed one; its shots and Cleave's side hits got no bonus). inspMark notes what a landing hit used; inspSpendPass spends that
+     as the pass ends, so tokens given after the unit acted wait for its next move. inspMover: the unit whose shot action or Archer turn runs. */
+  let inspPassNo = 0, inspMover = null;
+  function inspMark(c){ if(c && ((c.inspired||0) > 0 || (c.inspTokens||0) > 0)) c._inspSpend = {p: inspPassNo, tok: c.inspTokens||0, atk: c.inspired||0}; }
+  function inspSpendPass(players, sideOf, events){
+    [1, 2].forEach(pid=>{ const pl = players[pid]; if(pl) rowsUnitsOf(pl).forEach(c=>{ const s = c && c._inspSpend; if(!s) return; c._inspSpend = null; if(s.p !== inspPassNo) return;
+      const tok = Math.min(s.tok, c.inspTokens||0), atk = Math.min(s.atk, c.inspired||0); if(!(tok > 0 || atk > 0)) return;
+      c.inspTokens = (c.inspTokens||0) - tok; c.inspired = (c.inspired||0) - atk;
+      if(recordEvents && events) events.push({type:'statusFx', kind:'inspiredSpent', side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:atk, tokens:tok, left: c.inspTokens || undefined}); }); });
+  }
   function rowShareOf(n){ return n > 0 ? n * ROW_SWING_SHARE : n; } // exact (2026-10-22, package FX2; was rounded up): the hit's one rounding is applyDamage's / damageHQ's
   // The free slot nearest s0 in a middle / back row (2026-10-19, package RR: a token, a Revive, a Relic or a split in that row),
   // s0 itself first when allowed; ties at random, as spawnBeside's. null when none within 15 columns.
@@ -5771,6 +5783,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // below adds nothing to the amount and returns no card, so the callers' status steps (applyShotStatus) skip it.
     const e40Arrow = eng40ArrowNow; eng40ArrowNow = false; // ENG40: read once, so a shot this one sets off (a kill trigger's Missile ...) is not an arrow
     if(shot && e40Arrow && attUid != null && typeof amount === 'number' && amount > 0) amount += eng34FletchOf(players[ownerId]); // ENG34 (2026-11-07): Fletcher / Weapon Master, every ranged shot of the side (rides: 'ranged'); ENG40 (2026-11-09, ENG34-3 c): arrows only (eng40ArrowShot)
+    const inspA = (shot && inspMover && attUid != null && attUid === inspMover.uid && typeof amount === 'number' && amount > 0) ? (inspMover.inspired||0) : 0; if(inspA > 0) amount += inspA; /* 2026-11-26 (INSPIRE2): a damaging shot of its move carries its Inspiration */
     if(shot && target && target.kind === 'card' && target.card){ const rf = reflectShotOf(players, sideOf, ownerId, target.card, events);
       if(rf) return fireDamageAction(players, sideOf, rf.pid, rf.src.defId, amount, dmgType, rf.target, stats, events, killCredit, rf.src.uid, false, armored); }
     const owner = players[ownerId], enemy = players[otherId(ownerId)];
@@ -5790,6 +5803,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // skill's or a shot's damage any more (was redirectToGuardian here). A Spellward unit steps in where the skill picks its target.
       const c = target.card;
       const guardianRedirect = false;
+      if(inspA > 0) inspMark(inspMover); // INSPIRE2: it landed
       const dmg = damageCardFlat(c, realAmount, dmgType, attDefId, attUid, armored ? {armor: true} : null), chainBlow = dmg + lastFlatArmorSoak; // ENG-RC1
       aStat.dealt += dmg;
       if(attUid != null){ const src = allBoardCards(owner).find(x=> x.uid === attUid); if(src) applySpite(players, sideOf, otherId(ownerId), c, src, dmg, stats, events, killCredit);
@@ -5814,6 +5828,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       return c; // the card actually hit (after a Guardian redirect)
     } else {
       const bulwarkBlocked = bulwarkReductionFor(enemy);
+      if(inspA > 0) inspMark(inspMover); // INSPIRE2
       const dmg = damageHQ(enemy, realAmount);
       aStat.dealt += dmg; aStat.faceDamage += dmg;
       if(recordEvents && events) events.push({type:'hitHQ', side:sideOf(ownerId), attDefId, attUid, targetSide:sideOf(otherId(ownerId)), dmg, ranged:true, bulwark:Math.min(bulwarkBlocked, realAmount)});
@@ -11316,6 +11331,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   function resolveCombatInner(players, sideOf, stats, events, firstAttackerSide){
     curInitiative = firstAttackerSide || 2; // On Turn Start's 'yours'/'opponent's' = who strikes first this round
+    inspPassNo += 1; inspMover = null; // INSPIRE2 (2026-11-26): this pass's moves (inspSpendPass after the order)
     // Ordering (2026-09-16, per explicit request: "Poison should happen first") — Poison now
     // ticks BEFORE any round-start trigger (Renewal cleanse, Regeneration, On Round Start, Per
     // Turn). Previously Renewal ran first and could cleanse a stack away before it ever dealt
@@ -11597,7 +11613,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         a.att._frozenJustSet = false;
         pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; }
       if(a.shot){ // 2026-10-17: this shooter's shot action; its kills are cleared away before the next action, like a swing's
-        if(fireShotsOf(players, sideOf, a.attId, a.att, stats, events, killCredit, a.fam)) reflowAfterKills(null); // 2026-10-18: its kills credited like a swing's (was an empty book)
+        inspMover = a.att; const shotFired = fireShotsOf(players, sideOf, a.attId, a.att, stats, events, killCredit, a.fam); inspMover = null; // INSPIRE2 (2026-11-26): its shots carry its Inspiration
+        if(shotFired) reflowAfterKills(null); // 2026-10-18: its kills credited like a swing's (was an empty book)
         pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; }
       // A middle- or back-row unit's action (2026-10-18, RESERVE_ACTS; reserveVolley's single-unit passes). 2026-10-19 (package TS, owner
       // 13:35: "somehow, thorns is not affecting the back row of the raid units. Fix this and related."): root cause, its strike was
@@ -11619,7 +11636,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(confusedFumbles(a.att, sideOf(a.attId), events, 'attack')){ pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; }
       if(sk2SwingReplaced(players, sideOf, a, stats, events)){ pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; } // Package SK2 (2026-10-19): Harvest instead of the swing
       if(en7DiveRise(players, sideOf, a, events)){ pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; } // EN7 (2026-10-24): Dive's first turn, aloft / under instead of the swing
-      if(bxArcherTurn(players, sideOf, a, stats, events, killCredit)){ reflowAfterKills(null); watchScan(players, sideOf, stats, events); pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; } // Package BX (2026-10-21): Archer N, its arrow instead of the swing
+      inspMover = a.att; const archerTurn = bxArcherTurn(players, sideOf, a, stats, events, killCredit); inspMover = null; // INSPIRE2 (2026-11-26): an Archer's arrow carries its Inspiration
+      if(archerTurn){ reflowAfterKills(null); watchScan(players, sideOf, stats, events); pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; } // Package BX (2026-10-21): Archer N, its arrow instead of the swing
       const killCreditKeysAtTurnStart = new Set(Object.keys(killCredit));
       currentAttacker = a.att;
       const attDef = sk1Unhide(a.att, CARD_DEFS[a.att.defId]); // an Exposed Stealth unit swings as anyone does (2026-10-19, package SK1)
@@ -11653,7 +11671,6 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // On Attack (custom trigger — e.g. Bloodlust N = onAttack->buffAttack N): fires once this
       // card commits to attacking this round, AFTER atkThisRound is already captured above, so
       // a permanent Attack buff it grants takes effect starting NEXT round, not retroactively.
-      a.att._inspHit = 0; // ENG21 (2026-11-03): set when a hit of this swing lands (a unit or the bramble), which spends its Inspiration
       a.att._fireHit = 0; // Fire on hit (2026-10-16): an On Attack trigger may load this swing with extra fire damage
       // Bleed: attacking at all ticks this card's own bleed stacks, whether or not the attack finds/lands on a target.
       // 2026-11-22 (BLEED1, owner 09:56 #2: "even if the bleed would kill, the creature can perform its action first"): the tick comes before
@@ -11913,10 +11930,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:side.defId, targetUid:side.uid, sweep:true});
           return;
         }
-        const r2 = damageCard(side, sweepN, dmgType, null);
+        const r2 = damageCard(side, sweepN + (a.att.inspired||0), dmgType, null); // + its Inspiration (2026-11-26, INSPIRE2)
         aStat.dealt += r2.dmg;
         ensureStat(stats, sideOf(a.enemyId), side.defId).taken += r2.dmg;
-        a.att._inspHit = 1; if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:side.defId, targetUid:side.uid, mods:dnModsFor(side.uid), dmg:r2.dmg, dmgType, armorBlocked:r2.armorBlocked, armorSoaked:r2.armorSoaked||0, sweep:true, sweepDir:dir});
+        inspMark(a.att); if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:side.defId, targetUid:side.uid, mods:dnModsFor(side.uid), dmg:r2.dmg, dmgType, armorBlocked:r2.armorBlocked, armorSoaked:r2.armorSoaked||0, sweep:true, sweepDir:dir});
         maybeBreakChain(players, sideOf, a.enemyId, side, stats, events, {kind:'damage', amount:r2.dmg + (r2.armorSoaked||0)}); // ENG-RC1: before Armor
         // ENG9 (2026-10-26, owner EN7-3: "Cleave and related DOES spread the status."): a side hit that got through carries the unit's own
         // Poison N and Bleed N (with Greater Poison, Hemorrhage and Venom Master, as its swing gives them). Was EN7: an area, no statuses.
@@ -11946,7 +11963,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               aStat.dealt += r3.dmg; if(rowSwing) rowStrikeTally += r3.dmg; // reserveVolley's total (2026-10-19, RR)
               ensureStat(stats, sideOf(a.enemyId), c2.defId).taken += r3.dmg;
               const lb3 = relictOf(a.att) ? 0 : laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, flankCol), lk3 = relictOf(a.att) ? null : lastLaneKind; // for the hit event (2026-10-16)
-              a.att._inspHit = 1; if(recordEvents && events) events.push(lineTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, mods:dnModsFor(c2.uid), dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, armorSoaked:r3.armorSoaked||0, fork:true, prong: prong || null, laneBonus: lb3 || undefined, lane: lb3 ? lk3 : undefined, guardianRedirect:c2GuardianRedirect, guardedUid: c2GuardianRedirect ? c2raw.uid : undefined /* EN2 (2026-10-23): who it stepped in for */, crit:critLanded || !!r3.exposedCrit, exposedCrit:!!r3.exposedCrit, pierced:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount}));
+              inspMark(a.att); if(recordEvents && events) events.push(lineTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, mods:dnModsFor(c2.uid), dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, armorSoaked:r3.armorSoaked||0, fork:true, prong: prong || null, laneBonus: lb3 || undefined, lane: lb3 ? lk3 : undefined, guardianRedirect:c2GuardianRedirect, guardedUid: c2GuardianRedirect ? c2raw.uid : undefined /* EN2 (2026-10-23): who it stepped in for */, crit:critLanded || !!r3.exposedCrit, exposedCrit:!!r3.exposedCrit, pierced:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount}));
               if(r3.kingSlayerBonus>0 && recordEvents && events) events.push({type:'kingSlayer', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:r3.kingSlayerBonus});
               maybeBreakChain(players, sideOf, a.enemyId, c2, stats, events, {kind:'damage', amount:r3.dmg + (r3.armorSoaked||0)}); // ENG-RC1: before Armor
               psychicHit(otherId(a.enemyId), a.att, c2, sideOf, stats, events); // Psychic N (2026-10-14)
@@ -11979,7 +11996,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               // landing on the castle, not a swipe redirect.
               const flankDmg = damageHQ(players[a.enemyId], castleSwingAmt(a.att, atkThisRound));
               aStat.dealt += flankDmg; aStat.faceDamage += flankDmg;
-              a.att._inspHit = 1; if(recordEvents && events) events.push({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg:flankDmg, fork:true, prong: prong || null, festerBonus, ruptureBonus});
+              inspMark(a.att); if(recordEvents && events) events.push({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg:flankDmg, fork:true, prong: prong || null, festerBonus, ruptureBonus});
               if(attDef.effects.sap && flankDmg>0){
                 const healedFlank = Math.min(a.att.maxHp - a.att.hp, sapHealOf(attDef.effects, flankDmg) /* ENG35: Leech N */);
                 if(healedFlank>0){ a.att.hp += healedFlank; if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healedFlank}); }
@@ -12031,7 +12048,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         aStat.dealt += dmg;
         ensureStat(stats, sideOf(a.enemyId), defCard.defId).taken += dmg;
         if(rowSwing) rowStrikeTally += dmg; // reserveVolley's total (2026-10-19, TS)
-        a.att._inspHit = 1; if(recordEvents && events) events.push(rowEv(fkTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, mods:dnModsFor(defCard.uid), dmg, dmgType, armorBlocked, armorSoaked, guardianRedirect, guardedUid: guardianRedirect ? target.card.uid : undefined /* EN2 (2026-10-23): who the Guardian stepped in for (the board walks it there) */, liveAtk: shownAtk, crit:critLanded || !!exposedCrit, exposedCrit:!!exposedCrit, pierced:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0, laneBonus: laneBonus || undefined, lane: laneBonus ? lastLaneKind : undefined, tallGrass: tallGrassStab || undefined, dive: diveBonus ? diveBonus : undefined})));
+        inspMark(a.att); if(recordEvents && events) events.push(rowEv(fkTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, mods:dnModsFor(defCard.uid), dmg, dmgType, armorBlocked, armorSoaked, guardianRedirect, guardedUid: guardianRedirect ? target.card.uid : undefined /* EN2 (2026-10-23): who the Guardian stepped in for (the board walks it there) */, liveAtk: shownAtk, crit:critLanded || !!exposedCrit, exposedCrit:!!exposedCrit, pierced:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0, laneBonus: laneBonus || undefined, lane: laneBonus ? lastLaneKind : undefined, tallGrass: tallGrassStab || undefined, dive: diveBonus ? diveBonus : undefined})));
         // King Slayer (2026-09-22): a dedicated event, separate from the plain 'hit' above, so
         // the front end can flourish this distinctly instead of the bonus silently blending into
         // the ordinary damage number — see computeHitDamage's kingSlayerBonus for the actual math.
@@ -12288,7 +12305,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         swingLanded = true;
         aStat.dealt += dmg; aStat.faceDamage += dmg;
         if(rowSwing) rowStrikeTally += dmg; // reserveVolley's total (2026-10-19, TS)
-        a.att._inspHit = 1; if(recordEvents && events) events.push(rowEv(fkTag({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg, crit:critLanded, siege:siegeBonus>0, bulwark:Math.min(bulwarkBlocked, atkThisRound+siegeBonus), festerBonus, ruptureBonus, shielded: (rowSwing && dmg < castleAmt) || undefined})));
+        inspMark(a.att); if(recordEvents && events) events.push(rowEv(fkTag({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg, crit:critLanded, siege:siegeBonus>0, bulwark:Math.min(bulwarkBlocked, atkThisRound+siegeBonus), festerBonus, ruptureBonus, shielded: (rowSwing && dmg < castleAmt) || undefined})));
         fireHitLands(a.att, null, mySide, sideOf(a.enemyId), players[a.enemyId], aStat, stats, events); // Fire on hit, at the castle (2026-10-16)
         if(dmg > 0 && attDef.effects && attDef.effects.skitter) eng23SkitterMark(a.att, a.attId, sideOf, events); // ENG27 (2026-11-06, owner ENG23-2 b: "yes hitting a bramble counts")
         { const th = players[a.enemyId].castleThorns; if(th > 0 && dmg > 0 && a.att.hp > 0){ const td = damageCardFlat(a.att, th, 'thorns'); aStat.taken = (aStat.taken||0) + td;
@@ -12328,9 +12345,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(boomMiss && recordEvents && events) events.push({type:'boomerangThrow', miss:true, side:mySide, uid:a.att.uid, defId:a.att.defId, targetSide:sideOf(a.enemyId), targetUid: target && target.kind === 'card' && target.card ? target.card.uid : undefined, castle: target && target.kind === 'hq' ? true : undefined});
       }
       // ENG21 (2026-11-03, owner 20:28: "Once unit attacks and hits something, the inspiring tokens are expended"): spent only by a swing
-      // that landed a hit (was: by any swing, a miss included); a miss, a dodge or no target keeps them for the next swing.
-      if(a.att._inspHit && ((a.att.inspired||0) > 0 || (a.att.inspTokens||0) > 0)){ if(recordEvents && events) events.push({type:'statusFx', kind:'inspiredSpent', side:mySide, attUid:a.att.uid, attDefId:a.att.defId, targetUid:a.att.uid, targetDefId:a.att.defId, amount:a.att.inspired||0, tokens:a.att.inspTokens||0});
-        a.att.inspired = 0; a.att.inspTokens = 0; }
+      // that landed a hit; a miss, a dodge or no target keeps them. 2026-11-26 (INSPIRE2): spent as the pass ends (inspSpendPass), so
+      // Twin Strike's second swing and its arrows keep the bonus.
       sk2AfterSwing(players, sideOf, a, stats, events); // Package SK2 (2026-10-19): Pickpocket, Sabotage, Arson on what the swing hit
       // Recoil N (2026-10-12, user: "New passive skill: Recoil N: On attack, deal N damage to itself").
       if(attDef.effects && Number(attDef.effects.recoil) > 0 && a.att.hp > 0){
@@ -12408,6 +12424,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // could die after the castle fell, unseen (the replay stops at the fall), and vanish when the board re-rendered.
       pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : (frenziedAgain ? a : pickNextAttacker());
     }
+    inspSpendPass(players, sideOf, events); // INSPIRE2 (2026-11-26): the moves that landed a hit spend the Inspiration they used
     // Banana and Durian (2026-10-14, user: "every turn, at speed -1 (slower than everyone else) ... (They still do their normal
     // action)"): after the whole swing order.
     if(!passOnlyUid && p1.hq.hp > 0 && p2.hq.hp > 0) snackTime(players, sideOf, stats, events, firstAttackerSide);

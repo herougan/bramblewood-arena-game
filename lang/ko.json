@@ -4790,5 +4790,8 @@
  "Blue = suggested, carried": "파랑 = 추천, 보유",
  "Part won: the enemies left die and 3 cards from your Graveyard go back into your deck (an Ecclesia deck: 3 exiled cards back to the Graveyard).": "부 승리: 남은 적은 쓰러지고 무덤의 카드 3장이 덱으로 돌아갑니다 (에클레시아 덱: 추방된 카드 3장이 무덤으로).",
  "{n} from your Graveyard back to your deck": "무덤에서 {n}장이 덱으로",
- "{n} exiled back to your Graveyard": "추방된 {n}장이 무덤으로"
+ "{n} exiled back to your Graveyard": "추방된 {n}장이 무덤으로",
+ "Attacking gives adjacent allies {n} Inspiration: +1 Attack each on every hit of their next turn.": "공격하면 인접 아군이 영감 {n}을 얻습니다: 하나당 다음 턴의 모든 명중에 공격 +1.",
+ "Inspiration {n}: +{atk} Attack on every hit of its next turn; kept if it lands none.": "고무 {n}: 다음 턴의 모든 명중에 공격 +{atk}; 하나도 안 맞으면 남아요.",
+ "spent its Inspiration: +{atk}⚔ on every hit that turn 📯": "고무를 썼어요: 그 턴의 모든 명중에 +{atk}⚔ 📯"
 }

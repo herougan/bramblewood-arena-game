@@ -4787,5 +4787,8 @@
  "Blue = suggested, carried": "Blau = vorgeschlagen, vorhanden",
  "Part won: the enemies left die and 3 cards from your Graveyard go back into your deck (an Ecclesia deck: 3 exiled cards back to the Graveyard).": "Teil gewonnen: Die übrigen Gegner sterben, 3 Karten aus deinem Friedhof kommen zurück in dein Deck (Ecclesia-Deck: 3 verbannte Karten zurück in den Friedhof).",
  "{n} from your Graveyard back to your deck": "{n} aus deinem Friedhof zurück ins Deck",
- "{n} exiled back to your Graveyard": "{n} verbannte zurück in den Friedhof"
+ "{n} exiled back to your Graveyard": "{n} verbannte zurück in den Friedhof",
+ "Attacking gives adjacent allies {n} Inspiration: +1 Attack each on every hit of their next turn.": "Beim Angriff erhalten benachbarte Verbündete {n} Inspiration: je +1 Angriff auf jeden Treffer ihres nächsten Zugs.",
+ "Inspiration {n}: +{atk} Attack on every hit of its next turn; kept if it lands none.": "Inspiration {n}: +{atk} Angriff auf jeden Treffer seines nächsten Zugs; bleibt, wenn keiner trifft.",
+ "spent its Inspiration: +{atk}⚔ on every hit that turn 📯": "verbrauchte seine Inspiration: +{atk}⚔ auf jeden Treffer dieses Zugs 📯"
 }
