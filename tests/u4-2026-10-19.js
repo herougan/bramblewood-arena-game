@@ -40,7 +40,9 @@ const rp = B.grab('renderPlay');
 ok(/id="homeNavBtnPlay"[^]*?id="arenaNavBtnPlay"[^]*?id="forgeNavBtnPlay"[^]*?dungeonKeyBtnHTML\('dungeonKeyBtnPlay'\)[^]*?id="settingsBtnPlaySub"[^]*?id="energyPillPlay"/.test(rp), '2. Home, Arena, Forge, then the key, ⚙️ and Energy');
 ok(/\$\{tabOpen\('forge'\) \? `<button class="home-nav-btn" id="forgeNavBtnPlay" type="button" title="\$\{escapeAttr\(TX\('ui\.place-forge'\)\)\}" aria-label="\$\{escapeAttr\(TX\('ui\.place-forge'\)\)\}"><span class="tab-emoji" aria-hidden="true">🔨<\/span> \$\{escapeHtml\(TX\('ui\.u4-forge'\)\)\}<\/button>`/.test(rp), '2. the 🔨 Forge once the Forge is open, TX title / label');
 ok(/forgeBtn\.addEventListener\('click', \(\)=>\{ try\{ SoundKit\.woodKnock\(\); \}catch\(e\)\{\} exitConquestImmersive\(\); codexSubTab = 'forge'; switchTab\('codex'\); \}\)/.test(rp), '2. it goes to the Forge like the page bar\'s shortcut');
-ok(/id="arenaNavBtnPlay" type="button" title="\$\{escapeAttr\(TX\('ui\.u4-arena-tip'\)\)\}"/.test(rp) && /TX\('ui\.u4-arena-back'\)/.test(rp) && !/id="arenaNavBtnPlay" type="button" title="(?:The Arena|Back to the Arena)"/.test(rp), '2. the Arena button\'s texts are TX keys now');
+// 2026-11-27 (package TESTFIX12): UISWEEP2 moved the Autobattler to the Practice tab; its back button reads "← Practice" / "Back to Practice"
+// (ui.sw2-practice-back) and ui.u4-arena-back is gone by design
+ok(/id="arenaNavBtnPlay" type="button" title="\$\{escapeAttr\(TX\('ui\.u4-arena-tip'\)\)\}"/.test(rp) && /TX\('ui\.sw2-practice-back'\)/.test(rp) && !/id="arenaNavBtnPlay" type="button" title="(?:The Arena|Back to the Arena)"/.test(rp), '2. the Arena button\'s texts are TX keys now');
 
 // ---- 3. the deck popup's Advancement sort
 const dp = B.grab('openDeckBuilderPopup');
@@ -52,7 +54,7 @@ ok(/try\{ const v = localStorage\.getItem\('bramblewood_dbp_sort_v1'\);/.test(dp
   ok(Object.keys(defs).sort(S()).join('') === 'acdbe', '3. Base, Map 1 (its side map after it), Map 2, then the rest'); }
 
 // ---- texts and packs
-const KEYS = ['ui.u4-arena', 'ui.u4-arena-tip', 'ui.u4-arena-back', 'ui.u4-forge', 'ui.u4-sort-advance'];
+const KEYS = ['ui.u4-arena', 'ui.u4-arena-tip', 'ui.sw2-practice-back' /* was ui.u4-arena-back (TESTFIX12, UISWEEP2) */, 'ui.u4-forge', 'ui.u4-sort-advance'];
 KEYS.forEach(k=> ok(typeof TEXT[k] === 'string' && src.includes(`'${k}'`), `TX ${k} is in the table and used`));
 for(const c of ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko']){
   const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', c + '.json'), 'utf8'));
