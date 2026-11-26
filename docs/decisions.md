@@ -4,6 +4,12 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**INSPIRE2-1. Inspiration on many-hit turns: every hit, or at most 4?** · Decide · Rules · asked 2026-11-26
+- Built: Inspiration adds to every hit of the unit's next turn (Cleave's sides, every arrow, Twin Strike's second swing), so a Volley, Octolash or Pitchfork turn takes it on every hit. Your note said 'up to 3+1 hits'; read as an example, not a cap. A turn that only missed still keeps it, as before (ENG21-1).
+  - a) Every hit, as built
+  - b) At most 4 hits a turn
+- **Default:** a
+
 **DUNGEON2-1. Ecclesia stage clear: automatic or a choice?** · Decide · Dungeons · asked 2026-11-26
 - Your note: an Ecclesia deck may move 3 exiled cards back to the Graveyard instead of 3 Graveyard cards to the deck. Built automatic: a deck at least half Ecclesia does it whenever it has exiled cards. Prayer cards are refused in the vault, so few such decks play there.
   - a) Keep automatic
