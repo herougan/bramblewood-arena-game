@@ -15,7 +15,7 @@ Sources: `canonical/cards.json` (stats, Wait, Level skills), `canonical/map-pool
 | A1 | Early aggro (Rush) | Wait 0 bodies and Pounce trade up before the foe's Wait 1-2 units arrive; Inspiring tops the swings | Maps 0-5 | No finisher before Map 7 (Stealth); Pounce sits on walls (1/14-1/16), not on attackers |
 | A2 | Tempo / reactive (Answer) | Hold an On Play answer for the round a foe's unit reads Wait 1: shield, delay, stun, ambush | Maps 5-20 | Stun arrives on Map 20, +Wait on a Map 8 side map at Level 3; no "this round" defence |
 | A3 | Midrange value (Tide line) | Wait 1 bodies with Armor / Tide hold the line while Foraging, Meiosis and Intimidate grind | Maps 2-10 | Almost no card flow (3 draw cards) and no death value |
-| A4 | Tribe engines (Hive) | Swarm units grow per Kin ally; Broodmother and Progeny refill the board | Maps 0-8 | Swarm reads Types: 4 Bees, 5 Ants on the road; no tribe On Death |
+| A4 | Tribe engines (Hive) | Swarm units grow per Kin ally; Broodmother and Progeny refill the board | Maps 0-8 | Swarm reads Types: 4 Bees and 4 Ants on the lists; no tribe On Death |
 | A5 | Death engine (Carrion) | Bodies that die into more bodies feed Harbinger, Carrion, Broodmother | Maps 6-13 | One On Death trigger card in 400; the spawners sit on one side map; no sacrifice outlet |
 | A6 | Poison / Bleed attrition | Stack Poison and Bleed, hold the target, let the ticks win | Maps 5-11 | No cash-in card (COMBO1-1); Bleed is wasted on held units (COMBO1 note A) |
 | A7 | Late control (Fortress and forecast) | Walls and Guardians buy rounds for Wait 3+ payoffs and On Ready blows | Maps 9-20 | Three On Ready payoffs, two on Specials; nothing in F2's Wait 5+ row; Gilded Roadwarden's Pounce 6 is instant |
