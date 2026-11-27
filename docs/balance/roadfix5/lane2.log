@@ -10,3 +10,8 @@ start {"barrel-cactus":3,"dromedary":1,"horned-lizard":4,"pale-oryx":3,"sand-wid
 round 1: cur 93.3/92.3; 15 legal, 15 read + 14 predicted (of 33); top: -1 pale-oryx +1 sand-widow 91.7/91.7 | -1 sand-widow +1 dromedary 91.7/92 | -1 sand-widow +1 pale-oryx 91.7/92.3 | -1 barrel-cactus -1 sand-widow +1 pale-oryx +1 dromedary 91.7/93.3 | -1 barrel-cactus +1 pale-oryx 91.7/95
 no nearer move
 RESULT 18-A-6 {"barrel-cactus":3,"dromedary":1,"horned-lizard":4,"pale-oryx":3,"sand-widow":3} 92.3 {} moves:  problems: []
+18-A-7 target 64.3 (56.3-72.3) size 15 side (min 11) start {"barrel-cactus":2,"dune-jackal":4,"quicksand-queen":2,"roadrunner-courier":3,"horned-lizard":4} problems []
+start {"barrel-cactus":2,"dune-jackal":4,"quicksand-queen":2,"roadrunner-courier":3,"horned-lizard":4} 91.7
+round 1: cur 86.7/91.7; 36 legal, 36 read + 14 predicted (of 38); top: -1 quicksand-queen +1 roadrunner-courier 86.7/93 | -1 quicksand-queen -2 dune-jackal +1 roadrunner-courier +2 dromedary 88.3/93.3 | -2 dune-jackal +2 dromedary 88.3/94.3 | -1 quicksand-queen -3 dune-jackal +1 roadrunner-courier +3 dromedary 88.3/94.7 | -1 quicksand-queen -3 dune-jackal +1 roadrunner-courier +3 pale-oryx 88.3/95
+no nearer move
+RESULT 18-A-7 {"barrel-cactus":2,"dune-jackal":4,"quicksand-queen":2,"roadrunner-courier":3,"horned-lizard":4} 91.7 {} moves:  problems: []
