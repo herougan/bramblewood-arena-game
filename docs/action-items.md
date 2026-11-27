@@ -8,6 +8,10 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-27 10:18 Owner: ritual card placement (candles)
+- Owner (verbatim): "When you place a ritual card: as the card animations and transitions onto the board, it goes dark. It's slightly transparent so that we can still see the ground underneath. Then, the candles slowly appear (fade) one by one over 1+s, the more candles, the slightly longer it takes. The candles light when that corresponding effect is complete. Hover etc is the same, but it also shows the progress of the ritual in the same shape!"
+- [ ] RITUAL1 (inside VFX1, running): one candle per ritual condition at its corner of the ritual shape; dark translucent card on placement; candles fade in one by one (~1 s, a bit longer per extra candle); each lights when its condition is met; the tip shows progress in the same shape.
+
 ## 11-27 10:03 Owner: animals that punish predators on death; a grazing carp
 - Owner (verbatim): "Other creatures: Green Carp - eats algae and kelp! A creature that evolved to punish predators by being poisonous or similar on death. Teaching predators to avoid them - not through inherent protection. What animals have this? We can add a range of them (2-4) from different environments into the game too"
 - Answered in chat: aposematic animals: monarch butterfly (meadow, in game as Monarch Wingblade), rough-skinned newt (forest streams), hooded pitohui (rainforest canopy), boxfish (reef); in game already: Cane Toad, Blister Beetle, Ladybird Guard, Nudibranch, Pufferfish Bulwark. Real carp are freshwater (grass carp eats water weed, silver carp filters algae).
