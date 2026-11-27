@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-27 Package ROADFIX6 (8-7 without its Mine, 20-A-4's Epic swap, a road swap pass)
+- 8-7 The Roost Above: the Collapsed Mine bramble out (REFIT20-1 a), 24.8% -> 59.8% (target 60).
+- 20-A-4 Heart of the Mountain: its last door's Ashmantle Fiend (Unique) -> The Contradiction (TESTFIX9-1 a, the road's Epic cap).
+- 15-3 Stoat Ambush: 1 Plains Zebra -> 1 Bramblewood Lynx (95.3% -> 93.3%). Road Maps 0-20: 180 in band / 182 within 10 / 6 beyond 20 of 208 (was 179 / 181 / 7). docs/balance/roadfix6-2026-11-27.md
+
 ## 2026-11-27 Package UISWEEP3 (the settled UISWEEP-1/2/3 and STATE2-1/2)
 - **One top bar on every page (player-visible):** back (↩ icon with a tooltip) first, the page's own buttons next, then the same five in the same place everywhere: 🏠 Home, 🗺️ Map, ⚙️ Settings, Energy, 👤 Account (the page you are on is filled). Home and Conquest now have it too; the map's floating cluster, its second Home / Settings / Energy and the acorn brand tile are gone; 💬 Feedback is a row in Settings. On a phone the Camp's shortcuts sit on a second row.
 - **One Home, one back:** the 🏠 house everywhere (Camp pages showed two); a ↩ icon everywhere (the Shop, Nest, Achievements, Community and deck builder text backs are gone; the deck builder's ↩ steps back to your decks first).
