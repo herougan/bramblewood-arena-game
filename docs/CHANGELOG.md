@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-28 Package UIORDER1 (one skill order on every card display; owner 03:07)
+- **Card skills read in one order (player-visible):** zeitgebers first (Tide, Swimmer, Flying, Diurnal, Nocturnal, Crepuscular, Full Moon, Moonborn, Rainrunner, Sun-shy, Night-blind, Transform, Frostbite, Hibernate, Season and the weather / terrain keys: Heat, Frost, Rain, Storm, Fog, Salt, Drought, Dry, Shade, Shadow, Canopy Cover), then the passives (On Play kinds: Pounce, Trap, Bulwark, Gash, Offspring, Twin, Sprout, Brood, the arrival skills; then permanent: Thorns, Armor, Guardian ... and every skill not named; then per-turn: Arrow and the Bolts, Snipe, Regenerate, Nursing, Bloom, Forestry and the other resource skills, the powders), then the triggers (Progeny, On Spawn income, death skills like Meiosis, then the custom ⬆️ / 💀 / ⚔️ / ✅ triggers). Ties keep the old order.
+- One comparator (`skillOrderRank` / `skillOrderSort`), used by `describeEffects` (hover, detail card, Codex entry, deck editor) and `abilityBadges` (card face, board, hand, tile, pack reveal). Test: `tests/uiorder1-2026-11-28.js`. Shots in `docs/screens/uiorder1/`.
+
 ## 2026-11-28 Package TESTFIX14 (the older Python e2e failures; e2e runner gap)
 - **Phone top bar (player-visible):** slot buttons min 24 px wide (03d5c44b3 made them 36, which squeezed 🏠 / 🗺️ to 29-33 px at 360-390 and cut off the last slot button).
 - **Maple Leaf payouts are not a bug:** the Trail's free lane is halved by ECON1 (98f2a6489, 2026-10-30, owner BRUP-1 "half all the resources you get, except first-time rewards"); res4 pins tier 4 = 30 and the month's leftovers 400 / 400.

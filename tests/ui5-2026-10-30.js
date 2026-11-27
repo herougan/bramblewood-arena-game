@@ -31,7 +31,7 @@ function fnSrc(name){
     const a = src.indexOf('  { const ui5Fight'), b = src.indexOf('// 2026-10-15: titled Swimmer, not Tide');
     const block = src.slice(a, b);
     const env = new Proxy(known, {has: (t, k)=> typeof k === 'string' && k in t});
-    const f = new Function('env', 'e', 'bopts', 'with(env){ const out = []; ' + block + '\n return out.join(""); }');
+    const f = new Function('env', 'e', 'bopts', 'with(env){ const out = [], put = (k, h)=>{ out.push(h); }; /* UIORDER1 (2026-11-28): abilityBadges pushes through put(key, chip) */ ' + block + '\n return out.join(""); }');
     try{ return f(env, d.effects, bopts); }catch(err){ return 'THROW ' + err.message; }
   };
   const crab = {effects: {tide: true}}, fish = {effects: {swimmer: true}};

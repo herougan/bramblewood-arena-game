@@ -60594,6 +60594,22 @@ function maskHiddenSkills(d){
   return Object.assign({}, d, {effects: e, _hiddenSkills: hid.length}); }
 function skillQChipHTML(){ return `<span class="skill-q" title="${escapeAttr(SKILL_Q_TIP)}" aria-label="${escapeAttr(SKILL_Q_TIP)}">?</span>`; }
 /* [SKILL_REVEAL_END] */
+/* 2026-11-28 (UIORDER1, owner 03:07): one order for every list of a card's skills: 0 zeitgebers (time, weather, environment, Tide, Flying), then the passives:
+   1 On Play kinds (Pounce, Trap, Bulwark, Gash, Offspring ...), 2 permanent (Thorns, Armor, Guardian ... and every key not named here), 3 per-turn (Arrow, Snipe,
+   Regenerate, Forestry, powders ...), then 4 triggers (On Play / On Death / On Attack ... and the Progeny / On Spawn income lines). A "...Grant" twin ranks as its base.
+   skillOrderRank(key) gives the group; skillOrderSort(items, keyOf) is a stable sort (ties keep today's order); describeEffects and abilityBadges use it. */
+const SKILL_ORDER_SETS = [
+  ['tide', 'supremeTide', 'swimmer', 'flying', 'diurnal', 'nocturnal', 'crepuscular', 'fullMoon', 'moonborn', 'rainrunner', 'sunshy', 'nightblind', 'transform', 'frostbite', 'hibernate', 'season', 'heat', 'frost', 'rain', 'storm', 'fog', 'salt', 'drought', 'dry', 'shade', 'shadow', 'canopyCover'],
+  ['pounce', 'skyfall', 'gash', 'bulwark', 'trap', 'offspring', 'twin', 'sprout', 'brood', 'tornado', 'avalanche', 'tsunami', 'earthquake', 'poisonGas', 'absoluteZero', 'rainmaker', 'fieldBreaker', 'warcry', 'castDarkness', 'lightning', 'penance', 'bloodTithe', 'stench', 'revive', 'fortification', 'disarm', 'pickpocket', 'dismantle', 'fastForward', 'mimic', 'lumberFeast', 'moonpull', 'shield', 'injured', 'explode', 'delivery', 'deliveryEvery', 'tribeDelivery', 'dynamite', 'vanguard'],
+  ['arrow', 'arrowCount', 'fireArrow', 'iceArrow', 'twinShot', 'volley', 'fireBolt', 'acidBolt', 'poisonBolt', 'iceBolt', 'shockBolt', 'snipe', 'spitfire', 'regen', 'healing', 'nursing', 'bloom', 'bloomCopy', 'immolation', 'irradiated', 'restless', 'charge', 'inherentDarkness', 'satiety', 'molting', 'shedding', 'coffee', 'banana', 'durian', 'smokeBomb', 'cure', 'creative', 'rebuild', 'foraging', 'milling', 'quarry', 'smelter', 'repair', 'stonecutter', 'pearlBed', 'glean', 'corpsefeeder', 'spawner', 'proliferate', 'fireball', 'meteor', 'rocket', 'bolster', 'forestry', 'quarrying', 'mining', 'masonry', 'refining', 'metallurgy', 'prospecting', 'sleepPowder', 'poisonPowder', 'paralysisPowder', 'coppice', 'driftwood', 'archer'],
+  ['onTrigger', 'onDeathSpawn', 'onAttackedSpawn', 'onSpawnGold', 'onSpawnGrace', 'onSpawnDevilry', 'onReadyGold', 'onReadyGrace', 'onReadyDevilry', 'meiosis', 'relic', 'landslide', 'nova', 'crystallise', 'hiveMind', 'poisonous', 'coreEvil', 'retribution', 'missile', 'render']
+];
+const SKILL_ORDER_RANK = {}; SKILL_ORDER_SETS.forEach((ks, i)=> ks.forEach(k=>{ SKILL_ORDER_RANK[k] = i === 0 ? 0 : i === 1 ? 1 : i === 2 ? 3 : 4; }));
+function skillOrderRank(k){ k = String(k == null ? '' : k); const b = k.replace(/(Grant|Hp)$/, ''), r = SKILL_ORDER_RANK[k] != null ? SKILL_ORDER_RANK[k] : SKILL_ORDER_RANK[b]; return r != null ? r : 2; }
+function skillOrderSort(items, keyOf){ return items.map((x, i)=> [x, i, skillOrderRank(keyOf(x))]).sort((a, b)=> a[2] - b[2] || a[1] - b[1]).map(a=> a[0]); }
+// a strip of chips (abilityBadges): each chip's key comes from put(), else its data-sk, else the chip before it
+function skillOrderSortChips(out, kOf){ let prev = ''; const ks = new Map(); out.forEach(h=>{ const k = kOf.get(h) || (/data-sk="(\w+)"/.exec(h) || [])[1] || prev; ks.set(h, k); prev = k; });
+  const sorted = skillOrderSort(out, h=> ks.get(h)); out.length = 0; sorted.forEach(h=> out.push(h)); }
 // 2026-10-21 (package UI3, owner: "Simplify the card details ... No need to say Primate and Beast phylas. No need for the 'Wait-6' flavourtext ...
 // Since it deals COLD damage, just the icon change is sufficient"): opt.terse leaves out the species line, the Wait line and the
 // "Its attacks deal X damage" line (the card's chips, its Wait badge and its attack plate's element icon already say them).
@@ -60638,6 +60654,7 @@ function describeEffects(def, liveCard, opt){
   // 2026-10-10 (user: "The effect descriptions should include the effect icon"): each line opens with the same glyph the
   // card face uses for it (SKILL_ICON). Fork on a crab shows the crab claw (2026-10-14).
   const ic = k=>{ const g = skillIconFor(k, def); return g ? g + ' ' : ''; };
+  const uo1R = []; // UIORDER1 (2026-11-28): the passive lines carry their skill key and are sorted below
   PASSIVE_DEFS.forEach(p=>{ const nL0 = lines.length; ((p)=>{ if(p.reserved) return; /* a retired, empty slot (Worthy, 2026-10-16) has no line */ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0}${e.espritWho === 'any' ? ' (Any)' : ''} — ${skillText(p, [e.esprit||0, e.espritHp||0, e.espritWho === 'any' ? 'any' : 'kin'], e)}`); return; } // + its target (2026-10-18) // 2026-10-16 skill audit: the short card text
     const v = p.get ? p.get(e) : e[p.key]; if(!v) return;
     if(skillNameOnlyNow(p.key)){ lines.push(`${ic(p.key)}${p.label} — ? <small>${escapeHtml(TX('ui.eng9-mystery-effect'))}</small>`); return; } // ENG9 (2026-10-26, EN8-4): the name, "?" for the effect
@@ -60703,7 +60720,8 @@ function describeEffects(def, liveCard, opt){
     const head = p.key==='hunter' ? giHunterHead(p, e) /* Hunter N (Poisoned) (2026-10-19, GI) */ : p.key==='attunement' ? s3bAttuneHead(p, e) /* Fire Attunement 1 (SKILLS3-B) */ : p.key==='wave' ? `Wave${valSuffix(waveParts(v, e).n)}` /* Wave N (2026-10-18) */ : p.kind==='number' && typeof v === 'number' ? `${p.label}${skillValSuffix(p, v)}` /* BL: bare at its default */ : (p.key==='dynamite' && Array.isArray(v)) ? `${p.label} ${v[0]}` /* Fuse / Damage (2026-10-16 skill audit) */ : (p.key==='crepuscular' && Array.isArray(v)) ? eng23CrepHead(v) /* ENG23 (2026-11-04): its two parts */ : (p.kind==='twoNumber' && Array.isArray(v)) ? (atSkillDefault(p, v) ? p.label : `${p.label} +${v[0]}/+${v[1]}`) /* BL (2026-10-23): "Diurnal", not "Diurnal +1/+0" */ : (p.key==='kinship' && v && v.type) ? `${p.label} ${v.type} +${v.atk||0}/+${v.hp||0}` : p.label;
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${pd.label}` : SKILL_COUNTER_EXTRA[k] || k; });
     const gr = Array.isArray(def.granted) && def.granted.includes(p.key);
-    lines.push(`${gr ? '<span class="granted-skill" title="Given by this fight">' : ''}${ic(p.key)}${head}${legendaryTagHTML(p) /* 2026-10-18 (owner 23:05) */} — ${skillText(p, v, e)}${gr ? ' <small>(given by this fight)</small></span>' : ''}`); void ans; })(p); if(lines.length > nL0){ const tg = skillNewTagHTML(p.key); if(tg) lines[nL0] += tg; } }); // "Answered by" lives in the Skill Codex now (2026-10-13); NEW! on a freshly revealed skill (2026-10-23, RW4)
+    lines.push(`${gr ? '<span class="granted-skill" title="Given by this fight">' : ''}${ic(p.key)}${head}${legendaryTagHTML(p) /* 2026-10-18 (owner 23:05) */} — ${skillText(p, v, e)}${gr ? ' <small>(given by this fight)</small></span>' : ''}`); void ans; })(p); if(lines.length > nL0){ const tg = skillNewTagHTML(p.key); if(tg) lines[nL0] += tg; uo1R.push([p.key, lines.slice(nL0)]); lines.length = nL0; } });
+  skillOrderSort(uo1R, r=> r[0]).forEach(r=> lines.push(...r[1])); // UIORDER1 (2026-11-28): zeitgebers, On Play, permanent, per-turn // "Answered by" lives in the Skill Codex now (2026-10-13); NEW! on a freshly revealed skill (2026-10-23, RW4)
   // 2026-10-16 skill audit (user: "so the skills are as simply named and described as possible"): the "+ Add Skill" skills that live
   // only in SKILL_DEFS (Freeze, Sleep, Paralyze, Blind, Make Tipsy, Confuse, Shock, Stagger, Chained, Revive) had no line on the
   // card at all. Each gets its short text now, like every other skill.
@@ -61062,7 +61080,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '503cadcca342', BUILD_CARD_HASH = 'a66834fc0484abfb2220ea27203bf29de3a23511282b33f6b076b5da8ca7f01b';
+const BUILD_ID = '205b51e48588', BUILD_CARD_HASH = 'a66834fc0484abfb2220ea27203bf29de3a23511282b33f6b076b5da8ca7f01b';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
@@ -67135,7 +67153,7 @@ function abilityBadges(d, bopts){
   const e = d.effects||{};
   // 2026-10-12 (23:12, user: "If its just Poison 1 or Bleed 1 or ETC, just omit the number. Just the logo is enough").
   const n1 = v=> (v === 1 || v === true || v === '1') ? '' : v;
-  const out = [];
+  const out = [], kOf = new Map(), put = (k, h)=>{ if(h) kOf.set(h, k); out.push(h); }; /* 2026-11-28 (UIORDER1): each chip knows its skill, so the strip sorts by skillOrderRank */
   // 2026-09-19, per explicit request ("the items are not aligned" — the actual issue, confirmed by
   // reproducing the exact hand shown: bounty's badge sat in the top-center ability-badge row right
   // next to the top-left cost badge, and both used the SAME 🪙 coin glyph, so it read as a broken
@@ -67144,24 +67162,24 @@ function abilityBadges(d, bopts){
   // 2026-10-11 (user: "I wanted ALL symbols (incl like flying and poison) to be on the south border"): poison joins the
   // skill strip, which now sits on the card's bottom edge.
   if(e.poison){ const ui7P = !!(bopts && bopts.live), ui7T = ui7P ? escapeAttr(TX('ui.ui7-poison-skill-tip', {n: e.poison === true ? 1 : e.poison})) : ''; // 2026-10-31 (package UI7, owner Y1): on a board card the Poison skill is the icon alone
-    out.push(`<span class="ab-poison"${ui7P ? ` title="${ui7T}" aria-label="${ui7T}"` : ''}>${iconHTML('poison', '☠')}${ui7P ? '' : n1(e.poison)}</span>`); }
-  if(e.bounty) out.push(`<span class="ab-bounty">${iconHTML('bounty', '🏆')}${n1(e.bounty)}</span>`); // on the board the opponent's bounty shows as a Lumber bubble instead (bountyBubbleHTML)
-  if(e.explode) out.push(`${iconHTML('explode', '💣')}${e.explode.time}/${e.explode.damage}`);
+    put('poison', `<span class="ab-poison"${ui7P ? ` title="${ui7T}" aria-label="${ui7T}"` : ''}>${iconHTML('poison', '☠')}${ui7P ? '' : n1(e.poison)}</span>`); }
+  if(e.bounty) put('bounty', `<span class="ab-bounty">${iconHTML('bounty', '🏆')}${n1(e.bounty)}</span>`); // on the board the opponent's bounty shows as a Lumber bubble instead (bountyBubbleHTML)
+  if(e.explode) put('explode', `${iconHTML('explode', '💣')}${e.explode.time}/${e.explode.damage}`);
   // Poison moved out to its own bottom-center stat pill (see poisonTagHTML above, 2026-09-29).
   // 2026-10-24 (package BV, owner 13:16 #21: "Snail shields aren't centred; at 5+ show one shield with a number (like lumber)"): up
   // to 4 shields overlap by half, evenly, inside their pip (.ab-stack: they used to pile up to the left, out of it); 5 or more are one
   // shield with the number set over it, as a 5+ Lumber cost is (.is-num, the .pips.is-res-num look).
-  if(e.armor){ const na = Math.max(0, Math.round(+e.armor) || 0); if(na > 0) out.push(na >= 5 ? `<span class="ab-shields is-num" data-n="${na}" title="Armor ${na}"><i>🛡</i><b>${na}</b></span>` : `<span class="ab-shields ab-stack" data-n="${na}">${'<i>🛡</i>'.repeat(na)}</span>`); } // 2026-10-08: one shield per point of Armour; 2026-10-10: stacked closer (they overlap)
-  if(e.thorns) out.push(`${iconHTML('thorns', '🌵')}${n1(e.thorns)}`);
+  if(e.armor){ const na = Math.max(0, Math.round(+e.armor) || 0); if(na > 0) put('armor', na >= 5 ? `<span class="ab-shields is-num" data-n="${na}" title="Armor ${na}"><i>🛡</i><b>${na}</b></span>` : `<span class="ab-shields ab-stack" data-n="${na}">${'<i>🛡</i>'.repeat(na)}</span>`); } // 2026-10-08: one shield per point of Armour; 2026-10-10: stacked closer (they overlap)
+  if(e.thorns) put('thorns', `${iconHTML('thorns', '🌵')}${n1(e.thorns)}`);
   // 2026-10-12 (user: "Evasive's symbol must show on the card"; the turtle's wings were unclear): Evasive, Revive and Tide get marks.
-  if(e.evasive) out.push(`<span class="ab-evasive" title="Evasive: dodges half of single-target hits">${iconHTML('evasive', '🍃')}</span>`);
+  if(e.evasive) put('evasive', `<span class="ab-evasive" title="Evasive: dodges half of single-target hits">${iconHTML('evasive', '🍃')}</span>`);
   // 2026-10-17 (user: "I think there should be a context label caues its important"): on the board Revive is a labelled chip,
   // struck through in red once it has been used (the unit came back).
   if(e.thanatosis){ const lv = bopts && bopts.live, used = !!(lv && lv.uid != null && (()=>{ try{ const lc = currentCardByUidSafe(lv.uid); return lc && lc.thanatosisUsed; }catch(err){ return false; } })()); // ENG33 (2026-11-07): Thanatosis
-    out.push(`<span class="ab-sk${used ? ' is-used' : ''}" data-sk="thanatosis" title="${escapeAttr(TX(used ? 'ui.eng33-thanatosis-used' : 'ui.eng33-thanatosis-chip'))}">${iconHTML('thanatosis', '😵')}</span>`); }
+    put('thanatosis', `<span class="ab-sk${used ? ' is-used' : ''}" data-sk="thanatosis" title="${escapeAttr(TX(used ? 'ui.eng33-thanatosis-used' : 'ui.eng33-thanatosis-chip'))}">${iconHTML('thanatosis', '😵')}</span>`); }
   if(e.undead){ const lv = bopts && bopts.live, used = !!(lv && lv.uid != null && (()=>{ try{ const lc = currentCardByUidSafe(lv.uid); return lc && lc.revivedOnce; }catch(err){ return false; } })()); // ENG9 (2026-10-26): Undead, the old Revive chip
     if(lv && used) { /* 2026-10-31 (UI11, FF1): a spent one-shot changes nothing: the used Undead chip is gone, not struck through */ } else
-    out.push(lv ? `<span class="ab-revive ab-revive-label${used ? ' is-used' : ''}" title="${escapeAttr(TX(used ? 'ui.eng9-undead-used' : 'ui.eng9-undead-chip'))}">${iconHTML('revive', '↺')}<b>${escapeHtml(TX('ui.eng9-undead-name'))}</b></span>` : `<span class="ab-revive" title="${escapeAttr(TX('ui.eng9-undead-chip'))}">${iconHTML('revive', '↺')}</span>`); }
+    put('undead', lv ? `<span class="ab-revive ab-revive-label${used ? ' is-used' : ''}" title="${escapeAttr(TX(used ? 'ui.eng9-undead-used' : 'ui.eng9-undead-chip'))}">${iconHTML('revive', '↺')}<b>${escapeHtml(TX('ui.eng9-undead-name'))}</b></span>` : `<span class="ab-revive" title="${escapeAttr(TX('ui.eng9-undead-chip'))}">${iconHTML('revive', '↺')}</span>`); }
   // 2026-10-30 (package UI5, W5; owner 21:35: "Don't show tide if its irrelevant to the map. When you draw a card into your hand but the battlefield doesn't currently
   // have tide, the context pip reds out and fades out. Same for opposite - it green-fades in."): in a fight (a board card or a hand card) on a map that can never
   // have Tide, the Tide and Swimmer chips are left out. On a Tide map a HAND card's chip is lit while the Tide is in and out (invisible) while it is not;
@@ -67171,97 +67189,97 @@ function abilityBadges(d, bopts){
     const isHandChip = !!(ui5Fight && bopts.hand && !bopts.live);
     const lt = (e.tide || e.swimmer) && bopts && (bopts.live || bopts.hand) && ui5Map ? liveTideState(e) : null; // live: blue, and its title says what the tide gives now (2026-10-14)
     const hcls = isHandChip ? ' tide-hand' + (lt ? '' : ' tide-hand-off') : '', hdat = isHandChip ? ` data-tide-on="${lt ? 1 : 0}"` : '';
-    if(e.tide && ui5Map) out.push(`<span class="ab-tide${lt ? ' tide-live tide-' + lt.k : ''}${hcls}"${hdat} title="${lt ? escapeAttr(lt.name + ' – ' + lt.bonus) : 'Tide'}">${lt && lt.k === 'ebb' ? iconHTML('tide-ebb', '🐚') : iconHTML('tide', '🌊')}${(typeof eng25TideN === 'function' ? eng25TideN(e) : 1) > 1 ? eng25TideN(e) : ''}</span>`); /* ENG25 (2026-11-05): Tide N's number (typeof: a tool that lifts abilityBadges alone) */ // 2026-10-18 (owner: "So on flood, it's wave. On ebb, it's shell.")
-    if(e.swimmer && ui5Map) out.push(lt ? `<span class="ab-tide tide-live tide-${lt.k}${hcls}"${hdat} title="${escapeAttr('Swimmer – ' + (lt.k === 'ebb' ? 'Ebb' : lt.k === 'high' ? 'High Tide' : 'On Tide') + ', ' + lt.bonus)}">${iconHTML('swimmer', '🏊')}</span>` : `<span${isHandChip ? ` class="${hcls.trim()}"${hdat}` : ''} title="${escapeAttr(swimmerLine(e))}">${iconHTML('swimmer', '🏊')}</span>`); } // 2026-10-15: titled Swimmer, not Tide
-  if(e.rainmaker) out.push(`${iconHTML('rainmaker', '🌧️')}`); if(e.rainrunner) out.push(`${iconHTML('rainrunner', '🌦️')}${n1(e.rainrunner)}`); if(e.moonborn) out.push(`${iconHTML('moonborn', '🌕')}${n1(e.moonborn)}`); if(e.frostbite) out.push(`${iconHTML('frostbite', '🥶')}${n1(e.frostbite)}`);
+    if(e.tide && ui5Map) put('tide', `<span class="ab-tide${lt ? ' tide-live tide-' + lt.k : ''}${hcls}"${hdat} title="${lt ? escapeAttr(lt.name + ' – ' + lt.bonus) : 'Tide'}">${lt && lt.k === 'ebb' ? iconHTML('tide-ebb', '🐚') : iconHTML('tide', '🌊')}${(typeof eng25TideN === 'function' ? eng25TideN(e) : 1) > 1 ? eng25TideN(e) : ''}</span>`); /* ENG25 (2026-11-05): Tide N's number (typeof: a tool that lifts abilityBadges alone) */ // 2026-10-18 (owner: "So on flood, it's wave. On ebb, it's shell.")
+    if(e.swimmer && ui5Map) put('swimmer', lt ? `<span class="ab-tide tide-live tide-${lt.k}${hcls}"${hdat} title="${escapeAttr('Swimmer – ' + (lt.k === 'ebb' ? 'Ebb' : lt.k === 'high' ? 'High Tide' : 'On Tide') + ', ' + lt.bonus)}">${iconHTML('swimmer', '🏊')}</span>` : `<span${isHandChip ? ` class="${hcls.trim()}"${hdat}` : ''} title="${escapeAttr(swimmerLine(e))}">${iconHTML('swimmer', '🏊')}</span>`); } // 2026-10-15: titled Swimmer, not Tide
+  if(e.rainmaker) put('rainmaker', `${iconHTML('rainmaker', '🌧️')}`); if(e.rainrunner) put('rainrunner', `${iconHTML('rainrunner', '🌦️')}${n1(e.rainrunner)}`); if(e.moonborn) put('moonborn', `${iconHTML('moonborn', '🌕')}${n1(e.moonborn)}`); if(e.frostbite) put('frostbite', `${iconHTML('frostbite', '🥶')}${n1(e.frostbite)}`);
   // 2026-10-12 (23:12, user: "The espirit and rally symbols should be shown on the bottom of the card too").
-  if(e.esprit) out.push(`<span title="Esprit">${iconHTML('esprit', '🤝')}${n1(e.esprit)}</span>`); if(e.rally) out.push(`<span title="Rally">${iconHTML('rally', '🚩')}${n1(e.rally)}</span>`);
-  if(e.natureForce) out.push(`<span title="Nature's Force">${iconHTML('nature-force', '🌪️')}${n1(e.natureForce)}</span>`);
-  if(e.crepuscular || e.crepuscularHp) out.push(`<span title="Crepuscular">${iconHTML('crepuscular', '🌆')}</span>`); if((e.sunshy || e.nightblind) && !(bopts && bopts.live)) { if(e.sunshy) out.push(`<span title="Sun-shy">${iconHTML('sunshy', '🕶️')}</span>`); if(e.nightblind) out.push(`<span title="Night-blind">${iconHTML('nightblind', '🌑')}</span>`); }
+  if(e.esprit) put('esprit', `<span title="Esprit">${iconHTML('esprit', '🤝')}${n1(e.esprit)}</span>`); if(e.rally) put('rally', `<span title="Rally">${iconHTML('rally', '🚩')}${n1(e.rally)}</span>`);
+  if(e.natureForce) put('natureForce', `<span title="Nature's Force">${iconHTML('nature-force', '🌪️')}${n1(e.natureForce)}</span>`);
+  if(e.crepuscular || e.crepuscularHp) put('crepuscular', `<span title="Crepuscular">${iconHTML('crepuscular', '🌆')}</span>`); if((e.sunshy || e.nightblind) && !(bopts && bopts.live)) { if(e.sunshy) put('sunshy', `<span title="Sun-shy">${iconHTML('sunshy', '🕶️')}</span>`); if(e.nightblind) put('nightblind', `<span title="Night-blind">${iconHTML('nightblind', '🌑')}</span>`); }
   // 2026-10-29 (package UI3, S2; owner 23:01: "If a status/context pill is irrelevant e.g. night-blind, don't show it. In fact, just show that the blind context pill is sufficient."):
   // in a fight a Sun-shy / Night-blind unit shows no pip while it sees (a night-blind unit by day), and the plain Blind pip while it is blind right now (the Blind status
   // chip below the card already says it when it carries one: then no pip here, one Blind only). Outside a fight (hand, Codex, detail) the trait pip stays.
-  else if(e.sunshy || e.nightblind){ const lv = bopts.live; if(ui3SightBlindNow(e, lv) && !(lv.blind > 0)) out.push(`<span class="ab-blindnow" title="${escapeAttr('Blind: ' + (STATUS_KEYWORDS.find(k=> k.k === 'blind') || {}).text)}">${iconHTML('blind-now', '🕶️')}</span>`); }
-  if(e.shedding) out.push(`<span title="Shedding">${iconHTML('shedding', '🐍')}${e.shedding===3||e.shedding===true?'':e.shedding}</span>`);
-  if(e.molting) out.push(`<span title="Molting">${iconHTML('molting', '🦀')}${e.molting}</span>`);
-  if(e.dynamite) out.push(`<span class="ab-dyn" title="Dynamite: explodes ${e.dynamite} rounds after it lands, for ${Number(e.dynamiteDmg)||5} fire damage">${iconHTML('dynamite', '🧨')}${e.dynamite}</span>`);
-  if(e.helmet && !eng27HelmetGone(bopts)) out.push(`<span title="Helmet: half the shots aimed at it glance off"><svg class="ab-helm" viewBox="0 0 24 20" width="1em" height="0.85em" aria-hidden="true"><path d="M3 14 C3 6 8 2 12 2 C16 2 21 6 21 14 Z" fill="#8fa3b8" stroke="#3b4652" stroke-width="1.4"/><path d="M1 14 H23 V16.5 Q12 19 1 16.5 Z" fill="#6e8296" stroke="#3b4652" stroke-width="1.2"/><circle cx="8" cy="9" r="1" fill="#e9f1f8"/><circle cx="12" cy="6" r="1" fill="#e9f1f8"/><circle cx="16" cy="9" r="1" fill="#e9f1f8"/><path d="M6 8 Q8 5 11 4.5" stroke="#d8e6f2" stroke-width="1" fill="none" opacity=".7"/></svg></span>`); // a drawn helmet: the emoji set has none that's cute (2026-10-13)
-  if(e.bludgeon) out.push(`<span title="Bludgeon">${iconHTML('bludgeon', '🔨')}</span>`); if(e.snipe) out.push(`<span title="Snipe">${iconHTML('snipe', '🎯')}${n1(e.snipe)}</span>`);
-  if(e.kinship) out.push(`<span title="Kinship ${escapeAttr(e.kinship.type||'')}: +${e.kinship.atk||0}/+${e.kinship.hp||0}">${iconHTML('kinship', '🫶')}</span>`); if(e.rocket) out.push(`<span title="Rocket">${iconHTML('rocket', '🚀')}${n1(e.rocket)}</span>`);
-  if(e.loneWolf) out.push(`<span title="Lone Wolf">${iconHTML('lone-wolf', '🐺')}</span>`); if(e.sociable) out.push(`<span title="Sociable">${iconHTML('sociable', '🫂')}</span>`);
-  if(e.coffee) out.push(`<span title="Coffee">${iconHTML('coffee', '☕')}${n1(e.coffee)}</span>`); if(e.dry) out.push(`<span title="Dry">${iconHTML('dry', '🏜️')}</span>`);
-  if(e.darksight) out.push(`<span title="Darksight: it can see in darkness">${iconHTML('darksight', '👁️')}</span>`);
-  if(e.castDarkness) out.push(`<span title="${escapeAttr(TX('ui.sk-cast-darkness'))}">${iconHTML('cast-darkness', '🌘')}</span>`); if(e.trueStrike) out.push(`<span title="${escapeAttr(TX('ui.sk-true-strike'))}">${iconHTML('true-strike', '💯')}</span>`); // 2026-10-18 (package D)
-  if(e.illuminate || e.lantern) out.push(`<span title="Illuminate: lights up the dark">${iconHTML('illuminate', '🏮')}</span>`); // 2026-10-15
-  if(e.nursing) out.push(`<span title="${escapeAttr(TX('ui.eng52-chip-nursing'))}">${iconHTML('nursing', '🍼')}${n1(e.nursing === true ? 2 : e.nursing)}</span>`); // 2026-10-15; ENG52 (2026-11-18): a random hurt ally
-  if(e.landslide) out.push(`<span title="Landslide">${iconHTML('landslide', '🪨')}${n1(e.landslide)}</span>`);
-  if(e.inspiring) out.push(`${iconHTML('inspiring', '📯')}${n1(e.inspiring)}`);
-  if(e.friction) out.push(`<span class="ab-friction" title="Friction: hurts its adjacent allies when it attacks">${iconHTML('friction', '⚙️')}${n1(e.friction)}</span>`);
-  if(e.lumberjack) out.push(`${iconHTML('lumberjack', '🪓')}`); if(e.heavyMetal) out.push(`${iconHTML('heavy-metal', '🤘')}`);
-  if(e.timber) out.push(`${iconHTML('timber', '🌲')}`); if(e.rockSolid) out.push(`${iconHTML('rock-solid', '🪨')}`); if(e.ironWill) out.push(`${iconHTML('iron-will', '🔩')}`);
-  if(e.loyal || e.loyalGrant) out.push(`<span class="ab-sk${zeitLitNow('loyal', bopts) ? ' zeit-live' : ''}" data-sk="loyal">${iconHTML('loyal', '🎖️')}</span>`); if(e.usurper || e.usurperGrant) out.push(`<span class="ab-pair${zeitLitNow('usurper', bopts) ? ' ab-sk zeit-live' : ''}" data-sk="usurper">${iconHTML('usurper', '👑')}<i>🗡️</i></span>`); // ENG25 (2026-11-05, #7): lit while on
-  if(e.shell) out.push(`<span title="Shell">${iconHTML('shell', '🐢')}${n1(e.shell)}</span>`); if(e.pitchfork) out.push(`<span title="Pitchfork: one swing, 4 prongs, half Attack each">${iconHTML('pitchfork', '🍴')}</span>`); if(e.trident) out.push(`<span title="Trident: one swing, full Attack in front, half beside it">${iconHTML('trident', '🔱')}</span>`); if(e.octolash) out.push(`<span title="Octolash: the 8 nearest enemy units">${iconHTML('octolash', '🐙')}</span>`);
+  else if(e.sunshy || e.nightblind){ const lv = bopts.live; if(ui3SightBlindNow(e, lv) && !(lv.blind > 0)) put('sunshy', `<span class="ab-blindnow" title="${escapeAttr('Blind: ' + (STATUS_KEYWORDS.find(k=> k.k === 'blind') || {}).text)}">${iconHTML('blind-now', '🕶️')}</span>`); }
+  if(e.shedding) put('shedding', `<span title="Shedding">${iconHTML('shedding', '🐍')}${e.shedding===3||e.shedding===true?'':e.shedding}</span>`);
+  if(e.molting) put('molting', `<span title="Molting">${iconHTML('molting', '🦀')}${e.molting}</span>`);
+  if(e.dynamite) put('dynamite', `<span class="ab-dyn" title="Dynamite: explodes ${e.dynamite} rounds after it lands, for ${Number(e.dynamiteDmg)||5} fire damage">${iconHTML('dynamite', '🧨')}${e.dynamite}</span>`);
+  if(e.helmet && !eng27HelmetGone(bopts)) put('helmet', `<span title="Helmet: half the shots aimed at it glance off"><svg class="ab-helm" viewBox="0 0 24 20" width="1em" height="0.85em" aria-hidden="true"><path d="M3 14 C3 6 8 2 12 2 C16 2 21 6 21 14 Z" fill="#8fa3b8" stroke="#3b4652" stroke-width="1.4"/><path d="M1 14 H23 V16.5 Q12 19 1 16.5 Z" fill="#6e8296" stroke="#3b4652" stroke-width="1.2"/><circle cx="8" cy="9" r="1" fill="#e9f1f8"/><circle cx="12" cy="6" r="1" fill="#e9f1f8"/><circle cx="16" cy="9" r="1" fill="#e9f1f8"/><path d="M6 8 Q8 5 11 4.5" stroke="#d8e6f2" stroke-width="1" fill="none" opacity=".7"/></svg></span>`); // a drawn helmet: the emoji set has none that's cute (2026-10-13)
+  if(e.bludgeon) put('bludgeon', `<span title="Bludgeon">${iconHTML('bludgeon', '🔨')}</span>`); if(e.snipe) put('snipe', `<span title="Snipe">${iconHTML('snipe', '🎯')}${n1(e.snipe)}</span>`);
+  if(e.kinship) put('kinship', `<span title="Kinship ${escapeAttr(e.kinship.type||'')}: +${e.kinship.atk||0}/+${e.kinship.hp||0}">${iconHTML('kinship', '🫶')}</span>`); if(e.rocket) put('rocket', `<span title="Rocket">${iconHTML('rocket', '🚀')}${n1(e.rocket)}</span>`);
+  if(e.loneWolf) put('loneWolf', `<span title="Lone Wolf">${iconHTML('lone-wolf', '🐺')}</span>`); if(e.sociable) put('sociable', `<span title="Sociable">${iconHTML('sociable', '🫂')}</span>`);
+  if(e.coffee) put('coffee', `<span title="Coffee">${iconHTML('coffee', '☕')}${n1(e.coffee)}</span>`); if(e.dry) put('dry', `<span title="Dry">${iconHTML('dry', '🏜️')}</span>`);
+  if(e.darksight) put('darksight', `<span title="Darksight: it can see in darkness">${iconHTML('darksight', '👁️')}</span>`);
+  if(e.castDarkness) put('castDarkness', `<span title="${escapeAttr(TX('ui.sk-cast-darkness'))}">${iconHTML('cast-darkness', '🌘')}</span>`); if(e.trueStrike) put('trueStrike', `<span title="${escapeAttr(TX('ui.sk-true-strike'))}">${iconHTML('true-strike', '💯')}</span>`); // 2026-10-18 (package D)
+  if(e.illuminate || e.lantern) put('illuminate', `<span title="Illuminate: lights up the dark">${iconHTML('illuminate', '🏮')}</span>`); // 2026-10-15
+  if(e.nursing) put('nursing', `<span title="${escapeAttr(TX('ui.eng52-chip-nursing'))}">${iconHTML('nursing', '🍼')}${n1(e.nursing === true ? 2 : e.nursing)}</span>`); // 2026-10-15; ENG52 (2026-11-18): a random hurt ally
+  if(e.landslide) put('landslide', `<span title="Landslide">${iconHTML('landslide', '🪨')}${n1(e.landslide)}</span>`);
+  if(e.inspiring) put('inspiring', `${iconHTML('inspiring', '📯')}${n1(e.inspiring)}`);
+  if(e.friction) put('friction', `<span class="ab-friction" title="Friction: hurts its adjacent allies when it attacks">${iconHTML('friction', '⚙️')}${n1(e.friction)}</span>`);
+  if(e.lumberjack) put('lumberjack', `${iconHTML('lumberjack', '🪓')}`); if(e.heavyMetal) put('heavyMetal', `${iconHTML('heavy-metal', '🤘')}`);
+  if(e.timber) put('timber', `${iconHTML('timber', '🌲')}`); if(e.rockSolid) put('rockSolid', `${iconHTML('rock-solid', '🪨')}`); if(e.ironWill) put('ironWill', `${iconHTML('iron-will', '🔩')}`);
+  if(e.loyal || e.loyalGrant) put('loyal', `<span class="ab-sk${zeitLitNow('loyal', bopts) ? ' zeit-live' : ''}" data-sk="loyal">${iconHTML('loyal', '🎖️')}</span>`); if(e.usurper || e.usurperGrant) put('usurper', `<span class="ab-pair${zeitLitNow('usurper', bopts) ? ' ab-sk zeit-live' : ''}" data-sk="usurper">${iconHTML('usurper', '👑')}<i>🗡️</i></span>`); // ENG25 (2026-11-05, #7): lit while on
+  if(e.shell) put('shell', `<span title="Shell">${iconHTML('shell', '🐢')}${n1(e.shell)}</span>`); if(e.pitchfork) put('pitchfork', `<span title="Pitchfork: one swing, 4 prongs, half Attack each">${iconHTML('pitchfork', '🍴')}</span>`); if(e.trident) put('trident', `<span title="Trident: one swing, full Attack in front, half beside it">${iconHTML('trident', '🔱')}</span>`); if(e.octolash) put('octolash', `<span title="Octolash: the 8 nearest enemy units">${iconHTML('octolash', '🐙')}</span>`);
   // 2026-10-14 skills. Speed shows the live value on the board (c.speed: its own Speed, Haste, and a Haste ally beside it).
   { const lv = bopts && bopts.live && bopts.live.speed != null ? Number(bopts.live.speed)||0 : (Number(e.speed)||0) + (e.haste ? 2 : 0);
-    if(lv) out.push(`<span class="ab-speed" title="Speed ${lv}: the fastest units swing first">🐇${lv}</span>`); }
-  if(e.haste) out.push(`<span title="Haste: Speed +2, adjacent allies Speed +1">${iconHTML('haste', '🏃')}</span>`);
-  if(e.rabid) out.push(`<span title="Rabid ${numOr(e.rabid, 2)}: hits add ${numOr(e.rabid, 2)} Poison; Swimmers and water hit it for double">${iconHTML('rabid', '🤬')}${numOr(e.rabid, 2) === 2 ? '' : numOr(e.rabid, 2)}</span>`); // Rabid N (2026-10-16 skill audit)
-  if(e.cower) out.push(eng15CowerChip(e, !!(bopts && bopts.live && bopts.live.cowering))); // ENG15 (2026-10-31, FF6): lit, with its Armor, only while it cowers
-  if(e.ghost) out.push(`<span title="Ghost: normal attacks pass through it">${iconHTML('ghost', '👻')}</span>`);
-  if(e.ichor) out.push(`<span title="Ichor ${e.ichor}: whoever hits it takes ${e.ichor} acid, loses 1 Armor, Bleeds 1">${iconHTML('ichor', '🧪')}${n1(e.ichor)}</span>`);
-  if(e.irradiated) out.push(`<span title="Irradiated ${e.irradiated}: gives Irradiation to its adjacent units and the enemy facing it">${iconHTML('irradiated', '☢️')}${n1(e.irradiated)}</span>`);
+    if(lv) put('speed', `<span class="ab-speed" title="Speed ${lv}: the fastest units swing first">🐇${lv}</span>`); }
+  if(e.haste) put('haste', `<span title="Haste: Speed +2, adjacent allies Speed +1">${iconHTML('haste', '🏃')}</span>`);
+  if(e.rabid) put('rabid', `<span title="Rabid ${numOr(e.rabid, 2)}: hits add ${numOr(e.rabid, 2)} Poison; Swimmers and water hit it for double">${iconHTML('rabid', '🤬')}${numOr(e.rabid, 2) === 2 ? '' : numOr(e.rabid, 2)}</span>`); // Rabid N (2026-10-16 skill audit)
+  if(e.cower) put('cower', eng15CowerChip(e, !!(bopts && bopts.live && bopts.live.cowering))); // ENG15 (2026-10-31, FF6): lit, with its Armor, only while it cowers
+  if(e.ghost) put('ghost', `<span title="Ghost: normal attacks pass through it">${iconHTML('ghost', '👻')}</span>`);
+  if(e.ichor) put('ichor', `<span title="Ichor ${e.ichor}: whoever hits it takes ${e.ichor} acid, loses 1 Armor, Bleeds 1">${iconHTML('ichor', '🧪')}${n1(e.ichor)}</span>`);
+  if(e.irradiated) put('irradiated', `<span title="Irradiated ${e.irradiated}: gives Irradiation to its adjacent units and the enemy facing it">${iconHTML('irradiated', '☢️')}${n1(e.irradiated)}</span>`);
   // 2026-10-14 (second pass)
-  if(e.shade) out.push(`<span title="Shade: half damage from non-magic attacks at night or in darkness">${iconHTML('shade', '🌫️')}</span>`);
-  if(e.shadow) out.push(`<span title="Shadow: at night or in darkness, attacks at it miss 1 in 2">${iconHTML('shadow-skill', '👤')}</span>`);
-  if(e.supreme) out.push(`<span class="ab-supreme" title="Supreme: magic attacks that crush every defence; takes half from non-magic damage">${iconHTML('supreme', '✨')}</span>`);
-  if(e.twin) out.push(`<span title="Twin: a token twin arrives with it">${iconHTML('twin', '👯')}</span>`);
-  if(e.sprout) out.push(`<span title="Sprout: Growth Sprouts arrive with it">${iconHTML('sprout', '🌱')}${n1(e.sprout)}</span>`);
-  if(e.growth) out.push(`<span title="Growth: counts toward every Swarm">${iconHTML('growth', '🌿')}</span>`);
+  if(e.shade) put('shade', `<span title="Shade: half damage from non-magic attacks at night or in darkness">${iconHTML('shade', '🌫️')}</span>`);
+  if(e.shadow) put('shadow', `<span title="Shadow: at night or in darkness, attacks at it miss 1 in 2">${iconHTML('shadow-skill', '👤')}</span>`);
+  if(e.supreme) put('supreme', `<span class="ab-supreme" title="Supreme: magic attacks that crush every defence; takes half from non-magic damage">${iconHTML('supreme', '✨')}</span>`);
+  if(e.twin) put('twin', `<span title="Twin: a token twin arrives with it">${iconHTML('twin', '👯')}</span>`);
+  if(e.sprout) put('sprout', `<span title="Sprout: Growth Sprouts arrive with it">${iconHTML('sprout', '🌱')}${n1(e.sprout)}</span>`);
+  if(e.growth) put('growth', `<span title="Growth: counts toward every Swarm">${iconHTML('growth', '🌿')}</span>`);
   // 2026-10-17 (user: "Effects tied together context symbols should stack on top of each other ... make this consistent for all"):
   // every two-glyph chip is one .ab-pair (the second glyph tucked over the first), Moonpull, Supreme Tide and Twin Strike included.
-  if(e.moonpull) out.push(`<span class="ab-pair" title="Moonpull: when it arrives, the Tide comes in">${iconHTML('moonpull', '🌙')}<i>🌊</i></span>`);
+  if(e.moonpull) put('moonpull', `<span class="ab-pair" title="Moonpull: when it arrives, the Tide comes in">${iconHTML('moonpull', '🌙')}<i>🌊</i></span>`);
   // 2026-10-14 (third pass): Bloom (conditions) shows 🌷, and 🌸 while it is in bloom; Wave, Brood, Supreme Tide.
-  if(e.bloomCopy && !(bopts && bopts.live && (bopts.live.bloomed || bopts.live.bloomCopy)) && !ui11BloomImpossible(e.bloomCopy, bopts)){ /* 2026-10-31 (UI11, FF1): a Bloom that is spent, or that a copy does not have, shows no chip on the board */ const lv = bopts && bopts.live, spent = !!(lv && lv.bloomed); /* EN5 (2026-10-24): a copy can bloom, so only a bloomed unit's chip greys */ out.push(`<span class="ab-bloom ab-bloomcopy${spent ? ' is-spent' : ''}" title="${escapeAttr(bloomCopyLabel(e.bloomCopy) + (lv && lv.bloomCopy ? ' · ' + TX('ui.bl-is-copy') : spent ? ' · ' + TX('ui.bl-bloomed') : '') + '\n' + eng19BloomFillText(e.bloomCopy) /* ENG19 (2026-11-02, owner 22:26): how it fills */)}">🌸</span>`); } // BL (2026-10-23)
-  if(e.bloomWhen && !ui11BloomImpossible(e.bloomWhen, bopts)){ const on = !!(bopts && bopts.live && bopts.live.inBloom); out.push(`<span class="ab-bloom${on ? ' is-on' : ''}" title="${escapeAttr(bloomLabel(e.bloomWhen) + (on ? ' (in bloom now)' : ''))}">${on ? '🌸' : '🌷'}</span>`); }
-  if(e.wave){ const w = waveParts(undefined, e); out.push(`<span title="Wave${w.n > 1 ? ' ' + w.n : ''}: its hits push the unit ${w.n === 1 ? 'one column' : w.n + ' columns'} ${w.way === 'either' ? 'either way, leaning inward' : w.way === 'alternate' ? 'left, then right' : w.way}; a crash hurts both">〰️${w.n > 1 ? n1(w.n) : ''}</span>`); } // Wave N (2026-10-18)
-  if(e.brood) out.push(`<span title="Brood ${e.brood === true ? 1 : e.brood}: brood tokens hatch beside it">${iconHTML('brood', '🥚')}${n1(e.brood)}</span>`);
-  if(e.supremeTide) out.push(`<span class="ab-supreme ab-supreme-tide" title="Supreme Tide: +2 Attack and +2 Armor every round, Flood or Ebb"><span class="ab-pair">${iconHTML('supreme-tide', '✨')}<i>🌊</i></span></span>`); // stacked (2026-10-17)
+  if(e.bloomCopy && !(bopts && bopts.live && (bopts.live.bloomed || bopts.live.bloomCopy)) && !ui11BloomImpossible(e.bloomCopy, bopts)){ /* 2026-10-31 (UI11, FF1): a Bloom that is spent, or that a copy does not have, shows no chip on the board */ const lv = bopts && bopts.live, spent = !!(lv && lv.bloomed); /* EN5 (2026-10-24): a copy can bloom, so only a bloomed unit's chip greys */ put('bloomCopy', `<span class="ab-bloom ab-bloomcopy${spent ? ' is-spent' : ''}" title="${escapeAttr(bloomCopyLabel(e.bloomCopy) + (lv && lv.bloomCopy ? ' · ' + TX('ui.bl-is-copy') : spent ? ' · ' + TX('ui.bl-bloomed') : '') + '\n' + eng19BloomFillText(e.bloomCopy) /* ENG19 (2026-11-02, owner 22:26): how it fills */)}">🌸</span>`); } // BL (2026-10-23)
+  if(e.bloomWhen && !ui11BloomImpossible(e.bloomWhen, bopts)){ const on = !!(bopts && bopts.live && bopts.live.inBloom); put('bloomWhen', `<span class="ab-bloom${on ? ' is-on' : ''}" title="${escapeAttr(bloomLabel(e.bloomWhen) + (on ? ' (in bloom now)' : ''))}">${on ? '🌸' : '🌷'}</span>`); }
+  if(e.wave){ const w = waveParts(undefined, e); put('wave', `<span title="Wave${w.n > 1 ? ' ' + w.n : ''}: its hits push the unit ${w.n === 1 ? 'one column' : w.n + ' columns'} ${w.way === 'either' ? 'either way, leaning inward' : w.way === 'alternate' ? 'left, then right' : w.way}; a crash hurts both">〰️${w.n > 1 ? n1(w.n) : ''}</span>`); } // Wave N (2026-10-18)
+  if(e.brood) put('brood', `<span title="Brood ${e.brood === true ? 1 : e.brood}: brood tokens hatch beside it">${iconHTML('brood', '🥚')}${n1(e.brood)}</span>`);
+  if(e.supremeTide) put('supremeTide', `<span class="ab-supreme ab-supreme-tide" title="Supreme Tide: +2 Attack and +2 Armor every round, Flood or Ebb"><span class="ab-pair">${iconHTML('supreme-tide', '✨')}<i>🌊</i></span></span>`); // stacked (2026-10-17)
   // 2026-10-14 (fourth pass): Crab Claws, Meiosis, Nullify, Restless, Charge.
-  if(e.crabClaws) out.push(`<span title="Crab Claws: attacks left or right only (the bramble when neither has a unit)">${iconHTML('crab-claws', '🦞')}</span>`);
-  if(e.meiosis) out.push(`<span title="Meiosis ${e.meiosis === true ? 1 : e.meiosis}: splits in two when it dies">${iconHTML('meiosis', '🧫')}${n1(e.meiosis)}</span>`);
-  if(e.nullify) out.push(`<span class="ab-nullify" title="Nullify: its hits get no reaction; what it kills goes to the ${EXILE_ZONE_NAME}">${iconHTML('nullify', '🚫')}</span>`);
-  if(e.restless) out.push(`<span title="Restless: steps toward the nearest enemy every round">${iconHTML('restless', '👣')}</span>`);
-  if(e.charge){ const cp = chargeParts(e.charge) || {n:1}; out.push(`<span class="ab-charge" title="${escapeAttr(chargeLabel(e.charge))}">${iconHTML('charge', '⏲️')}${cp.n}</span>`); }
+  if(e.crabClaws) put('crabClaws', `<span title="Crab Claws: attacks left or right only (the bramble when neither has a unit)">${iconHTML('crab-claws', '🦞')}</span>`);
+  if(e.meiosis) put('meiosis', `<span title="Meiosis ${e.meiosis === true ? 1 : e.meiosis}: splits in two when it dies">${iconHTML('meiosis', '🧫')}${n1(e.meiosis)}</span>`);
+  if(e.nullify) put('nullify', `<span class="ab-nullify" title="Nullify: its hits get no reaction; what it kills goes to the ${EXILE_ZONE_NAME}">${iconHTML('nullify', '🚫')}</span>`);
+  if(e.restless) put('restless', `<span title="Restless: steps toward the nearest enemy every round">${iconHTML('restless', '👣')}</span>`);
+  if(e.charge){ const cp = chargeParts(e.charge) || {n:1}; put('charge', `<span class="ab-charge" title="${escapeAttr(chargeLabel(e.charge))}">${iconHTML('charge', '⏲️')}${cp.n}</span>`); }
   // 2026-10-14 (fifth pass): Tornado, Avalanche, Tsunami, Dragon Lightning, Wither, and the egg card's 🥚.
-  if(e.tornado) out.push(`<span title="Tornado ${e.tornado === true ? 1 : e.tornado}: when it arrives, enemy units are flung to other columns">${iconHTML('tornado', '🌪️')}💨${n1(e.tornado)}</span>`);
-  if(e.avalanche) out.push(`<span title="Avalanche ${e.avalanche === true ? 1 : e.avalanche}: when it arrives, every grounded enemy takes damage and +1 Wait">${iconHTML('avalanche', '🏔️')}${n1(e.avalanche)}</span>`);
-  if(e.tsunami) out.push(`<span title="Tsunami ${e.tsunami === true ? 1 : e.tsunami}: when it arrives, every enemy +1 Wait; non-swimmers take damage">${iconHTML('tsunami', '🌊')}💥${n1(e.tsunami)}</span>`);
-  if(e.dragonLightning) out.push(`<span class="ab-dragon-bolt" title="Dragon Lightning ${e.dragonLightning === true ? 1 : e.dragonLightning}: its hits call red lightning on the target and a unit adjacent to it">${iconHTML('dragon-lightning', '🐉')}⚡${n1(e.dragonLightning)}</span>`);
-  if(e.wither) out.push(`<span title="Wither ${e.wither === true ? 1 : e.wither}: its hits wither the target (max Health falls for 3 rounds, no healing)">${iconHTML('wither', '💀')}${n1(e.wither)}</span>`);
-  if(d.hatchInto) out.push(`<span title="Egg: cracks open into a random ${escapeAttr(eggKindLabel(d))} card when Ready">${iconHTML('hatch-into', '🥚')}</span>`);
+  if(e.tornado) put('tornado', `<span title="Tornado ${e.tornado === true ? 1 : e.tornado}: when it arrives, enemy units are flung to other columns">${iconHTML('tornado', '🌪️')}💨${n1(e.tornado)}</span>`);
+  if(e.avalanche) put('avalanche', `<span title="Avalanche ${e.avalanche === true ? 1 : e.avalanche}: when it arrives, every grounded enemy takes damage and +1 Wait">${iconHTML('avalanche', '🏔️')}${n1(e.avalanche)}</span>`);
+  if(e.tsunami) put('tsunami', `<span title="Tsunami ${e.tsunami === true ? 1 : e.tsunami}: when it arrives, every enemy +1 Wait; non-swimmers take damage">${iconHTML('tsunami', '🌊')}💥${n1(e.tsunami)}</span>`);
+  if(e.dragonLightning) put('dragonLightning', `<span class="ab-dragon-bolt" title="Dragon Lightning ${e.dragonLightning === true ? 1 : e.dragonLightning}: its hits call red lightning on the target and a unit adjacent to it">${iconHTML('dragon-lightning', '🐉')}⚡${n1(e.dragonLightning)}</span>`);
+  if(e.wither) put('wither', `<span title="Wither ${e.wither === true ? 1 : e.wither}: its hits wither the target (max Health falls for 3 rounds, no healing)">${iconHTML('wither', '💀')}${n1(e.wither)}</span>`);
+  if(d.hatchInto) put('hatchInto', `<span title="Egg: cracks open into a random ${escapeAttr(eggKindLabel(d))} card when Ready">${iconHTML('hatch-into', '🥚')}</span>`);
   // 2026-10-14 (sixth pass): Fencing, Fireball, Meteor, Banana, Bananarang, Durian, Shield, Electricity, Keen Sense.
-  if(e.fencing) out.push(`<span title="Fencing: Evasive and Swift units can't dodge its attacks">${iconHTML('fencing', '🤺')}</span>`);
-  if(e.fireball) out.push(`<span class="ab-fireball" title="Fireball ${numOr(e.fireball, 15)}: when Ready, a 3-wide fireball on a random enemy unit">${iconHTML('fireball', '🟠')}${n1(numOr(e.fireball, 15))}</span>`);
-  if(e.meteor) out.push(`<span title="Meteor ${numOr(e.meteor, 20)}: when Ready, a meteor crashes onto a random enemy column">${iconHTML('meteor', '☄️')}${n1(numOr(e.meteor, 20))}</span>`);
-  if(e.banana) out.push(`<span title="Banana ${numOr(e.banana, 3)}: every round, last, it eats it (if hurt) or throws it">${iconHTML('banana', '🍌')}${n1(numOr(e.banana, 3))}</span>`);
-  if(e.bananarang) out.push(`<span class="ab-pair" title="Bananarang ${numOr(e.bananarang, 3)}: a boomerang it may eat when it comes home">${iconHTML('bananarang', '🍌')}<i>🪃</i></span>`);
-  if(e.durian){ const db = bopts && bopts.live ? (Number(bopts.live.thornsBonus)||0) : 0; out.push(`<span class="ab-durian" title="Durian${numOr(e.durian, 1) > 1 ? ' ' + numOr(e.durian, 1) : ''}: 1 in 2 each round it eats one for Thorns +${numOr(e.durian, 1)}${db ? ` (Thorns +${db} so far)` : ''}">${iconHTML('durian', '🌰')}${db ? '+' + db : ''}</span>`); }
+  if(e.fencing) put('fencing', `<span title="Fencing: Evasive and Swift units can't dodge its attacks">${iconHTML('fencing', '🤺')}</span>`);
+  if(e.fireball) put('fireball', `<span class="ab-fireball" title="Fireball ${numOr(e.fireball, 15)}: when Ready, a 3-wide fireball on a random enemy unit">${iconHTML('fireball', '🟠')}${n1(numOr(e.fireball, 15))}</span>`);
+  if(e.meteor) put('meteor', `<span title="Meteor ${numOr(e.meteor, 20)}: when Ready, a meteor crashes onto a random enemy column">${iconHTML('meteor', '☄️')}${n1(numOr(e.meteor, 20))}</span>`);
+  if(e.banana) put('banana', `<span title="Banana ${numOr(e.banana, 3)}: every round, last, it eats it (if hurt) or throws it">${iconHTML('banana', '🍌')}${n1(numOr(e.banana, 3))}</span>`);
+  if(e.bananarang) put('bananarang', `<span class="ab-pair" title="Bananarang ${numOr(e.bananarang, 3)}: a boomerang it may eat when it comes home">${iconHTML('bananarang', '🍌')}<i>🪃</i></span>`);
+  if(e.durian){ const db = bopts && bopts.live ? (Number(bopts.live.thornsBonus)||0) : 0; put('durian', `<span class="ab-durian" title="Durian${numOr(e.durian, 1) > 1 ? ' ' + numOr(e.durian, 1) : ''}: 1 in 2 each round it eats one for Thorns +${numOr(e.durian, 1)}${db ? ` (Thorns +${db} so far)` : ''}">${iconHTML('durian', '🌰')}${db ? '+' + db : ''}</span>`); }
   // 2026-10-31 (package UI11, FF1; owner 18:09, correcting Z6 / UI8): on a board card the Shield is this skill chip on the south edge: the 💠 and the number of Shield left
   // (vis3ShieldHTML), shown only while some is left; at 1 the number fades and the icon alone means 1; at 0 the chip is gone. No badge on the east side any more.
-  if(bopts && bopts.live){ const sa = Number(bopts.live.shieldAmt) || 0; if(sa > 0) out.push(vis3ShieldHTML(null, sa)); }
-  else if(e.shield && Number(e.shieldArmor) > 0) out.push(`<span class="ab-unit-shield" title="${escapeAttr(TX('ui.skn-shield-armor') + ' ' + numOr(e.shield, 1) + ': ' + TX('ui.sk-shield-armor', {n: numOr(e.shield, 1), m: Number(e.shieldArmor)}))}">${iconHTML('shieldArmor', SKILL_ICON.shieldArmor)}${n1(numOr(e.shield, 1))}</span>`); // SKFIN (2026-11-19): Armoured Shield, the two stacked shields
-  else if(e.shield) out.push(`<span class="ab-unit-shield" title="Shield ${numOr(e.shield, 1)}: arrives with temporary Health that soaks damage first">${iconHTML('shield', '💠')}${n1(numOr(e.shield, 1))}</span>`);
+  if(bopts && bopts.live){ const sa = Number(bopts.live.shieldAmt) || 0; if(sa > 0) put('shield', vis3ShieldHTML(null, sa)); }
+  else if(e.shield && Number(e.shieldArmor) > 0) put('shield', `<span class="ab-unit-shield" title="${escapeAttr(TX('ui.skn-shield-armor') + ' ' + numOr(e.shield, 1) + ': ' + TX('ui.sk-shield-armor', {n: numOr(e.shield, 1), m: Number(e.shieldArmor)}))}">${iconHTML('shieldArmor', SKILL_ICON.shieldArmor)}${n1(numOr(e.shield, 1))}</span>`); // SKFIN (2026-11-19): Armoured Shield, the two stacked shields
+  else if(e.shield) put('shield', `<span class="ab-unit-shield" title="Shield ${numOr(e.shield, 1)}: arrives with temporary Health that soaks damage first">${iconHTML('shield', '💠')}${n1(numOr(e.shield, 1))}</span>`);
   // 2026-11-06 (package UI23 #33): the Delivery skills (Delivery, Delivery every turn, Tribe Delivery) are a context pip too: 📦 and the amount
   ['delivery', 'deliveryEvery', 'tribeDelivery'].forEach(k=>{ if(!e[k]) return; const t = e22Head(k, e[k], e) || k, n = k === 'tribeDelivery' ? '' : n1(numOr(e[k], 1));
-    out.push(`<span class="ab-sk ab-delivery" data-sk="${k}" title="${escapeAttr(t)}" aria-label="${escapeAttr(t)}">${iconHTML('delivery', '📦')}${n}</span>`); });
-  if(e.electricity) out.push(`<span title="Electricity ${numOr(e.electricity, 1)}: its hits arc to a unit adjacent to the target">${iconHTML('electricity', '🔌')}${n1(numOr(e.electricity, 1))}</span>`); // 2026-10-17: no wet note
-  if(e.chainLightning) out.push(`<span class="ab-chain-lightning" title="Chain Lightning ${numOr(e.chainLightning, 2)}: its hits chain lightning on through 2 more enemy units adjacent to the target">${iconHTML('chain-lightning', '🌩️')}${n1(numOr(e.chainLightning, 2))}</span>`); // 2026-10-17
-  if(e.keenSense && !eng28DarkPipOff(bopts)) out.push(`<span title="${escapeAttr(TX('ui.daunt2-keen-pip'))}">${iconHTML('keen-sense', '👃')}</span>`); // DAUNT2 (2026-11-24): + Evasive
+    put(k, `<span class="ab-sk ab-delivery" data-sk="${k}" title="${escapeAttr(t)}" aria-label="${escapeAttr(t)}">${iconHTML('delivery', '📦')}${n}</span>`); });
+  if(e.electricity) put('electricity', `<span title="Electricity ${numOr(e.electricity, 1)}: its hits arc to a unit adjacent to the target">${iconHTML('electricity', '🔌')}${n1(numOr(e.electricity, 1))}</span>`); // 2026-10-17: no wet note
+  if(e.chainLightning) put('chainLightning', `<span class="ab-chain-lightning" title="Chain Lightning ${numOr(e.chainLightning, 2)}: its hits chain lightning on through 2 more enemy units adjacent to the target">${iconHTML('chain-lightning', '🌩️')}${n1(numOr(e.chainLightning, 2))}</span>`); // 2026-10-17
+  if(e.keenSense && !eng28DarkPipOff(bopts)) put('keenSense', `<span title="${escapeAttr(TX('ui.daunt2-keen-pip'))}">${iconHTML('keen-sense', '👃')}</span>`); // DAUNT2 (2026-11-24): + Evasive
   // 2026-10-14 (seventh pass): Psychic, Smoke Bomb.
-  if(e.psychic) out.push(`<span class="ab-psychic" title="Psychic ${numOr(e.psychic, 1)}: its hits also deal ${numOr(e.psychic, 1)} psychic damage through Armor, Shield, Shell and Ghost">${iconHTML('psychic', '💭')}${n1(numOr(e.psychic, 1))}</span>`);
+  if(e.psychic) put('psychic', `<span class="ab-psychic" title="Psychic ${numOr(e.psychic, 1)}: its hits also deal ${numOr(e.psychic, 1)} psychic damage through Armor, Shield, Shell and Ghost">${iconHTML('psychic', '💭')}${n1(numOr(e.psychic, 1))}</span>`);
   // 2026-10-15: Ice Arrow, Twin Shot, Volley, the Bolts and Chilli.
   [['iceArrow', 'Ice Arrow', 2], ['twinShot', 'Twin Shot', 2], ['volley', 'Volley', 1], ['fireBolt', 'Fire Bolt', 2], ['acidBolt', 'Acid Bolt', 2], ['poisonBolt', 'Poison Bolt', 2], ['iceBolt', 'Ice Bolt', 2], ['shockBolt', 'Shock Bolt', 2], ['chilli', 'Chilli', 2]].forEach(([k, nm, dv])=>{
-    if(e[k]) out.push(`<span class="ab-${k.toLowerCase()}" title="${escapeAttr(nm + ' ' + numOr(e[k], dv) + ': ' + ((SKILL_TEXT[k] && SKILL_TEXT[k](e[k])) || ''))}">${iconHTML(k, SKILL_ICON[k])}${n1(numOr(e[k], dv))}</span>`); });
+    if(e[k]) put(k, `<span class="ab-${k.toLowerCase()}" title="${escapeAttr(nm + ' ' + numOr(e[k], dv) + ': ' + ((SKILL_TEXT[k] && SKILL_TEXT[k](e[k])) || ''))}">${iconHTML(k, SKILL_ICON[k])}${n1(numOr(e[k], dv))}</span>`); });
   // W2 skills (2026-10-16): one chip each, with its number (dv = the default; 0 = a skill with no number).
   [['venomous', 'Venomous', 2], ['toxin', 'Toxin', 1], ['weaken', 'Weaken', 1], ['wilting', 'Wilting', 1], ['bulldoze', 'Bulldoze', 1], ['tangle', 'Tangleweed', 1], ['strangle', 'Strangle', 2],
     ['invincible', 'Invincible', 1], ['invisible', 'Invisible', 2], ['sonar', 'Echolocation', 0], ['poisonGas', 'Poison Gas', 2], ['absoluteZero', 'Absolute Zero', 0], ['spitfire', 'Spitfire', 2],
@@ -67269,46 +67287,46 @@ function abilityBadges(d, bopts){
     ['mountainClimber', 'Mountain Climber', 0], ['taunt', 'Taunt', 0], ['penance', 'Penance', 3], ['bloodTithe', 'Blood Tithe', 2], ['atheist', 'Atheist', 0]].forEach(([k, nm, dv])=>{ // + the Devilry payments (2026-10-16)
     if(k === 'trap' && bopts && bopts.live && matchState && matchState.ui9Laid && matchState.ui9Laid[bopts.live.uid]) return; // UI9 (BB2): laid, the chip is spent
     if(k === 'sonar' && eng28DarkPipOff(bopts)) return; // ENG28 (2026-11-07, owner 23:35 #11): only in the dark
-    if(e[k]) out.push(`<span class="ab-w2 ab-${k.toLowerCase()}" title="${escapeAttr(nm + (dv ? ' ' + numOr(e[k], dv) : '') + ': ' + ((SKILL_TEXT[k] && SKILL_TEXT[k](e[k])) || ''))}">${iconHTML(k, SKILL_ICON[k])}${dv ? n1(numOr(e[k], dv)) : ''}</span>`); });
-  if(e.smokeBomb) out.push(`<span class="ab-smokebomb" title="Smoke Bomb: 1 in 2 each round, a smoke bomb at a random unit: Smoke for an ally, Blind for an enemy">${iconHTML('smoke-bomb', '💣')}</span>`);
+    if(e[k]) put(k, `<span class="ab-w2 ab-${k.toLowerCase()}" title="${escapeAttr(nm + (dv ? ' ' + numOr(e[k], dv) : '') + ': ' + ((SKILL_TEXT[k] && SKILL_TEXT[k](e[k])) || ''))}">${iconHTML(k, SKILL_ICON[k])}${dv ? n1(numOr(e[k], dv)) : ''}</span>`); });
+  if(e.smokeBomb) put('smokeBomb', `<span class="ab-smokebomb" title="Smoke Bomb: 1 in 2 each round, a smoke bomb at a random unit: Smoke for an ally, Blind for an enemy">${iconHTML('smoke-bomb', '💣')}</span>`);
   // Ore costs (2026-10-12, user: "What is +1 Stone Cost btw?"): it read "🪨1cost"; now just 🪨1 with a plain tip.
   // 2026-10-15 (user: "The stone cost should be on the top left."): ore costs moved to costBadgeParts (the top-left cost badge).
   if(bopts && bopts.oreCostBadges){ if(d.stoneCost) out.push(`<span title="Costs ${d.stoneCost} Stone to play. Stone comes from cards that quarry it">${iconHTML('stone-cost', '🪨')}${d.stoneCost}</span>`); if(d.metalCost) out.push(`<span title="Costs ${d.metalCost} Metal to play">${iconHTML('metal-cost', '🔩')}${d.metalCost}</span>`); if(d.uraniumCost) out.push(`<span title="Costs ${d.uraniumCost} Uranium to play">${iconHTML('uranium-cost', '☢️')}${d.uraniumCost}</span>`); }
-  if(e.boomerang || e.antiAir) out.push(`${iconHTML('boomerang', '🪃')}`);
-  if(e.demolisher) out.push(`${iconHTML('demolisher', '⛏️')}${n1(e.demolisher)}`);
-  if(e.changeling) out.push(`${iconHTML('changeling', '🎭')}`);
-  if(e.keenEye) out.push(`${iconHTML('keen-eye', '👁️')}`);
-  if(e.primed) out.push(`${iconHTML('primed', '🔋')}`);
-  if(e.drunk) out.push(`${iconHTML('drunk', '🍺')}`); if(e.purblind && !(bopts && bopts.live && bopts.live.blind > 0)) out.push(`${iconHTML('purblind', '🕶️')}`); /* 2026-11-02 (owner SS#1 21:37: "Blind has redundant context pips. Just use the above one."): on the board a Purblind unit already shows its Blind status pip, so the trait pip only shows outside a fight or while it is not Blind */ if(e.scatterbrained) out.push(`${iconHTML('scatterbrained', '❓')}`);
-  if(e.tipsy) out.push(`${iconHTML('tipsy', '🍺')}${e.tipsy.chance||''}%`); if(e.confuse) out.push(`${iconHTML('confuse', '❓')}${e.confuse.chance||''}%`);
-  if(e.overwhelm) out.push(`${iconHTML('overwhelm', '🐘')}`); // Stampede (2026-10-10) // Anti-Air (2026-10-10): a slingshot stone for the birds
+  if(e.boomerang || e.antiAir) put('boomerang', `${iconHTML('boomerang', '🪃')}`);
+  if(e.demolisher) put('demolisher', `${iconHTML('demolisher', '⛏️')}${n1(e.demolisher)}`);
+  if(e.changeling) put('changeling', `${iconHTML('changeling', '🎭')}`);
+  if(e.keenEye) put('keenEye', `${iconHTML('keen-eye', '👁️')}`);
+  if(e.primed) put('primed', `${iconHTML('primed', '🔋')}`);
+  if(e.drunk) put('drunk', `${iconHTML('drunk', '🍺')}`); if(e.purblind && !(bopts && bopts.live && bopts.live.blind > 0)) put('purblind', `${iconHTML('purblind', '🕶️')}`); /* 2026-11-02 (owner SS#1 21:37: "Blind has redundant context pips. Just use the above one."): on the board a Purblind unit already shows its Blind status pip, so the trait pip only shows outside a fight or while it is not Blind */ if(e.scatterbrained) put('scatterbrained', `${iconHTML('scatterbrained', '❓')}`);
+  if(e.tipsy) put('tipsy', `${iconHTML('tipsy', '🍺')}${e.tipsy.chance||''}%`); if(e.confuse) put('confuse', `${iconHTML('confuse', '❓')}${e.confuse.chance||''}%`);
+  if(e.overwhelm) put('overwhelm', `${iconHTML('overwhelm', '🐘')}`); // Stampede (2026-10-10) // Anti-Air (2026-10-10): a slingshot stone for the birds
   // 2026-09-21: Swipe became a boolean flag (flank columns + castle redirect, not a hit count),
   // so the old "🗡×N" badge no longer has a count to show — swapped for 🗡↔ (dagger + left-right
   // arrows) to read as "hits both sides" at a glance.
-  if(e.fork || e.swipe === true) out.push(isCrabDef(d) ? `<span class="ab-fork ab-crab" title="Fork: one swing, its claws hit left and right, or just the one in front">🦞</span>` : `<span class="ab-fork" title="Fork: one swing, left and right, or just the one in front">⇔</span>`); // a crab's Fork is a crab claw (2026-10-14) // Fork (was Swipe, 2026-10-12): one two-sided arrow, light red
-  if(typeof e.swipe === 'number' && e.swipe > 0) out.push(`🫳${n1(e.swipe)}`);
-  if(e.twinStrike) out.push(`<span class="ab-pair">${iconHTML('twin-strike', '⚔')}<i>⚔</i></span>`); // stacked (2026-10-17)
-  if(e.converge) out.push(`${iconHTML('converge', '🧲')}`);
-  if(e.defiance) out.push(`${iconHTML('defiance', '😤')}${(Number(e.defianceN)||1) > 1 ? e.defianceN : ''}`);
+  if(e.fork || e.swipe === true) put('fork', isCrabDef(d) ? `<span class="ab-fork ab-crab" title="Fork: one swing, its claws hit left and right, or just the one in front">🦞</span>` : `<span class="ab-fork" title="Fork: one swing, left and right, or just the one in front">⇔</span>`); // a crab's Fork is a crab claw (2026-10-14) // Fork (was Swipe, 2026-10-12): one two-sided arrow, light red
+  if(typeof e.swipe === 'number' && e.swipe > 0) put('swipe', `🫳${n1(e.swipe)}`);
+  if(e.twinStrike) put('twinStrike', `<span class="ab-pair">${iconHTML('twin-strike', '⚔')}<i>⚔</i></span>`); // stacked (2026-10-17)
+  if(e.converge) put('converge', `${iconHTML('converge', '🧲')}`);
+  if(e.defiance) put('defiance', `${iconHTML('defiance', '😤')}${(Number(e.defianceN)||1) > 1 ? e.defianceN : ''}`);
   // Pack (reworked 2026-10-14): on the board it shows the live chain, 🐺×n (n units in its chain).
   { const lv = bopts && bopts.live; const pn = e.pack === true ? 2 : e.pack;
-    if(e.pack) out.push(lv && lv.packChain ? `<span class="ab-pack is-on" title="Pack ${pn}: in a chain of ${lv.packChain}, +${lv.packChainBonus||0}/+${lv.packChainBonus||0}">🐺×${lv.packChain}</span>` : `<span class="ab-pack" title="Pack ${pn}">🐺${n1(pn)}</span>`);
-    if(e.packLeader) out.push(`<span class="ab-pair${lv && lv.packChain ? ' is-on' : ''}" title="Pack Leader${lv && lv.packChain ? `: leading ${lv.packChain - 1} (+${lv.packChainBonus||0}/+${lv.packChainBonus||0})` : ''}">🐺<i>👑</i></span>`); }
-  if(e.fastForward) out.push(`${iconHTML('fast-forward', '⏩')}${n1(e.fastForward)}`);
+    if(e.pack) put('pack', lv && lv.packChain ? `<span class="ab-pack is-on" title="Pack ${pn}: in a chain of ${lv.packChain}, +${lv.packChainBonus||0}/+${lv.packChainBonus||0}">🐺×${lv.packChain}</span>` : `<span class="ab-pack" title="Pack ${pn}">🐺${n1(pn)}</span>`);
+    if(e.packLeader) put('packLeader', `<span class="ab-pair${lv && lv.packChain ? ' is-on' : ''}" title="Pack Leader${lv && lv.packChain ? `: leading ${lv.packChain - 1} (+${lv.packChainBonus||0}/+${lv.packChainBonus||0})` : ''}">🐺<i>👑</i></span>`); }
+  if(e.fastForward) put('fastForward', `${iconHTML('fast-forward', '⏩')}${n1(e.fastForward)}`);
   // Sweep recolored from a bare ⚔+N (2026-09-18, per explicit request: "sweep should have a
   // sweep icon" — it was reusing the exact same sword glyph as the plain attack stat right
   // below it on the card, which is precisely why it didn't read as its own distinct ability) to
   // 🌀, evoking the wide/cleaving arc a Sweep hit actually is.
-  if(e.daunt) out.push(`<span title="Daunt ${e.daunt}">${iconHTML('daunt', '😨')}${n1(e.daunt)}</span>`); if(e.recoil) out.push(`<span title="Recoil ${e.recoil}">${iconHTML('recoil', '💢')}${n1(e.recoil)}</span>`);
-  if(e.sweep) out.push(`<span title="Cleave ${e.sweep}">${iconHTML('sweep', '🪓')}${n1(e.sweep)}</span>`); // 2026-10-12: its own mark (🌀 is the dodge); 09:11 (user: "dont put Sweep +N, just Sweep N")
+  if(e.daunt) put('daunt', `<span title="Daunt ${e.daunt}">${iconHTML('daunt', '😨')}${n1(e.daunt)}</span>`); if(e.recoil) put('recoil', `<span title="Recoil ${e.recoil}">${iconHTML('recoil', '💢')}${n1(e.recoil)}</span>`);
+  if(e.sweep) put('sweep', `<span title="Cleave ${e.sweep}">${iconHTML('sweep', '🪓')}${n1(e.sweep)}</span>`); // 2026-10-12: its own mark (🌀 is the dodge); 09:11 (user: "dont put Sweep +N, just Sweep N")
   // Pierce (2026-09-18, per explicit request: "a pierce should have a pierce logo at the top,
   // following our card styling so far") — Pierce is a real, playable skill (SKILL_DEFS above:
   // "every landed melee hit also punches N flat damage straight through to the enemy castle")
   // but had NO badge at all before this — a card with Pierce looked completely identical to one
   // without it anywhere outside the card editor. 🎯 reads as "punches straight through to the
   // target beyond," and isn't used by any other badge here.
-  if(e.puncture) out.push(`${iconHTML('puncture', '🎯')}${n1(e.puncture)}`);
-  if(e.rage) out.push(`${iconHTML('rage', '😡')}`);
+  if(e.puncture) put('puncture', `${iconHTML('puncture', '🎯')}${n1(e.puncture)}`);
+  if(e.rage) put('rage', `${iconHTML('rage', '😡')}`);
   // 🏹 also covers the generic Custom Trigger equivalent (On Spawn/On Ready + Deal damage to a
   // random enemy) that Arrow N/Arrow(=Attack) were migrated to (2026-09-20) -- see ACTIVE_PRESETS.
   // Bugfix 2026-09-30: this checked the OLD `t.target==='random'` field, which the Custom
@@ -67317,13 +67335,13 @@ function abilityBadges(d, bopts){
   // damage trigger lost its 🏹 badge. Also now covers the new dedicated Missile action, which
   // fires the same "arrow toward a random enemy" read.
   if(e.missile
-  ) out.push(`🏹`); // custom triggers show as ⚡→🏹 now (triggerBadges, 2026-10-11)
-  if(e.render) out.push(`${iconHTML('render', '📉')}`);
+  ) put('onTrigger', `🏹`); // custom triggers show as ⚡→🏹 now (triggerBadges, 2026-10-11)
+  if(e.render) put('render', `${iconHTML('render', '📉')}`);
   // 🐝 also covers the generic Custom Trigger equivalent (any On X + "Spawn card(s)" action) that
   // On Attacked: Spawn was migrated to (2026-09-21) -- see SKILL_DEFS' own comment on the removal.
-  if(e.onDeathSpawn||e.onAttackedSpawn) out.push(`${iconHTML('on-death-spawn', '🐛')}`);
-  if(e.onSpawnGold||e.onReadyGold) out.push(`${iconHTML('on-spawn-gold', '🪵')}`); // 2026-09-22: these grant Lumber now, not Gold
-  if(e.onSpawnGrace||e.onReadyGrace) out.push(`${iconHTML('on-spawn-grace', '🕊️')}`);
+  if(e.onDeathSpawn||e.onAttackedSpawn) put('onDeathSpawn', `${iconHTML('on-death-spawn', '🐛')}`);
+  if(e.onSpawnGold||e.onReadyGold) put('onSpawnGold', `${iconHTML('on-spawn-gold', '🪵')}`); // 2026-09-22: these grant Lumber now, not Gold
+  if(e.onSpawnGrace||e.onReadyGrace) put('onSpawnGrace', `${iconHTML('on-spawn-grace', '🕊️')}`);
   // New unified Buff/Debuff/Exile badges (2026-09-30, per explicit request: "The emoji symbol on
   // the card should use an arm or flag to represent this skill" — the Custom Triggers redesign
   // unified 4 old buff-family actions into one 'buff' action, and that one action had never
@@ -67348,7 +67366,7 @@ function abilityBadges(d, bopts){
   // author this). 2026-09-21: also covers the two new named passives, Inherent Darkness N
   // (onReadyDevilry's own convenience preset) and Core Evil (a pitch-time Dark Point bonus) --
   // both generate Dark Points just like the fields/triggers above, so both should earn the badge.
-  if(e.onSpawnDevilry||e.onReadyDevilry||e.inherentDarkness||e.coreEvil) out.push(`${iconHTML('on-spawn-devilry', '★')}`);
+  if(e.onSpawnDevilry||e.onReadyDevilry||e.inherentDarkness||e.coreEvil) put('onSpawnDevilry', `${iconHTML('on-spawn-devilry', '★')}`);
   // Flying / Earthquake (2026-09-21, task #304): 🪽 reads as "airborne" without reusing any
   // existing glyph on this card face; 🌎💥 (globe + burst) for Earthquake echoes 💣 (Explode)'s
   // "burst" shape while staying visually distinct from it.
@@ -67356,17 +67374,17 @@ function abilityBadges(d, bopts){
   // Tailwind also lights a Quick boot beside it (its own Quick boot when it has one), so the card reads wing + quick; a Headwind marks
   // the wing ×2 (skills twice). See liveWindState. ENG16 (2026-11-02, WIND-2 a): the Headwind mark is −1⚔ now (no doubling).
   const lw = e.flying && bopts && bopts.live ? liveWindState(bopts.live.pid) : null;
-  out.push(...flyerWindPips(e, lw)); // the wing and the Quick boot (2026-10-24, package BV: under the wind they share one pip)
-  if(e.swift) out.push(`${iconHTML('swift', '🥾')}`); // Swift (2026-10-02): first strike + dodges non-Swift attacks
-  if(e.earthquake) out.push(`<span class="ab-pair">${iconHTML('earthquake', '🌎')}<i>💥</i></span>${n1(e.earthquake)}`);
+  flyerWindPips(e, lw).forEach(h=> put('flying', h)); // the wing and the Quick boot (2026-10-24, package BV: under the wind they share one pip)
+  if(e.swift) put('swift', `${iconHTML('swift', '🥾')}`); // Swift (2026-10-02): first strike + dodges non-Swift attacks
+  if(e.earthquake) put('earthquake', `<span class="ab-pair">${iconHTML('earthquake', '🌎')}<i>💥</i></span>${n1(e.earthquake)}`);
   if(e.amore){ const st = bopts && bopts.live ? amoreLiveState(bopts.live) : 'single'; // Amore (2026-10-16)
-    out.push(`<span class="ab-amore is-${st}" title="${escapeAttr(st === 'love' ? 'Amore: in love — +0/+3 and Regenerate 3 while its partner lives' : st === 'broken' ? 'Amore: heartbroken — its partner died; it kept +0/+3, lost Regenerate 3' : 'Amore: pairs with your next Amore unit of the same Type')}">${st === 'love' ? '❤️' : st === 'broken' ? '🤎' : '💕'}</span>`); }
+    put('amore', `<span class="ab-amore is-${st}" title="${escapeAttr(st === 'love' ? 'Amore: in love — +0/+3 and Regenerate 3 while its partner lives' : st === 'broken' ? 'Amore: heartbroken — its partner died; it kept +0/+3, lost Regenerate 3' : 'Amore: pairs with your next Amore unit of the same Type')}">${st === 'love' ? '❤️' : st === 'broken' ? '🤎' : '💕'}</span>`); }
   if(e.pounce && !eng21PounceSpent(bopts)){ const pm = pounceMode(e.pounce), pl = bopts && bopts.live && bopts.live.pounceN != null ? bopts.live.pounceN : null; // Pounce (2026-10-12); <Att>/<Hp> (2026-10-16); ENG21 (2026-11-03): gone once it has fired
-    out.push(`<span title="Pounce ${pm ? (pm === 'attack' ? '(its Attack)' : '(its Health)') : numOr(e.pounce, 1)}">${iconHTML('pounce', '🐾')}${pm ? (pl != null ? `<b class="atk-bonus">${pl}</b>` : (pm === 'attack' ? '⚔' : '❤')) : n1(e.pounce)}</span>`); }
-  if(e.bloodlust) out.push(`<span title="Bloodlust: when it kills the unit facing it, it leaps to the next creature">${iconHTML('bloodlust', '🩸⚔️')}</span>`); // Bloodlust (2026-10-15; no number since the 2026-10-17 rework)
+    put('pounce', `<span title="Pounce ${pm ? (pm === 'attack' ? '(its Attack)' : '(its Health)') : numOr(e.pounce, 1)}">${iconHTML('pounce', '🐾')}${pm ? (pl != null ? `<b class="atk-bonus">${pl}</b>` : (pm === 'attack' ? '⚔' : '❤')) : n1(e.pounce)}</span>`); }
+  if(e.bloodlust) put('bloodlust', `<span title="Bloodlust: when it kills the unit facing it, it leaps to the next creature">${iconHTML('bloodlust', '🩸⚔️')}</span>`); // Bloodlust (2026-10-15; no number since the 2026-10-17 rework)
   // King Slayer (2026-09-22): crown + crossed-swords reads as "hunts royalty" without reusing
   // any existing glyph on this card face.
-  if(e.kingSlayer) out.push(`<span class="ab-pair">${iconHTML('king-slayer', '👑')}<i>⚔️</i></span>${n1(e.kingSlayer)}`);
+  if(e.kingSlayer) put('kingSlayer', `<span class="ab-pair">${iconHTML('king-slayer', '👑')}<i>⚔️</i></span>${n1(e.kingSlayer)}`);
   if(d.graceCost) out.push(`${iconHTML('grace-cost', '🕊️')}cost`);
   if(d.exileCost) out.push(`${iconHTML('exile-cost', '🌫')}cost`);
   // 2026-09-29, per explicit request ("I think remove the lightning symbol - no need. Just have
@@ -67385,6 +67403,7 @@ function abilityBadges(d, bopts){
     const num = !ui7NoNum && (typeof v === 'number' || /^\d+$/.test(String(v))) ? n1(v) : '', ui7Tip = escapeAttr(ui7NoNum ? TX('ui.ui7-regen-tip', {n: v}) : eng28PipTip(k, v, e, num)); // DAUNT2 (2026-11-24, owner 23:25: Corrode's tooltip): every chip says what it does, as the ENG28 pips
     out.push(`<span class="ab-sk${zeitLitNow(k, bopts) ? ' zeit-live' : ''}" data-sk="${k}"${ui7Tip ? ` title="${ui7Tip}" aria-label="${ui7Tip}"` : ''}>${iconHTML(k, SKILL_ICON[k] || '✦')}${num}</span>`); });
   eng28GenericPips(e, out, bopts, n1); // ENG28 (2026-11-07, owner 23:35 #9): every other skill gets its pip by default
+  skillOrderSortChips(out, kOf); // 2026-11-28 (UIORDER1): zeitgebers, then On Play, permanent, per-turn; the triggers follow below
   out.push(...triggerBadges(d, bopts && bopts.live).filter(Boolean)); // a spent trigger that has faded is gone, not an empty slot
   // UIQ2 (2026-11-21, owner 22:03 #3: "do not show the ? mystery skill as a context pip ... do not show things irrelevant to the battlefield as
   // context pips"): no "?" pip for a skill not met yet (SKILL_REVEAL) or one learnt at a higher level (LVL11); the hover's text lines say both
