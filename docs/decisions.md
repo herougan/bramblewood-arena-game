@@ -4,53 +4,10 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
-**COMBO1-1. Poison and Bleed payoffs on the road** · Decide · Cards · asked 2026-11-27
-- No Maps 0-20 card cashes in a Poison or Bleed stack. Bogfire Newt (Detonate: its hit ticks the target's Poison at once) joins Lilypad Reach; Bloodscent Shark (Hemorrhage: doubles the Bleed) joins The Sunken Depths. Side maps: no road fight moves.
-  - a) both
-  - b) Bogfire Newt only
-  - c) neither
-- **Default:** a
-
-**COMBO1-2. Saddle Tapir on Map 5's list** · Decide · Cards · asked 2026-11-27
-- Its On Play Growth Sprout counts for every Swarm (Ant Scout, Fire Ant Raft, Bee Warden, Wolf Spider Mother); no road card makes sprouts today. 93% of budget at Map 5. Moves Map 5 road fights.
-  - a) Map 5 list
-  - b) Map 5 Special
-  - c) not now
-- **Default:** a
-
-**COMBO1-3. Two Level skills move to Level 1** · Decide · Cards · asked 2026-11-27
-- Eagle-Owl Quartermaster gets Fletcher at Level 1 (was 6), so archer decks work from Map 11; Snow Ermine gets Momentum at Level 1 (was 3), filling Map 17's empty Momentum row. Both inside budget (97%, 86%).
-  - a) both
-  - b) Fletcher only
-  - c) neither
-- **Default:** a
-
-**COMBO1-4. Millipede Hauler on Map 7's list** · Decide · Cards · asked 2026-11-27
-- Its 3 Worker Ants on death feed Carrion and Broodmother, the Ants and Harbinger. Today only The Mycelium Deep holds it (opens after Map 8). 96% of budget at Map 7; moves Map 7 road fights.
-  - a) Map 7 list
-  - b) Map 13 list
-  - c) side map only
-- **Default:** a
-
-**COMBO1-5. Two Map 5 Specials** · Decide · Cards · asked 2026-11-27
-- Peat-cutter Vole (Bulwark, the table's Map 5 Special) and Newt Doctor (Herbalist: every heal +1) join Map 5's Special list, so fort and healer combos don't wait for The Sunken Grove (opens after Map 13).
-  - a) both
-  - b) Vole only
-  - c) neither
-- **Default:** a
-
 **TESTFIX11-4. Alley Cat's pack** · Decide · Packs · asked 2026-11-26
 - Alley Cat is in Pack 4; your earlier list (#10) said Pack 1.
   - a) Pack 1
   - b) Pack 4
-- **Default:** a
-
-**ROADFIX4-2. Map 17 too hard (Harbor Seal)** · Decide · Balance · asked 2026-11-25
-- 17-3, 17-6, 17-7, 17-8 are too hard since Harbor Seal grew from 1/9 to 2/13. No legal swap on Map 17's list gets nearer.
-  - a) Add a card to Map 17's list for swaps
-  - b) Trim Harbor Seal
-  - c) Relax Map 17's usage rule
-  - d) Leave
 - **Default:** a
 
 **SKILLS3-2. What On Pitch means** · Decide · Skills · asked 2026-11-25
@@ -80,18 +37,6 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
   - b) Keep as they are
 - **Default:** a
 
-**MAPEXEC1-1. Copy the 57 list changes into your Map cards picks? (needs "apply it")** · Decide · Maps · asked 2026-11-25
-- The game's map lists (the file) now carry 57 changes. Your Map cards window's Yes/No picks live in 22 cloud rows that the game never reads; they still show the old picks. supabase/proposed/mapexec1-2026-11-25.sql updates them to match, in one transaction with a read-back. Nothing runs until you say "apply it".
-  - a) Apply it (your picks match the game's lists)
-  - b) Keep your picks as they are (they then differ from the game)
-- **Default:** a
-
-**MAPEXEC1-3. Place three awaiting cards to fill To add rows** · Decide · Maps · asked 2026-11-25
-- Bog Shrew (Leech, Map 5), Bog Lungfish (Regenerate, Map 9) and Mire Rat (Pack, Map 14) wait for a place. Putting them on those lists gives the rows their missing carriers.
-  - a) Place all three
-  - b) Leave them; find other carriers
-- **Default:** a
-
 **W2PLAN-1. Maps 21-40: 40 new skills, or 47?** · Decide · Skills · asked 2026-11-25
 - Maps 0-20 introduce 67 new skills. Your "30% less" would be 47, but the two-new-skills-a-map rule allows only 40 on 20 maps. The proposal uses 40 (40% fewer; 25 of them active, 5 high-wait payoffs).
   - a) Keep 40 (two a map)
@@ -102,13 +47,6 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 - Your 11-22 price, 2.9 (SKM3-1), was measured when Corrode stacked. Since ENG16 it refreshes. Re-measured over 1,000 fights, Corrode 1 is worth 1.64 (range 1.35-1.98), down from 2.90. Corrode 2 reads 2.86 against its 3.85. The price now sits above the whole range, so Corrode carriers are priced too high and can take more stats.
   - a) Price Corrode at the new reading (about 1.6), then refit its carriers (Claude runs price + refit)
   - b) Keep 2.9
-- **Default:** a
-
-**CARDS1-1. Map 4's row has Fork, but no octopus is on Map 4** · Decide · Cards · asked 2026-11-24
-- Fork is now on octopus cards only (your 11-23 call). Map 4's table row keeps Fork, but no card on Map 4's list carries it, so the Map cards window shows Fork as To add.
-  - a) Put an octopus card on Map 4's list (Kraken Spawnling, your Yes pick)
-  - b) Take Fork out of Map 4's row
-  - c) A new Map 4 octopus card (Claude drafts it)
 - **Default:** a
 
 **MP1-1. How hard should the Tidelock Vault be?** · Decide · Multiplayer · asked 2026-11-23
@@ -214,6 +152,46 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 - **Default:** a
 - **Outcome:** Your own words 2026-11-27 09:39: "I like the squid ... Pixellab ai supports doing animation ... (Cheaper skin for players would be just the eagle static - but speed lines around": animated / layered art for premium skins, a still card plus an effect for the cheaper skin (ART18, ART18b, SKINS1).
 
+**COMBO1-1. Poison and Bleed payoffs on the road** · Decide · Cards · asked 2026-11-27 · decided 2026-11-27
+- No Maps 0-20 card cashes in a Poison or Bleed stack. Bogfire Newt (Detonate: its hit ticks the target's Poison at once) joins Lilypad Reach; Bloodscent Shark (Hemorrhage: doubles the Bleed) joins The Sunken Depths. Side maps: no road fight moves.
+  - a) both
+  - b) Bogfire Newt only
+  - c) neither
+- **Default:** a
+- **Outcome:** Owner 2026-11-27 11:22 (asked about Claude's swap recommendations): "I suggest cancel for now": cancelled for now; nothing applied. Reopen any time. (c)
+
+**COMBO1-2. Saddle Tapir on Map 5's list** · Decide · Cards · asked 2026-11-27 · decided 2026-11-27
+- Its On Play Growth Sprout counts for every Swarm (Ant Scout, Fire Ant Raft, Bee Warden, Wolf Spider Mother); no road card makes sprouts today. 93% of budget at Map 5. Moves Map 5 road fights.
+  - a) Map 5 list
+  - b) Map 5 Special
+  - c) not now
+- **Default:** a
+- **Outcome:** Owner 2026-11-27 11:22 (asked about Claude's swap recommendations): "I suggest cancel for now": cancelled for now; nothing applied. Reopen any time. (c)
+
+**COMBO1-3. Two Level skills move to Level 1** · Decide · Cards · asked 2026-11-27 · decided 2026-11-27
+- Eagle-Owl Quartermaster gets Fletcher at Level 1 (was 6), so archer decks work from Map 11; Snow Ermine gets Momentum at Level 1 (was 3), filling Map 17's empty Momentum row. Both inside budget (97%, 86%).
+  - a) both
+  - b) Fletcher only
+  - c) neither
+- **Default:** a
+- **Outcome:** Owner 2026-11-27 11:22 (asked about Claude's swap recommendations): "I suggest cancel for now": cancelled for now; nothing applied. Reopen any time. (c)
+
+**COMBO1-4. Millipede Hauler on Map 7's list** · Decide · Cards · asked 2026-11-27 · decided 2026-11-27
+- Its 3 Worker Ants on death feed Carrion and Broodmother, the Ants and Harbinger. Today only The Mycelium Deep holds it (opens after Map 8). 96% of budget at Map 7; moves Map 7 road fights.
+  - a) Map 7 list
+  - b) Map 13 list
+  - c) side map only
+- **Default:** a
+- **Outcome:** Owner 2026-11-27 11:22 (asked about Claude's swap recommendations): "I suggest cancel for now": cancelled for now; nothing applied. Reopen any time. (c)
+
+**COMBO1-5. Two Map 5 Specials** · Decide · Cards · asked 2026-11-27 · decided 2026-11-27
+- Peat-cutter Vole (Bulwark, the table's Map 5 Special) and Newt Doctor (Herbalist: every heal +1) join Map 5's Special list, so fort and healer combos don't wait for The Sunken Grove (opens after Map 13).
+  - a) both
+  - b) Vole only
+  - c) neither
+- **Default:** a
+- **Outcome:** Owner 2026-11-27 11:22 (asked about Claude's swap recommendations): "I suggest cancel for now": cancelled for now; nothing applied. Reopen any time. (c)
+
 **NEWCARDS1-1. Homes for the 14 new species** · Decide · Cards · asked 2026-11-27 · decided 2026-11-27
 - Oarfish, Opah, Mola, Sea Dragon, Okapi, Blobfish, Goblin Shark, Coelacanth, Saiga, Kakapo, Tapir, Glass Frog, Red Panda, Tube Worm are made, with art, but on no list, pack or reward. The doc proposes a home for each; the combo audit (COMBO1) may pick some for Maps 0-20.
   - a) Wait for COMBO1, then place
@@ -303,6 +281,15 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 - **Default:** a
 - **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. Keep the reference decks (no change; the road stays fit to them).
 
+**ROADFIX4-2. Map 17 too hard (Harbor Seal)** · Decide · Balance · asked 2026-11-25 · decided 2026-11-27
+- 17-3, 17-6, 17-7, 17-8 are too hard since Harbor Seal grew from 1/9 to 2/13. No legal swap on Map 17's list gets nearer.
+  - a) Add a card to Map 17's list for swaps
+  - b) Trim Harbor Seal
+  - c) Relax Map 17's usage rule
+  - d) Leave
+- **Default:** a
+- **Outcome:** Owner 2026-11-27 11:22 (asked about Claude's swap recommendations): "I suggest cancel for now": cancelled for now; nothing applied. Reopen any time. (d)
+
 **ROADFIX4-3. Out of band with no legal fix** · Decide · Balance · asked 2026-11-25 · decided 2026-11-27
 - Too easy: 15-3, 15-4, 18-2, 10-A-1, 10-A-3. Too hard: 2-2 (53 vs 80). Their map lists hold no nearer deck. (19-5 and 19-6 wait on TESTFIX9-2.)
   - a) Allow one off-list card in these decks
@@ -380,6 +367,13 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 - **Default:** a
 - **Outcome:** Your own words 2026-11-25 00:22: "more realistic animals b4 the elemental animals and magical ones": a (Blowfly Maggots).
 
+**MAPEXEC1-1. Copy the 57 list changes into your Map cards picks? (needs "apply it")** · Decide · Maps · asked 2026-11-25 · decided 2026-11-27
+- The game's map lists (the file) now carry 57 changes. Your Map cards window's Yes/No picks live in 22 cloud rows that the game never reads; they still show the old picks. supabase/proposed/mapexec1-2026-11-25.sql updates them to match, in one transaction with a read-back. Nothing runs until you say "apply it".
+  - a) Apply it (your picks match the game's lists)
+  - b) Keep your picks as they are (they then differ from the game)
+- **Default:** a
+- **Outcome:** Owner 2026-11-27 11:22 (asked about Claude's swap recommendations): "I suggest cancel for now": cancelled for now; nothing applied. Reopen any time. (withdrawn)
+
 **MAPEXEC1-2. Bludgeon, Acid, Rainrunner: in no map's row** · Decide · Maps · asked 2026-11-25 · decided 2026-11-27
 - Ironclaw Fiddler (Bludgeon), Caustic Scorpion (Acid) and Puddle Skimmer (Rainrunner) carry skills that no map's row has, so they show To remove. Kept for now.
   - a) Add each skill to the row of the map the card sits on
@@ -387,6 +381,13 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
   - c) Redesign their skills (card vet)
 - **Default:** c
 - **Outcome:** Your own words 2026-11-25 00:22: "Change the card designs for cards with skills we dont use for 0-20 anymore": c (Caustic Scorpion already redesigned in CARDVET1c; the other two follow).
+
+**MAPEXEC1-3. Place three awaiting cards to fill To add rows** · Decide · Maps · asked 2026-11-25 · decided 2026-11-27
+- Bog Shrew (Leech, Map 5), Bog Lungfish (Regenerate, Map 9) and Mire Rat (Pack, Map 14) wait for a place. Putting them on those lists gives the rows their missing carriers.
+  - a) Place all three
+  - b) Leave them; find other carriers
+- **Default:** a
+- **Outcome:** Owner 2026-11-27 11:22 (asked about Claude's swap recommendations): "I suggest cancel for now": cancelled for now; nothing applied. Reopen any time. (not now)
 
 **DAUNT2-1. Keen Sense now ignores Evasive (Camouflage isn't a skill yet)** · Decide · Rules · asked 2026-11-25 · decided 2026-11-27
 - Camouflage is only a name in the code, on no card. Reading "camouflaged" as Evasive: Keen Sense now ignores a grounded Evasive unit's dodge (flyers still dodge). Cards affected: Owl Sentinel, Quarry Mole, Oilbird, Cave Swiftlet vs Evasive cards.
@@ -439,6 +440,14 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
   - b) One breakpoint only (900)
 - **Default:** a
 - **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. 560 and 900 px; the style guide is amended in UISWEEP3.
+
+**CARDS1-1. Map 4's row has Fork, but no octopus is on Map 4** · Decide · Cards · asked 2026-11-24 · decided 2026-11-27
+- Fork is now on octopus cards only (your 11-23 call). Map 4's table row keeps Fork, but no card on Map 4's list carries it, so the Map cards window shows Fork as To add.
+  - a) Put an octopus card on Map 4's list (Kraken Spawnling, your Yes pick)
+  - b) Take Fork out of Map 4's row
+  - c) A new Map 4 octopus card (Claude drafts it)
+- **Default:** a
+- **Outcome:** Owner 2026-11-27 11:22 (asked about Claude's swap recommendations): "I suggest cancel for now": cancelled for now; nothing applied. Reopen any time. (not now)
 
 **ENG16B-1. Daunt: keep stacking, or refresh like Corrode?** · Decide · Rules · asked 2026-11-24 · decided 2026-11-27
 - Corrode stacked past its rule (a unit hit every round lost Attack without end); it now refreshes to the larger value and fades 1 a round. Daunt stacks by your 10-12 rule ("reduced by N multiple times"): one Daunt 2 unit hitting every round cuts 4 Attack. Its pip now shows the real total. (Owner 11-24 23:21 keeps Daunt and moves Scare cards to Daunt, so this is open again.)

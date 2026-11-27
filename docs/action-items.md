@@ -8,6 +8,11 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-27 11:22 Owner (on phone): swaps, fun redesigns, card sources
+- Owner (verbatim): "1. Whats the status of your recommendations for swaps - whats the reason. I suggest cancel for now 2. Whats the status of our discussion for card redesign to make it fun. Such as on death - rend + desc: player has to time the rend so that it doesnt affect him as badly. 3. Overall what are packs, skirmish rewards, starter, faction etc."
+- Done: the pending swap / list proposals cancelled for now (COMBO1-1..5, MAPEXEC1-1 SQL withdrawn, MAPEXEC1-3, CARDS1-1, ROADFIX4-2 = leave). Asked: also revert MAPEXEC1's 57 list edits that went live in today's release? (the road was re-fit to them).
+- [ ] SKILLS3 build design note: 💀 On Death Rend that hits every adjacent unit, both sides (yours too), so the player times the death (owner 11:22 example).
+
 ## 11-27 10:18 Owner: ritual card placement (candles)
 - Owner (verbatim): "When you place a ritual card: as the card animations and transitions onto the board, it goes dark. It's slightly transparent so that we can still see the ground underneath. Then, the candles slowly appear (fade) one by one over 1+s, the more candles, the slightly longer it takes. The candles light when that corresponding effect is complete. Hover etc is the same, but it also shows the progress of the ritual in the same shape!"
 - [x] RITUAL1 (done 2026-11-27 inside VFX1): a unit in its Ritual is a translucent dark card (no filter) with the ritual shape and one candle per condition at its corner; the candles fade in one by one (1 s for one, +0.25 s each more), each lights (catches) when its condition is met, the darkness lifts when all are; the hover shows the shape with have / need. Effects Low and reduced motion: static candles, lit state kept. Limit: progress is the engine's at the end of the round shown, so a candle can light a moment before the replay shows the death / draw that completes it. Lab: st-ritual-rite; test vfx1-2026-11-27.
