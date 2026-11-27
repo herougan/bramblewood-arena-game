@@ -1,0 +1,110 @@
+[
+ {
+  "key": "2-1",
+  "target": 90,
+  "lo": 82,
+  "hi": 98,
+  "b9": 79.3,
+  "b5": 76.8,
+  "a9": 78.5,
+  "a5": 76.8,
+  "keep": false,
+  "why": "not in band / not closer on both"
+ },
+ {
+  "key": "15-3",
+  "target": 78,
+  "lo": 70,
+  "hi": 86,
+  "b9": 95.3,
+  "b5": 98,
+  "a9": 93.3,
+  "a5": 94.3,
+  "keep": true,
+  "why": "closer on both"
+ },
+ {
+  "key": "15-4",
+  "target": 72,
+  "lo": 64,
+  "hi": 80,
+  "b9": 87,
+  "b5": 85,
+  "a9": 87,
+  "a5": 89.5,
+  "keep": false,
+  "why": "not in band / not closer on both"
+ },
+ {
+  "key": "15-6",
+  "target": 60,
+  "lo": 52,
+  "hi": 68,
+  "b9": 73.3,
+  "b5": 72.8,
+  "a9": 71.8,
+  "a5": 72,
+  "keep": false,
+  "why": "not in band / not closer on both"
+ },
+ {
+  "key": "17-3",
+  "target": 80,
+  "lo": 72,
+  "hi": 88,
+  "b9": 67.8,
+  "b5": 68.8,
+  "a9": 70.3,
+  "a5": 62.3,
+  "keep": false,
+  "why": "not in band / not closer on both"
+ },
+ {
+  "key": "17-6",
+  "target": 65,
+  "lo": 57,
+  "hi": 73,
+  "b9": 50.5,
+  "b5": 53.3,
+  "a9": 49.3,
+  "a5": 53.3,
+  "keep": false,
+  "why": "not in band / not closer on both"
+ },
+ {
+  "key": "17-8",
+  "target": 40,
+  "lo": 30,
+  "hi": 49,
+  "b9": 16,
+  "b5": 18.8,
+  "a9": 12.5,
+  "a5": 13.3,
+  "keep": false,
+  "why": "not in band / not closer on both"
+ },
+ {
+  "key": "2-B-1",
+  "target": 90,
+  "lo": 82,
+  "hi": 98,
+  "b9": 70.3,
+  "b5": 75.8,
+  "a9": 75,
+  "a5": 76.8,
+  "keep": false,
+  "why": "not in band / not closer on both"
+ },
+ {
+  "key": "18-A-4",
+  "target": 77.1,
+  "lo": 69.1,
+  "hi": 85.1,
+  "b9": 99.5,
+  "b5": 99.5,
+  "a9": 98.8,
+  "a5": 100,
+  "keep": false,
+  "why": "not in band / not closer on both"
+ }
+]

@@ -1,0 +1,7 @@
+{"key":"2-2","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":54.7,"seed2":18300,"games":300},"moves":[]}
+{"key":"2-1","deck":{"open-ocean-hermit-crab":1,"rock-pool-starfish":3,"salvager-hermit-crab":4,"limpet-clinger":4,"conch-crawler":4,"gull-thief":4},"shieldOverride":null,"hqHp":null,"tune":{"w2":77.3,"seed2":18300,"games":300},"moves":["-4 pincushion-urchin -1 rock-pool-starfish +4 gull-thief +1 conch-crawler"]}
+{"key":"2-B-1","deck":{"gallery-orb-weaver":1,"gull-thief":1,"limpet-clinger":4,"open-ocean-hermit-crab":3,"pincushion-urchin":4},"shieldOverride":null,"hqHp":null,"tune":{"w2":77,"seed2":18300,"games":300},"moves":["-1 open-ocean-hermit-crab +1 pincushion-urchin"]}
+{"key":"17-8","deck":{"glacier-yak":4,"ice-crevasse-wolf":3,"walrus-icebreaker":2,"elderhorn-monarch":1,"briarback-hedgehog":1,"harbor-seal":4,"warhorse-charger":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":12.3,"seed2":18300,"games":300},"moves":["-1 cataphract-destrier +1 warhorse-charger"]}
+{"key":"17-7","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":40,"seed2":18300,"games":300},"moves":[]}
+{"key":"17-4","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":62.7,"seed2":18300,"games":300},"moves":[]}
+{"key":"17-6","deck":{"arctic-tern":4,"glacier-yak":4,"polar-bear":2,"snow-ermine":4,"elderhorn-monarch":1,"ringed-seal":4,"briarback-hedgehog":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":49.7,"seed2":18300,"games":300},"moves":["-1 warhorse-charger +1 briarback-hedgehog"]}

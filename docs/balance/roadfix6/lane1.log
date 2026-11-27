@@ -43,3 +43,4 @@ round 1: cur 63.3/70; 17 legal, 17 read + 14 predicted (of 26); top: -1 briarbac
 round 2: cur 70/72; 15 legal, 15 read + 14 predicted (of 34); top: -1 pinecone-sapper -1 cataphract-destrier +1 briarback-hedgehog +1 warhorse-charger 68.3/68.7 | -1 pinecone-sapper +1 briarback-hedgehog 65/67.3 | -1 pinecone-sapper +1 snowshoe-hare 66.7/65 | -1 cataphract-destrier +1 ice-crevasse-wolf 66.7/60.7 | -1 pinecone-sapper +1 ice-crevasse-wolf 66.7/55.7
 no nearer move
 RESULT 17-3 {"polar-bear":2,"ringed-seal":4,"elderhorn-monarch":1,"snow-ermine":4,"pinecone-sapper":1,"cataphract-destrier":1} 72 {} moves: -1 briarback-hedgehog +1 cataphract-destrier problems: []
+LANE 1 DONE
