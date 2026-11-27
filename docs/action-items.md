@@ -8,6 +8,11 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-27 18:37 Owner: collapse every item; the skills / combos list by section
+- Owner (verbatim): "Collapse the master hub - have you done that yet? for each tab, for each item in each tab? But anyway, where's my list of skills and combos and count for each section in design?"
+- Answer: the list is in the 🧩 Effects 0-20 tab (By card), moved out of Design on 11-27.
+- [ ] HUB5 (running): every item in every tab collapsible, closed by default, Expand / Collapse all per tab; the By card view grouped by the Design sections (skills + counts + that section's pairs); a Design card that opens the Effects tab.
+
 ## 11-27 11:22 Owner (on phone): swaps, fun redesigns, card sources
 - Owner (verbatim): "1. Whats the status of your recommendations for swaps - whats the reason. I suggest cancel for now 2. Whats the status of our discussion for card redesign to make it fun. Such as on death - rend + desc: player has to time the rend so that it doesnt affect him as badly. 3. Overall what are packs, skirmish rewards, starter, faction etc."
 - Done: the pending swap / list proposals cancelled for now (COMBO1-1..5, MAPEXEC1-1 SQL withdrawn, MAPEXEC1-3, CARDS1-1, ROADFIX4-2 = leave). Asked: also revert MAPEXEC1's 57 list edits that went live in today's release? (the road was re-fit to them).
@@ -33,7 +38,8 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 ## 11-27 09:47 Owner: condense the hub; Effects tab
 - Owner (verbatim, abridged): "Condense the master hub. Condense the decision making points you can do on your own. Condense tabs uneeded. Mastr Hub Design strikes and attack shapes and following tables-> make it wider ... I want a tab for every effect used on a per card basis from map0-20 ... a very short summary for ALL symbols used, and the count ... every combo used ... glass cannon (low defence), and wall (no attack) ... the list of triggers table ... list all combos used (dont list glass cannons and walls first)."
 - [x] Done 2026-11-27: 🧩 Effects 0-20 tab (by card: 400 cards, every symbol + count, 286 combos used, 18 triggers, 250 pairs + 49 with 🥂 / 🚫; by list: moved from Design, wide); tabs: 10 in the bar, 18 behind ⋯ More (none removed); 35 decisions settled by Claude or by the owner's own words (30 left open), each outcome says which.
-- [ ] Builds the settled decisions need: UISWEEP3 (UISWEEP-1/2/3, STATE2-1/2), SKILLS3 build (SKILLS3-4..11), 8-7 without the Mine (REFIT20-1), 20-A-4 Epic swap (TESTFIX9-1), PvP first strike (MP1-3), Cinder Gecko L10 / Liege price / Hedgerow Shrew (TESTFIX11-1..3), CARDVET1-3 / -5, MAPEXEC1-2 c, NEWCARDS1-2 trims, vault re-measure (DUNGEON2-2).
+- [ ] Builds the settled decisions need: SKILLS3 build (SKILLS3-4..11), 8-7 without the Mine (REFIT20-1), 20-A-4 Epic swap (TESTFIX9-1), PvP first strike (MP1-3), Cinder Gecko L10 / Liege price / Hedgerow Shrew (TESTFIX11-1..3), CARDVET1-3 / -5, MAPEXEC1-2 c, NEWCARDS1-2 trims, vault re-measure (DUNGEON2-2).
+- [x] UISWEEP3 done 2026-11-27 (UISWEEP-1/2/3, STATE2-1/2): one top bar with the fixed core on every page, one 🏠, one ↩, curtain close-swap-open for places (880 / 420 ms), 280 ms fade-through, 200 / 140 ms pop-ups, two breakpoints (560 / 900), Codex filter row on phones; `docs/CHANGELOG.md`, `tests/uisweep3-2026-11-27.js`, shots `docs/screens/uisweep3/`
 
 ## 11-27 09:39 Owner: animated card skins (PixelLab animation) and a cheaper static skin
 - Owner (verbatim): "(I like the squid you just posted. are it separate layers). Pixellab ai supports doing animation (w/backgrounds too!). So we can do the eagle doing wingbeats. (Cheaper skin for players would be just the eagle static - but speed lines around"
