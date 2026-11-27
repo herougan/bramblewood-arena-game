@@ -1,0 +1,9 @@
+re-measured 70 with a target 70
+left the band: 18-7 36.8->54.5 (band 30-49); 18-3 82->90 (band 70-86); 15-5 70.8->76.5 (band 58-74); 20-B-3 71->72.3 (band 48-72)
+came into the band: 16-7 49.5->48.3
+moved most: 18-7 36.8->54.5 (+17.7); 15-6 69.3->78 (+8.7); 18-1 88.8->97 (+8.2); 18-3 82->90 (+8); 15-7 34.3->42 (+7.7); 14-5 64.8->72.3 (+7.5); 15-5 70.8->76.5 (+5.7); 9-1 88.5->83.3 (-5.2); 9-5 68->62.8 (-5.2); 14-3 76.3->79.3 (+3); 11-A-4 36.8->39.8 (+3); 9-6 58->55.8 (-2.2)
+mean change 1.2 mean |change| 1.6 beyond 5: 9
+pre1127s-merged: 208 fights, 180 in band, 183 within 10, 7 beyond 20, mean win 68.3
+  worst: 17 Wolfsbane Tundra (|gap| 11.9, mean -11.7, 3/8 green); 18 mpd The Pale Desert (|gap| 11.7, mean +11.3, 5/9 green); 2 Pebble Beach (|gap| 10.8, mean -10.8, 3/5 green); 2 mg Smugglers' Grotto (|gap| 10.2, mean -6.7, 3/4 green); 19 Ashen Spurn (|gap| 8.8, mean -8.8, 4/6 green); 15 The Long Grass (|gap| 8.4, mean +6.8, 4/7 green)
+post1127s-merged: 208 fights, 178 in band, 179 within 10, 7 beyond 20, mean win 68.6
+  worst: 17 Wolfsbane Tundra (|gap| 11.9, mean -11.7, 3/8 green); 18 mpd The Pale Desert (|gap| 11.7, mean +11.3, 5/9 green); 2 Pebble Beach (|gap| 10.8, mean -10.8, 3/5 green); 15 The Long Grass (|gap| 10.2, mean +10.2, 3/7 green); 2 mg Smugglers' Grotto (|gap| 10.2, mean -6.7, 3/4 green); 18 The Glass Dunes (|gap| 9.3, mean +5.7, 4/7 green)
