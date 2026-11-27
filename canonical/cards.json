@@ -5806,10 +5806,10 @@
     "icon": "\ud83d\udc0b",
     "cost": 3,
     "wait": 3,
-    "attack": 7,
-    "health": 7,
+    "attack": 8,
+    "health": 8,
     "effects": {
-      "sweep": 3,
+      "wave": true,
       "tide": true
     },
     "flavor": "Hunts in a pack that never needs to be told the plan twice.",
@@ -5826,7 +5826,7 @@
       "Cetacean"
     ],
     "animal": "orca",
-    "creatorNote": "2026-10-17: Cleave 1 \u2192 3 (user: \"Cleave cards should have stronger numbers. based on rarity and importance.\"). 2026-10-19 (card pass, package CB): source: 10-5 Current Split (skirmish, Coral Current) (it fights there; 6 fight(s) field it). 2026-10-19 retune (v5 L/10): was 9/36 (over budget: 2A+H+S 108.1% -> 98.6% of N 63.24). 2026-10-21 (BF5, two skills at most): cut bounty, tide; keeps sweep + momentum. 2026-10-19 halve (BF5): was 8/32. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/14; took momentum: the orca's sweep stays; Momentum is a mechanic. 2026-10-21 (TR, owner HB2-1: Flying, Tide, Diurnal and Nocturnal don't count toward two skills): tide back (BF5 cut it only because one of these counted). 2026-10-21 TR (re-fit by formula): was 1/21 (flag: its skills leave no room; at the floor of its shape, skills kept). 2026-10-21 human pass I (owner's hub skill costs): 1/1 -> 5/5. 2026-10-23 BF11 (cap 2 = 2x(N/3)^2, Thorns 1.25, Bulwark 6): 5/5 -> 7/7.",
+    "creatorNote": "2026-10-17: Cleave 1 \u2192 3 (user: \"Cleave cards should have stronger numbers. based on rarity and importance.\"). 2026-10-19 (card pass, package CB): source: 10-5 Current Split (skirmish, Coral Current) (it fights there; 6 fight(s) field it). 2026-10-19 retune (v5 L/10): was 9/36 (over budget: 2A+H+S 108.1% -> 98.6% of N 63.24). 2026-10-21 (BF5, two skills at most): cut bounty, tide; keeps sweep + momentum. 2026-10-19 halve (BF5): was 8/32. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/14; took momentum: the orca's sweep stays; Momentum is a mechanic. 2026-10-21 (TR, owner HB2-1: Flying, Tide, Diurnal and Nocturnal don't count toward two skills): tide back (BF5 cut it only because one of these counted). 2026-10-21 TR (re-fit by formula): was 1/21 (flag: its skills leave no room; at the floor of its shape, skills kept). 2026-10-21 human pass I (owner's hub skill costs): 1/1 -> 5/5. 2026-10-23 BF11 (cap 2 = 2x(N/3)^2, Thorns 1.25, Bulwark 6): 5/5 -> 7/7. 2026-11-28 (CARDFIX1, owner 11-27 09:47 settled decisions): CARDVET1-3 b: Cleave (Sweep, Map 15) sits on Map 10's list; orcas wash seals off the ice with a wave of their own making: Wave (Map 10 row) + Tide; was 7/7 {\"sweep\":3,\"tide\":true}.",
     "source": {
       "kind": "pack",
       "tier": 2,
@@ -5837,24 +5837,22 @@
         "health": 1
       },
       "4": {
-        "health": 1,
-        "skills": {
-          "sweep": 4
-        }
-      },
-      "6": {
-        "health": 1
-      },
-      "7": {
         "health": 2,
         "skills": {
-          "sweep": 5
+          "tide": 2
+        }
+      },
+      "7": {
+        "attack": 1,
+        "health": 1,
+        "skills": {
+          "tide": 3
         }
       },
       "10": {
         "attack": 1,
         "skills": {
-          "sweep": 6
+          "tide": 4
         }
       }
     }
