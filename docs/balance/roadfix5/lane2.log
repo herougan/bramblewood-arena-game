@@ -26,3 +26,4 @@ round 1: cur 100/100; 38 legal, 38 read + 14 predicted (of 31); top: -2 dromedar
 round 2: cur 98.3/99; 43 legal, 43 read + 14 predicted (of 30); top: -1 barrel-cactus +1 caustic-scorpion 98.3/99 | -1 barrel-cactus +1 pale-oryx 96.7/99.3 | -1 caustic-scorpion +1 pale-oryx 96.7/99.3 | -1 barrel-cactus +1 roadrunner-courier 96.7/99.7 | -1 caustic-scorpion +1 roadrunner-courier 96.7/99.7
 no nearer move
 RESULT 18-A-4 {"barrel-cactus":2,"caustic-scorpion":2,"dune-jackal":4,"sand-widow":4,"roadrunner-courier":3} 99 {} moves: -2 dromedary +2 roadrunner-courier problems: []
+LANE 2 DONE

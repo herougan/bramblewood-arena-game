@@ -21,3 +21,4 @@ round 1: cur 73.3/68; 32 legal, 32 read + 14 predicted (of 28); top: -1 obsidian
 round 2: cur 61.7/64; 32 legal, 32 read + 10 predicted (of 10); top: -1 magma-salamander +1 basalt-boar 60/65 | -1 obsidian-scorpion +1 fire-salamander 58.3/68 | -3 basalt-boar +2 fire-salamander +1 obsidian-scorpion 58.3/51 | -1 magma-salamander -1 obsidian-scorpion +1 basalt-boar +1 fire-salamander 58.3/70.7 | -1 obsidian-scorpion +1 stalactite-golem 61.7/71.3
 no nearer move
 RESULT 20-B-3 {"magma-salamander":2,"obsidian-scorpion":1,"vampire-roost":4,"cinder-hornet":2,"basalt-boar":3,"ur-elk":2} 64 {} moves: -1 obsidian-scorpion -1 basalt-boar +1 vampire-roost +1 ur-elk problems: []
+LANE 1 DONE

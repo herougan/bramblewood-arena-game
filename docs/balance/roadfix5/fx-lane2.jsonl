@@ -1,0 +1,6 @@
+{"src":"curve (seed 7300, 100 games)","key":"18-7","deck":{"chipmunk-forager":1,"dust-devil-kestrel":2,"sand-widow":2,"dune-jackal":2,"meerkat-sentry":4,"worker-ant":1},"shieldOverride":null,"hqHp":null,"tune":{"w":45,"seed":7300,"games":100},"before":54.5,"target":40,"green":"off"}
+{"src":"curve (seed 7300, 100 games)","key":"19-5","deck":{"cinder-hornet":4,"elderhorn-monarch":1,"fire-salamander":4,"glacier-yak":1,"honey-badger-fury":3,"obsidian-scorpion":3,"smoke-raccoon":4},"shieldOverride":null,"hqHp":null,"tune":{"w":52,"seed":7300,"games":100},"before":47.8,"target":60,"green":"off"}
+{"key":"18-3","deck":{"armadillo-guard":4,"caustic-scorpion":1,"meerkat-sentry":4,"horned-lizard":4,"worker-ant":1,"ice-crevasse-wolf":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":87,"seed2":12300,"games":300},"moves":["-1 caustic-scorpion +1 worker-ant","-1 chipmunk-forager +1 ice-crevasse-wolf"]}
+{"key":"18-A-6","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":92.3,"seed2":12300,"games":300},"moves":[]}
+{"key":"18-A-7","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":91.7,"seed2":12300,"games":300},"moves":[]}
+{"key":"18-A-5","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":84.3,"seed2":12300,"games":300},"moves":[]}
