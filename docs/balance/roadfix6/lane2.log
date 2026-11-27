@@ -1,0 +1,6 @@
+18-A-4 target 77.1 (69.1-85.1) size 15 side (min 11) start {"barrel-cactus":2,"caustic-scorpion":2,"dromedary":2,"dune-jackal":4,"sand-widow":4,"roadrunner-courier":1} problems []
+start {"barrel-cactus":2,"caustic-scorpion":2,"dromedary":2,"dune-jackal":4,"sand-widow":4,"roadrunner-courier":1} 99.3
+round 1: cur 98.3/99.3; 38 legal, 38 read + 14 predicted (of 42); top: -1 caustic-scorpion -1 dromedary +1 barrel-cactus +1 roadrunner-courier 96.7/98.3 | -2 sand-widow -2 dromedary +2 roadrunner-courier +2 caustic-scorpion 96.7/99.3 | -2 sand-widow +2 roadrunner-courier 96.7/99.7 | -1 caustic-scorpion +1 barrel-cactus 98.3/99.7 | -2 sand-widow -1 dromedary +2 roadrunner-courier +1 caustic-scorpion 96.7/100
+round 2: cur 96.7/98.3; 35 legal, 35 read + 14 predicted (of 44); top: -1 barrel-cactus +1 caustic-scorpion 98.3/98 | -1 dromedary +1 caustic-scorpion 98.3/98.7 | -1 dune-jackal +1 dromedary 98.3/99 | -1 dromedary +1 roadrunner-courier 98.3/99.7 | -1 dune-jackal +1 caustic-scorpion 98.3/99.7
+no nearer move
+RESULT 18-A-4 {"barrel-cactus":3,"caustic-scorpion":1,"dromedary":1,"dune-jackal":4,"sand-widow":4,"roadrunner-courier":2} 98.3 {} moves: -1 caustic-scorpion -1 dromedary +1 barrel-cactus +1 roadrunner-courier problems: []
