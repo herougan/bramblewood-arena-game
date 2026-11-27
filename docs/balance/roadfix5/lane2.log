@@ -5,3 +5,8 @@ round 2: cur 90/88.7; 72 legal, 72 read + 14 predicted (of 36); top: -1 chipmunk
 round 3: cur 80/87; 72 legal, 72 read + 14 predicted (of 20); top: -1 ice-crevasse-wolf +1 antlion-pit 76.7/88 | -1 ice-crevasse-wolf +1 bison-bulldozer 78.3/88.3 | -1 ice-crevasse-wolf +1 mouse-sapper 80/89.7 | -1 ice-crevasse-wolf +1 sunbittern-strider 81.7/90 | -1 ice-crevasse-wolf +1 barrel-cactus 81.7/90.7
 no nearer move
 RESULT 18-3 {"armadillo-guard":4,"caustic-scorpion":1,"meerkat-sentry":4,"horned-lizard":4,"worker-ant":1,"ice-crevasse-wolf":1} 87 {} moves: -1 caustic-scorpion +1 worker-ant ; -1 chipmunk-forager +1 ice-crevasse-wolf problems: []
+18-A-6 target 68.6 (60.6-76.6) size 14 side (min 10) start {"barrel-cactus":3,"dromedary":1,"horned-lizard":4,"pale-oryx":3,"sand-widow":3} problems []
+start {"barrel-cactus":3,"dromedary":1,"horned-lizard":4,"pale-oryx":3,"sand-widow":3} 92.3
+round 1: cur 93.3/92.3; 15 legal, 15 read + 14 predicted (of 33); top: -1 pale-oryx +1 sand-widow 91.7/91.7 | -1 sand-widow +1 dromedary 91.7/92 | -1 sand-widow +1 pale-oryx 91.7/92.3 | -1 barrel-cactus -1 sand-widow +1 pale-oryx +1 dromedary 91.7/93.3 | -1 barrel-cactus +1 pale-oryx 91.7/95
+no nearer move
+RESULT 18-A-6 {"barrel-cactus":3,"dromedary":1,"horned-lizard":4,"pale-oryx":3,"sand-widow":3} 92.3 {} moves:  problems: []
