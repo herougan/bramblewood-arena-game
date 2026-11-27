@@ -8,6 +8,13 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-27 09:39 Owner: animated card skins (PixelLab animation) and a cheaper static skin
+- Owner (verbatim): "(I like the squid you just posted. are it separate layers). Pixellab ai supports doing animation (w/backgrounds too!). So we can do the eagle doing wingbeats. (Cheaper skin for players would be just the eagle static - but speed lines around"
+- Answer: yes, ART17-T version A is three layers (water, squid, glow) cut from the one existing image.
+- [ ] ART18 (art): PixelLab "Animate with text" on one eagle card (Golden Eagle): a wingbeat loop, 8 frames, with its background and a transparent-background version over a still backdrop; then the frames as a premium animated skin prototype (docs/perf/art17/). Needs Chrome automatic downloads for pixellab.ai (owner, pending since 11-25); never buy a plan or credits.
+- [ ] ART18b (code prototype, no game files): the cheaper skin: the static eagle with speed lines around it (overlay, transforms / opacity only), measured like ART17-T.
+- [ ] SKINS1 (design, after ART18): card skins as cosmetics: premium = animated frames, cheaper = static + an effect (speed lines, glow), how a player gets them (ECON1), where they show (Detail card, pack reveal, hero; board tiles stay flat).
+
 ## 11-27 00:07 Owner: cool combos on Maps 0-20
 - Owner (verbatim): "i mentioned the skill thing only for cards we'll chooes for map0-20. we want to make sure all cool combos are there. for people to play with"
 - [x] COMBO1 (done 2026-11-27, docs/design/combo1-2026-11-27.md; 35 combos: 26 ✅ / 6 🟨 / 3 🟥, 31 ✅ after fixes; decisions COMBO1-1..5) (design, docs only): every cool combo (stratagem) a player could build, checked against the Maps 0-20 lists (main, side, Special, Level skills): can both halves be collected, from which map, and at what rarity; gaps filled by proposed card picks for Maps 0-20 lists (existing cards first, NEWCARDS1 cards as candidates); the owner chooses.
