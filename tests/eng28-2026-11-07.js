@@ -91,7 +91,8 @@ ok(/ENG28_ONE_SHOT = new Set\(\['onReadyDamage', 'rocket'/.test(app), 'the one-s
 // ---- 22:16 #5 #6 #7 ------------------------------------------------------------------------------------------------------------
 ok(/\$\{isCustom&&!hand&&adminModeEnabled /.test(app), '#5 the edited pencil shows only in Admin Mode');
 ok(/function eng28LaterSkillsHTML\(d\)/.test(app) && /\$\{abilityHTML\}\$\{eng28LaterSkillsHTML\(d\)\}/.test(app) && /\.skill-q\.eng28-later\{/.test(tpl) && T['ui.eng28-later'] === 'Learnt at a higher level', '#6 a gold "?" for a skill learnt at a higher level, tooltip "Learnt at a higher level"');
-ok(/function eng28DeathTrig\(t\)/.test(app) && (app.match(/eng28DeathTrig\(t\) \? '💀' : '⚡'/g) || []).length === 2, '#7 a death trigger\'s chip leads with 💀 (live and spent)');
+// 2026-11-27 (SKILLS3-B, SKILLS3-1): one helper (trigLeadIcon) leads every trigger chip, live and spent: 💀 for a death trigger (⬆️ On Play, 🃏 On Pitch beside it)
+ok(/function eng28DeathTrig\(t\)/.test(app) && /eng28DeathTrig\(t\) \? '💀'/.test(app.slice(app.indexOf('function trigLeadIcon('))) && (app.match(/<i class="ab-bolt">\$\{(trigLeadIcon\(t\)|lead)\}<\/i>/g) || []).length === 2, '#7 a death trigger\'s chip leads with 💀 (live and spent)');
 
 // ---- 23:35 #4 Mulligan ---------------------------------------------------------------------------------------------------------
 { const {e, P} = mk(); P[1].deck = ['x-dummy', 'x-dummy', 'x-dummy', 'x-dummy', 'x-dummy', 'x-dummy', 'x-mul']; const ev = [];

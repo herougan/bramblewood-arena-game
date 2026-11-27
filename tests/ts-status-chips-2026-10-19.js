@@ -69,7 +69,7 @@ async function browser(){
           const bb = await pg.evaluate(`(()=>{ const vis = [...document.querySelectorAll('.board-card.is-poisoned')].map(e=> e.getBoundingClientRect()).filter(r=> r.width > 0 && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth);
             if(!vis.length) return null; const r = vis[0]; return {x: r.left, y: r.top, w: r.width, h: r.height}; })()`);
           if(bb){ const x = Math.max(0, bb.x - bb.w * 1.2), y = Math.max(0, bb.y - 40); await pg.screenshot({path: path.join(OUT, `${SHOTS}-${tag}-zoom.png`), clip:{x, y, width: Math.min(w - x, bb.w * 3.4), height: Math.min(h - y, bb.h + 80)}}); } }
-        const ms = await pg.evaluate(MEASURE);
+        const ms = (await pg.evaluate(MEASURE)).filter(x=> x.chips > 0); // 2026-11-27 (SKILLS3-B, SKILLS3-7): a Tide unit is Wet from arrival; its 💧 is hidden unless Shift (FIX9), so a Wet-only strip shows no chip
         if(SHOTS === 'before'){ console.log(`  ${tag}: ${ms.slice(0, 4).map(x=> `${x.w}px "${x.text}" h${x.stripH}`).join(' | ')}`); await ctx.close(); continue; }
         ok(ms.length >= 3, `${tag}: units with statuses on the board (${ms.length})`);
         ok(ms.every(x=> /status-chips/.test(x.cls)), `${tag}: every status strip is the chip strip`);

@@ -114,7 +114,7 @@ ok(/\n  chainLightning: \{foes:FXL_FOES3/.test(src.slice(src.indexOf('const FXL_
 ok(/case 'chainLightning':/.test(src) && /ev\.type==='chainLightning'/.test(src), 'chainLightning: a log line and a look');
 ok(/lightning damage/.test(line('shockBolt')) && /lightning damage/.test(line('lightning')), 'Shock Bolt and Lightning say lightning damage');
 { const kws = (src.match(/const STATUS_KEYWORDS = \[[\s\S]*?\n\];/) || [''])[0]; const wet = (kws.match(/\{k:'wet'[^\n]*/) || [''])[0];
-  ok(/name:'Wet'/.test(wet) && /cs:true/.test(wet) && /text:TX\('ui\.st-wet'\), codex:TX\('ui\.stx-wet'\)/.test(wet) && /Wet units beside it/.test(TEXT_D['ui.st-wet']) && /Rain/.test(TEXT_D['ui.stx-wet']) /* SKILLS3-7 (2026-11-27): yes / no */ && /Swimmer or Tide unit/.test(TEXT_D['ui.stx-wet']) && /Tide is in/.test(TEXT_D['ui.stx-wet']), 'Wet: a status keyword whose gloss explains the counters (2026-10-18, package D: the water rule in the Codex)'); }
+  ok(/name:'Wet'/.test(wet) && /cs:true/.test(wet) && /text:TX\('ui\.st-wet'\), codex:TX\('ui\.stx-wet'\)/.test(wet) && /Wet neighbours/.test(TEXT_D['ui.st-wet']) && /Rain/.test(TEXT_D['ui.stx-wet']) /* SKILLS3-7 (2026-11-27): yes / no */ && /Swimmer or Tide unit/.test(TEXT_D['ui.stx-wet']) && /Tide is in/.test(TEXT_D['ui.stx-wet']), 'Wet: a status keyword whose gloss explains the counters (2026-10-18, package D: the water rule in the Codex)'); }
 ok(/if\(p\.codexNote\) txt \+= ' ' \+ p\.codexNote;/.test(src), 'the Skills Codex adds the codexNote');
 
 // ---- 6. The board: element emoji, and every lightning hit is its own bolt (nothing thrown)

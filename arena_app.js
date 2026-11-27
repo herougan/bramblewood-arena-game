@@ -10242,11 +10242,11 @@ function triggerBadges(d, live){
       const key = live.uid + ':' + k; m._spentTrig = m._spentTrig || {};
       const at = m._spentTrig[key] || (m._spentTrig[key] = Date.now()), age = Date.now() - at;
       if(age >= SPENT_TRIG_MS) return '';
-      const tip = (()=>{ try{ return triggerPreviewText(t); }catch(e){ return ''; } })() + ' (used up)';
+      const tip = trigLeadIcon(t) + ' ' + (()=>{ try{ return triggerPreviewText(t); }catch(e){ return ''; } })() + ' (used up)'; // SKILLS3-1: the tooltip leads with the trigger's icon too
       return `<span class="ab-trig is-spent" style="animation-delay:-${age}ms" title="${escapeAttr(tip)}"><i class="ab-bolt">${trigLeadIcon(t)}</i><i class="ab-arrow">→</i>${triggerActionEmoji(t)}</span>`;
     }
     const off = triggerIsOff(t, live, d);
-    const tip = (()=>{ try{ return triggerPreviewText(t); }catch(e){ return ''; } })() + (off ? ' (off for now: it is Waiting, Stunned, Frozen or Asleep)' : '');
+    const tip = trigLeadIcon(t) + ' ' + (()=>{ try{ return triggerPreviewText(t); }catch(e){ return ''; } })() + (off ? ' (off for now: it is Waiting, Stunned, Frozen or Asleep)' : '');
     // a trigger that fires every round leads with a clock instead of the bolt (2026-10-12, user: "Cards that have triggers
     // that depend on turns like every turn, should use the clock emoji instead")
     const clock = t.on === 'onRoundStart' || t.on === 'perTurn', lead = trigLeadIcon(t);
@@ -11075,7 +11075,7 @@ function referenceHTML(){
     <div class="ref-card"><span class="kind">Resistance</span><b>Resistance</b><p>Takes half damage (min 1) from anything matching an entry in this box.</p></div>
     <div class="ref-card"><span class="kind">Weakness</span><b>Weakness</b><p>Takes DOUBLE damage from anything matching an entry in this box — the mirror of Resistance, same matching rules. Putting the same match-key in both boxes multiplies out to a net 1x (self-cancelling).</p></div>
   </div></div>
-  <div class="panel"><h3 class="ref-heading">Triggers — the "On" half of a custom trigger</h3><div class="ref-grid">${TRIGGER_DEFS.map(t=>`<div class="ref-card"><span class="kind">Trigger</span><b>${t.label}</b><p>Fires ${t.desc}.</p></div>`).join('')}</div></div>
+  <div class="panel"><h3 class="ref-heading">Triggers — the "On" half of a custom trigger</h3><div class="ref-grid">${TRIGGER_DEFS.map(t=>`<div class="ref-card"><span class="kind">Trigger</span><b>${trigLeadIcon({on: t.key})} ${t.label}</b><p>Fires ${t.desc}.</p></div>`).join('')}</div></div>
   <div class="panel"><h3 class="ref-heading">Actions — the "Do" half of a custom trigger</h3><div class="ref-grid">${ACTION_DEFS.filter(a=> !a.retired).map(a=>`<div class="ref-card"><span class="kind">Action</span><b>${a.label}</b><p>${a.desc}</p></div>`).join('')}</div></div>
   <div class="panel"><h3 class="ref-heading">New zones &amp; resources</h3><div class="ref-grid">
     <div class="ref-card"><span class="kind">Zone</span><b>🌫 Removal Zone</b><p>Cards here can't be drawn again. Each card sent here gives its owner 1 Echo 🕯️; a Remember card here returns to the board once you have enough Echoes.</p></div>
@@ -44622,7 +44622,7 @@ function ui14ChipCount(b){ return String(b).replace(/([^\d+\-−])1<\/span>$/, '
 function statusChipsHTML(badges){
   if(!badges || !badges.length) return '';
   badges = badges.map(ui14ChipCount);
-  const n = badges.length, over = STATUS_CHIP_SLOTS.filter(k=> n > k);
+  const n = badges.filter(b=> !/abadge en20-water/.test(b)).length, over = STATUS_CHIP_SLOTS.filter(k=> n > k); // 2026-11-27 (SKILLS3-B): Wet (hidden unless Shift, FIX9) takes no slot; every Tide unit is Wet now
   const more = over.length ? `<span class="sc-more" aria-hidden="true" ${over.map(k=> `data-m${k}="+${n - k + 1}"`).join(' ')}></span>` : '';
   return `<div class="badges-bottom status-chips${over.map(k=> ' o' + k).join('')}">${badges.join('')}${more}</div>`;
 }

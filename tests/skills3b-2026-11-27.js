@@ -24,7 +24,8 @@ const app = rd('arena_app.js');
   ok(trigLeadIcon({on:'onSpawn'}) === '⬆️' && trigLeadIcon({on:'onDeath'}) === '💀' && trigLeadIcon({on:'onPitch'}) === '🃏', '1. lead icons: ⬆️ On Play, 💀 On Death, 🃏 On Pitch');
   ok(trigLeadIcon({on:'onAttack'}) === '⚡' && trigLeadIcon({on:'onRoundStart'}) === '🕐' && trigLeadIcon({on:'onSacrifice'}) === '🦷', '1. the other triggers keep ⚡ / 🕐 / 🦷');
   ok(/onSpawn:'⬆️'/.test(app) && /onPitch:'🃏'/.test(app) && !/onPitch:'♻️'/.test(app), '1. the ring glyphs (TRIGGER_GLYPH)');
-  ok((app.match(/trigLeadIcon\(t\)/g) || []).length >= 3 && /🃏 Scavenge - /.test(app), '1. chips (live and spent) and card lines use it'); }
+  ok((app.match(/trigLeadIcon\(t\)/g) || []).length >= 3 && /🃏 Scavenge - /.test(app), '1. chips (live and spent) and card lines use it');
+  ok((app.match(/const tip = trigLeadIcon\(t\) \+ ' ' \+/g) || []).length === 2 && /<b>\$\{trigLeadIcon\(\{on: t\.key\}\)\} \$\{t\.label\}<\/b>/.test(app), '1. the chip tooltips and the Codex trigger reference lead with it'); }
 
 // ---- board helpers (as tests/eng50-2026-11-17.js: exact slots, swings and rounds)
 const U = (id, effects, o)=> Object.assign({id, name:id, attack:0, health:500, wait:0, cost:0, effects: effects || {}}, o || {});
