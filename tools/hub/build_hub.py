@@ -189,7 +189,6 @@ skills_html = ''.join(skill_card(f) for f in SKILLS)
 # sheets and audits, newest first, each a collapsible card (the first one open).
 DESIGN = [
   # 2026-11-22 (MAPADD1, owner 13:22: "Can I see this table in the master hub?"): the owner's Maps 0-20 skill table checked against the cards (generated: node tools/hub/map_skill_table.js), first so it opens by default
-  ('Map skill table (Maps 0-20)', 'map-skill-table.md'),
   # 2026-11-04 (package SKILLREC1, owner 07:42: "get a list of skill recommendations (sort by advancement) in the master hub"): first, so it opens by default
   ('Skill recommendations by road advancement (SKILLREC1)', 'skill-recommendations-2026-11-04.md'),
   ('Fields, day and night, Lumber from cards', 'fields-and-day-night-2026-10-09.md'),
@@ -244,7 +243,8 @@ if os.path.exists(_feel_path):
 # and following tables-> make it wider so it's not too vertical"): the 🧩 Effects tab, two generated views, wide: by card (symbols and counts,
 # every combo used, triggers, every pair used: node tools/hub/effects_cards_0_20.js) and by list (what each effect does and where it first
 # shows: node tools/hub/effects_0_20.js, moved here from Design).
-_FX = [('By card: symbols, combos, pairs', 'effects-cards-0-20.md'), ('By list: what each does, where it starts', 'effects-0-20.md')]
+# 2026-11-27 (owner 09:59: "collapase the \"Map Skill Table\" artefact into the master hub"): the map skill table moves here from Design (the separate artifact now points here)
+_FX = [('By card: symbols, combos, pairs', 'effects-cards-0-20.md'), ('By list: what each does, where it starts', 'effects-0-20.md'), ('Map skill table: New! skills per map', 'map-skill-table.md')]
 _FX = [(t, f) for t, f in _FX if os.path.exists(os.path.join(ROOT, 'docs', f))]
 fx_html = ('<div class="doc guide wide"><h1>Effects on Maps 0-20</h1>'
   '<nav class="subtabs" data-group="fx" aria-label="Effects views">' + ''.join('<button type="button" data-show="fx-' + f[:-3] + '" aria-pressed="' + ('true' if k == 0 else 'false') + '">' + H.escape(t) + '</button>' for k, (t, f) in enumerate(_FX)) + '</nav>')
