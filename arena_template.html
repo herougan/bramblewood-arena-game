@@ -387,7 +387,7 @@
   .lang-option:disabled{color:var(--ink-muted); cursor:default; opacity:.62;}
   .lang-check{color:var(--accent); font-weight:800;}
   .lang-soon{font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.03em; color:var(--ink-muted); background:var(--surface-2); border-radius:6px; padding:2px 6px;}
-  @media (max-width:700px){ .lang-fab-wrap{right:8px; bottom:8px;} .lang-fab{height:30px; padding:0 10px; font-size:12px;} }
+  @media (max-width:560px){ .lang-fab-wrap{right:8px; bottom:8px;} .lang-fab{height:30px; padding:0 10px; font-size:12px;} }
   /* Task list item 8 ("start to create a framework for 'speech'... characters will talk during
      the game with speech bubbles"): a lightweight chat-bubble that floats above a board card,
      same DOM-append-into-the-card-element pattern floatText() already uses for damage numbers,
@@ -420,7 +420,7 @@
   .feedback-btn{flex:0 0 auto; width:30px; height:30px; border-radius:50%; display:grid; place-items:center; padding:0; font-size:15px; line-height:1; cursor:pointer; background:var(--surface-2); border:1px solid var(--surface-border); color:var(--ink); position:relative;}
   .feedback-btn:hover{filter:brightness(1.08); transform:translateY(-1px);} .feedback-btn:focus-visible{outline:2px solid #ffd76a; outline-offset:2px;}
   .feedback-btn.has-queue::after{content:''; position:absolute; top:1px; right:1px; width:8px; height:8px; border-radius:50%; background:#e3a32b; box-shadow:0 0 0 2px var(--surface-2);}
-  @media (max-width:640px){ .topbar .feedback-btn{width:26px; height:26px; font-size:13px;} }
+  @media (max-width:560px){ .topbar .feedback-btn{width:26px; height:26px; font-size:13px;} }
   .fb-modal{max-width:min(440px, 94vw) !important; width:min(440px, 94vw);}
   .fb-modal form{display:flex; flex-direction:column; gap:10px;}
   .fb-modal .fb-cats{display:flex; flex-wrap:wrap; gap:6px; border:0; padding:0; margin:0;}
@@ -452,7 +452,7 @@
   .sync-ind[data-state="offline"]{opacity:.9;}
   @keyframes syncIndPulse{50%{opacity:.35;}}
   @media (prefers-reduced-motion: reduce){ .sync-ind[data-state="syncing"] .sync-ind-dot{animation:none;} }
-  @media (max-width: 600px){ .sync-ind .sync-ind-txt{display:none;} }
+  @media (max-width:560px){ .sync-ind .sync-ind-txt{display:none;} }
   .account-identity{display:flex; align-items:center; gap:10px; margin:6px 0 4px; padding:8px 10px; border-radius:10px; background:var(--surface-2); border:1px solid #4caf50;}
   .account-identity-ico{font-size:18px;}
   .auth-gate-later{display:block; margin:12px auto 0;}
@@ -1207,7 +1207,7 @@
   /* 2026-10-22 (package GD2, owner: "Not available and Easter egg pills?pips are too large. Use a symbol like 🚫"): the admin's 🚫 Not
      obtainable and 🥚 Easter egg markers are a symbol; the words follow it only on a wide screen (title / aria-label carry them). */
   .cx-tag.cx-tag-sym{padding:0 5px; font-size:10px; line-height:16px; white-space:nowrap;}
-  @media (max-width:700px){ .cx-tag.cx-tag-sym{padding:0; width:16px; height:16px; line-height:16px; text-align:center; font-size:10px; background:rgba(0,0,0,.45); border:0;} .cx-tag-sym .cx-tag-words{display:none;} }
+  @media (max-width:560px){ .cx-tag.cx-tag-sym{padding:0; width:16px; height:16px; line-height:16px; text-align:center; font-size:10px; background:rgba(0,0,0,.45); border:0;} .cx-tag-sym .cx-tag-words{display:none;} }
   .hof-panel{margin-bottom:14px;}
   .hof-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:14px;}
   .hof-entry{display:flex; flex-direction:column; gap:6px;}
@@ -1312,7 +1312,7 @@
   .cx-filters-toggle{display:inline-flex;}
   #codexToolbar #cxSearch{flex:1 1 260px; min-width:0;}
   #codexToolbar:not(.filters-open) > :not(#cxSearch):not(.cx-filters-toggle):not(#cxSort):not(#cxSortDir){display:none;}
-  @media (max-width:700px){
+  @media (max-width:560px){
     #codexToolbar:not(.filters-open) > #cxSort, #codexToolbar:not(.filters-open) > #cxSortDir{display:none;}
     .codex-toolbar{gap:8px;}
     .codex-toolbar #cxSearch{flex:1 1 60%; min-width:0;}
@@ -1687,7 +1687,7 @@
   .field-res .hud-pill{pointer-events:auto; padding:4px 10px; font-size:12.5px; background:color-mix(in srgb, var(--surface) 82%, transparent); box-shadow:0 2px 6px rgba(0,0,0,.25);}
   .field-res.enemy .hud-pill{border-color:rgba(214,84,84,.55);}
   .field-res-tag{font-family:'Baloo 2'; font-weight:800; font-size:10.5px; letter-spacing:.04em; color:#fff; background:rgba(176,52,52,.85); border-radius:999px; padding:2px 8px;}
-  @media (max-width:699px){ .field-res{bottom:8px; gap:4px;} .field-res.mine{left:6px;} .field-res.enemy{right:6px; top:10px;} .field-res .hud-pill{padding:2px 7px; font-size:10.5px; gap:3px;} .field-res-tag{font-size:9px; padding:1px 6px;} }
+  @media (max-width:560px){ .field-res{bottom:8px; gap:4px;} .field-res.mine{left:6px;} .field-res.enemy{right:6px; top:10px;} .field-res .hud-pill{padding:2px 7px; font-size:10.5px; gap:3px;} .field-res-tag{font-size:9px; padding:1px 6px;} }
   .card-tile.quake-jolt{animation:quakeJolt .4s cubic-bezier(.3,.7,.4,1);}
   @keyframes quakeJolt{0%{transform:translateY(0);} 20%{transform:translateY(-9px) rotate(-2deg);} 45%{transform:translateY(3px) rotate(1.5deg);} 70%{transform:translateY(-2px);} 100%{transform:none;}}
   @media (prefers-reduced-motion: reduce){ .card-tile.quake-jolt{animation:none;} }
@@ -1731,7 +1731,7 @@
   .bf-pills .phase-pill.mist-pill{background:linear-gradient(135deg, #8d97a3, #5d6672); color:#f4f7fa;}
   .bf-pills .forecast-pill{border:1px solid rgba(255,255,255,.22); color:#fff3d6; font-family:inherit; flex-wrap:nowrap; max-width:none; white-space:nowrap; border-radius:999px; padding:3px 10px;}
   .bf-pills .phase-pill.tide-flow, .bf-pills .phase-pill.tide-ebb, .bf-pills .phase-pill.arena-rs-pill{margin-left:0;}
-  @media (max-width:699px){ .bf-pills{left:0; gap:3px; max-width:100%;} .bf-pills .phase-pill, .bf-pills .forecast-pill{font-size:10.5px; padding:2px 7px; white-space:nowrap;} .bf-pills .forecast-pill .fp-t{display:none;} #battlefieldEl .bf-pills .wind-pill{font-size:10.5px;} }
+  @media (max-width:560px){ .bf-pills{left:0; gap:3px; max-width:100%;} .bf-pills .phase-pill, .bf-pills .forecast-pill{font-size:10.5px; padding:2px 7px; white-space:nowrap;} .bf-pills .forecast-pill .fp-t{display:none;} #battlefieldEl .bf-pills .wind-pill{font-size:10.5px;} }
   /* the enemy's resource pills: under the fight controls, top right (no longer on the board) */
   .top-right-stack{display:flex; flex-direction:column; align-items:flex-end; gap:6px; margin-left:auto; align-self:flex-start; min-width:0;}
   .top-right-stack > .top-row-controls{margin-left:0; align-self:flex-end;}
@@ -1740,7 +1740,7 @@
   .match-field-tile{width:var(--match-card-w); height:var(--match-card-h); flex-shrink:0; font-size:13.5px; cursor:help;}
   .match-field-tile .stats.field-stats .fld{font-size:calc(var(--match-card-w, 118px) * .082);}
   .match-field-tile .stats.field-stats .fld{max-width:calc(100% - 6px); overflow:hidden; text-overflow:ellipsis; padding:1px 6px; box-sizing:border-box;}
-  @media (max-width:699px){ .match-field-tile .stats.field-stats .fld{font-size:8.5px; padding:1px 4px;} .match-field-tile .fl-w{display:none;} }
+  @media (max-width:560px){ .match-field-tile .stats.field-stats .fld{font-size:8.5px; padding:1px 4px;} .match-field-tile .fl-w{display:none;} }
   .match-field-tile.field-cond{--field-glow:rgba(255,226,140,.6);}
   .match-field-tile.biome-forest{background:linear-gradient(180deg,#5f8f4e,#2f5a2c) !important; color:#f2ffe8;}
   .match-field-tile.biome-meadow{background:linear-gradient(180deg,#d9e889,#86b24a) !important; color:#26330e;}
@@ -1867,7 +1867,7 @@
     display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
   .card-tile.env-card .nm{margin-top:4px;}
   .env-hover .fh-left{font-style:italic;}
-  @media (max-width:699px){
+  @media (max-width:560px){
     .env-stack{width:calc(var(--match-card-w) + (var(--n, 1) - 1) * var(--match-card-w) * .58 / var(--env-tight)); margin-top:4px;}
     .env-stack .env-card{left:calc(var(--i, 0) * var(--match-card-w) * .58 / var(--env-tight));}
     .card-tile.env-card .env-ribbon{font-size:6.5px; padding:0 5px 1px; top:-7px;}
@@ -1900,7 +1900,7 @@
   .lava-geyser b{position:absolute; left:-4px; bottom:0; width:8px; height:8px; border-radius:50%; background:#ffb13a; box-shadow:0 0 8px #ff6a14; animation:ember 1.1s ease-out var(--d) forwards; opacity:0;}
   @keyframes geyser{0%{transform:scaleY(.1); opacity:0;} 25%{transform:scaleY(1.05); opacity:1;} 70%{opacity:.8;} 100%{transform:scaleY(.6); opacity:0;}}
   @keyframes ember{0%{opacity:1; transform:translate(0,0) scale(1);} 100%{opacity:0; transform:translate(var(--x), var(--y)) scale(.4);}}
-  @media (max-width:699px){ .terrain-banner > b{font-size:16px;} .terrain-banner span{font-size:12.5px;} }
+  @media (max-width:560px){ .terrain-banner > b{font-size:16px;} .terrain-banner span{font-size:12.5px;} }
   @media (prefers-reduced-motion: reduce){ .battlefield.volcanic::after{animation:none;} .terrain-banner{animation:none;} }
   /* In-page select menus (2026-10-12): replaces the browser's own <select> popup on mouse devices */
   /* 2026-11-07 (owner 21:59): combined emoji icons overlap, the later part about 44% over the earlier one (iconHTML, icoParts) */
@@ -2083,7 +2083,7 @@
      card rows (enemy castle row, two board rows, your hand row) plus padding didn't fit, cutting off
      the hand — the thing you use every turn. Cards now size from the viewport height (never larger
      than before), and the board rows track the card height. Phones keep their own fixed sizes. */
-  @media (min-width: 701px){
+  @media (min-width:561px){
     /* 2026-10-30 (package CS-D, card sizes step 6): ONE formula for the match card on a tablet or a computer. The variants (a tablet, a big
        screen, a desktop window's --res3-fit, the tablet's 15% larger field) set only its parameters; the old copies of the formula are gone:
          h = clamp(min, min((100dvh - top) / 4.55 * fit, a row of 8.4 cards across (100vw - 110px)), max * fit) * k;  w = h * .8
@@ -2096,7 +2096,7 @@
   /* iPad (2026-10-13, user: "On iPad-size screens, make the game look like on PC. Cards currently look minimised and oddly
      proportioned"): tablets use the computer layout, with cards sized so a full row (castle, deck, five cards, Graveyard) fits
      the width in portrait too, instead of wrapping your hand into a column. The tablet-only name sizes are gone. */
-  @media (min-width: 701px) and (max-width: 1199px){
+  @media (min-width:561px) and (max-width: 1199px){
     #appWrap.in-match{--mc-min:92px;} /* 2026-10-30 (CS-D): the formula above; was its own copy */
     #appWrap.in-match .hand-strip{flex-wrap:nowrap;}
     /* 2026-10-17 (user: "In Mobile and iPad, the field can be 15% more zoomed in."): the battlefield's own cards are 15% bigger than
@@ -2173,7 +2173,7 @@
   .fight-sign.end-defeat{color:#c9c2d6; text-shadow:0 0 18px rgba(40,30,60,.8), 0 4px 0 rgba(0,0,0,.5);}
   .fight-sign.end-draw{color:#f4ecd8;}
   .end-confetti{position:absolute; z-index:31; font-size:22px; pointer-events:none;}
-  @media (max-width:600px){ .fight-sign.end-sign{font-size:44px;} }
+  @media (max-width:560px){ .fight-sign.end-sign{font-size:44px;} }
   @keyframes fightSignIn{0%{opacity:0; transform:scale(2.2) rotate(-6deg);}60%{opacity:1; transform:scale(.92) rotate(2deg);}100%{opacity:1; transform:scale(1) rotate(0deg);}}
   @keyframes fightSignOut{0%{opacity:1; transform:scale(1);}100%{opacity:0; transform:scale(1.3);}}
   /* "Next Turn" banner (Wait-timer rework, 2026-09-20, per explicit request: "decrement at start
@@ -2931,7 +2931,7 @@
   .me-list{list-style:none; margin:0 0 12px; padding:0; display:flex; flex-direction:column; gap:6px;}
   .me-list li{display:flex; gap:8px; align-items:center; padding:8px 10px; border-radius:10px; background:var(--surface-2);}
   .me-list li > div{flex:1; min-width:0;} .me-list small{display:block; color:var(--ink-muted); font-size:12px;}
-  @media (max-width: 700px){ .ce-side{float:none; width:auto; margin:0 0 12px; position:static; flex-direction:row; flex-wrap:wrap; align-items:flex-start;} .ce-preview .card-tile{width:110px; height:144px;} .ce-art{flex:1; min-width:160px;} }
+  @media (max-width:560px){ .ce-side{float:none; width:auto; margin:0 0 12px; position:static; flex-direction:row; flex-wrap:wrap; align-items:flex-start;} .ce-preview .card-tile{width:110px; height:144px;} .ce-art{flex:1; min-width:160px;} }
   .se-mode{margin:-4px 0 10px; font-size:12.5px; padding:6px 10px; border-radius:8px; background:var(--surface-2); color:var(--ink-muted);} .se-mode.is-live{background:color-mix(in srgb, var(--accent) 14%, var(--surface)); color:var(--ink);}
   /* Coin shower (2026-10-07): see rewardsCheer(). */
   .coin-drop{position:fixed; left:0; top:0; z-index:3000; pointer-events:none; font-size:20px; transform:translate(-50%,-50%); will-change:transform, opacity; filter:drop-shadow(0 2px 2px rgba(0,0,0,.35));}
@@ -3236,12 +3236,12 @@
   .vs-deck{font-size:15px; opacity:.85; background:rgba(0,0,0,.25); padding:4px 12px; border-radius:999px;}
   .vs-word{display:block; font-family:'Baloo 2'; font-weight:900; font-size:clamp(56px, 9vw, 120px); color:#ffd76a; text-shadow:0 0 30px rgba(255,200,80,.7), 0 5px 0 rgba(90,50,0,.7); padding:0 10px;}
   .vs-skip{position:absolute; bottom:20px; left:0; right:0; text-align:center; font-size:12px; opacity:.6;}
-  @media (max-width:600px){ .vs-screen{grid-template-columns:1fr; grid-template-rows:1fr auto 1fr; background:linear-gradient(180deg, #2c3a27 0 50%, #5a2b22 50% 100%);} .vs-side .bw-avatar{width:84px !important; height:84px !important; font-size:46px !important;} }
+  @media (max-width:560px){ .vs-screen{grid-template-columns:1fr; grid-template-rows:1fr auto 1fr; background:linear-gradient(180deg, #2c3a27 0 50%, #5a2b22 50% 100%);} .vs-side .bw-avatar{width:84px !important; height:84px !important; font-size:46px !important;} }
   .workshop-modal{max-width:460px;} .ws-steps{padding-left:20px; line-height:1.55; margin:10px 0 16px;} .ws-steps li{margin-bottom:6px;}
   .workshop-modal .btn[disabled]{opacity:.55; cursor:not-allowed;}
   .cur-pill{display:inline-flex; align-items:center; gap:4px;}
   .cur-pill .cur-label{font-size:10.5px; font-weight:700; opacity:1; margin-left:2px; white-space:nowrap;}
-  @media (max-width:460px){ .cur-pill .cur-label{display:none;} }
+  @media (max-width:560px){ .cur-pill .cur-label{display:none;} }
   /* 2026-11-16 (A11Y2): skip link (first Tab stop, visible on focus) and calm the idle chestnut bob for reduced motion */
   .skip-link{position:fixed; left:8px; top:-60px; z-index:100000; padding:10px 16px; border-radius:10px; background:var(--surface); color:var(--ink); font-weight:800; text-decoration:none; border:2px solid var(--focus-ring);}
   .skip-link:focus{top:8px;}
@@ -3265,14 +3265,14 @@
   /* 2026-10-16 (user: "Move the pass turn button to the same row as the deck, centered, then simplify to just "Pass". Then make it
      look more squarish - decrease the corner radius."): in the deck's row, centred in the room left before the Graveyard. */
   .bottom-play-row .skipzone.compact.in-deck-row{position:static !important; inset:auto !important; align-self:center; margin:0 auto; order:0; flex:0 0 auto; width:auto; min-width:72px; min-height:44px; padding:8px 14px; border-radius:8px; font-size:14px; font-weight:800; justify-content:center; box-shadow:0 3px 10px rgba(0,0,0,.3); z-index:2;}
-  @media (max-width:640px){ .bottom-play-row .skipzone.compact.in-deck-row{order:3; margin:0 auto; min-height:40px; padding:6px 12px;} }
+  @media (max-width:560px){ .bottom-play-row .skipzone.compact.in-deck-row{order:3; margin:0 auto; min-height:40px; padding:6px 12px;} }
   /* 2026-10-17 (user: "Pass on the right of Discard. On tighter screens, the discard looks very thin. It should somewhat maintain
      ratio."): Pass sits after the Graveyard/Discard pile at the row's right end, and the pile keeps a card's shape (the Deck's size,
      4:5) instead of being squeezed by the hand. */
   .bottom-play-row .skipzone.compact.in-deck-row{margin:0 0 0 10px !important;}
   .bottom-play-row .graveyard-pile{flex:0 0 auto !important; width:var(--match-card-w) !important; min-width:var(--match-card-w) !important; height:var(--match-card-h) !important; min-height:0 !important; aspect-ratio:4 / 5; padding:6px 4px !important; overflow:hidden;}
   .bottom-play-row .graveyard-pile > span{max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
-  @media (max-width:640px){ .bottom-play-row .skipzone.compact.in-deck-row{margin:0 0 0 6px !important; padding:6px 10px;} }
+  @media (max-width:560px){ .bottom-play-row .skipzone.compact.in-deck-row{margin:0 0 0 6px !important; padding:6px 10px;} }
   /* 2026-10-17 (user: "enemy hand size: There should be a counter above the enemy's deck that says "5 <Card Emoji>""): the pill
      straddles the top edge of their Deck; the 💀 Graveyard badge that sat there moves to the bottom edge (the Removal badge just above it). */
   .enemy-hand-count{position:absolute; top:-10px; left:50%; transform:translateX(-50%); z-index:4; border:2px solid var(--surface); border-radius:999px; padding:1px 8px;
@@ -3282,11 +3282,11 @@
   @keyframes ehcBump{0%{transform:translateX(-50%) scale(1);} 40%{transform:translateX(-50%) scale(1.25);} 100%{transform:translateX(-50%) scale(1);}}
   #deckWidgetTop .grave-peek-badge{top:auto; bottom:-8px;}
   #deckWidgetTop .grave-peek-badge ~ .removal-badge{bottom:14px;}
-  @media (max-width:640px){ .enemy-hand-count{font-size:9.5px; padding:0 6px; top:-9px;} }
+  @media (max-width:560px){ .enemy-hand-count{font-size:9.5px; padding:0 6px; top:-9px;} }
   /* 2026-10-24 (package BV, owner 13:16 #24: "the code above the deck during a fight: shrink or remove on small screens"): on a phone the
      fight's top row sits at the very top of the screen, so the pill over their Deck was cut in half by the screen edge. It now sits
      just inside the Deck's top edge, smaller, with a thinner border. */
-  @media (max-width:640px){ #deckWidgetTop .enemy-hand-count{top:3px; font-size:8.5px; line-height:1.25; padding:0 5px; border-width:1px; box-shadow:0 1px 3px rgba(0,0,0,.35);} }
+  @media (max-width:560px){ #deckWidgetTop .enemy-hand-count{top:3px; font-size:8.5px; line-height:1.25; padding:0 5px; border-width:1px; box-shadow:0 1px 3px rgba(0,0,0,.35);} }
   /* 2026-10-17 (user: "Opposing pitch animation ... it should look like it landed in a slot, them, faded off then a clearer +1 lumber
      anim."): enemyPitchSlotFx — a card-shaped recess, the card settling into it, then a big gain label rising out of it. */
   .enemy-pitch-slot-fx .eps-slot{position:absolute; inset:-4px; border-radius:10px; border:2px dashed rgba(255,226,160,.7); background:rgba(20,14,8,.38);
@@ -3297,7 +3297,7 @@
     background:linear-gradient(180deg,#4a3018,#24170a); border:2px solid #e9b44c; color:#ffd56e; font:800 22px/1 'Baloo 2', system-ui, sans-serif; white-space:nowrap;
     text-shadow:0 2px 0 rgba(0,0,0,.5); box-shadow:0 8px 20px rgba(0,0,0,.45);}
   .eps-gain small{font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:#f7e3b4; margin-top:2px;}
-  @media (max-width:640px){ .eps-gain{font-size:17px; padding:3px 9px 4px;} }
+  @media (max-width:560px){ .eps-gain{font-size:17px; padding:3px 9px 4px;} }
   /* 2026-10-17 (user: "it should be bonus! then a card that looks the same comes out from the back."): a pack's bonus copy waits hidden
      behind the card; once the card is face up, "Bonus!" pops over it and the identical copy slides out from behind to its right. */
   .po2-card{isolation:isolate;}
@@ -3403,7 +3403,7 @@
   .ab-castle-bar.theirs .ab-castle-fill{background:#b5473f;}
   .ab-castle-bar span{position:absolute; inset:0; font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.6);}
   .ab-outcome.win{color:#3c9a5f;} .ab-outcome.loss{color:#b5473f;}
-  @media (max-width:520px){ .ab-castle-tile{width:104px;} .ab-fight-box{margin-left:0; width:100%;} }
+  @media (max-width:560px){ .ab-castle-tile{width:104px;} .ab-fight-box{margin-left:0; width:100%;} }
   .ab-cap{display:flex; justify-content:space-between; font-size:12px; font-weight:800; padding:3px 4px 0;}
   .ab-cap-lvl{color:#a46b00;}
   .ab-move{width:100%; margin-top:4px;}
@@ -3443,7 +3443,7 @@
   @keyframes dlgChipPulse{50%{transform:scale(1.12);}}
   .dlg-hide, .dlg-chip{transition:opacity .6s ease;}
   .dialogue-dock.is-idle .dlg-hide, .dialogue-dock.is-idle .dlg-chip{opacity:0; pointer-events:none;}
-  @media (max-width:699px){
+  @media (max-width:560px){
     .dialogue-dock{left:8px; top:64px; width:min(300px, calc(100vw - 56px));}
     body.pg-in-match .dialogue-dock{top:150px;} /* 2026-11-16 (package UX4): below the fight HUD buttons (speed, log, full screen, settings), not over them */
     .dialogue-dock .dlg-line{padding:6px 8px; gap:8px;}
@@ -3496,7 +3496,7 @@
   .lc-leaf{position:absolute; line-height:1; will-change:transform; filter:drop-shadow(0 4px 6px rgba(0,0,0,.35));}
   .home-discover-hint{font-size:13px; color:var(--page-ink, #f4efdc); opacity:.85; margin:4px 0 10px; text-align:center;}
   .tip-ticker{position:relative; min-height:2.9em; overflow:hidden;} /* room for a tip that wraps to two lines */
-  @media (max-width:520px){ .tip-ticker{min-height:5.8em;} } /* 2026-11-03 (FIX8, QA2 minor 13): the Nest's tip wraps to three lines at 390 and was clipped at two */
+  @media (max-width:560px){ .tip-ticker{min-height:5.8em;} } /* 2026-11-03 (FIX8, QA2 minor 13): the Nest's tip wraps to three lines at 390 and was clipped at two */
   .tip-ticker .tip-line{position:absolute; left:10px; right:0; top:0; transform-origin:0 50%; animation:tipIn .6s cubic-bezier(.2,.8,.3,1) both, tipDrift 14s linear .6s both;}
   .tip-ticker .tip-line.tip-out{animation:tipOutZoom .42s ease-in forwards;}
   @keyframes tipDrift{from{translate:0 0;} to{translate:-8px 0;}} /* 2026-10-10: was -22px, which pushed the first letters out of the clipped box on phones */
@@ -3602,7 +3602,7 @@
   .trench-setup .ts-row-cta{font-size:12.5px; font-weight:800; color:var(--accent-strong);}
   .trench-setup .ts-allies{margin:12px 0 4px; font-size:13.5px;}
   .trench-setup .ts-lvl{font-size:11.5px; opacity:.7;}
-  @media (max-width:520px){ .trench-setup .ts-rows{grid-template-columns:1fr;} }
+  @media (max-width:560px){ .trench-setup .ts-rows{grid-template-columns:1fr;} }
   .trench-replay{max-width:760px; width:min(760px, calc(100vw - 24px)); max-height:min(94vh, 980px); overflow:auto;}
   .trench-replay .tr-round{font-size:13px; font-weight:800; opacity:.65; margin-left:6px;}
   .trench-replay .tr-bars{display:flex; flex-direction:column; gap:4px; margin-bottom:10px;}
@@ -3636,7 +3636,7 @@
   .trench-replay .tr-result{padding:10px 12px; border-radius:12px; background:var(--surface-2); border:1px solid var(--surface-border);}
   .trench-replay .tr-result.is-win{border-color:var(--accent);}
   .trench-replay .tr-result h3{margin:0 0 4px;}
-  @media (max-width:520px){ .trench-replay .tr-bar{grid-template-columns:96px 1fr 58px;} .trench-replay .tr-cell{min-height:48px;} .trench-replay .tr-ico{font-size:16px;} }
+  @media (max-width:560px){ .trench-replay .tr-bar{grid-template-columns:96px 1fr 58px;} .trench-replay .tr-cell{min-height:48px;} .trench-replay .tr-ico{font-size:16px;} }
   /* Quests & medals (2026-10-03) */
   .quests-modal{max-width:640px; width:min(640px, calc(100vw - 32px)); max-height:min(86vh, 900px); overflow:auto;}
   .quests-modal .qs-section{margin:14px 0 6px;}
@@ -3657,7 +3657,7 @@
   .quests-modal .qs-medal-ico{font-size:20px;}
   .quests-modal .qs-medal-l{flex:1;}
   .quests-modal .qs-medal-v{font-weight:800;}
-  @media (max-width:520px){ .quests-modal .qs-quest{grid-template-columns:1fr 54px 80px;} .quests-modal .qs-bar{grid-column:1 / -1; order:3;} }
+  @media (max-width:560px){ .quests-modal .qs-quest{grid-template-columns:1fr 54px 80px;} .quests-modal .qs-bar{grid-column:1 / -1; order:3;} }
   .coach-tip:not(.is-blocking){pointer-events:none;}
   .coach-tip:not(.is-blocking) .coach-ok{pointer-events:auto;}
   .faction-btn[hidden]{display:none;}
@@ -3756,7 +3756,7 @@
   .er-writ.is-offer .er-band{background:linear-gradient(180deg,#8a6a45,#6a4f30);}
   .er-empty{margin:6px 4px; padding:14px 16px; border:3px dashed rgba(63,40,18,.4); background:rgba(252,244,222,.6); color:#3f2812; font-style:italic;}
   .qn-journeys.is-admin-hidden{outline:2px dashed #ff8a7a; outline-offset:4px; opacity:.85;}
-  @media (max-width:520px){ .qn-tab{padding:6px 12px 5px; font-size:14px;} .qn-tab.is-on{padding-bottom:8px;} .er-writ{padding:0 12px 12px;} .er-band{margin:0 -12px; padding:6px 10px;}
+  @media (max-width:560px){ .qn-tab{padding:6px 12px 5px; font-size:14px;} .qn-tab.is-on{padding-bottom:8px;} .er-writ{padding:0 12px 12px;} .er-band{margin:0 -12px; padding:6px 10px;}
     .er-top{grid-template-columns:52px minmax(0,1fr); gap:10px;} .er-portrait{width:52px; height:52px; font-size:28px;} .er-title{font-size:19px;} .er-ask{font-size:16px;} .er-k{min-width:0;} }
   @media (prefers-reduced-motion:reduce){ .er-writ.is-ready .er-seal{animation:none;} .er-bar > span{transition:none;} }
   /* 2026-10-18 (Scale Trail package): the trail's journal on the Notices (a writ with its eight scales listed) and its reward screen */
@@ -3782,8 +3782,8 @@
   .st-reward-extra{justify-content:center; margin:6px 0;}
   .st-reward-sub{margin:8px 0 14px; font:700 17px/1.25 'Caveat','Baloo 2',cursive; color:#4a3019;}
   .st-reward-foot{display:flex; justify-content:center;}
-  @media (max-width:420px){ .st-tab-long{display:none;} .qn-tabs{gap:4px; padding:0 2px;} .qn-tab{padding-left:9px; padding-right:9px;} }
-  @media (max-width:520px){ .st-reward{padding:0 12px 14px;} .st-reward-band{margin:0 -12px 10px;} .st-line, .st-hint{font-size:14.5px;} }
+  @media (max-width:560px){ .st-tab-long{display:none;} .qn-tabs{gap:4px; padding:0 2px;} .qn-tab{padding-left:9px; padding-right:9px;} }
+  @media (max-width:560px){ .st-reward{padding:0 12px 14px;} .st-reward-band{margin:0 -12px 10px;} .st-line, .st-hint{font-size:14.5px;} }
   .coach-tip.is-blocking{box-shadow:0 10px 28px rgba(0,0,0,.45), 0 0 0 3px #ffd76a;}
   .coach-anchor{position:relative; z-index:1145 !important;}
   .coach-locked, .coach-locked *{pointer-events:none !important;}
@@ -3809,7 +3809,7 @@
   /* 2026-10-14 (user: "Proper margins between the feature pages tab and the feature page themselves. - the inventory one
      especially"): 10px was not enough room under the Camp/Codex/Forge/Nest/Inventory strip; 20px on desktop, 16px on phones. */
   .page-back-bar{display:flex; align-items:center; justify-content:flex-end; gap:8px; margin:0 0 20px; position:relative; z-index:20;}
-  @media (max-width:640px){ .page-back-bar{margin-bottom:16px;} }
+  @media (max-width:560px){ .page-back-bar{margin-bottom:16px;} }
   .page-back-bar .pb-shortcuts{margin-right:auto;}
   .page-back-bar .pb-shortcuts{display:flex; gap:4px; padding:3px; border-radius:999px; background:rgba(20,14,8,.45); box-shadow:inset 0 0 0 1px rgba(255,236,190,.2);}
   .page-back-bar .pb-sc{display:inline-flex; align-items:center; gap:5px; border:0; cursor:pointer; padding:5px 10px; border-radius:999px; background:transparent; color:#fff8e6; font:800 13px 'Baloo 2',system-ui,sans-serif;}
@@ -3817,7 +3817,7 @@
   .page-back-bar .pb-sc:hover{background:rgba(255,248,230,.16);} .page-back-bar .pb-sc.is-here{background:#fff8e6; color:#2b2117; cursor:default;}
   .page-back-bar .pb-back{width:40px; height:40px; border-radius:50%; border:0; cursor:pointer; display:grid; place-items:center; font-size:20px; font-weight:900; background:#fff8e6; color:#2b2117; box-shadow:0 0 0 2px #c9853a, 0 4px 10px rgba(0,0,0,.35);}
   .page-back-bar .pb-back:hover{background:#ffe9b8;}
-  @media (max-width:900px){ .page-back-bar .pb-sc b{display:none;} .page-back-bar .pb-sc{padding:6px 8px;} }
+  @media (max-width:899px){ .page-back-bar .pb-sc b{display:none;} .page-back-bar .pb-sc{padding:6px 8px;} }
 .page-back-bar .pb-sc{min-height:36px;} /* 2026-11-16 (package UX3): 36px tap target (was 31px) */
   /* 2026-10-15 (user: "the back button is not centered (in Nest etc.)"): the ↩ glyph came from whichever font had it, so it sat off
      centre (and as a colour emoji on some systems); it is now a drawn arrow centred in the circle. The Shop's own back button only
@@ -3884,7 +3884,7 @@
   .fr-recent .ro-res{display:inline; width:auto; height:auto; padding:0; background:none; color:inherit; font-weight:800;}
   .fr-recent .ro-res.win{color:#2f8f45;} .fr-recent .ro-res.loss{color:#b5473f;}
   @media (prefers-reduced-motion: reduce){ .fr-suggest.is-in .fr-row, .fr-npc:hover .fr-npc-av{animation:none;} }
-  @media (max-width:520px){ .fr-row{grid-template-columns:36px 1fr; } .fr-row .fr-actions{grid-column:2; justify-self:start;} }
+  @media (max-width:560px){ .fr-row{grid-template-columns:36px 1fr; } .fr-row .fr-actions{grid-column:2; justify-self:start;} }
   .fr-waiting{margin-top:14px; padding:10px 12px; border-radius:10px; background:rgba(213,139,58,.15); display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
   .invite-modal{max-width:440px;}
   .inv-field{margin:12px 0;} .inv-label{font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; opacity:.75; margin-bottom:6px;}
@@ -3996,7 +3996,7 @@
   .battle-log-panel.testkit-log .battle-log{max-height:220px; display:flex !important;}
   .battle-log-panel.testkit-log .battle-log-toggle{pointer-events:none;} .battle-log-panel.testkit-log .battle-log-chevron{display:none;}
   .log-row.tk-log-divider{background:transparent; border-top:1px dashed rgba(255,255,255,.25); border-radius:0; font-weight:800; opacity:.8; text-align:center;}
-  @media (max-width: 900px){
+  @media (max-width:899px){
     .testkit-layout{grid-template-columns:1fr;}
     .testkit-panel{position:static; max-height:none;}
   }
@@ -4044,7 +4044,7 @@
   .fxl-events li.is-err{color:#ff9a8a;}
   .fxl-kv{opacity:.65; font-family:ui-monospace, monospace; font-size:11.5px;}
   .fxl-said{opacity:.8; font-size:12px;}
-  @media (max-width: 900px){
+  @media (max-width:899px){
     .fxl-layout{grid-template-columns:1fr;}
     .fxl-list{position:static; max-height:300px;}
   }
@@ -4083,7 +4083,7 @@
   .board-row.reserve-row.coop-rows > .board-card{transform:none; margin-bottom:0;}
   .board-row.reserve-row.coop-rows .board-card.is-reserve{filter:none;}
   .board-row.reserve-row.coop-rows.enemy.is-empty{display:none !important;}
-  @media (min-width:701px){ #appWrap.in-match.gd-match, #appWrap.in-match.gd-match .battlefield{--mc-k:var(--gd-k, 1);} } /* COOP3: the match fitted to the window (centreFieldInFs) */
+  @media (min-width:561px){ #appWrap.in-match.gd-match, #appWrap.in-match.gd-match .battlefield{--mc-k:var(--gd-k, 1);} } /* COOP3: the match fitted to the window (centreFieldInFs) */
   .pass-overlay.gd-rw-overlay{z-index:9100; overflow-y:auto;} /* COOP3 (W6): a floor's rewards window, over the vault's floor panel (.gd-overlay, 9000) */
   .gd-rw-overlay .winloss-card{max-height:calc(100dvh - 40px); overflow-y:auto;}
   /* RV2: a reserve strike under reduced motion / Low effects (no lunge), and an ally's play: its name tag, its hand of card backs,
@@ -4121,7 +4121,7 @@
 
   /* ==================== SIMULATOR ==================== */
   .deck-cols{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
-  @media (max-width:820px){.deck-cols{grid-template-columns:1fr;}}
+  @media (max-width:899px){.deck-cols{grid-template-columns:1fr;}}
   .deck-col h3{font-size:15px; margin-bottom:8px;}
   /* Item #10 (2026-09-18): "'red' highlighted slot 'pill' with default text (greyed out)
      'missing leader'. Drag the card there to add it as leader." */
@@ -4175,7 +4175,7 @@
   .flip3d-inner.is-flipped{transform:rotateY(180deg);}
   .flip3d-face{backface-visibility:hidden; -webkit-backface-visibility:hidden;}
   .flip3d-face.flip3d-back{position:absolute; inset:0; transform:rotateY(180deg);}
-  @media (max-width:700px){
+  @media (max-width:560px){
     .forge-layout{grid-template-columns:1fr;}
     .forge-detail{position:static;}
   }
@@ -4370,7 +4370,7 @@
   .splash-enter:hover{animation-play-state:paused; transform:translateY(-2px);}
   @keyframes splashPulse{0%,100%{box-shadow:0 10px 26px rgba(0,0,0,.35);} 50%{box-shadow:0 10px 32px rgba(0,0,0,.35), 0 0 0 6px rgba(255,255,255,.06);}}
   .splash-sub{color:var(--banner-ink); opacity:.55; font-size:12px; margin:18px 0 0;}
-  @media (max-width:480px){ .splash-mark{font-size:52px;} .splash-inner{padding:24px 18px;} }
+  @media (max-width:560px){ .splash-mark{font-size:52px;} .splash-inner{padding:24px 18px;} }
   /* Debug account-switch bar (2026-09-23, batch #29; retargeted batch #30 to a hover-zone trigger
      instead of a Shift-tap toggle -- see wireDebugBar() in arena_app.js). z-index 99999 is
      deliberately far above every other layer in the app (the highest pre-existing value anywhere
@@ -4404,7 +4404,7 @@
   .debug-bar-btn:hover{background:var(--db-btn-hover-bg); border-color:var(--highlight-amber);}
   .debug-bar-btn-danger{border-color:var(--db-danger-border); color:var(--db-danger-ink);}
   .debug-bar-btn-danger:hover{background:var(--db-danger-hover-bg); border-color:var(--db-danger-hover-border);}
-  @media (max-width:480px){ .debug-bar{padding:6px 8px; flex-direction:column; align-items:stretch;}
+  @media (max-width:560px){ .debug-bar{padding:6px 8px; flex-direction:column; align-items:stretch;}
     .debug-bar-label{width:100%; margin:0 0 4px; text-align:center;}
     /* 2026-09-25 fix ("align the accounts tgt"): at this width the 4 buttons stack one per row
        (see .debug-bar's flex-wrap), and each was individually centered by the row's own
@@ -4443,7 +4443,7 @@
   .faction-showcase .pl1-fsf-front, .faction-showcase .pl1-fsf-back{backface-visibility:hidden; -webkit-backface-visibility:hidden;}
   .faction-showcase .pl1-fsf-back{position:absolute; inset:0; transform:rotateY(180deg); border-radius:10px; box-shadow:0 10px 22px rgba(0,0,0,.5);}
   .faction-showcase .fs-flash{position:absolute; inset:0; background:radial-gradient(circle at 50% 50%, rgba(255,240,200,.55), transparent 60%); opacity:0;}
-  @media (max-width:820px), (hover:none){ .faction-showcase{display:none;} }
+  @media (max-width:899px), (hover:none){ .faction-showcase{display:none;} }
   .faction-choice-row{display:flex; gap:18px; justify-content:center; flex-wrap:wrap; margin:8px 0 18px;}
   .faction-btn{display:flex; flex-direction:column; align-items:center; gap:4px; width:190px;
     padding:22px 16px 18px; border-radius:18px; border:1px solid rgba(255,255,255,.16);
@@ -4456,7 +4456,7 @@
   .faction-ico{font-size:44px; line-height:1; filter:drop-shadow(0 4px 8px rgba(0,0,0,.4)); margin-bottom:4px;}
   .faction-name{font-size:18px; font-weight:700;}
   .faction-sub{font-size:12px; opacity:.7;}
-  @media (max-width:480px){ .faction-btn{width:150px; padding:18px 10px 14px;} .faction-ico{font-size:36px;} .faction-name{font-size:15px;} }
+  @media (max-width:560px){ .faction-btn{width:150px; padding:18px 10px 14px;} .faction-ico{font-size:36px;} .faction-name{font-size:15px;} }
 
   /* Tutorial series, skirmish 3 deck-arranging screen (2026-09-23, batch #31) -- reuses the same
      .splash/.faction-select shell as Faction Choice above, adding only the toggleable card grid
@@ -4481,7 +4481,7 @@
   .tdp-reward-chip{display:inline-flex; align-items:center; gap:6px; padding:6px 12px;
     border-radius:999px; border:1px solid #ffb648; background:rgba(255,182,72,.16);
     color:var(--banner-ink); font-size:13px; font-weight:700;}
-  @media (max-width:480px){ .tdp-card{width:86px; padding:10px 6px 8px;} .tdp-ico{font-size:24px;} .tdp-name{font-size:10.5px;} }
+  @media (max-width:560px){ .tdp-card{width:86px; padding:10px 6px 8px;} .tdp-ico{font-size:24px;} .tdp-name{font-size:10.5px;} }
 
   /* ---- Login/entrance overlay extensions (2026-09-20) ----
      The original .splash background lived directly on .splash itself; it now lives on this
@@ -4569,7 +4569,7 @@
   .bush-tr{right:-10%; top:-14%; font-size:min(16vw,130px); opacity:.85; transform:rotate(-8deg) scaleX(-1);}
   .bush-bc1{left:20%; bottom:-14%; font-size:min(14vw,110px); opacity:.9;}
   .bush-bc2{right:22%; bottom:-16%; font-size:min(15vw,120px); opacity:.9; transform:scaleX(-1);}
-  @media (max-width:600px){ .bush-tl, .bush-tr{display:none;} }
+  @media (max-width:560px){ .bush-tl, .bush-tr{display:none;} }
   /* Start clicked -> .leaving is added to .entrance (see triggerEntranceAnimation in
      arena_app.js). Sequence, staged purely with transition-delay so one class toggle drives the
      whole thing: bushes peel off + the background pans/fades together first (0s), then the
@@ -4791,7 +4791,7 @@
   .home-menu-row .home-profile-avatar{width:26px;}
   .home-menu-row .home-menu-btn-small{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .home-menu-row .home-profile-sub{position:absolute; left:0; right:0; bottom:5px; text-align:center;}
-  @media (max-width: 460px){
+  @media (max-width:560px){
     .home-menu-row{gap:6px;}
     .home-menu-row .home-menu-btn-small{font-size:11px; height:74px; min-height:74px; padding:6px 2px;}
     .home-menu-row .home-menu-btn-small .tab-emoji{font-size:19px;}
@@ -4948,7 +4948,7 @@
   .achv-tile.is-claimed{opacity:.8;} .achv-stamp{position:absolute; right:-4px; bottom:-4px; width:22px; height:22px; border-radius:50%; background:var(--health, #3f5c3a); color:#fff; font-style:normal; font-size:13px; display:grid; place-items:center; border:2px solid var(--surface-2);}
   .achv-tile .achv-bar{height:6px; border-radius:4px; background:rgba(127,127,127,.25); overflow:hidden; margin-top:6px;} .achv-tile .achv-bar i{display:block; height:100%; background:var(--accent-strong); border-radius:inherit;}
   .achv-tile .achv-progress{font-size:11px; color:var(--ink-muted); font-variant-numeric:tabular-nums;}
-  @media (max-width:520px){ .achv-tile{grid-template-columns:44px 1fr;} .achv-medal{width:44px; height:44px; font-size:20px;} }
+  @media (max-width:560px){ .achv-tile{grid-template-columns:44px 1fr;} .achv-medal{width:44px; height:44px; font-size:20px;} }
   @media (prefers-reduced-motion: reduce){ .achv-tile.is-ready .achv-medal{animation:none;} }
 
   /* ---- Conquest / Raid (2026-09-16) ---- */
@@ -5354,7 +5354,7 @@
   /* Phones: the map pane wraps under the region strip and is clipped, so the panel floats just
      above the Fight button instead. */
   .conquest-main > .conquest-node-panel{position:sticky; bottom:0; z-index:6; max-height:min(46%, 260px); overflow:auto; box-shadow:0 -6px 18px rgba(0,0,0,.25);}
-  @media (max-width:820px){ .conquest-main > .conquest-node-panel{position:fixed; left:16px; right:16px; bottom:calc(100px + env(safe-area-inset-bottom, 0px)); max-height:32vh; z-index:40;} }
+  @media (max-width:899px){ .conquest-main > .conquest-node-panel{position:fixed; left:16px; right:16px; bottom:calc(100px + env(safe-area-inset-bottom, 0px)); max-height:32vh; z-index:40;} }
   /* Best rank (2026-10-08, user: "more obvious, overlaying the top right of the skirmish detail pane:
      a slightly off-rotated S in a glowing pink & purple foil hexagon"). A, B and C get gold, silver
      and bronze foil; S gets the animated pink-violet foil and glow. */
@@ -5522,7 +5522,7 @@
   .gsk-admin{display:flex; align-items:center; gap:4px;}
   .gsk-note{font-size:12.5px; color:var(--ink-muted); margin:8px 0 0;}
   .gsk-seeds{font-size:13px;}
-  @media (max-width:520px){ .gsk{grid-template-columns:28px 1fr;} .gsk-act{grid-column:1 / -1; flex-direction:row; justify-content:flex-end; flex-wrap:wrap;} .gsk > .gsk-tag{grid-column:2; justify-self:start;} }
+  @media (max-width:560px){ .gsk{grid-template-columns:28px 1fr;} .gsk-act{grid-column:1 / -1; flex-direction:row; justify-content:flex-end; flex-wrap:wrap;} .gsk > .gsk-tag{grid-column:2; justify-self:start;} }
   /* Match History / Replay (#254) — a plain expandable row list on the Profile tab, same
      .panel/.panel-sub shell as everything else there. */
   /* Sign-in gate modal (2026-09-24, batch #32) — the shared prompt Online Raid and Shop packs
@@ -5564,7 +5564,7 @@
   .sbm-chips{display:flex; flex-wrap:wrap; gap:6px;}
   .sbm-chip{font-size:12.5px; padding:2px 9px; border-radius:999px; border:1px dashed var(--surface-border); color:var(--ink-soft, var(--ink)); opacity:.7;}
   .sbm-chip.is-met{border-style:solid; opacity:1; background:var(--surface);}
-  @media (max-width:600px){ .sbm-row{flex-direction:column; gap:4px;} .sbm-map{flex:none;} }
+  @media (max-width:560px){ .sbm-row{flex-direction:column; gap:4px;} .sbm-map{flex:none;} }
   /* 2026-09-25 (standardisation pass): the Custom Trigger editor's small field inputs and the
      Roll Table editor's number columns were each hand-writing their own `style="width:Npx"` at
      every call site (with inconsistent trailing-semicolon usage too) instead of sharing classes
@@ -5594,7 +5594,7 @@
   .sbx-pick:hover .card-tile, .sbx-pick:focus-visible .card-tile{transform:translateY(-2px); box-shadow:0 0 0 2px var(--accent, #e0b04a);}
   .sbx-flags{position:absolute; top:2px; left:4px; font-size:12px; pointer-events:none; filter:drop-shadow(0 1px 1px rgba(0,0,0,.6));}
   .sandbox-results .sbx-more, .sandbox-results > .empty-hint{grid-column:1 / -1;}
-  @media (max-width:600px){ .sandbox-results{grid-template-columns:repeat(auto-fill,minmax(78px,1fr)); max-height:300px;} }
+  @media (max-width:560px){ .sandbox-results{grid-template-columns:repeat(auto-fill,minmax(78px,1fr)); max-height:300px;} }
   .sandbox-actions{display:flex; gap:8px; justify-content:flex-end;}
   /* Codex "Test cards" filter toggle (2026-09-22, Developer-Mode-only) — matches the plain
      checkbox-in-a-pill look the toolbar's other controls don't use, but reads clearly as its own
@@ -5619,7 +5619,7 @@
   /* .conquest-skirmish-menu / .csm-row (2026-09-16) removed 2026-09-18 (item #6, "remove the
      Skirmish explanations below the map — the tooltip already exists"): every node's info is
      now covered by the hover tooltip (nodeTooltipHTML) and the click-through node panel above. */
-  @media (max-width:820px){ .conquest-layout{height:calc(100vh - 190px); height:calc(100dvh - 190px); min-height:380px; flex-wrap:wrap;} .conquest-maps{width:100%; max-height:160px; border-right:none; border-bottom:1px solid rgba(255,255,255,.16);
+  @media (max-width:899px){ .conquest-layout{height:calc(100vh - 190px); height:calc(100dvh - 190px); min-height:380px; flex-wrap:wrap;} .conquest-maps{width:100%; max-height:160px; border-right:none; border-bottom:1px solid rgba(255,255,255,.16);
     /* Backlog #408 (2026-09-27 UX audit): this list clipped to ~2.3 rows with zero visible scroll
        affordance, reading as broken rather than intentionally short. A themed, always-visible thin
        scrollbar is the low-risk fix — no layout restructuring, just an honest "there's more below" cue. */
@@ -5654,7 +5654,7 @@
   .pvp-portent-next{font-size:10px; opacity:.7; white-space:nowrap;}
   @keyframes ppStrange{0%,100%{transform:scale(1);} 50%{transform:scale(1.08);}}
   @media (prefers-reduced-motion: reduce){ .pvp-portent .pp-fx.pp-w4{animation:none;} }
-  @media (max-width:520px){ .pvp-mode-btn{padding-right:86px;} .pvp-portent{width:78px;} .pvp-portent .pp-fx{width:30px; height:30px; font-size:18px;} }
+  @media (max-width:560px){ .pvp-mode-btn{padding-right:86px;} .pvp-portent{width:78px;} .pvp-portent .pp-fx{width:30px; height:30px; font-size:18px;} }
   .arena-mode-btn .amb-ico{font-size:34px;}
   .arena-mode-btn .amb-lbl{font-family:'Baloo 2'; font-size:17px;}
   /* One shared max-width for every variant's blurb (previously 180/210/230/210px per variant,
@@ -6061,7 +6061,7 @@
      top/bottom castle rows all already flex-wrap by default (see .topbar/.hud/.hand-strip
      above), so this block only needs to handle the pieces that don't reflow safely on their
      own: fixed card/tile dimensions, and a few spacing/legibility tweaks. */
-  @media (max-width:700px){
+  @media (max-width:560px){
     .wrap{padding:10px 0 34px;}
     .topbar-wrap, .content-wrap{padding:0 10px;}
     #appWrap.in-match .content-wrap{max-width:100vw; padding-left:6px; padding-right:6px;}
@@ -6176,7 +6176,7 @@
      little height to spare. This does not fully eliminate the remaining overflow at 375x667 (cuts
      it roughly in half); the rest is the same accepted, documented tradeoff as before -- the page
      scrolls cleanly to reach the rest rather than clipping or collapsing the Flip-protected board. */
-  @media (max-height:700px) and (max-width:700px){
+  @media (max-height:700px) and (max-width:560px){
     :root{ --match-card-w:54px; --match-card-h:68px; }
     .hud{margin-bottom:4px;}
     .top-play-row, .bottom-play-row{margin-bottom:3px;}
@@ -6187,7 +6187,7 @@
   /* 2026-10-17 (user: "In Mobile and iPad, the field can be 15% more zoomed in."): on a phone the battlefield's cards are 15% bigger
      than the hand's (65x81 -> 75x93; 54x68 -> 62x78 on a short phone) and the rows grow with them. A crowded row still shrinks its
      cards to the field's width (.board-row > .board-card), and fitBattlefieldZoom() zooms out past that, so nothing runs off the side. */
-  @media (max-width:700px){
+  @media (max-width:560px){
     /* 2026-10-30 (CS-D, step 7): the battlefield's own 75x93 / 62x78 pair is gone: in a match (the only place a battlefield shows) MB2's rules
        below set it (--mb2-bw on a phone fight, --mb2-bh in a raid) */
     #appWrap .battlefield .board-row{min-height:calc(var(--match-card-h) + 40px);}
@@ -6200,7 +6200,7 @@
      ends up behind them; the safe-area insets keep it off the home indicator. The battlefield takes the height that the rows
      above and below leave, and the board sits in its middle (fitBattlefieldZoomNow centres a shrunk board the same way). A
      raid's card sizes come from mb2FitRaidCards() as --mb2-bh / --mb2-ch / --mb2-gap / --mb2-rgap on #appWrap. */
-  @media (max-width:700px){
+  @media (max-width:560px){
     /* the hand, the castles, the decks and the Graveyard are the board's card size (75x93; 62x78 on a short phone) */
     #appWrap.in-match{--match-card-w:75px; --match-card-h:93px;}
     /* 2026-10-19 (MB2b, the owner: the field's cards as large as the hand's, by making the field bigger): a phone's normal fight
@@ -6210,10 +6210,10 @@
     #appWrap.in-match:not(.mb2-raid) #battlefieldInner > .board-row{gap:var(--mb2-gap, 4px) !important; --gapx:var(--mb2-gap, 4px); padding-left:2px !important; padding-right:2px !important;}
     #appWrap.in-match:not(.mb2-raid) #battlefieldInner > .board-row > .board-card{width:var(--match-card-w) !important; flex-shrink:0; margin-left:0 !important;}
   }
-  @media (max-width:700px) and (max-height:700px){
+  @media (max-width:560px) and (max-height:700px){
     #appWrap.in-match{--match-card-w:62px; --match-card-h:78px;}
   }
-  @media (max-width:700px){
+  @media (max-width:560px){
     #appWrap.in-match{display:flex; flex-direction:column; box-sizing:border-box; height:100vh; height:100svh; min-height:0 !important;
       padding-top:max(6px, env(safe-area-inset-top, 0px)) !important; padding-bottom:max(6px, env(safe-area-inset-bottom, 0px)) !important;}
     #appWrap.in-match > .content-wrap{flex:1 1 auto; min-height:0; width:100%; box-sizing:border-box; display:flex; flex-direction:column;}
@@ -6251,9 +6251,9 @@
      a quarter smaller (--mb2-th), which gives the six rows their height */
   #appWrap.in-match.mb2-raid{--match-card-h:var(--mb2-th, 82px); --match-card-w:calc(var(--mb2-th, 82px) * .8);}
   #appWrap.in-match.mb2-raid .bottom-play-row .hand-strip, #appWrap.in-match.mb2-raid .bottom-play-row #leaderWidgetWrap{--match-card-h:var(--mb2-ch, 110px); --match-card-w:calc(var(--mb2-ch, 110px) * .8);}
-  @media (min-width:701px){ #appWrap.in-match.mb2-raid .bottom-play-row{--match-card-h:var(--mb2-ch, 110px); --match-card-w:calc(var(--mb2-ch, 110px) * .8);} }
+  @media (min-width:561px){ #appWrap.in-match.mb2-raid .bottom-play-row{--match-card-h:var(--mb2-ch, 110px); --match-card-w:calc(var(--mb2-ch, 110px) * .8);} }
   /* MB2b: on a phone the raid's fight controls sit in a 4-wide grid of two short lines inside the top row, not on a line of their own */
-  @media (max-width:700px){
+  @media (max-width:560px){
     #appWrap.in-match.mb2-raid .top-play-row{flex-wrap:nowrap;}
     #appWrap.in-match.mb2-raid .top-right-stack{flex:none; margin-left:auto;}
     #appWrap.in-match.mb2-raid #view-play .top-row-controls{display:grid; grid-template-columns:repeat(4, auto); gap:3px; justify-items:stretch;}
@@ -6268,7 +6268,7 @@
   body.bw-holding{-webkit-touch-callout:none; -webkit-user-select:none; user-select:none;}
   #cardPop.is-held{pointer-events:auto; cursor:pointer;}
   #cardPop.is-held .card-pop-visual-tile{pointer-events:none;}
-  @media (max-width:700px){
+  @media (max-width:560px){
     #appWrap.in-match.mb2-raid #view-play > .battlefield{padding:4px;}
     #appWrap.in-match.mb2-raid > .content-wrap{padding-left:4px; padding-right:4px;}
     #appWrap.in-match .bottom-play-row .graveyard-pile{font-size:min(10.5px, calc(var(--match-card-w) * .15));} /* "Graveyard" fits a small pile */
@@ -6316,7 +6316,7 @@
   .home-play .home-sub{font-size:14px;}
   .home-play.is-rejoin{background:linear-gradient(180deg,#3f8f5a,#22603a) !important; border-color:#9fe0b0 !important; box-shadow:0 0 0 2px rgba(159,224,176,.35), 0 0 22px rgba(80,200,120,.35) !important; animation:rejoinPulse 2.4s ease-in-out infinite;}
   @keyframes rejoinPulse{50%{box-shadow:0 0 0 3px rgba(159,224,176,.55), 0 0 30px rgba(80,200,120,.5);}}
-  @media (max-width:520px){ .home-tile .home-sub{white-space:normal; font-size:11px; line-height:1.2;} }
+  @media (max-width:560px){ .home-tile .home-sub{white-space:normal; font-size:11px; line-height:1.2;} }
   .home-note{position:absolute; z-index:3; display:flex; flex-direction:column; align-items:flex-start; gap:1px; padding:10px 14px 9px; min-width:128px; border:0; cursor:pointer; text-align:left;
     color:#3b2712; background:linear-gradient(180deg,#f6e8c6,#e7cf98); box-shadow:0 8px 16px rgba(0,0,0,.35), inset 0 0 0 1px rgba(122,86,48,.35); border-radius:4px; transition:transform .18s;}
   .home-note b{font-family:'Baloo 2'; font-size:16px;} .home-note small{font-size:12px; opacity:.8;}
@@ -6325,7 +6325,7 @@
   .home-note-wrap{position:absolute; right:-152px; top:150px; z-index:3;} .home-note-wrap .home-note{position:relative; rotate:5deg;}
   .home-note:hover, .home-note:focus-visible{transform:scale(1.06) rotate(1deg);}
   .home-note .home-badge{position:absolute; top:-8px; right:-8px;}
-  @media (max-width:860px){ .home-note.note-quests, .home-note-wrap{position:static; rotate:0deg;} .home-note-wrap .home-note{rotate:0deg;} .home-note.note-quests{grid-column:1;} .home-note-wrap{grid-column:2;} .home-note{width:100%; min-width:0; align-items:center; text-align:center;} .home-note .pin{display:none;} }
+  @media (max-width:899px){ .home-note.note-quests, .home-note-wrap{position:static; rotate:0deg;} .home-note-wrap .home-note{rotate:0deg;} .home-note.note-quests{grid-column:1;} .home-note-wrap{grid-column:2;} .home-note{width:100%; min-width:0; align-items:center; text-align:center;} .home-note .pin{display:none;} }
   .home-extras .home-menu-btn-small{width:130px !important; min-width:130px;}
   .home-community-wrap .home-menu-btn-small{width:130px;}
   .home-community-menu{position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%); display:flex; flex-direction:column; gap:4px; padding:8px; border-radius:12px; background:var(--surface); border:1px solid var(--surface-border); box-shadow:0 10px 24px rgba(0,0,0,.35); z-index:30; min-width:150px;}
@@ -6333,7 +6333,7 @@
   #appWrap.tab-home .topbar{justify-content:flex-end;}
   #appWrap.tab-home .topbar .brand{display:none;}
   .home-menu-row.home-extras{display:flex !important; justify-content:center; gap:10px; width:min(520px,100%); margin-left:auto; margin-right:auto;}
-  @media (max-width:520px){ .home-grid .home-tile{min-height:62px; font-size:16px;} .home-grid .home-play{min-height:96px; font-size:24px;} }
+  @media (max-width:560px){ .home-grid .home-tile{min-height:62px; font-size:16px;} .home-grid .home-play{min-height:96px; font-size:24px;} }
   /* Arena groups (2026-10-03, D5): Practice / Challenges / Online, very short copy. */
   .arena-group{margin:4px 0 14px; text-align:left;}
   .arena-group-h{font-size:13px; letter-spacing:.08em; text-transform:uppercase; opacity:.7; margin:6px 2px 8px; font-weight:800;}
@@ -6411,8 +6411,8 @@
   .conquest-main.world-in-right{animation:worldInR .32s cubic-bezier(.2,.8,.3,1);} .conquest-main.world-in-left{animation:worldInL .32s cubic-bezier(.2,.8,.3,1);}
   @keyframes worldOutL{to{transform:translateX(-12%); opacity:0}} @keyframes worldOutR{to{transform:translateX(12%); opacity:0}}
   @keyframes worldInR{from{transform:translateX(12%); opacity:0}} @keyframes worldInL{from{transform:translateX(-12%); opacity:0}}
-  @media (max-width:760px){ .world-edge{padding:8px 6px;} }
-  @media (max-width:760px){
+  @media (max-width:899px){ .world-edge{padding:8px 6px;} }
+  @media (max-width:899px){
     .conquest-maps{flex-direction:row !important; width:auto !important; max-height:none !important; overflow-x:auto !important; overflow-y:hidden !important; flex-wrap:nowrap; padding:8px !important;}
     .conquest-map-item{flex:0 0 auto; padding:6px 10px !important; gap:6px !important;}
     .conquest-map-item .cmi-ico{font-size:18px !important;} .conquest-map-item .cmi-name{font-size:12px !important; white-space:nowrap;}
@@ -6428,7 +6428,7 @@
   @keyframes hsBob{0%,100%{translate:0 0} 50%{translate:0 -6px}}
   @keyframes hsHover{0%,100%{translate:0 0} 50%{translate:0 -12px}}
   #appWrap:not(.tab-home) .home-scene{display:none;}
-  @media (max-width:820px){ .hs-otter{width:110px; opacity:.55; bottom:2vh;} .hs-bird{width:90px; opacity:.55; top:12vh;} }
+  @media (max-width:899px){ .hs-otter{width:110px; opacity:.55; bottom:2vh;} .hs-bird{width:90px; opacity:.55; top:12vh;} }
   @media (prefers-reduced-motion: reduce){ .hs-otter, .hs-bird{animation:none;} .hs-layer{transition:none;} }
   :root{--splash-art:url(__SPLASH_ART__);}
   /* Atmosphere packs (2026-10-03, "shaders" v0): a colour grade + a light/particle layer over everything. */
@@ -6445,7 +6445,7 @@
   body[data-atmo="live"][data-tod="night"] #atmoTint{opacity:.62; background:radial-gradient(ellipse at 25% 0%, rgb(190,205,255), rgb(110,130,200) 50%, rgb(60,70,130) 100%);}
   body[data-atmo="autumn"] #atmoTint{opacity:.45; background:radial-gradient(ellipse at 50% 30%, rgba(255,190,120,.6), rgba(150,60,20,.5));}
   /* Phone header on one row (2026-10-03, UX #20): logo mark only, compact pills, short sign-in label. */
-  @media (max-width:520px){
+  @media (max-width:560px){
     .topbar{flex-wrap:nowrap; gap:6px; justify-content:flex-end;}
     .topbar .brand{margin-right:auto; padding:4px 2px;} .topbar .brand .word{display:none;}
     .topbar .home-nav-btn{padding:7px 9px; font-size:12.5px;}
@@ -6465,14 +6465,14 @@
   #appWrap.cq-hud:not(.in-match) #view-play .play-subtabs-actions .home-nav-btn .tab-emoji{font-size:18px; margin:0; line-height:1; display:block; text-align:center;}
   #appWrap.cq-hud.cq-no-tabs:not(.in-match) #view-play .play-subtabs-row{height:0; margin:0; padding:0; min-height:0;}
   /* ...and the map takes the room the header used to need (the Fight button still floats below). */
-  @media (min-width:821px){ #appWrap.cq-hud:not(.in-match) .conquest-layout{height:calc(100dvh - 150px);} #appWrap.cq-hud.cq-no-tabs:not(.in-match) .conquest-layout{height:calc(100dvh - 104px);} }
+  @media (min-width:900px){ #appWrap.cq-hud:not(.in-match) .conquest-layout{height:calc(100dvh - 150px);} #appWrap.cq-hud.cq-no-tabs:not(.in-match) .conquest-layout{height:calc(100dvh - 104px);} }
   body.conquest-immersive #appWrap.cq-hud #view-play .play-subtabs-actions{position:fixed; top:12px; z-index:60;}
-  @media (max-width:820px){ #appWrap.cq-hud:not(.in-match) .conquest-headline{margin-top:48px;} #appWrap.cq-hud:not(.in-match) #view-play .play-subtabs-actions{right:100px;} }
+  @media (max-width:899px){ #appWrap.cq-hud:not(.in-match) .conquest-headline{margin-top:48px;} #appWrap.cq-hud:not(.in-match) #view-play .play-subtabs-actions{right:100px;} }
   .conquest-map-item.home-chip .cmi-ico{font-size:22px;}
   .cq-rejoin{position:absolute; left:18px; bottom:18px; z-index:9; display:flex; align-items:center; gap:6px; padding:9px 14px; border-radius:999px; cursor:pointer; font:inherit; font-weight:800; color:#eafff0;
     background:linear-gradient(180deg,#3f8f5a,#22603a); border:1.5px solid #9fe0b0; box-shadow:0 6px 16px rgba(0,0,0,.35), 0 0 18px rgba(80,200,120,.35); animation:rejoinPulse 2.4s ease-in-out infinite;}
   .cq-rejoin small{opacity:.8; font-weight:700;} .cq-rejoin:hover{filter:brightness(1.1);}
-  @media (max-width:820px){ .cq-rejoin{position:fixed; left:16px; bottom:calc(84px + env(safe-area-inset-bottom, 0px)); padding:7px 12px; font-size:13px; z-index:41;} }
+  @media (max-width:899px){ .cq-rejoin{position:fixed; left:16px; bottom:calc(84px + env(safe-area-inset-bottom, 0px)); padding:7px 12px; font-size:13px; z-index:41;} }
   .conquest-world-btn{position:absolute; top:12px; right:58px; z-index:8; width:38px; height:38px; border-radius:10px; border:1px solid rgba(255,255,255,.35); background:rgba(0,0,0,.4); color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;}
   .conquest-world-btn:hover, .conquest-world-btn:focus-visible{background:rgba(0,0,0,.6);}
   .conquest-layout.is-world{background:
@@ -6656,7 +6656,7 @@
   .gd-chest{display:flex; gap:12px; align-items:center; flex-wrap:wrap; font-size:14px; padding:6px 12px; border-radius:12px; background:rgba(241,207,90,.12);} .gd-chest b{font-size:16px; display:inline-flex; align-items:center; gap:4px;} .gd-chest b svg, .gd-chest b img{width:18px; height:18px;}
   .gd-picks{display:flex; gap:10px; flex-wrap:wrap;} .gd-pick{padding:0; border:0; background:none; cursor:pointer; border-radius:10px; transition:transform .12s;} .gd-pick:hover, .gd-pick:focus-visible{transform:translateY(-4px);} .gd-pick .card-tile{width:96px; pointer-events:none;}
   .gd-phase-floorEnd .gd-actions, .gd-phase-end .gd-actions, .gd-phase-floorEnd .gd-hint, .gd-phase-end .gd-hint{display:none;}
-  @media (min-width:760px){ .gd-shell{padding:14px 24px 28px;} .gd-row{gap:6px;} .gd-cell{aspect-ratio:4 / 5;} .gd-board{padding:10px 14px;} .gd-hand-card .card-tile{width:100px;} .gd-seats-grid{gap:10px; padding:14px;} }
+  @media (min-width:900px){ .gd-shell{padding:14px 24px 28px;} .gd-row{gap:6px;} .gd-cell{aspect-ratio:4 / 5;} .gd-board{padding:10px 14px;} .gd-hand-card .card-tile{width:100px;} .gd-seats-grid{gap:10px; padding:14px;} }
   .gd-main, .gd-left, .gd-side{display:flex; flex-direction:column; gap:8px; min-width:0;}
   @media (min-width:1000px){
     .gd-shell{max-width:1220px;}
@@ -6757,7 +6757,7 @@
   input, textarea, select, [contenteditable="true"]{-webkit-user-select:text; user-select:text; -webkit-touch-callout:default;}
 
   /* Phone hand (2026-10-10, screenshots: cost/Wait badges of neighbouring hand cards ran into each other) */
-  @media (max-width:600px){
+  @media (max-width:560px){
     .hand-strip{gap:18px 12px !important; padding-top:6px;}
     #handStrip .pips.can-num i:not(:first-child), .drag-ghost-host .pips.can-num i:not(:first-child){display:none;}
     #handStrip .pips.can-num::after, .drag-ghost-host .pips.can-num::after{content:attr(data-n); font-weight:900; margin-left:1px;}
@@ -6779,7 +6779,7 @@
   }
 
   /* Phone toasts (2026-10-10, screenshots: toasts sat on Pass turn and on the Conquest tab bar) go to the top. */
-  @media (max-width:600px){ .toast-host{bottom:auto !important; top:calc(10px + env(safe-area-inset-top, 0px)) !important;} .rr-token{max-width:92vw;} .rr-token-lbl{overflow:hidden; text-overflow:ellipsis;} }
+  @media (max-width:560px){ .toast-host{bottom:auto !important; top:calc(10px + env(safe-area-inset-top, 0px)) !important;} .rr-token{max-width:92vw;} .rr-token-lbl{overflow:hidden; text-overflow:ellipsis;} }
 
 
   /* Caged Fight (2026-10-10, user: "It looks like your leader, slightly greyed out, and on top of it a card sized cage, but
@@ -6807,7 +6807,7 @@
      toolbar push the map below the fold inside a fixed full-screen layout that didn't scroll, and the bottom tab bar
      covered the fight nodes. The content area now scrolls, with room for the tab bar, and the fight panel scrolls
      inside itself with its Fight button pinned at the top. */
-  @media (max-width:820px){
+  @media (max-width:899px){
     body.conquest-full{overscroll-behavior:none;}
     body.conquest-full .conquest-layout{display:flex !important; flex-direction:column !important; flex-wrap:nowrap !important;}
     body.conquest-full .conquest-layout > .conquest-maps{flex:0 0 auto;}
@@ -6897,7 +6897,7 @@
   @media (max-width:560px){ .bf-hp-label{display:none;} .bf-hp-num{font-size:18px; min-width:52px;} .bf-hp-track{height:10px;} }
   .discardzone.compact{flex-direction:row; width:auto; min-height:0; padding:7px 14px; border-radius:999px; gap:6px;}
   .discardzone.compact .dz-ico{font-size:15px;} .discardzone.compact .dz-sub{font-size:11px; opacity:.7;}
-  @media (max-width:699px){ .coach-tip.is-docked{max-width:none;} }
+  @media (max-width:560px){ .coach-tip.is-docked{max-width:none;} }
   /* D16 "fit the viewport": the page's 60px bottom padding (room for floating buttons elsewhere) pushed the battle ~35px past an 860px screen */
   #appWrap.in-match{padding-bottom:12px;}
 
@@ -6933,10 +6933,10 @@
   .cnp-rw-tick{position:absolute; right:-4px; top:-4px; width:16px; height:16px; border-radius:50%; background:#3a8f4b; color:#fff; font:900 10px/16px system-ui; text-align:center; font-style:normal; box-shadow:0 1px 3px rgba(0,0,0,.4);}
   .cnp-rw-back{display:flex; align-items:center; justify-content:center; aspect-ratio:4/5; border-radius:6px; background:repeating-linear-gradient(45deg, rgba(0,0,0,.14) 0 4px, transparent 4px 9px), #2f5b3a; border:2px solid #d7b46a; font-size:16px;}
   .cnp-rw-cur{display:inline-flex; align-items:center; gap:3px; font:800 14px 'Baloo 2',system-ui,sans-serif; color:#fff; white-space:nowrap; padding:2px 8px; border-radius:999px; background:rgba(255,255,255,.12);}
-  @media (max-width:640px){ .cnp-rw{margin-left:0; width:100%;} }
+  @media (max-width:560px){ .cnp-rw{margin-left:0; width:100%;} }
   /* 2026-10-12 (user: "The first rewards should be clearer and bigger. The skirmish card size should be reduced, not being full
      width"): a narrower panel; the first-clear haul labelled and larger; a hidden deck is a dark slab with a lock and the rank */
-  @media (min-width:821px){ .conquest-main > .conquest-node-panel{max-width:760px; margin-left:auto !important; margin-right:auto !important;} }
+  @media (min-width:900px){ .conquest-main > .conquest-node-panel{max-width:760px; margin-left:auto !important; margin-right:auto !important;} }
   .cnp-rw{flex-wrap:wrap; padding:8px 12px; gap:10px; border-color:rgba(255,220,150,.45); background:rgba(0,0,0,.32);}
   .cnp-rw-label{flex:0 0 100%; font:800 11px 'Baloo 2',system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#ffd98a;}
   .cnp-rw .cnp-rw-cur{font-size:18px; padding:4px 12px;}
@@ -6996,7 +6996,7 @@
     box-shadow:0 0 0 1.5px #ffe9a0 inset, 0 0 0 3px #3e5f2c, 0 0 0 4.5px #ffd75e, 0 0 20px 6px rgba(255,214,110,.7), 0 6px 14px rgba(0,0,0,.45) !important;}
   .card-tile.env-card.is-firing-out{transition:transform .32s ease-in, box-shadow .32s ease !important;}
   .card-tile.env-card.is-selfish.is-firing{box-shadow:0 0 0 1.5px #ffd0c4 inset, 0 0 0 3px #6e1a12, 0 0 0 4.5px #ff6a52, 0 0 22px 7px rgba(255,90,60,.75), 0 6px 14px rgba(0,0,0,.45) !important;} /* 2026-10-24 (DF3): a selfish boon shines red, keeping its frame */
-  @media (max-width:699px){ .card-tile.env-card.is-firing{transform:translateY(-2px) rotate(0deg) scale(1.06) !important;} } /* the phone's header sits at the top edge */
+  @media (max-width:560px){ .card-tile.env-card.is-firing{transform:translateY(-2px) rotate(0deg) scale(1.06) !important;} } /* the phone's header sits at the top edge */
   .card-tile.env-card .env-shine{position:absolute; inset:0; border-radius:10px; overflow:hidden; pointer-events:none; z-index:7;}
   .card-tile.env-card .env-shine::after{content:''; position:absolute; top:-20%; bottom:-20%; left:-60%; width:45%;
     background:linear-gradient(100deg, transparent, rgba(255,255,240,.85), transparent); transform:skewX(-16deg); animation:envShine .75s .18s ease-out both;}
@@ -7078,12 +7078,12 @@
   .pf-char-modal{position:relative; max-width:560px; width:min(560px, 94vw); padding:0 !important; overflow:hidden;}
   .pf-char-modal .avatar-panel{margin:0 !important; border:0 !important; box-shadow:none !important;}
   .pf-char-modal .modal-close-btn{position:absolute; top:10px; right:10px; z-index:2;}
-  @media (max-width:820px){
+  @media (max-width:899px){
     .pf-hero{grid-template-columns:auto 1fr; padding:18px;} .pf-rank{grid-column:1 / -1; flex-direction:row; justify-content:flex-start; gap:10px;}
     .pf-tiles{grid-template-columns:repeat(2, minmax(0,1fr));}
     .pf-grid{grid-template-columns:1fr;}
   }
-  @media (max-width:420px){ .pf-hero{grid-template-columns:1fr; justify-items:center; text-align:center;} .pf-status, .pf-level{justify-content:center;} .pf-rank{justify-content:center;} }
+  @media (max-width:560px){ .pf-hero{grid-template-columns:1fr; justify-items:center; text-align:center;} .pf-status, .pf-level{justify-content:center;} .pf-rank{justify-content:center;} }
   #view-achievements{display:flex; flex-direction:column; gap:12px; max-width:880px; margin:0 auto; width:100%;}
 
   /* ===== Notices (quests) cork board (2026-10-08) ===== */
@@ -7127,7 +7127,7 @@
   .qn-medal.tier-0 .qn-medallion > span{background:radial-gradient(circle at 35% 30%, #e3a56b, #8a4f1e);} .qn-medal.tier-1 .qn-medallion > span{background:radial-gradient(circle at 35% 30%, #f1f3f5, #8f99a3);}
   .qn-medal.tier-2 .qn-medallion > span{background:radial-gradient(circle at 35% 30%, #fff1b0, #c9921d);} .qn-medal.tier-3 .qn-medallion > span{background:radial-gradient(circle at 35% 30%, #d9f6ff, #5aa8c9);}
   .qn-medal-l{font-weight:800; font-size:12.5px; color:#fbf1dc;} .qn-medal-v{font:800 14px 'Baloo 2',system-ui,sans-serif; color:#ffe2a6;} .qn-medal-v small{opacity:.6; font-size:11px;}
-  @media (max-width:720px){ .qn-cork{grid-template-columns:1fr; padding:12px;} .qn-notes{grid-template-columns:repeat(2, minmax(0,1fr));} }
+  @media (max-width:899px){ .qn-cork{grid-template-columns:1fr; padding:12px;} .qn-notes{grid-template-columns:repeat(2, minmax(0,1fr));} }
   /* 2026-10-15: "Your quests" list at the head of the Notices; Medals moved to the Profile */
   .qn-quests{display:flex; flex-direction:column; gap:8px; margin:0 0 14px;}
   .qn-qlist{list-style:none; margin:0; padding:8px; display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 380px), 1fr)); gap:6px; border-radius:10px; background:rgba(0,0,0,.22); box-shadow:inset 0 1px 4px rgba(0,0,0,.35);}
@@ -7136,7 +7136,7 @@
   .qn-qrow .qn-qk{font:800 10px/1 'Nunito',system-ui,sans-serif; text-transform:uppercase; letter-spacing:.06em; padding:3px 6px; border-radius:999px; background:rgba(120,80,30,.15); color:#6a4a26;}
   .qn-qrow .qn-qico{font-size:18px; line-height:1;} .qn-qrow .qn-ql{font-weight:800; font-size:13px; line-height:1.2; min-width:0; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;}
   .qn-qrow .qn-prog b{min-width:34px; text-align:right;} .qn-qrow.is-done{box-shadow:0 0 0 2px #7bbf5a inset;} .qn-qrow.is-done .qn-prog b{color:#3f8a2a;}
-  @media (max-width:520px){ .qn-qlist{grid-template-columns:1fr;} .qn-qrow{grid-template-columns:auto 1fr 88px;} .qn-qrow .qn-qk{display:none;} }
+  @media (max-width:560px){ .qn-qlist{grid-template-columns:1fr;} .qn-qrow{grid-template-columns:auto 1fr 88px;} .qn-qrow .qn-qk{display:none;} }
   .qn-flash{animation:qnFlash 1s ease;} @keyframes qnFlash{30%{filter:brightness(1.25) drop-shadow(0 0 10px rgba(255,220,140,.8));}}
   .qn-medals-moved{margin:12px 0 0; font-size:12.5px; color:#e9d6b2; display:flex; align-items:center; gap:6px; justify-content:flex-end;}
   .qn-medals-moved .btn{color:#fff1d0; border-color:rgba(255,241,208,.4);}
@@ -7404,7 +7404,7 @@
   /* 2026-10-08 (user: "The discard area should be beside the cards instead ... always on the right of the hand"): the graveyard follows the hand */
   .bottom-play-row .graveyard-pile{margin-left:14px !important;}
   .bottom-play-row .hand-strip{flex:0 1 auto !important; justify-content:flex-start !important;}
-  @media (max-width:640px){ .bottom-play-row .hand-strip{flex-basis:calc(100% - var(--match-card-w, 70px) - 16px) !important;} .bottom-play-row .graveyard-pile{margin-left:6px !important;} }
+  @media (max-width:560px){ .bottom-play-row .hand-strip{flex-basis:calc(100% - var(--match-card-w, 70px) - 16px) !important;} .bottom-play-row .graveyard-pile{margin-left:6px !important;} }
   /* (user: "The on-map health bars do not need a label to display the remaining health/health") */
   .bf-hp .bf-hp-num{display:none !important;}
   /* (user: "the opponent's central card slot indicator should not be visible to you, just a card-shaped shadow on the ground") */
@@ -7412,7 +7412,7 @@
   #rowEnemy .center-slot-empty .center-slot-inner{display:none !important;}
   /* (user: "The settings window is too thin") */
   .settings-panel{width:min(340px, calc(100vw - 24px)) !important; max-height:calc(100dvh - 90px); overflow-y:auto; padding:16px 18px 14px !important;}
-  @media (max-width:640px){ #appWrap:not(.in-match) .btn.small, .pg-tab.pg-corner{min-height:36px;} .ux-kind, .ux-lv{min-height:34px;} /* 2026-11-16 (package UX3): Codex tabs, filters, chips and pager were 26-32px tall */
+  @media (max-width:560px){ #appWrap:not(.in-match) .btn.small, .pg-tab.pg-corner{min-height:36px;} .ux-kind, .ux-lv{min-height:34px;} /* 2026-11-16 (package UX3): Codex tabs, filters, chips and pager were 26-32px tall */
   #signInBannerGoogle, #signInBannerLater{min-height:36px;} .settings-panel input[type=range]{height:28px;} /* 2026-11-16 (package UX3): the sign-in banner links were 18px and the settings sliders 16px tall */
   #settingsBtnPlaySub{width:36px !important; height:36px !important;} .settings-panel{position:fixed; top:56px; right:12px; left:auto; max-height:calc(100dvh - 70px);} } /* 2026-11-16 (package UX3): was anchored to the gear mid-bar, so 146px of it sat off the left edge at 390px */
   .leaf-sweep .ls-veil{display:none !important;} /* instant transitions: the leaves stay, the veil that dimmed the new screen goes */
@@ -7545,7 +7545,7 @@
   @keyframes ssOrb{0%,100%{transform:scale(1); filter:brightness(1);} 50%{transform:scale(1.35); filter:brightness(1.4);}}
   .splash-stage.is-still *{animation:none !important; transition:none !important;}
   .entrance.leaving .splash-stage{opacity:0; transition:opacity .8s ease-in;}
-  @media (max-width:520px){ .ss-duel{gap:16vw;} .ss-spear{width:15vw;} }
+  @media (max-width:560px){ .ss-duel{gap:16vw;} .ss-spear{width:15vw;} }
   /* Results fit the screen (2026-10-08, user: "Try to make the reward window fit in the screen"):
      everything scales with the window HEIGHT, the cards won sit beside the other rewards instead of
      above them, and the rank + First Clear ride on one line under the title. */
@@ -7582,7 +7582,7 @@
   #handStrip .card-tile.tut-highlight, .leader-widget.tut-highlight{animation:tutGlow 1.6s ease-in-out infinite; position:relative;}
   @keyframes tutGlow{0%,100%{box-shadow:0 0 0 2px rgba(255,214,102,.9), 0 0 12px 2px rgba(255,200,80,.55);} 50%{box-shadow:0 0 0 3px rgba(255,236,150,1), 0 0 26px 8px rgba(255,200,80,.8);}}
   @media (prefers-reduced-motion: reduce){ #handStrip .card-tile.tut-highlight, .leader-widget.tut-highlight{animation:none; box-shadow:0 0 0 3px rgba(255,220,120,1), 0 0 18px 4px rgba(255,200,80,.7);} }
-  @media (max-width:640px){ .entrance-fan .ef-card.is-outer{display:none;} }
+  @media (max-width:560px){ .entrance-fan .ef-card.is-outer{display:none;} }
   .ss-card.is-reward{position:relative; filter:drop-shadow(0 0 8px rgba(255,210,110,.75));}
   .ss-gift{position:absolute; top:-8px; left:-6px; font-size:18px; filter:drop-shadow(0 1px 2px rgba(0,0,0,.5));}
   /* Forge upgrade strip (2026-10-12) */
@@ -7594,7 +7594,7 @@
   /* Card workbench (2026-10-12) */
   .card-bench{max-width:900px; width:min(900px, calc(100vw - 32px));}
   .cb-layout{display:grid; grid-template-columns:minmax(0, 300px) minmax(0, 1fr); gap:20px; align-items:start;}
-  @media (max-width:640px){ .cb-layout{grid-template-columns:minmax(0,1fr);} }
+  @media (max-width:560px){ .cb-layout{grid-template-columns:minmax(0,1fr);} }
   .cb-controls{display:flex; flex-direction:column; gap:10px; font-size:13px; font-weight:700;}
   .cb-controls label{display:flex; flex-direction:column; gap:4px;} .cb-controls label.cb-inline{flex-direction:row; align-items:center; gap:8px;}
   .cb-controls select{font:inherit; font-weight:400; padding:6px 8px; border-radius:8px;}
@@ -7676,7 +7676,7 @@
   .hatch-egg.burst{animation:hatchBurst .45s ease-in forwards;}
   @keyframes hatchBurst{to{transform:scale(1.8); opacity:0; filter:blur(4px) drop-shadow(0 0 60px rgba(var(--glow),1));}}
   .hatch-ov.is-open .hatch-egg{position:absolute;}
-  .hatch-card{zoom:1.8;} @media (max-width:480px){ .hatch-card{zoom:1.4;} }
+  .hatch-card{zoom:1.8;} @media (max-width:560px){ .hatch-card{zoom:1.4;} }
   .hatch-text{display:flex; flex-direction:column; align-items:center; gap:4px; color:#fff8e6; text-align:center;}
   .hatch-text b{font:800 26px/1.1 'Baloo 2',system-ui,sans-serif;} .hatch-rar{font-weight:800; letter-spacing:.5px;} .hatch-text small{opacity:.8; margin-bottom:6px;}
   /* Wildpaths Stamina (2026-10-12, 22:04) */
@@ -7706,7 +7706,7 @@
   .showcase-picker .scp-pick.is-on{background:var(--gold, #c9a227); color:var(--gold-ink, #1a1a1a); border-color:transparent; font-weight:700;}
   @media (max-width:560px){ .showcase-picker .scp-now{flex-basis:70px; width:70px;} }
   .de-layout{display:grid; grid-template-columns:minmax(0, 240px) minmax(0, 1fr); gap:16px; max-height:70vh;}
-  @media (max-width:640px){ .de-layout{grid-template-columns:minmax(0,1fr); max-height:none;} }
+  @media (max-width:560px){ .de-layout{grid-template-columns:minmax(0,1fr); max-height:none;} }
   .de-list{display:flex; flex-direction:column; gap:4px; overflow:auto; min-width:0;} .de-list input{margin-bottom:6px;}
   .de-item{text-align:left; padding:5px 8px; border-radius:8px; border:1px solid transparent; background:none; font:inherit; cursor:pointer; overflow-wrap:anywhere;} .de-item.on{background:rgba(200,144,42,.18); border-color:rgba(200,144,42,.5); font-weight:700;}
   .de-item small{opacity:.6;}
@@ -7784,16 +7784,16 @@
   body.conquest-full .conquest-main{padding-top:12px; padding-bottom:12px;}
   body.conquest-full .conquest-main > .conquest-headline{position:absolute; top:16px; left:18px; z-index:7; margin:0; max-width:min(520px, 46%);}
   body.conquest-full .conquest-map-canvas{min-height:calc(100dvh - 24px); margin-top:0;}
-  @media (min-width:821px){ body.conquest-full .conquest-main > .conquest-node-panel{position:absolute; left:18px; right:18px; bottom:16px; margin:0;} body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) .conquest-main > .conquest-node-panel{bottom:72px;} }
+  @media (min-width:900px){ body.conquest-full .conquest-main > .conquest-node-panel{position:absolute; left:18px; right:18px; bottom:16px; margin:0;} body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) .conquest-main > .conquest-node-panel{bottom:72px;} }
   /* 2026-10-17 (user: "Why does clicking a tower of babel fight flash then close the skirmish menu!"): on the Babel Spire (a tall map that
      scrolls inside .conquest-main) the absolute panel sat at the bottom of the FIRST screenful of the scroll, so once the scroll was put
      back after the re-render it was thousands of pixels above the view: a flash, then gone. A tall map pins it with sticky instead. */
-  @media (min-width:821px){ body.conquest-full .conquest-main.endless-y-main > .conquest-node-panel{position:sticky; left:auto; right:auto; margin:0 auto !important; max-width:760px;} }
-  @media (max-width:820px){ body.conquest-full .conquest-main > .conquest-headline{position:static; max-width:none; margin-bottom:8px;} body.conquest-full .conquest-map-canvas{min-height:calc(100dvh - 220px);} }
+  @media (min-width:900px){ body.conquest-full .conquest-main.endless-y-main > .conquest-node-panel{position:sticky; left:auto; right:auto; margin:0 auto !important; max-width:760px;} }
+  @media (max-width:899px){ body.conquest-full .conquest-main > .conquest-headline{position:static; max-width:none; margin-bottom:8px;} body.conquest-full .conquest-map-canvas{min-height:calc(100dvh - 220px);} }
   /* Admin layout bar (2026-10-08, user: "fix the overlay issue on conquest"): in full-window Conquest it used
      to sit under the floating map title. It now floats beside the title (wide screens) or below it. */
   @media (min-width:1300px){ body.conquest-full .conquest-main > .map-layout-bar{position:absolute; top:16px; left:calc(min(520px, 46%) + 32px); right:300px; z-index:7; margin:0;} }
-  @media (min-width:821px) and (max-width:1299px){ body.conquest-full .conquest-main > .map-layout-bar{position:absolute; top:122px; left:18px; max-width:calc(100% - 36px); z-index:7; margin:0;} }
+  @media (min-width:900px) and (max-width:1299px){ body.conquest-full .conquest-main > .map-layout-bar{position:absolute; top:122px; left:18px; max-width:calc(100% - 36px); z-index:7; margin:0;} }
   /* Reward reveal (2026-10-08): playRewardReveal() in arena_app.js. */
   .rr-stage{position:fixed; inset:0; z-index:1200; display:flex; align-items:center; justify-content:center; cursor:pointer;}
   .rr-dim{position:absolute; inset:0; background:radial-gradient(ellipse at center, rgba(20,14,30,.38), rgba(6,4,10,.62));} /* 2026-10-23 (package RW4, owner #10): lighter; it rises with the first card (playRewardReveal) */
@@ -8103,8 +8103,8 @@
   /* map dialogue sits clear of the map rail and HUD (2026-10-08 playtest) */
   /* 2026-10-14 (user: "Move the NPC dialogue further to the left abit more, like 8%."): as far left as it goes without covering
      the map list (220px wide): 62px, about 5% of a 1280px window (a full 8% would sit on the map tabs). */
-  @media (min-width:821px){ body.conquest-full .dialogue-dock{left:228px; top:120px;} }
-  @media (max-width:820px){ body.conquest-full .dialogue-dock{top:236px;} }
+  @media (min-width:900px){ body.conquest-full .dialogue-dock{left:228px; top:120px;} }
+  @media (max-width:899px){ body.conquest-full .dialogue-dock{top:236px;} }
   /* starter deck hand-over (2026-10-08) */
   .starter-modal{max-width:min(860px, 94vw); width:min(860px, 94vw); text-align:center;}
   .ss-grid{display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin:12px 0; max-height:52vh; overflow:auto; padding:6px;}
@@ -8152,7 +8152,7 @@
   .tut-reward .tr-name{font:800 14px/1.1 'Baloo 2', system-ui, sans-serif; padding:4px 12px; border-radius:999px; background:#7a4a1c; color:#fff3d6; box-shadow:0 2px 0 #4f2f10; transition:opacity .25s;}
   .tut-reward.is-popping .tr-name{animation:trDeal .35s ease-out both; animation-delay:calc(.75s + var(--i, 0) * 220ms);}
   .tut-reward .tr-name.is-gone{opacity:0;}
-  @media (max-width:520px){ .tut-reward.is-topup .ss-card{width:104px;} .tut-reward .tr-grid{gap:14px;} }
+  @media (max-width:560px){ .tut-reward.is-topup .ss-card{width:104px;} .tut-reward .tr-grid{gap:14px;} }
   @media (prefers-reduced-motion: reduce){ .tut-reward .tr-rays, .tut-reward .ss-glow{animation:none;} }
   /* 2026-10-18 (owner: "After adding cards to my deck based on the window, that window should fade out while shrinking a little"):
      the window fades out as its panel shrinks to 94% (tutRewardClose). */
@@ -8176,7 +8176,7 @@
   @keyframes boltLit{0%{opacity:1} 15%{opacity:.25} 28%{opacity:1} 100%{opacity:0}}
   /* 2026-10-08 playtest: a full row (7+ cards/slots) ran off a phone screen. Rows with many children shrink their cards to fit. */
   .board-row{--gapx:12px; --row-n:1;}
-  @media (max-width:820px){ .board-row{--gapx:5px;} }
+  @media (max-width:899px){ .board-row{--gapx:5px;} }
   .board-row:has(> :nth-child(5)):not(:has(> :nth-child(6))){--row-n:5;}
   .board-row:has(> :nth-child(6)):not(:has(> :nth-child(7))){--row-n:6;}
   .board-row:has(> :nth-child(7)):not(:has(> :nth-child(8))){--row-n:7;}
@@ -8647,7 +8647,7 @@
   /* 2026-10-05: the resource-pill row keeps its height even with nothing to show, so the castle,
      hand and everything below it never jump up and down as Lumber hits 0 and comes back. */
   #appWrap.in-match #view-play .hud{min-height:36px;}
-  @media (max-width:699px){ #appWrap.in-match #view-play .hud{min-height:33px;} }
+  @media (max-width:560px){ #appWrap.in-match #view-play .hud{min-height:33px;} }
   /* Profile (2026-10-04, "sections should have the same widths and margins between them") */
   #view-profile{display:flex; flex-direction:column; gap:16px; align-items:stretch;}
   #view-profile > .panel{width:100%; max-width:880px; margin:0 auto !important; box-sizing:border-box;}
@@ -8854,7 +8854,7 @@
   .ds-stats small{font-size:10.5px; opacity:.75; margin-top:3px; white-space:nowrap;}
   .ds-meta{display:flex; gap:12px; font-size:12.5px; font-weight:700; opacity:.85;}
   .ds-meta .short{color:#b5651d;}
-  @media (max-width:430px){ .deck-showcase{flex-direction:column;} .ds-pair{justify-content:center;} }
+  @media (max-width:560px){ .deck-showcase{flex-direction:column;} .ds-pair{justify-content:center;} }
   /* Hero Hall (2026-10-05) — build-your-own card */
   .hero-hall-btn{position:relative;}
   .hero-dot{position:absolute; top:-3px; right:-3px; width:10px; height:10px; border-radius:50%; background:#e2553f; box-shadow:0 0 0 2px var(--surface,#fff8ea); animation:heroDot 1.6s ease-in-out infinite;}
@@ -8940,7 +8940,7 @@
   .fmb-text small{opacity:.85;}
   .fmb-text .hero-materia span{padding:2px 8px; font-size:12px; background:rgba(255,255,255,.18);}
   @media (max-width:560px){ .forge-materia-bench{flex-wrap:wrap;} }
-  @media (max-width:820px){ .hero-cols{grid-template-columns:1fr;} }
+  @media (max-width:899px){ .hero-cols{grid-template-columns:1fr;} }
   @media (max-width:560px){
     .hero-peoples{grid-template-columns:1fr;} .hero-people{flex-direction:row; text-align:left; flex-wrap:wrap;} .hp-art{width:56px; height:56px; font-size:30px;}
     .hero-top{flex-direction:column; align-items:center;} .hero-info{width:100%;}
@@ -9065,7 +9065,7 @@
   #view-stomp .ss-card, #view-stomp .ss-lines i{background:linear-gradient(90deg, var(--surface-2) 0%, var(--surface-3) 50%, var(--surface-2) 100%) 0 0/200% 100%; animation:stompShimmer 1.3s linear infinite;}
   @keyframes stompShimmer{to{background-position:-200% 0;}}
   #view-stomp .ss-msg{margin:0; color:var(--ink-muted); font-weight:700;}
-  @media (max-width:820px){ #view-stomp .hero-cols{gap:14px;} }
+  @media (max-width:899px){ #view-stomp .hero-cols{gap:14px;} }
   @media (max-width:560px){
     #view-stomp.stomp-scene{padding:58px 10px 16px; border-radius:12px;}
     #view-stomp.stomp-scene::after{font-size:13px;}
@@ -9185,7 +9185,7 @@
       repeating-linear-gradient(100deg, rgba(255,255,255,.035) 0 2px, transparent 2px 13px), linear-gradient(180deg, rgba(20,40,24,.94) 0 49.6%, rgba(70,20,16,.94) 50.4% 100%);}
     .vs-opener.is-boss{background:radial-gradient(ellipse 70% 30% at 50% 25%, rgba(140,220,120,.22), transparent 70%), radial-gradient(ellipse 75% 32% at 50% 75%, rgba(255,70,40,.4), transparent 70%),
       repeating-linear-gradient(100deg, rgba(255,255,255,.035) 0 2px, transparent 2px 13px), linear-gradient(180deg, rgba(20,40,24,.95) 0 49.6%, rgba(110,14,14,.96) 50.4% 100%);} }
-  @media (max-width:600px){ .vs-screen{background:radial-gradient(ellipse 70% 30% at 50% 25%, rgba(140,220,120,.22), transparent 70%), radial-gradient(ellipse 70% 30% at 50% 75%, rgba(255,110,70,.24), transparent 70%),
+  @media (max-width:560px){ .vs-screen{background:radial-gradient(ellipse 70% 30% at 50% 25%, rgba(140,220,120,.22), transparent 70%), radial-gradient(ellipse 70% 30% at 50% 75%, rgba(255,110,70,.24), transparent 70%),
       repeating-linear-gradient(105deg, rgba(255,255,255,.035) 0 2px, transparent 2px 13px), linear-gradient(180deg, #2c3a27 0 50%, #5a2b22 50% 100%);} .vs-screen::after{top:50%; bottom:auto; left:-10%; right:-10%; width:auto; height:6px; margin:-3px 0 0; transform:none; background:linear-gradient(90deg, transparent, #fff3c4 20%, #ffd27a 50%, #fff3c4 80%, transparent);} }
   @media (prefers-reduced-motion: reduce){ .vs-opener::before, .vs-screen::before, .vs-opener::after, .vs-screen::after{animation:none;} }
   @media (prefers-reduced-motion: reduce){ .vs-opener, .vs-me, .vs-them, .vs-mark, .vs-taunt{animation-duration:.01s !important; animation-delay:0s !important;} }
@@ -9313,7 +9313,7 @@
   .forge-medal.owned{opacity:1; border-color:#d4a23a; background:linear-gradient(180deg, color-mix(in srgb, #ffd77a 30%, var(--surface)), var(--surface));}
   .forge-medal.next{opacity:1; border-style:dashed; border-color:#ff9b4a;}
   .fm-ico{font-size:22px;} .fm-name{font:800 12px 'Baloo 2',system-ui,sans-serif;} .fm-state{font-size:10.5px; color:var(--ink-muted);}
-  @media (max-width:700px){ .forge-anvil{position:static; order:-1;} .forge-layout{display:flex; flex-direction:column;} }
+  @media (max-width:560px){ .forge-anvil{position:static; order:-1;} .forge-layout{display:flex; flex-direction:column;} }
   @media (prefers-reduced-motion: reduce){ .forge-embers{display:none;} .forge-pips i.next{animation:none;} }
   .coach-tip.nudge{animation:coachNudge .35s ease;}
   @keyframes coachNudge{20%{transform:translateX(-6px);} 40%{transform:translateX(6px);} 60%{transform:translateX(-4px);} 80%{transform:translateX(3px);}}
@@ -9341,7 +9341,7 @@
   .arena-mode-btn:not(.arena-hero) .amb-sub, .arena-mode-btn:not(.arena-hero) .async-run-line, .arena-mode-btn:not(.arena-hero) .gauntlet-streak-line, .arena-mode-btn:not(.arena-hero) .dungeon-status-line{color:var(--ink-muted) !important;}
   .arena-mode-btn:not(.arena-hero):hover:not(:disabled){border-color:var(--accent) !important; transform:translateY(-2px);}
   .arena-mode-btn.dungeon-panel .dungeon-node{color:var(--ink);}
-  @media (max-width:600px){ .arena-practice-grid{grid-template-columns:1fr !important;} }
+  @media (max-width:560px){ .arena-practice-grid{grid-template-columns:1fr !important;} }
   .ab-intro{text-align:center;}
   .ab-loop{list-style:none; padding:0; margin:18px auto; display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:10px; max-width:860px; counter-reset:abl;}
   .ab-loop li{position:relative; display:flex; flex-direction:column; align-items:center; gap:4px; padding:14px 10px; border-radius:14px; background:var(--surface-2); border:1px solid var(--surface-border); font-size:13px; color:var(--ink-muted);}
@@ -9351,7 +9351,7 @@
   .ab-start-hero{min-width:260px; font-size:20px; padding:16px 28px;}
   .ab-rules-more{max-width:640px; margin:14px auto 0; text-align:left;}
   .ab-rules-more summary{cursor:pointer; text-align:center; color:var(--ink-muted); font-weight:700;}
-  @media (max-width:600px){ .ab-loop{grid-template-columns:repeat(2, minmax(0,1fr));} .ab-loop li:nth-child(2)::after{display:none;} }
+  @media (max-width:560px){ .ab-loop{grid-template-columns:repeat(2, minmax(0,1fr));} .ab-loop li:nth-child(2)::after{display:none;} }
   .deck-switch-row{flex-wrap:wrap; gap:8px;}
   .deck-switcher{display:flex; gap:6px; flex-wrap:wrap; align-items:center; background:var(--surface); border:1px solid var(--surface-border); border-radius:14px; padding:4px;}
   .deck-chip{border:0; background:transparent; color:var(--ink-muted); font:700 13.5px 'Baloo 2',system-ui,sans-serif; padding:7px 12px; border-radius:10px; cursor:pointer; display:inline-flex; gap:4px; align-items:center; max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
@@ -9365,7 +9365,7 @@
   .shop-pack-price{font:800 15px 'Baloo 2',system-ui,sans-serif; margin:6px 0 8px; display:flex; gap:6px; justify-content:center; align-items:center;}
   #shopPackGrid{grid-template-columns:repeat(auto-fit, minmax(180px, 240px)); justify-content:center;}
   /* Phone pass (2026-10-03, UX): */
-  @media (max-width:600px){
+  @media (max-width:560px){
     /* Bramble picker: one swipeable row instead of three full-height stacked cards */
     .deck-bramble-row .char-picker, #view-deck .char-picker{flex-wrap:nowrap; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:6px;}
     #view-deck .char-card{flex:0 0 138px; min-width:138px; scroll-snap-align:start;}
@@ -9383,7 +9383,7 @@
   body.conquest-immersive .content-wrap{max-width:none !important; padding:0 !important;}
   body.conquest-immersive .conquest-layout{position:fixed; inset:0; z-index:50; height:100vh !important; height:100dvh !important; border-radius:0; border:0;}
   body.conquest-immersive .conquest-map-canvas{min-height:calc(100dvh - 140px);}
-  @media (max-width:820px){ body.conquest-full .conquest-maps{padding-top:56px !important; max-height:216px !important;} body.conquest-full #appWrap.cq-hud #view-play .play-subtabs-actions{right:12px !important;} }
+  @media (max-width:899px){ body.conquest-full .conquest-maps{padding-top:56px !important; max-height:216px !important;} body.conquest-full #appWrap.cq-hud #view-play .play-subtabs-actions{right:12px !important;} }
   /* no transform/backdrop-filter here: either would trap the fixed Home/Settings cluster inside this row */
   body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row{position:fixed; left:0; right:0; bottom:14px; width:fit-content; margin:0 auto; z-index:60; padding:4px; border-radius:999px; background:rgba(20,14,8,.72);}
   /* 2026-10-10 (user: "The buttons are more squarish than the bigger pill"): the floating tab bar is a full pill, so its
@@ -9518,7 +9518,7 @@
   .dt-stats small{font-size:10.5px; opacity:.75; margin-top:4px; white-space:nowrap;}
   .dt-stats .is-ok b{color:#2f7d3a;} .dt-stats .is-short b{color:#b5651d;}
   .dt-hero{font-size:13px; padding:6px 10px; border-radius:10px; background:rgba(255,215,110,.35); border:1px solid #c9a46a; width:fit-content;}
-  @media (max-width:820px){ .dt-stats{grid-template-columns:repeat(3, minmax(0,1fr));} }
+  @media (max-width:899px){ .dt-stats{grid-template-columns:repeat(3, minmax(0,1fr));} }
   @media (max-width:560px){ .deck-top{flex-direction:column; align-items:stretch;} .dt-pair{justify-content:center;}
     /* (2026-10-30 CS-A: the 104 × 130 phone size is gone; the slots are the Full size) */
     .dt-info h2{text-align:center;} .ds-arch{justify-content:center;} }
@@ -9549,7 +9549,7 @@
   .cd-placement{padding:10px 12px; border-radius:14px; background:var(--surface); border:1px solid var(--surface-border);}
   .cd-abilities .panel-sub{margin:0;}
   .cd-info .flavor{margin:0; font-style:italic; padding-left:12px; border-left:3px solid rgba(201,164,106,.7);}
-  @media (max-width:640px){ .cd-grid{grid-template-columns:1fr; gap:12px;} .card-detail-card .card-pop-visual{position:static; justify-content:center;}
+  @media (max-width:560px){ .cd-grid{grid-template-columns:1fr; gap:12px;} .card-detail-card .card-pop-visual{position:static; justify-content:center;}
     .cd-name{text-align:center; padding-right:0;} .cd-chips{justify-content:center;} .cd-tiles b{font-size:20px;} }
 
   /* Polish pass (2026-10-05, after the first real-font audit) */
@@ -9882,11 +9882,11 @@
   #battlefieldEl .field-res .hud-pill, #battlefieldEl #bfPills .bf-pill, #view-play .hud #hudPackBtn{height:26px; min-height:0; box-sizing:border-box; padding:0 10px; font-size:12.5px; line-height:1;
     display:inline-flex; align-items:center; gap:4px; border-radius:999px; border-width:1px;}
   #view-play .hud #hudPackBtn{background:color-mix(in srgb, var(--surface) 82%, transparent); box-shadow:0 2px 6px rgba(0,0,0,.25); color:var(--ink, inherit); font-weight:800;}
-  @media (max-width:699px){ #battlefieldEl .field-res .hud-pill, #battlefieldEl #bfPills .bf-pill, #view-play .hud #hudPackBtn{height:22px; padding:0 7px; font-size:10.5px; gap:3px;} }
+  @media (max-width:560px){ #battlefieldEl .field-res .hud-pill, #battlefieldEl #bfPills .bf-pill, #view-play .hud #hudPackBtn{height:22px; padding:0 7px; font-size:10.5px; gap:3px;} }
   /* The opponent's resources mirror yours (user: "On the opposite side of the field in the same position, I should see the enemy's
      currencies."): yours sit on the field's bottom-left, theirs on its top-left. */
   #battlefieldEl > .field-res.enemy{left:12px; right:auto; top:12px; bottom:auto; justify-content:flex-start;}
-  @media (max-width:699px){ #battlefieldEl > .field-res.enemy{left:6px; top:8px;} }
+  @media (max-width:560px){ #battlefieldEl > .field-res.enemy{left:6px; top:8px;} }
   /* 2026-10-25 (package PL2, owner 00:02 #8): the opponent's pills show only while Shift is held (html.pl2-shift) or in their deck's
      tooltip; hidden they keep their place (a gain still floats to them). */
   .field-res.enemy{opacity:0; transition:opacity .16s ease; visibility:hidden;}
@@ -9911,7 +9911,7 @@
   .rw-cards.pl2-stack:is(:hover, :focus, :focus-within) > .pl2-sk{filter:none; transform:translateX(calc((var(--i) - (var(--n) - 1) / 2) * clamp(22%, 230% / var(--n), 80%))) rotate(calc((var(--i) - (var(--n) - 1) / 2) * 4deg));}
   .rw-cards.pl2-stack > .pl2-stack-n{grid-area:s; align-self:start; justify-self:end; z-index:40; margin:-6px -10px 0 0; padding:1px 7px; border-radius:999px; background:var(--accent, #c9852b); color:#fff; font:800 13px/18px 'Baloo 2',system-ui,sans-serif; box-shadow:0 1px 3px rgba(0,0,0,.4); transition:opacity .2s;}
   .rw-cards.pl2-stack:is(:hover, :focus, :focus-within) > .pl2-stack-n{opacity:0;}
-  @media (max-width:700px){ .rw-cards.pl2-stack:is(:hover, :focus, :focus-within) > .pl2-sk{transform:translateX(calc((var(--i) - (var(--n) - 1) / 2) * clamp(14%, 120% / var(--n), 40%))) rotate(calc((var(--i) - (var(--n) - 1) / 2) * 4deg));} }
+  @media (max-width:560px){ .rw-cards.pl2-stack:is(:hover, :focus, :focus-within) > .pl2-sk{transform:translateX(calc((var(--i) - (var(--n) - 1) / 2) * clamp(14%, 120% / var(--n), 40%))) rotate(calc((var(--i) - (var(--n) - 1) / 2) * 4deg));} }
   .rw-card .pl2-rw-n{position:absolute; top:4px; right:4px; z-index:6; padding:0 6px; border-radius:9px; background:rgba(20,14,8,.85); color:#ffe9b8; font:800 12px/18px 'Baloo 2',system-ui,sans-serif;}
   .rw-card.pl2-rank-reward{animation:pl2RrPop .9s cubic-bezier(.3,1.5,.5,1) both;}
   .rw-card.pl2-rank-reward::after{content:''; position:absolute; inset:-4px; border-radius:10px; pointer-events:none; z-index:8; background:radial-gradient(ellipse at 50% 45%, rgba(255,255,255,.98), rgba(255,236,170,.75) 45%, rgba(255,214,120,0) 75%); animation:pl2RrFlash .9s ease-out both;}
@@ -9951,7 +9951,7 @@
     background:linear-gradient(180deg, #fff6df, #efdcb4); color:#4a2f14; border:1.5px solid #b98a45; box-shadow:0 2px 6px rgba(0,0,0,.4);
     font:800 12px/1 'Baloo 2', system-ui, sans-serif; letter-spacing:.02em; text-shadow:none; animation:bfTurnPillIn .45s cubic-bezier(.3,1.5,.5,1) both;}
   @keyframes bfTurnPillIn{from{opacity:0; transform:translate(-50%, -50%) scale(.6);} to{opacity:1; transform:translate(-50%, -50%) scale(1);}}
-  @media (max-width:699px){ .bf-hp .bf-turn-pill{height:18px; font-size:10.5px; padding:0 8px;} }
+  @media (max-width:560px){ .bf-hp .bf-turn-pill{height:18px; font-size:10.5px; padding:0 8px;} }
   @media (prefers-reduced-motion: reduce){ .bf-hp .bf-turn-pill{animation:none;} }
   /* The raid's clock (2026-10-18): the turn and the limit on the boss's ribbon all fight; the last turn glows. */
   .bf-hp .bf-turn-pill.raid-clock{background:linear-gradient(180deg, #dff4ff, #b9dcef); color:#0f3550; border-color:#4b87ad;}
@@ -10027,7 +10027,7 @@
   .tavern-recruit .tr-offer .card-tile{width:120px; height:150px; margin:0; font-size:10px;}
   .tavern-recruit .tr-offer .btn{width:100%; justify-content:center; flex-wrap:wrap; flex-direction:column; gap:3px; white-space:normal; height:auto;}
   .tavern-recruit .tr-offer .btn .btn-cost{display:flex; flex-wrap:wrap; justify-content:center; gap:2px 6px; margin:0; white-space:nowrap;} .tavern-recruit .tr-offer .btn .bc-sep{display:none;}
-  @media (max-width:520px){ .tavern-recruit .tr-offers{grid-template-columns:repeat(3, minmax(0, 1fr)); gap:6px;} .tavern-recruit .tr-offer{padding:4px;}
+  @media (max-width:560px){ .tavern-recruit .tr-offers{grid-template-columns:repeat(3, minmax(0, 1fr)); gap:6px;} .tavern-recruit .tr-offer{padding:4px;}
     .tavern-recruit .tr-offer .card-tile{width:92px; height:116px; font-size:8px;} .tavern-recruit .tr-offer .btn{font-size:11px; padding:4px 6px;} }
   .tavern-modal .tv-beer{display:flex; align-items:center; gap:8px; justify-content:center; margin:2px 0 4px; font:800 15px/1 'Baloo 2',system-ui,sans-serif;}
   .tavern-modal .tv-beer i{font-style:normal; font-size:22px; opacity:.25;} .tavern-modal .tv-beer i.on{opacity:1;}
@@ -10200,8 +10200,8 @@
   .tr-titles{display:flex; flex-wrap:wrap; gap:6px; margin:10px 0 0;} .tr-titles span{padding:3px 10px; border-radius:999px; background:var(--gold-soft); color:var(--gold-text); font-size:12px; font-weight:700;}
   .home-note.note-trail{left:-132px; top:516px; rotate:2deg;}
   #trailNavBtnPlay{position:relative;} #trailNavBtnPlay .home-badge{top:-6px; right:-6px;}
-  @media (max-width:860px){ .home-note.note-trail{position:static; rotate:0deg;} }
-  @media (max-width:640px){
+  @media (max-width:899px){ .home-note.note-trail{position:static; rotate:0deg;} }
+  @media (max-width:560px){
     .tr-head{padding:12px;} .tr-title h2{font-size:22px;} .tr-facts{width:100%;} .tr-fact{min-width:0; flex:1 1 0; padding:6px 8px; grid-template-columns:auto minmax(0, 1fr);} .tr-fact i{grid-row:1; font-size:17px;} .tr-fact small{grid-column:1 / -1; line-height:1.2;} .tr-claim-all{width:100%;}
     .tr-ways li{grid-template-columns:24px minmax(0, 1fr);} .tr-ways li b{grid-column:2; text-align:left; color:var(--ink-muted);}
     .tr-road{--col:58px; --k:62px; --vw:60px; grid-template-rows:auto 54px auto;} .tr-stop{height:62px;} .tr-stop-ico{font-size:18px;} .tr-stop-ico .maple-ico, .tr-stop-ico img{width:18px; height:18px;}
@@ -10336,7 +10336,7 @@
   .ce-body{display:flex; align-items:flex-start; gap:20px;}
   .ce-body > .ce-main{flex:1 1 auto; min-width:0;}
   .ce-body > .ce-side{float:none; flex:0 0 200px; width:200px; margin:0; position:sticky; top:0; max-height:calc(100vh - 120px); overflow:auto;}
-  @media (max-width: 700px){ .ce-body{flex-direction:column-reverse;} .ce-body > .ce-side{flex:none; width:auto; position:static; max-height:none;} }
+  @media (max-width:560px){ .ce-body{flex-direction:column-reverse;} .ce-body > .ce-side{flex:none; width:auto; position:static; max-height:none;} }
   /* Rarity lives on the border (2026-10-10, user: "is the blue hue on the card representative of its rarity? It
      should be the borders!"). The bottom band used to carry the rarity colour; it is now a plain dark scrim that only
      keeps the name and stats readable, and the card's border takes the rarity colour instead (lighter at the top,
@@ -10382,7 +10382,7 @@
   .adminu1-c-level,.adminu1-c-cards,.adminu1-c-fights{text-align:right;}
   .adminu1-none,.adminu1-msg{padding:14px 8px; color:var(--ink-soft); text-align:center;}
   .adminu1-msg{text-align:left; white-space:normal;}
-  @media (max-width:520px){ .adminu1-overlay{padding:16px 8px;} .adminu1-modal{padding:16px 12px;} .adminu1-table{min-width:0; font-size:12px;} .adminu1-table td{white-space:normal; padding:5px 4px;} .adminu1-sort{padding:8px 4px; white-space:normal;} .adminu1-table td.adminu1-c-name{min-width:84px;} }
+  @media (max-width:560px){ .adminu1-overlay{padding:16px 8px;} .adminu1-modal{padding:16px 12px;} .adminu1-table{min-width:0; font-size:12px;} .adminu1-table td{white-space:normal; padding:5px 4px;} .adminu1-sort{padding:8px 4px; white-space:normal;} .adminu1-table td.adminu1-c-name{min-width:84px;} }
   /* 2026-11-03 (package UI17): Admin -> Players overview tiles and health line; the Full reset's red typed-confirm modal; infinite Energy; Buy again */
   .ui17-ov{margin:4px 0 12px; padding:10px 12px; border:1px solid var(--surface-border); border-radius:12px; background:color-mix(in srgb, var(--bg) 70%, transparent);}
   .ui17-ov-head{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px;}
@@ -10412,7 +10412,7 @@
   .ui17-inf{font-weight:800;}
   .po-actions .ui17-buy-again{display:inline-flex; align-items:center; gap:6px;}
   .po-actions .ui17-buy-again[disabled]{opacity:.55;}
-  @media (max-width:520px){ .ui17-tiles{grid-template-columns:repeat(2, minmax(0, 1fr));} .ui17-tile b{font-size:19px;} .ui17-fr-acts .btn{flex:1 1 auto;} }
+  @media (max-width:560px){ .ui17-tiles{grid-template-columns:repeat(2, minmax(0, 1fr));} .ui17-tile b{font-size:19px;} .ui17-fr-acts .btn{flex:1 1 auto;} }
   /* Ecclesia (2026-10-10): Prayer pill and the offering picker */
   .hud-pill.prayer{background:linear-gradient(180deg,#f7e7b0,#e3c26a); color:#3a2a08;}
   .prayer-offer{width:min(640px, 100%);}
@@ -10744,7 +10744,7 @@
 
   /* Codex note on Home once the Arena takes its tile (2026-10-10) */
   .home-note.note-codex{left:-128px; top:150px; rotate:4deg;}
-  @media (max-width:860px){ .home-note.note-codex{position:static; rotate:0deg; grid-column:1 / -1;} }
+  @media (max-width:899px){ .home-note.note-codex{position:static; rotate:0deg; grid-column:1 / -1;} }
   /* Community page switcher (2026-10-10) */
   /* 2026-10-15 (user: "This bar does not look very good"): title and an even tab strip centred over the section, the same
      dark pill strip as the page shortcuts; no more title far left and tall buttons crammed to the right. */
@@ -11412,7 +11412,7 @@ body.cq-opening .map-trail-svg{display:none !important;}
 .shelf-row{position:relative; margin:0 0 30px;}
 .shelf-row.is-crooked{transform:rotate(-1.3deg); transform-origin:10% 100%;} .shelf-row.is-crooked-r{transform:rotate(.9deg); transform-origin:90% 100%;}
 .shelf-row:not(.is-stepped) > .shelf-items{flex-wrap:nowrap;}
-@media (max-width:620px){ .shelf-wall{padding:14px 8px 4px;} .booster{--bw:50px;} .shelf-items{gap:6px; min-height:110px;} .shelf-tape{font-size:14px; padding:1px 7px;} .shelf-row{margin-bottom:24px;} }
+@media (max-width:560px){ .shelf-wall{padding:14px 8px 4px;} .booster{--bw:50px;} .shelf-items{gap:6px; min-height:110px;} .shelf-tape{font-size:14px; padding:1px 7px;} .shelf-row{margin-bottom:24px;} }
 .shelf-row.is-stepped{display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:end;}
 .shelf-step.is-high{transform:translateY(-34px);}
 .shelf-items{display:flex; flex-wrap:wrap; justify-content:center; align-items:flex-end; gap:clamp(10px,2.4vw,26px); min-height:132px; padding:0 8px 2px;}
@@ -11483,7 +11483,7 @@ body.cq-opening .map-trail-svg{display:none !important;}
 .shop-counter .counter-goods{display:grid; place-items:end center; min-width:96px;}
 .shop-counter.is-new .counter-goods{animation:counterSlide .35s cubic-bezier(.2,.8,.3,1);}
 @keyframes counterSlide{from{translate:0 -24px; opacity:0} to{translate:0 0; opacity:1}}
-@media (max-width:620px){ .shop-counter{grid-template-columns:auto 1fr;} .shop-counter .counter-act{grid-column:1 / -1;} .shop-counter .counter-act .btn{width:100%;} .shelf-row.is-stepped{grid-template-columns:1fr;} .shelf-step.is-high{transform:none;} }
+@media (max-width:560px){ .shop-counter{grid-template-columns:auto 1fr;} .shop-counter .counter-act{grid-column:1 / -1;} .shop-counter .counter-act .btn{width:100%;} .shelf-row.is-stepped{grid-template-columns:1fr;} .shelf-step.is-high{transform:none;} }
 @media (prefers-reduced-motion: reduce){ .shelf-item, .booster::before{transition:none;} .shop-counter.is-new .counter-goods{animation:none;} }
 #conquestCanvas .map-node, #conquestCanvas .map-spot{scale:var(--icon-scale, 1);}
 /* 2026-10-15 (user: "The lines linking items on the conquest map are offset."): the `scale` property is applied around the box's centre
@@ -11514,7 +11514,7 @@ body.cq-opening .map-trail-svg{display:none !important;}
 .conquest-node-panel .cnp-sq-card .card-tile{width:100% !important; height:auto !important; font-size:7px; margin:0; pointer-events:none;}
 .conquest-node-panel .cnp-sq-card .cnp-sq-n{position:absolute; top:-6px; right:-6px; z-index:8; font:800 11px/1 'Baloo 2',system-ui,sans-serif; padding:3px 6px; border-radius:999px; background:#2b2117; color:#fff8e6; box-shadow:0 0 0 2px #e0b85a;}
 .conquest-node-panel .cnp-squad .dchip{font-size:12.5px; line-height:1.3; padding:2px 8px;}
-@media (max-width:620px){ .conquest-node-panel .cnp-head{grid-template-columns:auto minmax(0,1fr);} .conquest-node-panel .cnp-head > :last-child:not(.cnp-title){grid-column:1 / -1; justify-self:stretch; margin-top:8px;} }
+@media (max-width:560px){ .conquest-node-panel .cnp-head{grid-template-columns:auto minmax(0,1fr);} .conquest-node-panel .cnp-head > :last-child:not(.cnp-title){grid-column:1 / -1; justify-self:stretch; margin-top:8px;} }
 /* Shop polish (2026-10-12, user: "Improve ... the item shop visuals"): a lamp-lit wall with a scalloped valance, bigger
    pouches that cast a contact shadow on the plank and lift and tip when you reach for them, a light that falls on the
    chosen item, hanging price tags, and a counter with a wooden edge and a paper receipt. */
@@ -11669,7 +11669,7 @@ body.cq-opening .map-trail-svg{display:none !important;}
 .conquest-headline.is-chip > .panel-sub{display:none; margin:6px 2px 0; font-size:13px;}
 .conquest-headline.is-chip.is-open > .panel-sub{display:block;}
 .conquest-headline.is-chip > .dungeon-ticket-line{margin:2px 6px 2px;}
-@media (max-width:820px){ body.conquest-full .conquest-main > .conquest-headline.is-chip{max-width:calc(100% - 16px);} }
+@media (max-width:899px){ body.conquest-full .conquest-main > .conquest-headline.is-chip{max-width:calc(100% - 16px);} }
 .conquest-admin-btn{position:absolute; top:58px; right:12px; z-index:8; width:38px; height:38px; border-radius:10px; border:1px solid rgba(255,255,255,.35); background:rgba(0,0,0,.4); color:#fff; font-size:17px; cursor:pointer; display:flex; align-items:center; justify-content:center;} .conquest-admin-btn.is-on{background:rgba(200,40,40,.55); border-color:rgba(255,140,140,.8);}
 /* Home on the map's own button row (2026-10-18, package MB, owner: "In mobile, there's no way to go 'home'. No home button in the
    conquest menu."): the full-screen map hides the header and the 🏠 / ⚙️ / Energy row, so 🏠 sits left of 🧭 while it is on. */
@@ -11705,7 +11705,7 @@ body.conquest-immersive.world-hidden .conquest-home-btn{right:58px;} /* no 🧭 
 @keyframes bfFadeIn{from{opacity:0;} to{opacity:1;}}
 /* Phone match layout (2026-10-13 UI audit: "Pass turn and Graveyard end up below the fold"): your castle, deck and graveyard
    share one row; the leader and the hand share the next, the hand scrolling sideways if it must; Pass turn floats bottom-right. */
-@media (max-width:640px){
+@media (max-width:560px){
   .bottom-play-row .match-castle-tile{order:1;} .bottom-play-row #deckWidgetBottom{order:2;}
   .bottom-play-row .graveyard-pile{order:3; margin-left:auto !important; width:var(--match-card-w); min-height:0; height:var(--match-card-h);}
   .bottom-play-row::after{content:''; order:4; flex-basis:100%; height:0;}
@@ -11717,30 +11717,30 @@ body.conquest-immersive.world-hidden .conquest-home-btn{right:58px;} /* no 🧭 
 }
 /* 2026-10-13 UI audit: the floating Play tab bar covered the last Arena/Raid cards; the page leaves room under it. */
 body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs):not(.in-match) #view-play{padding-bottom:calc(84px + env(safe-area-inset-bottom, 0px));}
-@media (max-width:640px){ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row .play-subtabs button, body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row .play-subtabs a{white-space:nowrap;} }
+@media (max-width:560px){ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row .play-subtabs button, body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row .play-subtabs a{white-space:nowrap;} }
 /* 2026-10-13 UI audit fixes */
 .community-tabs .community-title{color:#ffe9b0; text-shadow:0 1px 2px rgba(0,0,0,.6);}
-@media (max-width:640px){ .community-tabs{flex-wrap:wrap; justify-content:center; row-gap:6px;} }
+@media (max-width:560px){ .community-tabs{flex-wrap:wrap; justify-content:center; row-gap:6px;} }
 #view-codex .section-divider > .st-sub{color:#e9dcc0;}
-@media (max-width:640px){ .forge-modes{max-width:calc(100vw - 24px); overflow-x:auto; scrollbar-width:none; justify-content:flex-start;} .forge-modes > *{flex-shrink:0;} }
-@media (max-width:640px){ .inv-sec h3{display:flex; flex-wrap:wrap; gap:2px 8px; align-items:baseline;} .inv-sec h3 small{flex-basis:100%;} }
+@media (max-width:560px){ .forge-modes{max-width:calc(100vw - 24px); overflow-x:auto; scrollbar-width:none; justify-content:flex-start;} .forge-modes > *{flex-shrink:0;} }
+@media (max-width:560px){ .inv-sec h3{display:flex; flex-wrap:wrap; gap:2px 8px; align-items:baseline;} .inv-sec h3 small{flex-basis:100%;} }
 /* 2026-10-13 UI audit: on small cards the skill badges sat on top of the Attack and Health numbers; they lift above the
    stat row instead and shrink a little. */
 @container (max-width: 96px){
   .card-tile.card-tile .badges, .card-tile.card-tile .badges-2row{bottom:0 !important; transform:translate(-50%, calc(88% + 2px)) !important;}
   .card-tile.card-tile .badges .abadge{font-size:clamp(9px, 11cqw, 13px) !important; padding:0 2px !important;}
 }
-@media (max-width:640px){
+@media (max-width:560px){
   /* 2026-10-18 (package MB, owner on mobile: "the admin and full screen button are stacked together. Put the full screen button on
      the correct row."): the 10-13 top:58px pushed ⛶ onto the 🚨 Admin button's spot. ⛶ is back on the 🧭 World row (top:12px);
      it only steps down, with 🚨 under it, while the map strip is hidden (world not open yet) and the Energy pill shares that line. */
   .conquest-fs-btn{top:12px;} /* was top:58px !important (2026-10-13 UI audit: it hid behind the Energy pill) */
 }
-@media (max-width:820px){
+@media (max-width:899px){
   body.world-hidden:not(.conquest-immersive) .conquest-fs-btn{top:58px;}
   body.world-hidden:not(.conquest-immersive) .conquest-admin-btn{top:104px;}
 }
-@media (max-width:640px){
+@media (max-width:560px){
   .toast-host{top:auto !important; bottom:calc(92px + env(safe-area-inset-bottom, 0px)) !important;} /* toasts no longer cover the HUD and the map title */
 }
 /* Faction colours (2026-10-13, user: "Blue represents Hummingbirds, Red represents Otters. Neutral creatures are Green") */
@@ -11815,7 +11815,7 @@ body.cave-screen .conquest-main > .conquest-headline{z-index:8;} body.cave-scree
 body.conquest-full.cave-screen .conquest-main > .conquest-headline{position:absolute;}
 /* The skirmish panel stays readable in a cave: only slightly darkened, and the lantern (the pointer on it) lifts that. */
 body.cave-screen .conquest-node-panel{filter:brightness(.8); transition:filter .25s ease;}
-@media (min-width:821px){ body.cave-screen .conquest-main > .conquest-node-panel{z-index:9;} }
+@media (min-width:900px){ body.cave-screen .conquest-main > .conquest-node-panel{z-index:9;} }
 body.cave-screen .conquest-node-panel:hover, body.cave-screen .conquest-node-panel:focus-within{filter:none;}
 body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .panel-sub{color:#efe6cf; text-shadow:0 1px 3px rgba(0,0,0,.8);}
 @media (prefers-reduced-motion: reduce){ .cave-screen-dark{background:radial-gradient(circle at var(--lx, 50vw) var(--ly, 50vh), rgba(4,6,12,0) 0, rgba(4,6,12,.6) 360px);} }
@@ -11911,7 +11911,7 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 /* Achievements note, on the right (2026-10-10) */
 .home-note.note-achv{right:-134px; top:22px; rotate:5deg;}
 .home-note-wrap{right:-134px !important;}
-@media (max-width:860px){ .home-note.note-achv{position:static; rotate:0deg;} }
+@media (max-width:899px){ .home-note.note-achv{position:static; rotate:0deg;} }
 .arena-achv-btn{margin-left:8px; vertical-align:middle; font-size:12px;}
 .qb-paper{position:fixed; left:0; top:0; z-index:10050; width:26px; height:32px; pointer-events:none; border-radius:2px; background:linear-gradient(180deg,#f6e8c6,#e2c890); box-shadow:0 3px 6px rgba(0,0,0,.3), inset 0 0 0 1px rgba(122,86,48,.3); background-image:repeating-linear-gradient(180deg, transparent 0 6px, rgba(122,86,48,.25) 6px 7px), linear-gradient(180deg,#f6e8c6,#e2c890);}
 
@@ -11930,7 +11930,7 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 @keyframes predBlink{0%,48%{transform:scaleY(1)} 50%,54%{transform:scaleY(.1)} 56%,100%{transform:scaleY(1)}}
 @media (prefers-reduced-motion: reduce){ .crystal-sparkle, .pred-eyes, .snail-trail{display:none;} }
 .home-note.note-market{left:-132px; top:272px; rotate:-3deg;}
-@media (max-width:860px){ .home-note.note-market{position:static; rotate:0deg;} }
+@media (max-width:899px){ .home-note.note-market{position:static; rotate:0deg;} }
 
 /* Fight kind stays readable after a clear (2026-10-10) */
 .map-node .map-node-kind{position:absolute; top:-8px; left:-8px; z-index:2; width:20px; height:20px; display:grid; place-items:center; font-size:12px; line-height:1; border-radius:50%; background:#2b2116; box-shadow:0 0 0 2px #f3e3bf; pointer-events:none;}
@@ -11977,7 +11977,7 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .conquest-node-panel .cnp-rw .cnp-rw-label{grid-column:1 / -1;}
 .conquest-node-panel .cnp-deck-locked{height:52px;}
 .conquest-node-panel .cnp-deck-locked .rank-hex{position:relative !important; inset:auto !important; transform:scale(.72) !important; margin:0 !important;}
-@media (min-width:821px){ .conquest-main > .conquest-node-panel{max-height:min(62%, 400px) !important;} }
+@media (min-width:900px){ .conquest-main > .conquest-node-panel{max-height:min(62%, 400px) !important;} }
 /* 2026-10-17 (user: "SS#1: Skirmish (last mission) is so big that it doesnt even fit."): the panel kept overflow:visible (for the Fight
    pill and rank hex on its edges), so a long Field list pushed the deck row down behind the tab bar. The panel is now a column capped
    at its max-height: the head and the deck row keep their size and the Field list alone gives way, two columns wide and scrolling
@@ -12008,8 +12008,8 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .conquest-node-panel{padding-bottom:10px !important;}
 .conquest-node-panel .cnp-squad{padding-bottom:6px;}
 .conquest-node-panel > :last-child, .conquest-node-panel .cnp-deck:last-child{margin-bottom:0 !important;}
-@media (min-width:821px){ .conquest-main > .conquest-node-panel{padding-top:32px !important;} }
-@media (max-width:620px){ .conquest-node-panel .cnp-head > .cnp-showcase, .conquest-node-panel .cnp-head > .cnp-ico, .conquest-node-panel .cnp-head > .cnp-pair{grid-row:span 2;}
+@media (min-width:900px){ .conquest-main > .conquest-node-panel{padding-top:32px !important;} }
+@media (max-width:560px){ .conquest-node-panel .cnp-head > .cnp-showcase, .conquest-node-panel .cnp-head > .cnp-ico, .conquest-node-panel .cnp-head > .cnp-pair{grid-row:span 2;}
   .conquest-node-panel .cnp-head > .cnp-rw:last-child{grid-column:2; justify-self:end; align-self:end; margin-top:12px;} }
 /* Glimmer Depths campfire and the cleared-gem shine (2026-10-13) */
 .map-skull{position:absolute; z-index:5; transform:translate(-50%,-50%) rotate(-6deg); pointer-events:none; opacity:.9; filter:drop-shadow(0 2px 2px rgba(0,0,0,.35));} /* 2026-11-18 (UIFIN): Glass Dunes skull */
@@ -12037,7 +12037,7 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .cd-spawns{display:flex; flex-direction:column; gap:12px; border-left:1px dashed rgba(120,90,50,.35); padding-left:14px;}
 .cd-spawn h3{margin:0 0 6px; font-size:13px; text-transform:uppercase; letter-spacing:.05em; opacity:.7;}
 .cd-spawn .card-tile{width:150px !important; height:auto !important; aspect-ratio:4/5; margin:0 0 8px;} .cd-spawn-ab{font-size:13px;}
-@media (max-width:820px){ .card-detail-card.has-spawns .cd-grid{grid-template-columns:1fr !important;} .cd-spawns{border-left:0; padding-left:0; border-top:1px dashed rgba(120,90,50,.35); padding-top:10px;} }
+@media (max-width:899px){ .card-detail-card.has-spawns .cd-grid{grid-template-columns:1fr !important;} .cd-spawns{border-left:0; padding-left:0; border-top:1px dashed rgba(120,90,50,.35); padding-top:10px;} }
 .species-field{display:flex; align-items:center; gap:6px;} .species-field .species-ico{font-size:20px; min-width:24px; text-align:center;} .species-field{flex-wrap:wrap;} .species-field input,.species-field select{flex:1 1 0; min-width:0;} .species-field #fSpecies2{flex:1 1 100%;} /* 2026-11-05 (EDIT1): two dropdowns, the second (hybrid) on its own line */
 .skill-row .sk-lv{display:inline-flex; align-items:center; gap:4px; white-space:nowrap;} .skill-row .sk-lv[hidden]{display:none !important;} .skill-row .sk-rm-lv{padding:0 6px; min-height:0;} /* 2026-11-05 (EDIT1): the level inside the skill's own row */
 /* Skill and Map Codex (2026-10-13) */
@@ -12086,7 +12086,7 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .pg-tab:disabled{opacity:.38; cursor:default; box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--surface-border) 85%, transparent);}
 /* On a phone the cards need the width, so the tabs fold into the page's top corners instead (« ‹ on the left, › » on the right,
    either side of the page's heading); a swipe turns as well. The album also reaches into the content's side padding. */
-@media (max-width:559px){ .pg-book{padding-left:6px !important; padding-right:6px !important;}
+@media (max-width:560px){ .pg-book{padding-left:6px !important; padding-right:6px !important;}
   .al-album.pg-book{margin-left:-8px; margin-right:-8px;}
   .pg-edge{top:10px; bottom:auto; width:auto; flex-direction:row;} .pg-edge-l{left:12px;} .pg-edge-r{right:12px;}
   .pg-edge-in{position:static; flex-direction:row; gap:4px;} .pg-edge-l .pg-edge-in{flex-direction:row-reverse;}
@@ -12138,7 +12138,7 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .bk-firstmap{display:inline-block; margin-left:8px; font:700 11px/1.4 'Nunito',system-ui,sans-serif; color:var(--accent-strong); padding:1px 7px; border-radius:999px; background:color-mix(in srgb, var(--accent) 14%, transparent); vertical-align:middle;}
 /* 2026-11-15 (package SKMAP1): admin Skills by map. New = red (--danger), text on --bg so it reads in light and dark. */
 .bk-skm-row{position:absolute; top:2px; right:46px; z-index:10;} .bk-skm-row .btn{min-width:40px; height:36px;} .skm-modal{max-width:860px; width:100%;} .skm-body{display:grid; grid-template-columns:1fr; gap:10px;}
-@media (min-width:821px){ .skm-body{grid-template-columns:1fr 1fr;} }
+@media (min-width:900px){ .skm-body{grid-template-columns:1fr 1fr;} }
 .skm-row{background:var(--surface-2); border:1px solid var(--surface-border); border-radius:10px; padding:8px 10px;} .skm-row h3{margin:0 0 4px; font:800 14px/1.2 'Baloo 2',system-ui,sans-serif;}
 .skm-part{margin-top:6px;} .skm-part h4{margin:0 0 2px; font:700 11px/1.2 'Nunito',system-ui,sans-serif; color:var(--ink-muted); text-transform:uppercase; letter-spacing:.04em;}
 .skm-chips,.skm-src{display:flex; flex-wrap:wrap; gap:4px; align-items:center;} .skm-src b{font:700 11px/1 'Nunito',system-ui,sans-serif; color:var(--ink-soft); margin-right:2px;} .skm-src{margin-bottom:3px;}
@@ -12146,7 +12146,7 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .skm-chip.is-new{border-style:dotted; border-color:var(--ink-muted);} .skm-chip.is-focus{background:var(--danger); border-color:var(--danger); border-style:solid; color:var(--bg);} /* 2026-11-16 (UX7): red = focus skills (MAP_FOCUS_SKILLS); new-but-not-focus is a dotted edge */ .skm-past{opacity:.55;} .skm-past.is-hit{opacity:1; border-color:var(--accent-strong);}
 .skm-pick{border-color:var(--danger); color:var(--danger);} .skm-pick.is-bad{text-decoration:line-through; opacity:.6;} .skm-none{font-size:12px; color:var(--ink-muted);}
 .bk-pager{display:flex; align-items:center; gap:4px;} .bk-pager .pg-info{margin:0;} .bk-pager .pg-edge{position:static; width:auto; flex-direction:row;} .bk-pager .pg-edge-l{order:-1;} .bk-pager .pg-edge-in{position:static; flex-direction:row; gap:4px;} .bk-pager .pg-edge-l .pg-edge-in{flex-direction:row-reverse;}
-@media (max-width:559px){ .bk-bar .bk-filter{flex-basis:100%;} #bkWrap.is-admin .bk-filter{padding-right:46px;} #bkWrap.is-admin.has-skm .bk-filter{padding-right:92px;} .bk-pager .pg-info .pg-of{min-width:7.5em; padding:6px 10px;} }
+@media (max-width:560px){ .bk-bar .bk-filter{flex-basis:100%;} #bkWrap.is-admin .bk-filter{padding-right:46px;} #bkWrap.is-admin.has-skm .bk-filter{padding-right:92px;} .bk-pager .pg-info .pg-of{min-width:7.5em; padding:6px 10px;} }
 .bk-bar .bk-filter small{color:var(--page-ink, #f5ecd2);}
 .bk-filter input{flex:1 1 auto; min-width:0; height:40px; padding:0 12px; border-radius:10px; border:1px solid var(--surface-border); font:inherit; background:var(--surface); color:var(--ink);}
 .bk-book{position:relative; touch-action:pan-y;}
@@ -12373,7 +12373,7 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .card-detail-card .cd-dc :is(.ci-fin, .ci-spinbtn){background:var(--surface-2); color:var(--ink); border-color:var(--surface-border); backdrop-filter:none;}
 .card-detail-card .cd-dc .ci-fin.is-on{background:linear-gradient(120deg, #f7d77a, #f2a8d8 50%, #9fd6f7); color:#2b1d10; border-color:transparent;}
 .card-detail-card .cd-dc .ci-finishes{gap:4px;} .card-detail-card .cd-dc .ci-fin{padding:3px 9px; font-size:11.5px;}
-@media (max-width:640px){ .card-detail-card .cd-dc{margin:0 auto;} }
+@media (max-width:560px){ .card-detail-card .cd-dc{margin:0 auto;} }
 /* the pack-results viewer (openCardInspector with a pull): the same Detail card; its old stage only holds it now */
 .card-inspect .ci-stage{touch-action:auto; cursor:auto; padding:10px; perspective:none;}
 /* the pack reveal: the Detail card inside each pack card's button, face down until it is revealed */
@@ -12467,7 +12467,7 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 #codexGrid.al-host .card-tile.cx-editable{cursor:pointer;}
 .al-foot{text-align:center; font:700 12px/1 'Baloo 2',system-ui,sans-serif; color:var(--ink-soft); padding-top:8px;}
 .al-head-next{margin-top:14px;} .al-page .al-grid:not(:last-of-type){flex:0 0 auto;} /* 2026-11-18 (UI60): a page can hold several sections, each with its own title and divider */
-@media (max-width:559px){ .al-album{padding:6px;} .al-page{padding:8px 6px 6px;} .al-grid{gap:5px; --al-sleeve-x:3px;}
+@media (max-width:560px){ .al-album{padding:6px;} .al-page{padding:8px 6px 6px;} .al-grid{gap:5px; --al-sleeve-x:3px;}
   /* 2026-10-19 (package CX, owner 14:07: "Show 16 cards on each page"): 4 × 4 on a phone too, in thinner sleeves */
   .al-sleeve{padding:3px 3px 7px; border-radius:6px;} .al-head .al-sec{font-size:15px;} }
 
@@ -12496,7 +12496,7 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .dbp-tools .cf-panel, .se-gallery .cf-panel{max-height:42vh; overflow-y:auto;}
 .cf-panel .cx-skill-chips:not(.is-groups){max-height:min(30vh, 260px);}
 .se-gallery .sg-tools .cf-bar{flex:1 1 100%;}
-@media (max-width:700px){ .cf-panel > select{flex:1 1 45%;} .cf-bar > select{flex:1 1 40%;} }
+@media (max-width:560px){ .cf-panel > select{flex:1 1 45%;} .cf-bar > select{flex:1 1 40%;} }
 .cx-skill-active{display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:6px 0 4px;} .cx-skill-active[hidden]{display:none;}
 .cx-skill-active > span{font-weight:800; font-size:13px; color:var(--page-ink, #f5ecd2);}
 .cx-skill-active > .btn{background:var(--surface-2); color:var(--ink); border:1px solid var(--surface-border);}
@@ -12516,7 +12516,7 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .cx-score-achv em{color:var(--accent); font-style:normal; font-weight:800;}
 /* 2026-10-13 (user: "Put the admin buttons to the side on the right, outside the card") */
 .cnp-admin-side{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;}
-@media (min-width:821px){ .conquest-node-panel > .cnp-admin-side{position:absolute; left:100%; top:44px; margin:0 0 0 12px; flex-direction:column; flex-wrap:nowrap; width:150px;}
+@media (min-width:900px){ .conquest-node-panel > .cnp-admin-side{position:absolute; left:100%; top:44px; margin:0 0 0 12px; flex-direction:column; flex-wrap:nowrap; width:150px;}
   .conquest-node-panel > .cnp-admin-side .btn{justify-content:flex-start; white-space:nowrap; background:rgba(20,16,10,.82) !important; color:#fff8e6;} }
 .cnp-lvl-inline{display:inline-flex; align-items:center; gap:3px; margin-left:10px; padding:1px 8px; border-radius:999px; font-weight:800; background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.14); white-space:nowrap;}
 .cnp-lvl-inline.lv-red{color:#ffb4a8; border-color:rgba(255,120,100,.5);} .cnp-lvl-inline.lv-darkred{color:#ff8a7a; border-color:rgba(255,80,60,.7);} .cnp-lvl-inline.lv-green{color:#b8f5b0;}
@@ -12621,7 +12621,7 @@ body.pg-has-ds2 #cardPop{z-index:9100 !important;} /* 2026-11-12 (package PERF3)
 .rr-row small{font-size:13px; color:#2f7a1f;}
 .rr-row.is-bump{animation:rrBump .22s ease;}
 @keyframes rrBump{50%{transform:scale(1.12); box-shadow:0 0 0 2px #ffd24a, 0 0 22px rgba(255,210,74,.9);}}
-@media (max-width:699px){ .rr-tally{right:10px; top:calc(env(safe-area-inset-top, 0px) + 56px);} .rr-row b{font-size:17px;} .rr-row i{font-size:19px;} }
+@media (max-width:560px){ .rr-tally{right:10px; top:calc(env(safe-area-inset-top, 0px) + 56px);} .rr-row b{font-size:17px;} .rr-row i{font-size:19px;} }
 @media (prefers-reduced-motion: reduce){ .rr-tally{transition:opacity .2s;} .rr-row.is-bump{animation:none;} }
 .qf-ribbon{position:fixed; z-index:10060; transform:translate(-50%,-50%); pointer-events:none; font-family:'Baloo 2'; font-weight:800; font-size:20px; color:#4a2a05; padding:6px 18px; border-radius:999px;
   background:linear-gradient(180deg,#ffe9a0,#f0b93a); box-shadow:0 8px 24px rgba(160,100,0,.45); animation:qfRibbon 1.9s ease-out forwards; white-space:nowrap;}
@@ -12775,7 +12775,7 @@ body.pg-has-ds2 #cardPop{z-index:9100 !important;} /* 2026-11-12 (package PERF3)
   .fp-how{opacity:.7 !important;}
   .fp-acts{display:flex; flex-wrap:wrap; gap:6px; justify-content:flex-end;}
   .fp-none{font-size:13px; opacity:.6; align-self:center;}
-  @media (max-width:620px){ .fp-row{grid-template-columns:auto 1fr;} .fp-acts{grid-column:1/-1; justify-content:flex-start;} }
+  @media (max-width:560px){ .fp-row{grid-template-columns:auto 1fr;} .fp-acts{grid-column:1/-1; justify-content:flex-start;} }
   /* Pitch already used this turn (2026-10-11): the yield shows red and struck through */
   #graveyardDragTip.is-spent, .pitch-badge.is-spent{background:linear-gradient(180deg,#7a2020,#4a1010) !important; border-color:#ff8a8a !important; box-shadow:0 0 0 2px rgba(255,90,90,.35), 0 10px 24px rgba(0,0,0,.5) !important;}
   #graveyardDragTip.is-spent b, .pitch-badge.is-spent b{text-decoration:line-through; text-decoration-thickness:3px; color:#ffd0d0;}
@@ -12876,7 +12876,7 @@ body.pg-has-ds2 #cardPop{z-index:9100 !important;} /* 2026-11-12 (package PERF3)
   .lvs-table thead th{position:sticky; top:0; background:var(--surface, #fff); z-index:1;}
   .lvs-table input{width:72px;}
   .lvs-table tr.is-base td{font-weight:800;}
-  .lvs-table .lvb-atk, .lvs-table .lvb-hp, .lvs-table .lvb-n, .lvs-table tr.is-hatch input{width:46px;} .lvs-table .lvb-key{max-width:110px;} .lvs-table td.lvb-sk{white-space:nowrap;} .lvs-table tbody th{white-space:nowrap;} @media (max-width:520px){ .lvs-table .lvb-atk, .lvs-table .lvb-hp, .lvs-table .lvb-n, .lvs-table tr.is-hatch input{width:38px;} .lvs-table th, .lvs-table td{padding:3px 3px;} } /* LVL10 (2026-11-18): the growth table */
+  .lvs-table .lvb-atk, .lvs-table .lvb-hp, .lvs-table .lvb-n, .lvs-table tr.is-hatch input{width:46px;} .lvs-table .lvb-key{max-width:110px;} .lvs-table td.lvb-sk{white-space:nowrap;} .lvs-table tbody th{white-space:nowrap;} @media (max-width:560px){ .lvs-table .lvb-atk, .lvs-table .lvb-hp, .lvs-table .lvb-n, .lvs-table tr.is-hatch input{width:38px;} .lvs-table th, .lvs-table td{padding:3px 3px;} } /* LVL10 (2026-11-18): the growth table */
   .lvs-table .lvb-tot, .lvs-table .lvb-fill{white-space:nowrap; font-variant-numeric:tabular-nums;} .lvs-table .lvb-fill.is-over{color:#c0392b; font-weight:800;} .lvs-box .lvb-style{font-weight:700;} .lvs-table .lvb-new{font-weight:700; color:#2e7d32;}
   .lvs-step{font-size:10px; padding:0 5px; border-radius:6px; margin-left:4px; background:rgba(200,140,40,.18);} .lvs-step.is-minor{background:rgba(120,120,120,.16);}
   /* Wildpaths (PvE passive skill trails) */
@@ -12891,7 +12891,7 @@ body.pg-has-ds2 #cardPop{z-index:9100 !important;} /* 2026-11-12 (package PERF3)
   .wp-points{margin-left:auto; padding:5px 12px; border-radius:999px; border:1px solid rgba(217,181,106,.5); color:#ffe7a8; font-weight:800;}
   .wp-preview{position:relative; margin:10px 0 6px; font-size:13px; color:#d9c8f0; opacity:.85;}
   .wp-trees{position:relative; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px;}
-  @media (max-width:820px){ .wp-trees{grid-template-columns:1fr;} .wp-tree-svg{max-height:420px;} }
+  @media (max-width:899px){ .wp-trees{grid-template-columns:1fr;} .wp-tree-svg{max-height:420px;} }
   .wp-tree{text-align:center;}
   .wp-tree h3{margin:6px 0 0; font-family:'Caveat', 'Baloo 2', cursive; font-size:30px; color:#ffe7a8;}
   .wp-tree > p{margin:0 auto; max-width:30ch; font-size:13px; opacity:.75; min-height:3em;}
@@ -12922,8 +12922,8 @@ body.pg-has-ds2 #cardPop{z-index:9100 !important;} /* 2026-11-12 (package PERF3)
   .note-paths b{display:inline-flex; align-items:center; gap:4px;} .note-paths .wp-logo{vertical-align:middle;}
   .home-note.note-paths{right:-136px; top:272px; rotate:-4deg;}
   .home-note.note-nest{right:-130px; top:394px; rotate:3deg;} /* 2026-10-11: the Nest's note once Raids take its tile */
-  @media (max-width:860px){ .home-note.note-nest{position:static; rotate:0deg;} }
-  @media (max-width:860px){ .home-note.note-paths{position:static; rotate:0deg;} }
+  @media (max-width:899px){ .home-note.note-nest{position:static; rotate:0deg;} }
+  @media (max-width:899px){ .home-note.note-paths{position:static; rotate:0deg;} }
   .new-skill-ribbon{display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:6px 0 2px; padding:5px 10px; border-radius:10px; background:linear-gradient(90deg, rgba(255,214,110,.22), rgba(255,214,110,.06)); border:1px dashed rgba(200,150,40,.55); font-size:13px;}
   .new-skill-ribbon b{color:#9a6a12;} .nsr-skill{padding:1px 7px; border-radius:999px; background:rgba(255,255,255,.55); border:1px solid rgba(200,150,40,.35); cursor:help;}
   .skill-counter{display:block; margin-top:2px; font-size:.86em; opacity:.75; font-style:italic;}
@@ -12940,7 +12940,7 @@ body.pg-has-ds2 #cardPop{z-index:9100 !important;} /* 2026-11-12 (package PERF3)
   .sm-mat b{font-size:16px; color:#ffd69a;} .sm-mat small{opacity:.75;}
   .sm-mats-hint{margin-left:auto; opacity:.65; font-size:12px; max-width:44ch;}
   .sm-layout{display:grid; grid-template-columns:minmax(220px, 320px) 1fr; gap:12px;}
-  @media (max-width:760px){ .sm-layout{grid-template-columns:1fr;} }
+  @media (max-width:899px){ .sm-layout{grid-template-columns:1fr;} }
   .sm-list{display:flex; flex-direction:column; gap:6px; padding:10px;}
   .sm-recipe{display:flex; align-items:center; gap:10px; text-align:left; padding:8px 10px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface-2, rgba(0,0,0,.03)); cursor:pointer; position:relative;}
   .sm-recipe:hover{border-color:#d08a3a;} .sm-recipe.on{border-color:#d08a3a; box-shadow:0 0 0 2px rgba(208,138,58,.25); background:rgba(208,138,58,.08);}
@@ -13009,11 +13009,11 @@ body.pg-has-ds2 #cardPop{z-index:9100 !important;} /* 2026-11-12 (package PERF3)
   .st-ico{font-size:20px;}
   .home-note.note-inv{left:-128px; top:394px; rotate:3deg;}
   .home-note.note-tavern{left:-130px; top:272px; rotate:-3deg;} /* 2026-10-13 UI audit: it had no spot and sat on the Play tile */
-  @media (max-width:860px){ .home-note.note-tavern{position:static; rotate:0deg;} }
-  @media (max-width:860px){ .home-note.note-inv{position:static; rotate:0deg;} }
+  @media (max-width:899px){ .home-note.note-tavern{position:static; rotate:0deg;} }
+  @media (max-width:899px){ .home-note.note-inv{position:static; rotate:0deg;} }
   /* 2026-10-22 (package TU, owner: "In mobile mode, the Profile icon should be a button in the main menu"): phones only; desktop keeps the top bar's 👤 chip */
   .home-note.note-profile{display:none;}
-  @media (max-width:860px){ .home-note.note-profile{display:flex; position:static; rotate:0deg;} }
+  @media (max-width:899px){ .home-note.note-profile{display:flex; position:static; rotate:0deg;} }
   /* Dragon scale glint on the map */
   .map-node-scale{position:absolute; right:-6px; bottom:-4px; width:12px; height:12px; border-radius:50%; background:radial-gradient(circle, #fff6d0 0%, #ffcf6a 40%, rgba(255,140,40,0) 70%); animation:scaleGlint 2.6s ease-in-out infinite; pointer-events:none;}
   .map-node-scale.is-found{width:auto; height:auto; background:none; font-size:12px; animation:none; filter:drop-shadow(0 1px 1px rgba(0,0,0,.5));}
@@ -13022,7 +13022,7 @@ body.pg-has-ds2 #cardPop{z-index:9100 !important;} /* 2026-11-12 (package PERF3)
   /* Hatchery (Nest, 2026-10-11): hay nests in a hexagon under a windy sky */
   .hatchery{position:relative; display:grid; grid-template-columns:minmax(260px, 420px) 1fr; gap:16px; align-items:center; margin:10px 0 12px; padding:16px; border-radius:18px; overflow:hidden;
     background:linear-gradient(180deg, #bfe0f0 0%, #e8f2dc 48%, #d9c78f 100%); color:#3a2a14; box-shadow:inset 0 0 0 1px rgba(120,90,40,.25);}
-  @media (max-width:720px){ .hatchery{grid-template-columns:1fr;} }
+  @media (max-width:899px){ .hatchery{grid-template-columns:1fr;} }
   .hatch-sky{position:absolute; inset:0; pointer-events:none; overflow:hidden;}
   .hatch-sky .wind{position:absolute; left:-40%; height:2px; width:38%; border-radius:2px; background:linear-gradient(90deg, transparent, rgba(255,255,255,.85), transparent); animation:windGust 6s linear infinite;}
   .hatch-sky .w1{top:14%;} .hatch-sky .w2{top:30%; animation-delay:2.2s; animation-duration:7.5s;} .hatch-sky .w3{top:62%; animation-delay:4.1s; animation-duration:5.5s;}
@@ -13352,7 +13352,7 @@ body.pg-has-ds2 #cardPop{z-index:9100 !important;} /* 2026-11-12 (package PERF3)
   .ds3-row.is-swapped .ds2-old{opacity:.45; filter:grayscale(1);} .ds3-row.is-skipped{opacity:.35;}
   .ds3-row.is-swapped .ds2-nav, .ds3-row.is-swapped .ds3-tick, .ds3-row.is-swapped .ds3-arrow, .ds3-row.is-skipped .ds3-tick{opacity:0; pointer-events:none; transition:opacity .2s;}
   .ds2-overlay.is-done .ds3-rows{overflow:visible;}
-  @media (max-width: 560px){
+  @media (max-width:560px){
     .ds3-head, .ds3-row{grid-template-columns:1fr 22px 1fr 46px; gap:8px;}
     .ds3-names{grid-template-columns:1fr 22px 1fr; column-gap:8px; font-size:10.5px;}
     .ds3-row{padding:4px;}
@@ -13539,7 +13539,7 @@ body.pg-has-ds2 #cardPop{z-index:9100 !important;} /* 2026-11-12 (package PERF3)
   background:rgba(232,196,106,.18); border:1px solid rgba(232,196,106,.55); color:inherit;}
 .arena-mode-btn.arena-hero .amb-win{background:rgba(255,230,160,.18); border-color:rgba(255,230,160,.5);}
 .amb-win .maple-leaf-icon, .amb-win img{width:1em; height:1em; vertical-align:-2px;}
-@media (max-width:600px){
+@media (max-width:560px){
   .arena2{--match-card-w:78px; --match-card-h:98px;}
   .ar2-hero{padding:28px 12px 12px;} .ar2-title h2{font-size:24px;} .ar2-crest{font-size:36px;}
   .ar2-stats{width:100%;} .ar2-stat{flex:1 1 0; min-width:0; padding:5px 6px;}
@@ -13658,7 +13658,7 @@ button.ar3-mode:hover{border-color:var(--accent); transform:translateY(-2px);}
 .pf-matchlog .ro-res{width:24px; height:24px; border-radius:6px; display:inline-flex; align-items:center; justify-content:center; flex:none; font-weight:900; color:#fff; background:var(--grave);}
 .pf-matchlog .ro-res.win{background:var(--health);} .pf-matchlog .ro-res.loss{background:var(--attack);}
 .pf-matchlog .ml-empty{margin:0;}
-@media (max-width:600px){
+@media (max-width:560px){
   .ar3-scene{padding:66px 10px 16px; border-radius:12px; gap:12px; --match-card-w:112px; --match-card-h:140px;}
   .ar3-scene::after{font-size:14px;}
   .ar3-pvp-row{gap:10px;}
@@ -13710,7 +13710,7 @@ button.ar3-mode:hover{border-color:var(--accent); transform:translateY(-2px);}
 .r3-rw{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; font-size:13px;}
 .r3-rw li{display:flex; justify-content:space-between; gap:10px; padding:6px 10px; border-radius:10px; background:var(--surface);}
 .r3-rw li span{text-align:right;}
-@media (max-width:600px){ .r3-boss-card{width:96px; height:96px; font-size:52px;} .r3-boss-info h2{font-size:21px;} .r3-chip{flex:1 1 40%;} .r3-info{grid-template-columns:1fr;} }
+@media (max-width:560px){ .r3-boss-card{width:96px; height:96px; font-size:52px;} .r3-boss-info h2{font-size:21px;} .r3-chip{flex:1 1 40%;} .r3-info{grid-template-columns:1fr;} }
 
 /* 2026-11-05 (package RAID2, owner: "terribly messy ... your rank beside the opponent's hp bar + your damage dealt ... lessen the margin between the top and fight sections ... just show 3 cards; the final card a full rectangle"):
    the hero's HP bar with your rank and damage beside it; a tight header; part cards of name, bar, HP and the Fight button; the Core alone, full width; the reward kinds as icon chips. */
@@ -13728,7 +13728,7 @@ button.ar3-mode:hover{border-color:var(--accent); transform:translateY(-2px);}
 .raid2-panel .r2-part .r2-part-foot .btn{width:100%;}
 .r3-rw-types{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:8px;}
 .r3-rw-types li{display:flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px; background:var(--surface); font:700 13px 'Baloo 2', system-ui, sans-serif;}
-@media (max-width:600px){ .r3-mine{flex:1 1 100%;} }
+@media (max-width:560px){ .r3-mine{flex:1 1 100%;} }
 .battlefield > .raid-fight-mine{position:absolute; left:8px; top:6px; z-index:40; display:flex; align-items:center; gap:8px; padding:3px 12px 3px 6px; border-radius:12px; pointer-events:none;
   background:rgba(8,16,28,.62); border:1px solid rgba(255,255,255,.18); color:#f4f1e8;}
 .raid-fight-mine .rank-hex{position:relative !important; top:auto !important; right:auto !important; left:auto !important; rotate:0deg; flex:0 0 auto; transform:scale(.5); margin:-14px -12px;}
@@ -13743,7 +13743,7 @@ button.ar3-mode:hover{border-color:var(--accent); transform:translateY(-2px);}
   color:var(--ink); background:var(--surface-2); border:1px solid var(--surface-border); box-shadow:0 2px 8px rgba(0,0,0,.35); touch-action:manipulation;}
 .battlefield > .rz-btn:hover{filter:brightness(1.1);} .battlefield > .rz-btn:focus-visible{outline:2px solid var(--accent, #c9a24a); outline-offset:2px;}
 .battlefield > .rz-btn .rz-i-out{display:none;} .battlefield > .rz-btn.is-in .rz-i-in{display:none;} .battlefield > .rz-btn.is-in .rz-i-out{display:inline;}
-@media (max-width:600px){ .battlefield > .rz-btn{width:44px; height:44px; bottom:54px;} }
+@media (max-width:560px){ .battlefield > .rz-btn{width:44px; height:44px; bottom:54px;} }
 
 /* 2026-11-05 (package RAID2): a wave of the raid's tide crossing its third of the board (raidTideCrests): a foam line with water behind it. */
 .battlefield > .raid-tide-crest{position:absolute; left:0; right:0; overflow:hidden; pointer-events:none; z-index:7;}
@@ -13764,7 +13764,7 @@ button.ar3-mode:hover{border-color:var(--accent); transform:translateY(-2px);}
 .vs-ally-txt b{font-size:14px;} .vs-ally-txt small{font-size:11.5px; opacity:.85; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
 .vs-ally-row{color:#ffe08a; font-weight:700; opacity:1 !important;}
 .vs-boss-art{width:120px; height:120px; border-radius:18px; image-rendering:pixelated; border:3px solid #c9a24a; box-shadow:0 8px 20px rgba(0,0,0,.45); object-fit:cover;}
-@media (max-width:600px){ .vs-ally2{max-width:46vw;} .vs-boss-art{width:84px; height:84px;} }
+@media (max-width:560px){ .vs-ally2{max-width:46vw;} .vs-boss-art{width:84px; height:84px;} }
 
 /* The raid's back-row volley: the striker bobs forward */
 .board-card.volley-lunge{animation:volleyLunge .45s ease-out;}
@@ -13844,7 +13844,7 @@ button.ar3-mode:hover{border-color:var(--accent); transform:translateY(-2px);}
 .raid-editor .re-ally-deck{flex:1 1 260px; min-width:0;}
 .raid-editor .re-warn{color:var(--danger);}
 .raid-editor .re-restart{display:flex; flex-wrap:wrap; align-items:center; gap:8px;}
-@media (max-width:600px){ .raid-hub .rh-art{width:64px; height:64px; font-size:36px;} }
+@media (max-width:560px){ .raid-hub .rh-art{width:64px; height:64px; font-size:36px;} }
 /* 2026-10-23 (package RW5, owner item 18): "2× unlocked!" in the fight, under the top bar; the speed button pulses with it */
 .rw5-speed-banner{position:fixed; left:50%; top:calc(env(safe-area-inset-top, 0px) + 64px); transform:translateX(-50%); z-index:9000; display:flex; flex-direction:column; align-items:center; gap:2px;
   padding:10px 18px; border-radius:14px; background:linear-gradient(180deg, #3a2a12, #1f160a); color:#ffe9b0; border:2px solid #e7b04a; box-shadow:0 8px 26px rgba(0,0,0,.45);
@@ -13877,7 +13877,7 @@ button.ar3-mode:hover{border-color:var(--accent); transform:translateY(-2px);}
 .pro-row .pro-card{white-space:nowrap;}
 .pro-editor .pro-row{padding:4px 0;}
 .wl-pro-note{margin:6px 0 0; font-size:13px; font-weight:700; color:#e7c66a;}
-@media (max-width: 520px){ .pro-row .pro-acts{margin-left:0; width:100%;} .pro-row .pro-acts .btn{flex:1;} }
+@media (max-width:560px){ .pro-row .pro-acts{margin-left:0; width:100%;} .pro-row .pro-acts .btn{flex:1;} }
 </style>
 <style id="nvStyles">
 /* ===== Package NV (2026-10-19, owner on an iPhone 10:55): Home on the map and the Arena, no map strip on phones, the pre-battle
@@ -13939,7 +13939,7 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
 @keyframes vsStartFill{from{transform:scaleX(0);} to{transform:scaleX(1);}}
 @media (prefers-reduced-motion: reduce){ .vs2 .vs-start-fill{animation:none; display:none;} }
 /* phones: stacked; the split and its seam sit at the VS word */
-@media (max-width:600px){
+@media (max-width:560px){
   .vs-screen.vs2{display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:4px; padding:max(14px, env(safe-area-inset-top, 0px)) 16px 0;
     background:radial-gradient(ellipse 70% 30% at 50% 25%, rgba(140,220,120,.22), transparent 70%), repeating-linear-gradient(105deg, rgba(255,255,255,.035) 0 2px, transparent 2px 13px),
       linear-gradient(180deg, #2c3a27 0 var(--vs-split, 50%), #5a2b22 var(--vs-split, 50%) 100%); background-attachment:local;}
@@ -14023,7 +14023,7 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
    small ✓ once cleared; its name is in the title / aria-label, and a touch-and-hold shows it (u3ChipPeek). Desktop keeps its side
    list of full chips. */
 .conquest-map-item .cmi-num, .conquest-map-item .cmi-tick{display:none;}
-@media (max-width:820px){
+@media (max-width:899px){
   body.conquest-full .conquest-maps{padding:12px 8px 4px !important; max-height:none !important; gap:6px !important; box-sizing:border-box;
     width:var(--u3-strip-w, 100%) !important; max-width:100%; flex:0 0 auto !important; align-self:flex-start; border-bottom:0 !important; scrollbar-width:none;}
   body.conquest-full .conquest-maps::-webkit-scrollbar{display:none;}
@@ -14050,7 +14050,7 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
 .vs2 .u3-bramble-abs li b, .r3-info .u3-bramble-abs li b{color:#e6c8ff;}
 .vs2 .u3-bramble-line{font-size:12.5px; opacity:.92; font-weight:700;}
 /* the boss card is taller with its bramble: on a phone the Start button stays in view at the bottom while the screen scrolls */
-@media (max-width:600px){ .vs2 .u3-bramble-abs li{font-size:11.5px; padding:4px 7px;} .vs2.is-raid .vs-start{position:sticky; bottom:calc(2px + env(safe-area-inset-bottom, 0px)); z-index:3;} } /* 2026-11-16 (package UX5): sticky Start sat 7px over the boss art at 390x844; 2px from the edge clears it */
+@media (max-width:560px){ .vs2 .u3-bramble-abs li{font-size:11.5px; padding:4px 7px;} .vs2.is-raid .vs-start{position:sticky; bottom:calc(2px + env(safe-area-inset-bottom, 0px)); z-index:3;} } /* 2026-11-16 (package UX5): sticky Start sat 7px over the boss art at 390x844; 2px from the edge clears it */
 .r3-bramble{display:flex; gap:10px; align-items:flex-start;}
 .r3-bramble > img{width:56px; height:56px; border-radius:10px; flex:0 0 auto; border:1px solid rgba(200,150,255,.45);}
 /* the bramble tile winds up as it smacks */
@@ -14081,7 +14081,7 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
 .u3-turn-flash .u3tf-warn{padding:3px 10px; border-radius:999px; background:linear-gradient(180deg, #ffe3d6, #f5b49a); color:#5a1b08; border:1.5px solid #c4502a;
   font:800 11.5px/1.1 'Baloo 2', system-ui, sans-serif; white-space:nowrap; box-shadow:0 2px 8px rgba(0,0,0,.4);}
 .u3-turn-flash.is-last .u3tf-pill{background:linear-gradient(180deg, #ffe3d6, #f5b49a); color:#5a1b08; border-color:#c4502a;}
-@media (max-width:699px){ .u3-turn-flash .u3tf-pill{height:20px; font-size:11.5px; padding:0 10px;} }
+@media (max-width:560px){ .u3-turn-flash .u3tf-pill{height:20px; font-size:11.5px; padding:0 10px;} }
 /* 2026-10-21 (package ED): the editors' tools. ✏️ on a card in the skirmish editor's deck list and a skirmish's deck preview (admins);
    the 🚫 Art rejected corner (admins); the kind chip in the skirmish editor's header; its Enemy level; the Codex's Create card; the
    results' "Saving your rewards…" while the buttons wait. */
@@ -14112,7 +14112,7 @@ body.bw-battle-edit .battlefield .board-card:hover .card-tile, body.bw-battle-ed
 /* 2026-11-11 (package UI46 #3, owner 00:06): the Codex's Create card is in the tab row, right-aligned beside 🃏 Deck (which gives up its own auto margin, or the two would
    split the free space); at phone width only the 🆕 shows (its tooltip and aria-label say the words) and the row still wraps, never scrolls sideways. */
 .codex-sub-tabs .ed-cx-create{margin-left:auto;} .codex-sub-tabs .ed-cx-create + .subnav-right-btn{margin-left:0;}
-@media (max-width:600px){ .codex-sub-tabs .ed-cx-lbl{display:none;} }
+@media (max-width:560px){ .codex-sub-tabs .ed-cx-lbl{display:none;} }
 .ed-saving{margin:6px 0 0; font-size:13px; opacity:.85; text-align:center;}
 .winloss-card .winloss-actions button[data-ed-locked], .winloss-card .wl-corner-btn[data-ed-locked]{opacity:.55; cursor:progress;}
 .ce-art-review{display:flex; flex-direction:column; gap:4px; margin-top:8px; font-size:12.5px;}
@@ -14310,7 +14310,7 @@ html[data-fx="none"] .board-card.is-attacking .card-tile .status-chips > .abadge
 .fg-rf-pick:focus-visible{outline:2px solid #ffcf6b; outline-offset:2px;}
 .fg-rf-pick-lv{font:800 12px 'Baloo 2',system-ui,sans-serif; color:#ffd98a;} .fg-rf-pick-name{font-size:12px; line-height:1.2; text-align:center;}
 .fg-rf-star{position:absolute; top:-6px; left:-4px; font-size:14px;}
-@media (max-width:700px){ .fg-rf-main{grid-template-columns:1fr;} .fg-rf-stage{min-height:250px;} .fg-rf-big{zoom:1.45;} .fg-rf-grid{grid-template-columns:repeat(auto-fill, minmax(92px, 1fr)); gap:8px; padding:8px;} .fg-rf-pick .card-tile{width:84px;} }
+@media (max-width:560px){ .fg-rf-main{grid-template-columns:1fr;} .fg-rf-stage{min-height:250px;} .fg-rf-big{zoom:1.45;} .fg-rf-grid{grid-template-columns:repeat(auto-fill, minmax(92px, 1fr)); gap:8px; padding:8px;} .fg-rf-pick .card-tile{width:84px;} }
 /* The Raid tab: the strip, the big card that turns, the recipe */
 .fg-rstrip{display:flex; gap:10px; overflow-x:auto; padding:10px 4px 12px; scroll-snap-type:x proximity; scrollbar-width:thin;}
 .fg-rs{position:relative; flex:0 0 auto; padding:4px; border-radius:12px; border:2px solid transparent; background:transparent; cursor:pointer; scroll-snap-align:start; transition:transform .15s, border-color .15s;}
@@ -14349,7 +14349,7 @@ html[data-fx="none"] .board-card.is-attacking .card-tile .status-chips > .abadge
 .fg-rc-row.is-ok .mk{color:#3f9b4c;} .fg-rc-row.is-short .mk, .fg-rc-row.is-short .need{color:var(--danger, #c0392b);}
 .fg-raid-craft{font-size:16px;}
 .fg-owned{display:flex; flex-direction:column; gap:6px; font-size:13px;} .fg-owned-list{display:flex; flex-wrap:wrap; gap:6px;}
-@media (max-width:760px){ .fg-raid-main{grid-template-columns:1fr;} .fg-rv{min-height:400px;} .fg-rv-front > .card-tile, .fg-rv-front > .fr-back{zoom:1.75;} .fg-rc-row{grid-template-columns:24px 1fr auto auto 18px; gap:6px; padding:8px 10px;} }
+@media (max-width:899px){ .fg-raid-main{grid-template-columns:1fr;} .fg-rv{min-height:400px;} .fg-rv-front > .card-tile, .fg-rv-front > .fr-back{zoom:1.75;} .fg-rc-row{grid-template-columns:24px 1fr auto auto 18px; gap:6px; padding:8px 10px;} }
 @media (prefers-reduced-motion: reduce){ .fg-rv-float{animation:none;} .fg-rv-card{transition:none;} }
 html[data-fx="none"] .fg-rv-float{animation:none;}
 /* 11 + 9: the Codex's card types and its Base level / My best toggle */
@@ -14363,7 +14363,7 @@ html[data-fx="none"] .fg-rv-float{animation:none;}
 .ux-cx-level{display:inline-flex; border-radius:999px; overflow:hidden; border:1px solid var(--surface-border); flex:none;}
 .ux-cx-level .ux-lv{border:0; border-radius:0;} .ux-cx-level .ux-lv + .ux-lv{border-left:1px solid var(--surface-border);}
 .cd-chip.ux-cd-lv{font-family:inherit; color:inherit; cursor:default;} button.cd-chip.ux-cd-lv{cursor:pointer;} button.cd-chip.ux-cd-lv:hover{background:rgba(201,164,106,.35);}
-@media (max-width:600px){
+@media (max-width:560px){
   .ux-cx-kinds{gap:6px;}
   .ux-kind-chips{flex-wrap:nowrap; overflow-x:auto; overscroll-behavior-x:contain; scrollbar-width:none; padding-bottom:2px; -webkit-mask-image:linear-gradient(90deg, #000 88%, transparent); mask-image:linear-gradient(90deg, #000 88%, transparent);}
   .ux-kind-chips::-webkit-scrollbar{display:none;}
@@ -14381,7 +14381,7 @@ html[data-fx="none"] .fg-rv-float{animation:none;}
 .ux2-brambles .u3-bramble-abs{margin:6px 0 4px; padding-left:0; list-style:none; font-size:12px; text-align:left;}
 .ux2-br-empty{flex:1 1 100%; text-align:center; padding:28px 12px; color:var(--ink-muted); border:1.5px dashed var(--surface-border); border-radius:14px;}
 .ux2-br-empty p{margin:0 0 10px;}
-@media (max-width:600px){ .ux2-brambles .ux2-br-bar input[type="search"]{flex:1 1 100%;} .ux2-brambles .ux2-br-bar select{flex:1 1 45%; min-width:0;} .ux2-brambles .bramble-codex-card{min-width:140px;} }
+@media (max-width:560px){ .ux2-brambles .ux2-br-bar input[type="search"]{flex:1 1 100%;} .ux2-brambles .ux2-br-bar select{flex:1 1 45%; min-width:0;} .ux2-brambles .bramble-codex-card{min-width:140px;} }
 </style>
 <style id="u4Styles">
 /* Package U4 (2026-10-19, owner 23:20: "The show unseen and all by ID, -> should show a tick or not if enabled or not - can't tell.").
@@ -14444,7 +14444,7 @@ html[data-fx="none"] .fg-rv-float{animation:none;}
 .mc-in{flex:1; text-align:right; font-size:11.5px; font-weight:700; color:var(--accent-strong); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
 .mc-res-item.is-in .mc-face{opacity:.4; cursor:default; filter:saturate(.6);}
 .mc-more{align-self:center; margin:6px auto;}
-@media (max-width:900px){
+@media (max-width:899px){
   .mc-overlay{padding:0;} .mc-modal{width:100%; height:100dvh; border-radius:0; padding:10px 12px;}
   .mc-tabs{display:flex; gap:6px; flex:0 0 auto;} .mc-tabs button{flex:1; min-height:38px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); border-radius:10px; font:inherit; font-weight:700;} .mc-tabs button.on{background:var(--accent); color:var(--accent-ink);}
   .mc-body{display:block; overflow:hidden;} .mc-pane{height:100%;} .mc-add-pane{border-left:0; padding-left:2px;}
@@ -14475,7 +14475,7 @@ html[data-fx="none"] .fg-rv-float{animation:none;}
 .mc-acts select.mc-move{min-width:34px; max-width:60px; min-height:30px; border:1px solid var(--surface-border); border-radius:8px; background:var(--surface-2); color:var(--ink); cursor:pointer; font-size:14px; padding:0 2px; text-align-last:center;}
 .mc-acts select.mc-move:hover{background:var(--surface-3);}
 .mc-tier + .mc-tier{border-top:1px solid var(--surface-border); padding-top:10px;}
-@media (max-width: 760px){ .mc-acts select.mc-move{min-height:34px;} }
+@media (max-width:899px){ .mc-acts select.mc-move{min-height:34px;} }
 .dbp-stack.is-offpool, .se-stack.is-offpool{position:relative;} .dbp-stack.is-offpool::after, .se-stack.is-offpool::after{content:'⚠'; position:absolute; top:-6px; left:-4px; z-index:6; font-size:14px; line-height:1; padding:2px 3px; border-radius:6px; background:#f0b429; color:#3a2600; box-shadow:0 1px 3px rgba(0,0,0,.4);}
 /* NE:BEGIN 2026-10-24 (package NE, owner 2026-10-23 notes) */
 /* #9: "You have" wallet row where a place spends currency (neWalletHTML) */
@@ -14514,7 +14514,7 @@ body.ne-shift .ne-shift-hint kbd, .ne-shift-hint.is-on kbd{color:var(--ink);}
 .ne-fan-card .ne-fan-lbl{display:flex; flex-direction:column; align-items:center; line-height:1.1;} .ne-fan-card .ne-fan-lbl b{font:800 11.5px 'Baloo 2',system-ui,sans-serif;} .ne-fan-card .ne-fan-lbl small{font-size:9.5px; opacity:.75; max-width:76px; text-align:center;}
 .ne-fan-card.is-in .ne-fan-tile{filter:grayscale(.9) brightness(.6);} .ne-fan-card.is-in{cursor:default;}
 .ne-fan-tick{position:absolute; top:30%; left:50%; transform:translate(-50%, -50%); width:24px; height:24px; border-radius:50%; display:grid; place-items:center; background:#3d7a3a; color:#fff; font:900 14px/1 system-ui; font-style:normal; box-shadow:0 0 0 2px #fff3dc;}
-@media (max-width:620px){ .ne-fan-card{width:62px;} .ne-fan-card .ne-fan-tile{width:58px;} }
+@media (max-width:560px){ .ne-fan-card{width:62px;} .ne-fan-card .ne-fan-tile{width:58px;} }
 @media (prefers-reduced-motion: reduce){ .ne-fan, .ne-fan.is-out{animation:none;} .ne-fan-card{transition:none;} }
 /* 11:26: the fight panel. The field sits in the head under the BR as pills; one left edge and one gap for the rows below; less room above the deck */
 .conquest-node-panel .cnp-title .cnp-field.cnp-field-pills{display:flex; flex-wrap:wrap; gap:4px; margin:0; padding:0; list-style:none; background:none; border-radius:0; font-size:12px; min-height:0; overflow:visible;}
@@ -14545,7 +14545,7 @@ body.ne-shift .ne-shift-hint kbd, .ne-shift-hint.is-on kbd{color:var(--ink);}
 .pl2-where-pill.is-text{font:700 12.5px/1.3 Nunito,system-ui,sans-serif;}
 .pl2-where-pill.c18-sp-pill{background:#f3e3a6; border-color:#b8902f;} /* CONTENT18 (2026-11-08): the Star path pill, a touch more golden than a pack's (both sit on the detail's fixed parchment) */
 body.pg-pack-open #cardPop{z-index:9600 !important;} /* 2026-11-12 (package PERF3): body class, not body:has() */
-@media (min-width:761px){
+@media (min-width:900px){
   .card-inspect.ci-split{display:grid; grid-template-columns:auto minmax(280px, 400px); grid-template-areas:"stage detail" "bar detail"; column-gap:40px; row-gap:14px; align-content:center; justify-content:center; align-items:center;}
   .card-inspect.ci-split .ci-stage{grid-area:stage;} .card-inspect.ci-split .ci-bar{grid-area:bar; justify-self:center;} .card-inspect.ci-split .ci-detail{grid-area:detail;}
   /* 2026-10-25 (package FIX3, G17, owner: "After x10 packs, a card's detail opened far left with its text far right"): in Admin Mode the bar under
@@ -14557,8 +14557,8 @@ body.pg-pack-open #cardPop{z-index:9600 !important;} /* 2026-11-12 (package PERF
 /* #21: Home is an icon; the Conquest map leads the places bar */
 .topbar .home-nav-btn.ne-home-icon{width:38px; height:38px; padding:0 !important; justify-content:center; gap:0; border-radius:50%;} .home-nav-btn.ne-home-icon .tab-emoji{font-size:18px; margin:0; line-height:1;}
 .page-back-bar .pb-sc[data-pbsc="map"]{margin-right:4px; box-shadow:4px 0 0 -2px rgba(255,236,190,.25);}
-@media (max-width:480px){ .page-back-bar .pb-shortcuts{gap:0; min-width:0; overflow-x:auto; scrollbar-width:none;} .page-back-bar .pb-sc{padding:6px 0; min-width:26px; min-height:36px; justify-content:center;} .page-back-bar .pb-sc span{font-size:15px;} } /* 2026-11-13 (package UI52): room for Shop, Premium and one more place on a phone; never wider than the bar */ /* 2026-11-16 (package UX5): 26px wide (24px WCAG floor), still 36 tall, so nine places fit at 360 */
-@media (max-width:380px){ .page-back-bar .pb-sc{min-width:23px;} .page-back-bar .pb-sc span{font-size:14px;} } /* 2026-11-16 (package UX5): 360 px phones, 36 tall kept */
+@media (max-width:560px){ .page-back-bar .pb-shortcuts{gap:0; min-width:0; overflow-x:auto; scrollbar-width:none;} .page-back-bar .pb-sc{padding:6px 0; min-width:26px; min-height:36px; justify-content:center;} .page-back-bar .pb-sc span{font-size:15px;} } /* 2026-11-13 (package UI52): room for Shop, Premium and one more place on a phone; never wider than the bar */ /* 2026-11-16 (package UX5): 26px wide (24px WCAG floor), still 36 tall, so nine places fit at 360 */
+@media (max-width:560px){ .page-back-bar .pb-sc{min-width:23px;} .page-back-bar .pb-sc span{font-size:14px;} } /* 2026-11-16 (package UX5): 360 px phones, 36 tall kept */
 /* #12: the Codex card detail's copies, one small card each, grouped by treatment; a tapped copy shows its level */
 .ne-cx-copies{margin:10px 0 4px;} .ne-cx-copies h3 small{font-weight:600; font-size:11.5px; opacity:.7; margin-left:6px;}
 .ne-cx-group{margin:4px 0 8px;} .ne-cx-g{display:block; font-weight:800; font-size:12px; opacity:.8; margin:0 0 4px;}
@@ -14605,7 +14605,7 @@ body.pg-pack-open #cardPop{z-index:9600 !important;} /* 2026-11-12 (package PERF
 .rw-panel .rw-sec.rw-seen-cards .rw-head{margin-top:2px;}
 .rw-panel .res3-fan .pl2-rr{left:auto; right:-8px; top:-10px; bottom:auto; translate:none;} /* R7 (owner PL2-4: "The ribbon should be on the top right.") */
 .rw-panel .res3-fan .res3-g.is-stack .pl2-rr{top:-14px;}
-@media (max-width:640px){
+@media (max-width:560px){
   .rw-panel .rw-cards.res3-fan, .rw-panel.has-split .rw-half-cards .rw-cards.res3-fan{gap:12px 14px !important; padding:12px 10px 8px 4px; max-height:44vh;}
   .rw-panel .res3-fan-won .rw-card, .rw-panel .res3-fan-won .res3-copy, .rw-panel .res3-fan-won .card-tile, .rw-panel.has-split .rw-half-cards .res3-fan-won .rw-card, .rw-panel.has-split .rw-half-cards .res3-fan-won .card-tile{width:var(--card-full-w) !important;} /* 2026-10-30 (CS-A): Full */
 }
@@ -14671,7 +14671,7 @@ body.pg-pack-open #cardPop{z-index:9600 !important;} /* 2026-11-12 (package PERF
 .res3-lt-gift{position:relative; z-index:1; display:flex; align-items:center; justify-content:center; gap:2px; white-space:nowrap; min-width:40px; height:40px; padding:0 6px; border-radius:12px; font-size:22px; background:#4a3520; box-shadow:0 0 0 2px rgba(255,214,140,.45);}
 .res3-lt-step.is-next .res3-lt-gift{background:#6b4a1c; box-shadow:0 0 0 2px #ffd36a, 0 0 12px rgba(255,200,90,.6);}
 .res3-lt-step:hover .res3-lt-gift, .res3-lt-step:focus-visible .res3-lt-gift{transform:translateY(-2px);}
-@media (max-width:640px){ .res3-lt{flex-direction:column;} .res3-lt-now{flex-basis:auto; min-width:0;} .res3-lt-step{min-width:64px;} .res3-lt-gift{min-width:34px; height:34px; font-size:18px;} }
+@media (max-width:560px){ .res3-lt{flex-direction:column;} .res3-lt-now{flex-basis:auto; min-width:0;} .res3-lt-step{min-width:64px;} .res3-lt-gift{min-width:34px; height:34px; font-size:18px;} }
 /* R6: the rank emblem's flight from the left edge into the page's bottom-right corner, and its landing ring */
 .res3-rank-fly{position:fixed; left:0; top:0; z-index:1222; width:58px; height:64px; display:grid; place-items:center; pointer-events:none; will-change:transform;}
 .res3-rank-fly .rank-hex{position:relative !important; top:auto !important; right:auto !important; left:auto !important; transform:none !important; margin:0 !important; filter:drop-shadow(0 4px 10px rgba(0,0,0,.5)) drop-shadow(0 0 12px rgba(255,214,120,.6));}
@@ -14694,7 +14694,7 @@ html.bw-touch-dragging, body.bw-touch-dragging{overscroll-behavior:none;} /* 202
 /* 2026-10-29 (package UI1, owner O1: "The raids decks are extremely elongated."): the desktop window's copies of the formula set only --match-card-h and beat the
    raid's own pair, so its Deck and Environment cards got 64 x 142. 2026-10-30 (CS-D): that rule only sets --mc-fit now, so the raid's own pair
    (#appWrap.in-match.mb2-raid) wins without a repeat here, and a top-row card is height x .8 wide by construction (CS-D block). */
-@media (max-width:640px){ #myDeckList.is-stacks, #myDeckPool.pool-grid{--cs-gap:8px;} #myDeckPool.pool-grid{gap:10px var(--cs-gap);} } /* 2026-10-30 (CS-A): sizes from the Full token */
+@media (max-width:560px){ #myDeckList.is-stacks, #myDeckPool.pool-grid{--cs-gap:8px;} #myDeckPool.pool-grid{gap:10px var(--cs-gap);} } /* 2026-10-30 (CS-A): sizes from the Full token */
 .cnp-rw .res3-got{position:absolute; right:-5px; top:-6px; z-index:7; width:17px; height:17px; border-radius:50%; display:grid; place-items:center; font:900 11px/1 'Nunito',system-ui,sans-serif; font-style:normal;
   background:#3f8a3a; color:#fff; box-shadow:0 0 0 2px #f6efdc, 0 1px 3px rgba(0,0,0,.45); filter:none;}
 /* RES3:END */
@@ -15113,7 +15113,7 @@ html.bw-touch-dragging, body.bw-touch-dragging{overscroll-behavior:none;} /* 202
 .topbar .settings-btn{width:32px !important; height:32px !important;}
 .topbar .energy-pill, .topbar .account-chip{height:32px; box-sizing:border-box; margin:0;}
 .topbar .feedback-btn{width:32px; height:32px; margin:0;}
-@media (max-width:640px){
+@media (max-width:560px){
   .topbar{column-gap:6px;}
   /* 2026-11-16 (package UX3): 36px tap targets on a phone (were 28px); the 5 controls still fit 390px */
   .topbar > .home-nav-btn.ne-home-icon, .topbar .settings-btn, .topbar .feedback-btn{width:36px !important; height:36px !important;}
@@ -15246,7 +15246,7 @@ html[data-fx="none"] .abadge.ui30-tick{animation:none !important;}
   filter:drop-shadow(0 3px 0 rgba(42,13,2,.85)) drop-shadow(0 0 16px rgba(255,140,30,.6));}
 .fl1-sub{font:600 clamp(12.5px, 1.5vw, 16px)/1.3 system-ui, sans-serif; color:#ffe7c0; max-width:min(560px, 86vw); text-shadow:0 1px 3px rgba(0,0,0,.7);}
 /* 2026-10-29 (FLAIR1 review): on a phone the banner covered the player's avatar and "You"; give the opener room above its content */
-@media (max-width:600px){ .vs-opener.is-lair{padding:104px 16px 34px; box-sizing:border-box;} .vs-opener.is-lair .vs-side{gap:5px;} .vs-opener.is-lair .vs-portrait{transform:scale(.8); margin:-12px 0;} .vs-opener.is-lair .vs-taunt{margin-top:0;} .fl1-banner{top:10px; padding:6px 10px;} .fl1-sub{font-size:12px;} }
+@media (max-width:560px){ .vs-opener.is-lair{padding:104px 16px 34px; box-sizing:border-box;} .vs-opener.is-lair .vs-side{gap:5px;} .vs-opener.is-lair .vs-portrait{transform:scale(.8); margin:-12px 0;} .vs-opener.is-lair .vs-taunt{margin-top:0;} .fl1-banner{top:10px; padding:6px 10px;} .fl1-sub{font-size:12px;} }
 @keyframes fl1BannerIn{0%{opacity:0; transform:translateY(-14px) scale(1.12); letter-spacing:.3em;} 55%{opacity:1;} 100%{opacity:1; transform:none;}}
 /* the title card as the fight opens: longer and warmer than the boss card */
 .boss-title.is-lair{top:36%; padding:16px 18px; gap:4px; text-align:center; color:#ffe9b0;
@@ -15266,7 +15266,7 @@ html[data-fx="none"] .abadge.ui30-tick{animation:none !important;}
 .fight-sign.end-lair::before{content:'👑'; font-size:.62em; line-height:1; filter:drop-shadow(0 0 12px rgba(255,170,40,.95));}
 .fight-sign.end-lair .fl1-win-title{font-size:.6em; line-height:1.02; letter-spacing:.05em; max-width:94%;}
 .fight-sign.end-lair .fl1-win-sub{color:#ffe7c0; text-shadow:0 1px 3px rgba(0,0,0,.8); font-size:15px; letter-spacing:.02em;}
-@media (max-width:600px){ .fight-sign.end-sign.end-lair{font-size:44px;} .fight-sign.end-lair .fl1-win-sub{font-size:13px;} }
+@media (max-width:560px){ .fight-sign.end-sign.end-lair{font-size:44px;} .fight-sign.end-lair .fl1-win-sub{font-size:13px;} }
 @media (prefers-reduced-motion: reduce){
   .map-node.is-lair-final:not(.done), .fl1-node-ring, .fl1-node-crown i, .fl1-entry-ring, .fl1-entry-ring::after, .fl1-vignette{animation:none !important;}
   .fl1-banner{animation:none; opacity:1;} .boss-title.is-lair{animation:none; opacity:1;} }
@@ -15336,7 +15336,7 @@ html[data-fx="none"] .map-node.is-lair-final:not(.done), html[data-fx="none"] .f
 .ui19-sk-main small{display:block; color:var(--ink-muted); font-size:11.5px; line-height:1.3; font-weight:600;}
 .ui19-new{font:800 10px/1 'Baloo 2', system-ui, sans-serif; font-style:normal; background:#d9480f; color:#fff; padding:2px 6px; border-radius:999px; letter-spacing:.05em; vertical-align:middle; cursor:help;}
 .ui19-sk-n{font-size:11px; font-weight:800; color:var(--ink-muted); white-space:nowrap; flex:0 0 auto;}
-@media (max-width:520px){ .ui19-sk-list{grid-template-columns:1fr;} }
+@media (max-width:560px){ .ui19-sk-list{grid-template-columns:1fr;} }
 .ms1-sec{margin-top:10px;} .ms1-sec h4{margin:0 0 4px;} .ms1-list{list-style:none; margin:0; padding:0; display:grid; gap:6px;} .ms1-row{display:flex; flex-wrap:wrap; align-items:center; gap:8px; padding:6px 8px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface-2);} .ms1-row.is-drop{border-left:4px solid var(--attack);} .ms1-row.is-move{border-left:4px solid var(--accent);} .ms1-main{flex:1 1 200px; display:flex; flex-direction:column; gap:2px; min-width:0;} .ms1-main small{opacity:.8;} .ms1-tile{flex:0 0 auto;}
 /* 2026-11-04 (UI22a; owner 22:56: "I can't scroll in the map cards section anymore. Only the cards. Make the overall thing scrollable." and
    "reduce the size of this section by 50%"): the whole dialog scrolls (the body no longer scrolls on its own, so the skills block scrolls away
@@ -15360,7 +15360,7 @@ html[data-fx="none"] .map-node.is-lair-final:not(.done), html[data-fx="none"] .f
 .pk1-mc-overlay .ui19-sk.is-new, .pk1-mc-overlay .ui19-sk.is-new.is-intro{border-color:#c62828; background:linear-gradient(135deg, color-mix(in srgb, #e53935 30%, var(--bg)), color-mix(in srgb, #e53935 14%, var(--bg)));}
 .pk1-mc-overlay .ui19-sk .ui19-new{background:#c62828; color:#fff; box-shadow:0 0 0 1px rgba(255,255,255,.35);}
 .ui19-sk-n{font-size:9.5px;}
-@media (max-width:520px){ .ui19-sk-list{grid-template-columns:1fr 1fr;} }
+@media (max-width:560px){ .ui19-sk-list{grid-template-columns:1fr 1fr;} }
 /* 2026-11-04 (package UI22, owner 22:56): the Map cards window's "Skirmish rewards" (a caption per fight, card tiles with their role under them)
    and "Recommended by Claude" (tiles marked with a "Claude New" pill; shown only, on no list). */
 .ui22-fight{margin:2px 0 0;}
@@ -15410,7 +15410,7 @@ html[data-fx="none"] .map-node.is-lair-final:not(.done), html[data-fx="none"] .f
 .pk1-mc-overlay .ui19-sk.is-counter, .pk1-mc-overlay .ui19-sk.is-counter.is-intro, .pk1-mc-overlay .ui19-sk.is-rec, .pk1-mc-overlay .ui19-sk.ui30-sugg-tile{border-color:var(--surface-border); border-style:solid; background:var(--bg);}
 .pk1-mc-overlay .ui19-sk.is-counter.is-intro, .pk1-mc-overlay .ui19-sk.is-intro.ui30-sugg-tile{border-color:#e0b23a; background:linear-gradient(135deg, color-mix(in srgb, #ffd36b 34%, var(--bg)), color-mix(in srgb, #ffffff 22%, var(--bg)));}
 .pk1-mc-overlay .ui19-sk-list{grid-template-columns:repeat(auto-fill, minmax(176px, 1fr));}
-@media (max-width:520px){ .pk1-mc-overlay .ui19-sk-list{grid-template-columns:1fr;} .ui35-pill, .ui19-sk .ui28-sug, .ui19-sk .ui30-sugg{font-size:8px; padding:1px 4px;} .ui19-sk .ui34-cn{margin-left:1px;} }
+@media (max-width:560px){ .pk1-mc-overlay .ui19-sk-list{grid-template-columns:1fr;} .ui35-pill, .ui19-sk .ui28-sug, .ui19-sk .ui30-sugg{font-size:8px; padding:1px 4px;} .ui19-sk .ui34-cn{margin-left:1px;} }
 /* 2026-11-08 (package UI35, owner 09:27 #3): the deck editor's Compact view (the Map cards chip: art disc, name, x N) and its Full art / Compact switch */
 .ui35-view{display:inline-flex; border:1px solid var(--surface-border); border-radius:999px; overflow:hidden; background:var(--surface-2);}
 .ui35-view-btn{border:0; background:transparent; padding:9px 12px; font:800 13px/1 'Nunito',system-ui,sans-serif; color:var(--ink); cursor:pointer; white-space:nowrap;}
@@ -15429,7 +15429,7 @@ html[data-fx="none"] .map-node.is-lair-final:not(.done), html[data-fx="none"] .f
 .ui35-pool-tile.is-spent{opacity:.45; filter:saturate(.55);}
 .ui35-pool-tile:hover:not(.is-spent){filter:brightness(1.08);}
 .ui35-pool-tile:focus-visible{outline:2px solid var(--accent-strong, #8a5a1e); outline-offset:2px;}
-@media (max-width:640px){ #myDeckPool.pool-grid.ui35-cmp{grid-template-columns:repeat(auto-fill, minmax(calc(var(--chip-h) * 5.2), 1fr)); gap:6px;} #myDeckList.ui35-cmp{gap:6px;} }
+@media (max-width:560px){ #myDeckPool.pool-grid.ui35-cmp{grid-template-columns:repeat(auto-fill, minmax(calc(var(--chip-h) * 5.2), 1fr)); gap:6px;} #myDeckList.ui35-cmp{gap:6px;} }
 /* 2026-11-08 (package UI35, owner 09:27 #8): the SK / WK details' Map-reference line */
 .bal24-winline .bal24-refline{flex:1 0 100%; display:flex; flex-wrap:wrap; align-items:center; gap:4px 6px; cursor:help;}
 .bal24-refline[data-flag="weak"] .bal24-band, .bal24-refline[data-flag="strong"] .bal24-band{background:rgba(179,38,30,.14); color:#b3261e;}
@@ -15558,7 +15558,7 @@ html[data-fx="none"] .map-node.is-lair-final:not(.done), html[data-fx="none"] .f
 .ui29-shop-bar{display:flex; justify-content:flex-end; margin:6px 0 0;}
 .ui29-shelf-edit{position:absolute; top:-2px; right:-2px; z-index:5; padding:2px 6px; border-radius:999px; background:#2b2218; color:#ffd24a; border:1px solid rgba(255,255,255,.35); font:800 10px/1.2 'Baloo 2',system-ui,sans-serif; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,.4);}
 .ui29-shelf-edit:hover, .ui29-shelf-edit:focus-visible{background:#4a3a24; outline:2px solid #ffd24a; outline-offset:1px;}
-@media (max-width:760px){
+@media (max-width:899px){
   .ui29-cols{grid-template-columns:minmax(0, 1fr);}
   .ui29-nav{position:static; flex-direction:row; flex-wrap:nowrap; overflow-x:auto; gap:4px; padding:4px; scrollbar-width:thin;}
   .ui29-nav h4{display:none;}
@@ -15586,7 +15586,7 @@ html[data-fx="none"] .map-node.is-lair-final:not(.done), html[data-fx="none"] .f
 #editorOverlay .modal-actions{display:flex; gap:8px; justify-content:flex-end; margin-left:-4px; margin-right:-4px;}
 #editorOverlay .modal-actions #btnDelete{margin-right:auto;}
 @media (max-width: 1100px){ #editorOverlay .ce-main > .field-row:has(> .ce-budget){grid-template-columns:repeat(2, minmax(0, 1fr));} #editorOverlay .ce-main > .field-row > .ce-budget{grid-column:1 / -1;} }
-@media (max-width: 700px){ #editorOverlay .ce-body{align-items:stretch;} #editorOverlay .ce-body > .ce-main{width:100%; max-width:100%;} #editorOverlay .modal.has-ce-side{width:100%;} #editorOverlay .ce-body > .ce-side{width:auto;} #editorOverlay .ce-main > .field-row > .ce-budget{grid-column:1 / -1;} #editorOverlay .skill-row{flex-wrap:wrap;} }
+@media (max-width:560px){ #editorOverlay .ce-body{align-items:stretch;} #editorOverlay .ce-body > .ce-main{width:100%; max-width:100%;} #editorOverlay .modal.has-ce-side{width:100%;} #editorOverlay .ce-body > .ce-side{width:auto;} #editorOverlay .ce-main > .field-row > .ce-budget{grid-column:1 / -1;} #editorOverlay .skill-row{flex-wrap:wrap;} }
 /* #2 an Undead unit's Health ("unhealth"): grey heart, grey number */
 .card-tile .stats .hp.is-unhealth{color:#b9bcc0 !important; text-shadow:0 1px 1px rgba(0,0,0,.6) !important;}
 .card-tile .stats .hp.is-unhealth i.sg{filter:grayscale(1) brightness(1.15);}
@@ -15612,7 +15612,7 @@ html[data-fx="none"] .map-node.is-lair-final:not(.done), html[data-fx="none"] .f
 .winloss-achv{position:fixed !important; top:12px; left:50%; translate:-50% 0; z-index:10060; margin:0 !important; width:max-content; max-width:min(92vw, 520px); box-shadow:0 8px 24px rgba(0,0,0,.45);
   animation:ui23AchvToast 6s ease both !important; pointer-events:none;}
 @keyframes ui23AchvToast{0%{opacity:0; transform:translateY(-24px);} 8%{opacity:1; transform:none;} 85%{opacity:1; transform:none;} 100%{opacity:0; transform:translateY(-12px);}}
-@media (max-width: 600px){ .winloss-achv{left:12px; translate:none; max-width:calc(100vw - 112px); font-size:13px;} } /* clear of the results' top-right buttons */
+@media (max-width:560px){ .winloss-achv{left:12px; translate:none; max-width:calc(100vw - 112px); font-size:13px;} } /* clear of the results' top-right buttons */
 @media (prefers-reduced-motion: reduce){ .winloss-achv{animation:ui23AchvFade 6s linear both !important;} @keyframes ui23AchvFade{0%,90%{opacity:1;} 100%{opacity:0;}} }
 /* #30 an S-or-better emblem shines as it pops from its node: a glow and a light sweep across the hex */
 .res3-rank-fly.ui23-rank-shine .rank-hex{filter:drop-shadow(0 0 10px rgba(255,220,120,.95)) drop-shadow(0 0 22px rgba(255,200,80,.6)) !important; overflow:hidden;}
@@ -15670,7 +15670,7 @@ html .fxb.fxb-dk > .fxb-spill{background:radial-gradient(ellipse at 50% 30%, var
 .modal-head-row .ui27-nav-pos{font-size:12px; color:var(--ink-muted); white-space:nowrap; font-variant-numeric:tabular-nums;}
 .modal-head-row .ui27-nav-btn{white-space:nowrap;}
 .modal-head-row .ui27-nav-btn.is-armed{color:var(--danger, #c0392b); border-color:var(--danger, #c0392b); white-space:normal; max-width:12em; line-height:1.15;}
-@media (max-width:600px){ #editorOverlay .modal-head-row:has(.ui27-nav){flex-wrap:wrap;} #editorOverlay .modal-head-row h2{flex:1 1 0; min-width:0;}
+@media (max-width:560px){ #editorOverlay .modal-head-row:has(.ui27-nav){flex-wrap:wrap;} #editorOverlay .modal-head-row h2{flex:1 1 0; min-width:0;}
   .modal-head-row .ui27-nav{order:3; flex:1 0 100%; justify-content:space-between; margin:6px 0 0;} .modal-head-row .ui27-nav-btn.is-armed{max-width:none;} }
 /* 2026-11-08 (package UI37, owner 17:22 #1-#3): the Map cards window's Lists / Prospects switch and the Prospects view (chip, source pills, Yes / No pill toggle, counters) */
 .ui37-switch{display:inline-flex; margin:6px 0 2px; align-self:flex-start; flex-shrink:0;}
@@ -15716,7 +15716,7 @@ html .fxb.fxb-dk > .fxb-spill{background:radial-gradient(ellipse at 50% 30%, var
 .home-grid > .home-tile:nth-child(even):last-child{grid-column:1 / -1; flex-direction:row; flex-wrap:wrap; column-gap:10px; min-height:0;}
 .home-grid > .home-tile:nth-child(even):last-child .home-sub{flex-basis:100%;}
 /* a desktop: three tiles a row under Play (six columns: a row of two takes halves, a lone tile the row) */
-@media (min-width:861px){
+@media (min-width:900px){
   #view-home .home-menu{max-width:640px;} #view-home .home-grid{width:100%;}
   #view-home .home-grid{grid-template-columns:repeat(6, minmax(0,1fr));}
   #view-home .home-grid > .home-tile{grid-column:span 2;} #view-home .home-grid > .home-play{grid-column:1 / -1;}
@@ -15731,22 +15731,22 @@ html .fxb.fxb-dk > .fxb-spill{background:radial-gradient(ellipse at 50% 30%, var
 #view-home .home-notes > .home-note:nth-child(odd){rotate:-1.5deg;} #view-home .home-notes > .home-note:nth-child(even){rotate:1.5deg;}
 #view-home .home-notes .home-note-wrap .home-note{position:relative; width:100%; rotate:1deg;}
 #view-home .home-notes .home-note{min-height:58px; justify-content:center;}
-@media (max-width:520px){ #view-home .home-notes > .home-note, #view-home .home-notes > .home-note-wrap{flex-basis:calc((100% - 12px) / 2);} #view-home .home-notes{padding:12px 8px 10px; gap:10px;} #view-home .home-notes .home-note{padding:8px 6px 7px; min-height:52px;} #view-home .home-notes .home-note b{font-size:14px; line-height:1.2;} }
+@media (max-width:560px){ #view-home .home-notes > .home-note, #view-home .home-notes > .home-note-wrap{flex-basis:calc((100% - 12px) / 2);} #view-home .home-notes{padding:12px 8px 10px; gap:10px;} #view-home .home-notes .home-note{padding:8px 6px 7px; min-height:52px;} #view-home .home-notes .home-note b{font-size:14px; line-height:1.2;} }
 .nav1-shop-tabs{display:flex; gap:6px; flex-wrap:wrap; margin:0 0 10px;}
 .nav1-shop-tabs .btn{min-height:36px;}
-@media (max-width: 600px){ #settingsPanelHud{position:fixed !important; left:8px !important; right:8px !important; top:56px !important; width:auto !important; max-height:70vh; overflow-y:auto; transform:none !important;} }
+@media (max-width:560px){ #settingsPanelHud{position:fixed !important; left:8px !important; right:8px !important; top:56px !important; width:auto !important; max-height:70vh; overflow-y:auto; transform:none !important;} }
 /* 2026-11-19 (package REL2, REL1 audit): first-release fixes */
 /* NEW / GET stickers sit on the card's top corner, never on its name plate */
 .rw-new{top:-14px !important; right:-12px !important;} .rw-new.ui23-late{right:auto !important; left:-12px;}
 .po2-new{top:-14% !important;} .po2-new-tag{top:-12px !important;} .po2-new-tag.ui23-late{top:-12px !important; left:auto; right:-6px; translate:0 0;}
 /* the tutorial win: Claim Rewards stays on screen while the panel scrolls */
-@media (max-width:700px){ .winloss-card.is-tutorial .winloss-actions{position:sticky; bottom:0; z-index:5; margin:6px -6px 0; padding:14px 6px calc(10px + env(safe-area-inset-bottom, 0px)); background:linear-gradient(to top, rgba(24,16,52,.92) 72%, rgba(24,16,52,0));} }
+@media (max-width:560px){ .winloss-card.is-tutorial .winloss-actions{position:sticky; bottom:0; z-index:5; margin:6px -6px 0; padding:14px 6px calc(10px + env(safe-area-inset-bottom, 0px)); background:linear-gradient(to top, rgba(24,16,52,.92) 72%, rgba(24,16,52,0));} }
 /* the guest sign-in strip never covers a fight */
 body.bw-in-match .signin-banner{display:none;}
 /* NPC bubbles sit under the page header and the sub-tabs, not over them */
-@media (min-width:700px){ body:not(.pg-in-match) .dialogue-dock{top:132px;} }
-@media (max-width:699px){ body:not(.pg-in-match) .dialogue-dock{top:124px;} }
-@media (max-width:699px){ body.conquest-full:not(.pg-in-match) .dialogue-dock{top:300px;} } /* 2026-11-19 (package REL3): under the map name card (it ends near 257 on a phone, 285 with a 3-line blurb), never over it */
+@media (min-width:561px){ body:not(.pg-in-match) .dialogue-dock{top:132px;} }
+@media (max-width:560px){ body:not(.pg-in-match) .dialogue-dock{top:124px;} }
+@media (max-width:560px){ body.conquest-full:not(.pg-in-match) .dialogue-dock{top:300px;} } /* 2026-11-19 (package REL3): under the map name card (it ends near 257 on a phone, 285 with a 3-line blurb), never over it */
 /* Murgle Mayhem: its Map 6 entrance pulses until the first visit; the floors read as places, not black holes */
 .rel2-pulse{animation:rel2Pulse 1.8s ease-in-out infinite;}
 @keyframes rel2Pulse{0%,100%{filter:drop-shadow(0 0 4px rgba(255,214,110,.6));} 50%{filter:drop-shadow(0 0 14px rgba(255,214,110,1));}}
@@ -15758,10 +15758,10 @@ body.bw-in-match .signin-banner{display:none;}
 /* phone: charts and "this map's cards" fold; the raid Start button fades the text it floats over */
 .dt-charts-fold > summary, .vis4-map-cards > summary{cursor:pointer;}
 .dt-charts-fold > summary{display:inline-block; font:700 13px 'Baloo 2',system-ui,sans-serif; padding:4px 10px; margin:4px 0; border-radius:999px; background:color-mix(in srgb, var(--surface-2) 70%, transparent); border:1px solid var(--surface-border);}
-@media (min-width:701px){ .dt-charts-fold > summary{display:none;} }
-@media (max-width:600px){ body[data-tab="play"] .signin-banner{display:none;} /* 2026-11-19 (package REL3): off the map's bottom nodes on a phone */ .vs2.is-raid .vs-start{box-shadow:0 -18px 22px 10px rgba(90,43,34,.94), 0 6px 14px rgba(0,0,0,.4);} }
+@media (min-width:561px){ .dt-charts-fold > summary{display:none;} }
+@media (max-width:560px){ body[data-tab="play"] .signin-banner{display:none;} /* 2026-11-19 (package REL3): off the map's bottom nodes on a phone */ .vs2.is-raid .vs-start{box-shadow:0 -18px 22px 10px rgba(90,43,34,.94), 0 6px 14px rgba(0,0,0,.4);} }
 /* 2026-11-26 (UISWEEP2, owner 11-24 22:29 #8): phone height. The nav is two rows at most (top bar, then the back / shortcut row), with 4-6 px between rows instead of 16; the Codex sign sits tighter, its page tabs and filter chips are one scrolling row each (the page itself never scrolls sideways); the Achievements head and card button are one slim row each. */
-@media (max-width:700px){
+@media (max-width:560px){
   .wrap{padding-top:4px;}
   .topbar{margin-bottom:4px;}
   .page-back-bar{margin-bottom:6px;}
@@ -15785,7 +15785,7 @@ body.bw-in-match .signin-banner{display:none;}
 .ar3-tent .ar3-modes{display:flex; flex-wrap:wrap; justify-content:center; gap:10px;}
 .ar3-tent .ar3-mode{flex:1 1 140px; max-width:220px;}
 .ar3-tent .ar3-pvp-note{margin:0; background:transparent; color:var(--ink-muted);}
-@media (max-width:700px){ .ar3-tent{gap:8px; padding:10px 8px;} .ar3-tent .ar3-chips{gap:6px;} .ar3-tent .ar3-deckchip{order:3; flex:1 1 100%; justify-content:center;} .ar3-tent .ar3-pvp{gap:8px;} .ar3-scene .pl2-arena-tabs .tab-btn{padding:5px 12px;} }
+@media (max-width:560px){ .ar3-tent{gap:8px; padding:10px 8px;} .ar3-tent .ar3-chips{gap:6px;} .ar3-tent .ar3-deckchip{order:3; flex:1 1 100%; justify-content:center;} .ar3-tent .ar3-pvp{gap:8px;} .ar3-scene .pl2-arena-tabs .tab-btn{padding:5px 12px;} }
 
 /* 2026-11-27 (UISWEEP3, UISWEEP-1 / STATE2-1/2): ONE bar on every page except the fight HUD: back first, the page's own buttons (the slot), then the fixed core Home, Map, Settings, Energy, Account. On Play it floats over the map where the old cluster was. */
 .topbar{flex-wrap:nowrap; justify-content:flex-end; margin-bottom:12px;}
@@ -15813,6 +15813,11 @@ body.play-full #appWrap.tab-play:not(.in-match) .topbar-wrap{right:16px; max-wid
   #appWrap.tab-play:not(.in-match) .page-back-bar{flex:0 1 auto;}
   #appWrap.tab-play:not(.in-match) .topbar .page-back-bar .pb-shortcuts{gap:0; padding:2px;}
   #appWrap.tab-play:not(.in-match) .topbar .pb-sc b{display:none;}
+}
+/* 2026-11-27 (UISWEEP3, UISWEEP2 leftover): on a phone the Codex's Base level / My best toggle is two icons (names in aria-label), so the type chips keep most of the row and no longer end under it */
+@media (max-width:560px){
+  .ux-lv-t{display:none;}
+  .ux-cx-level .ux-lv{padding:5px 10px;}
 }
 </style>
 

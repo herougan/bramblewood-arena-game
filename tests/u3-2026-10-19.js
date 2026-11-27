@@ -38,7 +38,7 @@ const rc = B.grab('renderConquestSubTab');
 ok(/<div class="cmi-num" aria-hidden="true">/.test(rc) && /<i class="cmi-tick" aria-hidden="true">✓<\/i>/.test(rc), '2. a chip has its number and, once cleared, a ✓');
 ok(/TX\('ui\.u3-map-chip-tip-cleared', \{n: num, name: map\.name\}\)/.test(rc) && /title="\$\{escapeAttr\(tip\)\}" aria-label="\$\{escapeAttr\(tip\)\}"/.test(rc), '2. its name is in the title and aria-label');
 ok(/u3FitMapStrip\(\); u3WireChipPeek\(listEl\)/.test(rc), '2. the strip is fitted beside the cluster and its chips peek on a hold');
-ok(/@media \(max-width:820px\)\{\s*body\.conquest-full \.conquest-maps\{padding:12px 8px 4px !important;/.test(u3) && /body\.conquest-full \.conquest-map-item \.cmi-body\{display:none;\}/.test(u3), '2. phones: the strip on the top line, chips without the name block');
+ok(/@media \(max-width:899px\)\{\s*body\.conquest-full \.conquest-maps\{padding:12px 8px 4px !important;/.test(u3) && /body\.conquest-full \.conquest-map-item \.cmi-body\{display:none;\}/.test(u3), '2. phones: the strip on the top line, chips without the name block');
 ok(!/#conquestMapList\{display:none !important;\}/.test(tpl.match(/<style id="nvStyles">([^]*?)<\/style>/)[1]), '2. NV\'s phone-only "no strip" is gone');
 ok(/'toast\.the-world-opens-up-phone'/.test(src) && /along the top/.test(TEXT['toast.the-world-opens-up-phone']) && /on the left/.test(TEXT['toast.the-world-opens-up-every-map']), '2. the world toast: phones "along the top", desktop "on the left"');
 { // the hold logic: a 450 ms timer, cancelled past 10 px, the click after a hold dropped

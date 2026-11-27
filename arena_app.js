@@ -4910,7 +4910,7 @@ function cardWhereToGetText(d){
 // (body.u3-strip-below) rather than squeezing under the buttons.
 function u3FitMapStrip(){
   const b = document.body; if(!b) return;
-  const phone = !!(window.matchMedia && matchMedia('(max-width:820px)').matches);
+  const phone = !!(window.matchMedia && matchMedia('(max-width:899px)').matches);
   const cl = document.querySelector('#appWrap.tab-play .topbar');
   const off = ()=>{ b.style.removeProperty('--u3-strip-w'); b.classList.remove('u3-strip-below'); };
   if(!phone || !b.classList.contains('conquest-full') || !cl || !cl.getClientRects().length){ off(); return; }
@@ -8734,7 +8734,7 @@ function codexKindRowHTML(){
   const k = codexFilter.kind || '', lv = codexLevelMode();
   const chip = (key, icon, label)=> `<button type="button" class="ux-kind ${k === key ? 'on' : ''}" data-cxkind="${key}" aria-pressed="${k === key}">${icon} ${escapeHtml(label)} <b class="ux-kind-n" data-kn="${key || 'all'}"></b></button>`;
   return `<div class="ux-cx-kinds" id="cxKindRow"><div class="ux-kind-chips" role="group" aria-label="${escapeAttr(TX('ui.ux-kind-label'))}">${chip('', '🗂️', TX('ui.ux-kind-all'))}${CODEX_KINDS.map(x=> chip(x.key, x.icon, x.label())).join('')}</div>
-    <span class="ux-cx-level" role="group" aria-label="${escapeAttr(TX('ui.ux-level-label'))}" title="${escapeAttr(TX('ui.ux-level-tip'))}"><button type="button" class="ux-lv ${lv === 'base' ? 'on' : ''}" data-cxlevel="base" aria-pressed="${lv === 'base'}">🌱 ${escapeHtml(TX('ui.ux-level-base'))}</button><button type="button" class="ux-lv ${lv === 'best' ? 'on' : ''}" data-cxlevel="best" aria-pressed="${lv === 'best'}">⭐ ${escapeHtml(TX('ui.ux-level-best'))}</button></span></div>`;
+    <span class="ux-cx-level" role="group" aria-label="${escapeAttr(TX('ui.ux-level-label'))}" title="${escapeAttr(TX('ui.ux-level-tip'))}"><button type="button" class="ux-lv ${lv === 'base' ? 'on' : ''}" data-cxlevel="base" aria-pressed="${lv === 'base'}" aria-label="${escapeAttr(TX('ui.ux-level-base'))}">🌱 <span class="ux-lv-t">${escapeHtml(TX('ui.ux-level-base'))}</span></button><button type="button" class="ux-lv ${lv === 'best' ? 'on' : ''}" data-cxlevel="best" aria-pressed="${lv === 'best'}" aria-label="${escapeAttr(TX('ui.ux-level-best'))}">⭐ <span class="ux-lv-t">${escapeHtml(TX('ui.ux-level-best'))}</span></button></span></div>`;
 }
 function codexKindRowUpdate(counts, all){
   const row = document.getElementById('cxKindRow'); if(!row) return;
@@ -29842,7 +29842,7 @@ function renderConquestSubTab(body){
   // The world is hidden at first (2026-10-12, user: "When you defeat the 2nd map for the first time, you also see the world
   // expand, then you get to see the world map... (otherwise its hidden till then)"): no map list, no world map button.
   const worldOpen = worldRevealed();
-  if(worldOpen && !loadDialogueFlags()['world_revealed_toast'] && !adminModeEnabled){ setDialogueFlag('world_revealed_toast', true); setTimeout(()=>{ try{ showToast(window.matchMedia && matchMedia('(max-width: 820px)').matches ? TX('toast.the-world-opens-up-phone') : TX('toast.the-world-opens-up-every-map'), 'ok'); /* 2026-10-19 (package U3): phones have the map strip again, along the top (desktop: the list on the left) */ SoundKit.unlock && SoundKit.unlock(); }catch(e){} }, 600); }
+  if(worldOpen && !loadDialogueFlags()['world_revealed_toast'] && !adminModeEnabled){ setDialogueFlag('world_revealed_toast', true); setTimeout(()=>{ try{ showToast(window.matchMedia && matchMedia('(max-width:899px)').matches ? TX('toast.the-world-opens-up-phone') : TX('toast.the-world-opens-up-every-map'), 'ok'); /* 2026-10-19 (package U3): phones have the map strip again, along the top (desktop: the list on the left) */ SoundKit.unlock && SoundKit.unlock(); }catch(e){} }, 600); }
   document.body.classList.toggle('world-hidden', !worldOpen);
   // 2026-10-17 (user: "Tutorial only: You see the tutorials placed left and right (T1  T2), not anymore"): on the Tutorial map itself
   // T-0 and T-1 show as they always will (their own spots, the trail between them); only the Outskirts keep the opening look.
@@ -43292,7 +43292,7 @@ if(typeof window !== 'undefined') window.addEventListener('resize', ()=>{ clearT
 //   --mb2-gap  the gap between columns, the same in every row so the columns line up;
 //   --mb2-rgap the height left over, shared out between the rows (each row gets the same extra above and below).
 // It runs when the raid is framed (the start, a resize, the column window widening: MB2b, below).
-function mb2IsPhone(){ try{ return !!(window.matchMedia && matchMedia('(max-width:700px)').matches); }catch(e){ return false; } }
+function mb2IsPhone(){ try{ return !!(window.matchMedia && matchMedia('(max-width:560px)').matches); }catch(e){ return false; } }
 function mb2FillMode(m){ return !!(m && (m.raidFull || mb2IsPhone())); }
 // 2026-10-19 (package MB2b, follow-up on the owner's "we can afford to use all the vertical and horizontal space"): the camera
 // frames the columns in use, not every column. The window is the units' span (both sides, every row) plus one column on each
@@ -54973,7 +54973,7 @@ html[data-fx="none"] .vis3-trap-ring.vis3-trap-ring i{animation:none; opacity:.2
 `; (document.head || document.documentElement).appendChild(st); }catch(e){} })();
 // 2026-10-31 (package UI9, DD1 / DD2): the Quests board's writs in two columns (one on phones); the levelled card's small face in the pack summary.
 (function ui9Css(){ try{ if(document.getElementById('ui9-css')) return; const st = document.createElement('style'); st.id = 'ui9-css'; st.textContent = `
-@media (min-width:721px){ .qn-board.er-board{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:18px; align-items:start;}
+@media (min-width:900px){ .qn-board.er-board{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:18px; align-items:start;}
   .qn-board.er-board > .qn-sign, .qn-board.er-board > .er-sub, .qn-board.er-board > .er-empty{grid-column:1 / -1;} .qn-board.er-board > .er-writs{display:contents;} }
 .pack-open-foot > .ui9-p{margin:0 0 10px; font-size:15px;} .po2 .pack-open-foot > .ui9-p{color:#fbeefe;}
 .ui9-lvl-up{display:inline-flex; align-items:center; gap:6px; vertical-align:middle;}
@@ -55350,7 +55350,7 @@ document.addEventListener('click', e=>{ const t = e.target && e.target.closest &
   .board-card .eq-under.eq2-wear{animation:eq2Wear .32s ease-out;}
   @keyframes eq2Wear{0%{transform:scale(1);} 40%{transform:scale(1.18) rotate(-4deg);} 100%{transform:scale(1);}}
   .eq2-hpbar{position:absolute; left:12%; right:12%; bottom:31.5%; height:4px; border-radius:3px; z-index:2; display:flex; overflow:hidden; background:rgba(0,0,0,.45); box-shadow:0 0 0 1px rgba(0,0,0,.45); pointer-events:auto;}
-  @media (max-width:700px){ .eq2-hpbar{bottom:39%; height:3px;} } /* PL1 (2026-10-24, P24-11): the phone card's plates sit higher */
+  @media (max-width:560px){ .eq2-hpbar{bottom:39%; height:3px;} } /* PL1 (2026-10-24, P24-11): the phone card's plates sit higher */
   .eq2-hpbar i{display:block; height:100%; transition:width .3s ease;}
   .eq2-hb-base{background:linear-gradient(180deg,#8fe08a,#3f9d3a);}
   .eq2-hb-bonus{background:linear-gradient(180deg,#ffe58a,#d9a521);}
@@ -61434,7 +61434,7 @@ function shelfRows(){
   const packs = shopPacksAll().filter(p=> adminModeEnabled || (packOnSale(p) && packPoolReady(p))), onSale = packs.filter(p=> packOnSale(p) && shopBundlesOpen());
   // one shelf never holds more than fits on it; extra goods go onto the next shelf down, alternating its lean
   const chunk = (items, n, kinds)=>{ const out = []; for(let i = 0; i < items.length; i += n) out.push({kind:kinds[(i/n) % kinds.length], items:items.slice(i, i + n)}); return out; };
-  const narrow = window.matchMedia && matchMedia('(max-width:620px)').matches;
+  const narrow = window.matchMedia && matchMedia('(max-width:560px)').matches;
   return [
     ...chunk([...(prem ? [] : packs.map(p=> ({pack:p, qty:1}))), ...(!prem && shopKitToday() ? [{kit:shopKitToday(), qty:1}] : []), ...(prem && shopTicketOnShelf() ? [{ticket:true, qty:1}] : []) /* 2026-10-18: 🎫 Rename Ticket */, ...(prem && shopRaidTicketOnShelf() ? [{raidTicket:true, qty:1}] : []) /* 2026-10-21 (package RK): 🎫 Raid Ticket */, ...(prem ? [] : [{bread:true, qty:1}])], narrow ? 2 : 5, ['straight', 'crooked-r']),
     ...(!prem && onSale.length === 1 ? [
@@ -61497,7 +61497,7 @@ function renderShopShelves(grid, signedIn){
         <div class="shelf-step is-high"><div class="shelf-items">${prop()}${b.map((it, i)=> itemHTML(it, i + half + ri*10)).join('')}</div><div class="shelf-plank"></div></div></div>`;
     }
     const items = r.items.map((it, i)=> itemHTML(it, i + ri*10));
-    const narrow = window.matchMedia && matchMedia('(max-width:620px)').matches;
+    const narrow = window.matchMedia && matchMedia('(max-width:560px)').matches;
     if(!narrow){ if(items.length < 5) items.splice(Math.min(1, items.length), 0, prop()); items.push(prop()); }
     return `<div class="shelf-row is-${r.kind}"><div class="shelf-items">${items.join('')}</div><div class="shelf-plank"></div></div>`;
   };
@@ -61590,10 +61590,10 @@ function playSlotItems(){
   const arenaBack = playSubTab === 'autobattle';
   return {back: arenaBack ? backBtnHTML('arenaNavBtnPlay', TX('ui.sw2-practice-back')) : '',
     items: [
-      !arenaBack && tabOpen('arena') && playSubTab !== 'arena' ? {id:'arenaNavBtnPlay', icon:'🏟️', name:TX('ui.u4-arena-tip')} : null,
-      tabOpen('forge') ? {id:'forgeNavBtnPlay', icon:'🔨', name:TX('ui.place-forge')} : null,
+      !arenaBack && tabOpen('arena') && playSubTab !== 'arena' ? {id:'arenaNavBtnPlay', icon:'🏟️', name:TX('ui.u4-arena-tip'), label:TX('ui.u4-arena')} : null,
+      tabOpen('forge') ? {id:'forgeNavBtnPlay', icon:'🔨', name:TX('ui.place-forge'), label:TX('ui.u4-forge')} : null,
       tabOpen('raid') && nav1PlayPage() !== 'dr' && !dailyDungeonsOpen() ? {id:'nav1DrBtnPlay', icon:'🐲', name:TX('ui.nav1-dungeons-raids')} : null,
-      res4TrailOpen() ? {id:'trailNavBtnPlay', icon:'🚐', name:TX('ui.res4-trail-name'), attr:'data-trail-badge'} : null].filter(Boolean)};
+      res4TrailOpen() ? {id:'trailNavBtnPlay', icon:'🚐', name:TX('ui.res4-trail-name'), label:TX('ui.res4-trail-short'), attr:'data-trail-badge'} : null].filter(Boolean)};
 }
 function refreshPageBar(tab){
   tab = tab || (typeof currentTab !== 'undefined' ? currentTab : 'home');
@@ -61605,7 +61605,7 @@ function refreshPageBar(tab){
   let lead = FEATURE ? backBtnHTML('pageBackBtn', back) : '';
   if(PLAY){ const ps = playSlotItems(); lead = ps.back; sc = ps.items.map(x=> Object.assign({key:x.id, here:()=>false}, x)); }
   bar.classList.toggle('has-many', !PLAY && sc.length > 2); // a phone wraps a page's own buttons to a second row; on the map the slot scrolls inside the one row
-  bar.innerHTML = `${lead}${sc.length > (PLAY ? 0 : 1) ? `<nav class="pb-shortcuts" aria-label="${escapeAttr(_t('Camp'))}">${sc.map(x=> `<button type="button" class="pb-sc ${x.here(tab) ? 'is-here' : ''}" ${PLAY ? `id="${x.key}"` : `data-pbsc="${x.key}"`} ${x.attr || ''} title="${escapeAttr(x.name)}" aria-label="${escapeAttr(x.name)}" ${x.here(tab) ? 'aria-current="page"' : ''}><span aria-hidden="true">${x.icon}</span><b>${escapeHtml(x.name)}</b></button>`).join('')}</nav>` : ''}`;
+  bar.innerHTML = `${lead}${sc.length > (PLAY ? 0 : 1) ? `<nav class="pb-shortcuts" aria-label="${escapeAttr(_t('Camp'))}">${sc.map(x=> `<button type="button" class="pb-sc ${x.here(tab) ? 'is-here' : ''}" ${PLAY ? `id="${x.key}"` : `data-pbsc="${x.key}"`} ${x.attr || ''} title="${escapeAttr(x.name)}" aria-label="${escapeAttr(x.name)}" ${x.here(tab) ? 'aria-current="page"' : ''}><span aria-hidden="true">${x.icon}</span><b>${escapeHtml(x.label || x.name)}</b></button>`).join('')}</nav>` : ''}`;
   bar.querySelectorAll('[data-pbsc]').forEach(b=> b.onclick = ()=>{ const x = PAGE_SHORTCUTS.find(y=> y.key === b.dataset.pbsc); if(x && !x.here(tab)) x.go(); });
   const bb = bar.querySelector('#pageBackBtn'); if(bb) bb.onclick = ()=>{ if(pageBackOverride){ pageBackOverride(); return; } const c2 = pageCameFrom; pageCameFrom = null; if(c2 && c2.tab === 'play'){ if(c2.sub) playSubTab = c2.sub; if(c2.map) conquestSelectedMap = c2.map; } if(c2 && c2.forge) codexSubTab = 'forge'; switchTab(c2 && c2.tab !== tab ? c2.tab : 'home'); };
   if(PLAY){

@@ -76,7 +76,7 @@ function constSrc(name){ const a = src.indexOf('\nconst ' + name + ' = '); if(a 
 // ---------------- the page: reachable, no price ----------------
 { const page = fnSrc('renderTrailPage'), block = src.slice(src.indexOf('// ==== Package RES4 (2026-10-26), PROP1-2'), src.indexOf('\nfunction profileHeroHTML('));
   ok(/<div id="view-trail" hidden><\/div>/.test(tpl) && /if\(tab==='trail'\) safeRender\('Trail', renderTrailPage\);/.test(src), 'its own page (view-trail)');
-  ok(/\$\{res4TrailHomeNoteHTML\(\)/.test(fnSrc('renderHome')) && /id="trailNavBtnPlay"/.test(src) && /switchTab\('trail'\)/.test(src), 'reachable from Home (a note) and the map (the corner cluster)');
+  ok(/\$\{res4TrailHomeNoteHTML\(\)/.test(fnSrc('renderHome')) && /id:'trailNavBtnPlay'/.test(src) && /switchTab\('trail'\)/.test(src), 'reachable from Home (a note) and the map (the corner cluster)');
   ok(/class="tr-road"/.test(page) && /id="trVan"/.test(page) && /res4TrailStopHTML\(i \+ 1/.test(page) && /\.tr-van\{position:absolute;[^}]*left:calc\(var\(--k\)/.test(tpl), 'a horizontal road of tiers with the camper van on it');
   ok(/class="tr-ch-list"/.test(page) && /res4TrailDaysLeft\(\)/.test(page), 'this week\'s challenges with progress, and days left');
   ok(!/\$\s*\d|USD|€|\bprice\b|4\.99/i.test(block.replace(/\/\/[^\n]*/g, '')), 'the premium lane is locked with no price');

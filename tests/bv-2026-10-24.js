@@ -125,7 +125,7 @@ const between = (s, a, b)=>{ const i = s.indexOf(a); if(i < 0) return ''; const 
   ok((src.match(/\.\.\.replayGuardSnap\(liveCard\)\}/g) || []).length === 2 && /shield: \(\(sd\.effects\|\|\{\}\)\.shield \?/.test(src), 'both live backfills and the card-built one keep it'); }
 
 // ---- 13:16 #24
-ok(/@media \(max-width:640px\)\{ #deckWidgetTop \.enemy-hand-count\{top:3px; font-size:8\.5px;/.test(tpl), 'on a phone the pill sits inside their Deck, smaller');
+ok(/@media \(max-width:560px\)\{ #deckWidgetTop \.enemy-hand-count\{top:3px; font-size:8\.5px;/.test(tpl), 'on a phone the pill sits inside their Deck, smaller');
 
 // ---- the Effects Lab
 ['wt-wind-swap', 'wt-tide-flow', 'castle-crumble', 'sk-smoke-bomb', 'st-smoke-apply', 'wt-perma-tide'].forEach(id=> ok(lab.includes(`R({id:'${id}'`), 'lab entry ' + id));

@@ -4848,5 +4848,6 @@
  "{n} enemy unit(s) saw {name} fall: they avoid Warning Colours next round.": "적 유닛 {n}개가 {name}의 죽음을 봤어요: 다음 라운드에 경고색을 피해요.",
  "{att} turns away from {name}.": "{att}이(가) {name}을(를) 피해요.",
  "takes 1 more from lightning, which runs on to Wet neighbours. Fire or dry weather dries it.": "번개 피해 +1, 번개가 옆의 젖은 유닛에게도 이어져요. 불이나 건조한 날씨에 말라요.",
- "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "죽인 유닛이 독 {n}을 받아요. 죽는 것을 본 적은 다음 라운드에 다른 경고색 유닛을 피해요."
+ "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "죽인 유닛이 독 {n}을 받아요. 죽는 것을 본 적은 다음 라운드에 다른 경고색 유닛을 피해요.",
+ "Energy: spent to start fights, refills 1 every 5 minutes.": "에너지: 전투를 시작할 때 쓰며 5분마다 1씩 차오릅니다."
 }

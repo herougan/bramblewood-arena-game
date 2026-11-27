@@ -4848,5 +4848,6 @@
  "{n} enemy unit(s) saw {name} fall: they avoid Warning Colours next round.": "{n} எதிரி அலகுகள் {name} விழுவதைப் பார்த்தன: அடுத்த சுற்றில் எச்சரிக்கை நிறங்களைத் தவிர்க்கும்.",
  "{att} turns away from {name}.": "{att} {name}-ஐத் தவிர்க்கிறது.",
  "takes 1 more from lightning, which runs on to Wet neighbours. Fire or dry weather dries it.": "மின்னலிலிருந்து 1 கூடுதல், அது நனைந்த அண்டை அலகுகளுக்கும் பாயும். நெருப்பு அல்லது வறண்ட வானிலை உலர்த்தும்.",
- "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "அதைக் கொன்றதற்கு {n} நஞ்சு. இது இறந்ததைப் பார்த்த எதிரிகள் அடுத்த சுற்றில் உன் மற்ற எச்சரிக்கை நிற அலகுகளைத் தவிர்க்கும்."
+ "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "அதைக் கொன்றதற்கு {n} நஞ்சு. இது இறந்ததைப் பார்த்த எதிரிகள் அடுத்த சுற்றில் உன் மற்ற எச்சரிக்கை நிற அலகுகளைத் தவிர்க்கும்.",
+ "Energy: spent to start fights, refills 1 every 5 minutes.": "ஆற்றல்: சண்டைகளைத் தொடங்கச் செலவாகும், 5 நிமிடத்துக்கு 1 நிரம்பும்."
 }

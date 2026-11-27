@@ -115,7 +115,7 @@ const CSS = () => `
 .sty-whisper .dlg-text{font-style:italic; color:var(--sty-whisper-ink); font-size:.94em;}
 .dlg-line.sty-whisper .dlg-portrait{opacity:.6; scale:.9;}
 .sty-zing{position:absolute; width:24px; height:24px; color:var(--sty-c); pointer-events:none; overflow:visible; z-index:2;}
-@media (max-width:699px){
+@media (max-width:560px){
   .sty-line .dlg-name{font-size:9.5px; padding:0 6px; margin-bottom:2px;}
   .dlg-line.sty-line .dlg-portrait{margin-top:-5px;} .dlg-line.sty-line.sty-r .dlg-portrait{margin-top:0; margin-bottom:-7px;}
   .sty-listen{width:20px; height:20px;} .sty-l .sty-listen{bottom:-9px;} .sty-r .sty-listen{top:-9px;}

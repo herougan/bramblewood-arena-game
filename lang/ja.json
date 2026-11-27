@@ -4846,5 +4846,6 @@
  "{n} enemy unit(s) saw {name} fall: they avoid Warning Colours next round.": "敵ユニット{n}体が{name}の最期を見た：次のラウンド警告色を避ける。",
  "{att} turns away from {name}.": "{att}は{name}を避けた。",
  "takes 1 more from lightning, which runs on to Wet neighbours. Fire or dry weather dries it.": "雷ダメージ+1、雷は隣の濡れたユニットにも伝わる。炎か乾いた天気で乾く。",
- "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "倒した相手に毒{n}。倒れるのを見た敵は次のラウンド、他の警告色ユニットを避ける。"
+ "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "倒した相手に毒{n}。倒れるのを見た敵は次のラウンド、他の警告色ユニットを避ける。",
+ "Energy: spent to start fights, refills 1 every 5 minutes.": "エネルギー: 戦闘開始に使い、5分ごとに1回復します。"
 }

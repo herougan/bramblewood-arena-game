@@ -18,7 +18,7 @@ ok(/if\(rel3MomentOn\(\)\)\{ rel3Moment\.xp \+= Math\.round\(n\)/.test(app) && a
 ok(/\.tut-reward \.tr-moment\{/.test(tpl) && /\.tr-moment \.trm\{/.test(tpl), '2. the moment is styled');
 // 3 + 6. tab change
 ok(/function rel3CloseOnTabChange\(\)/.test(app) && app.includes("document.querySelectorAll('.speech-bubble').forEach(b=> b.remove())") && app.includes("sw.querySelector('#dsKeep')"), '3/6. speech bubbles and a (non-teaching) swap sheet close');
-ok(/function switchTab\(tab\)\{\n  tabSwitchSeq\+\+;\n  if\(tab !== \(typeof currentTab !== 'undefined' \? currentTab : null\)\) rel3CloseOnTabChange\(\)/.test(app), '3/6. switchTab calls it on a real change');
+ok(/function switchTab\(tab, covered\)\{[^]*?tabSwitchSeq\+\+; pageBackOverride = null;\n  if\(tab !== \(typeof currentTab !== 'undefined' \? currentTab : null\)\) rel3CloseOnTabChange\(\)/.test(app), '3/6. switchTab calls it on a real change');
 ok(app.includes('epoch0 === dialogueEpoch'), '3. a running conversation stops on a tab change');
 // 4. traveller dialogue
 ok(/body:not\(\.pg-in-match\) \.dialogue-dock\{top:132px;\}/.test(tpl) && /body\.conquest-full \.dialogue-dock\{left:228px; top:120px;\}/.test(tpl), '4. the dock sits under the map name');

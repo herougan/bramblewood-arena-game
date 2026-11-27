@@ -24,7 +24,7 @@ function fnSrc(name){
 // --- 1. Profile on the phone's Home menu
 ok(TEXT['ui.home-profile'] === 'Profile' && typeof TEXT['ui.home-profile-sub'] === 'string', '1. TX keys ui.home-profile / ui.home-profile-sub');
 ok(/class="home-note note-profile" data-hometab="profile"/.test(src) && /TX\('ui\.home-profile'\)/.test(src), '1. Home draws the Profile note (goes to the profile tab)');
-ok(/\.home-note\.note-profile\{display:none;\}/.test(tpl) && /@media \(max-width:860px\)\{ \.home-note\.note-profile\{display:flex; position:static; rotate:0deg;\} \}/.test(tpl), '1. shown on phones only');
+ok(/\.home-note\.note-profile\{display:none;\}/.test(tpl) && /@media \(max-width:899px\)\{ \.home-note\.note-profile\{display:flex; position:static; rotate:0deg;\} \}/.test(tpl), '1. shown on phones only');
 for(const c of ['de','es','fr','id','it','ja','ko','pt','ta','tl','zh-Hans','zh-Hant']){
   const d = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', c + '.json'), 'utf8'));
   ok(d['Profile'] && d[TEXT['ui.home-profile-sub']], `1. ${c} translates both lines`);

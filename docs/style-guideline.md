@@ -229,8 +229,13 @@ play) — don't try to unify the two.
 Tiles in the same row (e.g. the Home menu's Settings/Profile/Ranking/Guild/Admin row) are the
 same width AND height — a wrapper element must not leave its button shrink-wrapped.
 
-One mobile breakpoint handles phone width — add a new responsive rule inside that existing
-`@media` block rather than introducing a second breakpoint. `.topbar-wrap` must never change
+Two breakpoints, no others (owner 2026-11-27, UISWEEP-3): `max-width:560px` for phones and `min-width:900px`
+for wide layouts (side-by-side columns). Their complements are `min-width:561px` and `max-width:899px`, so the
+bands are phone (up to 560), middle (561-899), wide (900 and up). Add a new responsive rule inside the existing
+`@media` block nearest your component; never write a new width. Kept on purpose: `min-width` 1000, 1100, 1200,
+1300, 1500, `max-width` 1100, 1199, 1299, 1499, and the two big-screen pairs with `min-height` (1700x950, 2300x1250):
+they only scale a layout up on very large monitors, they never change the layout. Script media queries
+(`matchMedia`) use the same two widths. `tests/uisweep3-2026-11-27.js` fails on any other width. `.topbar-wrap` must never change
 width based on the current tab; only `.content-wrap` toggles between the narrow (1220px-capped)
 and wide (`min(1900px, 98-99vw)`, in-match/map views) layouts — a nav bar that visibly resizes
 between tabs was explicitly flagged as disorienting and fixed.
@@ -240,6 +245,18 @@ When testing any layout change with Playwright, set an explicit viewport
 1280×720 — a real bug shipped once where hover/mouse-position checks silently no-op'd because
 the target element rendered below the default viewport's bottom edge, with no thrown error to
 flag it.
+
+## 7b. One bar, one Home, one back, one transition language (UISWEEP3, 2026-11-27)
+
+- One top bar (`.topbar`) on every page except the fight HUD: back first (`#pageBackBar`, a ↩ icon button with a tooltip and an
+  `aria-label`, drawn by `backBtnHTML`), then the page's own buttons (the slot: the Camp's shortcuts, the map's Arena / Forge /
+  Raids / Trail), then the fixed core in one order: 🏠 Home, 🗺️ Map, ⚙️ Settings, Energy, 👤 Account. The button of the place you
+  are on is filled. Feedback is a row in Settings. Home is always the 🏠 house; the back is never text (`← Back`, `‹ Back`,
+  `← Profile` are gone) and no screen shows two. A page with an inner step (the deck builder) sets `pageBackOverride`.
+- Going to a place (Shop, Premium, Camp, Nest, Codex, Stomping Grounds, Inventory) closes the curtain, swaps behind it, then opens
+  it: 880 ms the first visit of a session (320 close + 80 hold + 480 open), 420 ms after (160 + 260); Shop <-> Premium always the
+  420 take; a tap skips; the latest request wins; the layer sits under the bar (z 92 < 95). Other page changes fade through in
+  280 ms (no 3D page turn). Pop-ups open in 200 ms and close in 140 ms. Reduced motion, Effects None and browser automation swap at once.
 
 ## 8. Theming
 

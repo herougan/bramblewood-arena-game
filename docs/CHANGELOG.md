@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-27 Package UISWEEP3 (the settled UISWEEP-1/2/3 and STATE2-1/2)
+- **One top bar on every page (player-visible):** back (↩ icon with a tooltip) first, the page's own buttons next, then the same five in the same place everywhere: 🏠 Home, 🗺️ Map, ⚙️ Settings, Energy, 👤 Account (the page you are on is filled). Home and Conquest now have it too; the map's floating cluster, its second Home / Settings / Energy and the acorn brand tile are gone; 💬 Feedback is a row in Settings. On a phone the Camp's shortcuts sit on a second row.
+- **One Home, one back:** the 🏠 house everywhere (Camp pages showed two); a ↩ icon everywhere (the Shop, Nest, Achievements, Community and deck builder text backs are gone; the deck builder's ↩ steps back to your decks first).
+- **Transitions:** going to a place closes the curtain, swaps the page behind it, then opens it (880 ms the first visit, 420 ms after, a tap skips); Shop <-> Premium does the same in 420 ms; other pages fade through in 280 ms (the 3D page turn is gone); pop-ups open in 200 ms and close in 140 ms; reduced motion swaps at once. Browser automation also swaps at once (`window.__bwTransitions = true` turns the curtain on for a test).
+- **Two breakpoints:** 560 px (phones) and 900 px (wide); 207 media queries folded; kept: big-screen scaling at 1000-2300 px and the 1100 / 1199 / 1299 / 1499 caps. Style guide section 7 amended.
+- **Codex on a phone:** the Base level / My best toggle is two icons, so the type chips keep their room and no longer run under it.
+- Test `tests/uisweep3-2026-11-27.js`; old pins on the Play cluster (u3, u4, nv, nav1, mobile-nav, mx, uifx1) moved to the one bar. Shots in `docs/screens/uisweep3/`.
+
 ## 2026-11-27 Package ROADFIX5 (the road after SKILLS3-B)
 - **4 enemy decks re-fit by swaps from their own lists (player-visible difficulty):** 15-5 4 Elderhorn Monarch -> 4 Boreal Elk (76.5 -> 67.5, target 66); 18-7 1 Dune Jackal -> 1 Dust-devil Kestrel (54.5 -> 43.5, target 40); 15-6 (Boreal Elk, Plains Zebra, Mosquito Cloud in; off-list Village Miller out: 78 -> 73.3, target 60, closer); 20-B-3 (72.3 -> 65.3, target 60). 15-5 / 15-6's Sworn Shieldbearer and 18-7's Meerkat Sentry lost their round-start aura. 400 games, seeds 9100; seeds 5100 agree.
 - **Road (Maps 0-20, merged with post1127r):** 178 -> 180 in band of 208, 181 within 10, 7 beyond 20. Not fixable on their lists: 18-3 (90 / 78), 19-5, 19-6 (TESTFIX9-2), the Pale Desert. Map 9's Electric Ray fights stay in band.

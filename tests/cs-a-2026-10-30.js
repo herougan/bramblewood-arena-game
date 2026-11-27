@@ -91,7 +91,7 @@ const bad = offenders(css);
 ok(!bad.length, `4. no hard-coded card width on a migrated screen (use --card-full-w / --card-full-col):\n      ${bad.join('\n      ')}`);
 // the guard itself catches what it should, and lets through what it should
 ok(offenders('#myDeckPool .card-tile{width:96px;}').length === 1, '4. self-test: a px width on a deck pool tile is caught');
-ok(offenders('@media (max-width:640px){ #myDeckPool.pool-grid{grid-template-columns:repeat(auto-fill, minmax(104px, 1fr));} }').length === 1, '4. self-test: a px grid column inside @media is caught');
+ok(offenders('@media (max-width:560px){ #myDeckPool.pool-grid{grid-template-columns:repeat(auto-fill, minmax(104px, 1fr));} }').length === 1, '4. self-test: a px grid column inside @media is caught');
 ok(offenders('.ab-offer .card-tile{width:150px !important}').length === 1 && offenders('.discover-card{width:78px}').length === 1, '4. self-test: Arena offers and Discover');
 ok(!offenders('.rw-panel .res3-fan-won .card-tile{width:min(var(--card-full-w), max(78px, 15vh)) !important;}').length, '4. self-test: a token with a height cap passes');
 ok(!offenders('#myDeckList .dchip-minus{width:22px;} .pool-stack .ps-count{min-width:0;} .np-grid{grid-template-columns:repeat(auto-fill, minmax(min(100%, 150px), 1fr));}').length, '4. self-test: badges and other grids are not cards');

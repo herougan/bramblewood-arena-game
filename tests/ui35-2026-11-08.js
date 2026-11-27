@@ -106,7 +106,7 @@ KEYS.forEach(k=>{ const m = texts.match(new RegExp('"' + k.replace(/\./g, '\\.')
 
 // ================= 7. build, docs, tests =================
 ok(/\.ui35-pill\.is-counter/.test(tpl) && /\.ui35-newn\.has-new/.test(tpl) && /#myDeckPool\.pool-grid\.ui35-cmp/.test(tpl) && /\.ui35-pool-tile\.is-spent/.test(tpl) && /\.bal24-refline/.test(tpl), 'CSS: pills, the N new count, the Compact deck view, the reference line');
-ok(/@media \(max-width:520px\)\{ \.pk1-mc-overlay \.ui19-sk-list\{grid-template-columns:1fr;\}/.test(tpl), 'CSS: one column of tiles on a phone (a tile with three pills does not fit half a phone)');
+ok(/@media \(max-width:560px\)\{ \.pk1-mc-overlay \.ui19-sk-list\{grid-template-columns:1fr;\}/.test(tpl), 'CSS: one column of tiles on a phone (a tile with three pills does not fit half a phone)');
 ok(/^## 2026-11-08 Package UI35/m.test(rd('docs/CHANGELOG.md')), 'CHANGELOG entry');
 ok(/tests\/ui35-2026-11-08\.js/.test(rd('tests/run-all.sh')), 'tests/run-all.sh lists this test');
 ok(fs.existsSync(path.join(ROOT, 'tests/e2e/ui35_2026_11_08.py')) && ['mapcards-skills-1366', 'mapcards-skills-390', 'deck-compact-1366', 'deck-compact-390', 'sk-details-1366', 'sk-details-390'].every(n=> fs.existsSync(path.join(ROOT, 'docs/screens/ui35/' + n + '.png'))), 'the browser check and its screenshots exist');

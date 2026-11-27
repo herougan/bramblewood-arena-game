@@ -32,7 +32,7 @@ ok(/\.fl1-vignette\{[^}]*z-index:-1[^}]*pointer-events:none/.test(tpl), 'vignett
 ok(/prefers-reduced-motion: reduce\)\{\s*\.map-node\.is-lair-final:not\(\.done\)[^}]*\.fl1-vignette\{animation:none !important;\}/.test(tpl), 'reduced motion stops the lair animations');
 ok(/html\[data-fx="none"\][^{]*\{animation:none;\}/.test(tpl) && /fl1-vignette\)?\{animation:none;\}/.test(tpl), 'low / no effects stop them'); // 2026-11-12 (PERF3): plain selectors, no :is() group
 ok(/\.fl1-banner\{[^}]*pointer-events:none/.test(tpl), 'the banner never blocks the skip tap');
-ok(/@media \(max-width:560px\)\{ \.map-node\.is-lair-final/.test(tpl) && /@media \(max-width:600px\)\{ \.fight-sign\.end-sign\.end-lair/.test(tpl), 'phone-width rules');
+ok(/@media \(max-width:560px\)\{ \.map-node\.is-lair-final/.test(tpl) && /@media \(max-width:560px\)\{ \.fight-sign\.end-sign\.end-lair/.test(tpl), 'phone-width rules');
 // 4. texts
 const keys = ['ui.fl1-kicker', 'ui.fl1-title', 'ui.fl1-sub', 'ui.fl1-win', 'ui.fl1-win-first', 'ui.fl1-win-again'];
 const en = keys.map(k=>{ const m = tx.match(new RegExp('"' + k.replace(/[.-]/g, '\\$&') + '": ("(?:[^"\\\\]|\\\\.)*")')); ok(!!m, 'TX row ' + k); return m && JSON.parse(m[1]); });

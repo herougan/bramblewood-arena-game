@@ -4846,5 +4846,6 @@
  "{n} enemy unit(s) saw {name} fall: they avoid Warning Colours next round.": "{n}个敌方单位看到{name}倒下：下回合避开警戒色。",
  "{att} turns away from {name}.": "{att}避开了{name}。",
  "takes 1 more from lightning, which runs on to Wet neighbours. Fire or dry weather dries it.": "受到雷电多1点伤害，雷电还会传给相邻的潮湿单位。火焰或干燥天气会使其变干。",
- "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "击杀者获得{n}层中毒。看到它阵亡的敌人下回合会避开你其他有警戒色的单位。"
+ "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "击杀者获得{n}层中毒。看到它阵亡的敌人下回合会避开你其他有警戒色的单位。",
+ "Energy: spent to start fights, refills 1 every 5 minutes.": "能量：开始战斗时消耗，每 5 分钟恢复 1 点。"
 }

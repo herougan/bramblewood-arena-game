@@ -63,7 +63,7 @@ ok(/shake\(st\.querySelector\('\.fxf-rcs-card'\), \{amp:12/.test(fxf), '1. the t
 ok(/const resultsUp = \(\)=> !!document\.querySelector\('[^']*\.fxf-rcs'\)/.test(fxf), '1. the XP level-up waits for the claim screen');
 ok(!/M\.raidClaim\(\{getBoundingClientRect/.test(fxf), '1. the small claim-button splash no longer plays under the screen');
 ok(/@media \(prefers-reduced-motion:reduce\)\{ \.fxf-rcs-rays, \.fxf-rcs-bubbles i\{animation:none !important;\}/.test(fxf), '2. no drifting rays or bubbles under reduced motion');
-ok(/@media \(max-width:480px\)\{ \.fxf-rcs\{/.test(fxf), '2. a phone layout');
+ok(/@media \(max-width:560px\)\{ \.fxf-rcs\{/.test(fxf), '2. a phone layout');
 
 // ---- 3. the boss results (static)
 const findNode = (mapId, key)=> mapId === 'tw' ? {map:{id:'tw', tower:true}, node:{key, tower:true, floor: +String(key).split('-').pop(), kind: /-10$|-50$/.test(key) ? 'boss' : 'elite'}} : {map:{id:mapId}, node:{key}};

@@ -196,7 +196,7 @@ ok(MAXC.common === 5 && MAXC.uncommon === 4 && MAXC.rare === 3 && MAXC.veryrare 
   const rh = fnSrc('forgeRaidHTML'), wv = fnSrc('wireRaidViewer');
   ok(/raidCardRevealed\(id, d\)/.test(rh) && /id="raidViewer"/.test(rh) && /fg-recipe/.test(rh) && /fg-rstrip/.test(rh) && /data-rc-craft/.test(rh) && /fg-owned/.test(rh), '4. the raid tab: the strip, the big card, the recipe, Craft, the owned copies; the seen rule kept');
   ok(/pointermove/.test(wv) && /pointerdown/.test(wv) && /reducedMotion\(\)/.test(wv) && /ArrowLeft/.test(wv) && !/deviceorientation/.test(wv), '4. it tilts and turns with the pointer and a drag (no gyro), keys too, and respects reduced motion');
-  ok(/\.fg-rv\{[^}]*touch-action:pan-y/.test(tpl) && /@media \(max-width:760px\)\{ \.fg-raid-main\{grid-template-columns:1fr;\}/.test(tpl), '4. a touch drag turns it; phones stack the card over the recipe');
+  ok(/\.fg-rv\{[^}]*touch-action:pan-y/.test(tpl) && /@media \(max-width:899px\)\{ \.fg-raid-main\{grid-template-columns:1fr;\}/.test(tpl), '4. a touch drag turns it; phones stack the card over the recipe');
   ok(/\.hatch-egg\{position:absolute; left:50%; top:42%; translate:-50% -54%;\}/.test(tpl) && /\.hatch-rays\{[^}]*top:42%/.test(tpl), '1. the hatch egg sits at the rays\' centre (42%), a few % higher than before');
   const LEAD = /^[^\p{L}\p{N}{(\[+]+/u, packs = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].map(c=> [c, JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', c + '.json'), 'utf8'))]);
   const keys = Object.keys(TEXT).filter(k=> /^(ui|toast)\.fg-/.test(k)); const miss = [];

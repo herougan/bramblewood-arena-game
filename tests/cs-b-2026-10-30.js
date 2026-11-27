@@ -119,7 +119,7 @@ function offenders(text){
 }
 const bad = offenders(css);
 ok(!bad.length, `5. no hard-coded card width on a CS-B screen (use --card-compact-w / --card-full-w / --chip-h):\n      ${bad.join('\n      ')}`);
-ok(offenders('.conquest-node-panel .cnp-sq-card{width:62px;}').length === 1 && offenders('@media (max-width:640px){ .cnp-rw .cnp-rw-card{width:38px;} }').length === 1, '5. self-test: a px width on a squad card or a reward (in @media too) is caught');
+ok(offenders('.conquest-node-panel .cnp-sq-card{width:62px;}').length === 1 && offenders('@media (max-width:560px){ .cnp-rw .cnp-rw-card{width:38px;} }').length === 1, '5. self-test: a px width on a squad card or a reward (in @media too) is caught');
 ok(offenders('.vis4-mc-card .card-tile{width:44px !important}').length === 1 && offenders('.po2-slot{width:46px}').length === 1 && offenders('.grave-peek .gpk-mini{width:46px}').length === 1, '5. self-test: map chips, the tray, the graveyard');
 ok(!offenders('.cnp-rw-card.cnp-rw-pack{width:auto; max-width:180px;} .card-chip .cc-n{padding:2px 6px} .cnp-rw-zoom.cnp-rw-tip{max-width:220px}').length, '5. self-test: packs, badges and the text tip are not cards');
 ok(!offenders('.cnp-showcase{width:var(--card-compact-w);} .rv1-tile{width:var(--card-full-w);}').length, '5. self-test: a token passes');

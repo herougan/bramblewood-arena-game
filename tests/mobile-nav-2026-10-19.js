@@ -17,7 +17,7 @@ let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  �
 
 // ---- 1. the ⛶ row (static)
 ok(!/\.conquest-fs-btn\{top:58px !important;\}/.test(tpl), '1. the 10-13 top:58px !important that put ⛶ on the 🚨 spot is gone');
-ok(/@media \(max-width:640px\)\{\s*\/\*[^]*?\*\/\s*\.conquest-fs-btn\{top:12px;\}/.test(tpl), '1. ≤640px: ⛶ on the 🧭 row (top:12px)');
+ok(/@media \(max-width:560px\)\{\s*\/\*[^]*?\*\/\s*\.conquest-fs-btn\{top:12px;\}/.test(tpl), '1. ≤640px: ⛶ on the 🧭 row (top:12px)');
 ok(/body\.world-hidden:not\(\.conquest-immersive\) \.conquest-fs-btn\{top:58px;\}/.test(tpl) && /body\.world-hidden:not\(\.conquest-immersive\) \.conquest-admin-btn\{top:104px;\}/.test(tpl),
   '1. world not open yet: ⛶ steps under the Energy pill and 🚨 under ⛶');
 ok(/\.conquest-admin-btn\{position:absolute; top:58px; right:12px;/.test(tpl) && /\.conquest-world-btn\{position:absolute; top:12px; right:58px;/.test(tpl), '1. 🚨 under ⛶, 🧭 left of ⛶ (unchanged)');

@@ -44,7 +44,7 @@ ok(/function pl1SwapNeverOffer\(/.test(app) && /!pl1SwapNeverOffer\(k, defs\)/.t
 // P24-9
 ok(/pl1HandPreviewSoon\(\)/.test(app) && /function pl1HandPreviewSoon\(/.test(app), 'P24-9 a day / night turn refreshes the hand preview');
 // P24-11
-ok(/\.eq2-hpbar\{position:absolute; left:12%; right:12%; bottom:31\.5%/.test(app) && /@media \(max-width:700px\)\{ \.eq2-hpbar\{bottom:39%/.test(app), 'P24-11 the Health bar sits above the plates (desktop and phone)');
+ok(/\.eq2-hpbar\{position:absolute; left:12%; right:12%; bottom:31\.5%/.test(app) && /@media \(max-width:560px\)\{ \.eq2-hpbar\{bottom:39%/.test(app), 'P24-11 the Health bar sits above the plates (desktop and phone)');
 // P24-12
 ok(/function pl1AuraAtk\(/.test(app) && (app.match(/pl1AuraAtk\(/g) || []).length >= 5 && (app.match(/pl1AuraSnap\(/g) || []).length >= 4, 'P24-12 Kinship / Nature\'s Force / Lone Wolf reach the plate, the details, the refresh and the replay');
 { const f = new Function(fnSrc('pl1AuraAtk') + '; return pl1AuraAtk;')(); ok(f({kinBonus:1}) === 1 && f({kinBonus:1, natureBonus:2, packBonus:1}) === 4 && f(null) === 0, 'P24-12 pl1AuraAtk adds the three'); }

@@ -120,7 +120,7 @@ const fresh = Object.keys(fc).filter(k=> fc[k] > (ac[k] || 0)), gone = Object.ke
 ok(!fresh.length, `4. no new pixel width on a .card-tile (use --card-full-w / --card-compact-w / --card-detail-w / --match-card-w, or list it here with a reason):\n      ${fresh.join('\n      ')}`);
 ok(!gone.length, `4. these ALLOW entries are gone from the CSS: take them off the list:\n      ${gone.join('\n      ')}`);
 // the guard catches what it should and lets through what it should
-ok(widths('#myDeckPool .card-tile{width:96px;}').length === 1 && widths('@media (max-width:640px){ .board-card > .card-tile{min-width:58px !important} }').length === 1, '4. self-test: a px width, also inside @media, is caught');
+ok(widths('#myDeckPool .card-tile{width:96px;}').length === 1 && widths('@media (max-width:560px){ .board-card > .card-tile{min-width:58px !important} }').length === 1, '4. self-test: a px width, also inside @media, is caught');
 ok(!widths('.x .card-tile{width:var(--card-full-w)} .y .card-tile{width:min(var(--card-full-w), 15vh)} .z .card-tile{width:var(--match-card-w)} .q .card-tile{width:100%}').length, '4. self-test: tokens and percentages pass');
 ok(!widths('.card-tile .nm{width:40px} .card-tile .badge{max-width:22px}').length, '4. self-test: parts of a card are not the card');
 

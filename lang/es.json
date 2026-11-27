@@ -4845,5 +4845,6 @@
  "{n} enemy unit(s) saw {name} fall: they avoid Warning Colours next round.": "{n} unidad(es) enemiga(s) vieron caer a {name}: evitan los Colores de advertencia la ronda siguiente.",
  "{att} turns away from {name}.": "{att} se aparta de {name}.",
  "takes 1 more from lightning, which runs on to Wet neighbours. Fire or dry weather dries it.": "recibe 1 más del rayo, que pasa a las vecinas Mojadas. El fuego o el tiempo seco la secan.",
- "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "Su asesino recibe {n} Veneno. Los enemigos que la vieron morir evitan tus otras unidades con Colores de advertencia la ronda siguiente."
+ "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "Su asesino recibe {n} Veneno. Los enemigos que la vieron morir evitan tus otras unidades con Colores de advertencia la ronda siguiente.",
+ "Energy: spent to start fights, refills 1 every 5 minutes.": "Energía: se gasta al iniciar combates y recupera 1 cada 5 minutos."
 }

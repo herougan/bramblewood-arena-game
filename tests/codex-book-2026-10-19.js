@@ -239,7 +239,7 @@ const esc = s=> String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, 
   const B = run(['bookTurn'], bt); B.bookTurn('first'); B.bookTurn('last');
   ok(JSON.stringify(bt.went) === '[0,8]', '10. « opens the contents, » the last page (book)');
   ok(/const CODEX_TURN_KEYS = \{ArrowLeft:-1, ArrowRight:1, Home:'first', End:'last'\}/.test(src) && /codexTurnFn\(CODEX_TURN_KEYS\[e\.key\]\)/.test(src), '10. ← → turn, Home / End go to the first / last page');
-  ok(/\.pg-edge-in\{position:sticky; top:calc\(50vh - 60px\); bottom:14px;/.test(css) && /@media \(max-width:559px\)\{ \.pg-book\{padding-left:6px !important;/.test(css), '10. the tabs stay in reach down a tall page; on a phone they sit in the page\'s top corners');
+  ok(/\.pg-edge-in\{position:sticky; top:calc\(50vh - 60px\); bottom:14px;/.test(css) && /@media \(max-width:560px\)\{ \.pg-book\{padding-left:6px !important;/.test(css), '10. the tabs stay in reach down a tall page; on a phone they sit in the page\'s top corners');
   for(const k of ['ui.codex-first-page', 'ui.codex-last-page']) ok(k in TEXT, `10. ${k} is in the table`);
   const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'], cxKeys = Object.keys(TEXT).filter(k=> /^ui\.cx-sec-/.test(k));
   ok(cxKeys.length >= 20 && cxKeys.every(k=> src.includes(`TX('${k}'`)), `10. the section names are TX keys, all used (${cxKeys.length})`);

@@ -116,7 +116,7 @@ css('core', `
 .fxf .fxf-stamp{position:absolute; left:0; top:0; padding:6px 14px; border:3px solid currentColor; border-radius:10px; font:900 26px/1 'Baloo 2',system-ui,sans-serif; letter-spacing:.06em;
   text-transform:uppercase; white-space:nowrap; color:#c8322a; background:rgba(255,248,230,.12); box-shadow:inset 0 0 0 2px rgba(255,255,255,.12); text-shadow:0 1px 0 rgba(0,0,0,.2);}
 .fxf .fxf-stamp.c-gold{color:#e9b44c;} .fxf .fxf-stamp.c-green{color:#3fa34d;} .fxf .fxf-stamp.c-teal{color:#2a8f88;} .fxf .fxf-stamp.c-ink{color:#f4efdc;}
-@media (max-width:480px){ .fxf .fxf-stamp{font-size:20px;} .fxf .fxf-label{font-size:15px;} }
+@media (max-width:560px){ .fxf .fxf-stamp{font-size:20px;} .fxf .fxf-label{font-size:15px;} }
 `);
 
 // Particles from a point: dots, stars, shards or glyphs flying out (and optionally falling).
@@ -1919,7 +1919,7 @@ css('rcs', `
 .fxf-rcs.is-calm .fxf-rcs-rays{animation:none;} .fxf-rcs.is-calm .fxf-rcs-bubbles{display:none;}
 .fxf-rcs.is-calm .fxf-rcs-fade{opacity:0; transition:opacity .45s ease;} .fxf-rcs.is-calm .fxf-rcs-fade.is-in{opacity:1;}
 .fxf-rcs.is-calm .fxf-rcs-boss.is-in{opacity:.6;}
-@media (max-width:480px){ .fxf-rcs{padding:10px;} .fxf-rcs-card{padding:16px 10px 14px; border-radius:18px;} .fxf-rcs-rw{min-width:74px; padding:8px 6px 6px;} .fxf-rcs-rw .ico{font-size:26px;}
+@media (max-width:560px){ .fxf-rcs{padding:10px;} .fxf-rcs-card{padding:16px 10px 14px; border-radius:18px;} .fxf-rcs-rw{min-width:74px; padding:8px 6px 6px;} .fxf-rcs-rw .ico{font-size:26px;}
   .fxf-rcs-rw.is-card .ico .card-tile{width:70px !important; height:88px !important;} .fxf-rcs-tier{font-size:17px; padding:7px 14px;} .fxf-rcs-list{gap:8px;} }
 @media (prefers-reduced-motion:reduce){ .fxf-rcs-rays, .fxf-rcs-bubbles i{animation:none !important;} .fxf-rcs-bubbles{display:none;} }
 `);
@@ -2084,7 +2084,7 @@ css('xpbar', `
   color:#2a1a00; background:linear-gradient(180deg, #fff0b8, #f5c84a); box-shadow:0 2px 10px rgba(0,0,0,.4); opacity:0; pointer-events:none;}
 .fxf-xp.is-up .fxf-xp-up{opacity:1;}
 .fxf-xp.is-fade{animation:fxfXpFade .35s ease-out both;} @keyframes fxfXpFade{from{opacity:0;}}
-@media (max-width:480px){ .fxf-xp{width:calc(100% - 96px); gap:7px; padding:4px 8px; font-size:12px;} }
+@media (max-width:560px){ .fxf-xp{width:calc(100% - 96px); gap:7px; padding:4px 8px; font-size:12px;} }
 `);
 const xpPct = v=> (Math.max(0, Math.min(1, v || 0))*100).toFixed(1) + '%';
 // The bar's markup at its first state (before any fill; spec.gainShown prints the gain too, for a redraw after the fill).

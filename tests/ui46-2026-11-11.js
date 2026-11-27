@@ -47,7 +47,7 @@ ok(/\.wander-deal \.wd-offer\.is-sold\{opacity:/.test(tpl), 'a sold row is dimme
   ok(/class="btn primary small ed-cx-create"/.test(f) && /title="\$\{tip\}" aria-label="\$\{escapeAttr\(lbl\)\}"/.test(f) && /<span class="ed-cx-lbl">/.test(f), 'icon + label span, a tooltip and an accessible name (the same existing text)');
   ok(!/ed-cx-admin/.test(app) && !/\.ed-cx-admin/.test(tpl), 'the old .ed-cx-admin line is gone');
   ok(/\.codex-sub-tabs \.ed-cx-create\{margin-left:auto;\}/.test(tpl) && /\.ed-cx-create \+ \.subnav-right-btn\{margin-left:0;\}/.test(tpl), 'Create card takes the free space; Deck sits right after it (two auto margins would split it)');
-  ok(/@media \(max-width:600px\)\{ \.codex-sub-tabs \.ed-cx-lbl\{display:none;\} \}/.test(tpl), 'phone width: label hidden, the 🆕 stays');
+  ok(/@media \(max-width:560px\)\{ \.codex-sub-tabs \.ed-cx-lbl\{display:none;\} \}/.test(tpl), 'phone width: label hidden, the 🆕 stays');
   ok(/\.codex-sub-tabs\{[^}]*flex-wrap:wrap/.test(tpl), 'the row wraps (never scrolls sideways)'); }
 ok(/edCodexCreateBtn\(body\)/.test(fn('renderCodex')), 'the card browser still calls it');
 

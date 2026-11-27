@@ -107,7 +107,7 @@ const fn = name=>{ let i = src.indexOf(`\nfunction ${name}(`); if(i < 0) throw n
   ok(/mapLockReason\(firstLocked, progress\)/.test(src), 'minor 8: the locked map\'s tip names the fights still to win');
   ok(/playMap = map\.id/.test(fn('homeTileDetails')) && /data-fix8map/.test(src) && /conquestSelectedMap = pm\.id/.test(src), 'minor 9: Home\'s Play opens the map its "Next" fight is on');
   ok(/isMapUnlocked\(map, loadConquestProgress\(\)\)\) \)?;? ?\}catch|!map\.reserved && isMapUnlocked/.test(src), 'minor 12: the Battlefield list holds only maps you can open (no Reserved ones)');
-  ok(/@media \(max-width:520px\)\{ \.tip-ticker\{min-height:5\.8em;\} \}/.test(css), 'minor 13: the tip ticker has room for three lines at 390');
+  ok(/@media \(max-width:560px\)\{ \.tip-ticker\{min-height:5\.8em;\} \}/.test(css), 'minor 13: the tip ticker has room for three lines at 390');
 }
 
 console.log(fail ? `FAIL ${fail} (${pass} passed)` : `OK ${pass} checks`);
