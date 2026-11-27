@@ -1578,20 +1578,22 @@
   "area": "combat-attack",
   "name": "Stampede (Overwhelm) spill to the castle",
   "trigger": "overwhelmHQ {dmg}",
-  "current": "shakeEl + flashHqDamage + \"💥 -N\"",
-  "quality": "basic — no trample/stampede motion",
+  "current": "FX.V.stampedeRun: a pixel dust trail runs from the striker through to the bramble, a hoof stamp and chips (stampRumble); the shake and \"💥 -N\" stay; FX.A.stampede (paw-print emoji) steps aside",
+  "quality": "good — VFX2",
   "priority": 2,
-  "themeNotes": "Savanna herd dust cloud rolling into the wall.",
+  "themeNotes": "Was: shake + float, FX.A paw prints.",
   "variantsSuggested": false,
   "future": false,
   "sources": [
    "bramblewood-engine.js:5393",
-   "arena_app.js:4329"
+   "arena_app.js:4329",
+   "bramblewood-fx-v.js"
   ],
   "batch": "A",
   "status": "live",
-  "lab": "a.js",
-  "inGameHook": "onEvent (bramblewood-fx-a.js): overwhelmHQ"
+  "lab": "a.js, vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): overwhelmHQ",
+  "updated": "2026-11-27"
  },
  {
   "id": "atk-siege",
@@ -1852,21 +1854,22 @@
   "area": "combat-skill",
   "name": "Custom trigger fires",
   "trigger": "triggerFired {hook, action}",
-  "current": "2026-10-16: only the trigger's own ⚡ badge glows (triggerFiredVfx, .ab-trig.is-firing); no rune ring, card glow, aura or bolt",
-  "quality": "good — has its own look that plays at the right moment",
+  "current": "FX.V.trigLook: ⬆️ On Play arrows burst up (trigRise), 💀 On Death a skull wisp (trigWisp), ⚔️ On Attack two swords cross (trigClash), ✅ On Ready a check stamps in (trigCheck), then the action's own look; the ⚡ badge glow (triggerFiredVfx) stays for the other hooks and at Effects None / reduced motion",
+  "quality": "good — VFX2",
   "priority": 2,
-  "themeNotes": "",
+  "themeNotes": "Was: one shared badge glow for every trigger.",
   "variantsSuggested": false,
   "future": false,
   "sources": [
    "bramblewood-engine.js:3542",
-   "arena_app.js:30847"
+   "arena_app.js:30847",
+   "bramblewood-fx-v.js"
   ],
   "batch": "A",
   "status": "live",
-  "updated": "2026-10-17",
-  "lab": "a.js, x17.js",
-  "inGameHook": "triggerFiredVfx (arena_app.js): only the .ab-trig badge whose data-hook matches glows (.is-firing), with the trigger chime"
+  "updated": "2026-11-27",
+  "lab": "a.js, x17.js, vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): triggerFired {hook}; triggerFiredVfx steps aside (FX.V.owns)"
  },
  {
   "id": "sk-earthquake",
@@ -2473,19 +2476,21 @@
   "area": "combat-skill",
   "name": "Momentum",
   "trigger": "statusFx momentum",
-  "current": "\"🔥 +N⚔\" float + momentumTone",
-  "quality": "basic — float only",
+  "current": "FX.V.momentumFlame: a kill-streak flame at the card's corner, bigger with each kill this fight, flickering (flameUp); the float stays; FX.A.momentumTrail steps aside",
+  "quality": "good — VFX2",
   "priority": 3,
-  "themeNotes": "Savanna Hunting Grounds.",
+  "themeNotes": "Was: float + tone.",
   "variantsSuggested": false,
   "future": false,
   "sources": [
-   "bramblewood-engine.js:5402"
+   "bramblewood-engine.js:5402",
+   "bramblewood-fx-v.js"
   ],
   "batch": "A",
   "status": "live",
-  "lab": "a.js",
-  "inGameHook": "onEvent (bramblewood-fx-a.js): statusFx momentum (once a round)"
+  "lab": "a.js, vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): statusFx momentum",
+  "updated": "2026-11-27"
  },
  {
   "id": "sk-berserk",
@@ -2650,20 +2655,22 @@
   "area": "combat-skill",
   "name": "Gash opening cut",
   "trigger": "gash {amount}",
-  "current": "SkillFX.bleedDrip + \"+N🩸\"",
-  "quality": "good — has its own look that plays at the right moment",
+  "current": "FX.V.gashBleed: a pixel slash rips across the card, three drops of blood run from it (gashRip); the \"+N🩸\" float stays; SkillFX.bleedDrip steps aside",
+  "quality": "good — VFX2",
   "priority": 3,
-  "themeNotes": "",
+  "themeNotes": "Was: Bleed's drip, shared.",
   "variantsSuggested": false,
   "future": false,
   "sources": [
    "bramblewood-engine.js:3484",
-   "arena_app.js:4320"
+   "arena_app.js:4320",
+   "bramblewood-fx-v.js"
   ],
   "batch": "A",
   "status": "live",
-  "lab": "a.js",
-  "inGameHook": "eighthPassVfx → SkillFX.bleedDrip"
+  "lab": "a.js, vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): gash",
+  "updated": "2026-11-27"
  },
  {
   "id": "sk-revive",
@@ -3921,20 +3928,22 @@
   "area": "status",
   "name": "Decay: tick",
   "trigger": "decayTick {dmg, atk}",
-  "current": "shakeEl + bleed-tint-pulse + \"🦠 N! (−A⚔)\"",
-  "quality": "basic — reuses the bleed tint",
+  "current": "FX.V.decayRot: green rot creeps up from the card's foot, spores lift (rotCreep), once a round a unit; the float stays; FX.B.decayTick steps aside",
+  "quality": "good — VFX2",
   "priority": 2,
   "themeNotes": "Morel Hollow mould: grey-violet fuzz creeping in.",
   "variantsSuggested": false,
   "future": false,
   "sources": [
    "bramblewood-engine.js:4174",
-   "arena_app.js:4344"
+   "arena_app.js:4344",
+   "bramblewood-fx-v.js"
   ],
   "batch": "B",
   "status": "live",
-  "lab": "b.js",
-  "inGameHook": "onEvent: decayTick"
+  "lab": "b.js, vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): decayTick",
+  "updated": "2026-11-27"
  },
  {
   "id": "st-decay-expire",
@@ -19599,20 +19608,22 @@
   "area": "combat-skill",
   "name": "Web (Webbed status)",
   "trigger": "statusFx webbed on the unit its hit lands on; statusEnd webbed",
-  "current": "s17SkillVfx: \"🕸️ Webbed\" + SkillFX.vineBind; the 🕸️N status badge (w2StatusBadges)",
-  "quality": "good — has its own look that plays at the right moment",
+  "current": "FX.V.webNet: a pixel net spins out over the card, sags as it settles, sticks to the corners (webSpin); \"🕸️ Webbed\" and the badge stay; SkillFX.vineBind steps aside",
+  "quality": "good — VFX2",
   "priority": 2,
-  "themeNotes": "",
+  "themeNotes": "Was: Bind's vines, shared.",
   "variantsSuggested": true,
   "future": false,
   "sources": [
-   "arena_app.js: s17SkillVfx, w2StatusBadges"
+   "arena_app.js: s17SkillVfx, w2StatusBadges",
+   "bramblewood-fx-v.js"
   ],
   "batch": "L17",
   "status": "live",
   "added": "2026-10-17",
-  "lab": "x17.js",
-  "inGameHook": "s17SkillVfx (arena_app.js) on statusFx webbed → \"🕸️ Webbed\" + SkillFX.vineBind; the 🕸️N status badge (w2StatusBadges); statusEnd webbed takes it off"
+  "lab": "x17.js, vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): statusFx webbed",
+  "updated": "2026-11-27"
  },
  {
   "id": "sk-bloodlust-leap",
@@ -19659,20 +19670,22 @@
   "area": "combat-skill",
   "name": "Carrion",
   "trigger": "statusFx carrion when another unit dies",
-  "current": "s17SkillVfx: \"🦴 +N\" (heal)",
-  "quality": "good — has its own look that plays at the right moment",
+  "current": "FX.V.carrionPeck: a pixel beak pecks three times as it feeds, a plus (peck); the \"🦴 +N\" float stays",
+  "quality": "good — VFX2",
   "priority": 2,
-  "themeNotes": "",
+  "themeNotes": "Was: a float.",
   "variantsSuggested": false,
   "future": false,
   "sources": [
-   "arena_app.js: s17SkillVfx"
+   "arena_app.js: s17SkillVfx",
+   "bramblewood-fx-v.js"
   ],
   "batch": "L17",
   "status": "live",
   "added": "2026-10-17",
-  "lab": "x17.js",
-  "inGameHook": "s17SkillVfx (arena_app.js) on statusFx carrion → \"🦴 +N\" (heal) when another unit dies"
+  "lab": "x17.js, vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): statusFx carrion",
+  "updated": "2026-11-27"
  },
  {
   "id": "sk-hoard",
@@ -19719,40 +19732,44 @@
   "area": "combat-skill",
   "name": "Fletcher (passive)",
   "trigger": "Fletcher N: your units' arrows deal N more (no event of its own)",
-  "current": "its chip on the skill strip (CHIP_FALLBACK_SKILLS) and the bigger number",
-  "quality": "basic — the chip and the number; no look of its own",
+  "current": "FX.V.fletcherGlint: a feather twirls down onto the arrow's mark and glints (quillGlint); the chip and the bigger number stay",
+  "quality": "good — VFX2",
   "priority": 3,
-  "themeNotes": "",
+  "themeNotes": "Was: none of its own.",
   "variantsSuggested": false,
   "future": false,
   "sources": [
-   "arena_app.js: CHIP_FALLBACK_SKILLS, SKILL_ICON"
+   "arena_app.js: CHIP_FALLBACK_SKILLS, SKILL_ICON",
+   "bramblewood-fx-v.js"
   ],
   "batch": "L17",
   "status": "live",
   "added": "2026-10-17",
-  "lab": "x17.js",
-  "inGameHook": "no event of its own: the 🪶 chip on the skill strip (abilityBadges, CHIP_FALLBACK_SKILLS) and the number it changes"
+  "lab": "x17.js, vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): arrow from a side with a Fletcher unit, at the impact, once a round an archer",
+  "updated": "2026-11-27"
  },
  {
   "id": "sk-herbalist",
   "area": "combat-skill",
   "name": "Herbalist (passive)",
   "trigger": "Herbalist N: every heal on your units heals N more (no event of its own)",
-  "current": "its chip on the skill strip (CHIP_FALLBACK_SKILLS) and the bigger number",
-  "quality": "basic — the chip and the number; no look of its own",
+  "current": "FX.V.herbLeaves: leaves swirl round the healed unit and lift away (leafSwirl); the bigger heal number stays",
+  "quality": "good — VFX2",
   "priority": 3,
-  "themeNotes": "",
+  "themeNotes": "Was: none of its own.",
   "variantsSuggested": false,
   "future": false,
   "sources": [
-   "arena_app.js: CHIP_FALLBACK_SKILLS, SKILL_ICON"
+   "arena_app.js: CHIP_FALLBACK_SKILLS, SKILL_ICON",
+   "bramblewood-fx-v.js"
   ],
   "batch": "L17",
   "status": "live",
   "added": "2026-10-17",
-  "lab": "x17.js",
-  "inGameHook": "no event of its own: the 🌿 chip on the skill strip (abilityBadges, CHIP_FALLBACK_SKILLS) and the number it changes"
+  "lab": "x17.js, vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): heal on a side with a Herbalist unit, once a round a unit",
+  "updated": "2026-11-27"
  },
  {
   "id": "sk-shatter",
@@ -21253,6 +21270,326 @@
   "status": "live",
   "lab": "vfx1.js",
   "inGameHook": "boardCardHTML → rt1RiteHTML; updateCardStatusDisplay → rt1Sync; fullCardHTML (describeEffects ritual line)",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "sk-pulverise",
+  "area": "combat-skill",
+  "name": "Pulverise armour break",
+  "trigger": "statusFx pulverise {broke}",
+  "current": "FX.V.pulveriseShatter: an armour plate shows, cracks, its shards fly apart (plateShatter)",
+  "quality": "good — VFX2",
+  "priority": 3,
+  "themeNotes": "Was: none of its own.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): statusFx pulverise",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "atk-cull",
+  "area": "combat-attack",
+  "name": "Cull bonus on a weakened unit",
+  "trigger": "hit by a Cull unit whose bonus landed",
+  "current": "FX.V.cullClaw: a claw mark rakes the unit at its second number, two drops (cullRake); UI14's second number stays",
+  "quality": "good — VFX2",
+  "priority": 3,
+  "themeNotes": "Was: UI14's second number only ('weaker' showed nothing).",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): hit, ui14HitBonus or ('weaker') the replay's Attack, once a round",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "sk-constrict",
+  "area": "combat-skill",
+  "name": "Constrict",
+  "trigger": "statusFx constrict {amount, strangle}",
+  "current": "FX.V.constrictCoil: three pixel coils wrap the card and tighten (coilSqueeze); the float stays; SkillFX.vineBind steps aside",
+  "quality": "good — VFX2",
+  "priority": 3,
+  "themeNotes": "Was: Bind's vines + the curse cue, shared.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): statusFx constrict",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "sk-intimidate",
+  "area": "combat-skill",
+  "name": "Intimidate",
+  "trigger": "an Intimidate unit lands (no event of its own)",
+  "current": "FX.V.intimidateGlare: a glare from the unit; the foe facing it shrinks back (its tile's translate / scale) with a bead of sweat (glareGrowl)",
+  "quality": "good — VFX2",
+  "priority": 3,
+  "themeNotes": "Was: none. The cut itself has no event: the glare plays as the unit lands.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): play of an Intimidate unit (the foe nearest across)",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "sk-exploit",
+  "area": "combat-skill",
+  "name": "Exploit tokens put on",
+  "trigger": "statusFx exploit",
+  "current": "FX.V.exploitLock: four brackets snap onto a weak point, a red diamond blinks (lockOn); the float and badge stay",
+  "quality": "good — VFX2",
+  "priority": 3,
+  "themeNotes": "Was: \"Vulnerable\" float + badge, cue shared with Rend / Expose.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): statusFx exploit",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "sk-embrittle",
+  "area": "combat-skill",
+  "name": "Embrittle (Fragile)",
+  "trigger": "statusFx brittle",
+  "current": "FX.V.embrittleCrack: ice-blue cracks spread from the hit, two glints (iceCrack); the float stays",
+  "quality": "good — VFX2",
+  "priority": 3,
+  "themeNotes": "Was: none of its own.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): statusFx brittle",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "sk-harbinger",
+  "area": "combat-skill",
+  "name": "Harbinger",
+  "trigger": "triggerFired onAnyDeath of a Harbinger unit",
+  "current": "FX.V.harbingerFeathers: crow feathers drift in and gather into the card, a plus (crowCaw); the stat pop stays",
+  "quality": "good — VFX2",
+  "priority": 3,
+  "themeNotes": "Was: the stat pop.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): triggerFired onAnyDeath, once a round a unit",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "sk-carnage",
+  "area": "combat-skill",
+  "name": "Carnage turns on",
+  "trigger": "statusFx stateSkill carnage on",
+  "current": "FX.V.carnageMoon: a blood moon rises over the card and pulses twice (moonPulse)",
+  "quality": "good — VFX2",
+  "priority": 3,
+  "themeNotes": "Was: the numbers only.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): statusFx stateSkill {name: carnage, on}",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "sum-progeny-brood",
+  "area": "summon",
+  "name": "Progeny / Offspring brood burst",
+  "trigger": "spawn {cause: onDeathSpawn} (not Meiosis) / spawn {kind: offspring}",
+  "current": "FX.V.broodBurst: a spotted brood pod splits where each new unit lands, grubs wriggle out (broodPop); the summon portal steps aside",
+  "quality": "good — VFX2",
+  "priority": 3,
+  "themeNotes": "Was: the generic summon portal.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): spawn, each new unit 60 ms apart",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "sk-pack-leader",
+  "area": "combat-skill",
+  "name": "Pack Leader links the pack",
+  "trigger": "play of a Pack Leader unit",
+  "current": "FX.V.packHowlRings: howl rings rise off the leader, dotted links to each Pack unit on its side, a paw on each (howlRing)",
+  "quality": "good — VFX2",
+  "priority": 3,
+  "themeNotes": "Was: the stat pop.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): play of a Pack Leader",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "sk-repair",
+  "area": "combat-skill",
+  "name": "Repair",
+  "trigger": "heal {cause: repair} / rebuild {repair}",
+  "current": "FX.V.repairSparks: a hammer swings down twice, sparks at each blow (hammerTink)",
+  "quality": "good — VFX2",
+  "priority": 3,
+  "themeNotes": "Was: the rebuild heal, shared.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): heal {cause: repair} on a structure, rebuild {repair} on the bramble",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "sk-wet-chain",
+  "area": "combat-skill",
+  "name": "Shock chain through Wet units",
+  "trigger": "statusFx wetChain {fromUid, uids, dmgs}",
+  "current": "FX.V.shockHop: a pixel bolt hops unit to unit through the Wet chain, a spark at each (wetZap); SkillFX.lightning (all at once) steps aside",
+  "quality": "good — VFX2",
+  "priority": 3,
+  "themeNotes": "SKILLS3-B rule (SKILLS3-7).",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): statusFx wetChain",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "sk-warning-colours",
+  "area": "combat-skill",
+  "name": "Warning Colours",
+  "trigger": "statusFx warningColours {uids}",
+  "current": "FX.V.warningPulse: a hazard sign pulses where it fell, the enemies that saw it flinch back (translate) with a \"!\" (warnPulse); the ⚠️ floats stay",
+  "quality": "good — VFX2",
+  "priority": 3,
+  "themeNotes": "SKILLS3-B (NEWCARDS2), on no card yet.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): statusFx warningColours",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "sk-rend-around",
+  "area": "combat-skill",
+  "name": "💀 Rend {around}",
+  "trigger": "triggerFired onDeath {action: rend} of a rendAround unit, then its rend events",
+  "current": "FX.V.rendAround (red shards burst to every unit beside and facing it, 240 ms after the skull wisp) + FX.V.rendMark (a cracked heart on each unit hit) (rendBurst)",
+  "quality": "good — VFX2",
+  "priority": 3,
+  "themeNotes": "SKILLS3-B (SKILLS3-10), on no card yet.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx2b.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): triggerFired onDeath + statusFx rend from that unit",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "st-token-tick",
+  "area": "status",
+  "name": "Status tokens tick down at upkeep",
+  "trigger": "a Vulnerable / Feeble / Sturdy / Mighty badge number drops (no event of its own)",
+  "current": "FX.V.tokenTick: the badge dips (scale) and a -1 lifts off it (tokenTock)",
+  "quality": "good — VFX2",
+  "priority": 3,
+  "themeNotes": "SKILLS3-9: one token off each upkeep.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx2b.js",
+  "inGameHook": "fxHook cardStatusShown / boardRendered (bramblewood-fx-v.js): the badge counts per unit, per fight",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "card-skin-aura",
+  "area": "card-treatment",
+  "name": "Skin auras (ember, frost breath, sparkle)",
+  "trigger": "a card skin (none yet: SKINS1)",
+  "current": "FX.V.skinAura: a box-shadow glow and eight pixel bits behind the card, static or moving (CSS steps); Effects Low four bits, None the glow only",
+  "quality": "good — VFX2",
+  "priority": 4,
+  "themeNotes": "The skins ladder (ART18b): Detail card and pack reveal only, never a board tile.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx2b.js",
+  "inGameHook": "Lab only: FX.V.skinAura(card, kind, {moving})",
   "added": "2026-11-27"
  }
 ]

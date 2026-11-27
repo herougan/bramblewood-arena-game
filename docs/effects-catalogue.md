@@ -2137,3 +2137,34 @@ How they are drawn: each pixel sprite is one element whose `box-shadow` paints a
 | Mage boss (`mageCast`) | ✅ | `bossEntrance` with a witch / mage / shaman / sage / oracle / druid name: The Kelp Witch (9-7) | eight runes turn in a ring (one rotating wrapper), it charges, an orb, a burst ring (1.4 s); runeHum | ring + orb |
 | Sea boss (`seaRise`) | ✅ | `bossEntrance` with a sea / tide / drowned / kraken name: The Drowned Colossus (4-5); the raid opener (`raidEntrance`): the Goliath and any raid in the Abyss | the water line rises over a third of the board and ebbs, waves roll down the three lanes (1.8 s); seaSurge | water line only |
 | RITUAL1: the rite (`rt1RiteHTML`, `rt1Sync`, `rt1Lift`) | ✅ | a unit in its Ritual (The Sixfold): board card markup, updateCardStatusDisplay, the hover (`describeEffects`) | translucent dark veil (no filter: was `saturate(.6)`), the ritual shape, one brass candle per condition at its corner (`rt1Corners`, ritualShapeHTML's geometry); candles fade in one by one over 1 s + 0.25 s each more; a candle catches when its condition is met (candleCatch); all met: the veil fades and the candles flare (riteLift). CSS animations with a negative delay from the first draw, so a redraw carries them on. The hover's ritual line shows have / need per corner with a lit or unlit candle | static candles, lit state kept (also with reduced motion) |
+
+## 2026-11-27 additions (package VFX2 (2026-11-27)): strikes, statuses, growth, team, triggers, the SKILLS3-B rules, skin auras
+Owner 11-27 15:40 ("make more gif effects", after VFX1's GIFs); standing order 09:55 (card, skill, field and boss VFX). Code: `bramblewood-fx-v.js` section 5 (`FX.V`), drawn the same way as VFX1 (one `box-shadow` pixel sprite per element, `transform` / `opacity` / `translate` / `scale` in Web Animations with `steps()`, one rect read, no `filter` / blend mode). Lab: `tools/effects-lab/manifest/vfx2b.js`; GIFs `docs/screens/vfx2/` (`tools/vfx2_frames_2026_11_27.js`); test `tests/vfx2-2026-11-27.js`. `FX.V.owns(ev)` says when a look replaces the game's shared one (false under reduced motion / Effects None, so the shared look stays there). Every look has its own cue. Effects Low: the smaller version; reduced motion / Effects None: nothing (the auras: a static glow).
+
+| Effect | Status | Where it plays | How | Low |
+|---|---|---|---|---|
+| Gash (`gashBleed`) | ✅ | `gash` | a slash rips across, three blood drops run; gashRip; SkillFX.bleedDrip steps aside | the slash |
+| Stampede (`stampedeRun`) | ✅ | `overwhelmHQ` | dust puffs from the striker to the bramble, a hoof stamp, chips; stampRumble; FX.A.stampede steps aside | 3 puffs + stamp |
+| Pulverise (`pulveriseShatter`) | ✅ | statusFx `pulverise` | an armour plate cracks, 4 shards fly; plateShatter | 2 shards |
+| Cull (`cullClaw`) | ✅ | a hit by a Cull unit whose bonus landed (ui14HitBonus; `weaker`: the replay's Attack), at its second number | a claw mark rakes, two drops; cullRake | the mark |
+| Constrict (`constrictCoil`) | ✅ | statusFx `constrict` | three coils wrap and tighten; coilSqueeze; Bind's vines step aside | one coil |
+| Web (`webNet`) | ✅ | statusFx `webbed` | a net spins out, sags, sticks to the corners; webSpin; Bind's vines step aside | the net |
+| Intimidate (`intimidateGlare`) | ✅ | `play` of an Intimidate unit (the cut has no event) | a glare; the foe facing it shrinks back (its tile's translate / scale), a sweat bead; glareGrowl | the glare |
+| Decay (`decayRot`) | ✅ | `decayTick`, once a round a unit | green rot creeps up from the foot, spores; rotCreep; FX.B.decayTick steps aside | one blotch |
+| Exploit (`exploitLock`) | ✅ | statusFx `exploit` | four brackets snap onto a weak point, a red diamond blinks; lockOn | brackets |
+| Embrittle (`embrittleCrack`) | ✅ | statusFx `brittle` | ice-blue cracks spread, two glints; iceCrack | cracks |
+| Harbinger (`harbingerFeathers`) | ✅ | `triggerFired onAnyDeath` of a Harbinger unit, once a round | crow feathers gather into the card, a plus; crowCaw | 2 feathers |
+| Carrion (`carrionPeck`) | ✅ | statusFx `carrion` | a beak pecks three times, a plus; peck | one peck |
+| Carnage (`carnageMoon`) | ✅ | statusFx `stateSkill {carnage, on}` (its third death seen) | a blood moon rises and pulses twice (600 ms); moonPulse | the moon |
+| Momentum (`momentumFlame`) | ✅ | statusFx `momentum` | a corner flame, bigger with each kill this fight, flickering; flameUp; FX.A.momentumTrail steps aside | no flicker |
+| Progeny / Offspring (`broodBurst`) | ✅ | `spawn {onDeathSpawn}` (not Meiosis) / `spawn {offspring}` | a spotted brood pod splits, grubs wriggle out; broodPop; the summon portal steps aside | pod halves |
+| Fletcher (`fletcherGlint`) | ✅ | `arrow` from a side with a Fletcher unit, at the impact | a feather twirls down, a glint; quillGlint | the glint |
+| Herbalist (`herbLeaves`) | ✅ | `heal` on a side with a Herbalist unit | leaves swirl round and lift away; leafSwirl | 2 leaves |
+| Pack Leader (`packHowlRings`) | ✅ | `play` of a Pack Leader | howl rings, dotted links to each Pack unit, paws; howlRing | rings |
+| Repair (`repairSparks`) | ✅ | `heal {repair}` / `rebuild {repair}` | a hammer swings down twice, sparks; hammerTink | one swing |
+| Triggers (`trigLook`) | ✅ | `triggerFired` onSpawn / onDeath / onAttack / onReady | ⬆️ arrows burst up, 💀 a skull wisp, ⚔️ two swords cross, ✅ a check stamps in, then the action's own look; trigRise / trigWisp / trigClash / trigCheck; the ⚡ badge glow stays for other hooks and at None | one arrow / skull / sword / check |
+| Shock chain (`shockHop`) | ✅ | statusFx `wetChain` | a bolt hops unit to unit, 70 ms a hop, sparks; wetZap; SkillFX.lightning steps aside | bolts |
+| Warning Colours (`warningPulse`) | ✅ | statusFx `warningColours` | a hazard sign pulses, the enemies that saw it flinch back with a "!"; warnPulse | the sign |
+| 💀 Rend around (`rendAround`, `rendMark`) | ✅ (on no card) | `triggerFired onDeath {rend}` of a rendAround unit, then its `rend` events | the skull wisp, red shards burst out, a cracked heart on each unit hit; rendBurst | 4 shards |
+| Status token tick (`tokenTick`) | ✅ | fxHook `cardStatusShown` / `boardRendered`: a token badge's number dropped (the upkeep; no event) | the badge dips, a -1 lifts off; tokenTock | no spark |
+| Skin auras (`skinAura`) | 🧪 Lab only | no skins yet (SKINS1: Detail card, pack reveal; never a board tile) | box-shadow glow + 8 pixel bits behind the card; ember / frost breath / sparkle, static or moving | 4 bits; None: glow only |

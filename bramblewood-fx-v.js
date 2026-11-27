@@ -32,6 +32,22 @@
      M.bossKind(o)                      'skeleton' | 'mage' | 'sea' | null from a boss's name / id / icon
    Cues (SoundKit, built from SoundKit.prim): swiftZip, tideLap, shellCrack, reachCreak, mightyThud, berryPlip, berryMunch, sturdyThunk,
    twinShing, cageSlam, boneClatter, runeHum, seaSurge; RITUAL1 (arena_app.js rt1*): candleCatch, riteLift.
+
+   2026-11-27 (package VFX2, owner 15:40 "make more gif effects"): section 5, each with its own cue (in brackets); Lab: manifest/vfx2b.js,
+   GIFs docs/screens/vfx2/. M.owns(ev) says when one of these replaces the game's shared look (the trigger badge glow, Bind's vines, the
+   spawn portal, the Gash drip, SkillFX.lightning on the chain, FX.A's paw prints / chevrons, FX.B's mould).
+     strikes   gashBleed (gash event) [gashRip] · stampedeRun (overwhelmHQ) [stampRumble] · pulveriseShatter (statusFx pulverise)
+               [plateShatter] · cullClaw (a hit whose Cull bonus landed) [cullRake]
+     statuses  constrictCoil [coilSqueeze] · webNet [webSpin] · intimidateGlare (an Intimidate unit lands, the foe facing it shrinks back)
+               [glareGrowl] · decayRot (decayTick) [rotCreep] · exploitLock [lockOn] · embrittleCrack (statusFx brittle) [iceCrack]
+     growth    harbingerFeathers (its onAnyDeath trigger) [crowCaw] · carrionPeck [peck] · carnageMoon (stateSkill carnage on) [moonPulse] ·
+               momentumFlame (bigger each kill) [flameUp] · broodBurst (Progeny / Offspring spawns) [broodPop]
+     team      fletcherGlint (an arrow from a side with Fletcher) [quillGlint] · herbLeaves (a heal on a side with a Herbalist) [leafSwirl] ·
+               packHowlRings (a Pack Leader lands) [howlRing] · repairSparks (Repair's heal / bramble rebuild) [hammerTink]
+     triggers  trigLook(el, hook): ⬆️ onSpawn [trigRise], 💀 onDeath [trigWisp], ⚔️ onAttack [trigClash], ✅ onReady [trigCheck]
+     SKILLS3-B shockHop (wetChain) [wetZap] · warningPulse (warningColours) [warnPulse] · rendAround / rendMark (💀 Rend {around})
+               [rendBurst] · tokenTick (a status token badge counts down: fxHook cardStatusShown / boardRendered) [tokenTock]
+     skins     skinAura(card, 'ember' | 'frost' | 'sparkle', {moving}): Lab only until SKINS1 (Detail card / pack reveal, never a board tile)
    ============================================================ */
 (function(root){
 'use strict';
@@ -174,7 +190,7 @@ Object.assign(SPRITES, {
   skullS:  {pal:{w:'#efe8ff', k:'#2a1a3a'}, rows:['.www.', 'wwwww', 'wkwkw', 'wwwww', '.w.w.']},
   wisp:    {pal:{v:'rgba(200,170,255,.85)'}, rows:['.v.', 'v..', '.v.', '..v', '.v.', 'v..']},
   check:   {pal:{g:'#5ce87a', d:'#1f7a36'}, rows:['......g', '.....gd', 'g...gd.', 'gd.gd..', '.ggd...', '..d....']},
-  bolt:    {pal:{w:'#fffbd0', c:'#8fe8ff'}, rows:['.w....ww....', 'wcw..wcc..w.', '...ww....wwc']},
+  bolt:    {pal:{w:'#fffbd0', c:'#8fe8ff', b:'rgba(120,200,255,.6)'}, rows:['.c....cc....', 'cwc..cwwc..c', 'w.wccw..wccw', 'b..wwb...ww.', '....b.....b.']},
   warn:    {pal:{y:'#ffd23a', k:'#1a1208', o:'#c98a10'}, rows:['....y....', '...yky...', '...yky...', '..yykyy..', '..yykyy..', '.yyyyyyy.', '.yyykyyy.', 'ooooooooo']},
   bang:    {pal:{k:'#ffd23a', d:'#7a4a08'}, rows:['kk', 'kk', 'kd', '..', 'kk']},
   shardR:  {pal:{r:'#ff5a6a', R:'#9a1020'}, rows:['.r.', 'rRr', '.R.']},
@@ -544,7 +560,7 @@ M.stampedeRun = function(from, castle, o){ o = o || {}; if(!castle || RM()) retu
   const f = from && from.isConnected ? centre(tileOf(from)) : null, a = f && f.w ? f : {x:b.x, y:b.y + b.h*1.6, w:b.w}, px = pxFor(a.w), sp = speedOf(o), ps = [], n = lowOf(o) ? 3 : 6;
   for(let i = 0; i < n; i++){ const t = (i + 1)/(n + 1); ps.push(fly('dust', a.x + (b.x - a.x)*t + (i % 2 ? 7 : -7), a.y + (b.y - a.y)*t, px, [{transform:'scale(.4)', opacity:0}, {transform:'scale(1)', opacity:.95, offset:.25}, {transform:'translateY(-4px) scale(1.8)', opacity:0}], 260/sp, {ease:steps(4), delay:(i*28)/sp})); }
   ps.push(fly('hoof', b.x, b.y + b.h*.12, px + 1, POP(1.8), 230/sp, {ease:steps(4), delay:(n*28)/sp}));
-  if(!lowOf(o)) for(let i = 0; i < 4; i++){ const ang = Math.PI*(1.1 + i*.27); ps.push(fly('chip', b.x, b.y + b.h*.2, px, [{transform:'translate(0,0)', opacity:1}, {transform:`translate(${Math.cos(ang)*b.w*.5}px, ${Math.sin(ang)*b.h*.3}px)`, opacity:0}], 220/sp, {ease:steps(4), delay:(n*28 + 30)/sp})); }
+  if(!lowOf(o)) for(let i = 0; i < 4; i++){ const ang = Math.PI*(1.1 + i*.27); ps.push(fly('chip', b.x, b.y + b.h*.2, px, [{transform:'translate(0,0)', opacity:0}, {transform:'translate(0,0)', opacity:1, offset:.1}, {transform:`translate(${Math.cos(ang)*b.w*.5}px, ${Math.sin(ang)*b.h*.3}px)`, opacity:0}], 220/sp, {ease:steps(4), delay:(n*28 + 30)/sp})); }
   return all(ps); };
 // Pulverise: an armour plate shows over the card, cracks, and its shards fly apart (380 ms)
 M.pulveriseShatter = function(t, o){ o = o || {}; const c = begin(t); if(!c) return NONE(); const px = pxFor(c.w) + 1, sp = speedOf(o), ps = [];
@@ -661,7 +677,7 @@ M.repairSparks = function(el, o){ o = o || {}; const c = begin(el); if(!c) retur
   kf.push({transform:'rotate(-60deg)', opacity:0});
   ps.push(fly('hammer', hx, hy, px, kf, 400/sp, {ease:steps(8), extra:`transform-origin:${px + s.w/2}px ${px + s.h}px;`}));
   if(!lowOf(o)) for(let i = 0; i < k; i++) for(let j = 0; j < 3; j++){ const a = -Math.PI*(.15 + .35*j);
-    ps.push(fly('spark', ix, iy, px - 1, [{transform:'translate(0,0)', opacity:1}, {transform:`translate(${(Math.cos(a)*c.w*.25).toFixed(1)}px, ${(Math.sin(a)*c.h*.18).toFixed(1)}px)`, opacity:0}], 180/sp, {ease:steps(4), delay:(i*200 + 90)/sp})); }
+    ps.push(fly('spark', ix, iy, px - 1, [{transform:'translate(0,0)', opacity:0}, {transform:'translate(0,0)', opacity:1, offset:.1}, {transform:`translate(${(Math.cos(a)*c.w*.25).toFixed(1)}px, ${(Math.sin(a)*c.h*.18).toFixed(1)}px)`, opacity:0}], 180/sp, {ease:steps(4), delay:(i*200 + 90)/sp})); }
   return all(ps); };
 
 // ---- triggers: each kind gets its own opener (in place of the shared ⚡ badge glow), then the action's own look plays after it ----
@@ -685,7 +701,7 @@ M.trigLook = function(el, hook, o){ o = o || {}; const c = begin(el); if(!c || !
 // The shock chain (SKILLS3-7): a bolt hops from the struck Wet unit to each Wet unit chained to it in turn, a spark at each (70 ms a hop)
 M.shockHop = function(from, tos, o){ o = o || {}; if(!from || RM()) return NONE();
   const pts = [from].concat(tos || []).filter(e=> e && e.isConnected).slice(0, 6).map(e=> centre(tileOf(e))).filter(p=> p.w); if(pts.length < 2) return NONE();
-  const px = Math.max(2, pxFor(pts[0].w) - 1), sp = speedOf(o), s = sprite('bolt', px), ps = [];
+  const px = pxFor(pts[0].w), sp = speedOf(o), s = sprite('bolt', px), ps = [];
   for(let i = 0; i < pts.length - 1; i++){ const a = pts[i], b = pts[i + 1], L = Math.hypot(b.x - a.x, b.y - a.y), ang = (Math.atan2(b.y - a.y, b.x - a.x)*180/Math.PI).toFixed(1), k = (L / s.w).toFixed(3);
     ps.push(fly('bolt', (a.x + b.x)/2, (a.y + b.y)/2, px, [{transform:`rotate(${ang}deg) scale(${k*.2}, 1)`, opacity:0}, {transform:`rotate(${ang}deg) scale(${k}, 1)`, opacity:1, offset:.3},
       {transform:`rotate(${ang}deg) scale(${k}, -1)`, opacity:1, offset:.55}, {transform:`rotate(${ang}deg) scale(${k}, 1)`, opacity:0}], 200/sp, {ease:steps(4), delay:(i*70)/sp}));
@@ -723,14 +739,14 @@ M.tokenTick = function(badge, o){ o = o || {}; if(!badge || RM()) return NONE();
 // A layer behind the card (z-index -1 under a host that makes no stacking context: only the glow outside the card's box shows): a box-shadow
 // glow and eight pixel bits round the edge. Static: the bits hold still; moving: embers rise, frost breath puffs outward, sparkles twinkle
 // (CSS steps at ~8 fps, transform / opacity). Effects Low: four bits; Effects None: the glow only; reduced motion: the static version.
-css('aura', `.fxv-aura{position:absolute; inset:-9px; z-index:-1; pointer-events:none; border-radius:14px; contain:layout style;}
-.fxv-aura > i{position:absolute; display:block; width:4px; height:4px; will-change:transform, opacity;}
-.fxv-au-ember{box-shadow:0 0 10px 3px rgba(255,120,40,.55), 0 0 22px 6px rgba(255,70,20,.25);}
-.fxv-au-ember > i{background:#ffb347; box-shadow:0 2px 0 #e8461e;}
-.fxv-au-frost{box-shadow:0 0 12px 4px rgba(160,215,255,.55), 0 0 24px 8px rgba(120,190,255,.22);}
-.fxv-au-frost > i{width:6px; height:4px; background:rgba(240,250,255,.85); box-shadow:2px -2px 0 rgba(200,232,255,.7);}
-.fxv-au-sparkle{box-shadow:0 0 10px 3px rgba(255,236,150,.5), 0 0 20px 6px rgba(255,210,90,.2);}
-.fxv-au-sparkle > i{width:2px; height:2px; background:#fff; box-shadow:2px 0 #ffe066, -2px 0 #ffe066, 0 2px #ffe066, 0 -2px #ffe066;}
+css('aura', `.fxv-aura{position:absolute; inset:-12px; z-index:-1; pointer-events:none; border-radius:14px; contain:layout style;}
+.fxv-aura > i{position:absolute; display:block; width:5px; height:5px; will-change:transform, opacity;}
+.fxv-au-ember{box-shadow:0 0 0 2px rgba(255,150,60,.55), 0 0 14px 5px rgba(255,110,30,.7), 0 0 30px 10px rgba(255,60,10,.3);}
+.fxv-au-ember > i{background:#ffd27a; box-shadow:0 0 0 1px #c2380e, 0 3px 0 #e8461e;}
+.fxv-au-frost{box-shadow:0 0 0 2px rgba(190,230,255,.6), 0 0 14px 5px rgba(120,195,255,.7), 0 0 30px 10px rgba(80,160,255,.3);}
+.fxv-au-frost > i{width:7px; height:5px; background:rgba(245,252,255,.95); box-shadow:0 0 0 1px rgba(70,140,210,.8), 3px -3px 0 rgba(200,232,255,.8);}
+.fxv-au-sparkle{box-shadow:0 0 0 2px rgba(255,240,170,.6), 0 0 14px 5px rgba(255,220,100,.65), 0 0 28px 9px rgba(255,190,60,.28);}
+.fxv-au-sparkle > i{width:3px; height:3px; background:#fff; box-shadow:3px 0 #ffd23a, -3px 0 #ffd23a, 0 3px #ffd23a, 0 -3px #ffd23a, 0 0 0 4px rgba(150,100,10,.25);}
 .fxv-aura.is-moving.fxv-au-ember > i{animation:fxvEmberUp 1.6s steps(12, end) infinite;}
 .fxv-aura.is-moving.fxv-au-frost > i{animation:fxvBreath 2.2s steps(16, end) infinite;}
 .fxv-aura.is-moving.fxv-au-sparkle > i{animation:fxvTwinkle 1.4s steps(10, end) infinite;}
