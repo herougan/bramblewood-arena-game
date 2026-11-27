@@ -4821,7 +4821,6 @@
  "When played, the allies beside it are Mighty (deals double) for {n} rounds.": "விளையாடும்போது, அருகிலுள்ள கூட்டாளிகளுக்கு {n} சுற்றுகளுக்கு வல்லமை (இரட்டை சேதம்).",
  "When it dies, the allies beside it are Mighty (deals double) for {n} rounds.": "இறக்கும்போது, அருகிலுள்ள கூட்டாளிகளுக்கு {n} சுற்றுகளுக்கு வல்லமை (இரட்டை சேதம்).",
  "Wet: lightning deals 1 more and runs on to Wet units beside it. A fire hit or dry weather dries it.": "நனைந்தது: மின்னல் 1 கூடுதல் சேதம், அருகிலுள்ள நனைந்த அலகுகளுக்கும் பாயும். நெருப்புத் தாக்குதல் அல்லது வறண்ட வானிலை உலர்த்தும்.",
- "takes 1 more from lightning, which runs on to Wet units beside it. A fire hit or dry weather dries it.": "மின்னலிலிருந்து 1 கூடுதல் சேதம், அது அருகிலுள்ள நனைந்த அலகுகளுக்கும் பாயும். நெருப்புத் தாக்குதல் அல்லது வறண்ட வானிலை உலர்த்தும்.",
  "Wet: a water hit, standing in water (a Swimmer or Tide unit always; any unit that isn’t Flying while the Tide is in) or Rain. A bramble is never Wet.": "நனைந்தது: நீர்த் தாக்குதல், நீரில் நிற்பது (நீச்சல் அல்லது அலை அலகு எப்போதும்; அலை ஏறும்போது பறக்காத எந்த அலகும்) அல்லது மழை. முட்புதர் ஒருபோதும் நனையாது.",
  "It is lightning: a Wet unit takes 1 more and passes it on to Wet units beside it; Resist halves it.": "இது மின்னல்: நனைந்த அலகு 1 கூடுதல் சேதம் பெற்று அருகிலுள்ள நனைந்த அலகுகளுக்கும் கடத்தும்; எதிர்ப்பு பாதியாக்கும்.",
  "{name} is soaked: Wet. 💧": "{name} நனைந்தது. 💧",
@@ -4845,8 +4844,9 @@
  "While it is on the field, your units' lightning attacks deal {n} more.": "இது களத்தில் இருக்கும்வரை, உன் அலகுகளின் மின்னல் தாக்குதல்கள் {n} கூடுதல் சேதம் தரும்.",
  "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "ஒரு அலகைத் தாக்கும் அடிகள், அம்புகள், திறன்கள்; டிக்குகள் அல்ல. பலகையில் இருக்கும்வரை, காத்திருந்தாலும். பல இருந்தால் கூடும்.",
  "Warning Colours": "எச்சரிக்கை நிறங்கள்",
- "When an enemy kills it, the killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "எதிரி இதைக் கொன்றால், கொன்றதற்கு {n} நஞ்சு. இது இறந்ததைப் பார்த்த எதிரிகள் அடுத்த சுற்றில் உன் மற்ற எச்சரிக்கை நிற அலகுகளைத் தவிர்க்கும்.",
  "Avoid: a warned swing goes to an enemy unit one column beside, a shot to any other one, while there is one. Taunt still draws it.": "தவிர்ப்பு: எச்சரிக்கப்பட்ட அடி ஒரு நெடுவரிசை அருகிலுள்ள எதிரிக்கும், அம்பு வேறு எந்த எதிரிக்கும் போகும், இருந்தால். சீண்டல் இன்னும் இழுக்கும்.",
  "{n} enemy unit(s) saw {name} fall: they avoid Warning Colours next round.": "{n} எதிரி அலகுகள் {name} விழுவதைப் பார்த்தன: அடுத்த சுற்றில் எச்சரிக்கை நிறங்களைத் தவிர்க்கும்.",
- "{att} turns away from {name}.": "{att} {name}-ஐத் தவிர்க்கிறது."
+ "{att} turns away from {name}.": "{att} {name}-ஐத் தவிர்க்கிறது.",
+ "takes 1 more from lightning, which runs on to Wet neighbours. Fire or dry weather dries it.": "மின்னலிலிருந்து 1 கூடுதல், அது நனைந்த அண்டை அலகுகளுக்கும் பாயும். நெருப்பு அல்லது வறண்ட வானிலை உலர்த்தும்.",
+ "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "அதைக் கொன்றதற்கு {n} நஞ்சு. இது இறந்ததைப் பார்த்த எதிரிகள் அடுத்த சுற்றில் உன் மற்ற எச்சரிக்கை நிற அலகுகளைத் தவிர்க்கும்."
 }

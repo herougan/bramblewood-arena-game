@@ -50235,7 +50235,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=56c25c0a3a", "es": "assets/lang/es.js?v=9a5c49d8ef", "fr": "assets/lang/fr.js?v=5bd5a01f75", "id": "assets/lang/id.js?v=cd862dc5b2", "it": "assets/lang/it.js?v=be1d003cc9", "ja": "assets/lang/ja.js?v=ac41b98383", "ko": "assets/lang/ko.js?v=a3d0e44e3f", "pt": "assets/lang/pt.js?v=cb5f689d9e", "ta": "assets/lang/ta.js?v=c594b15228", "tl": "assets/lang/tl.js?v=0a087d7ffe", "zh-Hans": "assets/lang/zh-Hans.js?v=833d4066b7", "zh-Hant": "assets/lang/zh-Hant.js?v=2d09c1af2d"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=d9ae41ee98", "es": "assets/lang/es.js?v=78eff54557", "fr": "assets/lang/fr.js?v=22d5355370", "id": "assets/lang/id.js?v=8190e76389", "it": "assets/lang/it.js?v=b9bb05c856", "ja": "assets/lang/ja.js?v=38bf1cb8e1", "ko": "assets/lang/ko.js?v=90148b3505", "pt": "assets/lang/pt.js?v=1aee031d67", "ta": "assets/lang/ta.js?v=8b723b721d", "tl": "assets/lang/tl.js?v=3d22bc9b45", "zh-Hans": "assets/lang/zh-Hans.js?v=62f99eb20b", "zh-Hant": "assets/lang/zh-Hant.js?v=ec37c5bc13"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -51627,7 +51627,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.st-bleed": "hurts by its stacks as it attacks or uses skills; then −1 stack at the round's end.",
   "ui.st-exposed": "its hiding is stripped: Invisible, Evasive, Smoke and Shadow don’t protect it.",
   "ui.st-irradiation": "each round, each token takes 1 Health, Attack or skill point; then 1 token wears off.",
-  "ui.st-wet": "takes 1 more from lightning, which runs on to Wet units beside it. A fire hit or dry weather dries it.",
+  "ui.st-wet": "takes 1 more from lightning, which runs on to Wet neighbours. Fire or dry weather dries it.",
   "ui.stx-wet": "Wet: a water hit, standing in water (a Swimmer or Tide unit always; any unit that isn’t Flying while the Tide is in) or Rain. A bramble is never Wet.",
   "ui.stx-poison": "Heals don’t touch it.",
   "ui.ls-bleed": "takes {n} damage as it attacks or uses skills; then −1 stack at the round's end.",
@@ -54350,7 +54350,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-attunement-shock": "While it is on the field, your units' lightning attacks deal {n} more.",
   "ui.sk-attunement-codex": "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.",
   "ui.skn-warning-colours": "Warning Colours",
-  "ui.sk-warning-colours": "When an enemy kills it, the killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.",
+  "ui.sk-warning-colours": "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.",
   "ui.sk-warning-colours-codex": "Avoid: a warned swing goes to an enemy unit one column beside, a shot to any other one, while there is one. Taunt still draws it.",
   "ui.s3b-log-wc": "⚠️ {n} enemy unit(s) saw {name} fall: they avoid Warning Colours next round.",
   "ui.s3b-log-wc-avoid": "⚠️ {att} turns away from {name}."
@@ -60574,7 +60574,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'c7bb29bd5da1', BUILD_CARD_HASH = 'a66834fc0484abfb2220ea27203bf29de3a23511282b33f6b076b5da8ca7f01b';
+const BUILD_ID = 'c25c6660f7f0', BUILD_CARD_HASH = 'a66834fc0484abfb2220ea27203bf29de3a23511282b33f6b076b5da8ca7f01b';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed

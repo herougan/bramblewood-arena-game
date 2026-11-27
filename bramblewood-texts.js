@@ -1265,7 +1265,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.st-bleed": "hurts by its stacks as it attacks or uses skills; then −1 stack at the round's end.",
   "ui.st-exposed": "its hiding is stripped: Invisible, Evasive, Smoke and Shadow don’t protect it.",
   "ui.st-irradiation": "each round, each token takes 1 Health, Attack or skill point; then 1 token wears off.",
-  "ui.st-wet": "takes 1 more from lightning, which runs on to Wet units beside it. A fire hit or dry weather dries it.",
+  "ui.st-wet": "takes 1 more from lightning, which runs on to Wet neighbours. Fire or dry weather dries it.",
   "ui.stx-wet": "Wet: a water hit, standing in water (a Swimmer or Tide unit always; any unit that isn’t Flying while the Tide is in) or Rain. A bramble is never Wet.",
   "ui.stx-poison": "Heals don’t touch it.",
   "ui.ls-bleed": "takes {n} damage as it attacks or uses skills; then −1 stack at the round's end.",
@@ -3988,7 +3988,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-attunement-shock": "While it is on the field, your units' lightning attacks deal {n} more.",
   "ui.sk-attunement-codex": "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.",
   "ui.skn-warning-colours": "Warning Colours",
-  "ui.sk-warning-colours": "When an enemy kills it, the killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.",
+  "ui.sk-warning-colours": "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.",
   "ui.sk-warning-colours-codex": "Avoid: a warned swing goes to an enemy unit one column beside, a shot to any other one, while there is one. Taunt still draws it.",
   "ui.s3b-log-wc": "⚠️ {n} enemy unit(s) saw {name} fall: they avoid Warning Colours next round.",
   "ui.s3b-log-wc-avoid": "⚠️ {att} turns away from {name}."

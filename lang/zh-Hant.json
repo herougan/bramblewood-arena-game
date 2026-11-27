@@ -4819,7 +4819,6 @@
  "When played, the allies beside it are Mighty (deals double) for {n} rounds.": "打出時，身旁的友軍強力（造成雙倍傷害）{n}回合。",
  "When it dies, the allies beside it are Mighty (deals double) for {n} rounds.": "陣亡時，身旁的友軍強力（造成雙倍傷害）{n}回合。",
  "Wet: lightning deals 1 more and runs on to Wet units beside it. A fire hit or dry weather dries it.": "潮溼：雷電多造成1點，並傳給身旁的潮溼單位。火焰命中或乾燥天氣會使其變乾。",
- "takes 1 more from lightning, which runs on to Wet units beside it. A fire hit or dry weather dries it.": "受到雷電多1點傷害，雷電還會傳給身旁的潮溼單位。火焰命中或乾燥天氣會使其變乾。",
  "Wet: a water hit, standing in water (a Swimmer or Tide unit always; any unit that isn’t Flying while the Tide is in) or Rain. A bramble is never Wet.": "潮溼：被水命中、身處水中（游泳或潮汐單位始終如此；漲潮時任何不飛行的單位）或下雨。荊棘堡從不潮溼。",
  "It is lightning: a Wet unit takes 1 more and passes it on to Wet units beside it; Resist halves it.": "這是雷電：潮溼單位多受1點，並傳給身旁的潮溼單位；抗性減半。",
  "{name} is soaked: Wet. 💧": "{name}溼透了：潮溼。💧",
@@ -4843,8 +4842,9 @@
  "While it is on the field, your units' lightning attacks deal {n} more.": "只要它在場上，你的單位的雷電攻擊多造成{n}點傷害。",
  "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "命中單位的攻擊、射擊和技能，不含跳傷；只要它在場上，等待中也算。多個可疊加。",
  "Warning Colours": "警戒色",
- "When an enemy kills it, the killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "被敵人擊殺時，擊殺者獲得{n}層中毒。看到它陣亡的敵人下回合會避開你其他有警戒色的單位。",
  "Avoid: a warned swing goes to an enemy unit one column beside, a shot to any other one, while there is one. Taunt still draws it.": "避開：被警告的攻擊改打相鄰一列的敵方單位，射擊改打任意其他單位（若有）。嘲諷仍會吸引它。",
  "{n} enemy unit(s) saw {name} fall: they avoid Warning Colours next round.": "{n}個敵方單位看到{name}倒下：下回合避開警戒色。",
- "{att} turns away from {name}.": "{att}避開了{name}。"
+ "{att} turns away from {name}.": "{att}避開了{name}。",
+ "takes 1 more from lightning, which runs on to Wet neighbours. Fire or dry weather dries it.": "受到雷電多1點傷害，雷電還會傳給相鄰的潮溼單位。火焰或乾燥天氣會使其變乾。",
+ "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "擊殺者獲得{n}層中毒。看到它陣亡的敵人下回合會避開你其他有警戒色的單位。"
 }

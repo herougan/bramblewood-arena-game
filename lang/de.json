@@ -4818,7 +4818,6 @@
  "When played, the allies beside it are Mighty (deals double) for {n} rounds.": "Beim Ausspielen sind die Verbündeten daneben {n} Runden lang Mächtig (machen doppelt).",
  "When it dies, the allies beside it are Mighty (deals double) for {n} rounds.": "Stirbt sie, sind die Verbündeten daneben {n} Runden lang Mächtig (machen doppelt).",
  "Wet: lightning deals 1 more and runs on to Wet units beside it. A fire hit or dry weather dries it.": "Nass: Blitz macht 1 mehr und springt auf nasse Einheiten daneben über. Ein Feuertreffer oder trockenes Wetter trocknet sie.",
- "takes 1 more from lightning, which runs on to Wet units beside it. A fire hit or dry weather dries it.": "nimmt 1 mehr von Blitzen, die auf nasse Einheiten daneben überspringen. Ein Feuertreffer oder trockenes Wetter trocknet sie.",
  "Wet: a water hit, standing in water (a Swimmer or Tide unit always; any unit that isn’t Flying while the Tide is in) or Rain. A bramble is never Wet.": "Nass: ein Wassertreffer, im Wasser stehen (eine Schwimmer- oder Flut-Einheit immer; jede nicht fliegende Einheit, solange die Flut steigt) oder Regen. Eine Dornenhecke ist nie nass.",
  "It is lightning: a Wet unit takes 1 more and passes it on to Wet units beside it; Resist halves it.": "Es ist Blitz: Eine nasse Einheit nimmt 1 mehr und gibt ihn an nasse Einheiten daneben weiter; Resistenz halbiert ihn.",
  "{name} is soaked: Wet. 💧": "{name} ist durchnässt: Nass. 💧",
@@ -4842,8 +4841,9 @@
  "While it is on the field, your units' lightning attacks deal {n} more.": "Solange sie auf dem Feld ist, machen die Blitz-Angriffe deiner Einheiten {n} mehr.",
  "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "Schläge, Schüsse und Fähigkeiten, die eine Einheit treffen, keine Ticks; solange sie auf dem Brett ist, auch Wartend. Mehrere addieren sich.",
  "Warning Colours": "Warnfarben",
- "When an enemy kills it, the killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "Tötet ein Gegner sie, erhält der Mörder {n} Gift. Gegner, die sie sterben sahen, meiden in der nächsten Runde deine anderen Warnfarben-Einheiten.",
  "Avoid: a warned swing goes to an enemy unit one column beside, a shot to any other one, while there is one. Taunt still draws it.": "Meiden: Ein gewarnter Schlag geht an eine gegnerische Einheit eine Spalte daneben, ein Schuss an irgendeine andere, wenn es eine gibt. Spott zieht ihn trotzdem an.",
  "{n} enemy unit(s) saw {name} fall: they avoid Warning Colours next round.": "{n} gegnerische Einheit(en) sahen {name} fallen: Sie meiden Warnfarben in der nächsten Runde.",
- "{att} turns away from {name}.": "{att} wendet sich von {name} ab."
+ "{att} turns away from {name}.": "{att} wendet sich von {name} ab.",
+ "takes 1 more from lightning, which runs on to Wet neighbours. Fire or dry weather dries it.": "nimmt 1 mehr von Blitzen, die auf nasse Nachbarn überspringen. Feuer oder trockenes Wetter trocknet sie.",
+ "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "Ihr Mörder erhält {n} Gift. Gegner, die sie sterben sahen, meiden in der nächsten Runde deine anderen Warnfarben-Einheiten."
 }
