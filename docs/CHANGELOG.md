@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-28 Package TESTFIX14 (the older Python e2e failures; e2e runner gap)
+- **Phone top bar (player-visible):** slot buttons min 24 px wide (03d5c44b3 made them 36, which squeezed 🏠 / 🗺️ to 29-33 px at 360-390 and cut off the last slot button).
+- **Maple Leaf payouts are not a bug:** the Trail's free lane is halved by ECON1 (98f2a6489, 2026-10-30, owner BRUP-1 "half all the resources you get, except first-time rewards"); res4 pins tier 4 = 30 and the month's leftovers 400 / 400.
+- Stale pins, dated notes: u3 (RAID2 removed the raid rules section and zooms raids in; the profile owns its deck for PG's gate), ui14 (SKAUD1: Executioner -> Cull, Brood -> Offspring so JJ13 skipped; JJ10's Centurion at Level 1, ENG25), pl2 (FIX5 replay rows, Group Dungeon after Map 16, UISWEEP2's 3 Arena tabs, UI10's 2-SK, a returned gsap Timeline hung the run), rw4 (UI23 reveals Delivery on Map 1; egg toast check flaked on a late Shiny toast), ui17 (Pouch 80 Leaves, ECON1 phase 2; health colour skipped offline).
+- Runner: res4, u3, ui14, ui17 join `--e2e` in run-all.sh; `run.js` TEST_CAPS gives flows.py 1500 s (it was killed at 600).
+
 ## 2026-11-27 Package ROADFIX6 (8-7 without its Mine, 20-A-4's Epic swap, a road swap pass)
 - 8-7 The Roost Above: the Collapsed Mine bramble out (REFIT20-1 a), 24.8% -> 59.8% (target 60).
 - 20-A-4 Heart of the Mountain: its last door's Ashmantle Fiend (Unique) -> The Contradiction (TESTFIX9-1 a, the road's Epic cap).
