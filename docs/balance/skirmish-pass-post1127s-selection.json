@@ -1,0 +1,667 @@
+[
+ {
+  "key": "6-1",
+  "why": [
+   "wet:camouflage-frog",
+   "shock:lamprey",
+   "wet:pond-algae",
+   "wet:meadow-frog(you)"
+  ]
+ },
+ {
+  "key": "6-2",
+  "why": [
+   "wet:camouflage-frog",
+   "wet:pond-algae",
+   "shock:lamprey",
+   "wet:meadow-frog(you)"
+  ]
+ },
+ {
+  "key": "6-3",
+  "why": [
+   "wet:camouflage-frog",
+   "shock:lamprey",
+   "wet:pond-algae",
+   "wet:meadow-frog(you)"
+  ]
+ },
+ {
+  "key": "6-5",
+  "why": [
+   "wet:alligator-gar",
+   "shock:lamprey",
+   "wet:meadow-frog(you)"
+  ]
+ },
+ {
+  "key": "6-7",
+  "why": [
+   "shock:lamprey",
+   "wet:meadow-frog(you)"
+  ]
+ },
+ {
+  "key": "8-3",
+  "why": [
+   "wet:blind-cave-fish",
+   "fire:sulfur-cinder-moth"
+  ]
+ },
+ {
+  "key": "8-4",
+  "why": [
+   "wet:blind-cave-fish",
+   "fire:sulfur-cinder-moth"
+  ]
+ },
+ {
+  "key": "8-6",
+  "why": [
+   "wet:blind-cave-fish",
+   "fire:sulfur-cinder-moth"
+  ]
+ },
+ {
+  "key": "8-7",
+  "why": [
+   "wet:blind-cave-fish",
+   "fire:sulfur-cinder-moth"
+  ]
+ },
+ {
+  "key": "9-1",
+  "why": [
+   "wet:proboscis-monkey",
+   "wet:fiddler-crab-swarm",
+   "wet:electric-ray",
+   "shock:electric-ray",
+   "wet:anhinga-spearbird",
+   "wet:shoal-shark(you)",
+   "wet:conch-herald(you)",
+   "wet:rules"
+  ]
+ },
+ {
+  "key": "9-2",
+  "why": [
+   "wet:proboscis-monkey",
+   "wet:mangrove-mudskipper",
+   "wet:electric-ray",
+   "shock:electric-ray",
+   "wet:shoal-shark(you)",
+   "wet:conch-herald(you)",
+   "wet:rules"
+  ]
+ },
+ {
+  "key": "9-5",
+  "why": [
+   "wet:proboscis-monkey",
+   "wet:electric-ray",
+   "shock:electric-ray",
+   "wet:anhinga-spearbird",
+   "wet:shoal-shark(you)",
+   "wet:conch-herald(you)"
+  ]
+ },
+ {
+  "key": "9-6",
+  "why": [
+   "wet:mangrove-mudskipper",
+   "wet:reef-shark",
+   "wet:voltaic-eel",
+   "shock:voltaic-eel",
+   "wet:electric-ray",
+   "shock:electric-ray",
+   "wet:fiddler-crab-swarm",
+   "wet:shoal-shark(you)",
+   "wet:conch-herald(you)"
+  ]
+ },
+ {
+  "key": "10-1",
+  "why": [
+   "wet:crown-of-thorns-star",
+   "wet:orca-vanguard",
+   "wet:reef-shark",
+   "wet:sea-turtle-elder",
+   "wet:voltaic-eel",
+   "shock:voltaic-eel",
+   "wet:riptide-eel",
+   "wet:tide-spirit(you)",
+   "wet:shoal-shark(you)",
+   "wet:rules"
+  ]
+ },
+ {
+  "key": "14-1",
+  "why": [
+   "token:meerkat-sentry",
+   "wet:tide-spirit(you)"
+  ]
+ },
+ {
+  "key": "14-2",
+  "why": [
+   "token:meerkat-sentry",
+   "wet:tide-spirit(you)"
+  ]
+ },
+ {
+  "key": "14-3",
+  "why": [
+   "token:meerkat-sentry",
+   "wet:tide-spirit(you)"
+  ]
+ },
+ {
+  "key": "14-5",
+  "why": [
+   "token:meerkat-sentry",
+   "wet:tide-spirit(you)",
+   "fire:field"
+  ]
+ },
+ {
+  "key": "14-6",
+  "why": [
+   "wet:tide-spirit(you)",
+   "fire:field"
+  ]
+ },
+ {
+  "key": "14-7",
+  "why": [
+   "token:meerkat-sentry",
+   "wet:river-mink",
+   "wet:tide-spirit(you)",
+   "fire:field"
+  ]
+ },
+ {
+  "key": "15-1",
+  "why": [
+   "token:sworn-shieldbearer",
+   "wet:tide-spirit(you)"
+  ]
+ },
+ {
+  "key": "15-5",
+  "why": [
+   "token:sworn-shieldbearer",
+   "wet:tide-spirit(you)"
+  ]
+ },
+ {
+  "key": "15-6",
+  "why": [
+   "token:sworn-shieldbearer",
+   "wet:tide-spirit(you)"
+  ]
+ },
+ {
+  "key": "15-7",
+  "why": [
+   "token:sworn-shieldbearer",
+   "wet:tide-spirit(you)"
+  ]
+ },
+ {
+  "key": "16-1",
+  "why": [
+   "token:sworn-shieldbearer",
+   "wet:raft-spider",
+   "wet:tide-spirit(you)"
+  ]
+ },
+ {
+  "key": "16-7",
+  "why": [
+   "token:sworn-shieldbearer",
+   "wet:tide-spirit(you)"
+  ]
+ },
+ {
+  "key": "18-1",
+  "why": [
+   "token:meerkat-sentry",
+   "wet:shoal-shark(you)"
+  ]
+ },
+ {
+  "key": "18-3",
+  "why": [
+   "token:meerkat-sentry",
+   "wet:shoal-shark(you)"
+  ]
+ },
+ {
+  "key": "18-7",
+  "why": [
+   "token:meerkat-sentry",
+   "wet:shoal-shark(you)",
+   "fire:field"
+  ]
+ },
+ {
+  "key": "19-1",
+  "why": [
+   "fire:cinder-hornet",
+   "fire:obsidian-scorpion",
+   "fire:fire-salamander",
+   "wet:mudpuppy(you)"
+  ]
+ },
+ {
+  "key": "19-2",
+  "why": [
+   "fire:quillback-elder",
+   "fire:cinder-hornet",
+   "fire:basalt-boar",
+   "wet:mudpuppy(you)"
+  ]
+ },
+ {
+  "key": "19-3",
+  "why": [
+   "fire:cinder-hornet",
+   "fire:fire-salamander",
+   "fire:obsidian-scorpion",
+   "wet:mudpuppy(you)"
+  ]
+ },
+ {
+  "key": "19-4",
+  "why": [
+   "fire:obsidian-scorpion",
+   "fire:fire-salamander",
+   "fire:basalt-boar",
+   "wet:mudpuppy(you)"
+  ]
+ },
+ {
+  "key": "19-5",
+  "why": [
+   "fire:cinder-hornet",
+   "fire:fire-salamander",
+   "fire:obsidian-scorpion",
+   "wet:mudpuppy(you)"
+  ]
+ },
+ {
+  "key": "19-6",
+  "why": [
+   "fire:cinder-hornet",
+   "fire:obsidian-scorpion",
+   "fire:magma-salamander",
+   "wet:mudpuppy(you)"
+  ]
+ },
+ {
+  "key": "20-1",
+  "why": [
+   "fire:obsidian-scorpion",
+   "wet:rock-pool-starfish(you)"
+  ]
+ },
+ {
+  "key": "20-2",
+  "why": [
+   "fire:ash-cloud-condor",
+   "fire:obsidian-scorpion",
+   "wet:rock-pool-starfish(you)"
+  ]
+ },
+ {
+  "key": "20-3",
+  "why": [
+   "fire:basalt-boar",
+   "fire:magma-salamander",
+   "fire:obsidian-scorpion",
+   "wet:rock-pool-starfish(you)"
+  ]
+ },
+ {
+  "key": "20-4",
+  "why": [
+   "fire:obsidian-scorpion",
+   "fire:basalt-boar",
+   "wet:rock-pool-starfish(you)"
+  ]
+ },
+ {
+  "key": "20-5",
+  "why": [
+   "fire:basalt-boar",
+   "fire:ash-cloud-condor",
+   "wet:rock-pool-starfish(you)",
+   "fire:field"
+  ]
+ },
+ {
+  "key": "20-6",
+  "why": [
+   "fire:basalt-boar",
+   "wet:rock-pool-starfish(you)",
+   "fire:field"
+  ]
+ },
+ {
+  "key": "20-7",
+  "why": [
+   "fire:basalt-boar",
+   "fire:magma-salamander",
+   "wet:rock-pool-starfish(you)",
+   "fire:field"
+  ]
+ },
+ {
+  "key": "20-8",
+  "why": [
+   "fire:basalt-boar",
+   "fire:obsidian-scorpion",
+   "wet:rock-pool-starfish(you)",
+   "fire:field"
+  ]
+ },
+ {
+  "key": "20-9",
+  "why": [
+   "fire:ash-cloud-condor",
+   "fire:magma-salamander",
+   "fire:obsidian-scorpion",
+   "wet:rock-pool-starfish(you)",
+   "fire:field"
+  ]
+ },
+ {
+  "key": "20-10",
+  "why": [
+   "fire:basalt-boar",
+   "wet:rock-pool-starfish(you)",
+   "fire:field"
+  ]
+ },
+ {
+  "key": "T-4",
+  "why": [
+   "fire:ash-cloud-condor",
+   "wet:shoal-shark(you)"
+  ]
+ },
+ {
+  "key": "19-A-7",
+  "why": [
+   "fire:cinder-hornet",
+   "fire:obsidian-scorpion",
+   "wet:tide-spirit",
+   "fire:obsidian-scorpion(you)",
+   "fire:field"
+  ]
+ },
+ {
+  "key": "19-A-8",
+  "why": [
+   "wet:tide-spirit",
+   "fire:obsidian-scorpion(you)",
+   "fire:field"
+  ]
+ },
+ {
+  "key": "10-B-1",
+  "why": [
+   "wet:giant-clam",
+   "wet:sea-turtle-elder",
+   "wet:dolphin-knight",
+   "wet:blind-cave-fish",
+   "wet:electric-ray",
+   "shock:electric-ray",
+   "wet:pincushion-urchin",
+   "fire:obsidian-scorpion(you)",
+   "wet:rules"
+  ]
+ },
+ {
+  "key": "10-B-2",
+  "why": [
+   "wet:orca-vanguard",
+   "wet:riptide-eel",
+   "wet:crown-of-thorns-star",
+   "wet:old-sturgeon",
+   "fire:obsidian-scorpion(you)",
+   "wet:rules"
+  ]
+ },
+ {
+  "key": "10-B-3",
+  "why": [
+   "wet:reef-shark",
+   "wet:coral-current-eel",
+   "wet:sea-turtle-elder",
+   "wet:giant-clam",
+   "wet:electric-ray",
+   "shock:electric-ray",
+   "fire:obsidian-scorpion(you)",
+   "wet:rules"
+  ]
+ },
+ {
+  "key": "10-B-4",
+  "why": [
+   "wet:orca-vanguard",
+   "wet:reef-shark",
+   "wet:crown-of-thorns-star",
+   "wet:blind-cave-fish",
+   "fire:obsidian-scorpion(you)",
+   "wet:rules"
+  ]
+ },
+ {
+  "key": "20-A-1",
+  "why": [
+   "fire:obsidian-scorpion",
+   "wet:rock-pool-starfish(you)"
+  ]
+ },
+ {
+  "key": "20-A-2",
+  "why": [
+   "fire:obsidian-scorpion",
+   "fire:cinder-stoker",
+   "wet:rock-pool-starfish(you)"
+  ]
+ },
+ {
+  "key": "20-A-3",
+  "why": [
+   "fire:obsidian-scorpion",
+   "fire:basalt-boar",
+   "wet:rock-pool-starfish(you)"
+  ]
+ },
+ {
+  "key": "20-A-4",
+  "why": [
+   "fire:obsidian-scorpion",
+   "wet:rock-pool-starfish(you)"
+  ]
+ },
+ {
+  "key": "20-A-5",
+  "why": [
+   "fire:basalt-boar",
+   "fire:obsidian-scorpion",
+   "wet:rock-pool-starfish(you)"
+  ]
+ },
+ {
+  "key": "20-A-6",
+  "why": [
+   "fire:obsidian-scorpion",
+   "wet:rock-pool-starfish(you)"
+  ]
+ },
+ {
+  "key": "20-A-7",
+  "why": [
+   "fire:obsidian-scorpion",
+   "wet:rock-pool-starfish(you)"
+  ]
+ },
+ {
+  "key": "20-B-1",
+  "why": [
+   "fire:basalt-boar",
+   "fire:magma-salamander",
+   "wet:rock-pool-starfish(you)"
+  ]
+ },
+ {
+  "key": "20-B-2",
+  "why": [
+   "fire:basalt-boar",
+   "fire:magma-salamander",
+   "fire:obsidian-scorpion",
+   "wet:rock-pool-starfish(you)"
+  ]
+ },
+ {
+  "key": "20-B-3",
+  "why": [
+   "fire:magma-salamander",
+   "fire:obsidian-scorpion",
+   "fire:cinder-hornet",
+   "fire:basalt-boar",
+   "wet:rock-pool-starfish(you)"
+  ]
+ },
+ {
+  "key": "20-B-4",
+  "why": [
+   "fire:magma-salamander",
+   "fire:obsidian-scorpion",
+   "wet:rock-pool-starfish(you)"
+  ]
+ },
+ {
+  "key": "8-A-3",
+  "why": [
+   "fire:sulfur-cinder-moth",
+   "wet:tide-spirit(you)"
+  ]
+ },
+ {
+  "key": "11-A-1",
+  "why": [
+   "fire:wound-reaver",
+   "wet:tide-spirit(you)"
+  ]
+ },
+ {
+  "key": "11-A-4",
+  "why": [
+   "fire:wound-reaver",
+   "wet:tide-spirit(you)"
+  ]
+ },
+ {
+  "key": "17-A-1",
+  "why": [
+   "wet:greenland-shark",
+   "wet:pincushion-urchin",
+   "wet:giant-clam",
+   "fire:obsidian-scorpion(you)"
+  ]
+ },
+ {
+  "key": "17-A-2",
+  "why": [
+   "wet:giant-clam",
+   "wet:ringed-seal",
+   "wet:cormorant",
+   "fire:obsidian-scorpion(you)"
+  ]
+ },
+ {
+  "key": "17-A-3",
+  "why": [
+   "wet:greenland-shark",
+   "wet:ringed-seal",
+   "wet:giant-clam",
+   "fire:obsidian-scorpion(you)"
+  ]
+ },
+ {
+  "key": "17-A-4",
+  "why": [
+   "wet:greenland-shark",
+   "wet:limpet-clinger",
+   "wet:giant-clam",
+   "fire:obsidian-scorpion(you)"
+  ]
+ },
+ {
+  "key": "18-A-1",
+  "why": [
+   "wet:mudpuppy(you)",
+   "fire:field"
+  ]
+ },
+ {
+  "key": "18-A-2",
+  "why": [
+   "wet:mudpuppy(you)",
+   "fire:field"
+  ]
+ },
+ {
+  "key": "18-A-3",
+  "why": [
+   "wet:mudpuppy(you)",
+   "fire:field"
+  ]
+ },
+ {
+  "key": "18-A-4",
+  "why": [
+   "wet:mudpuppy(you)",
+   "fire:field"
+  ]
+ },
+ {
+  "key": "18-A-5",
+  "why": [
+   "wet:mudpuppy(you)",
+   "fire:field"
+  ]
+ },
+ {
+  "key": "18-A-6",
+  "why": [
+   "wet:mudpuppy(you)",
+   "fire:field"
+  ]
+ },
+ {
+  "key": "18-A-7",
+  "why": [
+   "wet:mudpuppy(you)",
+   "fire:field"
+  ]
+ },
+ {
+  "key": "18-A-8",
+  "why": [
+   "wet:mudpuppy(you)",
+   "fire:field"
+  ]
+ },
+ {
+  "key": "18-A-9",
+  "why": [
+   "wet:mudpuppy(you)",
+   "fire:field"
+  ]
+ }
+]
