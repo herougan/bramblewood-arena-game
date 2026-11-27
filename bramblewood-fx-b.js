@@ -1618,7 +1618,7 @@ M.onEvent = function(ev, env){
     else if(ev.kind === 'firstBlood'){ const a = el(ev.attUid); if(a) M.firstBlood(a); }
     else if(ev.kind === 'blind') env.at(700, ()=> M.sightSync(m, env)); // 2026-10-15: the Blind badge shows at once, not at the next render
     break; }
-  case 'decayTick': { const t = el(ev.uid); if(t) M.decayTick(t); break; }
+  case 'decayTick': { const t = el(ev.uid); if(t && !(FX.V && FX.V.owns && FX.V.owns(ev)) /* 2026-11-27 (VFX2): FX.V.decayRot instead */) M.decayTick(t); break; }
   case 'cageBroken': { const t = el(ev.uid); if(t) M.cageBurst(t); break; }
   case 'irradiation': { const t = el(ev.uid); if(t) M.radDecay(t, {points:ev.points}); break; }
   case 'hit': {

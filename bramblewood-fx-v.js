@@ -137,6 +137,27 @@ const SPRITES = {
   orb:     {pal:{w:'#ffffff', c:'#9ff6ff', v:'#b17cff'}, rows:['.vvv.', 'vcwcv', 'vwwwv', 'vcwcv', '.vvv.']},
   wave:    {pal:{w:'#ffffff', l:'#bfe8ff', b:'#4aa0e0'}, rows:['..www..', '.wlllw.', 'wllbllw', 'lbbbbbl']},
 };
+/* 2026-11-27 (VFX2): the art of the VFX2 looks (section 5) */
+Object.assign(SPRITES, {
+  gash:    {pal:{r:'#e0233a', w:'#fff4f4'}, rows:['........rw', '.......rwr', '......rwr.', '.....rwr..', '....rwr...', '...rwr....', '..rwr.....', '.rwr......', 'rwr.......', 'wr........']},
+  drop:    {pal:{r:'#d81b2a', h:'#ff8a8a', d:'#7a0a14'}, rows:['.r.', 'rhr', 'rrr', '.d.']},
+  hoof:    {pal:{b:'#5a3c20', l:'#8a6440'}, rows:['.b.b.', 'bl.lb', 'bb.bb', '.b.b.']},
+  plate:   {pal:{s:'#4d5460', h:'#eef2f8', m:'#aab3c0', d:'#7c8594'}, rows:['.sssssss.', 'shhhhhhds', 'shmmmmmds', 'shmmmmmds', 'shmmmmmds', '.sdddddd.', '..sssss..']},
+  shard:   {pal:{h:'#eef2f8', m:'#aab3c0', d:'#5d6470'}, rows:['hm..', 'mmm.', 'mmdd', '.dd.']},
+  crack:   {pal:{w:'#2a2420'}, rows:['....w....', '...w.....', '...ww....', '....w....', '.ww.ww...', 'w....w...', '.....ww..', '......w..', '.....w.ww', '....w....']},
+  crackB:  {pal:{w:'#eaf8ff', c:'#7fc8ff'}, rows:['....w....', '...wc....', '...ww....', '....wc...', '.wwcww...', 'w....w..c', '.....ww..', '...c..w..', '.....wcww', '....w....']},
+  claw:    {pal:{r:'#c8102e', w:'#ffd0d0'}, rows:['..r..r..r', '..r..r..r', '.rw.rw.rw', '.rw.rw.rw', '.r..r..r.', 'rw.rw.rw.', 'r..r..r..', 'r..r..r..']},
+  coil:    {pal:{g:'#5fae3a', y:'#e8d24a', G:'#3c7f24', d:'#244d16'}, rows:['..gg....gg....gg', '.gyyg..gyyg..gyy', 'gGGGGggGGGGggGGG', 'dddddddddddddddd']},
+  web:     {pal:{w:'rgba(242,242,255,.95)'}, rows:['w....w....w', '.w..www..w.', '..ww.w.ww..', '.w.w.w.w.w.', '.w..www..w.', 'wwwww.wwwww', '.w..www..w.', '.w.w.w.w.w.', '..ww.w.ww..', '.w..www..w.', 'w....w....w']},
+  tack:    {pal:{w:'rgba(242,242,255,.95)'}, rows:['ww', 'ww']},
+  glare:   {pal:{k:'#1c1410', y:'#ffe066', r:'#e0301e'}, rows:['k.......k', '.kk...kk.', '.yrk.kry.', '.yy...yy.']},
+  sweat:   {pal:{b:'#8fd4ff', w:'#ffffff'}, rows:['.b.', 'bwb', 'bbb', '.b.']},
+  rot:     {pal:{g:'#7fbf3f', G:'#4f8f2a', d:'#2f4f1a'}, rows:['..gg..', '.gGGg.', 'gGddGg', '.gGGgg', '..g.g.']},
+  spore:   {pal:{s:'#c8f07a'}, rows:['ss', 'ss']},
+  corner:  {pal:{r:'#ff4d4d', d:'#8a1414'}, rows:['rrrr', 'rddd', 'rd..', 'rd..']},
+  weak:    {pal:{r:'#ff2a2a', w:'#ffd0d0'}, rows:['..r..', '.rwr.', 'rwwwr', '.rwr.', '..r..']},
+  glint:   {pal:{w:'#ffffff', c:'#bfeaff'}, rows:['.w.', 'wcw', '.w.']},
+});
 
 // ---- sounds: each cue a named SoundKit method built from SoundKit.prim (tone / noise / fnoise / sweep), behind the same volume gate ----
 const CUES = {
@@ -168,6 +189,19 @@ const CUES = {
   riteLift(P){ [523, 784, 1046].forEach((f, i)=> P.tone(f, 0.35, 'sine', 0.03, i*0.08)); P.fnoise(0.4, 0.03, {type:'highpass', freq:3000, freqEnd:6000, attack:0.1}); },
   seaSurge(P){ P.fnoise(1.1, 0.08, {type:'lowpass', freq:500, freqEnd:1600, attack:0.4}); P.sweep(70, 110, 1.0, 'sine', 0.08); P.fnoise(0.5, 0.06, {type:'bandpass', freq:900, freqEnd:300, q:0.7, attack:0.05, delay:1.0}); },
 };
+/* 2026-11-27 (VFX2): one cue per VFX2 look, the same primitives */
+Object.assign(CUES, {
+  gashRip(P){ P.fnoise(0.1, 0.09, {type:'highpass', freq:2400, freqEnd:900, attack:0.002}); [0.12, 0.2, 0.27].forEach(d=> P.tone(420 - d*500, 0.04, 'sine', 0.03, d)); },
+  stampRumble(P){ for(let i = 0; i < 5; i++) P.fnoise(0.05, 0.06, {type:'lowpass', freq:500, attack:0.003, delay:i*0.04}); P.sweep(110, 50, 0.2, 'sine', 0.12, 0.2); },
+  plateShatter(P){ P.tone(1900, 0.05, 'square', 0.03); P.fnoise(0.16, 0.09, {type:'highpass', freq:3000, attack:0.001, delay:0.1, crackle:0.05}); P.tone(2600, 0.08, 'triangle', 0.025, 0.12); },
+  cullRake(P){ [0, 0.05, 0.1].forEach((d, i)=> P.fnoise(0.05, 0.06, {type:'bandpass', freq:2200 + i*500, q:2, attack:0.002, delay:d})); },
+  coilSqueeze(P){ P.sweep(260, 150, 0.3, 'sawtooth', 0.018); P.fnoise(0.22, 0.04, {type:'bandpass', freq:700, q:3, attack:0.03}); },
+  webSpin(P){ P.sweep(1400, 2400, 0.16, 'sine', 0.025); P.fnoise(0.25, 0.03, {type:'highpass', freq:4500, attack:0.02, delay:0.05}); P.tone(980, 0.08, 'triangle', 0.02, 0.24); },
+  glareGrowl(P){ P.sweep(120, 85, 0.32, 'sawtooth', 0.04); P.fnoise(0.3, 0.04, {type:'lowpass', freq:400, attack:0.04, crackle:0.03}); },
+  rotCreep(P){ P.fnoise(0.34, 0.05, {type:'bandpass', freq:500, freqEnd:240, q:1.5, attack:0.06}); P.sweep(300, 180, 0.3, 'triangle', 0.02, 0.05); },
+  lockOn(P){ P.tone(1700, 0.03, 'square', 0.02); P.tone(1700, 0.03, 'square', 0.02, 0.07); P.tone(2400, 0.09, 'sine', 0.03, 0.15); },
+  iceCrack(P){ P.fnoise(0.04, 0.1, {type:'highpass', freq:3500, attack:0.001}); P.fnoise(0.05, 0.07, {type:'highpass', freq:2800, attack:0.001, delay:0.08}); P.tone(3200, 0.12, 'sine', 0.02, 0.12); },
+});
 M.CUES = Object.keys(CUES);
 function soundKit(){
   const S = (typeof SoundKit !== 'undefined') ? SoundKit : null; if(!S || !S.prim) return null;
@@ -440,6 +474,94 @@ M.bossLook = function(kind, o){ o = o || {}; const castle = (()=>{ try{ return t
   if(kind === 'skeleton') return M.skeletonRise(castle || bf, o); if(kind === 'mage') return M.mageCast(castle || bf, o); if(kind === 'sea') return M.seaRise(bf, o); return Promise.resolve(); };
 
 // =====================================================================================================================
+// 5. VFX2 (2026-11-27, owner 15:40 "make more gif effects"; standing order 09:55: card, skill, field and boss VFX). The mechanics VFX1's
+//    inventory left on a shared look or none (docs/design/vfx1-2026-11-27.md), the trigger kinds, the SKILLS3-B rules and the skins
+//    ladder's outward auras. Same rules as above: pixel sprites, transform / opacity only, one rect read, no filter / blend mode; hits and
+//    statuses under ~400 ms. Effects Low: the minimal version; reduced motion and Effects None: nothing (the auras keep a static glow).
+// =====================================================================================================================
+const NONE = ()=> Promise.resolve();
+const fly = (name, x, y, px, kf, ms, o)=> play(pix(name, x, y, px, o && o.extra), kf, ms, o);
+const POP = (s0, y1)=> [{transform:`translateY(0) scale(${s0 == null ? .4 : s0})`, opacity:0}, {transform:'translateY(0) scale(1.15)', opacity:1, offset:.3},
+  {transform:'translateY(0) scale(1)', opacity:1, offset:.72}, {transform:`translateY(${y1 || 0}px) scale(1)`, opacity:0}];
+// the card itself flinches / shrinks through the individual translate / scale properties (GSAP owns transform on cards); nothing left behind
+const nudge = (el, kf, ms, delay)=>{ try{ tileOf(el).animate(kf, {duration:Math.max(16, ms), delay:delay || 0, easing:steps(5)}); }catch(e){} };
+const begin = el=>{ if(!el || RM()) return null; const c = centre(tileOf(el)); return c.w ? c : null; };
+
+// ---- strikes ----
+// Gash: a slash rips across the card and three drops of blood run from it (360 ms)
+M.gashBleed = function(t, o){ o = o || {}; const c = begin(t); if(!c) return NONE(); const px = pxFor(c.w), sp = speedOf(o), s = sprite('gash', px), ps = [];
+  ps.push(fly('gash', c.x, c.y, px, [{transform:'scale(.2) rotate(-8deg)', opacity:0}, {transform:'scale(1.15) rotate(0deg)', opacity:1, offset:.25}, {transform:'scale(1)', opacity:1, offset:.7}, {transform:'scale(1)', opacity:0}], 360/sp, {ease:steps(5)}));
+  if(!lowOf(o)) [-.25, 0, .25].forEach((f, i)=> ps.push(fly('drop', c.x + f*s.w, c.y - f*s.h + 4, px, [{transform:'translateY(0)', opacity:0}, {transform:'translateY(0)', opacity:1, offset:.2}, {transform:`translateY(${c.h*.26}px)`, opacity:0}], 260/sp, {ease:steps(5), delay:(80 + i*30)/sp})));
+  return all(ps); };
+// Stampede: a dust trail runs from the striker through to the bramble, a hoof stamp and chips land on it (~400 ms)
+M.stampedeRun = function(from, castle, o){ o = o || {}; if(!castle || RM()) return NONE(); const b = centre(tileOf(castle)); if(!b.w) return NONE();
+  const f = from && from.isConnected ? centre(tileOf(from)) : null, a = f && f.w ? f : {x:b.x, y:b.y + b.h*1.6, w:b.w}, px = pxFor(a.w), sp = speedOf(o), ps = [], n = lowOf(o) ? 3 : 6;
+  for(let i = 0; i < n; i++){ const t = (i + 1)/(n + 1); ps.push(fly('dust', a.x + (b.x - a.x)*t + (i % 2 ? 7 : -7), a.y + (b.y - a.y)*t, px, [{transform:'scale(.4)', opacity:0}, {transform:'scale(1)', opacity:.95, offset:.25}, {transform:'translateY(-4px) scale(1.8)', opacity:0}], 260/sp, {ease:steps(4), delay:(i*28)/sp})); }
+  ps.push(fly('hoof', b.x, b.y + b.h*.12, px + 1, POP(1.8), 230/sp, {ease:steps(4), delay:(n*28)/sp}));
+  if(!lowOf(o)) for(let i = 0; i < 4; i++){ const ang = Math.PI*(1.1 + i*.27); ps.push(fly('chip', b.x, b.y + b.h*.2, px, [{transform:'translate(0,0)', opacity:1}, {transform:`translate(${Math.cos(ang)*b.w*.5}px, ${Math.sin(ang)*b.h*.3}px)`, opacity:0}], 220/sp, {ease:steps(4), delay:(n*28 + 30)/sp})); }
+  return all(ps); };
+// Pulverise: an armour plate shows over the card, cracks, and its shards fly apart (380 ms)
+M.pulveriseShatter = function(t, o){ o = o || {}; const c = begin(t); if(!c) return NONE(); const px = pxFor(c.w) + 1, sp = speedOf(o), ps = [];
+  ps.push(fly('plate', c.x, c.y, px, [{transform:'scale(1.3)', opacity:0}, {transform:'scale(1)', opacity:1, offset:.2}, {transform:'scale(1)', opacity:1, offset:.45}, {transform:'scale(1.05)', opacity:0, offset:.55}, {opacity:0}], 380/sp, {ease:steps(5)}));
+  ps.push(fly('crack', c.x, c.y, px - 1, [{opacity:0}, {opacity:0, offset:.25}, {opacity:1, offset:.3}, {opacity:1, offset:.5}, {opacity:0, offset:.56}, {opacity:0}], 380/sp, {ease:steps(5)}));
+  for(let i = 0; i < (lowOf(o) ? 2 : 4); i++){ const sx = i % 2 ? 1 : -1, sy = i < 2 ? -1 : 1;
+    ps.push(fly('shard', c.x + sx*c.w*.08, c.y + sy*c.h*.06, px, [{transform:'translate(0,0) rotate(0deg)', opacity:0}, {transform:'translate(0,0) rotate(0deg)', opacity:1, offset:.5},
+      {transform:`translate(${sx*c.w*.45}px, ${sy*c.h*.3 + c.h*.12}px) rotate(${sx*120}deg)`, opacity:0}], 380/sp, {ease:steps(7), extra: sx > 0 ? 'scale:-1 1;' : ''})); }
+  return all(ps); };
+// Cull: a claw mark rakes the weakened unit as the bonus lands (340 ms)
+M.cullClaw = function(t, o){ o = o || {}; const c = begin(t); if(!c) return NONE(); const px = pxFor(c.w), sp = speedOf(o), s = sprite('claw', px), ps = [];
+  ps.push(fly('claw', c.x, c.y, px, [{transform:`translate(${-c.w*.12}px, ${-c.h*.12}px) scale(.6)`, opacity:0}, {transform:'translate(0,0) scale(1)', opacity:1, offset:.3}, {transform:'translate(0,0) scale(1)', opacity:1, offset:.75}, {transform:'translate(0,0) scale(1)', opacity:0}], 340/sp, {ease:steps(5)}));
+  if(!lowOf(o)) [-1, 1].forEach((k, i)=> ps.push(fly('drop', c.x + k*s.w*.3, c.y + s.h*.5, px, [{transform:'translateY(0)', opacity:0}, {transform:'translateY(0)', opacity:1, offset:.2}, {transform:`translateY(${c.h*.16}px)`, opacity:0}], 220/sp, {ease:steps(4), delay:(110 + i*30)/sp})));
+  return all(ps); };
+
+// ---- statuses ----
+// Constrict: three coils wrap the card and tighten (380 ms)
+M.constrictCoil = function(t, o){ o = o || {}; const c = begin(t); if(!c) return NONE(); const px = pxFor(c.w), sp = speedOf(o), k = (c.w*1.04)/sprite('coil', px).w;
+  return all((lowOf(o) ? [0] : [-.28, 0, .28]).map((f, i)=> fly('coil', c.x, c.y + f*c.h, px, [{transform:`scale(${k*1.5}, 1)`, opacity:0}, {transform:`scale(${k}, 1)`, opacity:1, offset:.35},
+    {transform:`scale(${k*.9}, 1.25)`, opacity:1, offset:.55}, {transform:`scale(${k}, 1)`, opacity:1, offset:.8}, {transform:`scale(${k}, 1)`, opacity:0}], 380/sp, {ease:steps(6), delay:(i*40)/sp}))); };
+// Web: a net spins out over the card, sags as it settles and sticks to the corners (400 ms)
+M.webNet = function(t, o){ o = o || {}; const c = begin(t); if(!c) return NONE(); const px = pxFor(c.w) + 1, sp = speedOf(o), ps = [];
+  ps.push(fly('web', c.x, c.y, px, [{transform:'scale(.15) rotate(-60deg)', opacity:0}, {transform:'scale(1.15) rotate(6deg)', opacity:1, offset:.4}, {transform:'translateY(3px) scale(1) rotate(0deg)', opacity:1, offset:.6},
+    {transform:'translateY(0) scale(1)', opacity:1, offset:.85}, {transform:'translateY(0) scale(1)', opacity:0}], 400/sp, {ease:steps(7)}));
+  if(!lowOf(o)) [[-1, -1], [1, -1], [1, 1], [-1, 1]].forEach(([sx, sy])=> ps.push(fly('tack', c.x + sx*c.w*.4, c.y + sy*c.h*.4, px - 1, [{opacity:0}, {opacity:0, offset:.45}, {opacity:1, offset:.5}, {opacity:1, offset:.85}, {opacity:0}], 400/sp, {ease:steps(5)})));
+  return all(ps); };
+// Intimidate: a glare from the unit; the foe facing it shrinks back with a bead of sweat (380 ms)
+M.intimidateGlare = function(src, foe, o){ o = o || {}; const c = begin(src); if(!c) return NONE(); const px = pxFor(c.w) + 1, sp = speedOf(o), ps = [];
+  const f = foe && foe.isConnected ? centre(tileOf(foe)) : null, dy = f && f.w ? (Math.sign(f.y - c.y) || -1) : -1;
+  ps.push(fly('glare', c.x, c.y + dy*c.h*.2, px, [{transform:'scaleY(0)', opacity:0}, {transform:'scaleY(1.2)', opacity:1, offset:.25}, {transform:'scaleY(1)', opacity:1, offset:.7}, {transform:'scaleY(.2)', opacity:0}], 380/sp, {ease:steps(5)}));
+  if(f && f.w && !lowOf(o)){ nudge(foe, [{translate:'0 0', scale:'1'}, {translate:`0 ${dy*6}px`, scale:'.93', offset:.4}, {translate:`0 ${dy*4}px`, scale:'.95', offset:.7}, {translate:'0 0', scale:'1'}], 300/sp, 80/sp);
+    ps.push(fly('sweat', f.x + f.w*.3, f.y - f.h*.3, px, [{transform:'translateY(0)', opacity:0}, {transform:'translateY(0)', opacity:1, offset:.35}, {transform:`translateY(${f.h*.12}px)`, opacity:0}], 300/sp, {ease:steps(5), delay:80/sp})); }
+  return all(ps); };
+// Decay: green rot creeps up from the card's foot, spores lift (~400 ms)
+M.decayRot = function(el, o){ o = o || {}; const c = begin(el); if(!c) return NONE(); const px = pxFor(c.w), sp = speedOf(o), ps = [];
+  (lowOf(o) ? [0] : [-.28, .05, .3]).forEach((f, i)=> ps.push(fly('rot', c.x + f*c.w, c.y + c.h*.36, px, [{transform:'translateY(0) scale(.4)', opacity:0}, {transform:`translateY(${-c.h*.16}px) scale(1)`, opacity:1, offset:.45},
+    {transform:`translateY(${-c.h*.34}px) scale(1.15)`, opacity:0}], 340/sp, {ease:steps(6), delay:(i*40)/sp})));
+  if(!lowOf(o)) for(let i = 0; i < 3; i++) ps.push(fly('spore', c.x + (i - 1)*c.w*.22, c.y, px, [{transform:'translateY(0)', opacity:0}, {transform:`translateY(${-c.h*.1}px)`, opacity:1, offset:.4}, {transform:`translateY(${-c.h*.3}px)`, opacity:0}], 300/sp, {ease:steps(5), delay:(100 + i*30)/sp}));
+  return all(ps); };
+// Exploit: four brackets snap onto a weak point and a red diamond blinks (380 ms)
+M.exploitLock = function(t, o){ o = o || {}; const c = begin(t); if(!c) return NONE(); const px = pxFor(c.w), sp = speedOf(o), ps = [], r = sprite('corner', px).w*.9, x0 = c.x + c.w*.12, y0 = c.y - c.h*.1;
+  [[-1, -1, 0], [1, -1, 90], [1, 1, 180], [-1, 1, 270]].forEach(([sx, sy, rot])=> ps.push(fly('corner', x0 + sx*r, y0 + sy*r, px, [{transform:`translate(${sx*c.w*.3}px, ${sy*c.h*.25}px)`, opacity:0}, {transform:'translate(0,0)', opacity:1, offset:.4},
+    {transform:`translate(${-sx*px}px, ${-sy*px}px)`, opacity:1, offset:.5}, {transform:'translate(0,0)', opacity:1, offset:.8}, {transform:'translate(0,0)', opacity:0}], 380/sp, {ease:steps(6), extra:`rotate:${rot}deg;`})));
+  if(!lowOf(o)) ps.push(fly('weak', x0, y0, px, [{opacity:0}, {opacity:0, offset:.4}, {opacity:1, offset:.45}, {opacity:.2, offset:.6}, {opacity:1, offset:.7}, {opacity:0}], 380/sp, {ease:steps(8)}));
+  return all(ps); };
+// Embrittle: ice-blue cracks spread from the hit, two glints (380 ms)
+M.embrittleCrack = function(t, o){ o = o || {}; const c = begin(t); if(!c) return NONE(); const px = pxFor(c.w) + 1, sp = speedOf(o), ps = [];
+  ps.push(fly('crackB', c.x, c.y, px, [{transform:'scale(.15)', opacity:0}, {transform:'scale(.7)', opacity:1, offset:.25}, {transform:'scale(1.1)', opacity:1, offset:.5}, {transform:'scale(1.1)', opacity:1, offset:.8}, {transform:'scale(1.1)', opacity:0}], 380/sp, {ease:steps(5)}));
+  if(!lowOf(o)) [[-.3, -.3], [.28, .32]].forEach(([fx, fy], i)=> ps.push(fly('glint', c.x + fx*c.w, c.y + fy*c.h, px, POP(.3), 240/sp, {ease:steps(4), delay:(120 + i*40)/sp})));
+  return all(ps); };
+
+// Which events FX.V draws a look of its own for, at the level now: the game's shared look for them steps aside (the trigger badge, Bind's
+// vines, the spawn portal, the shared drip, SkillFX.lightning, FX.A's chevrons and paw prints, FX.B's mould). False under reduced motion /
+// Effects None, so the shared look (or none) stays there.
+const TRIG = {onSpawn:'trigRise', onDeath:'trigWisp', onAttack:'trigClash', onReady:'trigCheck'};
+const lvOK = ()=>{ try{ return typeof fxAtLeast !== 'function' || fxAtLeast('low'); }catch(e){ return true; } };
+M.owns = function(ev){
+  if(!ev || RM() || !lvOK()) return false; const T = ev.type;
+  if(T === 'gash' || T === 'overwhelmHQ' || T === 'decayTick') return true;
+  return T === 'statusFx' && ['constrict', 'webbed'].includes(ev.kind);
+};
+
+// =====================================================================================================================
 // 4. WIRING (docs/effects-lab-contract.md section 2): battle events and the named hooks
 // =====================================================================================================================
 const isMine = side=>{ try{ return typeof matchState !== 'undefined' && matchState && matchState.sideOf ? side === matchState.sideOf(1) : side === 'A'; }catch(e){ return side === 'A'; } };
@@ -447,9 +569,42 @@ const boardCards = ()=> [...document.querySelectorAll('#battlefieldEl .board-car
 // a look that starts with the event starts one tick later: its one rect read then comes after the frame's layout, not right after the game's
 // own float in the same task (a forced layout)
 const tick = fn=> later(()=> fn(), 0);
+// 2026-11-27 (VFX2): the VFX2 looks' events. A side's cards are its row's (#rowMine / #rowEnemy); the unit facing another is the one in the
+// other row whose centre is nearest across (a few rect reads, only when an Intimidate unit lands).
+const hq = side=>{ try{ return typeof hqTileEl === 'function' ? hqTileEl(side) : null; }catch(e){ return null; } };
+const rowCards = mine=> [...document.querySelectorAll((mine ? '#rowMine' : '#rowEnemy') + ' .board-card[data-uid]')];
+const sideCards = side=> rowCards(isMine(side));
+const sideHas = (side, key, env)=> sideCards(side).some(c=> env.fxOf(c.getAttribute('data-defid'))[key]);
+const facing = (el, side)=>{ const a = centre(tileOf(el)); let best = null, d0 = Infinity;
+  rowCards(!isMine(side)).forEach(c=>{ const d = Math.abs(centre(tileOf(c)).x - a.x); if(d < d0){ d0 = d; best = c; } });
+  return best && d0 < a.w*.6 ? best : null; };
+function vfx2Event(ev, env, o){
+  const T = ev.type, el = env.el, K = ev.kind, now = (name, fn)=> tick(()=>{ snd(name); fn(); });
+  if(T === 'hit'){ const af = env.fxOf(ev.attDefId);
+    // Cull: the game's second number (ui14HitBonus) says when the bonus landed; 'weaker' shows no number, so it compares the replay's Attack
+    if(af.hunter && (ev.dmg || 0) > 0 && !ev.source && env.once('fxv-cull' + ev.attUid)){ let on = false;
+      try{ const b = typeof ui14HitBonus === 'function' ? ui14HitBonus(ev) : null, R = env.match && env.match.replayCards, a = R && R[ev.attUid], d = R && R[ev.targetUid];
+        on = b ? b.kind === 'hunter' : ((af.hunterVs || af.hunter.vs) === 'weaker' && !!(a && d && d.hp > 0 && (d.atk || 0) < (a.atk || 0))); }catch(e){}
+      const t = on ? el(ev.targetUid) : null; if(t) env.at(env.hitAtMs(ev) + 200, ()=>{ if(t.isConnected){ snd('cullRake'); M.cullClaw(t, o); } }); }
+    return; }
+  if(T === 'gash'){ const t = el(ev.targetUid); if(t) now('gashRip', ()=> M.gashBleed(t, o)); return; }
+  if(T === 'overwhelmHQ'){ const c = hq(ev.targetSide), a = el(ev.attUid); if(c) now('stampRumble', ()=> M.stampedeRun(a, c, o)); return; }
+  if(T === 'decayTick'){ const t = el(ev.uid); if(t && env.once('fxv-decay' + ev.uid)) now('rotCreep', ()=> M.decayRot(t, o)); return; }
+  if(T === 'play'){ const f = env.fxOf(ev.defId);
+    if(f.intimidate) env.at(260, ()=>{ const s = el(ev.uid); if(s && s.isConnected){ snd('glareGrowl'); M.intimidateGlare(s, facing(s, ev.side), o); } });
+    return; }
+  if(T !== 'statusFx') return;
+  const t = el(ev.targetUid);
+  if(K === 'pulverise' && t) now('plateShatter', ()=> M.pulveriseShatter(t, o));
+  else if(K === 'constrict' && t) now('coilSqueeze', ()=> M.constrictCoil(t, o));
+  else if(K === 'webbed' && t) now('webSpin', ()=> M.webNet(t, o));
+  else if(K === 'exploit' && t) now('lockOn', ()=> M.exploitLock(t, o));
+  else if(K === 'brittle' && t) now('iceCrack', ()=> M.embrittleCrack(t, o));
+}
 M.onEvent = function(ev, env){
   if(!ev || !env || !env.fxAtLeast('low')) return;
   const T = ev.type, el = env.el, o = {level:env.level, speed:Math.max(1, (env.match && env.match.speedMult) || 1)};
+  vfx2Event(ev, env, o);
   if(T === 'hit' || T === 'evaded'){
     const af = env.fxOf(ev.attDefId);
     if(af.swift && !ev.ranged && ev.attUid != null && env.once('fxv-swift' + ev.attUid)){ const a = el(ev.attUid), up = isMine(ev.side); if(a) tick(()=> M.swiftDash(a, Object.assign({up}, o))); }

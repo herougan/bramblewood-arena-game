@@ -54868,7 +54868,7 @@ function eighthPassVfx(ev){
   if(ev.type === 'render'){ const t = el(ev.targetUid); if(t) at(animMs().windup, ()=> F.curseDrain(t)); }
   if(ev.type === 'curseTick' && skillFxOnce('curse' + ev.uid)){ const t = el(ev.uid); if(t) F.curseDrain(t); }
   if(ev.type === 'frenzy' && skillFxOnce('frenzy' + ev.attUid)){ const t = el(ev.attUid); if(t) F.rageFlare(t); }
-  if(ev.type === 'gash' && F.bleedDrip){ const t = el(ev.targetUid); if(t) F.bleedDrip(t); }           // reused: Gash's opening cut
+  if(ev.type === 'gash' && F.bleedDrip && !(window.FX && FX.V && FX.V.owns && FX.V.owns(ev))){ const t = el(ev.targetUid); if(t) F.bleedDrip(t); }           // reused: Gash's opening cut; 2026-11-27 (VFX2): FX.V.gashBleed instead
   if(ev.type === 'spawn' && ev.cause !== 'shieldCall' && ev.kind !== 'bloom' /* BL: its own bloom */ && ev.kind !== 'bulwark' /* FX6: it rises, no portal */ && ev.kind !== 'brood' /* FX10: silk (SkillFX.broodDrop) */ && !(window.FX && FX.C && FX.C.ownsSpawn && FX.C.ownsSpawn(ev))){ const uids = (ev.uids || (ev.placements||[]).map(p=> p.uid) || []).slice(0, 4);
     // 2026-10-25 (package FIX3, F5, owner #17: "cards played disappear then appear again at the end of the round - no it's just tokens"): the
     // portal pops the new token's tile from 30% opacity, 140 ms (+60 per token) after the spawn, when the token has already landed at full
@@ -55872,7 +55872,7 @@ function w2SkillVfx(ev){
     switch(ev.kind){
       case 'thanatosis': fl(el, '😵', 'quick'); if(rc){ rc.hp = 1; rc.playingDead = true; rc.poison = 0; rc.bleed = 0; rc.gpoison = 0; rc.toxin = 0; rc.decay = 0; } try{ updateCardHpDisplay(ev.targetUid); }catch(e){} refresh(ev.targetUid); break; // ENG33 (2026-11-07)
       case 'thanatosisWake': fl(el, '💪', 'quick'); if(rc){ rc.playingDead = null; if(ev.hp != null) rc.hp = ev.hp; } try{ updateCardHpDisplay(ev.targetUid); }catch(e){} refresh(ev.targetUid); eng36FloatUp(el); break; // + ENG36 (2026-11-08): it floats up from its shadow
-      case 'constrict': snd('curse'); fl(el, '🐍 ' + TX('ui.eng36-constrict-name'), 'debuff'); if(rc){ rc.constricted = Math.max(rc.constricted||0, ev.amount||1); rc.bound = Math.max(rc.bound||0, ev.amount||1); } if(el && fx()) F.vineBind(el, {strangle: true}); refresh(ev.targetUid); break; // ENG36 (2026-11-08)
+      case 'constrict': snd('curse'); fl(el, '🐍 ' + TX('ui.eng36-constrict-name'), 'debuff'); if(rc){ rc.constricted = Math.max(rc.constricted||0, ev.amount||1); rc.bound = Math.max(rc.bound||0, ev.amount||1); } if(el && fx() && !(window.FX && FX.V && FX.V.owns && FX.V.owns(ev))) F.vineBind(el, {strangle: true}); refresh(ev.targetUid); break; // ENG36 (2026-11-08); 2026-11-27 (VFX2): FX.V.constrictCoil instead of Bind's vines
       case 'eng36Resist': fl(el, '🛡️ ' + (((typeof ENG36_STATUS !== 'undefined' && ENG36_STATUS[ev.status]) || {}).icon || ''), 'quick'); break; // ENG36: Resist / Immune held a status off
       case 'poisonous': snd('poisonApply'); fl(el, `🤢 +${ev.amount}☠`, 'poison'); if(rc) rc.poison = ev.total || ((rc.poison||0) + (ev.amount||0)); refresh(ev.targetUid); break;
       case 'venom': snd('poisonApply'); fl(el, `🦂 +${ev.amount}☠`, 'poison'); if(rc) rc.poison = (rc.poison||0) + (ev.amount||0); if(el && fx()) F.venomBite(el); refresh(ev.targetUid); break;
@@ -55986,7 +55986,7 @@ function s17SkillVfx(ev){
   if(ev.type === 'statusFx'){
     if(ev.kind === 'lasso'){ const el = boardCardEl(ev.targetUid), rc = rcOf(ev.targetUid); if(rc) rc.lassoed = 1; snd('curse'); fl(el, '➰ ' + TX('ui.eng15-stn-lassoed'), 'debuff'); if(el && F && F.vineBind && fx()) try{ F.vineBind(el, {}); }catch(e){} refresh(ev.targetUid); return; } // Lasso (ENG15, 2026-10-31)
     if(ev.kind === 'pinDown'){ const el = boardCardEl(ev.targetUid), rc = rcOf(ev.targetUid); if(rc) rc.pinDown = 1; snd('curse'); fl(el, '📌 ' + TX('ui.e14-stn-pinned'), 'debuff'); if(el && F && F.vineBind && fx()) try{ F.vineBind(el, {}); }catch(e){} refresh(ev.targetUid); return; } // Bola (ENG14, 2026-10-30)
-    if(ev.kind === 'webbed'){ const el = boardCardEl(ev.targetUid), rc = rcOf(ev.targetUid); if(rc) rc.webbed = Math.max(rc.webbed||0, ev.amount||1); snd('curse'); fl(el, '🕸️ Webbed', 'debuff'); if(el && F && F.vineBind && fx()) try{ F.vineBind(el, {}); }catch(e){} refresh(ev.targetUid); return; }
+    if(ev.kind === 'webbed'){ const el = boardCardEl(ev.targetUid), rc = rcOf(ev.targetUid); if(rc) rc.webbed = Math.max(rc.webbed||0, ev.amount||1); snd('curse'); fl(el, '🕸️ Webbed', 'debuff'); if(el && F && F.vineBind && fx() && !(window.FX && FX.V && FX.V.owns && FX.V.owns(ev))) try{ F.vineBind(el, {}); }catch(e){} /* 2026-11-27 (VFX2): FX.V.webNet instead */ refresh(ev.targetUid); return; }
     if(ev.kind === 'carrion'){ const el = boardCardEl(ev.targetUid), rc = rcOf(ev.targetUid); if(rc) rc.hp = Math.min(rc.maxHp || rc.hp + ev.amount, (rc.hp||0) + (ev.amount||0)); fl(el, `🦴 +${ev.amount}`, 'heal'); try{ updateCardHpDisplay(ev.targetUid); }catch(e){} return; }
     if(ev.kind === 'vanguard'){ w2Later(380, ()=> fl(boardCardEl(ev.targetUid), `🎖️ +${ev.amount}/+${ev.amount}`, 'heal')); return; }
   }

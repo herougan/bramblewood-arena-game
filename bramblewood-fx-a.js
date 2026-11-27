@@ -1511,7 +1511,7 @@ M.onEvent = function(ev, env){
     case 'boomerangReturn': break;
     case 'boomerangCaught': { const a = el(ev.uid), F = S(); if(a && !(F && F.boomerangInFlight && F.boomerangInFlight(String(ev.uid)))) M.catchSnap(a); break; }
     case 'boomerangWhiff': { const a = el(ev.uid), F = S(); if(a && !(F && F.boomerangInFlight && F.boomerangInFlight(String(ev.uid)))) M.whiffPast(a); break; }
-    case 'overwhelmHQ': { const c = hq(ev.targetSide); if(c) M.stampede(el(ev.attUid), c); break; }
+    case 'overwhelmHQ': { const c = hq(ev.targetSide); if(c && !(FX.V && FX.V.owns && FX.V.owns(ev)) /* 2026-11-27 (VFX2): FX.V.stampedeRun instead */) M.stampede(el(ev.attUid), c); break; }
     case 'pierceHQ': { const F = S(), c = hq(ev.targetSide), u = env.match && env.match._lastHitOf && env.match._lastHitOf[ev.attUid], from = u != null ? el(u) : el(ev.attUid);
       if(F && F.pierce && c && from) F.pierce(from, c, null, {draw:0, flight:220}); break; } // SkillFX.pierce: the shot carries on out of the unit into the castle
     case 'friction': { const t = el(ev.targetUid); if(t) M.frictionSparks(el(ev.attUid), t); break; }
