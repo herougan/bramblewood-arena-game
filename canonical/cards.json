@@ -10365,13 +10365,12 @@
     "cost": 1,
     "wait": 1,
     "attack": 3,
-    "health": 6,
+    "health": 7,
     "archetypes": [
       "Raccoon"
     ],
     "effects": {
-      "stealth": true,
-      "nocturnal": true
+      "foraging": 2
     },
     "flavor": "Never seen entering the castle. Only ever seen leaving it, richer.",
     "dmgType": "physical",
@@ -10386,7 +10385,7 @@
       "Procyonid"
     ],
     "animal": "raccoon",
-    "creatorNote": "2026-10-17 (balance pass): 7/12 -> 8/12 (win-rate: below its band (35-60%)). 2026-10-19 (card pass, package CB): source: 15-3 Stoat Ambush (skirmish, The Long Grass) (it fights there; 1 fight(s) field it). 2026-10-19 halve (BF5): was 8/12. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/5. 2026-10-21 human pass I (owner's hub skill costs): 4/6 -> 4/7. 2026-10-22 BF7 re-fit (half-miss x1.5 on the stats only, Fragile x0.7 on the caps, the four pass III cuts): 4/7 -> 4/8. 2026-10-24 BAL2 re-fit (DF-1: Map term 0.2 a map, first main-line map): 4/8 -> 4/9. 2026-10-28 BAL7 M1 re-balance (contribution 9.4, +11.3 vs its band): 4/9 -> 3/7. 2026-10-31 BUDGET2 re-fit (3A + H, N x 1.13; owner RECOST1-6): was 3/7 (cap-1 use 0.96 of N under 2A + H, 1.03 under 3A + H, now 0.98).",
+    "creatorNote": "2026-10-17 (balance pass): 7/12 -> 8/12 (win-rate: below its band (35-60%)). 2026-10-19 (card pass, package CB): source: 15-3 Stoat Ambush (skirmish, The Long Grass) (it fights there; 1 fight(s) field it). 2026-10-19 halve (BF5): was 8/12. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/5. 2026-10-21 human pass I (owner's hub skill costs): 4/6 -> 4/7. 2026-10-22 BF7 re-fit (half-miss x1.5 on the stats only, Fragile x0.7 on the caps, the four pass III cuts): 4/7 -> 4/8. 2026-10-24 BAL2 re-fit (DF-1: Map term 0.2 a map, first main-line map): 4/8 -> 4/9. 2026-10-28 BAL7 M1 re-balance (contribution 9.4, +11.3 vs its band): 4/9 -> 3/7. 2026-10-31 BUDGET2 re-fit (3A + H, N x 1.13; owner RECOST1-6): was 3/7 (cap-1 use 0.96 of N under 2A + H, 1.03 under 3A + H, now 0.98). 2026-11-28 (CARDFIX1, owner 11-27 09:47 settled decisions): CARDVET1-3 b: Stealth (Map 12) and Nocturnal (Map 7) sit on Map 2's side list; the raccoon that comes home richer is a forager: Foraging (Map 1 row); was 3/6 {\"stealth\":true,\"nocturnal\":true}.",
     "source": {
       "kind": "pack",
       "tier": 3,
@@ -10397,7 +10396,10 @@
         "health": 1
       },
       "7": {
-        "health": 2
+        "health": 2,
+        "skills": {
+          "foraging": 3
+        }
       },
       "10": {
         "health": 2
