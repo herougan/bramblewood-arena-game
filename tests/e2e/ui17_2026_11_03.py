@@ -136,7 +136,11 @@ async def overview(b, url, w):
     await pg.evaluate("(()=>{ sbClient.rpc = async ()=> ({error: null, data: [{fights_1h: 6, matches_1h: 2, db_connections: 10, db_size_mb: 32}]}); window.__ui17Net.err = 0; })()")
     await pg.click('.ui17-ov [data-ov-refresh]'); await pg.wait_for_timeout(1200)
     r2 = await pg.evaluate("(()=>{ const t = {}; document.querySelectorAll('.ui17-ov .ui17-tile').forEach(x=> t[x.dataset.ov] = x.textContent.replace(/\\s+/g, ' ').trim()); const h = document.querySelector('.ui17-ov .ui17-health'); return {t, ok: h.classList.contains('is-ok') === (window.__ui17Net.err === 0), cls: h.className, net: JSON.stringify(window.__ui17Net), txt: h.textContent}; })()")  # the dot is green exactly when no request failed (a real request may fail meanwhile)
-    ok(r2['t'].get('fights', '').startswith('6') and r2['t'].get('matches', '').startswith('2') and '32 MB' in r2['t'].get('conns', '') and r2['ok'], f'after "apply it": the server tiles fill in {r2}')
+    # 2026-11-28 (TESTFIX14): the page's own live Supabase reads (raid bosses, progress) keep running; offline (a request failed with status 0) they
+    # bump the error count after it was zeroed, so the health colour check needs the live server: skipped offline, the tiles are still checked
+    offline = '"status":0' in r2['net']
+    if offline: print('  skip  the health colour after Refresh (offline: live Supabase reads fail)')
+    ok(r2['t'].get('fights', '').startswith('6') and r2['t'].get('matches', '').startswith('2') and '32 MB' in r2['t'].get('conns', '') and (r2['ok'] or offline), f'after "apply it": the server tiles fill in {r2}')
     await pg.screenshot(path=shot('overview-applied', w))
     await done(pg)
 
@@ -150,18 +154,18 @@ async def to_summary(pg):
 async def buy(b, url, w):
     print(f'-- Buy again ({w})')
     pg = await fresh(b, url, w); await pg.evaluate("(()=>{ " + V.OWN + " })()"); await pg.add_style_tag(content=NOTOAST)
-    await pg.evaluate("(()=>{ isSignedIn = ()=> true; myCurrencies.gold = 120; myCurrencies.gems = 0; saveCurrencies(true); switchTab('shop'); })()"); await pg.wait_for_timeout(600)
+    await pg.evaluate("(()=>{ isSignedIn = ()=> true; myCurrencies.gold = 200; myCurrencies.gems = 0; saveCurrencies(true); switchTab('shop'); })()"); await pg.wait_for_timeout(600)  # 2026-11-28 (TESTFIX14): ECON1 phase 2 (68acb3866, 2026-11-23) prices the Pouch 80 Leaves (was 50): 200 -> 120 -> 40
     await pg.evaluate("(()=>{ buyPack('bronze', null, 1); })()"); await pg.wait_for_timeout(900)
     ok(await to_summary(pg) == 'summary', 'the first pouch reaches its summary')
     a = await pg.evaluate("(()=>{ const b = document.getElementById('poBuyAgain'); return b && {dis: b.disabled, txt: b.textContent.replace(/\\s+/g, ' ').trim(), gold: myCurrencies.gold}; })()")
-    ok(a and not a['dis'] and 'Buy again' in a['txt'] and '50' in a['txt'] and a['gold'] == 70, f'Buy again with its price (50), you have 70 {a}')
+    ok(a and not a['dis'] and 'Buy again' in a['txt'] and '80' in a['txt'] and a['gold'] == 120, f'Buy again with its price (80), you have 120 {a}')
     await pg.screenshot(path=shot('buy-again', w))
     await pg.click('#poBuyAgain'); await pg.wait_for_timeout(900)
     g = await pg.evaluate("(()=>({gold: myCurrencies.gold, open: !document.getElementById('packOpenOverlay').hidden}))()")
-    ok(g['open'] and g['gold'] == 20, f'it opens the next pouch and charges 50 again {g}')
+    ok(g['open'] and g['gold'] == 40, f'it opens the next pouch and charges 80 again {g}')
     ok(await to_summary(pg) == 'summary', 'the second pouch reaches its summary')
     a2 = await pg.evaluate("(()=>{ const b = document.getElementById('poBuyAgain'); return b && {dis: b.disabled, txt: b.textContent.replace(/\\s+/g, ' ').trim(), title: b.title}; })()")
-    ok(a2 and a2['dis'] and '50' in a2['txt'] and a2['title'], f'with 20 left it is disabled, the price and why on it {a2}')
+    ok(a2 and a2['dis'] and '80' in a2['txt'] and a2['title'], f'with 40 left it is disabled, the price and why on it {a2}')
     await pg.screenshot(path=shot('buy-again-short', w))
     await pg.click('#poDone'); await pg.wait_for_timeout(300)
     ok(await pg.evaluate("document.getElementById('packOpenOverlay').hidden"), 'Done closes the opener')
