@@ -85,7 +85,8 @@ async def run(b, url, w):
     # claim tier 4 from the road
     r = await pg.evaluate(E("""const g0 = myCurrencies.gold || 0; document.querySelector('.tr-stop[data-tr-tier="4"]').click(); await new Promise(r=> setTimeout(r, 400));
       return {gold: (myCurrencies.gold || 0) - g0, got: res4TrailState().claimed.includes(4), state: document.querySelector('.tr-stop[data-tr-tier="4"]').className, pick: (document.querySelector('.tr-pick')||{}).textContent};"""))
-    ok(r['gold'] == 60 and r['got'] and 'is-got' in r['state'], f"tapping a ready stop claims it (tier 4: +{r['gold']} Maple Leaves)")
+    # 2026-11-28 (TESTFIX14): ECON1 (98f2a6489, owner BRUP-1 2026-10-30) halved the free lane's Leaves / Dust / Metal: tier 4 pays 30 (was 60)
+    ok(r['gold'] == 30 and r['got'] and 'is-got' in r['state'], f"tapping a ready stop claims it (tier 4: +{r['gold']} Maple Leaves)")
     await pg.evaluate(E("document.querySelector('.tr-stop[data-tr-tier=\"9\"]').click(); await new Promise(r=> setTimeout(r, 300));"))
     await shot(pg, 'road', w, clip='.tr-road-wrap')
     await shot(pg, 'pick', w, clip='#trPick')
@@ -112,7 +113,8 @@ async def run(b, url, w):
       const g0 = myCurrencies.gold || 0, d0 = myCurrencies.dust || 0, held0 = (JSON.parse(localStorage.getItem(HELD_PACKS_KEY) || '[]')).length;
       const st = res4TrailState(); return {month: st.month, pts: st.pts, gold: (myCurrencies.gold || 0) - g0, dust: (myCurrencies.dust || 0) - d0, title: (st.titles || []).length};"""))
     ok(r['month'] != '2026-09' and r['pts'] == 0, f"a new month starts the road again ({r['month']}, {r['pts']})")
-    ok(r['gold'] >= 800 and r['dust'] >= 800 and r['title'] == 1, f"...and pays last month's 28 unclaimed tiers (+{r['gold']} Maple Leaves, +{r['dust']} Dust, the title)")
+    # 2026-11-28 (TESTFIX14): ECON1 halving (BRUP-1): tiers 3-30 pay 400 Leaves + 400 Dust (were 800 each); kits not halved
+    ok(r['gold'] >= 400 and r['dust'] >= 400 and r['title'] == 1, f"...and pays last month's 28 unclaimed tiers (+{r['gold']} Maple Leaves, +{r['dust']} Dust, the title)")
     await close(pg)
     # the map cluster's 🚐 and the Group Dungeon's name
     pg = await page(b, url, w)
