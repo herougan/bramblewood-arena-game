@@ -103,7 +103,8 @@ async def run(b, url, w):
       return {fresh: st.fresh.map(x=> x.k), key: skillNewKey(), tags: (html.match(/class="sk-new"/g) || []).length, err: html.startsWith('ERR') ? html : ''}; })()""")
     # 2026-11-04 (REG1): ENG22 (DESIGN1-2 / call ENG22-4) gates Taunt, Reach, Inspiring, Esprit, Boomerang, Evasive, Molting, Frostbite and
     # Fire Arrow to Map 1, so Map 1 now reveals them too; the NEW! mark is still Diurnal's alone, and never Crepuscular / Nocturnal
-    E22 = {'taunt', 'reach', 'inspiring', 'esprit', 'boomerang', 'evasive', 'molting', 'frostbite', 'fireArrow'}
+    # 2026-11-28 (TESTFIX14): UI23 (00d036906, 2026-11-06, owner ENG23-4 b) reveals every Delivery form from Map 1 too
+    E22 = {'taunt', 'reach', 'inspiring', 'esprit', 'boomerang', 'evasive', 'molting', 'frostbite', 'fireArrow', 'delivery'}
     ok(r['fresh'][:1] == ['diurnal'] and set(r['fresh'][1:]) <= E22 and not {'crepuscular', 'nocturnal'} & set(r['fresh']) and r['key'] == 'diurnal', f"6. Map 1 marks Diurnal only, not Crepuscular / Nocturnal {r['fresh']}")
     ok(r['tags'] == 1 and not r['err'], f"6. exactly one NEW! tag in a card's text {r}")
     await pg.close()
@@ -139,9 +140,10 @@ async def run(b, url, w):
     await pg.click('#epCapsule'); await pg.wait_for_timeout(300)
     r2 = await pg.evaluate("({caps: energyCapsules(), e: settleEnergy().current})")
     ok(r2['caps'] == 1 and r2['e'] == r['e0'] + 8, f'7. Use spends one capsule for +8 Energy ({r2})')
-    r = await pg.evaluate("""(async()=>{ const host = document.querySelector('.toast-host'); const n0 = host ? host.children.length : 0; grantEgg('woodland', 'rw4'); await new Promise(r=> setTimeout(r, 300));
-      return {n0, n1: host ? host.children.length : 0, text: Array.from(document.querySelectorAll('.toast')).map(t=> t.textContent).join('|')}; })()""")
-    ok(r['n1'] == r['n0'] and 'egg' not in r['text'].lower(), f'8. getting an egg shows no toast {r}')
+    # 2026-11-28 (TESTFIX14): only the toasts that came after grantEgg, and only an egg one fails: a late toast from an earlier grant (a Shiny roll) is not the egg's
+    r = await pg.evaluate("""(async()=>{ const old = new Set(document.querySelectorAll('.toast')); grantEgg('woodland', 'rw4'); await new Promise(r=> setTimeout(r, 300));
+      return {text: Array.from(document.querySelectorAll('.toast')).filter(t=> !old.has(t)).map(t=> t.textContent).join('|')}; })()""")
+    ok('egg' not in r['text'].lower() and '🥚' not in r['text'], f'8. getting an egg shows no toast {r}')
     ok(not pg._errs, f'7/8. no page errors {pg._errs[:2]}')
     await pg.close()
 
