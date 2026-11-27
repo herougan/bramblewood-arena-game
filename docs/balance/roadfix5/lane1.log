@@ -1,0 +1,4 @@
+15-5 target 66 (58-74) size 20 start {"adder-ambusher":1,"elderhorn-monarch":4,"hoopoe-herald":1,"siege-rhino":2,"sworn-shieldbearer":4,"warhorse-charger":4,"village-miller":4} problems []
+start {"adder-ambusher":1,"elderhorn-monarch":4,"hoopoe-herald":1,"siege-rhino":2,"sworn-shieldbearer":4,"warhorse-charger":4,"village-miller":4} 72.7
+round 1: cur 80/72.7; 31 legal, 31 read + 14 predicted (of 45); top: -4 elderhorn-monarch +4 boreal-elk 63.3/66 | -4 elderhorn-monarch +4 cataphract-destrier 65/66.3 | -4 elderhorn-monarch +4 pronghorn-racer 66.7/67.3 | -1 elderhorn-monarch -4 village-miller +1 adder-ambusher +4 pronghorn-racer 70/71 | -1 elderhorn-monarch -1 hoopoe-herald +1 adder-ambusher +1 plains-zebra 70/74
+RESULT 15-5 {"adder-ambusher":1,"hoopoe-herald":1,"siege-rhino":2,"sworn-shieldbearer":4,"warhorse-charger":4,"village-miller":4,"boreal-elk":4} 66 {} moves: -4 elderhorn-monarch +4 boreal-elk problems: []
