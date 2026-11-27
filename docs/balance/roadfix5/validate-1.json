@@ -1,0 +1,86 @@
+[
+ {
+  "key": "15-5",
+  "target": 66,
+  "lo": 58,
+  "hi": 74,
+  "b9": 76.5,
+  "b5": 75.8,
+  "a9": 67.5,
+  "a5": 64.8,
+  "keep": true,
+  "why": "in band on both"
+ },
+ {
+  "key": "15-6",
+  "target": 60,
+  "lo": 52,
+  "hi": 68,
+  "b9": 78,
+  "b5": 75.5,
+  "a9": 70,
+  "a5": 74,
+  "keep": false,
+  "why": "not in band / not closer on both"
+ },
+ {
+  "key": "18-3",
+  "target": 78,
+  "lo": 70,
+  "hi": 86,
+  "b9": 90,
+  "b5": 89.8,
+  "a9": 89.5,
+  "a5": 89.8,
+  "keep": false,
+  "why": "not in band / not closer on both"
+ },
+ {
+  "key": "18-7",
+  "target": 40,
+  "lo": 30,
+  "hi": 49,
+  "b9": 54.5,
+  "b5": 51.5,
+  "a9": 43.5,
+  "a5": 43.5,
+  "keep": true,
+  "why": "in band on both"
+ },
+ {
+  "key": "19-5",
+  "target": 60,
+  "lo": 52,
+  "hi": 68,
+  "b9": 47.8,
+  "b5": 47.3,
+  "a9": 46,
+  "a5": 49.5,
+  "keep": false,
+  "why": "not in band / not closer on both"
+ },
+ {
+  "key": "19-6",
+  "target": 40,
+  "lo": 30,
+  "hi": 49,
+  "b9": 23.3,
+  "b5": 19.8,
+  "a9": 26.5,
+  "a5": 21,
+  "keep": false,
+  "why": "not in band / not closer on both"
+ },
+ {
+  "key": "20-B-3",
+  "target": 60,
+  "lo": 48,
+  "hi": 72,
+  "b9": 72.3,
+  "b5": 73.8,
+  "a9": 65.3,
+  "a5": 69.8,
+  "keep": true,
+  "why": "in band on both"
+ }
+]
