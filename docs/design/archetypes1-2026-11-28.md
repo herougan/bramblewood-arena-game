@@ -156,3 +156,67 @@ The moment: a foe's unit reads Wait 1 (it acts after the next plays). The board 
 Also an earlier stun with no new skill: Sea Cucumber (On Attacked: stun the attacker, once; real Cuvierian threads) to the Map 10 list. All eight above are kinds of an existing skill or action, so none adds a New! row; R6-R8 need engine work.
 
 CPU note: the CPU never answers a Waiting unit (feelings G1, `aiSwingOdds`). Reactive cards in CPU decks would need `aiPlanPlay` to hold them for a foe at Wait 1: a CPU change, which moves the road (balance-analyst's road check).
+
+## 4. Glass cannons and walls (34 🥂, 25 🚫)
+
+Tags as in `docs/effects-cards-0-20.md`: 🥂 = Health no more than Attack at Level 0; 🚫 = Attack 0. **Designed** = its kit (or the real animal) makes the shape the point: a fast or first-strike killer, a burst, a support you must protect, an egg, a tree. **Accidental** = the stats only fit the budget, or the kit wants the opposite (Thorns, Regenerate, Guardian, Armor, Delivery on a 3-Health body). Fixes keep cap 1 (3 Attack = 9 Health ... 1 Attack trades for 3 Health) and stay at or under the card's current budget use; ↻ = on a main list or Special, so the fix moves road fights. No data changed.
+
+### 🥂 Glass cannons: 8 designed, 24 accidental, 2 items (tag misfires)
+| Card | A/H W | Where | Kit | Verdict | Fix (budget after) |
+|---|---|---|---|---|---|
+| Acorn Chipmunk | 3/3 W0 | starter | none | Accidental | 1/5 + 💀 Cache: draw 1 (D7; 96%) |
+| Cottontail | 3/1 W0 | Map 0 ↻ | none | Accidental: a rabbit with 3 Attack | 1/5 Evasive: it bolts (80%) |
+| Crossed-Eyes | 2/2 W0 | Map 0 ↻ | none | Accidental | 1/5 (75%) |
+| House Cat | 3/3 W0 | Map 0 ↻ | none | Accidental | 2/4 Pounce 1: a cat's pounce, the Map 0 aggro starter (90%) |
+| Meadow Rabbit | 3/3 W0 | Map 1 ↻ | none | Accidental | 2/6 (97%) |
+| Otter Paddler | 3/3 W0 | starter | none | Accidental | 2/6 (97%) |
+| Pond Duck | 3/3 W0 | starter | none | Accidental | 2/6 (97%) |
+| Crimson Recruit | 2/1 W0 | starter | Flying at Level 1 | Accidental | 1/4 (69%) |
+| Shallows Fry | 3/2 W0 | pack | Tide, Hatchling at Level 1 | Accidental: a fry with 3 Attack | 1/8, a Hatchling base (89%) |
+| Blind Cave Fish | 2/2 W0 | Map 8 Special ↻ | Tide, Keen Sense; Evasive at Level 2 | Accidental (60% used) | 2/6 (87%) |
+| Sulfur Vent Crab | 4/3 W1 | Map 20 Special ↻ | Thorns 1, Crab Claws, Tide | Accidental: Thorns wants to be hit | 2/9 (83%) |
+| Rootworm Colony | 4/4 W1 | Mycelium Deep 8 | Poison Barbs 1; Bloom at Level 2 | Accidental: Barbs want to be hit | 2/10 (87%) |
+| Teatime Toad | 4/4 W1 | pack | Regenerate 2 | Accidental: Regenerate wants to live | 2/10 (90%) |
+| Mangrove Manatee | 7/7 W3 | Map 9 ↻ | Regenerate 2, Guardian, Tide | Accidental: a gentle grazer built as a hitter | 2/22, a true Guardian wall (95%) |
+| Orca Vanguard | 7/7 W3 | Map 10 Special ↻ | Cleave 3, Tide | Accidental: a Wait 3 forecast body needs Health to survive its window (F2) | 5/13 (90%) |
+| Boreal Elk | 5/5 W1 | Map 15 ↻ | Cleave 2; Sturdy at Level 5 | Accidental: Sturdy on a glass body | 3/11 (94%) |
+| Riptide Eel | 5/5 W1 | Map 10 ↻ | Tide, Wave | Accidental | 3/11 (100%) |
+| Obsidian Scorpion | 5/4 W1 | Map 19 ↻ | Venomous 2; Armor at Level 5 | Accidental: Armor on a glass body | 3/6 Venomous 1 + 💀 Brood 2 (D6; 79%), or 3/10 (93%) |
+| Quillback Elder | 6/5 W2 | Map 19 ↻ | fire Arrow 1; Armor at Level 4 | Accidental: a porcupine is a defender | 3/14 (91%) |
+| Giant Clam | 5/4 W2 | Map 10 ↻ | Tide, Delivery (pearl) | Accidental: a clam with 5 Attack | 1/16 (90%) |
+| Banded Sea Krait | 4/3 W1 | Map 9 ↻ | Venomous 2, Nocturnal | Accidental: Venomous pays over many hits | 2/9 (92%) |
+| Star-nosed Mole | 5/3 W0 | Basalt Foundry 19 | Purblind, Keen Sense | Accidental: a tiny mole with 5 Attack | 2/12 (86%) |
+| Sunspire Choirmother | 3/3 W2 | pack (faction) | Esprit 2/2, Flying, Diurnal 2/2 | Accidental: a Wait 2 engine dies before it pays | 1/9 (84%) |
+| Rivergate Drummer | 3/3 W1 | pack (faction) | Kin Rally 1 | Accidental: support | 1/9 (80%) |
+| Glass Golem | 6/5 W1 | pack | none | Designed: glass by name ("Please don't touch it") | keep |
+| Nightshade Moth | 2/2 W0 | Map 11 | Flying, Nocturnal, Paralysis Powder | Designed: a stun moth the foe must kill first | keep |
+| Ruby-Throat Duelist | 3/2 W1 | pack (faction) | Swift, Pierce, Flying | Designed: strikes first, dodges | keep |
+| Dune Jackal | 3/2 W0 | Map 18 | Swift, Expose 2 | Designed: a fast skirmisher that strips dodges | keep (3/4 fits, 84%, if wanted) |
+| Cinder Hornet | 3/3 W0 | Map 19 | Flying, lasting Daunt | Designed: a flying stinger | keep |
+| Thorn Shrike | 3/3 W1 | Map 0 Special | Flying, Bleed 2 | Designed: the butcher-bird striker | keep |
+| Bramblewood Lynx | 4/4 W1 | Map 13 | Twin Strike | Designed: an ambush burst | keep |
+| Rabbit Kit | 2/2 W0 | Map 0 | Evasive; Hatchling at Level 1 | Designed: a baby to evolve onto, kept alive by Evasive | keep |
+| Sunfeather Plume | 1/1 | smith | equipment | Item: its stats are a bonus, not a body | the tag should skip equipment |
+| Torch | 3/3 | secret | equipment, Illuminate | Item | the tag should skip equipment |
+
+### 🚫 Walls: 21 designed, 1 accidental, 3 items
+| Card | A/H W | Where | Kit | Verdict | Fix |
+|---|---|---|---|---|---|
+| Mosswing | 0/7 W0 | starter | Flying and Timbered at Level 1 | Accidental: a "Laborer" hummingbird whose kit builds nothing; Timbered only adds Health | 1/4, Flying at Level 1, no Timbered (89%) |
+| Den Bundle, Leathery Egg, Red Dragon Egg, River Bundle, Roe Pearl, Speckled Egg, Woodland Egg, Cocoon | 0/1-0/5 W5-W12 | Nest, quest | Hatchling (Cocoon: Chrysalis) | Designed: eggs hatch | keep |
+| Elder Willow | 0/36 W5 | Map 0 Special | Forestry | Designed: a tree that makes Lumber | keep |
+| Riverworks Bastion | 0/35 W5 | Lilypad Reach 6 | Rampart | Designed: a beaver works that shields the bramble | keep |
+| Coral Polyp Colony | 0/12 W1 | Sunken Depths 11 | Tide, Forestry; Armor at Level 6 | Designed: a sessile builder | keep |
+| Vampire Roost | 0/24 W3 | Map 20 Special | Nocturnal, 2 bats on death | Designed: break it and the bats come out | keep |
+| Limpet Clinger | 0/10 W0 | Map 2 | Tide, Armor 1 | Designed: a limpet clings | keep |
+| Pincushion Urchin | 0/6 W1 | Smugglers' Grotto 7 | Tide, Poison Barbs 2 | Designed: spines only | keep |
+| Pinecone Sapper | 0/15 W1 | Map 16 | Sturdy | Designed by the animal (a pangolin curls up and has no teeth); its flavour ("a very short fuse") promises a blast it doesn't have | keep; reword the flavour |
+| Garden Snail | 0/7 W0 | starter | Slow; Armor at Level 1 | Designed: the teaching blocker | keep |
+| Earthworm | 0/6 W0 | Map 0 | Regenerate at Level 1 | Designed: a worm regrows | keep |
+| Bee Forager | 0/5 W0 | Map 0 | Flying, Nursing | Designed: a nurse that doesn't fight (support, not a wall) | keep |
+| Snail Mail | 0/16 W2 | pack | ⬆️ Draw 2; Armor at Level 4 | Designed: a cycler | keep |
+| Hedge Changeling | 0/5 W1 | pack | Changeling, Swarm | Designed: Attack comes from the Swarm | keep |
+| Krill Swarm | 0/7 W0 | Map 10 | Tide, Swarm | Designed: nothing alone, grows beside its Type | keep |
+| Bark Buckler, Dragonscale Mail, Lava Waders | 0/3-0/11 | smith | equipment | Items | the tag should skip equipment |
+
+Counts: 🥂 8 designed / 24 accidental (11 on a main list or Special: their fix moves road fights); 🚫 21 designed / 1 accidental. After the fixes the tags would hold 8 glass cannons and 21 walls, every one by design.
