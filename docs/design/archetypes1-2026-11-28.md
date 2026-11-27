@@ -1,0 +1,104 @@
+# ARCHETYPES1 (2026-11-28): deck archetypes, On Death, reactive skills, glass cannons and walls (design only)
+
+Owner 2026-11-28 03:07: "Glass cannons and walls use sparingly. They must have been designed for that purpose not just becuase the stat fit. Anyway, besides all the onplay version of buffing and nerfing skills, we need good ondeath skills and … Generate deck archetypes like early game attackers, mid game, and end game controllers. So the cards must facilitate them. So some cards are engines and some generate value over time. Some put the pressure on immediately and are very reactionary - oh protect all this turn cause I see your guys are ready next turn".
+
+Proposal only: no code, data or list changed. The engine (`bramblewood-engine.js`) and `docs/decisions.json` win over this page. Map-list moves stay proposals (owner 11-27 11:22 cancelled list swaps for now).
+
+Sources: `canonical/cards.json` (stats, Wait, Level skills), `canonical/map-pools.json` (lists, Specials, side maps), `docs/effects-cards-0-20.md` (the 400 collectible cards, the 🥂 / 🚫 tags), COMBO1, SKILLS3 / SKILLS3b, `docs/feelings.md` (F2: instant effects small, big effects forecast), the engine (functions named where it matters). Budget % = `tools/skill_costs.js` `budget()` cap 1 at Level 1 (read-only).
+
+"Where" = the card's earliest place on Maps 0-20: `Map N` list, `Map N Special`, or a side map with the map it opens after (Lilypad Reach 6, Smugglers' Grotto 7, Mycelium Deep 8, Sunken Depths 11, Clovermead 12, Sunken Grove 13, Aerie Vault 15, Glimmer Depths 16, Canopy 18, Pale Desert 19, Basalt Foundry 19, Eye of the Volcano / Volcano Lair 20). Wait on Maps 0-20 runs 0-3 for almost every card; 4+ is rare (Gilded Roadwarden, Elderhorn Monarch, Gaur 4; Wild Yak, Elder Willow 5; Ancient Sloth Titan 6).
+
+## 1. Archetypes for Maps 0-20 (8)
+
+| # | Archetype | Plan in one line | Peaks | Biggest gap |
+|---|---|---|---|---|
+| A1 | Early aggro (Rush) | Wait 0 bodies and Pounce trade up before the foe's Wait 1-2 units arrive; Inspiring tops the swings | Maps 0-5 | No finisher before Map 7 (Stealth); Pounce sits on walls (1/14-1/16), not on attackers |
+| A2 | Tempo / reactive (Answer) | Hold an On Play answer for the round a foe's unit reads Wait 1: shield, delay, stun, ambush | Maps 5-20 | Stun arrives on Map 20, +Wait on a Map 8 side map at Level 3; no "this round" defence |
+| A3 | Midrange value (Tide line) | Wait 1 bodies with Armor / Tide hold the line while Foraging, Meiosis and Intimidate grind | Maps 2-10 | Almost no card flow (3 draw cards) and no death value |
+| A4 | Tribe engines (Hive) | Swarm units grow per Kin ally; Broodmother and Progeny refill the board | Maps 0-8 | Swarm reads Types: 4 Bees, 5 Ants on the road; no tribe On Death |
+| A5 | Death engine (Carrion) | Bodies that die into more bodies feed Harbinger, Carrion, Broodmother | Maps 6-13 | One On Death trigger card in 400; the spawners sit on one side map; no sacrifice outlet |
+| A6 | Poison / Bleed attrition | Stack Poison and Bleed, hold the target, let the ticks win | Maps 5-11 | No cash-in card (COMBO1-1); Bleed is wasted on held units (COMBO1 note A) |
+| A7 | Late control (Fortress and forecast) | Walls and Guardians buy rounds for Wait 3+ payoffs and On Ready blows | Maps 9-20 | Three On Ready payoffs, two on Specials; nothing in F2's Wait 5+ row; Gilded Roadwarden's Pounce 6 is instant |
+| A8 | Ranged chip (Archer line) | Arrows and Snipe tick every upkeep from behind Guardians | Maps 3-20 | Fletcher only at Level 6; archers are 1/3-2/6 and fold to any Pounce |
+
+Roles: **starter** (early board), **engine** (makes the deck better each round it lives), **value over time** (wins the long game by itself), **finisher** (ends it), **reactive answer** (played in reply), **protection** (keeps the engine alive).
+
+### A1 Early aggro (Rush)
+| Role | Cards today (where) | Gap |
+|---|---|---|
+| Starter | House Cat 3/3 W0 (Map 0), Meadow Rabbit 3/3 W0 (Map 1), Chipmunk Cavalry 3/4 W0 Guardian (Map 1), Jackrabbit Sprinter Swift (Map 1 Special), Tomcat Swift (Map 3), Peregrine Stooper Flying, Pounce 3, W0 (Map 3) | The 3/3 starters are glass cannons by stat fit (part 4) |
+| Engine | Cricket Drummer Inspiring 1 W0 (Map 1), Robin Redbreast Inspiring 1, Diurnal 2 (Map 1) | none after Map 2 (Conch Herald is a Tide wall) |
+| Value over time | Balloon Archer, arrows at the bramble (Map 3) | - |
+| Finisher | Raccoon Nightcrew Stealth (Smugglers' Grotto 7), Fawn Scout, Cunning Vixen Stealth (Map 12), Mouse Sapper Siege at Level 3 (Map 12) | nothing on Maps 0-6 |
+| Reactive answer | Pounce: Peregrine Stooper, Peak Condor (Map 3), Grass Snake (Map 4) | Pounce mostly rides 1-Attack, 10-16-Health bodies (Fishing Cat, Pine Marten, The Gannet Queen, Chamois Leaper): removal on a wall |
+| Protection | Terrier Pup Guardian W0 (Map 1), Kittiwake Flock Flying Guardian (Map 3) | - |
+
+### A2 Tempo / reactive (Answer)
+| Role | Cards today (where) | Gap |
+|---|---|---|
+| Starter | Grass Snake Pounce 3 (Map 4), Lotus Frog Pounce 1 (Map 4) | - |
+| Engine (card flow) | Worker Ant, On Attack draw (Map 0), Lucky Hopper On Play draw (Clovermead 12) | Daily Post, Snail Mail are pack-only |
+| Reactive answer | Hedgehog Matron ⬆️ Shield every ally (Map 5 Special), Alpine Marmot ⬆️ Shield every ally, Guardian (Map 12), Rot-Swollen Carcass ⬆️ +2 Wait at Level 3 (Mycelium Deep 8), Grass Viper, Adder Ambusher Ambush (Map 15), Antlion Pit Trap (Map 18), Ash Cloud Condor ⬆️ Stun (Map 20), Gaur ⬆️ Stun (Volcano Lair 20) | Nothing on Maps 0-4; no verb aims at "the enemy unit that readies next"; Shield is the only "protect all" verb |
+| Value over time | Honey Fungus Sleeping Powder (Map 7), Apollo Butterfly, Nightshade Moth Paralysis Powder (Map 11) | - |
+| Finisher | Bison Bulldozer, Briarback Hedgehog Bulldoze (Map 12): a held unit lets a big swing through | - |
+| Protection | Amber Cicada ✅ 2 Shield every ally at Level 3 (Map 7) | the only timed (forecast) save |
+
+### A3 Midrange value (Tide line)
+| Role | Cards today (where) | Gap |
+|---|---|---|
+| Starter | Driftwood Crab (Map 2), Snapstick Turtle 4/5 Armor (Map 4), River Mink 4/8 Tide (Map 4), Raft Spider (Map 5) | - |
+| Engine | Conch Herald Inspiring 2 (Map 2), Dolphin Outrider Tide 2 (Map 2, rare from 5), Shoal Shark Tide 3, Swift (Map 4) | Tide pays only on tide fights (Maps 2, 9, 10, Lilypad Reach, Sunken Grove) |
+| Value over time | Hedgerow Shrew, Dormouse Foraging (Map 1), Planarian Meiosis (Map 4), Booming Bittern Intimidate 2 (Map 6), Horseshoe Crab Regenerate at Level 5 (Map 9) | no card advantage; no On Death value |
+| Finisher | Octopus Tactician Octolash (Smugglers' Grotto 7), Ironclaw Fiddler 7/12 W3 (Map 9), Reef Shark 6/13 W3 (Map 10) | - |
+| Reactive answer | Electric Ray, Voltaic Eel and the Wet chain (Map 9), Riptide Eel Wave (Map 10) | - |
+| Protection | The Old Shell Guardian, Armor 2 (Map 2 Special), Fiddler Crab Swarm Guardian (Map 3) | - |
+
+### A4 Tribe engines (Hive)
+| Role | Cards today (where) | Gap |
+|---|---|---|
+| Starter | Honey Bee, Bee Sentry, Bee Forager, Ant Scout, Soldier Ant, Worker Ant (Map 0) | - |
+| Engine | Bee Warden Swarm (Map 1), Fire Ant Raft Swarm, Venomous (Map 5), Wolf Spider Mother Swarm + Broodmother (Map 7) | Bee Warden is 1/2: any Pounce kills the engine |
+| Value over time | Bee Forager Nursing (Map 0), Worker Ant draw (Map 0), Millipede Hauler 3 Worker Ants on death (Mycelium Deep 8) | Growth Sprout maker off the road (COMBO1-2) |
+| Finisher | Gallery Orb-Weaver Web (Map 8), Giant Cave Huntsman Pounce 3 (Map 8) | Bees and Ants have no finisher |
+| Reactive answer | none | no tribe reaction (a 💀 Alarm, part 2) |
+| Protection | Ladybird Guard Guardian, Poison Barbs (Clovermead 12) | late for a Map 0 deck |
+
+### A5 Death engine (Carrion)
+| Role | Cards today (where) | Gap |
+|---|---|---|
+| Starter (fodder) | Planarian Meiosis (Map 4), Millipede Hauler, Rot-Swollen Carcass Progeny (Mycelium Deep 8) | the spawners are on one side map (COMBO1-4); no cheap 💀 bodies |
+| Engine | The Grey Heron Harbinger (Map 6 Special), Wolf Spider Mother Broodmother (Map 7), Tasmanian Devil, Monarch Wingblade Harbinger (Map 13) | - |
+| Value over time | Leopard Slug Carrion at Level 3 (Map 7), Ossuary Lammergeier Carrion 2 (Eye of the Volcano 20) | - |
+| Finisher | Fungal Colossus Progeny at Level 5 (Mycelium Deep 8), Wolfsbane Alpha Carnage at Level 3 (Map 17 Special) | Carnage behind a Level and a Special (SKILLS3-5) |
+| Reactive answer | Sulfur Cinder Moth 💀 2 fire to an adjacent foe (Map 8) | the only On Death trigger among the 400 |
+| Protection | Vampire Roost 0/24, two bats on death (Map 20 Special) | - |
+
+### A6 Poison / Bleed attrition
+| Role | Cards today (where) | Gap |
+|---|---|---|
+| Starter | Thorn Shrike Bleed 2 (Map 0 Special), Raft Spider, Fire Ant Raft Venomous 1 (Map 5), Mosquito Cloud Bleed 1 (Map 6) | - |
+| Engine | Fungus Gnat Cloud, Puffball Poison Powder (Map 7), Cottonmouth Matriarch ⬆️ 2 Poison (Sunken Grove 13) | - |
+| Value over time | Crocodile Ambusher, Black Caiman, Constrictor Coil Constrict (Map 6), Alligator Gar Bleed 3 (Map 6) | Constrict and Paralysis waste Bleed (note A) |
+| Finisher | Puffball Bloom on a Poison kill (Map 7) | no Detonate, Hemorrhage or Deadly Poison card (COMBO1-1) |
+| Reactive answer | Pincushion Urchin Poison Barbs (Smugglers' Grotto 7), Ladybird Guard (Clovermead 12) | 💀 Poisonous is built and on no card |
+| Protection | Hawthorn Shieldbug Guardian, Corrode (Map 7) | - |
+
+### A7 Late control (Fortress and forecast)
+| Role | Cards today (where) | Gap |
+|---|---|---|
+| Starter (walls) | Elder Willow 0/36 W5 (Map 0 Special), Riverworks Bastion Rampart (Lilypad Reach 6), Stalactite Pill Bug 1/23 Guardian, Armor 2 (Map 8), Pinecone Sapper Sturdy (Map 16), Barrel Cactus 1/19 Thorns 2 (Map 18) | - |
+| Engine | Elder Willow, Coral Polyp Colony Forestry (Sunken Depths 11), Badger Lumberjack, Beaver Feller Repair (Map 13), Peat-cutter Vole Bulwark (Sunken Grove 13) | - |
+| Value over time | Booming Bittern Intimidate (Map 6), Wild Yak 5/29 W5 Daunt 2 (Map 11), Bulldoze (Map 12) | - |
+| Finisher (forecast) | Echo Matriarch ✅ 3 to a random foe, W2 (Map 8 Special), Great Horned Owl ✅ 4 to an adjacent foe, W3 (Map 11 Special), Gaboon Viper 8/24 W3 (Map 6 Special), Siege Rhino Siege 3 W3 (Map 15), Elderhorn Monarch Sweep 2 W4 (Map 15) | F2's Wait 5+ row is empty; Gilded Roadwarden (Map 15) Pounces 6 as it lands at W4 (12 in Map 15's tall grass): an instant past F4's cap of about 3 |
+| Reactive answer | Amber Cicada ✅ Shield every ally at Level 3 (Map 7) | - |
+| Protection | the Guardian walls above, Marula Elephant Mighty, Guardian (Map 14) | - |
+
+### A8 Ranged chip (Archer line)
+| Role | Cards today (where) | Gap |
+|---|---|---|
+| Starter | Chipmunk Skirmisher Arrow 2 W0, Eagle Sharpshooter Arrow 3 (Map 3), Hawk Arrowkeeper (Map 3 Special) | 1/3-2/6 bodies |
+| Engine | Eagle-Owl Quartermaster Fletcher at Level 6 (Map 11); Inspiring archers (Conch Herald, Robin Redbreast) | Fletcher at Level 6 (COMBO1-3) |
+| Value over time | Peak Condor Pounce 2 + Arrow 2 (Map 3), Balloon Archer bramble arrows (Map 3), Bombardier Beetle bolt (Mycelium Deep 8) | - |
+| Finisher | Spitting Cobra Snipe 2 (Map 14), Bramblewood Macaque Snipe at Level 2 (Map 14), Fire Salamander, Quillback Elder fire arrows (Map 19), Marine Iguana (Eye of the Volcano 20) | - |
+| Reactive answer | Gallery Orb-Weaver Web: dodgers stop dodging (Map 8) | - |
+| Protection | Terrier Pup (Map 1), Marula Elephant (Map 14), Border Collie (Map 15) Guardians | - |
