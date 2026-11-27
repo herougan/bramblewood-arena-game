@@ -1573,7 +1573,7 @@ M.onEvent = function(ev, env){
       else if(k === 'nullify' && t) M.nullSeal(t);
       else if(k === 'shellDown'){ const s = t || self; if(s) M.shellCrack(s); }
       else if(k === 'rocket' && self) M.rocketLaunch(self, hq(ev.targetSide));
-      else if(k === 'momentum' && self && env.once('momentum' + ev.attUid)) M.momentumTrail(self);
+      else if(k === 'momentum' && self && !(FX.V && FX.V.owns && FX.V.owns(ev)) /* 2026-11-27 (VFX2): FX.V.momentumFlame instead */ && env.once('momentum' + ev.attUid)) M.momentumTrail(self);
       else if(k === 'pack' && self) env.at(420, ()=>{ const s2 = el(ev.attUid); if(s2) M.packHowl(s2, rowCards(s2)); });
       else if(k === 'satiety' && self) M.satietyFull(self);
       else if(k === 'shed'){ const s = t || self; if(s) M.skinShed(s, {molt:!!ev.molt}); }

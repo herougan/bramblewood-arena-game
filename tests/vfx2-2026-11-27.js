@@ -24,7 +24,7 @@ ok(CUES.every(c=> new RegExp('\\n  ' + c + '\\(P\\)\\{').test(V)), 'the VFX2 cue
 const vcss = (V.match(/css\('[^']+', `[\s\S]*?`\);/g) || []).join('\n');
 ok(/css\('aura'/.test(V) && !/(^|[^-])filter\s*:|mix-blend-mode|backdrop-filter/.test(vcss), 'no filter or blend mode in FX.V\'s CSS (the auras are box-shadow and pixel bits)');
 const OWN = 'FX.V && FX.V.owns && FX.V.owns(ev)';
-ok((app.match(/!\(window\.FX && FX\.V && FX\.V\.owns && FX\.V\.owns\(ev\)\)/g) || []).length >= 5, 'the shared looks in arena_app.js step aside for FX.V (gash drip, vines, portal, chain bolt, trigger badge)');
+ok((app.match(/window\.FX && FX\.V && FX\.V\.owns && FX\.V\.owns\(ev\)/g) || []).length >= 6, 'the shared looks in arena_app.js step aside for FX.V (gash drip, vines, portal, chain bolt, trigger badge)');
 ok(rd('bramblewood-fx-a.js').split(OWN).length >= 3 && rd('bramblewood-fx-b.js').includes(OWN), 'FX.A (Stampede paw prints, Momentum chevrons) and FX.B (Decay mould) step aside');
 const IDS = ['sk-gash', 'atk-overwhelm-hq', 'sk-pulverise', 'atk-cull', 'sk-constrict', 'sk-web', 'sk-intimidate', 'st-decay-tick', 'sk-exploit', 'sk-embrittle',
   'sk-harbinger', 'sk-carrion', 'sk-carnage', 'sk-momentum', 'sum-progeny-brood', 'sk-fletcher', 'sk-herbalist', 'sk-pack-leader', 'sk-repair', 'sk-trigger-fired',
@@ -71,6 +71,28 @@ const EVENTS = [
   ['Decay', `fxBatchVfx({type:'decayTick', side:'B', defId:'dormouse', uid:${U('2:-1')}, dmg:1, atk:1})`, 150, 6, 1],
   ['Exploit', `fxBatchVfx(${sfx('exploit', '1:0', '2:0')})`, 150, 5, 4],
   ['Embrittle', `fxBatchVfx(${sfx('brittle', '1:0', '2:0')})`, 150, 3, 1],
+  ['Harbinger', `fxBatchVfx({type:'triggerFired', side:'B', defId:'tasmanian-devil', uid:${U('2:0')}, hook:'onAnyDeath', action:'buff'})`, 150, 6, 2],
+  ['Carrion', `fxBatchVfx(${sfx('carrion', '2:0', '2:0', `, fromUid:${U('1:0')}`)})`, 150, 2, 1],
+  ['Carnage', `fxBatchVfx({type:'statusFx', kind:'stateSkill', name:'carnage', on:true, side:'B', attUid:${U('2:0')}, attDefId:'dust-hyena', targetUid:${U('2:0')}})`, 150, 3, 1],
+  ['Momentum', `fxBatchVfx(${sfx('momentum', '1:0', '1:0')})`, 150, 2, 1],
+  ['Progeny', `fxBatchVfx({type:'spawn', side:'B', defId:'dhole-runner', count:1, cause:'onDeathSpawn', uids:[${U('2:1')}], fromUid:${U('2:1')}, nearUid:${U('2:1')}})`, 300, 6, 2],
+  ['Offspring', `fxBatchVfx({type:'spawn', side:'B', defId:'dhole-runner', count:1, cause:'triggerSpawn', kind:'offspring', uids:[${U('2:1')}], nearUid:${U('2:0')}})`, 300, 6, 2],
+  ['Fletcher', `fxBatchVfx({type:'arrow', side:'A', defId:'hedge-weasel', uid:${U('1:-1')}, targetSide:'B', targetUid:${U('2:0')}, targetDefId:'dhole-matriarch', amount:2})`, 1500, 2, 1],
+  ['Herbalist', `fxBatchVfx({type:'heal', side:'A', attUid:${U('1:1')}, attDefId:'newt-doctor', targetUid:${U('1:0')}, targetDefId:'booming-bittern', amount:2})`, 150, 5, 2],
+  ['Repair', `fxBatchVfx({type:'heal', side:'A', attUid:${U('1:1')}, attDefId:'beaver-feller', targetUid:${U('1:0')}, targetDefId:'booming-bittern', amount:2, cause:'repair'})`, 150, 7, 1],
+  ['Repair (bramble)', `fxBatchVfx({type:'rebuild', side:'A', defId:'beaver-feller', uid:${U('1:1')}, amount:1, repair:true})`, 150, 7, 1],
+  ['Pack Leader', `fxBatchVfx({type:'play', side:'B', defId:'dhole-matriarch', uid:${U('2:0')}, boardSide:'center', slot:0})`, 600, 7, 3],
+  ['On Play trigger', `fxBatchVfx({type:'triggerFired', side:'A', defId:'booming-bittern', uid:${U('1:0')}, hook:'onSpawn', action:'stun'})`, 150, 4, 1],
+  ['On Death trigger', `fxBatchVfx({type:'triggerFired', side:'A', defId:'booming-bittern', uid:${U('1:0')}, hook:'onDeath', action:'damage'})`, 150, 2, 1],
+  ['On Attack trigger', `fxBatchVfx({type:'triggerFired', side:'A', defId:'booming-bittern', uid:${U('1:0')}, hook:'onAttack', action:'draw'})`, 150, 3, 1],
+  ['On Ready trigger', `fxBatchVfx({type:'triggerFired', side:'A', defId:'booming-bittern', uid:${U('1:0')}, hook:'onReady', action:'shield'})`, 150, 2, 1],
+  ['Shock chain', `fxBatchVfx({type:'statusFx', kind:'wetChain', side:'A', targetSide:'B', targetUid:${U('2:-1')}, fromUid:${U('2:-1')}, uids:[${U('2:0')}, ${U('2:1')}], dmgs:[1, 1], amount:2})`, 300, 4, 2],
+  ['Warning Colours', `fxBatchVfx({type:'statusFx', kind:'warningColours', side:'A', attUid:${U('1:0')}, attDefId:'booming-bittern', targetSide:'B', targetUid:${U('2:-1')}, uids:[${U('2:-1')}, ${U('2:0')}], amount:1})`, 300, 5, 1],
+  // 💀 Rend {around} on no card: lent to Booming Bittern's def; the trigger's skull wisp, the burst, then the mark on a unit it hit
+  ['Rend around', `(()=>{ getCardDefs()['booming-bittern'].effects.rendAround = 1; fxBatchVfx({type:'triggerFired', side:'A', defId:'booming-bittern', uid:${U('1:0')}, hook:'onDeath', action:'rend'});
+    fxBatchVfx(${sfx('rend', '1:0', '2:0', ', total:1')}); delete getCardDefs()['booming-bittern'].effects.rendAround; })()`, 1000, 14, 6],
+  // the status tokens: Vulnerable 3 drawn, then 2 after the upkeep (the board's next full draw)
+  ['Token tick', `(()=>{ const c = matchState.players[1].row.center[0]; c.vulnerable = 3; lastBoardSig = {1:null, 2:null}; renderBoard(); c.vulnerable = 2; lastBoardSig = {1:null, 2:null}; renderBoard(); })()`, 300, 2, 1],
 ];
 (async()=>{
   const srv = http.createServer((q, r)=>{ let p = decodeURIComponent(q.url.split('?')[0]); if(p === '/') p = '/index.html'; const f = path.join(ROOT, p);
@@ -85,6 +107,7 @@ const EVENTS = [
   try{
     const pg = await open(false);
     ok(await pg.evaluate(c=> c.every(k=> typeof SoundKit[k] === 'function'), CUES), 'every VFX2 cue is on SoundKit');
+    await pg.evaluate(()=>{ getCardDefs()['newt-doctor'].effects.fletcher = 1; }); // Fletcher's carriers (Armory, Mother Carrier) are not on the board
     for(const [name, js, ms, hi, lo] of EVENTS){
       await level(pg, 'high'); const h = await count(pg, js, ms); await pg.waitForTimeout(700);
       await level(pg, 'low'); const l = await count(pg, js, ms); await pg.waitForTimeout(700);
@@ -99,12 +122,32 @@ const EVENTS = [
     ok(own.high === '110' && own.low === '110' && own.none === '000', `FX.V.owns: gash / constrict at High and Low, not at None; never for a look that adds to the shared one (${JSON.stringify(own)})`);
     ok(await count(pg, `(()=>{ matchState.replayCards = {[${U('2:-1')}]: {defId:'dormouse', hp:9, maxHp:9, atk:5, slot:-1}, [${U('1:-1')}]: {defId:'hedge-weasel', hp:9, maxHp:9, atk:3, slot:-1}}; fxBatchVfx(${hit('1:-1', 'hedge-weasel', '2:-1', 'dormouse')}); matchState.replayCards = null; })()`, 900) === 0, 'Cull on a unit that is not weak: no claw');
     ok(await count(pg, `fxBatchVfx({type:'play', side:'A', defId:'hedge-weasel', uid:${U('1:-1')}, boardSide:'left', slot:-1})`, 500) === 0, 'a unit without Intimidate lands: no glare');
+    ok(await count(pg, `fxBatchVfx({type:'spawn', side:'B', defId:'dhole-runner', count:1, cause:'triggerSpawn', kind:'twin', uids:[${U('2:1')}]})`, 300) === 0, 'another spawn (Twin): no brood pod');
+    ok(await count(pg, `fxBatchVfx({type:'triggerFired', side:'A', defId:'booming-bittern', uid:${U('1:0')}, hook:'onHit', action:'exploit'})`, 150) === 0, 'an On Hit trigger keeps the shared badge (no FX.V look)');
+    ok(await count(pg, `fxBatchVfx({type:'heal', side:'B', attUid:${U('2:0')}, attDefId:'dhole-matriarch', targetUid:${U('2:1')}, targetDefId:'dhole-runner', amount:2})`, 150) === 0, 'a heal on a side without a Herbalist: no leaves');
+    // the trigger badge glows only while FX.V does not draw the trigger's look
+    const badge = await pg.evaluate(async(u)=>{ const el = boardCardEl(u), b = document.createElement('span'); b.className = 'ab-trig'; b.dataset.hook = 'onSpawn'; el.appendChild(b);
+      const ev = {type:'triggerFired', side:'A', defId:'booming-bittern', uid:u, hook:'onSpawn', action:'stun'}, at = l=>{ localStorage.setItem('bramblewood_fx_level', l); applyFxLevel(); b.classList.remove('is-firing'); triggerFiredVfx(ev); return b.classList.contains('is-firing'); };
+      const r = {high: at('high'), low: at('low'), none: at('none'), onHit: (()=>{ at('high'); b.classList.remove('is-firing'); b.dataset.hook = 'onHit'; triggerFiredVfx(Object.assign({}, ev, {hook:'onHit'})); return b.classList.contains('is-firing'); })()};
+      b.remove(); localStorage.setItem('bramblewood_fx_level', 'high'); applyFxLevel(); return r; }, await pg.evaluate(()=> window.__u['1:0']));
+    ok(!badge.high && !badge.low && badge.none && badge.onHit, `the ⚡ badge glow steps aside for FX.V's trigger looks, stays at Effects None and for other hooks (${JSON.stringify(badge)})`);
+    // the skins ladder's auras (Lab only: no skin system yet): static / moving, Low four bits, None the glow only, never on a board tile in the game
+    const au = await pg.evaluate(()=>{ const host = document.createElement('div'); host.style.cssText = 'position:fixed; left:40px; top:40px; width:120px; height:170px; background:#345;'; document.body.appendChild(host);
+      const vis = l=> [...l.children].filter(i=> getComputedStyle(i).display !== 'none').length, set = v=>{ localStorage.setItem('bramblewood_fx_level', v); applyFxLevel(); }, r = {};
+      FX.V.AURAS.forEach(k=>{ const l = FX.V.skinAura(host, k, {moving:true}); r[k] = {bits: vis(l), anim: getComputedStyle(l.firstChild).animationName, glow: getComputedStyle(l).boxShadow !== 'none'}; });
+      const st = FX.V.skinAura(host, 'ember', {}); r.staticAnim = getComputedStyle(st.firstChild).animationName;
+      const lo = FX.V.skinAura(host, 'frost', {moving:true, level:'low'}); r.low = vis(lo); set('low'); r.lowHtml = vis(FX.V.skinAura(host, 'sparkle', {moving:true})); set('none'); const nn = FX.V.skinAura(host, 'sparkle', {moving:true}); r.none = vis(nn); r.noneGlow = getComputedStyle(nn).boxShadow !== 'none'; set('high');
+      r.cleared = FX.V.skinAura(host, null) === null && !host.querySelector('.fxv-aura'); host.remove(); return r; });
+    ok(au.ember.bits === 8 && au.ember.anim === 'fxvEmberUp' && au.frost.anim === 'fxvBreath' && au.sparkle.anim === 'fxvTwinkle' && au.ember.glow && au.staticAnim === 'none', `auras: eight moving bits and a glow each, the static version holds still (${JSON.stringify(au)})`);
+    ok(au.low === 4 && au.lowHtml === 4 && au.none === 0 && au.noneGlow && au.cleared, 'auras: four bits at Effects Low, the glow only at None, cleared with null');
+    ok(!/skinAura\(/.test(app), 'the auras are Lab only: nothing in the game calls FX.V.skinAura yet (no skins, SKINS1)');
     await pg.close();
     // reduced motion: nothing from the VFX2 events or the looks called directly
     const rm = await open(true);
     for(const [name, js, ms] of EVENTS){ await rm.evaluate(()=>{ localStorage.setItem('bramblewood_fx_level', 'high'); applyFxLevel(); }); ok(await count(rm, js, ms) === 0, `${name}: nothing with reduced motion`); }
     ok(await count(rm, `(()=>{ FX.V.gashBleed(boardCardEl(${U('2:-1')})); FX.V.webNet(boardCardEl(${U('1:0')})); FX.V.stampedeRun(null, hqTileEl('B')); })()`, 100) === 0, 'the looks called directly do nothing with reduced motion');
     ok(await rm.evaluate(()=> !FX.V.owns({type:'gash'})), 'reduced motion: FX.V owns nothing (the shared looks keep their own reduced-motion rules)');
+    ok(await rm.evaluate(()=>{ const h = document.createElement('div'); document.body.appendChild(h); const l = FX.V.skinAura(h, 'ember', {moving:true}), r = !l.classList.contains('is-moving') && getComputedStyle(l.firstChild).animationName === 'none'; h.remove(); return r; }), 'reduced motion: the aura is the static version');
     await rm.close();
   }catch(e){ ok(false, 'page run: ' + (e && e.stack || e)); }
   ok(!errs.length, 'no page errors' + (errs.length ? ': ' + errs.slice(0, 3).join(' | ') : ''));

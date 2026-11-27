@@ -157,7 +157,36 @@ Object.assign(SPRITES, {
   corner:  {pal:{r:'#ff4d4d', d:'#8a1414'}, rows:['rrrr', 'rddd', 'rd..', 'rd..']},
   weak:    {pal:{r:'#ff2a2a', w:'#ffd0d0'}, rows:['..r..', '.rwr.', 'rwwwr', '.rwr.', '..r..']},
   glint:   {pal:{w:'#ffffff', c:'#bfeaff'}, rows:['.w.', 'wcw', '.w.']},
+  feather: {pal:{k:'#1a1626', g:'#3d3a5c', s:'#8a7f9e'}, rows:['...k', '..kg', '.kgk', 'kgk.', 'gk..', 's...']},
+  beak:    {pal:{k:'#3a2e2a', w:'#ffffff', o:'#f0b030'}, rows:['.kkk.', 'kkwkk', 'kkkkk', '.kok.', '..o..', '..o..']},
+  moon:    {pal:{r:'#d4232f', R:'#8a0f1a', h:'#ff7a6a'}, rows:['..rrrrr..', '.rhhrrrr.', 'rhRRrrrrr', 'rrrrrrRrr', 'rrrrrRRrr', 'rRrrrrrrr', 'rRRrrrrRr', '.rrrrrrr.', '..rrrrr..']},
+  flame:   {pal:{y:'#fff2a0', o:'#ff9a2a', r:'#e8461e', R:'#a0200e'}, rows:['..y..', '..yo.', '.yoo.', '.oroo', 'orrro', 'orRro', '.oRo.']},
+  grub:    {pal:{g:'#efe0b8', h:'#7a5a2a'}, rows:['.ggh', 'ggg.']},
+  quill:   {pal:{k:'#2e8f8a', g:'#d9fbf7', s:'#9a8a5a'}, rows:['...k', '..kg', '.kgk', 'kgk.', 'gk..', 's...']},
+  leaf:    {pal:{g:'#4fae4a', l:'#a6e07a', d:'#6b4a1e'}, rows:['..gl', '.ggl', 'ggl.', 'd...']},
+  arc:     {pal:{w:'rgba(225,238,255,.95)', b:'rgba(150,180,230,.8)'}, rows:['..wwwwwww..', '.b.......b.', 'w.........w']},
+  dotW:    {pal:{w:'#f2e8d0'}, rows:['ww', 'ww']},
+  paw:     {pal:{p:'#f2e8d0', d:'#8a7a5a'}, rows:['.p.p.', 'p...p', '.ppp.', 'ppppp', '.ddd.']},
+  hammer:  {pal:{h:'#8a96a8', H:'#dfe6ee', w:'#8a5a2a', d:'#5a3a1a'}, rows:['hhhhh', 'hHHHh', 'hhhhh', '..w..', '..w..', '..w..', '..d..']},
 });
+Object.assign(SPRITES, {
+  uparrow: {pal:{w:'#ffffff', y:'#ffe066', o:'#ffb02e'}, rows:['..w..', '.wyw.', 'wyyyw', '..y..', '..y..', '..o..']},
+  skullS:  {pal:{w:'#efe8ff', k:'#2a1a3a'}, rows:['.www.', 'wwwww', 'wkwkw', 'wwwww', '.w.w.']},
+  wisp:    {pal:{v:'rgba(200,170,255,.85)'}, rows:['.v.', 'v..', '.v.', '..v', '.v.', 'v..']},
+  check:   {pal:{g:'#5ce87a', d:'#1f7a36'}, rows:['......g', '.....gd', 'g...gd.', 'gd.gd..', '.ggd...', '..d....']},
+  bolt:    {pal:{w:'#fffbd0', c:'#8fe8ff'}, rows:['.w....ww....', 'wcw..wcc..w.', '...ww....wwc']},
+  warn:    {pal:{y:'#ffd23a', k:'#1a1208', o:'#c98a10'}, rows:['....y....', '...yky...', '...yky...', '..yykyy..', '..yykyy..', '.yyyyyyy.', '.yyykyyy.', 'ooooooooo']},
+  bang:    {pal:{k:'#ffd23a', d:'#7a4a08'}, rows:['kk', 'kk', 'kd', '..', 'kk']},
+  shardR:  {pal:{r:'#ff5a6a', R:'#9a1020'}, rows:['.r.', 'rRr', '.R.']},
+  heartX:  {pal:{r:'#ff4d6d', w:'#ffd0dc', k:'#3a0a14', d:'#8a1c3a'}, rows:['.rr.rr.', 'rwrkrrr', 'rrrkrrr', '.rrkrr.', '..rkr..', '...d...']},
+  minus1:  {pal:{w:'#ffe066', k:'#3a2a08'}, rows:['....w.', '...ww.', 'ww..w.', 'kk..w.', '...www']},
+});
+// palette variants of earlier art
+SPRITES.ringG = {pal:{w:'#c8ffd4', y:'#2fbf5a'}, rows:SPRITES.ring.rows};
+SPRITES.ringY = {pal:{w:'#ffe066', y:'#1a1208'}, rows:SPRITES.ring.rows};
+SPRITES.ringR = {pal:{w:'#ff7a7a', y:'#b0101e'}, rows:SPRITES.ring.rows};
+SPRITES.podL = {pal:{s:'#a8b86a', e:'#6f7f3a', o:'#3f4a1e'}, rows:SPRITES.shellL.rows};
+SPRITES.podR = {pal:{s:'#a8b86a', e:'#6f7f3a', o:'#3f4a1e'}, rows:SPRITES.shellR.rows};
 
 // ---- sounds: each cue a named SoundKit method built from SoundKit.prim (tone / noise / fnoise / sweep), behind the same volume gate ----
 const CUES = {
@@ -200,6 +229,23 @@ Object.assign(CUES, {
   glareGrowl(P){ P.sweep(120, 85, 0.32, 'sawtooth', 0.04); P.fnoise(0.3, 0.04, {type:'lowpass', freq:400, attack:0.04, crackle:0.03}); },
   rotCreep(P){ P.fnoise(0.34, 0.05, {type:'bandpass', freq:500, freqEnd:240, q:1.5, attack:0.06}); P.sweep(300, 180, 0.3, 'triangle', 0.02, 0.05); },
   lockOn(P){ P.tone(1700, 0.03, 'square', 0.02); P.tone(1700, 0.03, 'square', 0.02, 0.07); P.tone(2400, 0.09, 'sine', 0.03, 0.15); },
+  crowCaw(P){ P.sweep(900, 620, 0.12, 'sawtooth', 0.025); P.sweep(860, 600, 0.12, 'sawtooth', 0.02, 0.16); P.fnoise(0.2, 0.03, {type:'bandpass', freq:1800, q:1, attack:0.01, delay:0.05}); },
+  peck(P){ [0, 0.09, 0.18].forEach(d=> { P.tone(1500, 0.02, 'square', 0.025, d); P.fnoise(0.02, 0.04, {type:'highpass', freq:3000, attack:0.001, delay:d}); }); P.tone(880, 0.1, 'sine', 0.025, 0.28); },
+  moonPulse(P){ P.tone(110, 0.5, 'sine', 0.08); P.tone(165, 0.5, 'triangle', 0.03, 0.02); P.sweep(220, 330, 0.35, 'sine', 0.025, 0.2); },
+  flameUp(P){ P.fnoise(0.3, 0.06, {type:'bandpass', freq:600, freqEnd:2200, q:0.8, attack:0.03, crackle:0.04}); P.sweep(300, 600, 0.25, 'triangle', 0.025); },
+  broodPop(P){ [0, 0.05, 0.1, 0.14].forEach((d, i)=> P.sweep(500 + i*120, 900 + i*150, 0.04, 'sine', 0.03, d)); P.fnoise(0.12, 0.05, {type:'bandpass', freq:1200, q:1.5, attack:0.002}); },
+  quillGlint(P){ P.fnoise(0.1, 0.03, {type:'highpass', freq:5000, attack:0.01}); P.tone(2640, 0.12, 'sine', 0.025, 0.08); P.tone(3520, 0.1, 'sine', 0.015, 0.12); },
+  leafSwirl(P){ P.fnoise(0.4, 0.04, {type:'bandpass', freq:1500, freqEnd:3500, q:1.2, attack:0.08}); P.sweep(660, 990, 0.3, 'sine', 0.02, 0.1); },
+  howlRing(P){ P.sweep(320, 620, 0.35, 'sine', 0.05); P.sweep(620, 520, 0.3, 'sine', 0.04, 0.35); P.sweep(480, 920, 0.3, 'triangle', 0.015, 0.05); },
+  hammerTink(P){ [0, 0.2].forEach(d=>{ P.tone(1800, 0.05, 'square', 0.03, d); P.tone(2700, 0.08, 'sine', 0.025, d + 0.005); P.fnoise(0.04, 0.05, {type:'highpass', freq:4000, attack:0.001, delay:d}); }); },
+  trigRise(P){ P.sweep(520, 1560, 0.16, 'triangle', 0.035); P.tone(1560, 0.06, 'sine', 0.02, 0.15); },
+  trigWisp(P){ P.sweep(700, 300, 0.3, 'sine', 0.03); P.fnoise(0.3, 0.025, {type:'bandpass', freq:900, freqEnd:400, q:2, attack:0.05}); },
+  trigClash(P){ P.fnoise(0.06, 0.07, {type:'highpass', freq:3800, attack:0.001}); P.tone(2100, 0.07, 'square', 0.02, 0.01); P.tone(1400, 0.1, 'triangle', 0.025, 0.03); },
+  trigCheck(P){ P.tone(880, 0.06, 'sine', 0.035); P.tone(1320, 0.12, 'sine', 0.035, 0.07); },
+  wetZap(P){ P.fnoise(0.08, 0.07, {type:'highpass', freq:3000, attack:0.001, crackle:0.06}); [0.07, 0.14, 0.21].forEach(d=> P.fnoise(0.05, 0.05, {type:'bandpass', freq:2400, q:2, attack:0.001, delay:d})); P.tone(140, 0.2, 'sawtooth', 0.02); },
+  warnPulse(P){ [0, 0.12].forEach(d=> P.tone(1240, 0.08, 'square', 0.03, d)); P.sweep(900, 600, 0.2, 'triangle', 0.02, 0.24); },
+  rendBurst(P){ P.fnoise(0.18, 0.09, {type:'bandpass', freq:1600, freqEnd:500, q:1, attack:0.002}); P.sweep(600, 200, 0.22, 'sawtooth', 0.025, 0.02); },
+  tokenTock(P){ P.tone(1100, 0.03, 'square', 0.02); P.tone(740, 0.06, 'sine', 0.025, 0.04); },
   iceCrack(P){ P.fnoise(0.04, 0.1, {type:'highpass', freq:3500, attack:0.001}); P.fnoise(0.05, 0.07, {type:'highpass', freq:2800, attack:0.001, delay:0.08}); P.tone(3200, 0.12, 'sine', 0.02, 0.12); },
 });
 M.CUES = Object.keys(CUES);
@@ -550,15 +596,170 @@ M.embrittleCrack = function(t, o){ o = o || {}; const c = begin(t); if(!c) retur
   if(!lowOf(o)) [[-.3, -.3], [.28, .32]].forEach(([fx, fy], i)=> ps.push(fly('glint', c.x + fx*c.w, c.y + fy*c.h, px, POP(.3), 240/sp, {ease:steps(4), delay:(120 + i*40)/sp})));
   return all(ps); };
 
+// ---- deaths and growth ----
+// Harbinger: crow feathers drift in from above and gather into the card, a plus (~420 ms)
+M.harbingerFeathers = function(el, o){ o = o || {}; const c = begin(el); if(!c) return NONE(); const px = pxFor(c.w), sp = speedOf(o), ps = [], n = lowOf(o) ? 2 : 5, R = Math.max(c.w, c.h)*.62;
+  for(let i = 0; i < n; i++){ const a = -Math.PI/2 + (i - (n - 1)/2)*.7, dx = Math.cos(a)*R, dy = Math.sin(a)*R;
+    ps.push(fly('feather', c.x, c.y, px, [{transform:`translate(${dx}px, ${dy}px) rotate(${-40 + i*20}deg)`, opacity:0}, {transform:`translate(${dx*.7}px, ${dy*.7}px) rotate(${i*15}deg)`, opacity:1, offset:.3},
+      {transform:'translate(0,0) rotate(0deg) scale(.6)', opacity:1, offset:.8}, {transform:'translate(0,0) scale(.3)', opacity:0}], 360/sp, {ease:steps(7), delay:(i*15)/sp})); }
+  if(!lowOf(o)) ps.push(fly('plus', c.x, c.y, px, POP(.3, -c.h*.15), 200/sp, {ease:steps(4), delay:220/sp}));
+  return all(ps); };
+// Carrion: a beak pecks at the card three times as it feeds, a plus (380 ms)
+M.carrionPeck = function(el, o){ o = o || {}; const c = begin(el); if(!c) return NONE(); const px = pxFor(c.w) + 1, sp = speedOf(o), ps = [], k = lowOf(o) ? 1 : 3;
+  const kf = [{transform:'translateY(0)', opacity:0}, {transform:'translateY(0)', opacity:1, offset:.08}];
+  for(let i = 0; i < k; i++){ const t0 = .12 + i*.24; kf.push({transform:`translateY(${c.h*.12}px)`, opacity:1, offset:t0 + .08}, {transform:'translateY(0)', opacity:1, offset:t0 + .2}); }
+  kf.push({transform:'translateY(-4px)', opacity:0});
+  ps.push(fly('beak', c.x + c.w*.18, c.y - c.h*.42, px, kf, 380/sp, {ease:steps(10)}));
+  if(!lowOf(o)) ps.push(fly('plus', c.x - c.w*.15, c.y, px - 1, POP(.3, -c.h*.15), 240/sp, {ease:steps(4), delay:140/sp}));
+  return all(ps); };
+// Carnage: its third death lands: a blood moon rises over the card and pulses twice (600 ms, a state turning on)
+M.carnageMoon = function(el, o){ o = o || {}; const c = begin(el); if(!c) return NONE(); const px = pxFor(c.w) + 1, sp = speedOf(o), ps = [], y = c.y - c.h*.3;
+  ps.push(fly('moon', c.x, y, px, [{transform:`translateY(${c.h*.25}px) scale(.5)`, opacity:0}, {transform:'translateY(0) scale(1)', opacity:1, offset:.35}, {transform:'translateY(0) scale(1.08)', opacity:1, offset:.55},
+    {transform:'translateY(0) scale(1)', opacity:1, offset:.8}, {transform:'translateY(-4px) scale(1)', opacity:0}], 600/sp, {ease:steps(9)}));
+  if(!lowOf(o)) [0, 1].forEach(i=> ps.push(fly('ringR', c.x, y, px - 1, [{transform:'scale(.5)', opacity:0}, {transform:'scale(.6)', opacity:1, offset:.1}, {transform:'scale(2.4)', opacity:0}], 300/sp, {ease:steps(6), delay:(200 + i*100)/sp})));
+  return all(ps); };
+// Momentum: a kill-streak flame at the card's corner, bigger with each kill this fight (o.stacks 1-3), flickering (400 ms)
+M.momentumFlame = function(el, o){ o = o || {}; const c = begin(el); if(!c) return NONE(); const px = pxFor(c.w) + 1, sp = speedOf(o), n = Math.max(1, Math.min(3, o.stacks | 0 || 1)), s1 = .7 + .2*n, x = c.x - c.w*.3, y = c.y - c.h*.34, ps = [];
+  ps.push(fly('flame', x, y, px, [{transform:'translateY(4px) scale(.3)', opacity:0}, {transform:`translateY(0) scale(${s1*.8})`, opacity:1, offset:.3}, {transform:`translateY(-2px) scale(${s1})`, opacity:1, offset:.6},
+    {transform:`translateY(-6px) scale(${s1*1.05})`, opacity:0}], 400/sp, {ease:steps(6)}));
+  if(!lowOf(o)) ps.push(fly('flame', x, y - 2, px, [{transform:`scale(${s1*.9})`, opacity:0}, {transform:`scale(${s1*.9})`, opacity:0, offset:.3}, {transform:`scale(${s1*.95})`, opacity:.85, offset:.4}, {transform:`scale(${s1})`, opacity:0, offset:.5},
+    {transform:`scale(${s1})`, opacity:.85, offset:.62}, {transform:`scale(${s1})`, opacity:0}], 400/sp, {ease:steps(6), extra:'scale:-1 1;'}));
+  return all(ps); };
+// Progeny / Offspring: a spotted brood pod splits where the new unit lands and grubs wriggle out (in place of the summon portal; 360 ms)
+M.broodBurst = function(el, o){ o = o || {}; const c = begin(el); if(!c) return NONE(); const px = pxFor(c.w), sp = speedOf(o), ps = [], y = c.y + c.h*.1;
+  [['podL', -1], ['podR', 1]].forEach(([nm, s])=> ps.push(fly(nm, c.x + s*sprite(nm, px).w*.5, y, px, [{transform:'translate(0,0) rotate(0deg)', opacity:1}, {transform:`translate(${s*c.w*.36}px, ${-c.h*.1}px) rotate(${s*70}deg)`, opacity:1, offset:.55},
+    {transform:`translate(${s*c.w*.46}px, ${c.h*.12}px) rotate(${s*110}deg)`, opacity:0}], 360/sp, {ease:steps(6)})));
+  if(!lowOf(o)) for(let i = 0; i < 4; i++){ const a = -Math.PI*(.1 + .8*i/3);
+    ps.push(fly('grub', c.x, y, px, [{transform:'translate(0,0) scale(.5)', opacity:0}, {transform:`translate(${Math.cos(a)*c.w*.25}px, ${Math.sin(a)*c.h*.2}px) scale(1)`, opacity:1, offset:.45},
+      {transform:`translate(${Math.cos(a)*c.w*.34}px, ${Math.sin(a)*c.h*.12 + c.h*.08}px) scale(1)`, opacity:0}], 320/sp, {ease:steps(6), delay:40/sp, extra: Math.cos(a) < 0 ? 'scale:-1 1;' : ''})); }
+  return all(ps); };
+
+// ---- team ----
+// Fletcher: a feather twirls down onto the arrow's mark and glints (360 ms)
+M.fletcherGlint = function(t, o){ o = o || {}; const c = begin(t); if(!c) return NONE(); const px = pxFor(c.w) + 1, sp = speedOf(o), ps = [], x = c.x + c.w*.22, y = c.y - c.h*.22;
+  if(!lowOf(o)) ps.push(fly('quill', x, y, px, [{transform:`translate(${-c.w*.2}px, ${-c.h*.25}px) rotate(-50deg)`, opacity:0}, {transform:'translate(0,0) rotate(0deg)', opacity:1, offset:.45},
+    {transform:`translate(${c.w*.05}px, ${c.h*.12}px) rotate(25deg)`, opacity:0}], 360/sp, {ease:steps(6)}));
+  ps.push(fly('glint', x, y, px, [{transform:'scale(.2) rotate(0deg)', opacity:0}, {transform:'scale(1.4) rotate(45deg)', opacity:1, offset:.4}, {transform:'scale(.6) rotate(90deg)', opacity:0}], 240/sp, {ease:steps(5), delay:120/sp}));
+  return all(ps); };
+// Herbalist: leaves swirl round the healed unit and lift away (400 ms)
+M.herbLeaves = function(el, o){ o = o || {}; const c = begin(el); if(!c) return NONE(); const px = pxFor(c.w), sp = speedOf(o), n = lowOf(o) ? 2 : 5, R = c.w*.42, ps = [];
+  for(let i = 0; i < n; i++){ const a0 = i/n*Math.PI*2, kf = [];
+    for(let k = 0; k <= 4; k++){ const a = a0 + k*.55, r = R*(1 - k*.15); kf.push({transform:`translate(${(Math.cos(a)*r).toFixed(1)}px, ${(Math.sin(a)*r*.8 - k*c.h*.06).toFixed(1)}px) rotate(${k*60}deg)`, opacity: k === 0 || k === 4 ? 0 : 1, offset:k/4}); }
+    ps.push(fly('leaf', c.x, c.y, px, kf, 380/sp, {ease:steps(8), delay:(i*15)/sp})); }
+  return all(ps); };
+// Pack Leader: howl rings rise off the leader and a dotted line links each packmate, a paw on each (~500 ms, the pack forming)
+M.packHowlRings = function(lead, mates, o){ o = o || {}; const c = begin(lead); if(!c) return NONE(); const px = pxFor(c.w), sp = speedOf(o), ps = [], y = c.y - c.h*.4;
+  for(let i = 0; i < 3; i++) ps.push(fly('arc', c.x, y, px, [{transform:'scale(.5)', opacity:0}, {transform:'scale(.7)', opacity:1, offset:.15}, {transform:`translateY(-3px) scale(${1.8 + i*.3})`, opacity:0}], 340/sp, {ease:steps(6), delay:(i*80)/sp}));
+  if(!lowOf(o)) (mates || []).filter(m=> m && m !== lead && m.isConnected).slice(0, 4).forEach((m, j)=>{ const d = centre(tileOf(m)); if(!d.w) return;
+    for(let k = 1; k <= 3; k++){ const t = k/4; ps.push(fly('dotW', c.x + (d.x - c.x)*t, c.y + (d.y - c.y)*t, px, [{opacity:0}, {opacity:1, offset:.3}, {opacity:0}], 220/sp, {ease:steps(3), delay:(120 + j*40 + k*30)/sp})); }
+    ps.push(fly('paw', d.x, d.y - d.h*.3, px, POP(.3, -d.h*.1), 240/sp, {ease:steps(4), delay:(220 + j*40)/sp})); });
+  return all(ps); };
+// Repair: a hammer swings down on the structure (or the bramble) twice, sparks at each blow (400 ms)
+M.repairSparks = function(el, o){ o = o || {}; const c = begin(el); if(!c) return NONE(); const px = pxFor(c.w) + 1, sp = speedOf(o), ps = [], s = sprite('hammer', px), k = lowOf(o) ? 1 : 2;
+  const hx = c.x + s.h*.8, hy = c.y - s.h*.3, ix = hx - s.h*.82, iy = hy + s.h*.36, kf = [{transform:'rotate(20deg)', opacity:0}];  // the head lands near the card's centre at -80deg
+  for(let i = 0; i < k; i++){ const t0 = i/k; kf.push({transform:'rotate(20deg)', opacity:1, offset:t0 + .05}, {transform:'rotate(-80deg)', opacity:1, offset:t0 + .5/k}); }
+  kf.push({transform:'rotate(-60deg)', opacity:0});
+  ps.push(fly('hammer', hx, hy, px, kf, 400/sp, {ease:steps(8), extra:`transform-origin:${px + s.w/2}px ${px + s.h}px;`}));
+  if(!lowOf(o)) for(let i = 0; i < k; i++) for(let j = 0; j < 3; j++){ const a = -Math.PI*(.15 + .35*j);
+    ps.push(fly('spark', ix, iy, px - 1, [{transform:'translate(0,0)', opacity:1}, {transform:`translate(${(Math.cos(a)*c.w*.25).toFixed(1)}px, ${(Math.sin(a)*c.h*.18).toFixed(1)}px)`, opacity:0}], 180/sp, {ease:steps(4), delay:(i*200 + 90)/sp})); }
+  return all(ps); };
+
+// ---- triggers: each kind gets its own opener (in place of the shared ⚡ badge glow), then the action's own look plays after it ----
+// ⬆️ On Play: arrows burst up off the card · 💀 On Death: a skull wisp rises · ⚔️ On Attack: two swords cross · ✅ On Ready: a check stamps in (≤ 320 ms)
+const TRIG = {onSpawn:'trigRise', onDeath:'trigWisp', onAttack:'trigClash', onReady:'trigCheck'};
+M.TRIG_HOOKS = Object.keys(TRIG);
+M.trigLook = function(el, hook, o){ o = o || {}; const c = begin(el); if(!c || !TRIG[hook]) return NONE(); const px = pxFor(c.w) + 1, sp = speedOf(o), ps = [], lo = lowOf(o);
+  if(hook === 'onSpawn'){ (lo ? [0] : [-.25, 0, .25]).forEach((f, i)=> ps.push(fly('uparrow', c.x + f*c.w, c.y + c.h*.3, px, [{transform:'translateY(0)', opacity:0}, {transform:`translateY(${-c.h*.3}px)`, opacity:1, offset:.35},
+      {transform:`translateY(${-c.h*.75}px)`, opacity:0}], 280/sp, {ease:steps(6), delay:(f ? 40 : 0)/sp})));
+    if(!lo) ps.push(fly('ring', c.x, c.y + c.h*.42, px - 1, [{transform:'scale(.3, .15)', opacity:1}, {transform:'scale(1.6, .5)', opacity:0}], 240/sp, {ease:steps(4)})); }
+  else if(hook === 'onDeath'){ ps.push(fly('skullS', c.x, c.y - c.h*.1, px, [{transform:'translateY(0) scale(.5)', opacity:0}, {transform:`translateY(${-c.h*.2}px) scale(1)`, opacity:1, offset:.35}, {transform:`translateY(${-c.h*.45}px) scale(1)`, opacity:0}], 300/sp, {ease:steps(6)}));
+    if(!lo) ps.push(fly('wisp', c.x, c.y + c.h*.06, px - 1, [{transform:'translateY(0) scaleY(.4)', opacity:0}, {transform:`translateY(${-c.h*.16}px) scaleY(1)`, opacity:.9, offset:.35}, {transform:`translateY(${-c.h*.42}px) scaleY(1.2)`, opacity:0}], 300/sp, {ease:steps(6), delay:20/sp})); }
+  else if(hook === 'onAttack'){ [[1, ''], [-1, 'scale:-1 1;']].slice(0, lo ? 1 : 2).forEach(([s, ex])=> ps.push(fly('sword', c.x, c.y - c.h*.2, px, [{transform:`translate(${-s*c.w*.25}px, 0) rotate(${-s*30}deg)`, opacity:0},
+      {transform:'translate(0,0) rotate(0deg)', opacity:1, offset:.4}, {transform:'translate(0,0) rotate(0deg) scale(1.1)', opacity:1, offset:.7}, {transform:'translate(0,0) scale(1)', opacity:0}], 300/sp, {ease:steps(5), extra:ex})));
+    if(!lo) ps.push(fly('flash', c.x, c.y - c.h*.2, px, [{transform:'scale(.4)', opacity:0}, {transform:'scale(1.5)', opacity:1, offset:.5}, {transform:'scale(1.8)', opacity:0}], 160/sp, {ease:steps(4), delay:110/sp})); }
+  else { ps.push(fly('check', c.x, c.y - c.h*.15, px, [{transform:'scale(1.9)', opacity:0}, {transform:'scale(1)', opacity:1, offset:.3}, {transform:'scale(1)', opacity:1, offset:.75}, {transform:'scale(1)', opacity:0}], 300/sp, {ease:steps(5)}));
+    if(!lo) ps.push(fly('ringG', c.x, c.y - c.h*.15, px - 1, [{transform:'scale(.5)', opacity:0}, {transform:'scale(.6)', opacity:1, offset:.2}, {transform:'scale(1.8)', opacity:0}], 260/sp, {ease:steps(5), delay:60/sp})); }
+  return all(ps); };
+
+// ---- the SKILLS3-B rules ----
+// The shock chain (SKILLS3-7): a bolt hops from the struck Wet unit to each Wet unit chained to it in turn, a spark at each (70 ms a hop)
+M.shockHop = function(from, tos, o){ o = o || {}; if(!from || RM()) return NONE();
+  const pts = [from].concat(tos || []).filter(e=> e && e.isConnected).slice(0, 6).map(e=> centre(tileOf(e))).filter(p=> p.w); if(pts.length < 2) return NONE();
+  const px = Math.max(2, pxFor(pts[0].w) - 1), sp = speedOf(o), s = sprite('bolt', px), ps = [];
+  for(let i = 0; i < pts.length - 1; i++){ const a = pts[i], b = pts[i + 1], L = Math.hypot(b.x - a.x, b.y - a.y), ang = (Math.atan2(b.y - a.y, b.x - a.x)*180/Math.PI).toFixed(1), k = (L / s.w).toFixed(3);
+    ps.push(fly('bolt', (a.x + b.x)/2, (a.y + b.y)/2, px, [{transform:`rotate(${ang}deg) scale(${k*.2}, 1)`, opacity:0}, {transform:`rotate(${ang}deg) scale(${k}, 1)`, opacity:1, offset:.3},
+      {transform:`rotate(${ang}deg) scale(${k}, -1)`, opacity:1, offset:.55}, {transform:`rotate(${ang}deg) scale(${k}, 1)`, opacity:0}], 200/sp, {ease:steps(4), delay:(i*70)/sp}));
+    if(!lowOf(o)) ps.push(fly('flash', b.x, b.y, px + 1, [{transform:'scale(.4)', opacity:0}, {transform:'scale(1.4)', opacity:1, offset:.4}, {transform:'scale(1.8)', opacity:0}], 180/sp, {ease:steps(4), delay:(i*70 + 60)/sp})); }
+  return all(ps); };
+// Warning Colours: a hazard sign pulses where it fell; each enemy that saw it flinches back with a "!" (400 ms)
+M.warningPulse = function(src, saw, o){ o = o || {}; if(RM()) return NONE(); const eyes = (saw || []).filter(e=> e && e.isConnected).slice(0, 5), s0 = src && src.isConnected ? centre(tileOf(src)) : null;
+  const c = s0 && s0.w ? s0 : (eyes[0] ? centre(tileOf(eyes[0])) : null); if(!c || !c.w) return NONE(); const px = pxFor(c.w) + 1, sp = speedOf(o), ps = [];
+  ps.push(fly('warn', c.x, c.y, px, [{transform:'scale(.3)', opacity:0}, {transform:'scale(1.25)', opacity:1, offset:.2}, {transform:'scale(1)', opacity:1, offset:.35}, {transform:'scale(1.15)', opacity:1, offset:.5},
+    {transform:'scale(1)', opacity:1, offset:.75}, {transform:'scale(1)', opacity:0}], 400/sp, {ease:steps(6)}));
+  if(!lowOf(o)){ [0, 1].forEach(i=> ps.push(fly('ringY', c.x, c.y, px - 1, [{transform:'scale(.5)', opacity:0}, {transform:'scale(.6)', opacity:1, offset:.1}, {transform:'scale(2.6)', opacity:0}], 300/sp, {ease:steps(6), delay:(i*90)/sp})));
+    eyes.forEach((e, i)=>{ const d = centre(tileOf(e)); if(!d.w) return; const dy = Math.sign(d.y - c.y) || 1;
+      nudge(e, [{translate:'0 0'}, {translate:`0 ${dy*7}px`, offset:.35}, {translate:`0 ${dy*3}px`, offset:.65}, {translate:'0 0'}], 300/sp, (90 + i*25)/sp);
+      ps.push(fly('bang', d.x + d.w*.32, d.y - d.h*.34, px, POP(.3, -6), 280/sp, {ease:steps(4), delay:(90 + i*25)/sp})); }); }
+  return all(ps); };
+// 💀 Rend {who: around}: red shards burst out of the fallen unit to every unit beside or facing it (src: its element or its centre, kept
+// at its death); each unit hit shows a cracked heart (rendMark) as its Vulnerable tokens land (360 ms each)
+M.rendAround = function(src, o){ o = o || {}; const c = src && src.x != null ? (RM() ? null : src) : begin(src); if(!c || !c.w) return NONE(); const px = pxFor(c.w) + 1, sp = speedOf(o), ps = [], n = lowOf(o) ? 4 : 8;
+  for(let i = 0; i < n; i++){ const a = i/n*Math.PI*2 + .2; ps.push(fly('shardR', c.x, c.y, px, [{transform:'translate(0,0) scale(.5)', opacity:0}, {transform:`translate(${(Math.cos(a)*c.w*.35).toFixed(1)}px, ${(Math.sin(a)*c.h*.3).toFixed(1)}px) scale(1.1)`, opacity:1, offset:.35},
+    {transform:`translate(${(Math.cos(a)*c.w*.9).toFixed(1)}px, ${(Math.sin(a)*c.h*.75).toFixed(1)}px) scale(.8)`, opacity:0}], 360/sp, {ease:steps(6)})); }
+  if(!lowOf(o)) ps.push(fly('ringR', c.x, c.y, px - 1, [{transform:'scale(.4)', opacity:0}, {transform:'scale(.5)', opacity:1, offset:.1}, {transform:'scale(2.2)', opacity:0}], 300/sp, {ease:steps(6)}));
+  return all(ps); };
+M.rendMark = function(t, o){ o = o || {}; const c = begin(t); if(!c) return NONE(); const px = pxFor(c.w) + 1, sp = speedOf(o), ps = [];
+  ps.push(fly('heartX', c.x, c.y - c.h*.12, px, POP(1.6, -c.h*.1), 340/sp, {ease:steps(5)}));
+  if(!lowOf(o)) [-1, 1].forEach(s=> ps.push(fly('shardR', c.x + s*c.w*.12, c.y - c.h*.12, px - 1, [{transform:'translate(0,0)', opacity:0}, {transform:'translate(0,0)', opacity:1, offset:.3}, {transform:`translate(${s*c.w*.25}px, ${c.h*.15}px)`, opacity:0}], 280/sp, {ease:steps(4), delay:80/sp})));
+  return all(ps); };
+// The status tokens ticking down at upkeep (SKILLS3-9): the badge dips and a -1 lifts off it (badge: the .abadge chip; 340 ms)
+M.tokenTick = function(badge, o){ o = o || {}; if(!badge || RM()) return NONE(); const r = badge.getBoundingClientRect(); if(!r.width) return NONE(); const sp = speedOf(o), ps = [], x = r.left + r.width/2;
+  nudge(badge, [{scale:'1'}, {scale:'.7', offset:.3}, {scale:'1.15', offset:.6}, {scale:'1'}], 320/sp);
+  ps.push(fly('minus1', x, r.top - 2, 2, [{transform:'translateY(0)', opacity:0}, {transform:'translateY(-4px)', opacity:1, offset:.3}, {transform:'translateY(-14px)', opacity:0}], 340/sp, {ease:steps(5)}));
+  if(!lowOf(o)) ps.push(fly('spark', x, r.top + r.height/2, 2, [{transform:'scale(.5)', opacity:0}, {transform:'scale(1.4)', opacity:1, offset:.4}, {transform:'scale(1.8)', opacity:0}], 200/sp, {ease:steps(4)}));
+  return all(ps); };
+
+// ---- the skins ladder's outward auras (ART18b / SKINS1: the Detail card and the pack reveal only, never a board tile) ----
+// A layer behind the card (z-index -1 under a host that makes no stacking context: only the glow outside the card's box shows): a box-shadow
+// glow and eight pixel bits round the edge. Static: the bits hold still; moving: embers rise, frost breath puffs outward, sparkles twinkle
+// (CSS steps at ~8 fps, transform / opacity). Effects Low: four bits; Effects None: the glow only; reduced motion: the static version.
+css('aura', `.fxv-aura{position:absolute; inset:-9px; z-index:-1; pointer-events:none; border-radius:14px; contain:layout style;}
+.fxv-aura > i{position:absolute; display:block; width:4px; height:4px; will-change:transform, opacity;}
+.fxv-au-ember{box-shadow:0 0 10px 3px rgba(255,120,40,.55), 0 0 22px 6px rgba(255,70,20,.25);}
+.fxv-au-ember > i{background:#ffb347; box-shadow:0 2px 0 #e8461e;}
+.fxv-au-frost{box-shadow:0 0 12px 4px rgba(160,215,255,.55), 0 0 24px 8px rgba(120,190,255,.22);}
+.fxv-au-frost > i{width:6px; height:4px; background:rgba(240,250,255,.85); box-shadow:2px -2px 0 rgba(200,232,255,.7);}
+.fxv-au-sparkle{box-shadow:0 0 10px 3px rgba(255,236,150,.5), 0 0 20px 6px rgba(255,210,90,.2);}
+.fxv-au-sparkle > i{width:2px; height:2px; background:#fff; box-shadow:2px 0 #ffe066, -2px 0 #ffe066, 0 2px #ffe066, 0 -2px #ffe066;}
+.fxv-aura.is-moving.fxv-au-ember > i{animation:fxvEmberUp 1.6s steps(12, end) infinite;}
+.fxv-aura.is-moving.fxv-au-frost > i{animation:fxvBreath 2.2s steps(16, end) infinite;}
+.fxv-aura.is-moving.fxv-au-sparkle > i{animation:fxvTwinkle 1.4s steps(10, end) infinite;}
+@keyframes fxvEmberUp{from{transform:translateY(0); opacity:0;} 20%{opacity:1;} to{transform:translateY(-34px); opacity:0;}}
+@keyframes fxvBreath{from{transform:translate(0, 0) scale(.6); opacity:0;} 30%{opacity:.9;} to{transform:translate(var(--dx, 10px), -6px) scale(1.6); opacity:0;}}
+@keyframes fxvTwinkle{0%, 100%{transform:scale(.3); opacity:0;} 50%{transform:scale(1.2); opacity:1;}}
+.fxv-aura.is-low > i:nth-child(n+5), html[data-fx="low"] .fxv-aura > i:nth-child(n+5), html[data-fx="none"] .fxv-aura > i{display:none;}
+@media (prefers-reduced-motion: reduce){ .fxv-aura > i{animation:none !important;} }`);
+const AURAS = ['ember', 'frost', 'sparkle'];
+M.AURAS = AURAS;
+const auraHTML = k=> seeded(8, k.length*11 + 5, (r, i)=>{ const e = i % 4, a = (8 + r()*84).toFixed(0), d = (-r()*2).toFixed(2), dx = (e === 1 ? 10 : e === 3 ? -10 : (r() - .5)*12).toFixed(0);
+  const pos = e === 0 ? `left:${a}%; bottom:-2px;` : e === 1 ? `right:-2px; top:${a}%;` : e === 2 ? `left:${a}%; top:-2px;` : `left:-2px; top:${a}%;`;
+  return `<i style="${pos} animation-delay:${d}s; --dx:${dx}px"></i>`; }).join('');
+// skinAura(card, kind, {moving, level}): adds or swaps the card's aura (kind null clears); returns the layer
+M.skinAura = function(card, kind, o){ o = o || {}; if(!card) return null; const old = card.querySelector(':scope > .fxv-aura'); if(old) old.remove(); if(!AURAS.includes(kind)) return null;
+  if(getComputedStyle(card).position === 'static') card.style.position = 'relative';
+  const l = document.createElement('div'); l.className = `fxv-aura fxv-au-${kind}${o.moving && !RM() ? ' is-moving' : ''}${lowOf(o) ? ' is-low' : ''}`; l.setAttribute('aria-hidden', 'true'); l.innerHTML = auraHTML(kind);
+  card.insertBefore(l, card.firstChild); return l; };
+
 // Which events FX.V draws a look of its own for, at the level now: the game's shared look for them steps aside (the trigger badge, Bind's
 // vines, the spawn portal, the shared drip, SkillFX.lightning, FX.A's chevrons and paw prints, FX.B's mould). False under reduced motion /
 // Effects None, so the shared look (or none) stays there.
-const TRIG = {onSpawn:'trigRise', onDeath:'trigWisp', onAttack:'trigClash', onReady:'trigCheck'};
 const lvOK = ()=>{ try{ return typeof fxAtLeast !== 'function' || fxAtLeast('low'); }catch(e){ return true; } };
 M.owns = function(ev){
   if(!ev || RM() || !lvOK()) return false; const T = ev.type;
+  if(T === 'triggerFired') return !!TRIG[ev.hook];
   if(T === 'gash' || T === 'overwhelmHQ' || T === 'decayTick') return true;
-  return T === 'statusFx' && ['constrict', 'webbed'].includes(ev.kind);
+  if(T === 'spawn') return (ev.cause === 'onDeathSpawn' && ev.kind !== 'meiosis') || ev.kind === 'offspring';
+  return T === 'statusFx' && ['constrict', 'webbed', 'momentum', 'wetChain'].includes(ev.kind);
 };
 
 // =====================================================================================================================
@@ -578,6 +779,8 @@ const sideHas = (side, key, env)=> sideCards(side).some(c=> env.fxOf(c.getAttrib
 const facing = (el, side)=>{ const a = centre(tileOf(el)); let best = null, d0 = Infinity;
   rowCards(!isMine(side)).forEach(c=>{ const d = Math.abs(centre(tileOf(c)).x - a.x); if(d < d0){ d0 = d; best = c; } });
   return best && d0 < a.w*.6 ? best : null; };
+const MEMO = new WeakMap(); // per fight: Momentum's kills per unit
+const memo = m=>{ const k = m || M; let s = MEMO.get(k); if(!s){ s = {mom:new Map(), rend:new Map(), tok:new Map()}; MEMO.set(k, s); } return s; }; // + 💀 Rend around's sources, the token counts seen
 function vfx2Event(ev, env, o){
   const T = ev.type, el = env.el, K = ev.kind, now = (name, fn)=> tick(()=>{ snd(name); fn(); });
   if(T === 'hit'){ const af = env.fxOf(ev.attDefId);
@@ -592,7 +795,22 @@ function vfx2Event(ev, env, o){
   if(T === 'decayTick'){ const t = el(ev.uid); if(t && env.once('fxv-decay' + ev.uid)) now('rotCreep', ()=> M.decayRot(t, o)); return; }
   if(T === 'play'){ const f = env.fxOf(ev.defId);
     if(f.intimidate) env.at(260, ()=>{ const s = el(ev.uid); if(s && s.isConnected){ snd('glareGrowl'); M.intimidateGlare(s, facing(s, ev.side), o); } });
+    if(f.packLeader) env.at(300, ()=>{ const s = el(ev.uid); if(s && s.isConnected){ snd('howlRing'); M.packHowlRings(s, sideCards(ev.side).filter(c=> c !== s && env.fxOf(c.getAttribute('data-defid')).pack), o); } });
     return; }
+  if(T === 'spawn' && M.owns(ev)){ const uids = (ev.uids || (ev.placements || []).map(p=> p.uid)).slice(0, 4); if(uids.length) env.at(120, ()=> snd('broodPop'));
+    uids.forEach((u, i)=> env.at(120 + i*60, ()=>{ const t = el(u); if(t && t.isConnected) M.broodBurst(t, o); })); return; }
+  if(T === 'arrow' && ev.targetUid != null && sideHas(ev.side, 'fletcher', env) && env.once('fxv-fletch' + ev.uid)){ const t = el(ev.targetUid);
+    if(t) env.at(env.hitAtMs(ev), ()=>{ if(t.isConnected){ snd('quillGlint'); M.fletcherGlint(t, o); } }); return; }
+  if(T === 'heal' && (ev.amount || 0) > 0 && ev.targetUid != null){ const t = el(ev.targetUid); if(!t) return;
+    if(ev.cause === 'repair') now('hammerTink', ()=> M.repairSparks(t, o));
+    else if(sideHas(ev.side, 'herbalist', env) && env.once('fxv-herb' + ev.targetUid)) now('leafSwirl', ()=> M.herbLeaves(t, o));
+    return; }
+  if(T === 'rebuild' && ev.repair && (ev.amount || 0) > 0){ const c = hq(ev.side); if(c) now('hammerTink', ()=> M.repairSparks(c, o)); return; }
+  if(T === 'triggerFired' && TRIG[ev.hook]){ const t = el(ev.uid); if(!t) return;
+    // 💀 Rend {around}: the skull wisp first, then the burst from where it fell; its rend events then mark each unit hit
+    if(ev.hook === 'onDeath' && ev.action === 'rend' && env.fxOf(ev.defId).rendAround){ const c0 = centre(tileOf(t)); if(c0.w){ memo(env.match).rend.set(String(ev.uid), c0); env.at(240, ()=>{ snd('rendBurst'); M.rendAround(c0, o); }); } }
+    now(TRIG[ev.hook], ()=> M.trigLook(t, ev.hook, o)); return; }
+  if(T === 'triggerFired' && ev.hook === 'onAnyDeath' && env.fxOf(ev.defId).harbinger){ const t = el(ev.uid); if(t && env.once('fxv-harb' + ev.uid)) now('crowCaw', ()=> M.harbingerFeathers(t, o)); return; }
   if(T !== 'statusFx') return;
   const t = el(ev.targetUid);
   if(K === 'pulverise' && t) now('plateShatter', ()=> M.pulveriseShatter(t, o));
@@ -600,6 +818,13 @@ function vfx2Event(ev, env, o){
   else if(K === 'webbed' && t) now('webSpin', ()=> M.webNet(t, o));
   else if(K === 'exploit' && t) now('lockOn', ()=> M.exploitLock(t, o));
   else if(K === 'brittle' && t) now('iceCrack', ()=> M.embrittleCrack(t, o));
+  else if(K === 'carrion' && t) now('peck', ()=> M.carrionPeck(t, o));
+  else if(K === 'wetChain'){ const f = el(ev.fromUid); if(f) now('wetZap', ()=> M.shockHop(f, (ev.uids || []).map(u=> el(u)), o)); }
+  else if(K === 'warningColours') now('warnPulse', ()=> M.warningPulse(el(ev.attUid), (ev.uids || []).map(u=> el(u)), o));
+  else if(K === 'rend' && t && memo(env.match).rend.has(String(ev.attUid))) env.at(380, ()=>{ if(t.isConnected) M.rendMark(t, o); });
+  else if(K === 'stateSkill' && ev.name === 'carnage' && ev.on){ const a = el(ev.attUid); if(a) now('moonPulse', ()=> M.carnageMoon(a, o)); }
+  else if(K === 'momentum'){ const a = el(ev.attUid), mm = memo(env.match).mom, k = String(ev.attUid), n = (mm.get(k) || 0) + 1; mm.set(k, n);
+    if(a) now('flameUp', ()=> M.momentumFlame(a, Object.assign({stacks:n}, o))); }
 }
 M.onEvent = function(ev, env){
   if(!ev || !env || !env.fxAtLeast('low')) return;
@@ -628,7 +853,7 @@ M.onEvent = function(ev, env){
 M.hooks.matchUI = (m, env)=> fieldSync(m, env);
 const CAGED = new WeakSet();
 M.hooks.boardRendered = (m, env)=>{
-  fieldSync(m, env);
+  fieldSync(m, env); tokenSync(document.getElementById('battlefieldEl'), env); // + VFX2's token ticks
   // the Caged Fight: the cage is placed before the fight (no replayed event), so its slam plays the first time it is on screen
   if(m && m.caged && !CAGED.has(m) && !document.querySelector('.vs-screen')){
     const cages = [...document.querySelectorAll('#battlefieldEl .board-card .cage-bars')].map(b=> b.closest('.board-card')).filter(Boolean);
@@ -636,6 +861,15 @@ M.hooks.boardRendered = (m, env)=>{
   }
 };
 M.hooks.resultsShown = ()=> M.fieldAmbient(document.getElementById('battlefieldEl'), null);
+// 2026-11-27 (VFX2): the status tokens tick down at upkeep (no event of their own: the badge's number drops when the card is next drawn,
+// incremental or full). Counts are read off the badges, per fight and unit; a kind whose badge is gone is forgotten (statusEnd took it).
+const TOKS = ['vulnerable', 'feeble', 'hardened', 'emboldened'];
+function tokenSync(root, env){ const m = env.match; if(!m || !root || !root.querySelectorAll) return; const seen = memo(m).tok, ticks = [];
+  (root.matches && root.matches('.board-card[data-uid]') ? [root] : [...root.querySelectorAll('.board-card[data-uid]')]).forEach(card=>{ const uid = card.getAttribute('data-uid');
+    TOKS.forEach(f=>{ const b = card.querySelector('.abadge.' + f), key = uid + ':' + f; if(!b){ seen.delete(key); return; }
+      const v = parseInt(String(b.textContent).replace(/\D+/g, ''), 10) || 0, was = seen.get(key); seen.set(key, v); if(was > v) ticks.push(b); }); });
+  if(ticks.length) later(()=>{ snd('tokenTock'); ticks.slice(0, 6).forEach(b=>{ if(b.isConnected) M.tokenTick(b, {level:env.level}); }); }, 0); }
+M.hooks.cardStatusShown = (el, c, env)=> tokenSync(el, env);
 // bossEntrance (arena_app.js) as a boss's versus opener closes; the raid's opener (startRaidFullBattle) for a raid part
 M.hooks.bossEntrance = (node, lair, env)=>{ const k = M.bossKind(node); if(k) later(()=> M.bossLook(k, {level:env.level}), 300); };
 M.hooks.raidEntrance = (def, env)=>{ let k = M.bossKind(def);

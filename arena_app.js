@@ -54125,6 +54125,7 @@ function pullKillTrigger(attUid){
 // glow, the electric aura behind the card (and FX.F's bolt from the badge, bramblewood-fx-f.js) are gone. Only the card's own ⚡ badge
 // for that trigger glows (the one whose data-hook matches; any of its badges if none does), with the trigger's chime.
 function triggerFiredVfx(ev){
+  if(window.FX && FX.V && FX.V.owns && FX.V.owns(ev)) return; // 2026-11-27 (VFX2): ⬆️ On Play / 💀 On Death / ⚔️ On Attack / ✅ On Ready get FX.V.trigLook and its own cue instead of the badge glow
   try{ SoundKit.trigger && SoundKit.trigger(); }catch(e){}
   const el = boardCardEl(ev.uid); if(!el || !el.isConnected) return;
   const all = [...el.querySelectorAll('.ab-trig')]; if(!all.length) return;
@@ -54869,7 +54870,7 @@ function eighthPassVfx(ev){
   if(ev.type === 'curseTick' && skillFxOnce('curse' + ev.uid)){ const t = el(ev.uid); if(t) F.curseDrain(t); }
   if(ev.type === 'frenzy' && skillFxOnce('frenzy' + ev.attUid)){ const t = el(ev.attUid); if(t) F.rageFlare(t); }
   if(ev.type === 'gash' && F.bleedDrip && !(window.FX && FX.V && FX.V.owns && FX.V.owns(ev))){ const t = el(ev.targetUid); if(t) F.bleedDrip(t); }           // reused: Gash's opening cut; 2026-11-27 (VFX2): FX.V.gashBleed instead
-  if(ev.type === 'spawn' && ev.cause !== 'shieldCall' && ev.kind !== 'bloom' /* BL: its own bloom */ && ev.kind !== 'bulwark' /* FX6: it rises, no portal */ && ev.kind !== 'brood' /* FX10: silk (SkillFX.broodDrop) */ && !(window.FX && FX.C && FX.C.ownsSpawn && FX.C.ownsSpawn(ev))){ const uids = (ev.uids || (ev.placements||[]).map(p=> p.uid) || []).slice(0, 4);
+  if(ev.type === 'spawn' && ev.cause !== 'shieldCall' && ev.kind !== 'bloom' /* BL: its own bloom */ && ev.kind !== 'bulwark' /* FX6: it rises, no portal */ && ev.kind !== 'brood' /* FX10: silk (SkillFX.broodDrop) */ && !(window.FX && FX.C && FX.C.ownsSpawn && FX.C.ownsSpawn(ev)) && !(window.FX && FX.V && FX.V.owns && FX.V.owns(ev)) /* 2026-11-27 (VFX2): Progeny / Offspring burst from a brood pod (FX.V.broodBurst) */){ const uids = (ev.uids || (ev.placements||[]).map(p=> p.uid) || []).slice(0, 4);
     // 2026-10-25 (package FIX3, F5, owner #17: "cards played disappear then appear again at the end of the round - no it's just tokens"): the
     // portal pops the new token's tile from 30% opacity, 140 ms (+60 per token) after the spawn, when the token has already landed at full
     // opacity: it showed, dropped to 30% and faded back in (seen headless: a 145-170 ms dip on a Brood token). The portal now plays over the
@@ -55694,7 +55695,8 @@ function giVfx(ev){
   // SKILLS3-7 (2026-11-27): the shock chain: a bolt from the Wet unit hit through each Wet unit linked to it, 1 shock each (Health down, the number floats)
   if(ev.type === 'statusFx' && ev.kind === 'wetChain'){ const uids = ev.uids || [], dm = ev.dmgs || [];
     uids.forEach((u, i)=>{ const rc = rcOf(u); if(rc) rc.hp = Math.max(0, (rc.hp || 0) - (dm[i] || 0)); try{ updateCardHpDisplay(u); }catch(e){} fl(boardCardEl(u), `⚡💧 ${dm[i] || 0}`, 'debuff'); });
-    try{ const from = boardCardEl(ev.fromUid), to = uids.map(boardCardEl).filter(Boolean); if(from && to.length && !reducedMotion() && window.SkillFX && SkillFX.lightning) SkillFX.lightning(from, to, {}); else SoundKit.shockTone && SoundKit.shockTone(); }catch(e){}
+    try{ const from = boardCardEl(ev.fromUid), to = uids.map(boardCardEl).filter(Boolean); if(window.FX && FX.V && FX.V.owns && FX.V.owns(ev)){ /* 2026-11-27 (VFX2): FX.V.shockHop hops unit to unit, with its own cue */ }
+      else if(from && to.length && !reducedMotion() && window.SkillFX && SkillFX.lightning) SkillFX.lightning(from, to, {}); else SoundKit.shockTone && SoundKit.shockTone(); }catch(e){}
     return; }
   // Warning Colours (SKILLS3-B, 2026-11-27): the warned enemies flinch; a warned attacker turns to another target
   if(ev.type === 'statusFx' && ev.kind === 'warningColours'){ (ev.uids || []).forEach(u=> fl(boardCardEl(u), '⚠️', 'debuff')); snd('poisonApply'); return; }
