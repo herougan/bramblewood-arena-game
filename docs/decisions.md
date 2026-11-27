@@ -4,13 +4,6 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
-**ART17-1. Living card art: which way?** · Decide · Art · asked 2026-11-27
-- Abyss Lantern Squid test (frames in docs/perf/art17/frames). A: the art cut into layers (water, squid, glow): depth, a pulsing lantern and spots, drifting motes; 32 KB a card; works only where the creature's colour differs from its scene. B: the flat art with a glow pulse and caustics; no extra art. Both ran without dropped frames. Detail card first, then rare pack reveals.
-  - a) A where the cut is clean, B elsewhere
-  - b) B only
-  - c) neither yet
-- **Default:** a
-
 **COMBO1-1. Poison and Bleed payoffs on the road** · Decide · Cards · asked 2026-11-27
 - No Maps 0-20 card cashes in a Poison or Bleed stack. Bogfire Newt (Detonate: its hit ticks the target's Poison at once) joins Lilypad Reach; Bloodscent Shark (Hemorrhage: doubles the Bleed) joins The Sunken Depths. Side maps: no road fight moves.
   - a) both
@@ -46,87 +39,10 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
   - c) neither
 - **Default:** a
 
-**NEWCARDS1-1. Homes for the 14 new species** · Decide · Cards · asked 2026-11-27
-- Oarfish, Opah, Mola, Sea Dragon, Okapi, Blobfish, Goblin Shark, Coelacanth, Saiga, Kakapo, Tapir, Glass Frog, Red Panda, Tube Worm are made, with art, but on no list, pack or reward. The doc proposes a home for each; the combo audit (COMBO1) may pick some for Maps 0-20.
-  - a) Wait for COMBO1, then place
-  - b) Place as the doc proposes
-  - c) I pick in the Pack Editor
-- **Default:** a
-
-**NEWCARDS1-2. Seven new cards test strong** · Decide · Balance · asked 2026-11-27
-- Against filler decks, Blobfish, Glass Frog, Sea Dragon, Okapi, Red Panda, Saiga and Mola rate "strong" (400 games each), though all are inside the budget caps.
-  - a) Trim them before placing
-  - b) Place, then measure the road
-- **Default:** a
-
-**INSPIRE2-1. Inspiration on many-hit turns: every hit, or at most 4?** · Decide · Rules · asked 2026-11-26
-- Built: Inspiration adds to every hit of the unit's next turn (Cleave's sides, every arrow, Twin Strike's second swing), so a Volley, Octolash or Pitchfork turn takes it on every hit. Your note said 'up to 3+1 hits'; read as an example, not a cap. A turn that only missed still keeps it, as before (ENG21-1).
-  - a) Every hit, as built
-  - b) At most 4 hits a turn
-- **Default:** a
-
-**DUNGEON2-1. Ecclesia stage clear: automatic or a choice?** · Decide · Dungeons · asked 2026-11-26
-- Your note: an Ecclesia deck may move 3 exiled cards back to the Graveyard instead of 3 Graveyard cards to the deck. Built automatic: a deck at least half Ecclesia does it whenever it has exiled cards. Prayer cards are refused in the vault, so few such decks play there.
-  - a) Keep automatic
-  - b) A lobby toggle for Ecclesia decks
-- **Default:** a
-
-**DUNGEON2-2. The vault after the stage clear: re-measure?** · Decide · Balance · asked 2026-11-26
-- Each part now ends with the enemies left dying and 3 cards back into every deck. That makes the Tidelock Vault easier than MP1's 49% full clear (Map 16 decks, Auto). Nothing was retuned.
-  - a) Re-measure with the MP1 run, then retune the brambles
-  - b) Leave it easier
-- **Default:** a
-
-**TESTFIX11-1. Cinder Gecko over its Level 10 cap** · Decide · Cards · asked 2026-11-26
-- Map changes moved Cinder Gecko from Map 22 to Map 8's list, so its budget shrank; its Level 10 line is now 2% over.
-  - a) Re-fit its Level 10 to Map 8
-  - b) Accept 2% over
-- **Default:** a
-
-**TESTFIX11-2. Liege price** · Decide · Skills · asked 2026-11-26
-- Today's skill-price change moved Assault only; Liege is still priced at 0.3x the old Assault.
-  - a) Move Liege with Assault
-  - b) Keep
-- **Default:** a
-
-**TESTFIX11-3. Hedgerow Shrew = Dormouse** · Decide · Cards · asked 2026-11-26
-- The Maps 0-6 card vet made Hedgerow Shrew identical to Dormouse (stats and skills).
-  - a) Redesign the Shrew
-  - b) Keep both
-- **Default:** a
-
 **TESTFIX11-4. Alley Cat's pack** · Decide · Packs · asked 2026-11-26
 - Alley Cat is in Pack 4; your earlier list (#10) said Pack 1.
   - a) Pack 1
   - b) Pack 4
-- **Default:** a
-
-**SKILLS3-9. Status tokens: one off each upkeep** · Decide · Skills · asked 2026-11-26
-- Vulnerable, Feeble, Mighty (deals x2) and Sturdy (takes x0.5) are tokens. While any remain, every hit counts; one comes off each upkeep; hits spend none (today Vulnerable is spent per hit). New tokens add, up to 3.
-  - a) as written
-  - b) refresh to the larger, never add
-  - c) also spend one per hit
-- **Default:** a
-
-**SKILLS3-10. The ladder: plain, then On Play, then On Death** · Decide · Skills · asked 2026-11-26
-- Each status skill first appears as its plain On Hit form (debuffs on the unit hit, buffs on an ally beside it); its ⬆️ and 💀 forms come on later maps. Harden / Embolden lose their round-start aura.
-  - a) as written
-  - b) plain buffs go on itself
-  - c) no ladder
-- **Default:** a
-
-**SKILLS3-11. Attunement N – {element}** · Decide · Skills · asked 2026-11-26
-- While it is on the field, your units' attacks of that element deal N more. One rare card per element: Fire Hawk, Ice Fish, Caustic Scorpion, Sperm Whale Elder, Electric Catfish; Venom Master is poison's.
-  - a) "Attunement"
-  - b) "Elemental Mastery"
-  - c) a word per element (Stoke, Deep Chill, Caustic, Undertow, Overcharge)
-- **Default:** a
-
-**ROADFIX4-1. Reference decks after the card vet** · Decide · Balance · asked 2026-11-25
-- Ibex Rockcaller (Maps 12-20) and Tide Seahorse (Maps 10-16) sit in the reference decks; their redesign moved those maps 10-30 points. The road is now re-fit to them (179 in band). Changing them moves Maps 10-20 again.
-  - a) Keep the reference decks
-  - b) Re-pick them, then re-fit
-  - c) Retune the two cards
 - **Default:** a
 
 **ROADFIX4-2. Map 17 too hard (Harbor Seal)** · Decide · Balance · asked 2026-11-25
@@ -136,12 +52,6 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
   - c) Relax Map 17's usage rule
   - d) Leave
 - **Default:** a
-
-**ROADFIX4-3. Out of band with no legal fix** · Decide · Balance · asked 2026-11-25
-- Too easy: 15-3, 15-4, 18-2, 10-A-1, 10-A-3. Too hard: 2-2 (53 vs 80). Their map lists hold no nearer deck. (19-5 and 19-6 wait on TESTFIX9-2.)
-  - a) Allow one off-list card in these decks
-  - b) Leave until the next list review
-- **Default:** b
 
 **SKILLS3-2. What On Pitch means** · Decide · Skills · asked 2026-11-25
 - Today a board unit reacts when you pitch any card; the pitched card's own trigger only gains resources. Proposed: 🃏 "When pitched: X" runs any action, and the board reaction becomes Cache N.
@@ -157,41 +67,6 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
   - c) SKILLS3's first plan
 - **Default:** a
 
-**SKILLS3-4. Dogfighter N** · Decide · Skills · asked 2026-11-25
-- Its hits deal N more to Flying and Mach units. Map 3: Great Skua (added), Peregrine Stooper (from Level 2).
-  - a) Map 3
-  - b) Map 16 (Owl Sentinel, Upside-Down Bat)
-  - c) not now
-- **Default:** a
-
-**SKILLS3-5. Carnage back on Maps 0-20** · Decide · Skills · asked 2026-11-25
-- Today's map changes moved Dust Hyena, the last Carnage card, to Map 22. Raven Scout becomes Map 13's Special; Dust Hyena returns to Map 14; Map 22 drops Carnage.
-  - a) both
-  - b) Raven Scout only
-  - c) Dust Hyena only
-- **Default:** a
-
-**SKILLS3-6. Payoffs: one card each** · Decide · Skills · asked 2026-11-25
-- Fletcher, Broodmother, Deadly Poison, Venom Master, Hemorrhage, Detonate, Proliferate, Herbalist, Armourer: one rare card each, on a side map, a map's Special or as a rare booster card (doc table B).
-  - a) as listed
-  - b) one each, placements kept
-  - c) not now
-- **Default:** a
-
-**SKILLS3-7. Elements and Wet** · Decide · Skills · asked 2026-11-25
-- Fire Burn, ice Frozen, acid Corrode, poison Poison, water Wet, electricity none. A hit = damage + its status (poison: stacks only). Water puts Burn out; fire burns Wet off; electricity on Wet +1 and 1 to every Wet unit chained to it; fire and ice cancel. Wet is yes / no.
-  - Wet ends: a) on a fire hit or dry weather
-  - b) also each round out of water
-  - c) keep counters
-- **Default:** a
-
-**SKILLS3-8. Pack additions** · Decide · Packs · asked 2026-11-25
-- 8, 10 and 8 rare-and-up real animals from no map list join Packs 1-3 (doc table D; no cold animals in Pack 1).
-  - a) as listed
-  - b) I pick in the Pack Editor
-  - c) not now
-- **Default:** a
-
 **CARDVET1-1. Gaur: far under budget** · Decide · Cards · asked 2026-11-25
 - Gaur (was Granite Ox Golem, Maps 19-21) runs 51-82% of budget: the table prices its On Play stun on all foes low. Fitting it by formula gives a 6/29 rare, a big jump. Left as it was.
   - a) Raise the stun-all price in the skill table (affects every such card)
@@ -199,29 +74,10 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
   - c) Leave it
 - **Default:** a
 
-**CARDVET1-2. Marine Iguana breathes fire?** · Decide · Cards · asked 2026-11-25
-- Magma Salamander became the Marine Iguana and kept its fire bolt, the Map 20 Cinder skill (no real animal breathes fire). Cinder has only two carriers.
-  - a) Keep the fire bolt
-  - b) Find another Cinder carrier; the iguana gets a non-fire skill
-- **Default:** a
-
-**CARDVET1-3. Later-map skills on early lists** · Decide · Cards · asked 2026-11-25
-- Barkplate Beetle, Quill-Thorn Boar (Recoil, Map 12) and Bramblewood Lynx (Twin Strike, Map 13) sit on Map 0's side list; Raccoon Nightcrew (Stealth, Map 12) on Map 2's; Matamata (Ambush, Map 15) on Map 5's; Orca Vanguard (Cleave, Map 15) on Map 10.
-  - a) Move the cards to their skill's map
-  - b) Give them skills from their own map's row
-  - c) Keep
-- **Default:** b
-
 **CARDVET1-4. Plain owner-edited bodies** · Decide · Cards · asked 2026-11-25
 - Platypus (vanilla 4/5, Maps 0/4/5), Dolphin Outrider (Tide only, Maps 2/3/10), Clover Butterfly and Jackrabbit Sprinter have no active skill. You edited Platypus and Dolphin, so the vet left them.
   - a) Give them active designs (e.g. Platypus: On Play Poison)
   - b) Keep as they are
-- **Default:** a
-
-**CARDVET1-5. Rot-Swollen Carcass is not an animal** · Decide · Cards · asked 2026-11-25
-- Map 7's Rot-Swollen Carcass is a dead body with maggots, not a real animal.
-  - a) Swap to Blowfly Maggots (rename, new art)
-  - b) Keep
 - **Default:** a
 
 **MAPEXEC1-1. Copy the 57 list changes into your Map cards picks? (needs "apply it")** · Decide · Maps · asked 2026-11-25
@@ -230,23 +86,10 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
   - b) Keep your picks as they are (they then differ from the game)
 - **Default:** a
 
-**MAPEXEC1-2. Bludgeon, Acid, Rainrunner: in no map's row** · Decide · Maps · asked 2026-11-25
-- Ironclaw Fiddler (Bludgeon), Caustic Scorpion (Acid) and Puddle Skimmer (Rainrunner) carry skills that no map's row has, so they show To remove. Kept for now.
-  - a) Add each skill to the row of the map the card sits on
-  - b) Drop the cards from Maps 0-20 lists
-  - c) Redesign their skills (card vet)
-- **Default:** c
-
 **MAPEXEC1-3. Place three awaiting cards to fill To add rows** · Decide · Maps · asked 2026-11-25
 - Bog Shrew (Leech, Map 5), Bog Lungfish (Regenerate, Map 9) and Mire Rat (Pack, Map 14) wait for a place. Putting them on those lists gives the rows their missing carriers.
   - a) Place all three
   - b) Leave them; find other carriers
-- **Default:** a
-
-**DAUNT2-1. Keen Sense now ignores Evasive (Camouflage isn't a skill yet)** · Decide · Rules · asked 2026-11-25
-- Camouflage is only a name in the code, on no card. Reading "camouflaged" as Evasive: Keen Sense now ignores a grounded Evasive unit's dodge (flyers still dodge). Cards affected: Owl Sentinel, Quarry Mole, Oilbird, Cave Swiftlet vs Evasive cards.
-  - a) Keep: Keen Sense ignores grounded Evasive
-  - b) Undo, and make Camouflage its own skill that Keen Sense ignores
 - **Default:** a
 
 **W2PLAN-1. Maps 21-40: 40 new skills, or 47?** · Decide · Skills · asked 2026-11-25
@@ -255,49 +98,10 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
   - b) A third skill on 7 maps, from a listed reserve, to reach 47
 - **Default:** a
 
-**W2PLAN-2. When elemental and magic skills start** · Decide · Skills · asked 2026-11-25
-- Proposed: elemental creatures' skills from Map 21, magic from Map 50+ (so World 2 stays mostly real and elemental).
-  - a) As tabled
-  - b) Preview Shade and Ghost in the 30s
-- **Default:** a
-
-**W2PLAN-3. If the war maps move to 30+** · Decide · Skills · asked 2026-11-25
-- Your 10-29 / 10-30 notes may move the war maps past 30. Each row in the proposal follows its map's theme.
-  - a) Rows follow their themes wherever the maps land
-  - b) Re-plan now on the 10-30 list
-- **Default:** a
-
-**REFIT20-1. 8-7 with its Mine back is far too hard** · Decide · Balance · asked 2026-11-24
-- With the Map 8 reference deck change, 8-7 got its Mine back and you now win 24% (target 60). Without the Mine it reads 57-60%. The item's own Health 4 is under the 60% floor (REFIT13-5 b), and Health may not change past Map 1, so it keeps Health 8.
-  - a) 8-7 without the Mine
-  - b) Mine with Health 4 (an exception to the floor)
-  - c) Keep the Mine, re-fit 8-7's deck by swaps
-- **Default:** a
-
 **ROADFIX2-1. Corrode is worth less now that it refreshes** · Decide · Balance · asked 2026-11-24
 - Your 11-22 price, 2.9 (SKM3-1), was measured when Corrode stacked. Since ENG16 it refreshes. Re-measured over 1,000 fights, Corrode 1 is worth 1.64 (range 1.35-1.98), down from 2.90. Corrode 2 reads 2.86 against its 3.85. The price now sits above the whole range, so Corrode carriers are priced too high and can take more stats.
   - a) Price Corrode at the new reading (about 1.6), then refit its carriers (Claude runs price + refit)
   - b) Keep 2.9
-- **Default:** a
-
-**UISWEEP-1. One top bar everywhere** · Decide · UI · asked 2026-11-24
-- One bar on every page except the fight HUD: ↩ back first, a slot for the page's own buttons, then a fixed core of 🏠 Home, Map, Settings, Energy, Account. Feedback moves into the one Settings panel; the acorn tile leaves the bar. Conquest keeps its shortcuts in the slot.
-  - a) Yes, as proposed
-  - b) Keep Feedback on the bar
-  - c) Keep today's bars
-- **Default:** a
-
-**UISWEEP-2. Transitions: curtain for places, quick fade elsewhere** · Decide · UI · asked 2026-11-24
-- Going to a place (shops, Shop↔Premium, Camp...) closes the curtain, swaps behind it, then opens: 880 ms the first time, 420 ms on repeat visits, and a tap skips it. Other pages fade through in 280 ms (replacing the 3D page turn); pop-ups open in 200 ms and close in 140 ms.
-  - a) Yes
-  - b) Curtain everywhere
-  - c) Fades only, no curtain
-- **Default:** a
-
-**UISWEEP-3. Two screen-width breakpoints** · Decide · UI · asked 2026-11-24
-- The style guide says one breakpoint; the CSS has 33. Proposed: 560 px (phones) and 900 px (wide layouts), and the style guide amended.
-  - a) 560 and 900
-  - b) One breakpoint only (900)
 - **Default:** a
 
 **CARDS1-1. Map 4's row has Fork, but no octopus is on Map 4** · Decide · Cards · asked 2026-11-24
@@ -305,24 +109,6 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
   - a) Put an octopus card on Map 4's list (Kraken Spawnling, your Yes pick)
   - b) Take Fork out of Map 4's row
   - c) A new Map 4 octopus card (Claude drafts it)
-- **Default:** a
-
-**ENG16B-1. Daunt: keep stacking, or refresh like Corrode?** · Decide · Rules · asked 2026-11-24
-- Corrode stacked past its rule (a unit hit every round lost Attack without end); it now refreshes to the larger value and fades 1 a round. Daunt stacks by your 10-12 rule ("reduced by N multiple times"): one Daunt 2 unit hitting every round cuts 4 Attack. Its pip now shows the real total. (Owner 11-24 23:21 keeps Daunt and moves Scare cards to Daunt, so this is open again.)
-  - a) Keep Daunt stacking (10-12 rule)
-  - b) Daunt refreshes like Corrode
-- **Default:** a
-
-**STATE2-1. One Home icon** · Decide · UI · asked 2026-11-24
-- Three Home buttons exist, and Camp pages show two at once. The UI sweep keeps one Home button everywhere.
-  - a) 🏠 house (10-24)
-  - b) 🌰 acorn (10-19)
-- **Default:** a
-
-**STATE2-2. One back button style** · Decide · UI · asked 2026-11-24
-- Seven back-button styles exist; five screens show two backs at once. The sweep uses one. The Nest and Shop show a text button "← Back to the map".
-  - a) One ↩ icon button with a tooltip everywhere
-  - b) ↩ everywhere, but keep the text on the Nest and Shop
 - **Default:** a
 
 **MP1-1. How hard should the Tidelock Vault be?** · Decide · Multiplayer · asked 2026-11-23
@@ -337,19 +123,6 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
   - a) First run full, then x0.2; two players x1.25
   - b) No cap, as today
   - c) Every run x0.3
-- **Default:** a
-
-**MP1-3. PvP turn order** · Decide · Multiplayer · asked 2026-11-23
-- In mirror decks you score 36% against a stranger (the stranger strikes first every round) and the first seat scores 45% in Live Ranked. Default: first strike alternates against a stranger (you keep the +1 Shield), and in Live Ranked the seat that strikes first also acts first: both go to 50%.
-  - a) Both fixes
-  - b) Only the stranger fix
-  - c) Keep both as they are
-- **Default:** a
-
-**TESTFIX9-1. Map 20 side dungeon fields a Unique card** · Decide · Balance · asked 2026-11-23
-- 20-A-4 (the Map 20 side dungeon) holds Ashmantle Fiend, a Unique card, while the road cap there is Epic.
-  - a) Swap it for the best Epic-or-lower card that keeps the fight in band (Claude re-measures)
-  - b) Allow it as an exception for this dungeon boss
 - **Default:** a
 
 **TESTFIX9-2. 61 road fights use cards from another map's list** · Decide · Balance · asked 2026-11-23
@@ -433,6 +206,110 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Decided
 
+**ART17-1. Living card art: which way?** · Decide · Art · asked 2026-11-27 · decided 2026-11-27
+- Abyss Lantern Squid test (frames in docs/perf/art17/frames). A: the art cut into layers (water, squid, glow): depth, a pulsing lantern and spots, drifting motes; 32 KB a card; works only where the creature's colour differs from its scene. B: the flat art with a glow pulse and caustics; no extra art. Both ran without dropped frames. Detail card first, then rare pack reveals.
+  - a) A where the cut is clean, B elsewhere
+  - b) B only
+  - c) neither yet
+- **Default:** a
+- **Outcome:** Your own words 2026-11-27 09:39: "I like the squid ... Pixellab ai supports doing animation ... (Cheaper skin for players would be just the eagle static - but speed lines around": animated / layered art for premium skins, a still card plus an effect for the cheaper skin (ART18, ART18b, SKINS1).
+
+**NEWCARDS1-1. Homes for the 14 new species** · Decide · Cards · asked 2026-11-27 · decided 2026-11-27
+- Oarfish, Opah, Mola, Sea Dragon, Okapi, Blobfish, Goblin Shark, Coelacanth, Saiga, Kakapo, Tapir, Glass Frog, Red Panda, Tube Worm are made, with art, but on no list, pack or reward. The doc proposes a home for each; the combo audit (COMBO1) may pick some for Maps 0-20.
+  - a) Wait for COMBO1, then place
+  - b) Place as the doc proposes
+  - c) I pick in the Pack Editor
+- **Default:** a
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. COMBO1 is done; the Saddle Tapir's home rides on COMBO1-2, the rest wait for the next list review.
+
+**NEWCARDS1-2. Seven new cards test strong** · Decide · Balance · asked 2026-11-27 · decided 2026-11-27
+- Against filler decks, Blobfish, Glass Frog, Sea Dragon, Okapi, Red Panda, Saiga and Mola rate "strong" (400 games each), though all are inside the budget caps.
+  - a) Trim them before placing
+  - b) Place, then measure the road
+- **Default:** a
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. Trim the seven before any is placed (card-level design, inside the budget).
+
+**INSPIRE2-1. Inspiration on many-hit turns: every hit, or at most 4?** · Decide · Rules · asked 2026-11-26 · decided 2026-11-27
+- Built: Inspiration adds to every hit of the unit's next turn (Cleave's sides, every arrow, Twin Strike's second swing), so a Volley, Octolash or Pitchfork turn takes it on every hit. Your note said 'up to 3+1 hits'; read as an example, not a cap. A turn that only missed still keeps it, as before (ENG21-1).
+  - a) Every hit, as built
+  - b) At most 4 hits a turn
+- **Default:** a
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. Every hit, as built (road moved +0.3 points on average).
+
+**DUNGEON2-1. Ecclesia stage clear: automatic or a choice?** · Decide · Dungeons · asked 2026-11-26 · decided 2026-11-27
+- Your note: an Ecclesia deck may move 3 exiled cards back to the Graveyard instead of 3 Graveyard cards to the deck. Built automatic: a deck at least half Ecclesia does it whenever it has exiled cards. Prayer cards are refused in the vault, so few such decks play there.
+  - a) Keep automatic
+  - b) A lobby toggle for Ecclesia decks
+- **Default:** a
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. Keep it automatic.
+
+**DUNGEON2-2. The vault after the stage clear: re-measure?** · Decide · Balance · asked 2026-11-26 · decided 2026-11-27
+- Each part now ends with the enemies left dying and 3 cards back into every deck. That makes the Tidelock Vault easier than MP1's 49% full clear (Map 16 decks, Auto). Nothing was retuned.
+  - a) Re-measure with the MP1 run, then retune the brambles
+  - b) Leave it easier
+- **Default:** a
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. Re-measure with the MP1 run; any retune comes back to you.
+
+**TESTFIX11-1. Cinder Gecko over its Level 10 cap** · Decide · Cards · asked 2026-11-26 · decided 2026-11-27
+- Map changes moved Cinder Gecko from Map 22 to Map 8's list, so its budget shrank; its Level 10 line is now 2% over.
+  - a) Re-fit its Level 10 to Map 8
+  - b) Accept 2% over
+- **Default:** a
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. Re-fit its Level 10 line to Map 8's budget (2% over).
+
+**TESTFIX11-2. Liege price** · Decide · Skills · asked 2026-11-26 · decided 2026-11-27
+- Today's skill-price change moved Assault only; Liege is still priced at 0.3x the old Assault.
+  - a) Move Liege with Assault
+  - b) Keep
+- **Default:** a
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. Liege keeps its 0.3x of Assault.
+
+**TESTFIX11-3. Hedgerow Shrew = Dormouse** · Decide · Cards · asked 2026-11-26 · decided 2026-11-27
+- The Maps 0-6 card vet made Hedgerow Shrew identical to Dormouse (stats and skills).
+  - a) Redesign the Shrew
+  - b) Keep both
+- **Default:** a
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. Redesign the Shrew so it differs from the Dormouse (card-level design).
+
+**SKILLS3-9. Status tokens: one off each upkeep** · Decide · Skills · asked 2026-11-26 · decided 2026-11-27
+- Vulnerable, Feeble, Mighty (deals x2) and Sturdy (takes x0.5) are tokens. While any remain, every hit counts; one comes off each upkeep; hits spend none (today Vulnerable is spent per hit). New tokens add, up to 3.
+  - a) as written
+  - b) refresh to the larger, never add
+  - c) also spend one per hit
+- **Default:** a
+- **Outcome:** Your own words 2026-11-25 23:59: "One token expires every upkeep. So if it has 3 Vulnerable, it becomes 2 Vulnerable": a (hits spend none, as read).
+
+**SKILLS3-10. The ladder: plain, then On Play, then On Death** · Decide · Skills · asked 2026-11-26 · decided 2026-11-27
+- Each status skill first appears as its plain On Hit form (debuffs on the unit hit, buffs on an ally beside it); its ⬆️ and 💀 forms come on later maps. Harden / Embolden lose their round-start aura.
+  - a) as written
+  - b) plain buffs go on itself
+  - c) no ladder
+- **Default:** a
+- **Outcome:** Your own words 2026-11-25 23:59: "the first time its introduced, it's plain - meaning onHit. Then you get the On Play and On Death versions after": a.
+
+**SKILLS3-11. Attunement N – {element}** · Decide · Skills · asked 2026-11-26 · decided 2026-11-27
+- While it is on the field, your units' attacks of that element deal N more. One rare card per element: Fire Hawk, Ice Fish, Caustic Scorpion, Sperm Whale Elder, Electric Catfish; Venom Master is poison's.
+  - a) "Attunement"
+  - b) "Elemental Mastery"
+  - c) a word per element (Stoke, Deep Chill, Caustic, Undertow, Overcharge)
+- **Default:** a
+- **Outcome:** Your own words 2026-11-25 23:59: "Elemental Mastery skill or something better named": a (Attunement).
+
+**ROADFIX4-1. Reference decks after the card vet** · Decide · Balance · asked 2026-11-25 · decided 2026-11-27
+- Ibex Rockcaller (Maps 12-20) and Tide Seahorse (Maps 10-16) sit in the reference decks; their redesign moved those maps 10-30 points. The road is now re-fit to them (179 in band). Changing them moves Maps 10-20 again.
+  - a) Keep the reference decks
+  - b) Re-pick them, then re-fit
+  - c) Retune the two cards
+- **Default:** a
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. Keep the reference decks (no change; the road stays fit to them).
+
+**ROADFIX4-3. Out of band with no legal fix** · Decide · Balance · asked 2026-11-25 · decided 2026-11-27
+- Too easy: 15-3, 15-4, 18-2, 10-A-1, 10-A-3. Too hard: 2-2 (53 vs 80). Their map lists hold no nearer deck. (19-5 and 19-6 wait on TESTFIX9-2.)
+  - a) Allow one off-list card in these decks
+  - b) Leave until the next list review
+- **Default:** b
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): b. Leave them until the next list review (no change).
+
 **SKILLS3-1. Trigger icons** · Decide · Skills · asked 2026-11-25 · decided 2026-11-25
 - On Play shows ⬆️ (was ⚡), On Death 💀, On Pitch 🃏 (was ♻️) on cards, chips and the Codex.
   - a) all three
@@ -440,6 +317,164 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
   - c) keep today's
 - **Default:** a
 - **Outcome:** Owner 2026-11-25 20:31: "arrow up emoji for ON PLAY", "(skull emoji)" for On Death, "ON PITCH (black card)": a. Built with SKILLS3.
+
+**SKILLS3-4. Dogfighter N** · Decide · Skills · asked 2026-11-25 · decided 2026-11-27
+- Its hits deal N more to Flying and Mach units. Map 3: Great Skua (added), Peregrine Stooper (from Level 2).
+  - a) Map 3
+  - b) Map 16 (Owl Sentinel, Upside-Down Bat)
+  - c) not now
+- **Default:** a
+- **Outcome:** Your own words 2026-11-25 20:31: "DOGFIGHTER N - Deal additional N damage to flying units": a (Map 3).
+
+**SKILLS3-5. Carnage back on Maps 0-20** · Decide · Skills · asked 2026-11-25 · decided 2026-11-27
+- Today's map changes moved Dust Hyena, the last Carnage card, to Map 22. Raven Scout becomes Map 13's Special; Dust Hyena returns to Map 14; Map 22 drops Carnage.
+  - a) both
+  - b) Raven Scout only
+  - c) Dust Hyena only
+- **Default:** a
+- **Outcome:** Your own words 2026-11-25 20:31: "Add back Carnage": a.
+
+**SKILLS3-6. Payoffs: one card each** · Decide · Skills · asked 2026-11-25 · decided 2026-11-27
+- Fletcher, Broodmother, Deadly Poison, Venom Master, Hemorrhage, Detonate, Proliferate, Herbalist, Armourer: one rare card each, on a side map, a map's Special or as a rare booster card (doc table B).
+  - a) as listed
+  - b) one each, placements kept
+  - c) not now
+- **Default:** a
+- **Outcome:** Your own words 2026-11-25 20:31: "Definitely fletcher, broodmother, those venom boosters etc. should be in 1 card each": a.
+
+**SKILLS3-7. Elements and Wet** · Decide · Skills · asked 2026-11-25 · decided 2026-11-27
+- Fire Burn, ice Frozen, acid Corrode, poison Poison, water Wet, electricity none. A hit = damage + its status (poison: stacks only). Water puts Burn out; fire burns Wet off; electricity on Wet +1 and 1 to every Wet unit chained to it; fire and ice cancel. Wet is yes / no.
+  - Wet ends: a) on a fire hit or dry weather
+  - b) also each round out of water
+  - c) keep counters
+- **Default:** a
+- **Outcome:** Your own words 2026-11-25 20:31 / 23:59: Wet "does not go away unless the weather is dry", "water removes fire, fire burns of wet": a.
+
+**SKILLS3-8. Pack additions** · Decide · Packs · asked 2026-11-25 · decided 2026-11-27
+- 8, 10 and 8 rare-and-up real animals from no map list join Packs 1-3 (doc table D; no cold animals in Pack 1).
+  - a) as listed
+  - b) I pick in the Pack Editor
+  - c) not now
+- **Default:** a
+- **Outcome:** Your own words 2026-11-25 20:31: "High rarity cards in boosters, so many an additional 5-10 in each of the 3 packs": a.
+
+**CARDVET1-2. Marine Iguana breathes fire?** · Decide · Cards · asked 2026-11-25 · decided 2026-11-27
+- Magma Salamander became the Marine Iguana and kept its fire bolt, the Map 20 Cinder skill (no real animal breathes fire). Cinder has only two carriers.
+  - a) Keep the fire bolt
+  - b) Find another Cinder carrier; the iguana gets a non-fire skill
+- **Default:** a
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. Keep the fire bolt (no change).
+
+**CARDVET1-3. Later-map skills on early lists** · Decide · Cards · asked 2026-11-25 · decided 2026-11-27
+- Barkplate Beetle, Quill-Thorn Boar (Recoil, Map 12) and Bramblewood Lynx (Twin Strike, Map 13) sit on Map 0's side list; Raccoon Nightcrew (Stealth, Map 12) on Map 2's; Matamata (Ambush, Map 15) on Map 5's; Orca Vanguard (Cleave, Map 15) on Map 10.
+  - a) Move the cards to their skill's map
+  - b) Give them skills from their own map's row
+  - c) Keep
+- **Default:** b
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): b. Give those cards skills from their own map's row (your map skill table).
+
+**CARDVET1-5. Rot-Swollen Carcass is not an animal** · Decide · Cards · asked 2026-11-25 · decided 2026-11-27
+- Map 7's Rot-Swollen Carcass is a dead body with maggots, not a real animal.
+  - a) Swap to Blowfly Maggots (rename, new art)
+  - b) Keep
+- **Default:** a
+- **Outcome:** Your own words 2026-11-25 00:22: "more realistic animals b4 the elemental animals and magical ones": a (Blowfly Maggots).
+
+**MAPEXEC1-2. Bludgeon, Acid, Rainrunner: in no map's row** · Decide · Maps · asked 2026-11-25 · decided 2026-11-27
+- Ironclaw Fiddler (Bludgeon), Caustic Scorpion (Acid) and Puddle Skimmer (Rainrunner) carry skills that no map's row has, so they show To remove. Kept for now.
+  - a) Add each skill to the row of the map the card sits on
+  - b) Drop the cards from Maps 0-20 lists
+  - c) Redesign their skills (card vet)
+- **Default:** c
+- **Outcome:** Your own words 2026-11-25 00:22: "Change the card designs for cards with skills we dont use for 0-20 anymore": c (Caustic Scorpion already redesigned in CARDVET1c; the other two follow).
+
+**DAUNT2-1. Keen Sense now ignores Evasive (Camouflage isn't a skill yet)** · Decide · Rules · asked 2026-11-25 · decided 2026-11-27
+- Camouflage is only a name in the code, on no card. Reading "camouflaged" as Evasive: Keen Sense now ignores a grounded Evasive unit's dodge (flyers still dodge). Cards affected: Owl Sentinel, Quarry Mole, Oilbird, Cave Swiftlet vs Evasive cards.
+  - a) Keep: Keen Sense ignores grounded Evasive
+  - b) Undo, and make Camouflage its own skill that Keen Sense ignores
+- **Default:** a
+- **Outcome:** Your own words 2026-11-24 23:30: "Keen sense also lets you hit camouflaged things. (Camouflage is the kind of the same as evasive)": a.
+
+**W2PLAN-2. When elemental and magic skills start** · Decide · Skills · asked 2026-11-25 · decided 2026-11-27
+- Proposed: elemental creatures' skills from Map 21, magic from Map 50+ (so World 2 stays mostly real and elemental).
+  - a) As tabled
+  - b) Preview Shade and Ghost in the 30s
+- **Default:** a
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. As tabled (planning only; reversible).
+
+**W2PLAN-3. If the war maps move to 30+** · Decide · Skills · asked 2026-11-25 · decided 2026-11-27
+- Your 10-29 / 10-30 notes may move the war maps past 30. Each row in the proposal follows its map's theme.
+  - a) Rows follow their themes wherever the maps land
+  - b) Re-plan now on the 10-30 list
+- **Default:** a
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. Rows follow their themes wherever the maps land.
+
+**REFIT20-1. 8-7 with its Mine back is far too hard** · Decide · Balance · asked 2026-11-24 · decided 2026-11-27
+- With the Map 8 reference deck change, 8-7 got its Mine back and you now win 24% (target 60). Without the Mine it reads 57-60%. The item's own Health 4 is under the 60% floor (REFIT13-5 b), and Health may not change past Map 1, so it keeps Health 8.
+  - a) 8-7 without the Mine
+  - b) Mine with Health 4 (an exception to the floor)
+  - c) Keep the Mine, re-fit 8-7's deck by swaps
+- **Default:** a
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. 8-7 without the Mine (reads 57-60%, in band).
+
+**UISWEEP-1. One top bar everywhere** · Decide · UI · asked 2026-11-24 · decided 2026-11-27
+- One bar on every page except the fight HUD: ↩ back first, a slot for the page's own buttons, then a fixed core of 🏠 Home, Map, Settings, Energy, Account. Feedback moves into the one Settings panel; the acorn tile leaves the bar. Conquest keeps its shortcuts in the slot.
+  - a) Yes, as proposed
+  - b) Keep Feedback on the bar
+  - c) Keep today's bars
+- **Default:** a
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. Built in the next UI sweep (UISWEEP3).
+
+**UISWEEP-2. Transitions: curtain for places, quick fade elsewhere** · Decide · UI · asked 2026-11-24 · decided 2026-11-27
+- Going to a place (shops, Shop↔Premium, Camp...) closes the curtain, swaps behind it, then opens: 880 ms the first time, 420 ms on repeat visits, and a tap skips it. Other pages fade through in 280 ms (replacing the 3D page turn); pop-ups open in 200 ms and close in 140 ms.
+  - a) Yes
+  - b) Curtain everywhere
+  - c) Fades only, no curtain
+- **Default:** a
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. Built in the next UI sweep (UISWEEP3).
+
+**UISWEEP-3. Two screen-width breakpoints** · Decide · UI · asked 2026-11-24 · decided 2026-11-27
+- The style guide says one breakpoint; the CSS has 33. Proposed: 560 px (phones) and 900 px (wide layouts), and the style guide amended.
+  - a) 560 and 900
+  - b) One breakpoint only (900)
+- **Default:** a
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. 560 and 900 px; the style guide is amended in UISWEEP3.
+
+**ENG16B-1. Daunt: keep stacking, or refresh like Corrode?** · Decide · Rules · asked 2026-11-24 · decided 2026-11-27
+- Corrode stacked past its rule (a unit hit every round lost Attack without end); it now refreshes to the larger value and fades 1 a round. Daunt stacks by your 10-12 rule ("reduced by N multiple times"): one Daunt 2 unit hitting every round cuts 4 Attack. Its pip now shows the real total. (Owner 11-24 23:21 keeps Daunt and moves Scare cards to Daunt, so this is open again.)
+  - a) Keep Daunt stacking (10-12 rule)
+  - b) Daunt refreshes like Corrode
+- **Default:** a
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. Daunt keeps stacking (your 10-12 rule; no change).
+
+**STATE2-1. One Home icon** · Decide · UI · asked 2026-11-24 · decided 2026-11-27
+- Three Home buttons exist, and Camp pages show two at once. The UI sweep keeps one Home button everywhere.
+  - a) 🏠 house (10-24)
+  - b) 🌰 acorn (10-19)
+- **Default:** a
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. The 🏠 house everywhere (UISWEEP3).
+
+**STATE2-2. One back button style** · Decide · UI · asked 2026-11-24 · decided 2026-11-27
+- Seven back-button styles exist; five screens show two backs at once. The sweep uses one. The Nest and Shop show a text button "← Back to the map".
+  - a) One ↩ icon button with a tooltip everywhere
+  - b) ↩ everywhere, but keep the text on the Nest and Shop
+- **Default:** a
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. One ↩ icon button with a tooltip (UISWEEP3).
+
+**MP1-3. PvP turn order** · Decide · Multiplayer · asked 2026-11-23 · decided 2026-11-27
+- In mirror decks you score 36% against a stranger (the stranger strikes first every round) and the first seat scores 45% in Live Ranked. Default: first strike alternates against a stranger (you keep the +1 Shield), and in Live Ranked the seat that strikes first also acts first: both go to 50%.
+  - a) Both fixes
+  - b) Only the stranger fix
+  - c) Keep both as they are
+- **Default:** a
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. Both first-strike fixes (a fairness fix: 36% and 45% in mirror decks).
+
+**TESTFIX9-1. Map 20 side dungeon fields a Unique card** · Decide · Balance · asked 2026-11-23 · decided 2026-11-27
+- 20-A-4 (the Map 20 side dungeon) holds Ashmantle Fiend, a Unique card, while the road cap there is Epic.
+  - a) Swap it for the best Epic-or-lower card that keeps the fight in band (Claude re-measures)
+  - b) Allow it as an exception for this dungeon boss
+- **Default:** a
+- **Outcome:** Claude decided (owner 2026-11-27 09:47: "Condense the decision making points you can do on your own"): a. Swap the Unique for the best Epic-or-lower card that keeps 20-A-4 in band (the road's Epic cap).
 
 **SKWK6-2. Two too-strong decks fit only if they share more cards** · Decide · Balance · asked 2026-11-22 · decided 2026-11-22
 - 2-B-BPRO-2 (81.5%) and 10-A-BPRO-2 (53.5%) should beat the reference ladder 15-30%. Under the 10-shared-copies rule no change helps. Re-tunes ready: up to 13 shared, 31% and 21.5%; up to 12, 60.5% and 21.5%.

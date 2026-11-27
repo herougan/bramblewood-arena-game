@@ -1,0 +1,82 @@
+#!/usr/bin/env node
+// 2026-11-27 (owner 09:47: "I want a tab for every effect used on a per card basis from map0-20, including faction cards unlocked from
+// 0-20, and packs, starter, etc, within 0-20 progression ... a very short summary for ALL symbols used, and the count. Then ... a
+// -everycomboused table. It will ONLY present combinations that ARE used. Include 2 new symbols JUST for this purpose: glass cannon (low
+// defence), and wall (no attack) ... Anyway, then the list of triggers table as well. Now, list all combos used (dont list glass cannons and
+// walls first). E.g. Tide + Diurnal - 3, Tide + Crab Claw - 2 ... If 0, don't need to include."):
+// the pool is every collectible card a player can get by Map 20 (the game's own cardObtainMap <= 20: map lists, side maps that open by
+// Map 20, Specials, Packs 1-3, the faction pack, starters, rewards, the Nest / Smith / Mystery / raid sources), read inside the built game.
+// A card's symbols are its effects at every level (Level skills included; grants and shot parameters fold into their skill), its trigger
+// effects (trigger + action), and two tags only for this view: 🥂 Glass cannon (Health no more than Attack at Level 0, about the frailest 6% of the pool) and 🚫 Wall (Attack 0).
+// Writes docs/effects-cards-0-20.md (generated; the hub's 🧩 Effects tab shows it).   node tools/hub/effects_cards_0_20.js
+'use strict';
+const fs = require('fs'), path = require('path');
+const ROOT = path.join(__dirname, '..', '..'), OUT = path.join(ROOT, 'docs', 'effects-cards-0-20.md');
+const FOLD = { diurnalGrant: 'diurnal', nocturnalGrant: 'nocturnal', stormGrant: 'storm', tideGrant: 'tide', deliveryRes: 'delivery', arrowBramble: 'arrow', hunterVs: 'hunter' };
+const TRIG = { onSpawn: ['⬆️', 'On Play'], onDeath: ['💀', 'On Death'], onAttack: ['⚔️', 'On Attack'], onAttacked: ['🛡', 'On Attacked'], onReady: ['✅', 'On Ready'], onKill: ['🎯', 'On Kill'], onHealed: ['💚', 'On Nursed'], onAction: ['🔁', 'On Action'], perTurn: ['🔁', 'Every Turn'], onPitch: ['🃏', 'On Pitch'], onDiscard: ['🗑', 'On Discard'] };
+const TAGS = { glass: { icon: '🥂', label: 'Glass cannon' }, wall: { icon: '🚫', label: 'Wall' } };
+(async () => {
+  const pw = require('playwright'), b = await pw.chromium.launch(), p = await b.newPage();
+  await p.goto('file://' + path.join(ROOT, 'index.html'));
+  await p.waitForFunction(() => typeof cardObtainMap === 'function' && typeof skillText === 'function', null, { timeout: 90000 });
+  const data = await p.evaluate(() => {
+    try { adminModeEnabled = true; } catch (e) {}
+    const defs = getCardDefs(), cards = [], info = {};
+    Object.keys(defs).forEach(id => { const d = defs[id];
+      if (!d || d.token || d.test || d.hero || d.hallOfFame || d.cardType === 'materia' || /^dev|^event/.test(d.rarity || '')) return;
+      if (isEasterEgg(d) || isUnattainable(d)) return; const at = cardObtainMap(d); if (!(at <= 20)) return;
+      const keys = new Set(), trig = new Set();
+      const scan = eff => Object.keys(eff || {}).forEach(k => { const v = eff[k]; if (v == null || v === false || v === 0) return;
+        if (k === 'triggers') return (v || []).forEach(t => { const tk = t.on + '>' + t.do; trig.add(tk);
+          if (!info[tk]) { let txt = ''; try { txt = describeEffects({ id: 'x', name: 'x', effects: { triggers: [t] } }, null, { terse: true }).join(' / ').replace(/<[^>]*>/g, ''); } catch (e) {} info[tk] = { trig: true, on: t.on, do: t.do, eg: txt }; } });
+        keys.add(k); if (!info[k]) { const pd = skillDefOf(k); info[k] = { label: pd ? pd.label : '', icon: SKILL_ICON[k] || '', known: !!pd }; } });
+      scan(d.effects); Object.values(d.levelSkills || {}).forEach(scan);
+      cards.push({ id, name: d.name, rarity: d.rarity || '', at, src: cardSourceOf(d).kind, a: +d.attack || 0, h: +d.health || 0, keys: [...keys], trig: [...trig] }); });
+    return { cards, info };
+  });
+  await b.close();
+  const info = data.info, sym = {}; // symbol id -> { icon, label, kind }
+  const symOfKey = k => { const f = FOLD[k] || k, i = info[f] || info[k]; if (!i || !i.known) return null; return f; };
+  data.cards.forEach(c => {
+    const s = new Set(); c.keys.forEach(k => { const f = symOfKey(k); if (f) { s.add(f); if (!sym[f]) sym[f] = { icon: (info[f] || {}).icon || '', label: (info[f] || {}).label || f, kind: 'skill' }; } });
+    c.trig.forEach(tk => { const i = info[tk], t = TRIG[i.on] || ['🔁', i.on], act = String(i.do || '').replace(/([A-Z])/g, ' $1').toLowerCase();
+      if (!sym[tk]) sym[tk] = { icon: t[0], label: `${t[1]}: ${act}`, kind: 'trigger', eg: i.eg }; s.add(tk); });
+    if (c.a === 0) s.add('wall'); else if (c.h > 0 && c.h <= c.a) s.add('glass'); // items with 0 Health (Quill Spear ...) are not glass cannons
+    c.syms = [...s]; });
+  Object.assign(sym, { glass: Object.assign({ kind: 'tag' }, TAGS.glass), wall: Object.assign({ kind: 'tag' }, TAGS.wall) });
+  const byLabel = {}; Object.keys(sym).forEach(k => { (byLabel[sym[k].label] = byLabel[sym[k].label] || []).push(k); });
+  Object.values(byLabel).filter(ks => ks.length > 1).forEach(ks => ks.forEach(k => { sym[k].label += ` (${k})`; })); // two skills share a label (Loyal)
+  const count = {}; data.cards.forEach(c => c.syms.forEach(s => { count[s] = (count[s] || 0) + 1; }));
+  const nm = s => `${sym[s].icon} ${sym[s].label}`.trim(), order = (x, y) => (count[y] - count[x]) || nm(x).localeCompare(nm(y));
+  const isTag = s => s === 'glass' || s === 'wall';
+  const multi = (rows, per) => { const out = []; for (let i = 0; i < rows.length; i += per) out.push('| ' + rows.slice(i, i + per).map(r => r.join(' | ')).concat(Array(Math.max(0, per - Math.min(per, rows.length - i))).fill(' |  ')).join(' | ') + ' |'); return out; };
+  const L = [], src = {}; data.cards.forEach(c => { src[c.src] = (src[c.src] || 0) + 1; });
+  L.push('# Every effect, card by card (Maps 0-20 progression)', '', '_Generated by `node tools/hub/effects_cards_0_20.js` from the built game. Do not edit by hand._', '',
+    `**${data.cards.length} cards** a player can collect by Map 20 (the game's own obtain map, ≤ 20): ${Object.entries(src).sort((a, b) => b[1] - a[1]).map(([k, n]) => `${k} ${n}`).join(', ')}. ` +
+    'A card counts every effect it has at any level (Level skills included) and each trigger effect. Two tags exist only in this view: ' +
+    '🥂 **Glass cannon** (Health no more than Attack at Level 0: the frailest ~6%) and 🚫 **Wall** (Attack 0).', '');
+  // 1. symbols summary
+  const skills = Object.keys(sym).filter(s => sym[s].kind === 'skill' && count[s]).sort(order), trigs = Object.keys(sym).filter(s => sym[s].kind === 'trigger' && count[s]).sort(order);
+  L.push(`## 1. Every symbol and its count (${skills.length} skills, ${trigs.length} trigger effects, 2 tags)`, '');
+  const per = 5, head = n => ['| ' + Array(n).fill('Symbol | Cards').join(' | ') + ' |', '|' + Array(n).fill('---|---:').join('|') + '|'];
+  L.push(...head(per), ...multi(['glass', 'wall'].concat(skills).map(s => [nm(s), String(count[s] || 0)]), per), '');
+  // 2. every full combo used
+  const combos = {}; data.cards.forEach(c => { const k = c.syms.slice().sort(order).join('+') || '(none)'; (combos[k] = combos[k] || []).push(c); });
+  const cl = Object.entries(combos).sort((a, b) => b[1].length - a[1].length || b[0].split('+').length - a[0].split('+').length);
+  L.push(`## 2. Every combo used (${cl.length} distinct; each card's whole kit)`, '', '| Combo | Cards | Which |', '|---|---:|---|');
+  cl.forEach(([k, cs]) => L.push(`| ${k === '(none)' ? '_no effect_' : k.split('+').map(nm).join(' + ')} | ${cs.length} | ${cs.map(c => c.name).sort().join(', ')} |`));
+  L.push('');
+  // 3. triggers
+  L.push(`## 3. Trigger effects (${trigs.length})`, '', '| Trigger effect | Cards | Game text (first carrier) | Which |', '|---|---:|---|---|');
+  trigs.forEach(s => L.push(`| ${nm(s)} | ${count[s]} | ${(sym[s].eg || '').replace(/\|/g, '/')} | ${data.cards.filter(c => c.syms.includes(s)).map(c => c.name).sort().join(', ')} |`));
+  L.push('');
+  // 4. pairs used
+  const pairs = {}; data.cards.forEach(c => { const s = c.syms.slice().sort(order); for (let i = 0; i < s.length; i++) for (let j = i + 1; j < s.length; j++) { const k = s[i] + '|' + s[j]; pairs[k] = (pairs[k] || 0) + 1; } });
+  const pl = Object.entries(pairs).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])), main = pl.filter(([k]) => !k.split('|').some(isTag)), tagged = pl.filter(([k]) => k.split('|').some(isTag));
+  const pr = ([k, n]) => [k.split('|').map(nm).join(' + '), String(n)];
+  L.push(`## 4. Every pair used (${main.length} pairs; pairs with 🥂 / 🚫 after, ${tagged.length})`, '', ...['| ' + Array(3).fill('Pair | Cards').join(' | ') + ' |', '|' + Array(3).fill('---|---:').join('|') + '|'], ...multi(main.map(pr), 3), '',
+    '### With 🥂 Glass cannon or 🚫 Wall', '', ...['| ' + Array(3).fill('Pair | Cards').join(' | ') + ' |', '|' + Array(3).fill('---|---:').join('|') + '|'], ...multi(tagged.map(pr), 3), '');
+  fs.writeFileSync(OUT, L.join('\n') + '\n');
+  console.log('->', path.relative(ROOT, OUT), { cards: data.cards.length, skills: skills.length, triggers: trigs.length, combos: cl.length, pairs: main.length, tagged: tagged.length, glass: count.glass || 0, wall: count.wall || 0, src,
+    unknownKeys: [...new Set([].concat(...data.cards.map(c => c.keys)).filter(k => !symOfKey(k)))] });
+})().catch(e => { console.error(e); process.exit(1); });

@@ -189,8 +189,6 @@ skills_html = ''.join(skill_card(f) for f in SKILLS)
 # sheets and audits, newest first, each a collapsible card (the first one open).
 DESIGN = [
   # 2026-11-22 (MAPADD1, owner 13:22: "Can I see this table in the master hub?"): the owner's Maps 0-20 skill table checked against the cards (generated: node tools/hub/map_skill_table.js), first so it opens by default
-  # 2026-11-26 (owner 21:32: "Whats in map0-20, wffects wise. Show every single one"): every effect on a Maps 0-20 list (generated: node tools/hub/effects_0_20.js)
-  ('Every effect on Maps 0-20', 'effects-0-20.md'),
   ('Map skill table (Maps 0-20)', 'map-skill-table.md'),
   # 2026-11-04 (package SKILLREC1, owner 07:42: "get a list of skill recommendations (sort by advancement) in the master hub"): first, so it opens by default
   ('Skill recommendations by road advancement (SKILLREC1)', 'skill-recommendations-2026-11-04.md'),
@@ -241,6 +239,20 @@ if os.path.exists(_feel_path):
     _fh, _fsecs = anchor(md_html(open(_feel_path, encoding='utf-8').read()), 'feel')
     for sid, st, sx in _fsecs: SEARCH.append(['Feelings', st, 'docs/feelings.md', sx[:4000], {'tab': 'feelings', 'el': sid}])
     feel_html = '<article class="doc guide">' + _fh + '</article>'
+
+# 2026-11-27 (owner 09:47: "I want a tab for every effect used on a per card basis from map0-20 ... Mastr Hub Design strikes and attack shapes
+# and following tables-> make it wider so it's not too vertical"): the 🧩 Effects tab, two generated views, wide: by card (symbols and counts,
+# every combo used, triggers, every pair used: node tools/hub/effects_cards_0_20.js) and by list (what each effect does and where it first
+# shows: node tools/hub/effects_0_20.js, moved here from Design).
+_FX = [('By card: symbols, combos, pairs', 'effects-cards-0-20.md'), ('By list: what each does, where it starts', 'effects-0-20.md')]
+_FX = [(t, f) for t, f in _FX if os.path.exists(os.path.join(ROOT, 'docs', f))]
+fx_html = ('<div class="doc guide wide"><h1>Effects on Maps 0-20</h1>'
+  '<nav class="subtabs" data-group="fx" aria-label="Effects views">' + ''.join('<button type="button" data-show="fx-' + f[:-3] + '" aria-pressed="' + ('true' if k == 0 else 'false') + '">' + H.escape(t) + '</button>' for k, (t, f) in enumerate(_FX)) + '</nav>')
+for k, (t, f) in enumerate(_FX):
+    _h, _secs = anchor(md_html(open(os.path.join(ROOT, 'docs', f), encoding='utf-8').read()), f'fx-{f[:-3]}')
+    for sid, st, sx in _secs: SEARCH.append(['Effects', st, t, sx[:4000], {'tab': 'effects', 'sub': f'fx-{f[:-3]}', 'el': sid}])
+    fx_html += f'<div class="subpane" data-group="fx" id="fx-{f[:-3]}"{"" if k == 0 else " hidden"}><p class="note">docs/{f} (generated)</p><div class="doc">{_h}</div></div>'
+fx_html += '</div>'
 
 # 2026-10-24 (package HUB4, owner G2 / item 71: "Everything within the master hub. Move the other .md files that are still relevant."): the 📖 Library tab
 # (tools/hub/library.py): every docs/**/*.md except docs/balance and docs/art, canonical + reference rendered, dated snapshots in a collapsed History
@@ -416,6 +428,7 @@ CALLS = ''.join(f'<section class="dash-card"><h2>{H.escape(re.sub(r"^[0-9]+[.] *
 _dec_rows = ''.join(f'<li><a href="#decisions" data-dec="{H.escape(i["id"])}"><span class="dec-id">{H.escape(i["id"])}</span> {H.escape(i["title"])}</a><small>{H.escape(i.get("area", ""))} · asked {H.escape(i.get("asked", ""))}</small></li>' for i in _open_dec[:8])
 RECENT = ''.join(f'<details class="cl"{" open" if k == 0 else ""}><summary>{H.escape(t)}</summary><div class="cl-b doc">{b}</div></details>' for k, (t, b) in enumerate(CL[:5]))
 LINKS = [('🎯', 'actions', 'Action items', 'Everything done and waiting, newest first'), ('🎴', 'cards', 'Cards', 'Every card with art, stats, skills, where it drops'),
+  ('🧩', 'effects', 'Effects 0-20', 'Every symbol, combo and pair on the cards of Maps 0-20'),
   ('⚖️', 'balance', 'Balance', 'Win rate of each card in simulation'), ('📈', 'difficulty', 'Difficulty', 'How hard each fight is, map by map'),
   ('🃏', 'decks', 'Decks', 'Tutorial, skirmish and raid decks'), ('💬', 'dialogues', 'Dialogues', 'Every conversation and who says it'),
   ('🗳️', 'decisions', 'Decisions', 'Waiting on you, and decided'), ('📐', 'design', 'Design', 'Design sheets and audits'),
@@ -644,6 +657,8 @@ main{{flex:1; min-height:0; position:relative;}}
 .panel[hidden]{{display:none;}}
 iframe{{border:0; width:100%; height:100%; display:block; background:var(--bg);}}
 .doc{{max-width:900px; margin:0 auto; padding:20px 16px 80px;}}
+.doc.wide{{max-width:min(1600px, 98vw);}} .doc.wide .doc{{max-width:none; padding:0 0 40px;}} .doc.wide table{{font-size:13px;}} .doc.wide td, .doc.wide th{{padding:4px 8px;}} /* 2026-11-27: Effects tables run wide, not tall */
+.more-tabs{{display:none;}} nav.show-more .more-tabs{{display:contents;}} .more-btn{{font:700 14px 'Baloo 2',system-ui,sans-serif; border:1px dashed var(--line); background:transparent; color:var(--ink-muted); padding:6px 12px; border-radius:10px; cursor:pointer; white-space:nowrap;}}
 .doc h1{{font:800 30px 'Baloo 2',system-ui,sans-serif; margin:0 0 8px;}}
 .doc h2{{font:800 22px 'Baloo 2',system-ui,sans-serif; margin:28px 0 8px; padding-top:8px; border-top:1px solid var(--line);}}
 .doc h3{{font:800 17px 'Baloo 2',system-ui,sans-serif; margin:20px 0 6px;}}
@@ -728,10 +743,19 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <button type="button" class="thm" id="hubTheme" aria-label="Colour theme" title="Colour theme: auto / light / dark">🌓 Auto</button>
 <a class="play" href="https://bramblewood-arena.vercel.app" target="_blank" rel="noopener">🎮 <span>Play ↗</span></a></header>
 <nav role="tablist" aria-label="Pages" aria-orientation="vertical">
+<!-- 2026-11-27 (owner 09:47: "Condense tabs uneeded"): the ten tabs in daily use stay in the bar; the rest sit behind ⋯ More (nothing removed) -->
 <button role="tab" id="t-master" aria-controls="p-master" data-tab="master">🏠 Home</button>
 <button role="tab" id="t-actions" aria-controls="p-actions" data-tab="actions">🎯 Action items</button>
+<button role="tab" id="t-decisions" aria-controls="p-decisions" data-tab="decisions">🗳️ Decisions</button>
 <button role="tab" id="t-cards" aria-controls="p-cards" data-tab="cards">🎴 Cards</button>
+<button role="tab" id="t-effects" aria-controls="p-effects" data-tab="effects">🧩 Effects 0-20</button>
+<button role="tab" id="t-mapcards" aria-controls="p-mapcards" data-tab="mapcards">🗺️ Map cards</button>
 <button role="tab" id="t-balance" aria-controls="p-balance" data-tab="balance">⚖️ Balance</button>
+<button role="tab" id="t-feelings" aria-controls="p-feelings" data-tab="feelings">💭 Feelings</button>
+<button role="tab" id="t-design" aria-controls="p-design" data-tab="design">📐 Design</button>
+<button role="tab" id="t-changelog" aria-controls="p-changelog" data-tab="changelog">🗒️ Changelog</button>
+<button type="button" class="more-btn" id="moreBtn" aria-expanded="false" aria-controls="moreTabs">⋯ More (18)</button>
+<div class="more-tabs" id="moreTabs">
 <button role="tab" id="t-budget" aria-controls="p-budget" data-tab="budget">🎚️ Budget &amp; stats</button>
 <button role="tab" id="t-costs" aria-controls="p-costs" data-tab="costs">🧮 Skill costs</button>
 <button role="tab" id="t-ucosts" aria-controls="p-ucosts" data-tab="ucosts">💰 Upgrade costs</button>
@@ -741,20 +765,16 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <button role="tab" id="t-resources" aria-controls="p-resources" data-tab="resources">🪙 Resources</button>
 <button role="tab" id="t-chips" aria-controls="p-chips" data-tab="chips">🏷️ Chips &amp; FX</button>
 <button role="tab" id="t-ctable" aria-controls="p-ctable" data-tab="ctable">🗃️ Card table</button>
-<button role="tab" id="t-mapcards" aria-controls="p-mapcards" data-tab="mapcards">🗺️ Map cards</button>
 <button role="tab" id="t-curves" aria-controls="p-curves" data-tab="curves">📊 Curves</button>
 <button role="tab" id="t-curve" aria-controls="p-curve" data-tab="curve">📈 Difficulty</button>
 <button role="tab" id="t-decks" aria-controls="p-decks" data-tab="decks">🃏 Decks</button>
 <button role="tab" id="t-dialogues" aria-controls="p-dialogues" data-tab="dialogues">💬 Dialogues</button>
-<button role="tab" id="t-decisions" aria-controls="p-decisions" data-tab="decisions">🗳️ Decisions</button>
-<button role="tab" id="t-feelings" aria-controls="p-feelings" data-tab="feelings">💭 Feelings</button>
-<button role="tab" id="t-design" aria-controls="p-design" data-tab="design">📐 Design</button>
-<button role="tab" id="t-changelog" aria-controls="p-changelog" data-tab="changelog">🗒️ Changelog</button>
 <button role="tab" id="t-doclib" aria-controls="p-doclib" data-tab="doclib">📖 Library</button>
 <button role="tab" id="t-lab" aria-controls="p-lab" data-tab="lab">✨ Effects Lab</button>
 <button role="tab" id="t-playground" aria-controls="p-playground" data-tab="playground">🧪 VFX Playground</button>
 <button role="tab" id="t-library" aria-controls="p-library" data-tab="library">🖼️ Visual Library</button>
 <button role="tab" id="t-guide" aria-controls="p-guide" data-tab="guide">🧠 Claude's guide</button>
+</div>
 </nav>
 <main>
 <section class="panel" id="p-master" role="tabpanel" aria-labelledby="t-master">{home_html}</section>
@@ -794,6 +814,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 {dialogues_panel}
 <section class="panel" id="p-doclib" role="tabpanel" aria-labelledby="t-doclib" hidden>{lazy(LIB_HTML)}</section>
 <section class="panel" id="p-feelings" role="tabpanel" aria-labelledby="t-feelings" hidden>{lazy(feel_html)}</section>
+<section class="panel" id="p-effects" role="tabpanel" aria-labelledby="t-effects" hidden>{lazy(fx_html)}</section>
 <section class="panel" id="p-design" role="tabpanel" aria-labelledby="t-design" hidden>{lazy(design_html)}</section>
 <section class="panel" id="p-guide" role="tabpanel" aria-labelledby="t-guide" hidden>{lazy(guide)}</section>
 </main>
@@ -861,6 +882,7 @@ const DEC = {decisions_json};
   render();
 }})();
 const tabs = [...document.querySelectorAll('[role=tab]')];
+{{ const mb = document.getElementById('moreBtn'); if(mb) mb.addEventListener('click', ()=>{{ const nv = mb.closest('nav'), on = nv.classList.toggle('show-more'); mb.setAttribute('aria-expanded', String(on)); }}); }} // 2026-11-27: ⋯ More
 // 2026-10-15: lazy panels are stamped from their <template> on first show; the open tab is kept in #hash and
 // localStorage (the artifact frame may drop the hash); hub.onShow lets the Cards tab render on first open.
 const hub = window.hub = {{ onShow: {{}} }};
@@ -876,7 +898,7 @@ function show(id, keepScroll){{
   if(!document.getElementById('p-'+id)) id = 'master';
   tabs.forEach(t=>{{ const on = t.dataset.tab===id; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; document.getElementById('p-'+t.dataset.tab).hidden = !on; }});
   const p = document.getElementById('p-'+id); stamp(p); if(hub.onShow[id]) hub.onShow[id]();
-  const cur = tabs.find(t=> t.dataset.tab===id); if(cur) cur.scrollIntoView({{inline:'nearest', block:'nearest'}});
+  const cur = tabs.find(t=> t.dataset.tab===id); if(cur && cur.closest('.more-tabs')){{ const nv = cur.closest('nav'); nv.classList.add('show-more'); document.getElementById('moreBtn').setAttribute('aria-expanded','true'); }} if(cur) cur.scrollIntoView({{inline:'nearest', block:'nearest'}});
   const fr = document.querySelector('#p-'+id+' iframe'); if(fr && !fr.src) fr.src = fr.dataset.src;
   try{{ history.replaceState(null, '', '#'+id); }}catch(e){{}}
   try{{ localStorage.setItem('hub.tab', id); }}catch(e){{}}
