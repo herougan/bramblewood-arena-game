@@ -2,3 +2,4 @@
 {"key":"18-A-6","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":92.3,"seed2":12300,"games":300},"moves":[]}
 {"key":"18-A-7","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":91.7,"seed2":12300,"games":300},"moves":[]}
 {"key":"18-A-5","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":84.3,"seed2":12300,"games":300},"moves":[]}
+{"key":"18-A-4","deck":{"barrel-cactus":2,"caustic-scorpion":2,"dune-jackal":4,"sand-widow":4,"roadrunner-courier":3},"shieldOverride":null,"hqHp":null,"tune":{"w2":99,"seed2":12300,"games":300},"moves":["-2 dromedary +2 roadrunner-courier"]}
