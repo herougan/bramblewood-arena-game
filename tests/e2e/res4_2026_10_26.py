@@ -118,9 +118,9 @@ async def run(b, url, w):
     pg = await page(b, url, w)
     r = await pg.evaluate(E("""playSubTab = 'conquest'; switchTab('play'); await new Promise(r=> setTimeout(r, 2500));
       const btn = document.getElementById('trailNavBtnPlay'); const bb = btn && btn.getBoundingClientRect(); return {btn: !!btn, vis: !!(bb && bb.width > 0 && bb.top >= 0 && bb.right <= innerWidth + 1), name: gdThemedName()};"""))
-    ok(r['btn'] and r['vis'], 'the map\'s corner cluster has the 🚐 button, on screen')
+    ok(r['btn'] and r['vis'], 'the top bar\'s slot on the map has the 🚐 button, on screen')  # 2026-11-27 (TESTFIX13): was the map's corner cluster; the one top bar's slot now, same id (UISWEEP3)
     ok(r['name'] == 'The Tidelock Vault', f"the first group dungeon is The Tidelock Vault ({r['name']})")
-    await shot(pg, 'map-cluster', w, clip='.play-subtabs-actions', pad=10)
+    await shot(pg, 'map-cluster', w, clip='.topbar', pad=10)  # 2026-11-27 (TESTFIX13): was '.play-subtabs-actions', gone with the cluster (UISWEEP3); a missing clip fell back to the whole page
     await pg.click('#trailNavBtnPlay'); await pg.wait_for_timeout(1500)
     ok(await pg.evaluate("currentTab") == 'trail', 'the 🚐 opens the Trail page')
     await close(pg)

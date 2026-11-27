@@ -24,15 +24,17 @@ async def done(pg):
 async def bb1(b, url, w):
     print(f'-- BB1: the Nest\'s way back to the map ({w})')
     pg = await W.fresh(b, url, w)
-    await pg.evaluate("(()=>{ adminModeEnabled = true; FEATURE_SPOTS.forEach(s=> unlockFeature(s.key)); switchTab('nest'); })()"); await pg.wait_for_timeout(900)
-    r = await pg.evaluate("""(()=>{ const b = document.getElementById('nestMapBackBtn'); if(!b) return null; const q = b.getBoundingClientRect(), p = document.querySelector('#view-nest .panel').getBoundingClientRect(), sb = document.getElementById('shopBackBtn');
-      return {text: b.textContent.trim(), cls: b.className, left: Math.round(q.left - p.left), top: Math.round(q.top - p.top), w: Math.round(q.width), h: Math.round(q.height), vis: q.width > 0}; })()""")
-    ok(r is not None and r['vis'], f'the Nest has a back-to-map button {r}')
-    ok(r is not None and 'shop-back' in r['cls'] and r['text'].endswith('Back to the map') and r['left'] < 60 and r['top'] < 40, 'it is the Shop\'s button style, top left of the panel, "Back to the map"')
+    # 2026-11-27 (TESTFIX13): the Nest's text button ("Back to the map", .shop-back) is the top bar's ↩ icon (#pageBackBtn, tooltip + aria-label) now (UISWEEP3, STATE2-2); it goes back to where you came from, so open the Nest from the map
+    await pg.evaluate("(()=>{ adminModeEnabled = true; FEATURE_SPOTS.forEach(s=> unlockFeature(s.key)); playSubTab = 'conquest'; switchTab('play'); })()"); await pg.wait_for_timeout(900)
+    await pg.evaluate("switchTab('nest')"); await pg.wait_for_timeout(900)
+    r = await pg.evaluate("""(()=>{ const b = document.getElementById('pageBackBtn'); if(!b) return null; const q = b.getBoundingClientRect(), tb = document.querySelector('.topbar').getBoundingClientRect(), bar = document.getElementById('pageBackBar');
+      return {text: b.textContent.trim(), cls: b.className, label: b.getAttribute('aria-label'), title: b.title, left: Math.round(q.left - tb.left), top: Math.round(q.top), w: Math.round(q.width), h: Math.round(q.height), vis: q.width > 0, inBar: !!bar && bar.contains(b), first: bar && bar.firstElementChild === b, oldBtn: !!document.getElementById('nestMapBackBtn')}; })()""")
+    ok(r is not None and r['vis'], f'the Nest has a back-to-map button in the top bar {r}')
+    ok(r is not None and 'pb-back' in r['cls'] and r['label'] == 'Back to the map' and r['title'] == 'Back to the map' and r['text'] == '' and r['inBar'] and r['first'] and r['left'] < 60 and r['top'] < 80 and not r['oldBtn'], f'it is the bar\'s ↩ icon (no text), first on the left, labelled "Back to the map"; the old text button is gone {r}')
     await pg.screenshot(path=os.path.join(SHOTS, f'nest-after-{w}.png'))
-    await pg.evaluate("document.getElementById('nestMapBackBtn').style.display = 'none'"); await pg.screenshot(path=os.path.join(SHOTS, f'nest-before-{w}.png'))  # before: the Nest as it was (no button)
-    await pg.evaluate("document.getElementById('nestMapBackBtn').style.display = ''")
-    await pg.click('#nestMapBackBtn'); await pg.wait_for_timeout(900)
+    await pg.evaluate("document.getElementById('pageBackBtn').style.visibility = 'hidden'"); await pg.screenshot(path=os.path.join(SHOTS, f'nest-before-{w}.png'))  # before: the Nest as it was (no button)
+    await pg.evaluate("document.getElementById('pageBackBtn').style.visibility = ''")
+    await pg.click('#pageBackBtn'); await pg.wait_for_timeout(900)
     r2 = await pg.evaluate("({tab: currentTab, play: !document.getElementById('view-play').hidden, nest: document.getElementById('view-nest').hidden, sub: playSubTab})")
     ok(r2['play'] and r2['nest'] and r2['sub'] == 'conquest', f'it opens the Conquest map {r2}')
     await done(pg)

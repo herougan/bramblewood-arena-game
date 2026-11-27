@@ -227,8 +227,8 @@ async def jj16(b, url, w):
     ok(max(r['gaps']) - min(r['gaps']) <= 1 and len(r['hs']) == 1 and max(r['mids']) - min(r['mids']) <= 1, f'one gap, one height, one centre line {r}')
     await pg.add_style_tag(content=NOTOAST)
     await pg.screenshot(path=shot('jj16-topbar', w), clip={'x': max(0, w - 520), 'y': 0, 'width': min(520, w), 'height': 80})
-    r = await pg.evaluate("(async()=>{ document.getElementById('ui14MapNavBtn').click(); await new Promise(r=> setTimeout(r, 900)); return {tab: currentTab, sub: playSubTab, map: !!document.getElementById('conquestCanvas'), hiddenNow: document.getElementById('ui14MapNavBtn').hidden}; })()")
-    ok(r['tab'] == 'play' and r['sub'] == 'conquest' and r['map'] and r['hiddenNow'], f'it opens the conquest map (and hides there) {r}')
+    r = await pg.evaluate("(async()=>{ document.getElementById('ui14MapNavBtn').click(); await new Promise(r=> setTimeout(r, 900)); return {tab: currentTab, sub: playSubTab, map: !!document.getElementById('conquestCanvas'), hiddenNow: document.getElementById('ui14MapNavBtn').hidden, here: document.getElementById('ui14MapNavBtn').classList.contains('is-here')}; })()")
+    ok(r['tab'] == 'play' and r['sub'] == 'conquest' and r['map'] and not r['hiddenNow'] and r['here'], f'it opens the conquest map (and stays in the bar, filled: is-here) {r}')  # 2026-11-27 (TESTFIX13): the 🗺️ is part of the bar's fixed core on every page now, filled on its own page, no longer hidden there (UISWEEP3)
     await done(pg)
 
 # ---------------------------------------------------------------- JJ20

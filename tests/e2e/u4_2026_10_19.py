@@ -96,27 +96,32 @@ async def cluster_part(b, w, h, phone):
     for tab in ['conquest', 'arena', 'raid', 'dungeons']:
         await pg.evaluate(f"(()=>{{ playSubTab = '{tab}'; switchTab('play'); return 1; }})()"); await pg.wait_for_timeout(700)
         await pg.evaluate(CLEAN)
-        r = await pg.evaluate("""(()=>{ const cl = document.querySelector('#view-play .play-subtabs-actions'); if(!cl) return null;
+        # 2026-11-27 (TESTFIX13): the floating cluster is the one top bar now (UISWEEP3): the page's slot (Arena where it shows, Forge, ...) first, then the fixed core 🏠, 🗺️ (off on the map itself), ⚙️, Energy, 👤
+        r = await pg.evaluate("""(()=>{ const cl = document.querySelector('.topbar'); if(!cl) return null;
           const vis = e=> e && e.getClientRects().length && getComputedStyle(e).display !== 'none' && getComputedStyle(e).visibility !== 'hidden';
-          const kids = [...cl.children].filter(vis).map(e=>{ const q = e.matches('.settings-wrap') ? e.querySelector('.settings-btn') : e, r = q.getBoundingClientRect(); return {id: q.id || q.className, l:r.left, r:r.right, t:r.top, b:r.bottom}; });
+          const kids = [...cl.querySelectorAll('.pb-back, .pb-sc, #homeNavBtn, #ui14MapNavBtn, #dungeonKeyBtnTop, #settingsBtn, #energyPill, #accountChip')].filter(vis).map(q=>{ const r = q.getBoundingClientRect(); return {id: q.id || q.className, l:r.left, r:r.right, t:r.top, b:r.bottom, here: q.classList.contains('is-here')}; });
           let scroller = null; for(let a = cl; a && a !== document.body; a = a.parentElement){ const o = getComputedStyle(a).overflowX; if((o === 'auto' || o === 'scroll') && a.scrollWidth > a.clientWidth + 1){ scroller = a.className || a.id; break; } }
           const f = document.getElementById('forgeNavBtnPlay');
-          return {kids, scroller, vw: document.documentElement.clientWidth, forgeEmoji: f && (f.querySelector('.tab-emoji img') ? f.querySelector('.tab-emoji img').getAttribute('alt') : f.querySelector('.tab-emoji').textContent), forgeLabel: f && f.getAttribute('aria-label')}; })()""")
-        check(r is not None, f'{tag} {tab}: the cluster is there')
+          return {kids, scroller, vw: document.documentElement.clientWidth, forgeEmoji: f && (f.querySelector('span img') ? f.querySelector('span img').getAttribute('alt') : f.querySelector('span').textContent.trim()), forgeLabel: f && f.getAttribute('aria-label'), sub: playSubTab}; })()""")  # sub: the page may fall back (Dungeons not open -> the map)
+        check(r is not None, f'{tag} {tab}: the top bar is there')
         if not r: continue
         ids = [k['id'] for k in r['kids']]
-        check(ids[:1] == ['homeNavBtnPlay'], f'{tag} {tab}: Home comes first ({ids})')
+        slot = [i for i in ids if i in ('arenaNavBtnPlay', 'forgeNavBtnPlay')]
+        core = ids[ids.index('homeNavBtn'):] if 'homeNavBtn' in ids else []
+        check(ids[:len(slot)] == slot and 'homeNavBtn' in ids and ids.index('homeNavBtn') > ids.index('forgeNavBtnPlay'), f'{tag} {tab}: the slot (Arena, Forge) comes first, then Home ({ids})') if 'forgeNavBtnPlay' in ids else check(False, f'{tag} {tab}: the Forge is in the slot ({ids})')
         if 'arenaNavBtnPlay' in ids:
-            check(ids[1:3] == ['arenaNavBtnPlay', 'forgeNavBtnPlay'], f'{tag} {tab}: Home, Arena, Forge ({ids})')
+            check(ids.index('arenaNavBtnPlay') + 1 == ids.index('forgeNavBtnPlay'), f'{tag} {tab}: Arena, Forge ({ids})')
         else:
-            check(ids[1:2] == ['forgeNavBtnPlay'], f'{tag} {tab}: Home, Forge (no Arena here) ({ids})')
+            check(tab == 'arena', f'{tag} {tab}: no Arena button only on the Arena page ({ids})')
+        check(core[:1] == ['homeNavBtn'] and [c for c in core if c in ('settingsBtn', 'energyPill', 'accountChip')] == ['settingsBtn', 'energyPill', 'accountChip'], f'{tag} {tab}: the core is Home, Map, Settings, Energy, Account in that order ({core})')
+        check('ui14MapNavBtn' in ids and [k['here'] for k in r['kids'] if k['id'] == 'ui14MapNavBtn'] == [r['sub'] == 'conquest'], f'{tag} {tab}: 🗺️ is in the core on every page, filled (is-here) only on the map itself (sub {r["sub"]}, {ids})')
         check(r['forgeEmoji'] == '🔨' and r['forgeLabel'] == 'The Forge', f'{tag} {tab}: the Forge is the 🔨 with its label ({r["forgeEmoji"]}, {r["forgeLabel"]})')
-        btns = [k for k in r['kids'] if k['id'] in ('homeNavBtnPlay', 'arenaNavBtnPlay', 'forgeNavBtnPlay', 'settingsBtnPlaySub')]
-        check(all(k['l'] >= 0 and k['r'] <= r['vw'] + 0.5 for k in r['kids']), f'{tag} {tab}: the whole cluster is on screen ({[(k["id"], round(k["l"]), round(k["r"])) for k in r["kids"]]})')
-        check(len({round((k['t'] + k['b']) / 2) // 4 for k in btns}) == 1, f'{tag} {tab}: Home, Arena, Forge and ⚙️ share one line ({[(k["id"], k["t"]) for k in btns]})')
-        check(not r['scroller'], f'{tag} {tab}: no sideways-scrolling box around the cluster ({r["scroller"]})')
+        btns = [k for k in r['kids'] if k['id'] in ('homeNavBtn', 'arenaNavBtnPlay', 'forgeNavBtnPlay', 'settingsBtn')]
+        check(all(k['l'] >= 0 and k['r'] <= r['vw'] + 0.5 for k in r['kids']), f'{tag} {tab}: the whole bar is on screen ({[(k["id"], round(k["l"]), round(k["r"])) for k in r["kids"]]})')
+        check(len({round((k['t'] + k['b']) / 2) // 4 for k in r['kids']}) == 1, f'{tag} {tab}: every button of the bar shares one line ({[(k["id"], k["t"]) for k in btns]})')
+        check(not r['scroller'], f'{tag} {tab}: no sideways-scrolling box around the bar ({r["scroller"]})')
         await shot(pg, f'cluster-{tab}-{tag}')
-    # the Forge button goes to the Forge
+    # the Forge button goes to the Forge (2026-11-27, TESTFIX13: still #forgeNavBtnPlay, now the bar's slot)
     await pg.evaluate("(()=>{ playSubTab = 'conquest'; switchTab('play'); return 1; })()"); await pg.wait_for_timeout(600)
     await pg.evaluate("document.getElementById('forgeNavBtnPlay').click(); 1"); await pg.wait_for_timeout(900)
     went = await pg.evaluate("({tab: currentTab, sub: codexSubTab, forge: !!document.querySelector('#view-forge')})")

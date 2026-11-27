@@ -36,7 +36,7 @@ async def nav_ok(pg, label):
         if await pg.evaluate("!!matchState"): bad(f'{label}: matchState still set after leaving')
         return
     # some way home is visible (header on most tabs, the sub-tab row's Home on Play)
-    vis = await pg.evaluate("(()=>{ const ok = el=> el && el.offsetParent!==null; return ok(document.getElementById('homeNavBtn')) || ok(document.getElementById('homeNavBtnPlay')); })()")
+    vis = await pg.evaluate("(()=>{ const ok = el=> el && el.offsetParent!==null; return ok(document.getElementById('homeNavBtn')); })()")  # 2026-11-27 (TESTFIX13): the one top bar's 🏠 is the only Home; the Play page's #homeNavBtnPlay copy is gone (UISWEEP3)
     if not vis: bad(f'{label}: no visible Home button after leaving')
     await pg.evaluate("switchTab('home'); 1"); await pg.wait_for_timeout(200)
     if await pg.evaluate("currentTab")!='home': bad(f'{label}: cannot get back Home')

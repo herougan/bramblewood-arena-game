@@ -66,26 +66,26 @@ async def map_part(b, w, h, phone):
     for tab in ['conquest', 'arena', 'raid', 'dungeons']:
         await pg.evaluate(f"(()=>{{ playSubTab = '{tab}'; switchTab('play'); return 1; }})()"); await pg.wait_for_timeout(600)
         r = await pg.evaluate("""(BOX)=>{ const box = new Function('return ' + BOX)();
-          const home = box('#homeNavBtnPlay'), gear = box('#settingsBtnPlaySub'), arena = box('#arenaNavBtnPlay');
-          const el = document.getElementById('homeNavBtnPlay'); let scroller = null;
+          const home = box('#homeNavBtn'), gear = box('#settingsBtn'), arena = box('#arenaNavBtnPlay');
+          const el = document.getElementById('homeNavBtn');  /* 2026-11-27 (TESTFIX13): the one top bar's 🏠 and ⚙️ (UISWEEP3) */ let scroller = null;
           for(let a = el && el.parentElement; a && a !== document.body; a = a.parentElement){ const o = getComputedStyle(a).overflowX; if((o === 'auto' || o === 'scroll') && a.scrollWidth > a.clientWidth + 1){ scroller = a.className; break; } }
           return {home, gear, arena, emoji: el ? (el.querySelector('.tab-emoji img') ? el.querySelector('.tab-emoji img').getAttribute('alt') : el.querySelector('.tab-emoji').textContent) : null, scroller, tabHome: !!document.getElementById('playHomeTabBtn'), label: el && el.getAttribute('aria-label')}; }""", BOX)
         hm, gr = r['home'], r['gear']
         check(hm and hm['l'] >= 0 and hm['r'] <= w + 1 and hm['t'] >= 0 and hm['t'] < 80, f'{tag} {tab}: the Home is on screen, top right ({hm})')
-        check(r['emoji'] == '🌰' and r['label'] == 'Back to Home', f'{tag} {tab}: an acorn Home with its label ({r["emoji"]}, {r["label"]})')
+        check(r['emoji'] == '🏠' and r['label'] == 'Home', f'{tag} {tab}: a 🏠 Home with its label ({r["emoji"]}, {r["label"]})')  # 2026-11-27 (TESTFIX13): was the acorn / 'Back to Home' (UISWEEP3: one Home, the house)
         check(gr and hm and abs((hm['t'] + hm['b'])/2 - (gr['t'] + gr['b'])/2) < 3 and hm['r'] <= gr['l'] + 1, f'{tag} {tab}: the Home sits in the cluster, left of the ⚙️')
         if tab == 'conquest':
-            check(hm and gr and abs(hm['h'] - 38) < 2 and abs(hm['w'] - 38) < 2 and r['arena'] and abs(r['arena']['w'] - hm['w']) < 2, f'{tag}: the Home is sized like its neighbours ({hm and hm["w"]}x{hm and hm["h"]}, Arena {r["arena"] and r["arena"]["w"]})')
+            check(hm and gr and abs(hm['h'] - gr['h']) < 2 and abs(hm['w'] - gr['w']) < 2 and hm['w'] == hm['h'], f'{tag}: the Home is sized like the ⚙️ beside it ({hm and hm["w"]}x{hm and hm["h"]}, ⚙️ {gr and gr["w"]}x{gr and gr["h"]})')  # 2026-11-27 (TESTFIX13): the bar's core buttons share one size (36 on a phone, 32 on a desktop); the slot's icons are narrower, so no Arena width compare (UISWEEP3)
         check(not r['scroller'], f'{tag} {tab}: no sideways-scrolling box around the cluster ({r["scroller"]})')
         check(not r['tabHome'], f'{tag} {tab}: no Home in the bottom tab bar')
         if tab == 'conquest':
-            s = await pg.evaluate("""(BOX)=>{ const box = new Function('return ' + BOX)(); const list = box('#conquestMapList'), cl = box('#view-play .play-subtabs-actions');
+            s = await pg.evaluate("""(BOX)=>{ const box = new Function('return ' + BOX)(); const list = box('#conquestMapList'), cl = box('.topbar');  /* 2026-11-27 (TESTFIX13): the one top bar (UISWEEP3) */
               const chips = [...document.querySelectorAll('#conquestMapList .conquest-map-item[data-mapid]')].map(c=> ({b: box(c), num: (box(c.querySelector('.cmi-num')) ? c.querySelector('.cmi-num').textContent : null), name: !!box(c.querySelector('.cmi-name')), tick: !!box(c.querySelector('.cmi-tick')), cleared: c.classList.contains('is-cleared'), aria: c.getAttribute('aria-label')}));
               return {list, cl, chips, world: box('#conquestWorldBtn'), fs: box('#conquestFsBtn')}; }""", BOX)
             if phone:
                 c0 = s['chips'][0] if s['chips'] else None
-                check(s['list'] and s['chips'] and c0['b'] and c0['b']['t'] <= 16, f'{tag}: the map strip is back, on the top line (first chip top {c0 and c0["b"] and round(c0["b"]["t"])})')
-                check(s['list'] and s['cl'] and s['list']['r'] <= s['cl']['l'] + 1, f'{tag}: the strip stops short of the cluster ({s["list"] and round(s["list"]["r"])} vs {s["cl"] and round(s["cl"]["l"])})')
+                check(s['list'] and s['chips'] and c0['b'] and s['cl'] and s['cl']['b'] - 1 <= c0['b']['t'] <= s['cl']['b'] + 16, f'{tag}: the map strip sits right under the top bar, no empty margin (first chip top {c0 and c0["b"] and round(c0["b"]["t"])}, bar bottom {s["cl"] and round(s["cl"]["b"])})')  # 2026-11-27 (TESTFIX13): the bar is on every page now, so the strip is its second line, not on the cluster's line (UISWEEP3)
+                check(s['chips'] and s['cl'] and all(c['b'] and c['b']['t'] >= s['cl']['b'] - 1 for c in s['chips']), f'{tag}: no chip runs under the top bar ({[c["b"] and round(c["b"]["t"]) for c in s["chips"]][:3]} vs bar bottom {s["cl"] and round(s["cl"]["b"])})')  # 2026-11-27 (TESTFIX13): was 'stops short of the cluster' (UISWEEP3)
                 check(all(c['num'] is not None and not c['name'] for c in s['chips']), f'{tag}: each chip is its number and emoji, no name')
                 check(all(c['tick'] == c['cleared'] for c in s['chips']) and any(c['tick'] for c in s['chips']), f'{tag}: cleared chips wear a ✓')
                 check(all(c['aria'] and ('Map ' + c['num'] + ':') in c['aria'] for c in s['chips']), f'{tag}: the name is in the aria-label ({s["chips"][0]["aria"] if s["chips"] else None})')
@@ -109,8 +109,9 @@ async def map_part(b, w, h, phone):
         if tab == 'arena' and w != 430: await shot(pg, f'arena-home-{tag}')
     # the 🌰 goes Home
     await pg.evaluate("(()=>{ playSubTab = 'conquest'; switchTab('play'); return 1; })()"); await pg.wait_for_timeout(400)
-    await pg.click('#homeNavBtnPlay'); await pg.wait_for_timeout(500)
-    check(await pg.evaluate("currentTab === 'home'"), f'{tag}: the 🌰 goes Home')
+    await pg.evaluate("document.querySelectorAll('#packOpenOverlay, .pack-open-overlay, .levelup-overlay').forEach(e=> e.remove()); document.querySelectorAll('[inert]').forEach(e=> { e.inert = false; }); document.documentElement.classList.remove('po2-open'); 1")  # 2026-11-27 (TESTFIX13): the map clears above pay a pack; its opener is modal over the bar and makes the app inert (as it should), so close it as a player would before the click
+    await pg.click('#homeNavBtn'); await pg.wait_for_timeout(500)  # 2026-11-27 (TESTFIX13): the bar's 🏠 (UISWEEP3)
+    check(await pg.evaluate("currentTab === 'home'"), f'{tag}: the 🏠 goes Home')
     check(not errs, f'map@{w}: page errors {errs[:3]}')
     await ctx.close()
 
