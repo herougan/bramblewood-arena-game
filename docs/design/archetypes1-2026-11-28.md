@@ -123,3 +123,36 @@ Built = the engine runs it today (`removeDeadCardsPass`: `onDeath` triggers with
 Also built and waiting for carriers: **💀 Warning Colours** (NEWCARDS2 adds them). Left out: 💀 stun or Blind on the killer (no true-to-life fit on the road), 💀 Nurse (a heal after the death sweep comes too late, feelings 3).
 
 Spread: D1, D2, D7 sit on Map 0 starters, D3-D4 on Maps 2-3, so the death and trading plans exist from the first maps; D5-D6, D8-D9 serve the mid and late archetypes.
+
+## 3. Reactive / tempo: the "protect all this turn" family
+
+The moment: a foe's unit reads Wait 1 (it acts after the next plays). The board shows it (feelings F1), so the answer should be an On Play card you hold for that round (F4: answers are instant and small; they delay, block or soften, never erase).
+
+### What exists, by verb
+| Verb | On the road today (where) | Built, on no road card | Missing |
+|---|---|---|---|
+| Soak (Shield) | Hedgehog Matron ⬆️ every ally (Map 5 Special), Alpine Marmot ⬆️ every ally (Map 12), Amber Cicada ✅ 2 every ally at Level 3 (Map 7), Armadillo Guard Shield 3 (Map 18), Bulwark walls (Sunken Grove 13, Map 20 Special) | Royal Guard ⬆️ 3 every ally (pack, super rare) | a Shield that ends with the round (today Shield stays until spent, `grantShield`) |
+| Halve (Sturdy) | passive only: Woodland Caribou, Pinecone Sapper (Map 16) | ⬆️ Harden every ally beside (`harden`, `when: play`) or every ally (`sub: all`) | on the road: held by SKILLS3-3 |
+| Dodge | Evasive, Flying, Swift passives; Smoke Bomb at random (Giant Pacific Octopus Level 2, Map 10 Special) | ⬆️ Smoke Screen on allies for N rounds (`smokeScreen`; the Smoke Screen spell card, on no list) | - |
+| Redirect | Guardian (21 cards from Map 1), Taunt (Sheep at Level 1, starter; Proboscis Monkey, Canopy 18), Rampart (Riverworks Bastion, Lilypad Reach 6) | Goose Sentry Taunt + Ambush 2 (pack, Map 24 tier) | a Taunt for this round only |
+| Delay | ⬆️ Stun: Ash Cloud Condor (Map 20), Gaur (Volcano Lair 20); ⬆️ +2 Wait: Rot-Swollen Carcass at Level 3 (Mycelium Deep 8); Bulldoze (Map 12); Sleeping / Paralysis Powder (Maps 7, 11); Constrict (Map 6) | Sea Cucumber, On Attacked: stun the attacker once (pack) | a target "the enemy closest to Ready"; any delay before Map 6 |
+| Move | Wave push (Riptide Eel, Coral Current Eel, Map 10) | `swapPositions`: two random enemies swap (one card) | swap your own unit out of a lane |
+| Strike first | Pounce (27 cards), Ambush (Map 15), Trap (Map 18) | ⬆️ Arrow (SKILLS3 A3) | - |
+| Cleanse | none (no Cure or Cleanse among the 400) | ⬆️ Cleanse (`cleanse`) | any answer to a Poison / Bleed stack on the road |
+| React to Ready | none | On Enemy Ready (`onEnemyReady`) + Shield `who: ally`, `sub: subjectFacing`: the ally facing the unit that readied | - |
+
+### Proposed reactive skills (prices: to price)
+| # | Skill (player rule) | Verb | Engine | Real animal (card) | Map | Price |
+|---|---|---|---|---|---|---|
+| R1 | ⬆️ **Puff Up**: the enemy facing it gets +1 Wait | Delay | Built (`addWait`, `adjacent`) | Pufferfish Bulwark 1/18 W2 (pack, not collectible by Map 20): predators back off a puffed fish | Map 4 list (water map, no delay yet) | to price (table today 0.76; card 92%) |
+| R2 | ⬆️ **Ink Cloud**: every ally hides in Smoke this round (half of single-target swings and shots at them miss) | Dodge | Built (`smokeScreen`, 1 round) | Cuttlefish Illusionist 1/8 (pack): an ink cloud | Map 10 | to price (2.6; 81%) |
+| R3 | ⬆️ **Brace**: every ally beside it gets 1 Sturdy token (takes half until the next upkeep) | Halve | Built (`harden`, `when: play`); needs SKILLS3-3 lifted for this form | Woodland Caribou (Map 16): caribou bunch tight when wolves come | Map 16 (Sturdy's row) | to price (0.74; 83%) |
+| R4 | ✅ **Sentinel**: whenever an enemy unit becomes Ready, the ally facing it gets 2 Shield | Soak, on the clock | Built (`onEnemyReady` + `shield`, `sub: subjectFacing`) | Meerkat Burrower 2/12 (pack): the sentinel meerkat calls the alarm | Map 14 Special (savanna) | to price (table counts one firing: 1.4; 77%) |
+| R5 | ⬆️ **Groom**: Cleanse every ally | Cleanse | Built (`cleanse`) | Cleaner Wrasse (pack; in place of Cure 1): reef cleaning stations | Map 6 Special (Bleed's map) | to price |
+| R6 | ⬆️ **Hiss**: +1 Wait on the enemy unit closest to Ready (lowest Wait above 0) | Delay, aimed | ⚙️ new target `sub: nextReady` (a few lines in `resolveGeneralTarget0`) | Skunk Gasser (pack; second skill beside Poison Gas): the skunk stamps and the predator pauses | Map 12 | to price (the facing form: 104%, trim 1 Health) |
+| R7 | ⬆️ **Lure**: Taunt until the round ends | Redirect | ⚙️ a timed Grant (Grant lasts the fight today) | Killdeer (new card): the broken-wing display draws a predator off the nest | Map 3 | to price |
+| R8 | ⬆️ **Make Way**: swap places with an ally beside it | Move | ⚙️ an own-side swap (`swapPositions` swaps two random enemies) | American Alligator mother (new card): she carries hatchlings in her jaws to the water | Map 6 | to price |
+
+Also an earlier stun with no new skill: Sea Cucumber (On Attacked: stun the attacker, once; real Cuvierian threads) to the Map 10 list. All eight above are kinds of an existing skill or action, so none adds a New! row; R6-R8 need engine work.
+
+CPU note: the CPU never answers a Waiting unit (feelings G1, `aiSwingOdds`). Reactive cards in CPU decks would need `aiPlanPlay` to hold them for a foe at Wait 1: a CPU change, which moves the road (balance-analyst's road check).
