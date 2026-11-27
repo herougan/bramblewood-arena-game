@@ -4,6 +4,47 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**ARCH1-1. Fix the accidental glass cannons and walls** · Decide · Cards · asked 2026-11-28
+- 24 of 34 glass cannons and 1 of 25 walls only fit the stats. Each is reshaped inside its budget or gets a kit that explains it (e.g. Acorn Chipmunk 💀 draw). 8 glass cannons and 21 walls are by design and stay. 14 are on road lists, so road fights move.
+  - a) all 25
+  - b) only cards off the road lists
+  - c) none
+- **Default:** a
+
+**ARCH1-2. Seven On Death skills on road cards** · Decide · Cards · asked 2026-11-28
+- Sting (Honey Bee), Alarm (Soldier Ant), Spare Shell (Hermit Crab), Mobbing (Kittiwake Flock), Cache (Acorn Chipmunk), Poisonous (Monarch Wingblade, Level 5), Brood (Obsidian Scorpion). Death, trading and tribe decks get pieces from Map 0. Card data only.
+  - a) all seven
+  - b) the four on Maps 0-3
+  - c) none
+- **Default:** a
+
+**ARCH1-3. ⬆️ Brace on Map 16** · Decide · Cards · asked 2026-11-28
+- A "halve the hit this round" answer: ⬆️ Harden 1 on the allies beside it (Woodland Caribou, Map 16). Lifts the x2 / x0.5 hold (SKILLS3-3) for this one form only.
+  - a) Brace on Map 16
+  - b) keep the hold
+- **Default:** a
+
+**ARCH1-4. Five reactive cards for the road** · Decide · Cards · asked 2026-11-28
+- Already built pack cards: Pufferfish Bulwark (⬆️ +1 Wait), Cleaner Wrasse (⬆️ Cleanse allies), Cuttlefish Illusionist (⬆️ Smoke on allies), Sea Cucumber (stuns its attacker once), Meerkat Burrower (Shield an ally when a foe readies). Placing them is a list change, paused since 11-27.
+  - a) queue all five for the next list pass
+  - b) Specials only
+  - c) not now
+- **Default:** a
+
+**ARCH1-5. Engine work for new reactive verbs** · Decide · Skills · asked 2026-11-28
+- Hiss (+1 Wait on the enemy closest to Ready), Lure (Taunt this round), Make Way (swap with an ally beside), 💀 Last Lodge (a Log Wall in its slot). The CPU must also learn to answer a foe about to act: a CPU change that moves the road.
+  - a) all four
+  - b) Hiss and Lure
+  - c) none now
+- **Default:** b
+
+**ARCH1-6. Gilded Roadwarden's instant Pounce 6** · Decide · Cards · asked 2026-11-28
+- The Map 15 common Pounces 6 as it lands (12 in tall grass), double what the forecast principle allows for an instant hit.
+  - a) Pounce 3
+  - b) ✅ On Ready: 6 to the foe facing it, no Pounce
+  - c) keep
+- **Default:** b
+
 **ROADFIX6-1. Road fights only a list change can fix** · Decide · Balance · asked 2026-11-28
 - Deck swaps are used up. Too hard: 2-1, 2-2, 2-B-1 and Map 17 (17-3/4/6/7/8, Harbor Seal). Too easy: 15-3/4/6, 18-A-4/6/7, 20-A-4. Each needs one card added to or taken off its map's list, which you paused on 11-27.
   - a) Propose one list change per fight for you to approve
