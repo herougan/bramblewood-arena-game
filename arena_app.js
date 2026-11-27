@@ -4911,7 +4911,7 @@ function cardWhereToGetText(d){
 function u3FitMapStrip(){
   const b = document.body; if(!b) return;
   const phone = !!(window.matchMedia && matchMedia('(max-width:820px)').matches);
-  const cl = document.querySelector('#view-play .play-subtabs-actions');
+  const cl = document.querySelector('#appWrap.tab-play .topbar');
   const off = ()=>{ b.style.removeProperty('--u3-strip-w'); b.classList.remove('u3-strip-below'); };
   if(!phone || !b.classList.contains('conquest-full') || !cl || !cl.getClientRects().length){ off(); return; }
   const r = cl.getBoundingClientRect(); if(!(r.width > 0)){ off(); return; }
@@ -14382,6 +14382,7 @@ function refreshAccountUI(){
     chip.classList.toggle('signed-in', signedIn);
     const txt = document.getElementById('accountChipText');
     if(txt){ if(signedIn) txt.textContent = cloudUserLabel || 'Signed in'; else txt.innerHTML = '<span class="acc-long">Guest · </span>Sign in'; }
+    chip.setAttribute('aria-label', signedIn ? (cloudUserLabel || 'Signed in') : 'Sign in'); // 2026-11-27 (UISWEEP3): icon only on a phone
     chip.title = signedIn ? `Signed in${cloudUserEmail ? ' as '+cloudUserEmail : ''}. Click to open Profile.` : 'Guest: progress is saved on this device only. Click to sign in.';
   }
   const line = document.getElementById('entranceAccountLine');
@@ -18819,76 +18820,11 @@ function renderPlay(){
                player never sees this tab at all. -->
           ${nav1PlayTabs().includes('sandbox') ? `<button class="tab-btn ${playSubTab==='sandbox'?'active':''}" data-playtab="sandbox" role="tab" aria-selected="${playSubTab==='sandbox'}"><span class="tab-emoji">🧪</span> Test Lab</button>` : ''}
         </div>
-        <div class="play-subtabs-actions">
-          <!-- 2026-09-26 (explicit request: "The energy left should be displayed in the Play
-               pages... skirmishes typically take 1 energy... going up as we go to the higher
-               level skirmishes"): the account-level Energy pill already lives in the global
-               topbar, but the topbar deliberately hides itself while on this exact tab (see
-               #appWrap.tab-play:not(.in-match) .topbar-wrap{display:none} in the template) so the
-               Conquest/Raid map can use the full width -- which meant Energy was invisible at
-               precisely the moment it matters most: choosing which node to fight, each already
-               costing 1-5⚡ by kind (ENERGY_COST). A second copy of the same pill, mirrored by
-               refreshEnergyHud() alongside the topbar original, closes that gap without touching
-               the topbar-hiding behavior that gave the map its room in the first place. -->
-          <button class="home-nav-btn" id="homeNavBtnPlay" type="button" title="${escapeAttr(TX('ui.back-to-home'))}" aria-label="${escapeAttr(TX('ui.back-to-home'))}"><span class="tab-emoji" aria-hidden="true">🌰</span> ${escapeHtml(TX('ui.nv-home'))}</button>${'' /* 2026-10-19 (package U3): the acorn Home, first in the cluster on Conquest, Arena, Raid and Dungeons */}
-          ${tabOpen('arena') && playSubTab !== 'arena' && playSubTab !== 'autobattle' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="${escapeAttr(TX('ui.u4-arena-tip'))}" aria-label="${escapeAttr(TX('ui.u4-arena-tip'))}"><span class="tab-emoji" aria-hidden="true">🏟️</span> ${escapeHtml(TX('ui.u4-arena'))}</button>` : ''}${playSubTab === 'autobattle' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="${escapeAttr(TX('ui.sw2-practice-back'))}" aria-label="${escapeAttr(TX('ui.sw2-practice-back'))}">← ${escapeHtml(TX('ui.sw2-practice'))}</button>` : ''}
-          ${'' /* 2026-10-19 (package U4, owner 23:34: "there should be a forge shortcut in the top right corner of the screen, together with
-               arena and home. Home of course comes first."): Home, Arena, then the Forge (its own 🔨, as in the page bar's shortcuts), once
-               the Forge is open. Same trip as PAGE_SHORTCUTS' Forge: the Codex view on its Forge page (switchTab remembers where you came from). */}${tabOpen('forge') ? `<button class="home-nav-btn" id="forgeNavBtnPlay" type="button" title="${escapeAttr(TX('ui.place-forge'))}" aria-label="${escapeAttr(TX('ui.place-forge'))}"><span class="tab-emoji" aria-hidden="true">🔨</span> ${escapeHtml(TX('ui.u4-forge'))}</button>` : ''}
-          ${nav1PlayPage() !== 'conquest' ? `<button class="home-nav-btn" id="nav1MapBtnPlay" type="button" title="${escapeAttr(TX('ui.ui14-map-nav'))}" aria-label="${escapeAttr(TX('ui.ui14-map-nav'))}"><span class="tab-emoji" aria-hidden="true">🗺️</span></button>` : '' /* 2026-11-17 (package NAV1): Conquest is its own page; the corner's 🗺️ goes back to it */}${tabOpen('raid') && nav1PlayPage() !== 'dr' && !dailyDungeonsOpen() ? `<button class="home-nav-btn" id="nav1DrBtnPlay" type="button" title="${escapeAttr(TX('ui.nav1-dungeons-raids'))}" aria-label="${escapeAttr(TX('ui.nav1-dungeons-raids'))}"><span class="tab-emoji" aria-hidden="true">🐲</span></button>` : '' /* NAV1: Dungeons & Raids, a page of its own (when the 🗝️ shows, it leads there; the cluster keeps to 7 on a 360 px phone) */}${res4TrailOpen() ? `<button class="home-nav-btn" id="trailNavBtnPlay" type="button" data-trail-badge title="${escapeAttr(TX('ui.res4-trail-name'))}" aria-label="${escapeAttr(TX('ui.res4-trail-name'))}"><span class="tab-emoji" aria-hidden="true">🚐</span> ${escapeHtml(TX('ui.res4-trail-short'))}</button>` : ''}
-          ${'' /* 2026-10-16 (user: "the daily dungeon key logo visible in small beside HOME and ARENA at the top right hand corner of Conquest Map UI. (same throughout)") */}${nav1PlayPage() === 'dr' ? '' /* NAV1: the page's own Dungeons tab */ : dungeonKeyBtnHTML('dungeonKeyBtnPlay')}
-          <div class="settings-wrap">
-            <button class="settings-btn" id="settingsBtnPlaySub" type="button" title="Settings" aria-label="Settings" aria-haspopup="true" aria-expanded="false">⚙️</button>
-            <div class="settings-panel" id="settingsPanelPlaySub" hidden>
-              <div class="settings-panel-title">Settings</div>
-              <div class="settings-row">
-                <div class="settings-row-label"><span>🌿 Ambience</span><span class="settings-row-val" id="musicVolumeValPlaySub">60%</span></div>
-                <input type="range" id="musicVolumeSliderPlaySub" min="0" max="100" step="1" aria-label="Music volume">
-              </div>
-              <div class="settings-row"><div class="settings-row-label"><span>🎼 Battle music</span><span class="settings-row-val" id="battleMusicValPlaySub">60%</span></div><input type="range" id="battleMusicSliderPlaySub" min="0" max="100" step="1" aria-label="Battle music volume"></div>
-      <div class="settings-row"><div class="settings-row-label"><span>🎹 Menu music</span><span class="settings-row-val" id="menuMusicValPlaySub">60%</span></div><input type="range" id="menuMusicSliderPlaySub" min="0" max="100" step="1" aria-label="Menu music volume"></div>
-              <div class="settings-row">
-                <div class="settings-row-label"><span>🔊 Sound Effects</span><span class="settings-row-val" id="sfxVolumeValPlaySub">100%</span></div>
-                <input type="range" id="sfxVolumeSliderPlaySub" min="0" max="100" step="1" aria-label="Sound effects volume">
-              </div>
-              <div class="settings-row">
-                <div class="settings-row-label"><span>💬 Voice</span><span class="settings-row-val" id="voiceVolumeValPlaySub">80%</span></div>
-                <input type="range" id="voiceVolumeSliderPlaySub" min="0" max="100" step="1" aria-label="Voice volume">
-              </div>
-              <div class="settings-row">
-                <div class="settings-row-label"><span>🖼️ Battlefield</span></div>
-                <select id="battlefieldBgSelectPlaySub" aria-label="Battlefield background"></select>
-              </div>
-            <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span></div><select class="lang-select" aria-label="Language"></select></div>
-            <div class="settings-row"><div class="settings-row-label"><span>✨ Atmosphere</span></div><select id="atmosphereSelectPlaySub" aria-label="Atmosphere"></select></div>
-            <div class="settings-row"><div class="settings-row-label"><span>🎆 Effects</span></div><select id="fxSelectPlaySub" aria-label="Effects quality"></select></div>
-            <div class="settings-row"><div class="settings-row-label"><span>🎨 Effects style</span></div><select id="fxStyleSelectPlaySub" aria-label="Effects style"></select></div>
-            <div class="settings-row"><div class="settings-row-label"><span>🐢 Auto-lower effects</span></div><select id="fxAutoSelectPlaySub" aria-label="Auto-lower effects"></select></div>
-            <div class="settings-row"><div class="settings-row-label"><span>🗨️ Voice lines</span></div><select id="voiceLinesSelectPlaySub" aria-label="Voice lines"></select></div>
-            <div class="settings-row"><div class="settings-row-label"><span>💬 NPC dialogue speed</span></div><select id="dialogueSpeedSelectPlaySub" aria-label="NPC dialogue speed"></select></div>
-            <div class="settings-row"><div class="settings-row-label"><span>🌊 Shader effects</span></div><select id="shaderSelectPlaySub" aria-label="Shader effects"></select></div>
-            <div class="settings-row"><div class="settings-row-label"><span>😀 Emoji style</span></div><select id="emojiStyleSelectPlaySub" aria-label="Emoji style"></select><div class="settings-row-note emoji-credit" ${EmojiStyle.isActive() ? '' : 'hidden'}>${EMOJI_CREDITS[EmojiStyle.active()] || ''}</div></div>
-            </div>
-          </div>
-          <div class="energy-pill" id="energyPillPlay" title="Energy: spent to start fights, refills 1 every 5 minutes.">
-            <span id="energyPillPlayText">—</span>
-          </div>
-        </div>
       </div>
       <div id="playSubBody"></div>`;
     root.querySelectorAll('[data-playtab]').forEach(b=> b.addEventListener('click', ()=>{ playSubTab = b.getAttribute('data-playtab'); playerStatsOpen = false; if(playSubTab!=='conquest') exitConquestImmersive(); renderPlay(); }));
     root.querySelectorAll('.play-subtabs .tab-btn').forEach(b=> b.setAttribute('aria-selected', String(b.getAttribute('data-playtab')===playSubTab)));
-    const backBtn = document.getElementById('homeNavBtnPlay');
-    if(backBtn) backBtn.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); switchTab('home'); }); // 2026-10-19 (package U3): the cluster's 🌰 Home (was NV's tab-bar button)
-    const arenaBtn = document.getElementById('arenaNavBtnPlay');
-    if(arenaBtn) arenaBtn.addEventListener('click', ()=>{ playSubTab = playSubTab === 'autobattle' ? 'practice' : 'arena'; exitConquestImmersive(); renderPlay(); }); // 2026-11-26 (UISWEEP2): from the Autobattler it goes back to Practice
-    [['nav1MapBtnPlay', 'conquest'], ['nav1DrBtnPlay', 'raid']].forEach(([id, sub])=>{ const b = document.getElementById(id); if(b) b.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} playSubTab = sub; playerStatsOpen = false; if(sub !== 'conquest') exitConquestImmersive(); renderPlay(); }); }); // 2026-11-17 (package NAV1)
-    const forgeBtn = document.getElementById('forgeNavBtnPlay'); // 2026-10-19 (package U4): the cluster's Forge
-    if(forgeBtn) forgeBtn.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); codexSubTab = 'forge'; switchTab('codex'); });
-    const trailBtn = document.getElementById('trailNavBtnPlay'); // 2026-10-26 (package RES4): the Trail Mix Trek from the map's corner cluster
-    if(trailBtn){ trailBtn.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); switchTab('trail'); }); try{ res4TrailRefreshBadges(); }catch(e){} }
-    wireSettingsButton('PlaySub');
-    refreshEnergyHud(); // paints the new Play-tab Energy pill immediately instead of waiting for its first 1s tick
+    refreshPageBar('play'); // 2026-11-27 (UISWEEP3): the bar's slot follows the sub-tab (the cluster that used to live here is the one bar now)
     // Item #4 (2026-09-18): "The Conquest explanation can be removed. Only when hovering over
     // the Conquest tab button for more than 1s does the tooltip appear." — the old always-on
     // <p class="panel-sub"> explanation in renderConquestSubTab is gone (see there); this is its
@@ -19075,7 +19011,7 @@ function renderPlayerStatsSubpage(body){
       </div>
     </div>
     <div class="panel" style="text-align:center; display:flex; gap:10px; justify-content:center;">
-      <button class="btn" id="statsBackBtn">← Back</button>
+      ${backBtnHTML('statsBackBtn', 'Back')}
       <button class="btn ghost" id="statsExitBtn">Exit</button>
     </div>`;
   document.getElementById('statsBackBtn').addEventListener('click', ()=>{ playerStatsOpen = false; renderPlay(); });
@@ -28499,7 +28435,7 @@ function dungeonKeyBtnHTML(id){
 }
 function refreshTopbarDungeonKey(tab){
   const b = document.getElementById('dungeonKeyBtnTop'); if(!b) return;
-  const show = tab !== 'home' && tab !== 'play' && dailyDungeonsOpen(); b.hidden = !show; if(!show) return;
+  const show = tab !== 'home' && !(tab === 'play' && nav1PlayPage() === 'dr') && dailyDungeonsOpen(); b.hidden = !show; if(!show) return; // 2026-11-27 (UISWEEP3): on Play too, except on its own Dungeons page
   const k = dungeonKeyBadge(dungeonTicketsLeft());
   b.title = k.tip; b.setAttribute('aria-label', k.tip); b.classList.toggle('is-empty', k.empty); const c = b.querySelector('.dk-n'); if(c) c.textContent = k.text;
 }
@@ -60904,7 +60840,7 @@ const ui51Back = {armed: false,
     const ov = ui51Back.topPanel(), ae = document.activeElement;
     if(ov){ ui51Back.push(); (ae && ov.contains(ae) ? ae : ov).dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', bubbles: true, cancelable: true})); return; }
     if(typeof matchState !== 'undefined' && matchState && !matchState.over && document.querySelector('#appWrap.in-match')){ ui51Back.push(); forfeitMatch(); return; }
-    const bb = document.getElementById('deckBackBtn'); if(bb && bb.getClientRects().length){ ui51Back.push(); bb.click(); return; }
+    if(pageBackOverride && currentTab === 'deck'){ ui51Back.push(); pageBackOverride(); return; }
     try{ history.back(); }catch(e){} } };
 try{ addEventListener('pointerdown', ui51Back.push, true); addEventListener('popstate', ui51Back.onPop); }catch(e){}
 let deckHeroView = false; // Deck → 🦸 Hero: the Hero Hall instead of the deck builder
@@ -61053,7 +60989,7 @@ function renderDeckSection(){ renderDeckSectionInner();
     root.insertAdjacentHTML('beforeend', `<section class="camp-tavern-door" aria-label="The Tavern"><span class="ctd-ico" aria-hidden="true">🍺</span><span class="ctd-txt"><b>The Tavern</b><small>Recruit a card with Beer, raise max Energy to 60 · 🍺 ${myCurrencies.beer||0} Beer</small></span><button type="button" class="btn small primary" id="campTavernBtn">Go to the Tavern</button></section>`);
     const b = root.querySelector('#campTavernBtn'); if(b) b.onclick = ()=> openTavern(); } }catch(e){} }
 function renderDeckSectionInner(){
-  const root = document.getElementById('view-deck');
+  const root = document.getElementById('view-deck'); pageBackOverride = null;
   setTimeout(()=> addTentPoles(root), 0);
   if(!deckEditingId && !deckShowList && deckSubTab==='list' && myDecks.some(d=> d.id===activeDeckId)) deckEditingId = activeDeckId;
   if(deckEditingId){
@@ -61066,7 +61002,6 @@ function renderDeckSectionInner(){
     // renderPlayerSubTab and deckSaveBarHTML.
     document.getElementById('deckSaveBar')?.remove();
     root.innerHTML = `<div class="play-subtabs-row deck-switch-row">
-        <button type="button" class="btn small deck-back-btn" id="deckBackBtn" title="Back to your decks">‹ Back</button>
         <div class="deck-switcher" role="tablist" aria-label="Your decks">
           ${myDecks.map(d=> `<button type="button" class="deck-chip ${d.id===deckEditingId?'on':''}" data-switchdeck="${d.id}" role="tab" aria-selected="${d.id===deckEditingId}"${d.id===deckEditingId?' title="Click to rename"':''}>${d.id===mainDeckId?'<span class="dc-star" title="Main deck: the one you play with">★</span>':''}${escapeHtml(d.name)}${deckIsLegal(d)?'':'<span class="dc-warn" title="Not ready to play: needs exactly '+DECK_SIZE+' cards">!</span>'}</button>`).join('')}
           <button type="button" class="deck-chip deck-chip-new" id="deckNewChip" title="New deck">➕ New</button>
@@ -61089,7 +61024,7 @@ function renderDeckSectionInner(){
         if(!del.dataset.armed){ del.dataset.armed = '1'; del.textContent = TX('ui.ui51-deck-delete-again'); setTimeout(()=>{ if(del.isConnected){ delete del.dataset.armed; del.textContent = '🗑 ' + TX('ui.ui51-deck-delete'); } }, 4000); return; }
         const d = myDecks.find(x=> x.id === deckEditingId), name = d ? d.name : ''; discardDeckDraft(); endDeckDraft();
         if(deleteDeck(deckEditingId)){ showToast(TX('ui.ui51-deck-deleted', {name}), 'ok'); deckEditingId = null; deckShowList = true; renderDeckSection(); } }); }
-    document.getElementById('deckBackBtn').addEventListener('click', ()=> deckLeaveGuard(()=>{ endDeckDraft(); deckEditingId = null; deckShowList = true; deckHeroView = false; renderDeckSection(); }));
+    pageBackOverride = ()=> deckLeaveGuard(()=>{ endDeckDraft(); deckEditingId = null; deckShowList = true; deckHeroView = false; renderDeckSection(); }); // 2026-11-27 (UISWEEP3, STATE2-2): the bar's ↩ is the builder's back too (the '‹ Back' button is gone)
 
     renderPlayerSubTab(document.getElementById('deckBuilderBody'));
     { const sv = document.getElementById('deckSaveBtn'), dc = document.getElementById('deckDiscardBtn'); // on the count row (2026-10-15)
@@ -61648,21 +61583,41 @@ const PAGE_SHORTCUTS = [
 function nav1InCamp(tab){ return PAGE_SHORTCUTS.some(x=> x.here(tab)); }
 // 2026-10-15 (user: "the back button is not centered (in Nest etc.)"): a drawn return arrow, centred on its own 24×24 box.
 const PB_BACK_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 4.5 5 9l4.5 4.5"/><path d="M5 9h9.5a4.75 4.75 0 0 1 0 9.5H11"/></svg>';
+var pageBackOverride = null; // 2026-11-27 (UISWEEP3): a page with an inner step (the deck builder) says what the bar's ↩ does first
+function backBtnHTML(id, label){ return `<button type="button" class="pb-back" id="${id}" title="${escapeAttr(label)}" aria-label="${escapeAttr(label)}">${PB_BACK_SVG}</button>`; } // 2026-11-27 (UISWEEP3, STATE2-2): the one back, a ↩ icon with a tooltip, everywhere
+// 2026-11-27 (UISWEEP3, UISWEEP-1): the Play page's own shortcuts are the bar's slot (they were a second cluster with its own Home, Settings and Energy).
+function playSlotItems(){
+  const arenaBack = playSubTab === 'autobattle';
+  return {back: arenaBack ? backBtnHTML('arenaNavBtnPlay', TX('ui.sw2-practice-back')) : '',
+    items: [
+      !arenaBack && tabOpen('arena') && playSubTab !== 'arena' ? {id:'arenaNavBtnPlay', icon:'🏟️', name:TX('ui.u4-arena-tip')} : null,
+      tabOpen('forge') ? {id:'forgeNavBtnPlay', icon:'🔨', name:TX('ui.place-forge')} : null,
+      tabOpen('raid') && nav1PlayPage() !== 'dr' && !dailyDungeonsOpen() ? {id:'nav1DrBtnPlay', icon:'🐲', name:TX('ui.nav1-dungeons-raids')} : null,
+      res4TrailOpen() ? {id:'trailNavBtnPlay', icon:'🚐', name:TX('ui.res4-trail-name'), attr:'data-trail-badge'} : null].filter(Boolean)};
+}
 function refreshPageBar(tab){
   tab = tab || (typeof currentTab !== 'undefined' ? currentTab : 'home');
   const bar = document.getElementById('pageBackBar'); if(!bar) return;
-  const FEATURE = !['home','play','admin'].includes(tab); bar.hidden = !FEATURE; if(!FEATURE){ bar.innerHTML = ''; return; }
+  const PLAY = tab === 'play', FEATURE = !['home','play','admin'].includes(tab); bar.hidden = !FEATURE && !PLAY; if(bar.hidden){ bar.innerHTML = ''; return; }
+  try{ refreshTopbarDungeonKey(tab); ui14SyncMapNav(tab); }catch(e){}
   const c = pageCameFrom, back = c && c.tab === 'play' ? 'Back to the map' : c && c.tab !== 'home' && c.tab !== tab ? 'Back' : 'Home';
-  const sc = nav1InCamp(tab) ? PAGE_SHORTCUTS.filter(x=>{ try{ return x.open(); }catch(e){ return false; } }) : []; // 2026-11-17 (package NAV1): the Camp's pages only
-  bar.innerHTML = `${sc.length > 1 ? `<nav class="pb-shortcuts" aria-label="${escapeAttr(_t('Camp'))}">${sc.map(x=> `<button type="button" class="pb-sc ${x.here(tab) ? 'is-here' : ''}" data-pbsc="${x.key}" title="${escapeAttr(x.name)}" aria-label="${escapeAttr(x.name)}" ${x.here(tab) ? 'aria-current="page"' : ''}><span aria-hidden="true">${x.icon}</span><b>${escapeHtml(x.name)}</b></button>`).join('')}</nav>` : ''}<button type="button" class="pb-back" id="pageBackBtn" title="${escapeAttr(back)}" aria-label="${escapeAttr(back)}">${PB_BACK_SVG}</button>`;
+  let sc = nav1InCamp(tab) ? PAGE_SHORTCUTS.filter(x=>{ try{ return x.open(); }catch(e){ return false; } }) : []; // 2026-11-17 (package NAV1): the Camp's pages only
+  let lead = FEATURE ? backBtnHTML('pageBackBtn', back) : '';
+  if(PLAY){ const ps = playSlotItems(); lead = ps.back; sc = ps.items.map(x=> Object.assign({key:x.id, here:()=>false}, x)); }
+  bar.classList.toggle('has-many', !PLAY && sc.length > 2); // a phone wraps a page's own buttons to a second row; on the map the slot scrolls inside the one row
+  bar.innerHTML = `${lead}${sc.length > (PLAY ? 0 : 1) ? `<nav class="pb-shortcuts" aria-label="${escapeAttr(_t('Camp'))}">${sc.map(x=> `<button type="button" class="pb-sc ${x.here(tab) ? 'is-here' : ''}" ${PLAY ? `id="${x.key}"` : `data-pbsc="${x.key}"`} ${x.attr || ''} title="${escapeAttr(x.name)}" aria-label="${escapeAttr(x.name)}" ${x.here(tab) ? 'aria-current="page"' : ''}><span aria-hidden="true">${x.icon}</span><b>${escapeHtml(x.name)}</b></button>`).join('')}</nav>` : ''}`;
   bar.querySelectorAll('[data-pbsc]').forEach(b=> b.onclick = ()=>{ const x = PAGE_SHORTCUTS.find(y=> y.key === b.dataset.pbsc); if(x && !x.here(tab)) x.go(); });
-  bar.querySelector('#pageBackBtn').onclick = ()=>{ const c2 = pageCameFrom; pageCameFrom = null; if(c2 && c2.tab === 'play'){ if(c2.sub) playSubTab = c2.sub; if(c2.map) conquestSelectedMap = c2.map; } if(c2 && c2.forge) codexSubTab = 'forge'; switchTab(c2 && c2.tab !== tab ? c2.tab : 'home'); };
+  const bb = bar.querySelector('#pageBackBtn'); if(bb) bb.onclick = ()=>{ if(pageBackOverride){ pageBackOverride(); return; } const c2 = pageCameFrom; pageCameFrom = null; if(c2 && c2.tab === 'play'){ if(c2.sub) playSubTab = c2.sub; if(c2.map) conquestSelectedMap = c2.map; } if(c2 && c2.forge) codexSubTab = 'forge'; switchTab(c2 && c2.tab !== tab ? c2.tab : 'home'); };
+  if(PLAY){
+    const knock = ()=>{ try{ SoundKit.woodKnock(); }catch(e){} };
+    const on = (id, fn)=>{ const b = document.getElementById(id); if(b) b.addEventListener('click', ()=>{ knock(); fn(); }); };
+    on('arenaNavBtnPlay', ()=>{ playSubTab = playSubTab === 'autobattle' ? 'practice' : 'arena'; exitConquestImmersive(); renderPlay(); }); // 2026-11-26 (UISWEEP2): from the Autobattler it goes back to Practice
+    on('nav1DrBtnPlay', ()=>{ playSubTab = 'raid'; playerStatsOpen = false; exitConquestImmersive(); renderPlay(); }); // 2026-11-17 (package NAV1)
+    on('forgeNavBtnPlay', ()=>{ exitConquestImmersive(); codexSubTab = 'forge'; switchTab('codex'); }); // 2026-10-19 (package U4)
+    on('trailNavBtnPlay', ()=>{ exitConquestImmersive(); switchTab('trail'); }); try{ res4TrailRefreshBadges(); }catch(e){} // 2026-10-26 (package RES4)
+  }
 }
-function shopBackHTML(){
-  const c = shopCameFrom; if(!c || c.tab === 'shop' || c.tab === 'home') return ''; // 2026-10-13 UI audit: the header's Home already does this
-  const lbl = c.tab === 'play' && c.sub === 'conquest' ? 'Back to the map' : c.tab === 'home' ? 'Back home' : 'Back';
-  return `<button type="button" class="btn small shop-back" id="shopBackBtn">← ${lbl}</button>`;
-}
+function shopBackHTML(){ return ''; } // 2026-11-27 (UISWEEP3, STATE2-2): the bar's ↩ is the one back (the Shop's text button is gone)
 // The market around the cart (2026-10-17, user: "Shop: Can we make it more fun by having some background doodads or doors n the
 // background"): two layers, both drawn in CSS (plus two NPC sprites), aria-hidden and click-through.
 //  - The street (#marketStreet, a fixed layer behind the page, shown only on the Shop): timber shopfronts with arched doors (one ajar
@@ -61780,7 +61735,7 @@ function renderShop(){
          "arrives locked" data model this would eventually feed into. -->
     `;
   root.classList.toggle('is-premium-shop', prem);
-  root.querySelectorAll('[data-nav1shop]').forEach(b=> b.onclick = ()=>{ if(shopMode === b.dataset.nav1shop) return; shopMode = b.dataset.nav1shop; shopSelected = null; try{ SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e){} renderShop(); }); // 2026-11-17 (package NAV1)
+  root.querySelectorAll('[data-nav1shop]').forEach(b=> b.onclick = ()=>{ if(shopMode === b.dataset.nav1shop) return; try{ SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e){} placeSwap('shop', shopMode === 'premium' ? 'premium' : 'shop', ()=>{ shopMode = b.dataset.nav1shop; shopSelected = null; renderShop(); }, {repeat: true}); }); // 2026-11-17 (package NAV1); 2026-11-27 (UISWEEP3): the one shop building: close, swap behind the curtain, open
   if(prem){ // 2026-11-12 (package SHOP1): the Premium shop is its own shelf; no pack shelf, no merchant
     const g = document.getElementById('shopPackGrid'), has = shelfRows().length > 0;
     if(!has) g.innerHTML = `<div class="panel"><p class="panel-sub">${escapeHtml(TX('ui.shop1-premium-empty'))}</p></div>`; else renderShopShelves(g, isSignedIn());
@@ -62275,7 +62230,7 @@ function renderNest(){
   const eggN = nestState().eggs.filter(e=> e.kind !== 'nurture').length; // in the nests, the basket and your pack
   // 2026-10-31 (package UI9, BB1; owner: "the Nest page gets the nav button back to the conquest map"): the Shop's own "← Back to the map" button
   // (shop-back: small, top left of the panel), always on the Nest, whichever way you came; it goes to the Conquest map.
-  root.innerHTML = `<div class="panel"><button type="button" class="btn small shop-back nest-map-back" id="nestMapBackBtn">← ${escapeHtml(TX('ui.ui9-back-to-map'))}</button><h2>🪺 The Nest</h2>
+  root.innerHTML = `<div class="panel"><h2>🪺 The Nest</h2>
       <p class="panel-sub tip-ticker" id="nestTipTicker" aria-live="polite"></p>
       <p class="panel-sub">${escapeHtml(TX('ui.tu2-nest-eggs-sub', {n: eggN}))}</p>
       ${neWalletHTML(['gold', 'dust', 'kibble'])}
@@ -62285,7 +62240,6 @@ function renderNest(){
     </div>
     <div class="grid-view" id="nestGrid" hidden></div>`;
   { const tb = root.querySelector('#nestTrainBtn'); if(tb) tb.onclick = ()=> openNestPicker(); }
-  { const mb = root.querySelector('#nestMapBackBtn'); if(mb) mb.onclick = ()=>{ pageCameFrom = null; playSubTab = 'conquest'; switchTab('play'); }; } // 2026-10-31 (UI9, BB1)
   root.querySelectorAll('[data-nest-go]').forEach(b=> b.onclick = ()=>{ if(b.dataset.nestGo==='conquest'){ playSubTab='conquest'; switchTab('play'); } else switchTab('shop'); });
   if(nestTab === 'upgrades'){ wireStamina(root, renderNest); root.querySelectorAll('[data-nest-build]').forEach(b=> b.onclick = ()=>{ const r = buildNextNest();
     if(r === 'ok'){ try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} renderNest(); showToast(TX('toast.a-new-nest-is-built', {open: nestSlotsOpen()}), 'ok'); }
@@ -64000,7 +63954,6 @@ function renderRanking(){
   const root = document.getElementById('view-ranking');
   const myRank = rankForRating(myRating);
   root.innerHTML = `
-    <div class="play-subtabs" role="tablist"><button class="btn small" id="rankingBackBtn">← Back</button></div>
     <div class="panel">
       <h2>🏆 Your Rank</h2>
       <p class="panel-sub">${ONLINE_RAID_VISIBLE ? 'Your rating goes up and down with your Online Raid and Ranked 1v1 results.' : escapeHtml(TX('ui.rating-moves-with-pvp-ranked'))}</p>
@@ -64016,7 +63969,6 @@ function renderRanking(){
         : cloudLeaderboardError ? netErrorHTML(TX('net.leaderboard-failed'), 'leaderboard', ()=>{ cloudLeaderboard = null; cloudLeaderboardError = false; renderRanking(); })
         : leaderboardTableHTML(cloudLeaderboard)}</div>
     </div>`;
-  document.getElementById('rankingBackBtn').addEventListener('click', goHome);
   if(cloudLeaderboard===null) loadLeaderboard();
 }
 function leaderboardTableHTML(rows){
@@ -64355,32 +64307,25 @@ function renderGuild(){
   const root = document.getElementById('view-guild');
   if(!isSignedIn()){
     root.innerHTML = `
-      <div class="play-subtabs" role="tablist"><button class="btn small" id="guildBackBtn">← Back</button></div>
       <div class="panel"><h2>🛡️ Guilds</h2>
         <p class="panel-sub">${ONLINE_RAID_VISIBLE ? 'Sign in to create or join a guild — membership syncs across devices, same as Online Raid and the Shop.' : escapeHtml(TX('ui.guild-sign-in-syncs'))}</p>
         <button class="btn primary" id="guildSignInBtn">🔑 Sign in</button>
       </div>`;
-    document.getElementById('guildBackBtn').addEventListener('click', goHome);
     document.getElementById('guildSignInBtn').addEventListener('click', ()=> requireSignIn('to create or join a guild', ()=>{ refreshAuthGateUI(); loadMyGuild(); }));
     return;
   }
   if(!guildDataLoaded){
-    root.innerHTML = `<div class="play-subtabs" role="tablist"><button class="btn small" id="guildBackBtn">← Back</button></div><div class="panel"><div class="empty-hint">Loading your guild…</div></div>`;
-    document.getElementById('guildBackBtn').addEventListener('click', goHome);
+    root.innerHTML = `<div class="panel"><div class="empty-hint">Loading your guild…</div></div>`;
     loadMyGuild();
     return;
   }
   // 2026-10-18 (R3-WP3): a failed load says so (with Retry) instead of offering to create a guild
   if(guildLoadError){
-    root.innerHTML = `<div class="play-subtabs" role="tablist"><button class="btn small" id="guildBackBtn">← Back</button></div>
-      <div class="panel"><h2>🛡️ Guilds</h2>${netErrorHTML(TX('net.guild-failed'), 'guild', ()=>{ guildLoadError = false; guildDataLoaded = false; guildBrowseList = null; renderGuild(); })}</div>`;
-    document.getElementById('guildBackBtn').addEventListener('click', goHome);
+    root.innerHTML = `<div class="panel"><h2>🛡️ Guilds</h2>${netErrorHTML(TX('net.guild-failed'), 'guild', ()=>{ guildLoadError = false; guildDataLoaded = false; guildBrowseList = null; renderGuild(); })}</div>`;
     return;
   }
   root.innerHTML = `
-    <div class="play-subtabs" role="tablist"><button class="btn small" id="guildBackBtn">← Back</button></div>
     ${myGuild ? guildRosterPanelHTML(myGuild, myGuildMembers||[]) + guildSkillsPanelHTML(myGuild, myGuildMembers||[]) /* 2026-10-19 (guild skills) */ + guildShopPanelHTML() /* 2026-10-23 (RW5) */ : guildBrowseCreatePanelHTML()}`;
-  document.getElementById('guildBackBtn').addEventListener('click', goHome);
   if(myGuild){
     wireGuildShop(root); // 2026-10-23 (package RW5)
     const renameBtn = document.getElementById('guildRenameBtn'); // 2026-10-18 (guild rename): owners only
@@ -65015,8 +64960,7 @@ function openCharacterEditor(){
 }
 function renderAchievementsPage(){
   const root = document.getElementById('view-achievements'); if(!root) return;
-  root.innerHTML = `<div class="play-subtabs" role="tablist"><button class="btn small" id="achvBackBtn">← Profile</button></div>${achievementsPanelHTML()}`;
-  document.getElementById('achvBackBtn').onclick = ()=> switchTab('profile');
+  root.innerHTML = `${achievementsPanelHTML()}`;
   wireAchievementsPanel();
 }
 // Admin resets (2026-10-13, user: "Help me add some admin functions in the profile. 1) Reset all, 2) Reset codex - just removes
@@ -65899,8 +65843,34 @@ function a11yPageH1(tab){
     const sk = document.getElementById('skipLink'); if(sk) sk.addEventListener('click', e=>{ e.preventDefault(); wrap.focus({preventScroll: true}); }); }
   h.textContent = _t(A11Y_TAB_H1[tab] || (String(tab).charAt(0).toUpperCase() + String(tab).slice(1)));
 }
-function switchTab(tab){
-  tabSwitchSeq++;
+// 2026-11-27 (UISWEEP3, UISWEEP-2): going to a place closes the curtain, swaps behind it, then opens it (bramblewood-ui-places.js; 880 ms the first visit of a session, 420 ms after, a tap skips).
+// A request that arrives while a curtain is closing replaces the pending one (latest wins). Pages that are not places, reduced motion and Effects None swap at once.
+let placeCoverPending = null;
+function placeSwap(kind, skin, swap, opts){
+  const P = window.BramblewoodPlaces;
+  if(placeCoverPending){ placeCoverPending.swap = swap; return; }
+  placeCoverPending = {swap};
+  const started = P && P.cover && P.cover(kind, skin, ()=>{ const sw = placeCoverPending.swap; placeCoverPending = null; sw(); try{ if(kind === 'shop') P.enter('shop', document.getElementById('view-shop'), {from: 'shop-switch', covered: true}); }catch(e){} }, opts);
+  if(!started){ const sw = placeCoverPending.swap; placeCoverPending = null; sw(); }
+}
+// 2026-11-27 (UISWEEP3, UISWEEP-2): a removed pop-up (.modal-overlay) stays 140 ms as an id-less ghost that fades out (it opens in 200 ms, CSS); reduced motion and browser automation drop it at once.
+(function popupExit(){
+  if(typeof MutationObserver !== 'function' || !document.body) return;
+  new MutationObserver(recs=>{
+    if(reducedMotion() || (navigator.webdriver && !window.__bwTransitions)) return;
+    for(const r of recs) for(const n of r.removedNodes){
+      if(n.nodeType !== 1 || !n.classList || !n.classList.contains('modal-overlay') || n.classList.contains('bw-centre-dialog') || n.dataset.bwGhost || n.isConnected) continue;
+      n.dataset.bwGhost = '1'; n.removeAttribute('id'); n.classList.add('bw-closing'); document.body.appendChild(n); setTimeout(()=> n.remove(), 150);
+    }
+  }).observe(document.body, {childList: true});
+})();
+function switchTab(tab, covered){
+  if(!covered && !matchState && typeof currentTab !== 'undefined' && currentTab && tab !== currentTab && !(currentTab === 'deck' && deckDirty) && !tutorialGateBlocks(tab) && (tab === 'home' || tab === 'play' || tabOpen(tab))
+     && ['shop','nest','codex','deck','stomp','inventory'].includes(tab) && !(tab === 'codex' && codexSubTab === 'forge') && !placeCoverPending){
+    placeSwap(tab, tab === 'shop' && shopMode === 'premium' ? 'premium' : tab, ()=> switchTab(tab, true)); return;
+  }
+  if(placeCoverPending && !covered){ placeCoverPending.swap = ()=> switchTab(tab, true); if(!['shop','nest','codex','deck','stomp','inventory'].includes(tab)) try{ BramblewoodPlaces.jump(); }catch(e){} return; }
+  tabSwitchSeq++; pageBackOverride = null;
   if(tab !== (typeof currentTab !== 'undefined' ? currentTab : null)) rel3CloseOnTabChange(); // 2026-11-19 (package REL3)
   setTimeout(()=>{ try{ pl2MapViewed(); }catch(e){} }, 0); // RES3 (2026-10-26, R8): waiting XP plays on whichever screen comes up
   if(tab !== (typeof currentTab!=='undefined' ? currentTab : null)) forgeReadyUsed = false; // the Forge's one-shot "Show the N I can temper" comes back on a new visit
@@ -65940,12 +65910,9 @@ function switchTab(tab){
     const reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     // 2026-10-08: a screen change is the Codex's quick page turn (forward moving right along the menu, back moving left); a place's own entrance replaces it.
     if(currentTabBeforeSwitch && currentTabBeforeSwitch!==tab && !reduced && !matchState && tab!=='play'){
-      const ORDER = ['home','play','deck','nest','shop','market','codex','profile','achievements','ranking','admin'];
-      // 2026-10-10 (user: "When I click Home from Conquest, the Home background loads up, but at the wrong size, and it has to
-      // resize"): a transform on #view-home turned the fixed, full-screen Home scene into a box the size of the view for the
-      // length of the turn, then it snapped to the screen. Home turns its menu instead, so the scene is full size from the start.
-      const v = tab==='home' ? document.querySelector('#view-home .home-menu') : document.getElementById('view-' + tab), dir = ORDER.indexOf(tab) >= ORDER.indexOf(currentTabBeforeSwitch) ? 'fwd' : 'back';
-      if(v){ v.classList.remove('view-turn-fwd','view-turn-back'); void v.offsetWidth; v.classList.add('view-turn-' + dir); setTimeout(()=> v.classList.remove('view-turn-' + dir), 420); }
+      // 2026-11-27 (UISWEEP3, UISWEEP-2): the 3D page turn is a 280 ms fade-through now (a place's curtain replaces it; reduced motion swaps at once).
+      const v = tab==='home' ? document.querySelector('#view-home .home-menu') : document.getElementById('view-' + tab);
+      if(v){ v.classList.remove('view-fade'); void v.offsetWidth; v.classList.add('view-fade'); setTimeout(()=> v.classList.remove('view-fade'), 320); }
     }
   }catch(e){}
   // In-page Back (2026-10-13, user: "Feature pages (Nest, Forge, etc.) need a prominent in-page Back button"; then "Make the Back
@@ -66005,7 +65972,7 @@ function switchTab(tab){
   if(tab==='friends') safeRender('Friends', renderFriends);
   if(tab==='admin') safeRender('Admin', renderAdmin);
   safeRender('CommunityTabs', ()=> syncCommunityTabs(tab));
-  try{ window.BramblewoodPlaces && BramblewoodPlaces.enter(tab, document.getElementById('view-' + tab), {from: currentTabBeforeSwitch}); }catch(e){} // 2026-11-13 (package UIFX1): the place's entrance and ambience
+  try{ window.BramblewoodPlaces && BramblewoodPlaces.enter(tab, document.getElementById('view-' + tab), {from: currentTabBeforeSwitch, covered: covered === true}); }catch(e){} // 2026-11-13 (package UIFX1): the place's entrance and ambience
   // Task #94 (2026-09-16, "make the battleground significantly bigger, full on full
   // screen"): the wider layout only makes sense while an actual match is on screen, so it's
   // gated on being both on the Play tab AND mid-match, not just the tab alone.
@@ -66016,7 +65983,7 @@ function switchTab(tab){
   // topbar's Home button is the one persistent way back, so it hides itself while you're
   // already there instead of doing nothing when clicked.
   const homeBtn = document.getElementById('homeNavBtn');
-  if(homeBtn) homeBtn.hidden = (tab==='home');
+  if(homeBtn){ homeBtn.classList.toggle('is-here', tab==='home'); homeBtn.toggleAttribute('aria-current', tab==='home'); } // 2026-11-27 (UISWEEP3): the core never moves; the button of the place you are on is filled
   try{ refreshTopbarDungeonKey(tab); }catch(e){} // 2026-10-16 (user: "the daily dungeon key logo ... beside HOME ... (same throughout)")
   try{ ui14SyncMapNav(tab); }catch(e){} // 2026-11-02 (package UI14, JJ16)
   // Item #275 (2026-09-20, "the header is unnecessary on the home page"... "Home button should
@@ -66031,18 +65998,19 @@ function switchTab(tab){
     wrap.classList.toggle('tab-play', tab==='play');
   }
 }
-document.getElementById('homeNavBtn').addEventListener('click', ()=> switchTab('home'));
+document.getElementById('homeNavBtn').addEventListener('click', ()=>{ if(currentTab === 'home') return; try{ SoundKit.woodKnock(); }catch(e){} switchTab('home'); });
 // 2026-11-02 (package UI14, owner JJ16): the topbar's 🗺️ goes straight to the conquest map (the map you were on), from any feature page (Codex,
 // Deck, Forge, Profile...). Shown where 🏠 is, once the conquest map is open (Tutorial done); not on Home or Play, which have their own way there.
 function ui14SyncMapNav(tab){
   const b = document.getElementById('ui14MapNavBtn'); if(!b) return;
   let open = true; try{ open = !!loadTutorialDone(); }catch(e){}
   const t = TX('ui.ui14-map-nav'); b.title = t; b.setAttribute('aria-label', t);
-  b.hidden = !open || tab === 'home' || tab === 'play';
+  b.hidden = !open; b.classList.toggle('is-here', tab === 'play' && playSubTab === 'conquest'); // 2026-11-27 (UISWEEP3): part of the fixed core on every page
 }
 function ui14GoToMap(){
   if(typeof matchState !== 'undefined' && matchState && !matchState.over) return;
   try{ SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e){}
+  if(currentTab === 'play' && playSubTab === 'conquest' && !playerStatsOpen) return; // 2026-11-27 (UISWEEP3): already on the map
   playSubTab = 'conquest'; try{ playerStatsOpen = false; }catch(e){} try{ conquestWorldView = false; }catch(e){}
   if(currentTab !== 'play') switchTab('play'); else renderPlay();
 }
@@ -66139,7 +66107,7 @@ var Feedback = (function(){
     if(error){ el.innerHTML = `<p class="panel-sub">The feedback table isn't there yet (supabase/migrations/20261015_feedback.sql needs applying), or you can't read it. ${escapeHtml(error.message || '')}</p>`; return; }
     el.innerHTML = (data || []).length ? data.map(r=> `<article class="fb-admin-item"><header><b>${escapeHtml(r.name || 'Guest')}</b><span>${escapeHtml(r.category || '')}</span><span>${escapeHtml(new Date(r.created_at).toLocaleString())}</span><span>${escapeHtml(((r.context||{}).tab || '') + ((r.context||{}).map ? ' · ' + r.context.map : ''))}</span></header><p>${escapeHtml(r.text || '')}</p><details><summary>Context</summary><pre>${escapeHtml(JSON.stringify(r.context || {}, null, 1))}</pre></details></article>`).join('') : '<p class="panel-sub">No feedback yet.</p>';
   };
-  const wire = ()=>{ const b = document.getElementById('feedbackBtn'); if(b && !b._fb){ b._fb = true; b.addEventListener('click', open); } badge(); setTimeout(flush, 6000); };
+  const wire = ()=>{ const b = document.getElementById('feedbackBtn'); if(b && !b._fb){ b._fb = true; b.addEventListener('click', ()=>{ closeAnyOpenSettingsPanel(); open(); }); } badge(); setTimeout(flush, 6000); };
   return {open, flush, queued, loadAdmin, wire, context};
 })();
 try{ Feedback.wire(); }catch(e){}

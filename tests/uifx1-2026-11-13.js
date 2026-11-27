@@ -16,9 +16,9 @@ process.on('exit', ()=>{ if(!ended){ console.log('  x the test stopped early (a 
 
 // 1. wiring
 { const lines = app.split('\n').filter(l=> l.includes('BramblewoodPlaces'));
-  ok(lines.length === 1, 'arena_app.js names BramblewoodPlaces on exactly one line (' + lines.length + ')');
+  ok(lines.length === 3, 'arena_app.js names BramblewoodPlaces on three lines: the switchTab hook and the two UISWEEP3 curtain lines (' + lines.length + ')'); // 2026-11-27 (UISWEEP3): was one; placeSwap / the latest-wins jump are the others
   const sw = app.slice(app.indexOf('\nfunction switchTab('), app.indexOf('\nfunction ui14SyncMapNav('));
-  ok(/BramblewoodPlaces\.enter\(tab, document\.getElementById\('view-' \+ tab\), \{from: currentTabBeforeSwitch\}\)/.test(sw), 'switchTab calls BramblewoodPlaces.enter(tab, #view-<tab>, {from}) after the screens draw');
+  ok(/BramblewoodPlaces\.enter\(tab, document\.getElementById\('view-' \+ tab\), \{from: currentTabBeforeSwitch, covered: covered === true\}\)/.test(sw), 'switchTab calls BramblewoodPlaces.enter(tab, #view-<tab>, {from}) after the screens draw');
   ok(sw.indexOf('BramblewoodPlaces.enter') > sw.indexOf("safeRender('Shop', renderShop)"), 'the hook runs after the renderers');
   ok(/open\(SCRATCH \+ "bramblewood-ui-places\.js"/.test(rd('assemble_arena.py')), 'assemble_arena.py bundles bramblewood-ui-places.js');
   ok(/bramblewood-ui-places\.js/.test(rd('tools/effects-lab/build.py')), 'the Effects Lab bundles it too');
@@ -125,7 +125,7 @@ const propsOf = list=>{ const s = new Set(); list.forEach(a=> a.frames.forEach(k
   { const w = world({level: 'none'}), v = w.view('nest', 'nest-scene'); const r = await w.P.enter('nest', v, {from: 'home'});
     ok(r === false && w.layers().length === 0 && w.anims.length === 0 && !w.listeners.length && !v.className.includes('bwp-host'), 'Effects None: nothing at all'); }
   { const w = world({reduced: true}), v = w.view('codex'); w.P.enter('codex', v, {from: 'home'});
-    ok(w.layers().length === 0 && w.anims.length === 1 && w.anims[0].el === v && propsOf(w.anims).join() === 'opacity' && w.anims[0].opts.duration <= 200, 'reduced motion: one plain fade of the screen, nothing else');
+    ok(w.layers().length === 0 && w.anims.length === 0, 'reduced motion: the screen swaps at once, nothing plays (UISWEEP3)');
     ok(!w.doc.body.all().some(e=> /bwp-amb/.test(e.className)), 'reduced motion: no ambience'); }
   for(const k of Object.keys(MS)){ const w = world({level: 'low'}), v = w.view(TAB[k], k === 'premium' ? 'is-premium-shop' : ''); w.P.enter(TAB[k], v, {from: 'home'});
     const parts = w.anims.length, end = Math.max(...w.anims.map(a=> (a.opts.delay || 0) + a.opts.duration));

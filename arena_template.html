@@ -1362,13 +1362,19 @@
   .pie-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; margin-top:10px;}
   .bw-text-dialog{z-index:2000;} .bw-text-dialog .modal{max-width:460px; width:min(460px, calc(100vw - 32px));}
   /* Centred confirm (2026-10-14, the Forfeit dialog): middle of the screen, everything else dimmed, a fade in and out. */
-  .bw-centre-dialog{align-items:center; background:rgba(8,6,4,.62); -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px); animation:bwDimIn .24s ease-out both;}
-  .bw-centre-dialog .modal{margin:auto; animation:bwPopIn .26s cubic-bezier(.2,.9,.3,1.2) both;}
-  .bw-centre-dialog.is-out{animation:bwDimOut .24s ease-in both; pointer-events:none;}
-  .bw-centre-dialog.is-out .modal{animation:bwPopOut .22s ease-in both;}
+  .bw-centre-dialog{align-items:center; background:rgba(8,6,4,.62); -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px); animation:bwDimIn .2s ease-out both;}
+  .bw-centre-dialog .modal{margin:auto; animation:bwPopIn .2s cubic-bezier(.2,.8,.2,1) both;}
+  .bw-centre-dialog.is-out{animation:bwDimOut .14s ease-in both; pointer-events:none;}
+  .bw-centre-dialog.is-out .modal{animation:bwPopOut .14s ease-in both;}
   @keyframes bwDimIn{from{background:rgba(8,6,4,0); -webkit-backdrop-filter:blur(0); backdrop-filter:blur(0);}}
   @keyframes bwDimOut{to{background:rgba(8,6,4,0); -webkit-backdrop-filter:blur(0); backdrop-filter:blur(0);}}
-  @keyframes bwPopIn{from{opacity:0; transform:scale(.94) translateY(8px);}}
+  @keyframes bwPopIn{from{opacity:0; transform:scale(.96);}}
+  /* 2026-11-27 (UISWEEP3): every pop-up opens in 200 ms and closes in 140 ms (centre dialogs above; a removed one fades as a ghost, see popupExit) */
+  .modal-overlay:not(.bw-centre-dialog){animation:bwDimIn .2s ease-out both;}
+  .modal-overlay:not(.bw-centre-dialog) .modal{animation:bwPopIn .2s cubic-bezier(.2,.8,.2,1) both;}
+  .modal-overlay.bw-closing{animation:bwDimOut .14s ease-in both; pointer-events:none;}
+  .modal-overlay.bw-closing .modal{animation:bwPopOut .14s ease-in both;}
+  @media (prefers-reduced-motion: reduce){ .modal-overlay, .modal-overlay .modal{animation:none !important;} }
   @keyframes bwPopOut{to{opacity:0; transform:scale(.96);}}
   @media (prefers-reduced-motion: reduce){ .bw-centre-dialog, .bw-centre-dialog .modal{animation:none;} }
   /* Forge bulk sheet (2026-10-17): Fuse all extras / Disenchant extras, see openForgeBulk */
@@ -4871,7 +4877,6 @@
      case already had its own #appWrap.in-match .topbar-wrap{display:none} rule further up this
      file; :not(.in-match) here just avoids that rule and this one fighting redundantly. */
   /* 2026-10-03 (D1): the header shows on Home too — one header everywhere except Play (which has its own compact row) and matches. */
-  #appWrap.tab-play:not(.in-match) .topbar-wrap{display:none;}
   .play-subtabs .tab-btn.active{background:var(--accent); color:var(--accent-ink);}
   .player-stats-row{display:flex; gap:10px; flex-wrap:wrap;}
   .stat-box{flex:1; min-width:78px; background:var(--surface-2); border:1px solid var(--surface-border); border-radius:10px; padding:10px 8px; text-align:center;}
@@ -7914,11 +7919,10 @@
   /* Screen changes: the Codex page turn, a touch quicker and gentler. */
   /* 2026-10-09: the page turn swings the view a little past the right edge; clip it so no sideways scrollbar flashes */
   .content-wrap{overflow-x:clip;}
-  .view-turn-fwd, .view-turn-back{animation:viewTurnFwd 380ms cubic-bezier(.2,.7,.25,1) both; transform-origin:0% 50%;}
-  .view-turn-back{animation-name:viewTurnBack; transform-origin:100% 50%;}
-  @keyframes viewTurnFwd{from{transform:perspective(1600px) rotateY(-16deg) translateX(26px); opacity:.35;} to{transform:none; opacity:1;}}
-  @keyframes viewTurnBack{from{transform:perspective(1600px) rotateY(16deg) translateX(-26px); opacity:.35;} to{transform:none; opacity:1;}}
-  @media (prefers-reduced-motion: reduce){ .view-turn-fwd, .view-turn-back{animation:none;} }
+  /* 2026-11-27 (UISWEEP3, UISWEEP-2): a page change that is not a place fades through in 280 ms (it was the 3D page turn); reduced motion swaps at once */
+  .view-fade{animation:viewFade 280ms cubic-bezier(.2,.8,.2,1) both;}
+  @keyframes viewFade{from{transform:translateY(6px); opacity:0;} to{transform:none; opacity:1;}}
+  @media (prefers-reduced-motion: reduce){ .view-fade{animation:none;} }
   .nest-keeper{display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; margin:8px 0 10px; padding:10px 12px; border-radius:12px; background:var(--surface-2); border:1px solid var(--surface-border);}
   .nest-keeper > div{display:flex; flex-wrap:wrap; align-items:center; gap:8px;} .nest-keeper small{color:var(--ink-muted);} .nk-card{font-weight:800;}
   .nest-egg{display:inline-flex; flex-direction:column; align-items:center; gap:0; padding:4px 8px; border-radius:12px; border:1px solid var(--surface-border); background:var(--surface); font:inherit; cursor:pointer;}
@@ -9379,7 +9383,6 @@
   body.conquest-immersive .content-wrap{max-width:none !important; padding:0 !important;}
   body.conquest-immersive .conquest-layout{position:fixed; inset:0; z-index:50; height:100vh !important; height:100dvh !important; border-radius:0; border:0;}
   body.conquest-immersive .conquest-map-canvas{min-height:calc(100dvh - 140px);}
-  body.conquest-full:not(.conquest-immersive) .topbar-wrap{display:none !important;}
   @media (max-width:820px){ body.conquest-full .conquest-maps{padding-top:56px !important; max-height:216px !important;} body.conquest-full #appWrap.cq-hud #view-play .play-subtabs-actions{right:12px !important;} }
   /* no transform/backdrop-filter here: either would trap the fixed Home/Settings cluster inside this row */
   body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row{position:fixed; left:0; right:0; bottom:14px; width:fit-content; margin:0 auto; z-index:60; padding:4px; border-radius:999px; background:rgba(20,14,8,.72);}
@@ -15783,6 +15786,34 @@ body.bw-in-match .signin-banner{display:none;}
 .ar3-tent .ar3-mode{flex:1 1 140px; max-width:220px;}
 .ar3-tent .ar3-pvp-note{margin:0; background:transparent; color:var(--ink-muted);}
 @media (max-width:700px){ .ar3-tent{gap:8px; padding:10px 8px;} .ar3-tent .ar3-chips{gap:6px;} .ar3-tent .ar3-deckchip{order:3; flex:1 1 100%; justify-content:center;} .ar3-tent .ar3-pvp{gap:8px;} .ar3-scene .pl2-arena-tabs .tab-btn{padding:5px 12px;} }
+
+/* 2026-11-27 (UISWEEP3, UISWEEP-1 / STATE2-1/2): ONE bar on every page except the fight HUD: back first, the page's own buttons (the slot), then the fixed core Home, Map, Settings, Energy, Account. On Play it floats over the map where the old cluster was. */
+.topbar{flex-wrap:nowrap; justify-content:flex-end; margin-bottom:12px;}
+.topbar .page-back-bar{flex:1 1 auto; min-width:0; margin:0; justify-content:flex-start; gap:8px; z-index:auto;}
+.topbar .page-back-bar[hidden]{display:none;}
+.topbar .page-back-bar .pb-back{width:32px; height:32px; flex:0 0 auto;}
+.topbar .page-back-bar .pb-back svg{width:20px; height:20px;}
+.topbar .page-back-bar .pb-shortcuts{margin:0; min-width:0; overflow-x:auto; scrollbar-width:none;}
+.topbar > .home-nav-btn.ne-home-icon.is-here{background:var(--accent); color:var(--accent-ink); box-shadow:0 0 0 2px var(--accent-strong);}
+.topbar .account-chip{flex:0 0 auto;}
+#feedbackBtn.has-queue{box-shadow:0 0 0 2px #e3a32b;}
+#appWrap.tab-play:not(.in-match) .topbar-wrap{position:fixed; top:12px; right:104px; left:auto; width:auto; max-width:calc(100vw - 116px); padding:0; z-index:60;}
+#appWrap.tab-play:not(.in-match) .topbar{margin:0; padding:5px 6px; border-radius:999px; background:rgba(20,14,8,.5);}
+body.play-full #appWrap.tab-play:not(.in-match) .topbar-wrap{right:16px; max-width:calc(100vw - 32px);}
+@media (max-width:560px){
+  .topbar{flex-wrap:wrap; row-gap:6px;}
+  .topbar .page-back-bar.has-many{display:contents;}
+  .topbar .page-back-bar.has-many .pb-back{margin-right:auto;}
+  .topbar .page-back-bar.has-many .pb-shortcuts{order:9; flex:1 0 100%; justify-content:center; margin:0;}
+  .topbar .page-back-bar .pb-back{width:36px; height:36px;}
+  .topbar .account-chip{width:36px; padding:0; justify-content:center; max-width:none;}
+  .topbar .account-chip #accountChipText{display:none;}
+  #appWrap.tab-play:not(.in-match) .topbar-wrap, body.play-full #appWrap.tab-play:not(.in-match) .topbar-wrap{right:8px; left:8px; top:6px; max-width:none;}
+  #appWrap.tab-play:not(.in-match) .topbar{flex-wrap:nowrap; column-gap:4px; padding:4px;}
+  #appWrap.tab-play:not(.in-match) .page-back-bar{flex:0 1 auto;}
+  #appWrap.tab-play:not(.in-match) .topbar .page-back-bar .pb-shortcuts{gap:0; padding:2px;}
+  #appWrap.tab-play:not(.in-match) .topbar .pb-sc b{display:none;}
+}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
@@ -15937,14 +15968,15 @@ body.bw-in-match .signin-banner{display:none;}
   <a class="skip-link" id="skipLink" href="#view-home">Skip to content</a>
   <div class="topbar-wrap">
   <div class="topbar">
-    <div class="brand" id="brandHomeBtn" role="button" tabindex="0" title="Home" aria-label="Bramblewood Arena — Home"><span class="mark">🌰</span><span class="word">Bramblewood Arena</span></div>
+    <!-- 2026-11-27 (UISWEEP3, UISWEEP-1): one bar on every page: back first, the page's own buttons (#pageBackBar, filled by refreshPageBar), then the fixed core Home, Map, Settings, Energy, Account. The acorn brand tile and the 💬 button left the bar (Feedback is a row in Settings). -->
+    <div class="page-back-bar dock-left" id="pageBackBar" hidden></div>
     <!-- 2026-09-20, per explicit request ("Have a 'Home' landing page... contains the Play,
          Deck, Codex"): navigation between sections now happens from the Home menu itself (see
          renderHome() in arena_app.js), so the old always-visible Codex/Play/Forge/Simulator tab
          strip is gone — this single Home button is the one persistent way back to that menu from
          anywhere else in the app. Hidden while already on Home (see switchTab()). -->
     <!-- 2026-10-24 (package NE, owner 17:34 #21: "Home is reduced to just an icon as well"): the 🏠 alone; its name stays in title / aria-label. -->
-    <button class="home-nav-btn ne-home-icon" id="homeNavBtn" type="button" title="Home" aria-label="Home" hidden><span class="tab-emoji" aria-hidden="true">🏠</span></button>
+    <button class="home-nav-btn ne-home-icon" id="homeNavBtn" type="button" title="Home" aria-label="Home"><span class="tab-emoji" aria-hidden="true">🏠</span></button>
     <!-- 2026-11-02 (package UI14, owner JJ16: "feature pages (Codex etc.): a top-right nav button straight to the conquest map"): 🗺️ beside 🏠; ui14SyncMapNav() in arena_app.js. -->
     <button class="home-nav-btn ne-home-icon ui14-map-nav" id="ui14MapNavBtn" type="button" title="Conquest map" aria-label="Conquest map" hidden><span class="tab-emoji" aria-hidden="true">🗺️</span></button>
     <!-- 2026-10-16 (user: "the daily dungeon key logo visible in small beside HOME and ARENA ... (same throughout)"): the 🗝️ Dungeons key
@@ -16042,6 +16074,7 @@ body.bw-in-match .signin-banner{display:none;}
             </div>
             <!-- 2026-10-15 (user: "Danger warnings is not to be a setting in settings."): the ⚠️ Danger warnings row is gone; warnings
                  always run at their default (the ladder from Uncommon). -->
+            <div class="settings-row"><button type="button" class="btn ghost small" id="feedbackBtn">💬 Send feedback</button></div><!-- 2026-11-27 (UISWEEP3): Feedback lives in Settings; the bar lost its 💬 -->
             <div class="settings-row settings-links" id="settingsLinks"></div>
       </div>
     </div>
@@ -16054,15 +16087,12 @@ body.bw-in-match .signin-banner{display:none;}
       <span id="energyPillText">—</span>
     </div>
     <button type="button" class="account-chip" id="accountChip" hidden><span class="account-chip-ico">👤</span><span id="accountChipText">Guest · Sign in</span></button>
-    <!-- 2026-10-15 (user: "on the right of your profile name, there is an opinion icon. Clicking it lets them write a comment to us"): -->
-    <button type="button" class="feedback-btn" id="feedbackBtn" title="Tell us what you think" aria-label="Send feedback">💬</button>
     <div class="user-pill" id="userPill" hidden><span class="user-ico">👤</span><span id="userPillText"></span></div>
     <div class="db-pill" id="dbPill" style="display:none"><span class="dot"></span><span id="dbPillText"></span></div>
   </div>
   </div>
 
   <div class="content-wrap" id="mainContent" role="main" tabindex="-1">
-  <div class="page-back-bar" id="pageBackBar" hidden><button type="button" class="btn page-back-btn" id="pageBackBtn">← Back</button></div>
   <div id="view-home"></div>
   <div id="view-codex" hidden></div>
   <div id="view-play" hidden></div>

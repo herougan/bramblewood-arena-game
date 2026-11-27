@@ -20,7 +20,7 @@ ok(/nav1InCamp\(tab\) \?/.test(fn('refreshPageBar')), 'the bar shows only on the
 ok(/nav1ShopTabsHTML\(\)/.test(fn('renderShop')) && /data-nav1shop/.test(fn('renderShop')) && /role="tablist"/.test(fn('nav1ShopTabsHTML')), 'the Shop page has Shop | Premium tabs');
 // Play: three pages
 ok(/'dr'/.test(fn('nav1PlayPage')) && /'arena'/.test(fn('nav1PlayPage')), 'Play view: Conquest, Arena, Dungeons & Raids');
-ok(/nav1PlayTabs\(\)\.length > 1/.test(fn('renderPlay')) && /id="nav1MapBtnPlay"/.test(fn('renderPlay')) && /id="nav1DrBtnPlay"/.test(fn('renderPlay')), 'each Play page shows its own tabs; the corner cluster reaches Conquest and Dungeons & Raids');
+ok(/nav1PlayTabs\(\)\.length > 1/.test(fn('renderPlay')) && /id="ui14MapNavBtn"/.test(tpl) && /id:'nav1DrBtnPlay'/.test(fn('playSlotItems'))  /* 2026-11-27 (UISWEEP3): the bar's 🗺️ and the slot's 🐲 */, 'each Play page shows its own tabs; the corner cluster reaches Conquest and Dungeons & Raids');
 // main menu
 const home = fn('renderHome');
 ok(/class="home-notes"/.test(home) && !/note-nest|note-inv|note-paths|homeCodexBtn/.test(home), 'Home: notes on one board; Nest, Inventory, Wildpaths moved into the Camp bar; the Codex is a tile');
@@ -74,10 +74,10 @@ async function browser(){
         document.querySelector('#view-shop [data-nav1shop="normal"]').click(); skip(); await wait(300); out.backToShop = shopMode === 'normal' && !!document.querySelector('#shopCounter [data-buypack], #shopCounter .btn');
         // Play: three pages
         const tabsOf = ()=> [...document.querySelectorAll('#view-play .play-subtabs:not([hidden]) [data-playtab]')].map(b=> b.dataset.playtab);
-        homeGo('play', 'raid'); await wait(700); out.dr = {tabs: tabsOf(), map: !!document.getElementById('nav1MapBtnPlay'), arena: !!document.getElementById('arenaNavBtnPlay'), key: !!document.getElementById('dungeonKeyBtnPlay')};
-        document.getElementById('nav1MapBtnPlay').click(); await wait(700); out.toMap = playSubTab;
-        out.conq = {tabs: tabsOf(), dr: !!document.getElementById('nav1DrBtnPlay'), key: !!document.getElementById('dungeonKeyBtnPlay'), n: document.querySelectorAll('#view-play .play-subtabs-actions > .home-nav-btn').length};
-        homeGo('play', 'arena'); await wait(700); out.arena = {tabs: tabsOf(), map: !!document.getElementById('nav1MapBtnPlay')};
+        homeGo('play', 'raid'); await wait(700); out.dr = {tabs: tabsOf(), map: !!document.getElementById('ui14MapNavBtn') && !document.getElementById('ui14MapNavBtn').hidden, arena: !!document.getElementById('arenaNavBtnPlay'), key: !document.getElementById('dungeonKeyBtnTop').hidden /* 2026-11-27 (UISWEEP3): the key is the bar's, hidden on its own page */};
+        document.getElementById('ui14MapNavBtn').click(); await wait(700); out.toMap = playSubTab;
+        out.conq = {tabs: tabsOf(), dr: !!document.getElementById('nav1DrBtnPlay'), key: !document.getElementById('dungeonKeyBtnTop').hidden, n: document.querySelectorAll('#pageBackBar .pb-sc').length};
+        homeGo('play', 'arena'); await wait(700); out.arena = {tabs: tabsOf(), map: !!document.getElementById('ui14MapNavBtn') && !document.getElementById('ui14MapNavBtn').hidden};
         switchTab('home'); await wait(200); return out; })()`);
       ok(['play', 'homeArenaBtn', 'homeRaidBtn', 'deck', 'shop', 'codex'].every(x=> r.tiles.includes(x)), `${t} Home tiles are the pages (${r.tiles})`);
       ok(r.tethered && r.sameW, `${t} the notes sit on one board under the tiles, the grid's width, one size (${r.tethered}, ${r.sameW})`);
@@ -86,7 +86,7 @@ async function browser(){
       ok(r.codex, `${t} the Codex is its own page (Browse, no Camp bar)`);
       ok(r.shop && r.premium && r.backToShop, `${t} the Shop page: Shop | Premium tabs, the buy counter shown, nothing bought (${r.shop}, ${r.premium}, ${r.backToShop})`);
       ok(!r.dr.tabs.includes('conquest') && !r.dr.tabs.includes('arena') && r.dr.map && r.dr.arena && !r.dr.key && r.toMap === 'conquest', `${t} Dungeons & Raids: its own tabs only; 🗺️ and 🏟️ in the corner (${JSON.stringify(r.dr)}, ${r.toMap})`);
-      ok(!r.conq.tabs.includes('raid') && !r.conq.tabs.includes('arena') && r.conq.dr !== r.conq.key && r.conq.n <= 6, `${t} Conquest: no Arena / Raid tabs; 🐲 in the corner (or the 🗝️ when it shows), at most 6 round buttons (${JSON.stringify(r.conq)})`);
+      ok(!r.conq.tabs.includes('raid') && !r.conq.tabs.includes('arena') && r.conq.dr !== r.conq.key && r.conq.n <= 6, `${t} Conquest: no Arena / Raid tabs; 🐲 in the corner (or the 🗝️ when it shows), at most 4 slot buttons (${JSON.stringify(r.conq)})`);
       ok(r.arena.tabs.length === 0 && r.arena.map, `${t} Arena: a page of its own (${JSON.stringify(r.arena)})`);
       await ctx.close();
     }

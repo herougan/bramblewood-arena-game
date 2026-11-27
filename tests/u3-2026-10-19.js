@@ -28,7 +28,8 @@ ok(u3.length > 0, 'the U3 style block is there');
 // ---- 1. Home in the cluster
 const rp = B.grab('renderPlay');
 ok(!/playHomeTabBtn|play-home-tab/.test(rp) && !/play-home-tab/.test(tpl), '1. no Home in the floating tab bar');
-ok(/<div class="play-subtabs-actions">[^]*?<button class="home-nav-btn" id="homeNavBtnPlay"[^>]*aria-label="\$\{escapeAttr\(TX\('ui\.back-to-home'\)\)\}"><span class="tab-emoji" aria-hidden="true">🌰<\/span>/.test(rp), '1. the cluster starts with the 🌰 Home (TX aria-label)');
+/* 2026-11-27 (UISWEEP3): Home is the 🏠 of the one top bar; the Play page has no cluster of its own */
+ok(!/id="homeNavBtnPlay"/.test(rp) && /id="homeNavBtn"/.test(tpl), '1. Home is the one bar\'s 🏠 (no second copy in the Play page)');
 ok(!/#homeNavBtnPlay\{display:none/.test(tpl), '1. nothing hides it');
 ok(/class="conquest-home-btn" id="conquestHomeBtn"[^>]*><span class="tab-emoji" aria-hidden="true">🌰<\/span>/.test(src), '1. the full-screen map\'s Home is the acorn too');
 

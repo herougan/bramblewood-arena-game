@@ -13,10 +13,10 @@ const reduced = ()=>{ try{ return typeof reducedMotion === 'function' ? reducedM
 const live = ()=>{ try{ return typeof matchState !== 'undefined' && !!matchState && !matchState.over; }catch(e){ return false; } };
 const sound = (n, ...a)=>{ try{ if(typeof SoundKit !== 'undefined' && typeof SoundKit[n] === 'function') SoundKit[n](...a); }catch(e){} };
 const rng = seed=>{ let s = seed >>> 0 || 1; return ()=> (s = (Math.imul(s, 1664525) + 1013904223) >>> 0) / 4294967296; }; // same motes every play
-const SWING = 'cubic-bezier(.6,.02,.3,1)', OUT = 'cubic-bezier(.2,.7,.3,1)';
+const SWING = 'cubic-bezier(.6,.02,.3,1)', OUT = 'cubic-bezier(.2,.7,.3,1)', IN = 'cubic-bezier(.5,0,.8,.4)';
 
 const CSS = `
-.bwp-layer{position:fixed; inset:0; z-index:590; overflow:hidden; pointer-events:auto; cursor:pointer; contain:strict;}
+.bwp-layer{position:fixed; inset:0; z-index:92; /* 2026-11-27 (UISWEEP3): below the bar (95), so Home, Settings and the Map button stay reachable while a curtain is up */ overflow:hidden; pointer-events:auto; cursor:pointer; contain:strict;}
 .bwp-layer.is-hosted{position:absolute; z-index:50;}
 .bwp-layer i, .bwp-layer b{position:absolute; display:block; pointer-events:none;}
 .bwp-layer > i{will-change:transform, opacity;}
@@ -192,8 +192,8 @@ function begin(kind, host, ms, rate){
   lay.setAttribute('aria-hidden', 'true');
   host.appendChild(lay);
   const run = {kind, lay, ms, rate: rate > 0 ? rate : 1, anims: [], timers: [], done: false};
-  run.skip = ()=> finish(run);
-  run.tap = ()=> finish(run, true);
+  run.skip = ()=> run.jump ? run.jump() : finish(run); // 2026-11-27 (UISWEEP3): during the cover a skip closes the curtain now (the swap happens); after that it ends the reveal
+  run.tap = ()=> run.jump ? run.jump() : finish(run, true);
   lay.addEventListener('pointerdown', run.tap);
   W.addEventListener('keydown', run.skip, true);
   W.addEventListener('wheel', run.skip, {capture: true, passive: true});
@@ -218,6 +218,7 @@ function finish(run, eat){
   } else lay.remove();
   if(cur === run) cur = null;
   run.resolve(true);
+  if(run.cover && !run.closed){ run.closed = true; run.cover = null; try{ run.onClosed && run.onClosed(); }catch(e){} } // 2026-11-27 (UISWEEP3): a curtain ended before it closed still swaps the page, never strands the request
 }
 function bit(run, cls, style, html){ const i = D.createElement('i'); i.className = cls; if(style) i.style.cssText = style; if(html) i.innerHTML = html; run.lay.appendChild(i); return i; }
 function kid(parent, cls, style, html){ const i = D.createElement('i'); i.className = cls; if(style) i.style.cssText = style; if(html) i.innerHTML = html; parent.appendChild(i); return i; }
@@ -372,6 +373,18 @@ const PLACES = {
     later(run, 300, ()=> sound('pickup'));
   }},
 };
+
+// 2026-11-27 (UISWEEP3, UISWEEP-2): the CLOSE half of a place change. cover(run, ms) draws the closed curtain sliding in over the old page and returns the pieces the reveal
+// replaces (the reveal's own entrance starts from the same closed look); a place whose closed look is a dim backdrop keeps its dim.
+const slide = (run, node, from, ms)=> an(run, node, [{transform: from}, {transform: 'none'}], ms, 0, IN);
+const COVER = {
+  shop: (run, ms)=>{ const [l, r] = pair(run, 'bwp-flap', '<b></b>'), v = bit(run, 'bwp-valance'); slide(run, l, 'translateX(-102%)', ms); slide(run, r, 'translateX(102%)', ms); slide(run, v, 'translateY(-105%)', ms); return [l, r, v]; },
+  premium: (run, ms)=>{ const [l, r] = pair(run, 'bwp-flap', '<b></b>'), p = bit(run, 'bwp-pelmet'); slide(run, l, 'translateX(-102%)', ms); slide(run, r, 'translateX(102%)', ms); slide(run, p, 'translateY(-130%)', ms); return [l, r, p]; },
+  deck: (run, ms)=>{ const d = bit(run, 'bwp-door'); an(run, d, [{transform: 'scaleY(0)'}, {transform: 'scaleY(1)'}], ms, 0, IN); return [d]; },
+  stomp: (run, ms)=>{ const [l, r] = pair(run, 'bwp-gate', '<b></b>'); an(run, l, [{transform: 'rotateY(-100deg)'}, {transform: 'rotateY(0deg)'}], ms, 0, IN); an(run, r, [{transform: 'rotateY(100deg)'}, {transform: 'rotateY(0deg)'}], ms, 0, IN); return [l, r]; },
+  dim: (run, ms)=>{ const d = bit(run, 'bwp-dim'); an(run, d, [{opacity: 0}, {opacity: 1}], ms, 0, IN); return [d]; },
+};
+COVER.nest = COVER.codex = COVER.inventory = COVER.dim;
 // The Forge keeps its own flare (dressForgePlace); a Codex view showing the Forge is not the library.
 function placeOf(kind, el){
   if(kind === 'shop' && el && el.classList && el.classList.contains('is-premium-shop')) return 'premium';
@@ -420,19 +433,37 @@ function watchShop(el){
   unwatchShop();
   if(!el || typeof MutationObserver !== 'function') return;
   const mo = new MutationObserver(recs=>{ const was = recs[0] && /(^|\s)is-premium-shop(\s|$)/.test(recs[0].oldValue || ''), now = el.classList.contains('is-premium-shop');
-    if(was !== now && !el.hidden) P.enter('shop', el, {from: 'shop-switch'}); });
+    if(was !== now && !el.hidden && !(cur && cur.revealing)) P.enter('shop', el, {from: 'shop-switch'}); });
   mo.observe(el, {attributes: true, attributeFilter: ['class'], attributeOldValue: true});
   shopWatch = {el, mo};
 }
 function unwatchShop(){ if(shopWatch){ shopWatch.mo.disconnect(); shopWatch = null; } }
 
-function fade(el){
-  if(!el || typeof el.animate !== 'function') return Promise.resolve(false);
-  const a = el.animate([{opacity: 0}, {opacity: 1}], {duration: 180, easing: 'ease-out'});
-  return a.finished.then(()=> true, ()=> true);
-}
-
 const P = {};
+// Test hook: browser automation (navigator.webdriver) swaps at once, as before, so a test that clicks and reads the page is not racing a curtain; a test of the curtain itself sets window.__bwTransitions = true.
+const txOn = ()=>{ try{ return !!W.__bwTransitions || !navigator.webdriver; }catch(e){ return true; } };
+const TIMES = {first: {cover: 320, hold: 80, reveal: 480}, repeat: {cover: 160, hold: 0, reveal: 260}}; // UISWEEP-2: 880 ms the first visit of a session, 420 ms after
+// P.cover(kind, skin, onClosed, opts) → true when a curtain is closing (onClosed runs once it is closed, or at once on a tap; the caller swaps the page there and calls
+// P.enter(kind, el, {covered: true}) to open it); false when nothing plays (reduced motion, Effects None, a fight, not a place): the caller swaps now.
+P.cover = function(kind, skin, onClosed, opts){
+  opts = opts || {};
+  try{
+    const k = PLACES[skin || kind] ? (skin || kind) : null;
+    if(!k || !txOn() || reduced() || !atLeast('low') || live()) return false;
+    if(cur) finish(cur);
+    css();
+    const low = !atLeast('med'), short = low || opts.repeat || seen.has(k), T = short ? TIMES.repeat : TIMES.first;
+    seen.add(k);
+    const run = begin(k, D.body, PLACES[k].ms, 1); cur = run;
+    run.timers.forEach(clearTimeout); run.timers.length = 0; run.timers.push(setTimeout(()=> finish(run), 1200 + T.cover + T.hold)); // the watchdog: the layer is never left up
+    run.pieces = (COVER[k] || COVER.dim)(run, T.cover);
+    run.cover = {k, short, low: !!(low || short)}; run.onClosed = onClosed;
+    const close = ()=>{ if(run.closed || run.done) return; run.closed = true; run.jump = null; run.anims.forEach(a=>{ try{ a.finish(); }catch(e){} }); try{ onClosed(); }catch(e){ finish(run); } };
+    run.jump = close;
+    run.timers.push(setTimeout(close, T.cover + T.hold));
+    return true;
+  }catch(e){ try{ if(cur) finish(cur); }catch(_){} return false; }
+};
 // The full entrance plays on the first arrival at each place in a session; later arrivals get the short take (about the page turn's length),
 // as the Forge flare and the map titles do (owner 2026-10-08: "Clicking play or any other button should instantly transit you").
 const seen = new Set();
@@ -444,15 +475,32 @@ P.enter = function(kind, el, opts){
   try{
     const k = placeOf(kind, el);
     if(kind === 'shop' && !opts.host) watchShop(el); else if(!opts.host) unwatchShop();
+    if(opts.covered && !(cur && cur.cover && cur.closed)){ if(k && !opts.host) ambientOn(k, el); return Promise.resolve(false); } // swapped without a curtain (it was skipped): no second entrance
+    if(opts.covered){ // 2026-11-27 (UISWEEP-2): the page is swapped behind the closed curtain; open it
+      const run = cur, c = run.cover; run.cover = null; run.revealing = true;
+      if(!k || !atLeast('low')){ finish(run); if(!opts.host) ambientOff(); return Promise.resolve(false); }
+      const spec = PLACES[k], T = c.short ? TIMES.repeat : TIMES.first, nominal = c.low ? spec.low : spec.ms;
+      run.pieces.forEach(n=>{ try{ n.getAnimations().forEach(a=> a.cancel()); }catch(e){} n.remove(); });
+      run.anims = run.anims.filter(a=> a.playState !== 'idle');
+      run.lay.className = run.lay.className.replace(/bwp-(shop|premium|nest|codex|deck|stomp|inventory)/, 'bwp-' + k); // the skin follows the page behind it (Shop to Premium)
+      run.ms = nominal; run.rate = nominal / T.reveal;
+      run.timers.forEach(clearTimeout); run.timers.length = 0; run.timers.push(setTimeout(()=> finish(run), 1200));
+      run.jump = null; seen.add(k);
+      spec.play(run, c.low);
+      const dim = run.lay.querySelector('.bwp-dim'); if(dim){ dim.getAnimations().forEach(a=> a.cancel()); dim.style.opacity = '1'; } // a dim place is already dark: its own fade-in would flash the page
+      Promise.all(run.anims.map(a=> a.finished)).then(()=> finish(run), ()=> finish(run));
+      if(!opts.host){ if(c.low && !atLeast('med')) ambientOff(); else ambientOn(k, el); }
+      return run.promise;
+    }
     if(!k){ if(!opts.host) ambientOff(); return Promise.resolve(false); }
     if(!opts.force && (!opts.from || opts.from === kind)){ if(!opts.host) ambientOn(k, el); return Promise.resolve(false); }
     if(cur) finish(cur);
     if(!atLeast('low')){ if(!opts.host) ambientOff(); return Promise.resolve(false); }
-    if(reduced()){ if(!opts.host) ambientOff(); return fade(el); }
+    if(reduced()){ if(!opts.host) ambientOff(); return Promise.resolve(false); } // 2026-11-27 (UISWEEP-2): reduced motion swaps at once
     const low = !atLeast('med'), short = low || (!opts.force && seen.has(k)), spec = PLACES[k], host = opts.host || D.body;
     if(!host || typeof host.appendChild !== 'function') return Promise.resolve(false);
     if(!opts.host) seen.add(k);
-    if(el && el.classList && !opts.host) el.classList.remove('view-turn-fwd', 'view-turn-back'); // the entrance replaces the page turn
+    if(el && el.classList && !opts.host) el.classList.remove('view-fade'); // the entrance replaces the fade-through
     const run = begin(k, host, short ? spec.low : spec.ms, opts.rate);
     cur = run;
     spec.play(run, short);
@@ -462,6 +510,7 @@ P.enter = function(kind, el, opts){
   }catch(e){ try{ if(cur) finish(cur); }catch(_){} return Promise.resolve(false); }
 };
 P.skip = ()=>{ if(cur) finish(cur); };
+P.jump = ()=>{ if(cur && cur.jump) cur.jump(); }; // close a closing curtain now (the pending swap runs)
 P.seek = ms=>{ if(!cur) return false; cur.timers.forEach(clearTimeout); cur.timers.length = 0; cur.anims.forEach(a=>{ a.pause(); a.currentTime = ms; }); return true; }; // hold the playing entrance at ms (contact sheets); skip() ends it
 P.stop = ()=>{ P.skip(); ambientOff(); unwatchShop(); }; // everything off (the Lab between plays; a test)
 P.ambient = (kind, el)=>{ const k = placeOf(kind, el); if(k) ambientOn(k, el); else ambientOff(); }; // the Lab shows a place's ambience on its own
