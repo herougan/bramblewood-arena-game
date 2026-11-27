@@ -33,7 +33,7 @@ const TAGS = { glass: { icon: '🥂', label: 'Glass cannon' }, wall: { icon: '�
         keys.add(k); if (!info[k]) { const pd = skillDefOf(k); info[k] = { label: pd ? pd.label : '', icon: SKILL_ICON[k] || '', known: !!pd }; } });
       scan(d.effects); Object.values(d.levelSkills || {}).forEach(scan);
       cards.push({ id, name: d.name, rarity: d.rarity || '', at, src: cardSourceOf(d).kind, a: +d.attack || 0, h: +d.health || 0, keys: [...keys], trig: [...trig] }); });
-    return { cards, info };
+    return { cards, info, skillOrder: [].concat(typeof SKILL_DEFS !== 'undefined' ? SKILL_DEFS : [], PASSIVE_DEFS).map(x => x.key) };
   });
   await b.close();
   const info = data.info, sym = {}; // symbol id -> { icon, label, kind }
@@ -49,6 +49,18 @@ const TAGS = { glass: { icon: '🥂', label: 'Glass cannon' }, wall: { icon: '�
   Object.values(byLabel).filter(ks => ks.length > 1).forEach(ks => ks.forEach(k => { sym[k].label += ` (${k})`; })); // two skills share a label (Loyal)
   const count = {}; data.cards.forEach(c => c.syms.forEach(s => { count[s] = (count[s] || 0) + 1; }));
   const nm = s => `${sym[s].icon} ${sym[s].label}`.trim(), order = (x, y) => (count[y] - count[x]) || nm(x).localeCompare(nm(y));
+  // 2026-11-28 (HUB6, owner 03:07: "separate the combo column into skill 1 column (spans) and then sub rows in col 2 ... Skills have id so follow that precedence. If flying and venomous showed up, no need venomous and flying"):
+  // id precedence = the game's own skill order (SKILL_DEFS then PASSIVE_DEFS, the list skillDefOf searches), trigger effects after skills (TRIG order, then action), the two tags last.
+  // A pair or kit is listed once, in that order (Flying + Venomous, never Venomous + Flying), as an HTML table with rowspan: one column per level of the tree.
+  const kord = data.skillOrder, tkeys = Object.keys(TRIG), rank = s => sym[s].kind === 'tag' ? 3000 + (s === 'wall') : sym[s].kind === 'trigger' ? 1000 + tkeys.indexOf(info[s].on) * 40 + (s.charCodeAt(s.indexOf('>') + 1) % 40) : (kord.indexOf(s) < 0 ? 999 : kord.indexOf(s)),
+    byRank = (x, y) => (rank(x) - rank(y)) || nm(x).localeCompare(nm(y)), E = x => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  const treeTable = (items, heads, last) => { // items: { path: [symbols in id order], n, which? }; a node cell spans its subtree; a kit that ends on a node gets its own row (empty cells to the count)
+    const root = { ch: {}, own: null }; let D = 1; items.forEach(it => { let nd = root; D = Math.max(D, it.path.length); it.path.forEach(k => { nd = nd.ch[k] = nd.ch[k] || { ch: {}, own: null }; }); nd.own = it; });
+    const tail = it => `<td class="n">${it.n}</td>` + (last ? `<td>${E(it.which || '')}</td>` : '');
+    const walk = (nd, d) => { const out = []; Object.keys(nd.ch).sort(byRank).forEach(k => { const c = nd.ch[k], sub = [];
+        if (c.own) sub.push((d < D ? `<td colspan="${D - d}" class="n">only these</td>` : '') + tail(c.own)); walk(c, d + 1).forEach(r => sub.push(r));
+        sub.forEach((r, i) => out.push(i ? r : `<td rowspan="${sub.length}">${E(nm(k))}</td>` + r)); }); return out; };
+    return `<table class="fx-tree"><thead><tr>${heads.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${walk(root, 1).map(r => '<tr>' + r + '</tr>').join('')}</tbody></table>`; };
   const isTag = s => s === 'glass' || s === 'wall';
   const multi = (rows, per) => { const out = []; for (let i = 0; i < rows.length; i += per) out.push('| ' + rows.slice(i, i + per).map(r => r.join(' | ')).concat(Array(Math.max(0, per - Math.min(per, rows.length - i))).fill(' |  ')).join(' | ') + ' |'); return out; };
   const L = [], src = {}; data.cards.forEach(c => { src[c.src] = (src[c.src] || 0) + 1; });
@@ -60,7 +72,7 @@ const TAGS = { glass: { icon: '🥂', label: 'Glass cannon' }, wall: { icon: '�
   // view (effects_groups.js), then Trigger effects, then the two tags. Each: its symbols with card counts, a section total, and its pairs (a pair that holds one
   // of its symbols), most used first, pairs with 🥂 / 🚫 last.
   const skills = Object.keys(sym).filter(s => sym[s].kind === 'skill' && count[s]).sort(order), trigs = Object.keys(sym).filter(s => sym[s].kind === 'trigger' && count[s]).sort(order);
-  const pairs = {}; data.cards.forEach(c => { const s = c.syms.slice().sort(order); for (let i = 0; i < s.length; i++) for (let j = i + 1; j < s.length; j++) { const k = s[i] + '|' + s[j]; pairs[k] = (pairs[k] || 0) + 1; } });
+  const pairs = {}; data.cards.forEach(c => { const s = c.syms.slice().sort(byRank); for (let i = 0; i < s.length; i++) for (let j = i + 1; j < s.length; j++) { const k = s[i] + '|' + s[j]; pairs[k] = (pairs[k] || 0) + 1; } });
   const pl = Object.entries(pairs).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])), main = pl.filter(([k]) => !k.split('|').some(isTag)), tagged = pl.filter(([k]) => k.split('|').some(isTag));
   const pr = ([k, n]) => [k.split('|').map(nm).join(' + '), String(n)];
   const sections = GROUPS.map(([t, ks]) => [t, ks.split(' ').filter(k => skills.includes(k))]);
@@ -74,12 +86,13 @@ const TAGS = { glass: { icon: '🥂', label: 'Glass cannon' }, wall: { icon: '�
     const has = ([k]) => k.split('|').some(x => set.has(x)), pm = main.filter(has), pt = tagged.filter(has); secTot.push([title, ks.length, cards]);
     L.push(`### ${title} (${ks.length} ${ks.length === 1 ? 'symbol' : 'symbols'}, ${cards} cards)`, '', `**Section total:** ${ks.length} ${ks.length === 1 ? 'symbol' : 'symbols'}, ${uses} uses on ${cards} cards (a card with two of them counts once here); ${pm.length + pt.length} pairs (${pt.length} with 🥂 / 🚫).`, '',
       ...head(per), ...multi(ks.slice().sort(order).map(x => [nm(x), String(count[x] || 0)]), per), '');
-    if (pm.length || pt.length) L.push(...phead, ...multi(pm.concat(pt).map(pr), 3), ''); });
+    if (pm.length || pt.length) L.push(treeTable(pm.concat(pt).map(([k, n]) => ({ path: k.split('|'), n })), ['Skill 1', 'Skill 2', 'Cards']), ''); });
   // 2. every full combo used
-  const combos = {}; data.cards.forEach(c => { const k = c.syms.slice().sort(order).join('+') || '(none)'; (combos[k] = combos[k] || []).push(c); });
-  const cl = Object.entries(combos).sort((a, b) => b[1].length - a[1].length || b[0].split('+').length - a[0].split('+').length);
-  L.push(`## 2. Every combo used (${cl.length} distinct; each card's whole kit)`, '', '| Combo | Cards | Which |', '|---|---:|---|');
-  cl.forEach(([k, cs]) => L.push(`| ${k === '(none)' ? '_no effect_' : k.split('+').map(nm).join(' + ')} | ${cs.length} | ${cs.map(c => c.name).sort().join(', ')} |`));
+  const combos = {}; data.cards.forEach(c => { const k = c.syms.slice().sort(byRank).join('+'); (combos[k] = combos[k] || []).push(c); });
+  const cl = Object.entries(combos).sort((a, b) => b[1].length - a[1].length || b[0].split('+').length - a[0].split('+').length), maxK = Math.max(...cl.map(([k]) => k ? k.split('+').length : 0));
+  L.push(`## 2. Every combo used (${cl.length} distinct; each card's whole kit)`, '', 'Grouped as a tree in skill-id order: skill 1 spans its rows, each next skill sits on a sub row. A kit appears once.', '');
+  L.push(treeTable(cl.filter(([k]) => k).map(([k, cs]) => ({ path: k.split('+'), n: cs.length, which: cs.map(c => c.name).sort().join(', ') })), Array.from({ length: maxK }, (_, i) => 'Skill ' + (i + 1)).concat(['Cards', 'Which']), true));
+  if (combos['']) L.push('', `_No effect at all: ${combos[''].length} cards (${combos[''].map(c => c.name).sort().join(', ')})._`);
   L.push('');
   // 3. triggers
   L.push(`## 3. Trigger effects (${trigs.length})`, '', '| Trigger effect | Cards | Game text (first carrier) | Which |', '|---|---:|---|---|');

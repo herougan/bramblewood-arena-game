@@ -669,6 +669,7 @@ iframe{{border:0; width:100%; height:100%; display:block; background:var(--bg);}
 .doc table{{border-collapse:collapse; width:100%; font-size:14px; display:block; overflow-x:auto;}}
 .doc th,.doc td{{border:1px solid var(--line); padding:6px 8px; text-align:left; vertical-align:top;}}
 .doc th{{background:var(--surface-2);}}
+.doc table.fx-tree td{{white-space:nowrap; font-size:13px; padding:4px 6px;}} .doc table.fx-tree td.n{{text-align:right;}} .doc table.fx-tree td:last-child:not(.n){{white-space:normal; min-width:200px;}} .doc table.fx-tree td[rowspan]{{background:var(--surface-2); font-weight:600;}} /* 2026-11-28 (HUB6): grouped skill tables */
 .doc li{{margin:2px 0;}}
 header .play{{order:1; margin:0 0 8px auto; font:700 13px 'Baloo 2',system-ui,sans-serif; color:var(--accent-ink); background:var(--accent); padding:4px 12px; border-radius:999px; text-decoration:none; white-space:nowrap;}}
 nav[role=tablist]{{order:2;}}
