@@ -5,3 +5,4 @@
 {"key":"17-7","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":40,"seed2":18300,"games":300},"moves":[]}
 {"key":"17-4","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":62.7,"seed2":18300,"games":300},"moves":[]}
 {"key":"17-6","deck":{"arctic-tern":4,"glacier-yak":4,"polar-bear":2,"snow-ermine":4,"elderhorn-monarch":1,"ringed-seal":4,"briarback-hedgehog":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":49.7,"seed2":18300,"games":300},"moves":["-1 warhorse-charger +1 briarback-hedgehog"]}
+{"key":"17-3","deck":{"polar-bear":2,"ringed-seal":4,"elderhorn-monarch":1,"snow-ermine":4,"pinecone-sapper":1,"cataphract-destrier":1},"shieldOverride":null,"hqHp":null,"tune":{"w2":72,"seed2":18300,"games":300},"moves":["-1 briarback-hedgehog +1 cataphract-destrier"]}
