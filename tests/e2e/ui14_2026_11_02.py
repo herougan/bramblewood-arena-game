@@ -86,7 +86,8 @@ async def jj3(b, url, w):
       const none = ui14HitBonus(Object.assign({}, ev, {dmg: 2})); // no split when the hit got no more than the bonus through
       m.replayCards[t] = {hp: 9, maxHp: 10, atk: 1, defId: 'otter-kit'}; const healthy = ui14HitBonus(ev);
       return {bon, mark: el && el.dataset.ui14Bonus, none, healthy}; })""", [u['1:0'], u['2:0']])
-    ok(r['bon'] and r['bon']['n'] == 2 and r['bon']['kind'] == 'executioner', f'Executioner 2 on a unit under 25% Health: a bonus of 2 {r["bon"]}')
+    # 2026-11-28 (TESTFIX14): SKAUD1 phase 2 (6416043d4, 2026-11-18) merged Executioner into Cull: the Hyena is hunter 2 vs wounded, so the kind reads 'hunter'
+    ok(r['bon'] and r['bon']['n'] == 2 and r['bon']['kind'] == 'hunter', f'Executioner 2 on a unit under 25% Health: a bonus of 2 {r["bon"]}')
     ok(r['mark'] == '2', f'the second hit played on the target (data-ui14-bonus={r["mark"]})')
     ok(r['none'] is None and r['healthy'] is None, 'no second hit when the hit is no bigger than the bonus, or the target is not low')
     # Cull (hunter, Wet): the Tidepool Trapper Crab on a Wet unit; the bonus pops in water
@@ -140,6 +141,7 @@ async def jj6(b, url, w):
 async def jj10(b, url, w):
     print(f'-- JJ10: the felling boomerang flies home in slow motion ({w})')
     pg = await W.fresh(b, url, w)
+    await pg.evaluate("myCardLevels['otter-centurion'] = 1; 1")  # 2026-11-28 (TESTFIX14): Boomerang is its Level 1 skill (levelSkills); since ENG25 (2026-11-05) a fresh profile's Level 0 copy has none, so the VFX skipped the return
     u = await pg.evaluate(V.BOARD + "([['otter-centurion', 0, 6]], [])")
     r = await pg.evaluate("""(async(a)=>{ """ + SLEEP + """ const m = matchState; m.resolving = false; window.__ui14BoomFinale = null; m.speedMult = 1;
       const pl = m.players[1]; pl.boomerangs = [{uid: a, defId: 'otter-centurion', col: 0, dmg: 3, dmgType: 'physical', hitCastle: true, targetUid: null}];
@@ -171,6 +173,9 @@ async def jj11(b, url, w):
 # ---------------------------------------------------------------- JJ13
 async def jj13(b, url, w):
     print(f'-- JJ13: Brood hatches from a 🐣 ({w})')
+    # 2026-11-28 (TESTFIX14): skipped. SKAUD1 phase 2 (6416043d4, 2026-11-18) merged Brood into Offspring: no card carries Brood, and Offspring
+    # copies have their own look (the hop out of the parent + FX-V broodBurst), so the 🐣 (kind 'brood') no longer plays on any card
+    print('  skip  no card carries Brood since SKAUD1 (Offspring has its own spawn look)'); return
     pg = await W.fresh(b, url, w)
     await pg.evaluate(V.BOARD + "([], [])")
     r = await pg.evaluate("""(async()=>{ """ + SLEEP + """ const m = matchState, E = m.engine, me = m.players[1]; m.resolving = false; me.playedThisTurn = false; me.lumber = 20;
