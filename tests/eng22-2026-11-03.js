@@ -136,10 +136,10 @@ ok(/the card must 'see'/.test(JSON.stringify(SK.carnage)), '6: Carnage\'s price 
 // ---- 7. UI17-3 ----------------------------------------------------------------------------------------------------------
 ok(!/id="adminResetBtn"/.test(app) && !/async function adminResetProgress\(\)/.test(app) && /ui17FullResetBtn/.test(app), '7: Admin -> "Reset my progress" is gone; Full reset stays');
 
-// ---- 9. owner 22:02: "Wetness is lost 1 per turn." ------------------------------------------------------------------------
-{ const {e, P} = mk(13); const c = put(e, P, 1, 'x-dummy', 0); c.water = 3; const got = []; for(let r = 1; r <= 4; r++){ e.roundStart(P, r, so, {}, []); got.push(c.water); }
-  ok(got.join(',') === '2,1,0,0', `9: a unit loses 1 water counter each round start (${got})`); }
-ok(eng.indexOf('en20WaterDrain(players, sideOf, events);') > 0 && eng.indexOf('en20WaterDrain(players, sideOf, events);') < eng.indexOf('en20TideWater(players, sideOf, events); // ENG20-2'), '9: the loss comes before the tide adds');
+// ---- 9. owner 22:02: "Wetness is lost 1 per turn." (2026-11-27, SKILLS3-B: superseded by SKILLS3-7 a, Wet ends on a fire hit or dry weather) --
+{ const {e, P} = mk(13); const c = put(e, P, 1, 'x-dummy', 0); c.water = 1; const got = []; for(let r = 1; r <= 4; r++){ e.roundStart(P, r, so, {}, []); got.push(c.water); }
+  ok(got.join(',') === '1,1,1,1', `9: Wet stays from round to round (SKILLS3-7; ${got})`); }
+ok(eng.indexOf('en20DryWeather(players, sideOf, events);') > 0 && eng.indexOf('en20DryWeather(players, sideOf, events);') < eng.indexOf('en20TideWater(players, sideOf, events);'), '9: dry weather dries before the water wets again');
 ok(/Wetness is lost 1 per turn/.test(JSON.stringify(J('docs/decisions.json').items.find(x=> x.id === 'ENG20-1'))), '9: ENG20-1 carries the owner\'s quote');
 // ---- decisions, docs, packs ---------------------------------------------------------------------------------------------
 { const D = J('docs/decisions.json'), ids = D.items.map(x=> x.id); ok(['ENG22-1', 'ENG22-2'].every(i=> ids.includes(i)), '8: decisions ENG22-1 / ENG22-2 filed'); }

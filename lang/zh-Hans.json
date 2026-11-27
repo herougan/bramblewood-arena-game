@@ -4817,5 +4817,14 @@
  "When played, the allies beside it are Sturdy (takes half) for {n} rounds.": "打出时，身旁的友军坚固（受到伤害减半）{n}回合。",
  "When it dies, the allies beside it are Sturdy (takes half) for {n} rounds.": "阵亡时，身旁的友军坚固（受到伤害减半）{n}回合。",
  "When played, the allies beside it are Mighty (deals double) for {n} rounds.": "打出时，身旁的友军强力（造成双倍伤害）{n}回合。",
- "When it dies, the allies beside it are Mighty (deals double) for {n} rounds.": "阵亡时，身旁的友军强力（造成双倍伤害）{n}回合。"
+ "When it dies, the allies beside it are Mighty (deals double) for {n} rounds.": "阵亡时，身旁的友军强力（造成双倍伤害）{n}回合。",
+ "Wet: lightning deals 1 more and runs on to Wet units beside it. A fire hit or dry weather dries it.": "潮湿：雷电多造成1点，并传给身旁的潮湿单位。火焰命中或干燥天气会使其变干。",
+ "takes 1 more from lightning, which runs on to Wet units beside it. A fire hit or dry weather dries it.": "受到雷电多1点伤害，雷电还会传给身旁的潮湿单位。火焰命中或干燥天气会使其变干。",
+ "Wet: a water hit, standing in water (a Swimmer or Tide unit always; any unit that isn’t Flying while the Tide is in) or Rain. A bramble is never Wet.": "潮湿：被水命中、身处水中（游泳或潮汐单位始终如此；涨潮时任何不飞行的单位）或下雨。荆棘堡从不潮湿。",
+ "It is lightning: a Wet unit takes 1 more and passes it on to Wet units beside it; Resist halves it.": "这是雷电：潮湿单位多受1点，并传给身旁的潮湿单位；抗性减半。",
+ "{name} is soaked: Wet. 💧": "{name}湿透了：潮湿。💧",
+ "{name} is dried by the fire.": "{name}被火烤干了。",
+ "The dry weather dries every creature. 💧": "干燥的天气让所有生物变干。💧",
+ "It makes the target Wet and puts out Burn. Wet: lightning deals 1 more and runs on to Wet units beside it.": "使目标潮湿并扑灭灼烧。潮湿：雷电多造成1点，并传给身旁的潮湿单位。",
+ "The shock runs on from {name} through {n} Wet unit(s). 💧": "电击从{name}传到{n}个潮湿单位。💧"
 }

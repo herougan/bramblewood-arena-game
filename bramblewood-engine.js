@@ -1270,6 +1270,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function setField(id, rounds, by){
     if(field && field.rounds == null && rounds) baseField = field;
     field = FIELDS[id] ? {id, rounds: rounds || null, by: by || null} : null;
+    if(id === 'rain' && curPlayers) [1,2].forEach(pid=> curPlayers[pid] && upkeepUnitsOf(curPlayers[pid]).forEach(c=>{ if(c && !c.gap) wetOnArrive(c); })); // SKILLS3-7 (2026-11-27): the Rain wets every unit as it starts
   }
   function getPhase(){ return phaseOff ? null : phase; } // the Full Moon no longer forces night (2026-10-14)
   // 2026-10-17 (user: "I think there is no true night on the volcano. Instead or 1-3 Day, 4-6 Night; 1-4 Day, 5-6 Night - because of the hot
@@ -1728,8 +1729,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(tideRising()){
       if(recordEvents && events) events.push({type:'tide', tide:getTide(), round});
     } else if(getTide() === 'ebb' && recordEvents && events) events.push({type:'tide', tide:'ebb', round});
-    en20WaterDrain(players, sideOf, events); // ENG22 (2026-11-03, owner 22:02: "Wetness is lost 1 per turn."): -1 water counter each, before the tide adds
-    en20TideWater(players, sideOf, events); // ENG20-2 (2026-11-02): the tide's water counters
+    en20DryWeather(players, sideOf, events); // SKILLS3-7 (2026-11-27): dry weather dries every unit, before the water wets the units in it
+    en20TideWater(players, sideOf, events); // the units in the water (and under Rain) are Wet
     { const stV = statusSnap(players); volcanoTick(players, round, sideOf, stats, events, fPause); pushStatusEnds(stV, players, sideOf, events); } // 2026-10-15: petrification wearing off (2026-10-19: no hazards while the field is broken)
     if(rules.swampFever && round > 1 && !fPause) swampFeverTick(players, sideOf, events); // Swamp Fever (2026-10-15)
     if(rules.bossGimmick && round > 1) bossGimmickTick(players, round, sideOf, stats, events); // CONTENT11 (2026-11-05, IDEA-EARLY-2): the boss's own act, not the field's (a broken field doesn't stop it)
@@ -3658,7 +3659,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function roundDmg(x){ x = Number(x); if(!(x + DMG_EPS >= 0.5)) return 0; return Math.floor(x + 0.5 + DMG_EPS); }
   function applyDamage(card, x, o){
     o = o || {};
-    const y = roundDmg(x);
+    const y = roundDmg(x), wasWet = o.dmgType === 'shock' && !wetChainNow && isWetUnit(card);
     // ENG15 (2026-10-31, owner Z6: "Poison skips the Shield and hits Health"): a Poison tick (o.poisonTick: Poison, Toxin, Greater Poison;
     // no attacker) passes every temporary Health layer (Bolster, Shell's, the Shield) and goes straight to Health.
     const dmg = (o.raw || o.crush || o.poisonTick) ? y : spendTempHp(card, y), tempSoak = y - dmg; // Shell's temporary Health, then a Shield (2026-10-12 / 10-14)
@@ -3675,6 +3676,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(o.shell) shellUp(card);
     if(o.nul && card.hp <= 0) nullifyKill(card);
     if(o.dmgType === 'heat' || o.dmgType === 'water') en20Elements(card, y, o.dmgType, !!o.ignite); // ENG20 (2026-11-02): fire dries / lights, water soaks / douses
+    if(o.dmgType === 'shock' && y > 0 && wasWet) wetChainFrom(card, o.killerUid, o.killerDefId); // SKILLS3-7 (2026-11-27): the shock chain through Wet neighbours
     if(o.dmgType === 'cold') eng28Chill(card, y, !!o.ignite); // ENG28 (2026-11-07): frost damage plus 1 Freeze counter
     return {dmg, tempSoak};
   }
@@ -7669,33 +7671,19 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && events) events.push({type:'statusFx', kind:'unitShield', side:sideOf(pid), attDefId:src ? src.defId : c.defId, attUid:src ? src.uid : c.uid, targetSide:sideOf(pid), targetDefId:c.defId, targetUid:c.uid, amount:n, total:c.shield});
     return n;
   }
-  // Wet (2026-10-17, user: "Remove the wet unit description from electricity. Wet units just take +N damage by default, for every wet
-  // counter. Can see this in codex instead."): a general rule now, not Electricity's. A unit's Wet counters are read live, one for each
-  // of these that holds: it is a Swimmer or Tide unit; the Rain field is down; the Tide is in (Flood or High Tide). So 0 to 3. Every
-  // lightning (shock) hit on it, from any source (Electricity, Chain Lightning, Shock Bolt, Lightning, a shock attack), deals
-  // WET_SHOCK_PER (1) more for each counter. It is added to the hit's amount (like Scar), so Resist, Shock and Armor still apply after.
-  // Electricity's own +1 (the arc, and the extra zap on a wet target) is gone, so nothing counts twice. (Wet maps, the beach/river/sea
-  // `rules.wet` Bloom reads, give no counter; nothing else in the game makes a unit wet yet.)
-  // 2026-10-18 (owner 15:05: "All non swimming, non flying are made 'wet' in flood. Swimming units are always wet in flood or ebb."):
-  // the counters are "in the water" and Rain now, so 0 to 2. In the water: a Swimmer or Tide unit always is (Flood, Ebb, or no tide at
-  // all, as before); while the Tide is in (Flood or High Tide) every other unit on the board is too, unless it is Flying (an Ashy sky
-  // grounds a flyer, so it wades in too). It is read live, so a land unit is Wet the moment the water comes in (or it arrives in a
-  // Flood) and dries the moment the tide goes out to Ebb; every row counts, the raid's middle and back rows too. A Swimmer in a Flood
-  // has one counter, not two (it was Swimmer + Tide in). Rain still gives every unit, flyers too, one more. A castle is never Wet.
-  // ==== Package ENG20 (2026-11-02, owner 22:44 / 22:47 / 22:49 notes; settled in docs/project-state.md, calls ENG20-n in docs/decisions.json) ====
-  // Every number is a knob here (EN20); makeSimEngine(..., {eng20:{...}}) changes them for a test or a sim.
-  //   Water counters (owner: "Water damage adds water counters = damage"): c.water, at most waterMax (3). Wet = its water counters
-  //     (a Swimmer / Tide unit is always at least 1: it lives in the water) + 1 under Rain. Every lightning hit gets +1 a Wet counter (as before).
-  //   The tide (owner: "Tide and Ebb add a water counter if the card doesn't have counters - flood up to max 2 counters, ebb up to max 1"):
-  //     at a round's start, a unit in the water with no water counter gets floodWater (2) in a Flood or High Tide, ebbWater (1) in an Ebb
-  //     (in an Ebb only Swimmer / Tide units are in the water). A unit that already has counters gets none. Counters stay until fire dries them (ENG22, owner 22:02: and 1 is lost every round's start, en20WaterDrain).
-  //   Fire (owner: "Fire damage should light the target on fire, or remove wet counters first"): a fire (heat) hit that lands removes 1 water
-  //     counter a point of damage; if points are left once it is dry, a unit's hit, shot or skill sets it Burning (burnRounds 2: at each of the
-  //     next 2 round starts it takes burnDmg 1 fire; a new fire hit refreshes it to 2, it never stacks). Field fire (Scorching, the volcano,
-  //     Wildfire) and Burn's own tick dry counters but light nothing. A unit that resists fire (Resist, Immune, Dry) never burns. Water damage puts Burn out.
-  //   Stop, Drop and Roll (owner: "take the fire damage, but put it out by 'rolling on the floor'"), effects.dropRoll: when it would start
-  //     Burning it rolls instead: no Burn, Wait +1 (it loses its next swing). The hit's damage still lands.
-  const EN20 = Object.assign({waterMax:3, floodWater:2, ebbWater:1, burnRounds:2, burnPerHit:1 /* ENG28 (2026-11-07) */, burnDmg:1, rollWait:1, crossHp:2, heavyCrossHp:5, heavyHeadCut:2, lumberFeastN:3}, (opts && opts.eng20) || {});
+  // ==== Wet and Burn (ENG20 2026-11-02, ENG28 2026-11-07; Wet yes / no since 2026-11-27, package SKILLS3-B, decision SKILLS3-7 a: owner 11-25
+  // "does not go away unless the weather is dry", "water removes fire, fire burns of wet"). Every number is a knob (EN20; makeSimEngine(..., {eng20:{...}})).
+  //   Wet (c.water 1 = Wet, 0 = dry; a castle never is): a water hit that lands; arriving or standing in the water at a round's start (a Swimmer / Tide
+  //     unit always is; every non-flyer while the tide is in, Flood or High Tide); Rain at a round's start or on arrival (flyers too; not a Relict).
+  //     It ends with a fire hit, or dry weather (Scorching by day, Ashy ground, a Sandstorm: every unit dries at the round's start, before the water
+  //     wets the units in it again). Nothing else dries it (no round drain).
+  //   Shock on Wet: a shock hit on a Wet unit deals WET_SHOCK_PER (1) more (added before Resist and Armor), then 1 shock to every Wet unit linked to
+  //     it through Wet neighbours on its side (wetChainFrom); the chain's hits start no new chain.
+  //   Fire: a fire (heat) hit that lands on a Wet unit dries it and lights nothing (its damage lands); on a dry unit a unit's hit, shot or skill adds
+  //     burnPerHit (1) Burn (stacking; 1 fire at each round's start, one counter off a tick). Field fire lights nothing. A unit that resists fire
+  //     (Resist, Immune, Dry) never burns. A water hit puts Burn out.
+  //   Stop, Drop and Roll (effects.dropRoll): when it would start Burning it rolls instead: no Burn, Wait +1. The hit's damage still lands.
+  const EN20 = Object.assign({burnRounds:2, burnPerHit:1 /* ENG28 (2026-11-07) */, burnDmg:1, rollWait:1, crossHp:2, heavyCrossHp:5, heavyHeadCut:2, lumberFeastN:3}, (opts && opts.eng20) || {});
   function en20Ev(card, kind, extra){ if(!recordEvents || !shieldEvents || !card) return; const pid = ownerPidOfCard(card), side = shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B');
     shieldEvents.push(Object.assign({type:'statusFx', kind, side, attUid:card.uid, attDefId:card.defId, targetSide:side, targetUid:card.uid, targetDefId:card.defId}, extra || {})); }
   function en20Elements(card, y, dmgType, ignite){
@@ -7704,12 +7692,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(card.burn > 0){ card.burn = 0; en20Ev(card, 'en20Douse'); }
       if(!(card.hp > 0)) return;
       if(!eng36Lands(card, 'soak')) return; // ENG36 (2026-11-08): Soak Resist / Immune
-      const w0 = card.water || 0; card.water = Math.min(EN20.waterMax, w0 + y); if(card.water > w0) en20Ev(card, 'en20Soak', {amount: card.water - w0, total: card.water});
+      if(!(card.water > 0)){ card.water = 1; en20Ev(card, 'en20Soak', {amount: 1, total: 1}); }
       return; }
     if(dmgType !== 'heat') return;
-    let left = y; const w0 = card.water || 0;
-    if(w0 > 0){ const dry = Math.min(w0, left); card.water = w0 - dry; left -= dry; en20Ev(card, 'en20Dry', {amount: dry, total: card.water}); }
-    if(!(left > 0) || !ignite || !(card.hp > 0) || resistFactor(card.defId, 'heat') < 1) return; // fire Resist / Immune (and Dry): it never burns
+    if(card.water > 0){ card.water = 0; en20Ev(card, 'en20Dry', {amount: 1, total: 0}); return; } // SKILLS3-7: a fire hit on a Wet unit ends Wet and lights nothing
+    if(!ignite || !(card.hp > 0) || resistFactor(card.defId, 'heat') < 1) return; // fire Resist / Immune (and Dry): it never burns
     if(effectsOf(card).dropRoll){ card.burn = 0; card.wait = (card.wait || 0) + EN20.rollWait; en20Ev(card, 'en20Roll', {amount: EN20.rollWait}); return; }
     // ENG28 (2026-11-07, owner 11-06 22:16 #2, settled rule: "fire damage = the damage plus 1 Burn"): each fire hit that lights adds
     // EN20.burnPerHit (1) Burn, and Burn stacks (each counter is 1 fire at a round's start, one counter off a tick). Was (ENG20-1): it set
@@ -7735,21 +7722,24 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       ensureStat(stats, sideOf(pl.id), c.defId).taken += dmg;
       if(recordEvents && events) events.push({type:'burnTick', side:sideOf(pl.id), defId:c.defId, uid:c.uid, dmg, left:c.burn, mods:dnModsFor(c.uid)}); }));
     if(any) removeDeadCards(players, sideOf, {}, stats, events); }
-  // ENG22 (2026-11-03, owner 22:02: "Wetness is lost 1 per turn."): at every round's start each unit with water counters loses 1, before the
-  // tide's counters (en20TideWater, right after it): a unit dried to 0 in the water gets the tide's 2 (Flood) / 1 (Ebb) again, a unit that
-  // still has counters gets none. On top of fire drying them (ENG20-1). Event statusFx en20Dry {drain:true}.
-  function en20WaterDrain(players, sideOf, events){
+  // SKILLS3-7 (2026-11-27): dry weather (Scorching by day, Ashy ground, a Sandstorm) dries every unit at the round's start, before the water wets
+  // the units in it again (en20TideWater). Event statusFx en20Dry {drain:true} (one log line for the field). Was ENG22's -1 counter every round.
+  function dryWeatherNow(){ return !!((field && field.id === 'heatwave' && scorchingOn()) || ashyNow() || sandstormOn()); }
+  function en20DryWeather(players, sideOf, events){ if(!dryWeatherNow()) return;
     [1,2].forEach(pid=> players[pid] && upkeepUnitsOf(players[pid]).forEach(c=>{
-      if(!c || c.gap || !(c.hp > 0) || !((c.water || 0) > 0)) return; c.water -= 1;
-      if(recordEvents && events) events.push({type:'statusFx', kind:'en20Dry', drain:true, side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetSide:sideOf(pid), targetUid:c.uid, targetDefId:c.defId, amount:1, total:c.water}); })); }
-  // The tide's water counters, at a round's start once the tide is known.
+      if(!c || c.gap || !(c.hp > 0) || !(c.water > 0)) return; c.water = 0;
+      if(recordEvents && events) events.push({type:'statusFx', kind:'en20Dry', drain:true, side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetSide:sideOf(pid), targetUid:c.uid, targetDefId:c.defId, amount:1, total:0}); })); }
+  // A unit in the water or under Rain is Wet: at a round's start (here) and as it arrives (wetOnArrive). The tide's soaking puts Burn out.
+  function rainWets(c){ return !!(field && field.id === 'rain') && !relictOf(c); }
+  function wetOnArrive(c){ if(c && c.hp > 0 && !(c.water > 0) && !c.cageOf && !relictOf(c) && (inTheWater(c) || rainWets(c)) && eng36Lands(c, 'soak')) c.water = 1; }
   function en20TideWater(players, sideOf, events){
-    const t = getTide(); if(t == null) return; const n = tideRising() ? EN20.floodWater : t === 'ebb' ? EN20.ebbWater : 0; if(!(n > 0)) return;
+    const t = getTide();
     [1,2].forEach(pid=> players[pid] && upkeepUnitsOf(players[pid]).forEach(c=>{
-      if(!c || c.gap || !(c.hp > 0) || c.cageOf || (c.water || 0) > 0 || !inTheWater(c) || relictOf(c) /* ENG24 */) return;
+      if(!c || c.gap || !(c.hp > 0) || c.cageOf || c.water > 0 || relictOf(c) /* ENG24 */) return;
+      const inW = inTheWater(c); if(!inW && !rainWets(c)) return;
       if(!eng36Lands(c, 'soak')) return; // ENG36 (2026-11-08)
-      c.water = Math.min(EN20.waterMax, n); if(c.burn > 0) c.burn = 0;
-      if(recordEvents && events) events.push({type:'statusFx', kind:'en20Soak', tide:t, side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetSide:sideOf(pid), targetUid:c.uid, targetDefId:c.defId, amount:c.water, total:c.water}); })); }
+      c.water = 1; if(inW && t != null && c.burn > 0) c.burn = 0;
+      if(inW && t != null && recordEvents && events) events.push({type:'statusFx', kind:'en20Soak', tide:t, side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetSide:sideOf(pid), targetUid:c.uid, targetDefId:c.defId, amount:1, total:1}); })); }
   // ENG20-5 (owner: "if a defensive (+0/N) buff is removed and the unit would die, they remain with 1 health instead. Damage dealt to it always
   // prioritises the buff-health, not the true health. Otherwise, debuffs can sometimes kill units."): a live +0/N aura (Nature's Force, Kinship,
   // Pack, Formation, Herald, the Crosswind; the Zeitgeber / state Health and an equipped piece already did this) moving from `had` to `now`.
@@ -7800,10 +7790,25 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(now > 0 && recordEvents && events) events.push({type:'statusFx', kind:'crosswind', heavy: windKind === 'heavyCross' || undefined, side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetSide:sideOf(pid), targetUid:c.uid, targetDefId:c.defId, amount:now}); })); }
   const WET_SHOCK_PER = 1;
   function inTheWater(c){ if(isTide(c)) return true; return tideRising() && !(isFlyingCard(c) && !ashyNow()); }
-  // ENG20 (2026-11-02): the unit's water counters (a Swimmer / Tide unit at least 1) + Rain; the tide gives counters now (en20TideWater), not a live +1.
-  function wetCountOf(c){ if(!c || c.kind === 'hq') return 0; return Math.max(c.water || 0, isTide(c) ? 1 : 0) + (field && field.id === 'rain' && !relictOf(c) /* ENG24 */ ? 1 : 0); }
-  function wetShockBonus(c, dmgType){ return dmgType === 'shock' ? wetCountOf(c) * WET_SHOCK_PER : 0; }
+  // SKILLS3-7 (2026-11-27): Wet is yes / no (1 or 0), set by water, the tide and Rain, ended by fire and dry weather (above).
+  function wetCountOf(c){ return c && c.kind !== 'hq' && c.water > 0 ? 1 : 0; }
+  function wetShockBonus(c, dmgType){ return dmgType === 'shock' && !wetChainNow ? wetCountOf(c) * WET_SHOCK_PER : 0; }
   function isWetUnit(c){ return wetCountOf(c) > 0; }
+  // The shock chain (SKILLS3-7): after a shock hit lands on a Wet unit, 1 shock to every Wet unit linked to it through Wet neighbours (left / right;
+  // front / behind on raid boards), each once, on its side; a dry unit breaks the chain. The chain's hits get no Wet +1 and start no new chain.
+  // Called from applyDamage (every shock hit: Electricity's arc, Chain Lightning, Shock Bolt, Lightning, Thunder, a shock swing); one statusFx
+  // 'wetChain' event {fromUid, uids, dmgs} for the board.
+  let wetChainNow = false;
+  function wetChainFrom(card, attUid, attDefId){
+    if(wetChainNow || !curPlayers) return; const pid = ownerPidOfCard(card), pl = curPlayers[pid]; if(!pl) return;
+    const seen = new Set([card]), hits = [], queue = [card];
+    while(queue.length){ const at = queue.shift(); adjacentOf(pl, at).forEach(c=>{ if(!c || seen.has(c) || c.gap || !(c.hp > 0) || c.cageOf || !isWetUnit(c)) return; seen.add(c); hits.push(c); queue.push(c); }); }
+    if(!hits.length) return; wetChainNow = true; const dmgs = [];
+    try{ hits.forEach(c=>{ const hp0 = c.hp; damageCardFlat(c, 1, 'shock', attDefId || null, attUid != null ? attUid : null, {wetChain: true}); dmgs.push(Math.max(0, hp0 - c.hp)); }); } // damageCardFlat credits a kill to the attacker
+    finally{ wetChainNow = false; }
+    if(recordEvents && shieldEvents){ const sd = shieldSideOf ? shieldSideOf(pid) : (pid === 1 ? 'A' : 'B'), od = shieldSideOf ? shieldSideOf(otherId(pid)) : (pid === 1 ? 'B' : 'A');
+      shieldEvents.push({type:'statusFx', kind:'wetChain', side:od, attUid: attUid != null ? attUid : null, attDefId: attDefId || null, targetSide:sd, targetUid:card.uid, targetDefId:card.defId, fromUid:card.uid, uids:hits.map(c=> c.uid), dmgs, amount:dmgs.reduce((a, b)=> a + b, 0)}); }
+  }
   // Electricity N: its landed hits arc to one enemy unit beside the target (a seeded pick) for N lightning (shock) damage (+ the Wet
   // rule above). 2026-10-17: the wet target's extra 1-damage zap and the arc's own +1 are gone (Wet is general now).
   function electricityArc(players, sideOf, pid, att, target, n, stats, events, killCredit){
@@ -7843,6 +7848,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Freezing (2026-10-15): on a Freezing field every unit arrives frozen (one freeze counter), unless it resists cold.
     if(rules.freezing && boardCard.hp > 0 && !(boardCard.frozen > 0) && resistFactor(boardCard.defId, 'cold') >= 1 && !relictOf(boardCard) /* ENG24 */ && eng36Lands(boardCard, 'freeze') /* ENG36 */){ boardCard.frozen = 1;
       if(recordEvents && events) events.push({type:'fieldTick', field:'freezing', side:sideOf(playerId), uid:boardCard.uid, defId:boardCard.defId, freeze:1}); }
+    wetOnArrive(boardCard); // SKILLS3-7 (2026-11-27): it arrives in the water or under Rain: Wet
     if(!def.effects) return;
     const pl = players[playerId];
     const mySide = sideOf(playerId);

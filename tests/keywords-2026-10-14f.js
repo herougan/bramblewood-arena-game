@@ -140,7 +140,8 @@ ok(swings('kf-fence', 'kf-fly', 40) > 5, 'a Flyer is still out of reach half the
   const el = ev.find(x=> x.type === 'electricity'); ok(el && el.arcUid === N.uid && N.hp === 48 && T.hp === 49, `Electricity 2: the hit arcs to the unit beside it for 2 (${T.hp}, ${N.hp})`); }
 { const {e, P} = mk(4); const T = put(e, P, 2, 'kf-swim', 0), N = put(e, P, 2, 'kf-swim', -1); const X = put(e, P, 1, 'kf-elec', 0); const ev = []; e.debugAttack(P, so, X.uid, {}, ev);
   // 2026-10-17: Wet is a general rule (+1 lightning damage per Wet counter, tests/lightning-2026-10-17.js); the wet target's extra zap is gone
-  ok(T.hp === 49 && N.hp === 47, `wet (Swimmers): +1 on the arc, no extra zap on the target (${T.hp}, ${N.hp})`); }
+  // 2026-11-27 (SKILLS3-B, SKILLS3-7): the arc's shock on the Wet unit then runs back through the Wet target beside it (1): 50 - 1 swing - 1 chain
+  ok(T.hp === 48 && N.hp === 47, `wet (Swimmers): +1 on the arc, and the shock chain's 1 on the Wet target (${T.hp}, ${N.hp})`); }
 { const {e, P} = mk(4); const T = put(e, P, 2, 'kf-wall', 0); const X = put(e, P, 1, 'kf-elec', 0); const ev = []; e.debugAttack(P, so, X.uid, {}, ev); ok(T.hp === 49 && ev.find(x=> x.type === 'electricity').arcUid === null, 'nobody beside it: no arc'); }
 { const vb = ['voltwing-bat','static-bat','arc-bat'].map(id=> base[id]);
   // 2026-10-21 (BF5, two skills at most): the bats keep Flying + Electricity (Nocturnal cut, docs/balance/two-skills-2026-10-21.json);

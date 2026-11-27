@@ -4817,5 +4817,14 @@
  "When played, the allies beside it are Sturdy (takes half) for {n} rounds.": "出したとき、隣の味方が{n}ラウンド頑丈（受けるダメージ半分）。",
  "When it dies, the allies beside it are Sturdy (takes half) for {n} rounds.": "倒れると、隣の味方が{n}ラウンド頑丈（受けるダメージ半分）。",
  "When played, the allies beside it are Mighty (deals double) for {n} rounds.": "出したとき、隣の味方が{n}ラウンド怪力（与えるダメージ2倍）。",
- "When it dies, the allies beside it are Mighty (deals double) for {n} rounds.": "倒れると、隣の味方が{n}ラウンド怪力（与えるダメージ2倍）。"
+ "When it dies, the allies beside it are Mighty (deals double) for {n} rounds.": "倒れると、隣の味方が{n}ラウンド怪力（与えるダメージ2倍）。",
+ "Wet: lightning deals 1 more and runs on to Wet units beside it. A fire hit or dry weather dries it.": "濡れ：雷ダメージ+1、隣の濡れたユニットにも伝わる。炎の命中か乾いた天気で乾く。",
+ "takes 1 more from lightning, which runs on to Wet units beside it. A fire hit or dry weather dries it.": "雷ダメージ+1、雷は隣の濡れたユニットにも伝わる。炎の命中か乾いた天気で乾く。",
+ "Wet: a water hit, standing in water (a Swimmer or Tide unit always; any unit that isn’t Flying while the Tide is in) or Rain. A bramble is never Wet.": "濡れ：水の命中、水の中にいる（スイマーや潮ユニットは常に、潮が満ちている間は飛行しない全ユニット）、または雨。いばらは濡れない。",
+ "It is lightning: a Wet unit takes 1 more and passes it on to Wet units beside it; Resist halves it.": "雷なので、濡れたユニットは+1を受け、隣の濡れたユニットにも伝える。耐性で半減。",
+ "{name} is soaked: Wet. 💧": "{name}はずぶ濡れ：濡れ。💧",
+ "{name} is dried by the fire.": "{name}は炎に乾かされた。",
+ "The dry weather dries every creature. 💧": "乾いた天気で全員が乾く。💧",
+ "It makes the target Wet and puts out Burn. Wet: lightning deals 1 more and runs on to Wet units beside it.": "対象を濡らし、炎上を消す。濡れ：雷ダメージ+1、隣の濡れたユニットにも伝わる。",
+ "The shock runs on from {name} through {n} Wet unit(s). 💧": "電撃が{name}から濡れたユニット{n}体に伝わる。💧"
 }

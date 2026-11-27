@@ -37,6 +37,7 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   's3-rendDeath': U('s3-rendDeath', {rend:{v:2, when:'death'}}, {health:3}), 's3-enfDeath': U('s3-enfDeath', {enfeeble:{v:1, when:'death'}}, {health:3}),
   's3-hardDeath': U('s3-hardDeath', {harden:{v:1, when:'death'}}, {health:3}), 's3-embDeath': U('s3-embDeath', {embolden:{v:1, when:'death'}}, {health:3}),
   's3-rendAround': U('s3-rendAround', {rend:{v:1, when:'death', who:'around'}}, {health:3}),
+  's3-tide': U('s3-tide', {tide:true}), 's3-fly': U('s3-fly', {flying:true}), 's3-shock2': U('s3-shock2', {}, {attack:2, dmgType:'shock'}), 's3-fire1': U('s3-fire1', {}, {attack:1, dmgType:'heat'}),
 });
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
 function mk(seed, o){ const e = E.makeSimEngine(defs, E.mulberry32(seed || 11), Object.assign({recordEvents:true, battleMode:'open'}, o || {}));
@@ -105,6 +106,40 @@ const hitOn = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid)
   const cards = J('canonical/cards.json'), pools = J('canonical/map-pools.json'), FORM_KEYS = ['rendPlay', 'rendDeath', 'rendAround', 'enfeeblePlay', 'enfeebleDeath', 'hardenPlay', 'hardenDeath', 'emboldenPlay', 'emboldenDeath'];
   const has = c=> [c.effects || {}].concat(Object.values(c.levelSkills || {})).some(o=> Object.keys(o).some(k=> FORM_KEYS.includes(k) || (['rend', 'enfeeble', 'harden', 'embolden'].includes(k) && o[k] && o[k].when)));
   ok(!cards.some(has), '2. no card carries a ⬆️ / 💀 form yet (SKILLS3-3 open; no list changes, owner 11-27 11:22)'); void pools; }
+
+// ================= 3. Wet yes / no, water vs Burn, fire vs Wet, dry weather, the shock chain (SKILLS3-7) =================
+{ const {e, P} = mk(); const t = put(e, P, 2, 's3-dummy', 0), src = put(e, P, 1, 's3-hit1', 0);
+  e.damageCardFlat(t, 2, 'water', 's3-hit1', src.uid); ok(t.water === 1 && e.wetCountOf(t) === 1, '3. a water hit makes it Wet (yes / no)');
+  e.damageCardFlat(t, 5, 'water', 's3-hit1', src.uid); ok(t.water === 1, '3. more water: still just Wet');
+  e.damageCardFlat(t, 3, 'heat', 's3-hit1', src.uid); ok(t.water === 0 && !(t.burn > 0), '3. a fire hit on a Wet unit ends Wet and lights nothing');
+  e.damageCardFlat(t, 1, 'heat', 's3-hit1', src.uid); ok(t.burn === 1, '3. on a dry unit the fire lights 1 Burn');
+  e.damageCardFlat(t, 1, 'water', 's3-hit1', src.uid); ok(!(t.burn > 0) && t.water === 1, '3. water puts Burn out (and soaks)'); }
+{ const {e, P} = mk(); const tide = put(e, P, 1, 's3-tide', 0), land = put(e, P, 1, 's3-dummy', 1); ok(tide.water === 1 && !(land.water > 0), '3. a Tide unit arrives Wet (it lives in the water); a land unit with no tide does not');
+  tide.water = 0; e.roundStart(P, 2, so, {}, []); ok(tide.water === 1, '3. dried, a Tide unit is Wet again at the next round start');
+  land.water = 1; [3, 4, 5].forEach(r=> e.roundStart(P, r, so, {}, [])); ok(land.water === 1, '3. Wet stays (no round drain): it ends only with fire or dry weather'); }
+{ const {e, P} = mk(1, {rules:{sandstorm:true}}); const land = put(e, P, 1, 's3-dummy', 0), tide = put(e, P, 1, 's3-tide', 1); land.water = 1; const ev = []; e.roundStart(P, 2, so, {}, ev);
+  ok(land.water === 0 && tide.water === 1 && ev.some(x=> x.type === 'statusFx' && x.kind === 'en20Dry' && x.drain), '3. a Sandstorm (dry weather) dries every unit at the round start; a Tide unit, in the water, is Wet again'); }
+{ const {e, P} = mk(1, {rules:{ashy:true}}); const land = put(e, P, 1, 's3-dummy', 0); land.water = 1; e.roundStart(P, 2, so, {}, []); ok(land.water === 0, '3. Ashy ground dries too'); }
+{ const {e, P} = mk(); const land = put(e, P, 1, 's3-dummy', 0), fly = put(e, P, 1, 's3-fly', 1); e.setField('rain', 3); e.roundStart(P, 2, so, {}, []);
+  ok(land.water === 1 && fly.water === 1, '3. Rain makes every unit Wet, flyers too'); }
+// the shock chain: +1 on the Wet unit hit, then 1 to every Wet unit linked to it (a dry unit breaks it), its side only, no chain from the chain
+{ const {e, P} = mk(); const a = put(e, P, 1, 's3-shock2', 0), mine = put(e, P, 1, 's3-dummy', 1);
+  const t = put(e, P, 2, 's3-dummy', 0), w1 = put(e, P, 2, 's3-dummy', 1), w2 = put(e, P, 2, 's3-dummy', 2), dry = put(e, P, 2, 's3-dummy', -1), past = put(e, P, 2, 's3-dummy', -2);
+  [t, w1, w2, past, mine].forEach(c=> c.water = 1);
+  const ev = swing(e, P, a);
+  ok(500 - t.hp === 3, `3. a shock hit on a Wet unit deals 1 more (2 + 1 = ${500 - t.hp})`);
+  ok(500 - w1.hp === 1 && 500 - w2.hp === 1, `3. 1 shock to every Wet unit linked to it, each once, no +1 (${500 - w1.hp}, ${500 - w2.hp})`);
+  ok(dry.hp === 500 && past.hp === 500, '3. a dry unit breaks the chain (the Wet one past it is not hit)');
+  ok(mine.hp === 500, '3. only on the target\'s side');
+  const wc = ev.find(x=> x.type === 'statusFx' && x.kind === 'wetChain'); ok(wc && wc.fromUid === t.uid && wc.uids.length === 2 && wc.dmgs.join() === '1,1', '3. one wetChain event for the board ({fromUid, uids, dmgs})'); }
+{ const {e, P} = mk(); const a = put(e, P, 1, 's3-shock2', 0), t = put(e, P, 2, 's3-dummy', 0), w = put(e, P, 2, 's3-dummy', 1); w.water = 1; swing(e, P, a);
+  ok(500 - t.hp === 2 && w.hp === 500, '3. a dry target: no +1 and no chain'); }
+{ const {e, P} = mk(); const a = put(e, P, 1, 's3-fire1', 0), t = put(e, P, 2, 's3-dummy', 0); t.water = 1; swing(e, P, a); ok(t.water === 0 && !(t.burn > 0) && t.hp === 499, '3. a fire swing on a Wet unit: the damage lands, Wet ends, no Burn'); }
+{ const ENG = rd('bramblewood-engine.js'), TX = require('../bramblewood-texts.js').TEXT, pk = J('lang/fr.json');
+  ok(!/en20WaterDrain/.test(ENG) && !/waterMax/.test(ENG), '3. the round drain and the counters are gone');
+  ok(/class="abadge en20-water"[^`]*>💧<\/span>/.test(app) && !/💧\$\{c\.water\}/.test(app), '3. the board shows Wet as a 💧 badge, no number (SKILLS3b display rule)');
+  ok(/ev\.kind === 'wetChain'\)\{/.test(app) && /ev\.kind === 'wetChain'\) return \{cls:'', text:TX\('ui\.s3b-log-wet-chain'/.test(app), '3. the board plays and logs the chain');
+  ok(['ui.eng20-water-tip', 'ui.st-wet', 'ui.stx-wet', 'ui.fxx-thunderstorm', 'ui.ui32-log-soak', 'ui.ui32-log-dry', 'ui.ui32-log-drain', 'ui.sk-water-bolt-codex', 'ui.s3b-log-wet-chain'].every(k=> TX[k] && pk[TX[k].replace(/^[⚡\s]+/, '')] && !/counter/.test(TX[k])), '3. Wet texts read yes / no, translated (fr)'); }
 
 console.log(`skills3b-2026-11-27: ${n - fail}/${n} passed`);
 process.exit(fail ? 1 : 0);

@@ -38,6 +38,7 @@ function put(e, P, pid, id, slot, ev){ const pl = P[pid]; e.debugSpawnCard(P, so
   if(slot != null){ c.slot = slot; const cs = all(pl); pl.row.center = cs.filter(x=> x.slot === 0); pl.row.left = cs.filter(x=> x.slot < 0).sort((a, b)=> b.slot - a.slot); pl.row.right = cs.filter(x=> x.slot > 0).sort((a, b)=> a.slot - b.slot); if(e.syncSlots) e.syncSlots(pl); }
   return c; }
 // One Electricity 2 swing: the target (a plain wall, so the melee hit can't be a Tide dodge) and the unit beside it (`side`).
+// 2026-11-27 (SKILLS3-B, SKILLS3-7): the Rain is set before the units arrive, so they arrive Wet (Wet is set on arrival, at a round's start, or as the Rain begins)
 function elec(side, rules, field){ const {e, P} = mk(4, rules); if(field) e.setField(field, 3); const T = put(e, P, 2, 'lt-wall', 0), N = put(e, P, 2, side, 1); const X = put(e, P, 1, 'lt-elec', 0);
   const ev = []; e.debugAttack(P, so, X.uid, {}, ev); return {T, N, ev}; }
 
@@ -47,13 +48,13 @@ function elec(side, rules, field){ const {e, P} = mk(4, rules); if(field) e.setF
   const arcHit = r.ev.find(x=> x.type === 'hit' && x.electricity); ok(arcHit && arcHit.dmgType === 'shock' && arcHit.wet === 1 && arcHit.arc, 'the arc hit is shock damage and says wet 1');
   ok(r.ev.filter(x=> x.type === 'hit' && x.electricity).length === 1, 'no extra zap on the target any more (one Electricity hit per swing)'); }
 { const r = elec('lt-tide'); ok(r.N.hp === 47, `a Tide unit has 1 Wet counter (${r.N.hp})`); }
-{ const r = elec('lt-wall', {}, 'rain'); ok(r.T.hp === 49 && r.N.hp === 47, `the Rain: everyone 1 counter; the target's melee hit (physical) gets nothing (${r.T.hp}, ${r.N.hp})`); }
-{ const r = elec('lt-swim', {}, 'rain'); ok(r.N.hp === 46, `a Swimmer in the Rain: 2 counters, 2 + 2 (${r.N.hp})`); }
-{ const r = elec('lt-swim', {permaTide:true}, 'rain'); ok(r.N.hp === 46, `a Swimmer in the Rain with the Tide in: 2 counters (in the water, Rain; 2026-10-18 owner 15:05), 2 + 2 (${r.N.hp})`); }
-// 2026-11-02 (package ENG20, owner 22:44): the tide gives water counters at a round's start (Flood: 2 to a dry unit), no live +1; a fresh board has none yet.
-{ const r = elec('lt-wall', {permaTide:true}); ok(r.N.hp === 48, `a fresh board in a Flood: no counter until the round starts (${r.N.hp})`); }
-{ const {e, P} = mk(4, {permaTide:true}); const T = put(e, P, 2, 'lt-wall', 0), N = put(e, P, 2, 'lt-wall', 1); const X = put(e, P, 1, 'lt-elec', 0); e.roundStart(P, 1, so, {}, []);
-  e.debugAttack(P, so, X.uid, {}, []); ok(N.water === 2 && N.hp === 46, `the Flood gives a dry land unit 2 water counters: the arc 2 + 2 (${N.water}, ${N.hp})`); }
+// 2026-11-27 (SKILLS3-B, SKILLS3-7): Wet is yes / no: +1 on a Wet unit, however it got Wet; the shock then runs on through Wet neighbours (here the target is Wet too in the Rain)
+{ const r = elec('lt-wall', {}, 'rain'); ok(r.T.hp === 48 && r.N.hp === 47, `the Rain: everyone Wet; the target's melee hit (physical) gets nothing, the arc 2 + 1, and its shock runs back to the Wet target: 1 + 1 (${r.T.hp}, ${r.N.hp})`); }
+{ const r = elec('lt-swim', {}, 'rain'); ok(r.N.hp === 47, `a Swimmer in the Rain: Wet once, 2 + 1 (${r.N.hp})`); }
+{ const r = elec('lt-swim', {permaTide:true}, 'rain'); ok(r.N.hp === 47, `a Swimmer in the Rain with the Tide in: Wet once, 2 + 1 (${r.N.hp})`); }
+{ const r = elec('lt-wall', {permaTide:true}); ok(r.N.hp === 47 && r.N.water === 1, `a land unit that arrives in a Flood is Wet at once: 2 + 1 (${r.N.hp})`); }
+{ const {e, P} = mk(4, {permaTide:true}); const T = put(e, P, 2, 'lt-wall', 0), N = put(e, P, 2, 'lt-wall', 1); const X = put(e, P, 1, 'lt-elec', 0); N.water = 0; e.roundStart(P, 1, so, {}, []);
+  e.debugAttack(P, so, X.uid, {}, []); ok(N.water === 1 && N.hp === 47, `the Flood makes a dried land unit Wet again at the round start: the arc 2 + 1 (${N.water}, ${N.hp})`); void T; }
 { const r = elec('lt-wall'); const el = r.ev.find(x=> x.type === 'electricity'); ok(el && !('wetTarget' in el) && !el.wetArc, 'the electricity event no longer carries wetTarget'); }
 // A melee attacker whose damage type is shock: the Wet rule reads computeHitDamage too.
 { const {e, P} = mk(2); const T = put(e, P, 2, 'lt-swim', 0); const X = put(e, P, 1, 'lt-shockA', 0); const ev = []; e.debugAttack(P, so, X.uid, {}, ev);
@@ -76,7 +77,7 @@ function elec(side, rules, field){ const {e, P} = mk(4, rules); if(field) e.setF
 { const {e, P} = mk(5); const T = put(e, P, 2, 'lt-wall', 0); const X = put(e, P, 1, 'lt-chain', 0); const ev = []; e.debugAttack(P, so, X.uid, {}, ev);
   const cl = ev.find(x=> x.type === 'chainLightning'); ok(cl && cl.uids.length === 0 && T.hp === 49 && !ev.some(x=> x.type === 'hit' && x.chainLightning), 'a lone target: nothing to jump to'); }
 { const {e, P} = mk(5); e.setField('rain', 3); const T = put(e, P, 2, 'lt-wall', 0), N = put(e, P, 2, 'lt-swim', 1); const X = put(e, P, 1, 'lt-chain1', 0); e.debugAttack(P, so, X.uid, {}, []);
-  ok(N.hp === 46, `Chain Lightning (true = 2) on a Swimmer in the Rain: 2 + 2 (${N.hp})`); }
+  ok(N.hp === 47 && T.hp === 48, `Chain Lightning (true = 2) on a Swimmer in the Rain: 2 + 1 (Wet is yes / no, SKILLS3-7), and the Wet target beside it takes the chain's 1 (${N.hp}, ${T.hp})`); }
 { let seen = new Set(); for(let s = 1; s <= 12; s++){ const {e, P} = mk(s); const ws = [-2, -1, 0, 1, 2].map(x=> put(e, P, 2, 'lt-wall', x)); const X = put(e, P, 1, 'lt-chain', 0); const ev = []; e.debugAttack(P, so, X.uid, {}, ev);
     const cl = ev.find(x=> x.type === 'chainLightning'); if(cl){ ok(new Set(cl.uids).size === cl.uids.length && !cl.uids.includes(ws[2].uid), 'never the same unit twice, never back to the target'); seen.add(cl.uids.map(u=> ws.find(w=> w.uid === u).slot).join()); } }
   ok(seen.size > 1, `the jumps are a seeded pick (${[...seen].join(' | ')})`); }
@@ -104,15 +105,16 @@ function elec(side, rules, field){ const {e, P} = mk(4, rules); if(field) e.setF
 const src = fs.readFileSync(path.join(H.ROOT, 'arena_app.js'), 'utf8');
 const line = k=> (src.match(new RegExp(`\\n  \\{key:'${k}', [^\\n]*`)) || [''])[0];
 ok(/label:'Electricity'/.test(line('electricity')) && !/wet/i.test(line('electricity').replace(/codexNote:'[^']*'/, '')), 'Electricity: the card line has no wet sentence');
-ok(/codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has\.'/.test(line('electricity')), 'Electricity: the Wet note is Codex-only (codexNote)');
-ok(/label:'Chain Lightning'/.test(line('chainLightning')) && /codexNote:'A Wet unit/.test(line('chainLightning')), 'Chain Lightning: a skill (PASSIVE_DEFS) with the Codex Wet note');
+// 2026-11-27 (SKILLS3-B, SKILLS3-7): the four lightning skills' Codex note is the one Wet text (ui.eng20-water-tip)
+ok(/codexNote:TX\('ui\.eng20-water-tip'\)/.test(line('electricity')), 'Electricity: the Wet note is Codex-only (codexNote)');
+ok(/label:'Chain Lightning'/.test(line('chainLightning')) && /codexNote:TX\('ui\.eng20-water-tip'\)/.test(line('chainLightning')), 'Chain Lightning: a skill (PASSIVE_DEFS) with the Codex Wet note');
 ok(/\n  electricity: v=> `Its hits arc to a unit adjacent to the target for \$\{numOr\(v, 1\)\} lightning damage\.`/.test(src), 'Electricity SKILL_TEXT: no "wet units take +1"');
 ok(/\n  chainLightning: v=> `/.test(src) && /chainLightning:'🌩️'/.test(src) && /if\(e\.chainLightning\) out\.push/.test(src), 'Chain Lightning: card text, icon and chip');
 ok(/\n  chainLightning: \{foes:FXL_FOES3/.test(src.slice(src.indexOf('const FXL_SKILL_SETUPS'))), 'Chain Lightning: an Effects library setup');
 ok(/case 'chainLightning':/.test(src) && /ev\.type==='chainLightning'/.test(src), 'chainLightning: a log line and a look');
 ok(/lightning damage/.test(line('shockBolt')) && /lightning damage/.test(line('lightning')), 'Shock Bolt and Lightning say lightning damage');
 { const kws = (src.match(/const STATUS_KEYWORDS = \[[\s\S]*?\n\];/) || [''])[0]; const wet = (kws.match(/\{k:'wet'[^\n]*/) || [''])[0];
-  ok(/name:'Wet'/.test(wet) && /cs:true/.test(wet) && /text:TX\('ui\.st-wet'\), codex:TX\('ui\.stx-wet'\)/.test(wet) && /Wet counter/.test(TEXT_D['ui.st-wet']) && /Rain/.test(TEXT_D['ui.st-wet']) && /Swimmer or Tide unit/.test(TEXT_D['ui.stx-wet']) && /Tide is in/.test(TEXT_D['ui.stx-wet']), 'Wet: a status keyword whose gloss explains the counters (2026-10-18, package D: the water rule in the Codex)'); }
+  ok(/name:'Wet'/.test(wet) && /cs:true/.test(wet) && /text:TX\('ui\.st-wet'\), codex:TX\('ui\.stx-wet'\)/.test(wet) && /Wet units beside it/.test(TEXT_D['ui.st-wet']) && /Rain/.test(TEXT_D['ui.stx-wet']) /* SKILLS3-7 (2026-11-27): yes / no */ && /Swimmer or Tide unit/.test(TEXT_D['ui.stx-wet']) && /Tide is in/.test(TEXT_D['ui.stx-wet']), 'Wet: a status keyword whose gloss explains the counters (2026-10-18, package D: the water rule in the Codex)'); }
 ok(/if\(p\.codexNote\) txt \+= ' ' \+ p\.codexNote;/.test(src), 'the Skills Codex adds the codexNote');
 
 // ---- 6. The board: element emoji, and every lightning hit is its own bolt (nothing thrown)

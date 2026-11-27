@@ -1071,7 +1071,7 @@ const PASSIVE_DEFS = [
   {key:'trueStrike', category:'passive', label:'True Strike', kind:'boolean', legendary:true /* 2026-10-18 (owner 23:05: "White Dragon's True Strike is legendary in itself") */, desc:()=> TX('ui.sk-true-strike'), codexNote:TX('ui.sk-true-strike-codex')},
   {key:'landslide', category:'evergreen', label:'Landslide', kind:'number', min:1, defaultValue:1, desc:v=>`When it falls: rocks crash on the enemy facing it and the enemy on each side of that one, ${v||1} damage each. Flying units are above it.`},
   {key:'natureForce', category:'passive', label:"Nature's Force", kind:'number', min:1, defaultValue:1, desc:v=>`All your Elementals on the field get +${v||1}/+${v||1}. Stacks with every other source.`},
-  {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v} lightning damage, +1 for every 4 Prayer you have. With no enemy unit it strikes the bramble, which is never Shocked.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has (a bramble never counts as Wet).'}, // 2026-10-16 skill audit: + the castle fallback; 2026-10-17: lightning (shock) damage, the Wet note in the Codex; 2026-10-18 (owner 15:05 "No Shocked status on Brambles."): the bramble takes the damage again, no status, no Wet bonus
+  {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v} lightning damage, +1 for every 4 Prayer you have. With no enemy unit it strikes the bramble, which is never Shocked.`, codexNote:TX('ui.eng20-water-tip')}, // 2026-10-16 skill audit: + the castle fallback; 2026-10-17: lightning (shock) damage, the Wet note in the Codex; 2026-10-18 (owner 15:05 "No Shocked status on Brambles."): the bramble takes the damage again, no status, no Wet bonus
   {key:'midas', category:'passive', label:'Midas Touch', kind:'number', min:0, desc:v=>`When this card kills a unit, you gain ${v} Lumber.`},
   // 2026-10-16 skill audit (user: "so the skills are as simply named and described as possible"): Divine Retribution → Retribution,
   // Satiety → Well Fed. Labels only; the keys stay retribution and satiety.
@@ -1255,7 +1255,7 @@ const PASSIVE_DEFS = [
   {key:'acidBolt', category:'evergreen', label:'Acid Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 2 (with Quick units, before the rest swing): spits acid at the enemy opposite (the nearest one if none is) for ${v||2} acid damage, and 1 Corrode.`},
   {key:'poisonBolt', category:'evergreen', label:'Poison Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 2 (with Quick units, before the rest swing): spits venom at the enemy opposite (the nearest one if none is): no damage, but ${v||2} Poison.`},
   {key:'iceBolt', category:'evergreen', label:'Ice Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 2 (with Quick units, before the rest swing): spits a shard of ice at the enemy opposite (the nearest one if none is) for ${v||2} Cold damage. A 1 in 2 chance it freezes a unit that isn't already frozen (1 Freeze counter).`},
-  {key:'shockBolt', category:'evergreen', label:'Shock Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 2 (with Quick units, before the rest swing): spits a crackling spark at the enemy opposite (the nearest one if none is) for ${v||2} lightning damage, and Shocks it for a round (it takes 50% more damage).`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'}, // 2026-10-17: lightning damage (was physical); the Wet note in the Codex
+  {key:'shockBolt', category:'evergreen', label:'Shock Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 2 (with Quick units, before the rest swing): spits a crackling spark at the enemy opposite (the nearest one if none is) for ${v||2} lightning damage, and Shocks it for a round (it takes 50% more damage).`, codexNote:TX('ui.eng20-water-tip')}, // 2026-10-17: lightning damage (was physical); the Wet note in the Codex
   {key:'kingSlayer', category:'passive', label:'King Slayer', kind:'number', min:0, desc:v=>`Deals ${v} bonus damage on every landed hit against a target with the King type.`},
   // 2026-10-14 (fifth pass). Tornado, Avalanche, Tsunami (user: "All evergreen abilities"); Dragon Lightning and Wither, the
   // Dragonic Spire's signature skills (user: "Dragonic Spire - (imagine elden ring) - Skills, Dragon Lightning (monster hunter), and Wither (Minecraft)").
@@ -1285,8 +1285,8 @@ const PASSIVE_DEFS = [
   // 2026-10-17 (user: "Remove the wet unit description from electricity. Wet units just take +N damage by default, for every wet counter.
   // Can see this in codex instead."): the wet sentence is gone from the card line; Wet is a general rule now (the Wet keyword, and the
   // codexNote the Skills Codex adds). Chain Lightning (user: "Voltaic Eel should have chain lighting as well"): Electricity's longer cousin.
-  {key:'electricity', category:'passive', label:'Electricity', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits arc: the spark jumps to one enemy unit adjacent to the target for ${v||1} lightning damage.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'},
-  {key:'chainLightning', category:'passive', label:'Chain Lightning', kind:'number', min:1, defaultValue:2, desc:v=>`Its hits loose chain lightning: the bolt jumps from the target to an enemy unit adjacent to it, then on to one more, never the same unit twice. Each unit it jumps to takes ${numOr(v, 2)} lightning damage.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'},
+  {key:'electricity', category:'passive', label:'Electricity', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits arc: the spark jumps to one enemy unit adjacent to the target for ${v||1} lightning damage.`, codexNote:TX('ui.eng20-water-tip')},
+  {key:'chainLightning', category:'passive', label:'Chain Lightning', kind:'number', min:1, defaultValue:2, desc:v=>`Its hits loose chain lightning: the bolt jumps from the target to an enemy unit adjacent to it, then on to one more, never the same unit twice. Each unit it jumps to takes ${numOr(v, 2)} lightning damage.`, codexNote:TX('ui.eng20-water-tip')},
   {key:'keenSense', category:'passive', label:'Keen Sense', kind:'boolean', desc:()=> TX('ui.daunt2-keen-sense'), codexNote:TX('ui.daunt2-keen-codex')}, // DAUNT2 (2026-11-24, owner 23:30): it finds Evasive (camouflaged) units too
   // 2026-10-14 (seventh pass). Psychic (user: "Psychic Damage: it's a skill rather than a type like Normal and Magic."); Smoke Bomb
   // (user: "Throws a smoke bomb at an ally or enemy (random). If ally, then the ally has smoke-evade. If enemy, the enemy has blind.
@@ -7523,7 +7523,7 @@ LIVE_STATUS_ROWS.push(['silenced', 'silenced', TX('ui.stn3-silenced'), ()=> TX('
 function ui32CounterRows(c){
   if(!c) return []; const out = [], N = k=> Number(c[k]) || 0;
   const add = (ico, n, tip)=>{ if(n > 0 && tip) out.push(`<div class="ui32-ctr"><b class="kw kw-term">${ico} ${n}</b>: ${escapeHtml(tip)}</div>`); };
-  add('💧', N('water'), TX('ui.eng20-water-tip', {n: N('water')}));
+  if(N('water') > 0) out.push(`<div class="ui32-ctr"><b class="kw kw-term">💧</b>: ${escapeHtml(TX('ui.eng20-water-tip'))}</div>`); // SKILLS3-7 (2026-11-27): Wet is yes / no
   add('🔥', N('burn'), TX('ui.eng20-burn-tip', {n: N('burn')}));
   add('⏩', N('ffCounters'), TX('ui.eng23-ff-tip', {n: N('ffCounters')}));
   add('🎨', N('creativity'), creativityTip(N('creativity')));
@@ -44594,9 +44594,9 @@ function ui30StackGo(uid, kind, left){
   if(!(left > 0) && ui30TickOn()){ try{ if(kind === 'bleed') bleedFadeDropVfx(uid); else { const el = boardCardEl(uid); if(el && window.FX && FX.D && FX.D.poisonDrop) FX.D.poisonDrop(el, {pip: true}); } }catch(e){} }
   try{ updateCardStatusDisplay(uid); }catch(e){}
   if(left > 0) ui30StackTick(uid, kind); }
-// ENG20-2 (2026-11-02, owner 22:44: "Show the counters as pips"): a unit's water counters (💧N) and Burn (🔥, the rounds left in the tooltip).
+// ENG20-2 (2026-11-02, owner 22:44: "Show the counters as pips"): a unit's Wet (💧, yes / no since SKILLS3-7, 2026-11-27) and Burn (🔥N).
 function en20StatusBadges(c, badges){ if(!c || !badges) return;
-  if(c.water > 0){ const t = escapeAttr(TX('ui.eng20-water-tip', {n: c.water})); badges.push(`<span class="abadge en20-water" title="${t}" aria-label="${t}">💧${c.water}</span>`); }
+  if(c.water > 0){ const t = escapeAttr(TX('ui.eng20-water-tip')); badges.push(`<span class="abadge en20-water" title="${t}" aria-label="${t}">💧</span>`); }
   if(c.burn > 0){ const t = escapeAttr(TX('ui.eng20-burn-tip', {n: c.burn})); badges.push(`<span class="abadge en20-burn" title="${t}" aria-label="${t}">🔥${c.burn}</span>`); } }
 const STATUS_CHIP_SLOTS = [2, 3, 4];
 // 2026-11-02 (package UI14, owner JJ15: "status context pills sit in the card's centre and show the token count (no number when 1)"): one rule for every
@@ -45187,8 +45187,8 @@ function fix9WetShown(){ try{ return document.documentElement.classList.contains
 // ENG20 (2026-11-02): the board side of the Package ENG20 rules. Each statusFx kind keeps the replay copy (rc) in step and floats its number.
 function en20StatusFx(ev, el, rc){ try{
   const k = ev.kind; if(!/^en20|^crosswind$/.test(k || '')) return;
-  if(k === 'en20Soak'){ if(rc) rc.water = ev.total; if(el && fix9WetShown()) floatText(el, '💧+' + ev.amount, 'buff'); } // FIX9: no wet floats unless Shift is held
-  else if(k === 'en20Dry'){ if(rc) rc.water = ev.total; if(el && fix9WetShown()) floatText(el, '💧−' + ev.amount, 'debuff'); }
+  if(k === 'en20Soak'){ if(rc) rc.water = ev.total; if(el && fix9WetShown()) floatText(el, '💧', 'buff'); } // FIX9: no wet floats unless Shift is held; Wet is yes / no (SKILLS3-7)
+  else if(k === 'en20Dry'){ if(rc) rc.water = ev.total; if(el && fix9WetShown()) floatText(el, '−💧', 'debuff'); }
   else if(k === 'en20Ignite'){ if(rc) rc.burn = ev.total; if(el) floatText(el, '🔥 ' + TX('ui.eng20-float-burn'), 'debuff'); }
   else if(k === 'en20Douse'){ if(rc) rc.burn = 0; if(el) floatText(el, '💧 ' + TX('ui.eng20-float-douse'), 'heal'); }
   else if(k === 'en20Roll'){ if(rc) rc.wait = (rc.wait||0) + (ev.amount||1); if(el){ floatText(el, '🤸 ' + TX('ui.eng20-float-roll'), 'quick'); try{ if(hasGsap() && !reducedMotion() && fxAtLeast('low')) gsap.fromTo(el, {rotation:0}, {rotation:360, duration:.6, ease:'power2.inOut', clearProps:'rotation'}); }catch(e){} } }
@@ -55652,6 +55652,7 @@ function giLogText(ev, nm){
   if(ev.type === 'statusFx' && ev.kind === 'sunder') return {cls:'', text:TX('ui.e10-log-sunder', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})}; // ENG10 (PROP1-1)
   if(ev.type === 'statusFx' && ev.kind === 'dismantle') return {cls:'', text: ev.ok ? TX('ui.e10-log-dismantle', {att: nm(ev.attDefId)}) : TX('ui.e10-log-dismantle-miss', {att: nm(ev.attDefId)})}; // ENG10 (PROP1-1)
   if(ev.type === 'statusFx' && ev.kind === 'detonate') return {cls:'', text:TX('ui.c3-log-detonate', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount})}; // CONTENT3 (2026-10-26): Detonate N's ticks
+  if(ev.type === 'statusFx' && ev.kind === 'wetChain') return {cls:'', text:TX('ui.s3b-log-wet-chain', {name: nm(ev.targetDefId), n: (ev.uids || []).length})}; // SKILLS3-7 (2026-11-27)
   if(ev.type === 'statusFx' && ev.kind === 'wakeful') return {cls:'', text:TX('ui.c3-log-wakeful', {name: nm(ev.targetDefId)})}; // CONTENT3 (G5)
   if(ev.type === 'statusFx' && ev.kind === 'pulverise') return {cls:'', text:TX('ui.c3-log-pulverise', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})}; // CONTENT3 (OWN-Q5)
   if(ev.type === 'statusFx' && ev.kind === 'proliferate') return {cls:'', text:TX('ui.log-proliferate', {from: nm(ev.fromDefId), name: nm(ev.targetDefId)})};
@@ -55672,6 +55673,11 @@ function giVfx(ev){
     try{ updateCardHpDisplay(u); }catch(e){} snd('boom');
     ticks.forEach((d, i)=> setTimeout(()=>{ fl(boardCardEl(u), `🎆 ${d}`, 'poison'); try{ if(i) SoundKit.bubble(); }catch(e){} }, i * ((()=>{ try{ return reducedMotion(); }catch(e){ return true; } })() ? 0 : 240)));
     refresh(u); return; }
+  // SKILLS3-7 (2026-11-27): the shock chain: a bolt from the Wet unit hit through each Wet unit linked to it, 1 shock each (Health down, the number floats)
+  if(ev.type === 'statusFx' && ev.kind === 'wetChain'){ const uids = ev.uids || [], dm = ev.dmgs || [];
+    uids.forEach((u, i)=>{ const rc = rcOf(u); if(rc) rc.hp = Math.max(0, (rc.hp || 0) - (dm[i] || 0)); try{ updateCardHpDisplay(u); }catch(e){} fl(boardCardEl(u), `⚡💧 ${dm[i] || 0}`, 'debuff'); });
+    try{ const from = boardCardEl(ev.fromUid), to = uids.map(boardCardEl).filter(Boolean); if(from && to.length && !reducedMotion() && window.SkillFX && SkillFX.lightning) SkillFX.lightning(from, to, {}); else SoundKit.shockTone && SoundKit.shockTone(); }catch(e){}
+    return; }
   if(ev.type === 'statusFx' && ev.kind === 'proliferate'){ const rc = rcOf(ev.targetUid); if(rc) rc.poison = ev.total != null ? ev.total : (rc.poison||0) + 1; fl(boardCardEl(ev.targetUid), '🧫 +1☠', 'poison'); snd('poisonApply'); refresh(ev.targetUid); return; }
   if(ev.type === 'statusFx' && ev.kind === 'brittle'){ const rc = rcOf(ev.targetUid); if(rc) rc.brittle = Math.max(rc.brittle||0, ev.amount||1); fl(boardCardEl(ev.targetUid), TX('ui.float-brittle'), 'debuff'); snd('freezeChime'); refresh(ev.targetUid); return; }
   if(ev.type === 'statusEnd' && ev.status === 'brittle'){ const rc = rcOf(ev.uid); if(rc) rc.brittle = 0; refresh(ev.uid); return; }

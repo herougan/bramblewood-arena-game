@@ -59,7 +59,7 @@ const hitOn = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid)
 { const {e, P} = mk(); put(e, P, 1, 'gi-hunterX'); const t = put(e, P, 2, 'gi-wall'); t.exposed = 1; const ev = fight(e, P);
   // 2026-10-19 (package SK1): Exposed strips hiding for N rounds now (no crit, nothing used up); the old crit counters' damage is Exploit's.
   ok(hitOn(ev, t.uid) === 5 && t.exposed === 0, `Hunter 2 (Exposed): 3 + 2 = 5 (no crit since SK1); its 1 round of Exposed wears off at the upkeep (${hitOn(ev, t.uid)})`); }
-{ const {e, P} = mk(); put(e, P, 1, 'gi-hunterW'); const t = put(e, P, 2, 'gi-wall'); e.setField('rain', 3); const ev = fight(e, P);
+{ const {e, P} = mk(); put(e, P, 1, 'gi-hunterW'); const t = put(e, P, 2, 'gi-wall'); e.setField('rain', 3); start(e, P, 2); const ev = fight(e, P); // 2026-11-27 (SKILLS3-B, SKILLS3-7): Wet is set by the Rain at a round's start (or on arrival, or as it begins in play)
   ok(hitOn(ev, t.uid) === 4, `Hunter 1 (Wet) under Spring Rain: +1 (${hitOn(ev, t.uid)})`); }
 { const {e, P} = mk(); const a = put(e, P, 1, 'gi-hunterArrow'); const t = put(e, P, 2, 'gi-wall'); t.poison = 2; const hp0 = t.hp; const ev = start(e, P, 2).concat(fight(e, P));
   const shot = ev.filter(x=> (x.type === 'hit' || x.type === 'arrow' || x.type === 'shot') && x.targetUid === t.uid);

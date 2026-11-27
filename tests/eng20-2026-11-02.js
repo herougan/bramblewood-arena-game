@@ -59,10 +59,11 @@ ok(/function en20CandleVfx/.test(app) && /ev\.type==='remember'[\s\S]{0,500}en20
 // ---- 2 Water and fire ----------------------------------------------------------------------------------------------------
 const hitWith = (e, P, c, amt, type, srcUid)=> e.damageCardFlat(c, amt, type, srcUid != null ? 'x-src' : null, srcUid);
 { const {e, P} = mk(4); const S = spawn(e, P, 1, 'x-src'), T = spawn(e, P, 2, 'x-land');
-  hitWith(e, P, T, 2, 'water', S.uid); ok(T.water === 2 && e.wetCountOf(T) === 2, `2: 2 water damage adds 2 water counters (${T.water})`);
-  hitWith(e, P, T, 5, 'water', S.uid); ok(T.water === e.EN20.waterMax, `2: water counters cap at ${e.EN20.waterMax} (${T.water})`);
-  T.water = 2; hitWith(e, P, T, 3, 'heat', S.uid); ok(T.water === 0 && T.burn === 1, `2: 3 fire on 2 counters dries them and the point left lights Burn 1 (water ${T.water}, burn ${T.burn})`); // 2026-11-07 (ENG28, owner 22:16 #2: + 1 Burn a hit): was Burn 2
-  T.burn = 0; T.water = 3; hitWith(e, P, T, 3, 'heat', S.uid); ok(T.water === 0 && !(T.burn > 0), '2: 3 fire on 3 counters only dries them');
+  // 2026-11-27 (SKILLS3-B, SKILLS3-7 a): Wet is yes / no (water 1); a fire hit on a Wet unit dries it and lights nothing (tests/skills3b-2026-11-27.js)
+  hitWith(e, P, T, 2, 'water', S.uid); ok(T.water === 1 && e.wetCountOf(T) === 1, `2: a water hit makes it Wet (${T.water})`);
+  hitWith(e, P, T, 5, 'water', S.uid); ok(T.water === 1, `2: Wet is yes / no: more water changes nothing (${T.water})`);
+  T.water = 1; hitWith(e, P, T, 3, 'heat', S.uid); ok(T.water === 0 && !(T.burn > 0), `2: 3 fire on a Wet unit dries it and lights nothing (water ${T.water}, burn ${T.burn})`);
+  T.burn = 0; hitWith(e, P, T, 3, 'heat', S.uid); ok(T.burn === 1, '2: the next fire hit, on the dry unit, lights Burn 1'); T.burn = 0;
   T.water = 0; T.burn = 0; hitWith(e, P, T, 2, 'heat', null); ok(!(T.burn > 0), '2: field fire (no source) lights nothing');
   T.water = 1; hitWith(e, P, T, 2, 'heat', null); ok(T.water === 0, '2: field fire still dries');
   hitWith(e, P, T, 1, 'heat', S.uid); ok(T.burn === 1, '2: a sourced fire hit on a dry unit lights it (Burn 1)'); // 2026-11-07 (ENG28): was 2
@@ -75,21 +76,21 @@ const hitWith = (e, P, c, amt, type, srcUid)=> e.damageCardFlat(c, amt, type, sr
   const P2 = spawn(e, P, 2, 'x-proof'); hitWith(e, P, P2, 3, 'heat', S.uid); ok(!(P2.burn > 0), '2: a unit that resists fire never burns'); }
 { // the tide's counters: Flood fills a dry unit in the water to 2, a Flyer stays dry; a wet unit gets no more
   const {e, P} = mk(6, {permaTide:true}); const L = spawn(e, P, 1, 'x-land'), F = spawn(e, P, 1, 'x-flyw', 'right'); spawn(e, P, 2, 'x-wall');
-  e.roundStart(P, 1, so, {}, []); ok(L.water === 2 && !(F.water > 0), `2: a Flood gives a dry land unit 2 counters, a Flyer none (${L.water}, ${F.water})`);
-  // 2026-11-03 (package ENG22, owner 22:02: "Wetness is lost 1 per turn."): the round start takes 1 off first, then the tide fills a dry unit
-  L.water = 3; e.roundStart(P, 2, so, {}, []); ok(L.water === 2, `2: a unit that has counters loses 1 and gets none from the tide (3 -> ${L.water})`);
-  L.water = 1; e.roundStart(P, 3, so, {}, []); ok(L.water === 2, `2: a unit dried to 0 by the round's loss is filled again by the Flood (1 -> 0 -> ${L.water})`); }
-{ const {e, P} = mk(6); const L = spawn(e, P, 1, 'x-land'); spawn(e, P, 2, 'x-wall'); L.water = 3; const got = [];
+  L.water = 0; e.roundStart(P, 1, so, {}, []); ok(L.water === 1 && !(F.water > 0), `2: a Flood makes a dry land unit Wet, a Flyer stays dry (${L.water}, ${F.water})`);
+  // 2026-11-27 (SKILLS3-B, SKILLS3-7 a): no round drain (was ENG22's -1 a round); a fire hit dries it until the next round's start in the water
+  e.roundStart(P, 2, so, {}, []); ok(L.water === 1, `2: a Wet unit stays Wet (${L.water})`);
+  L.water = 0; e.roundStart(P, 3, so, {}, []); ok(L.water === 1, `2: a unit dried by fire is Wet again at the next round's start in the water (${L.water})`); }
+{ const {e, P} = mk(6); const L = spawn(e, P, 1, 'x-land'); spawn(e, P, 2, 'x-wall'); L.water = 1; const got = [];
   for(let r = 1; r <= 4; r++){ e.roundStart(P, r, so, {}, []); got.push(L.water); }
-  ok(got.join(',') === '2,1,0,0', `2: with no tide, wetness is lost 1 a round (ENG22; ${got})`); }
+  ok(got.join(',') === '1,1,1,1', `2: with no tide and no dry weather, Wet stays (SKILLS3-7; ${got})`); }
 { const {e, P} = mk(6); spawn(e, P, 2, 'x-wall'); e.startTide(); let ebb = false, sw = null, land = null;
   for(let r = 1; r <= 4 && !ebb; r++){ e.roundStart(P, r, so, {}, []); if(e.getTide() === 'flow' && !sw){ /* spawn dry units for the next Ebb */ }
     if(e.getTide() === 'ebb'){ ebb = true; } }
   sw = spawn(e, P, 1, 'x-swim'); land = spawn(e, P, 1, 'x-land', 'right'); // fresh and dry; the next round: flow, then ebb
   let seenEbb = false; for(let r = 5; r <= 8 && !seenEbb; r++){ sw.water = 0; land.water = 0; e.roundStart(P, r, so, {}, []); if(e.getTide() === 'ebb'){ seenEbb = true; ok(sw.water === 1 && !(land.water > 0), `2: an Ebb gives a dry Swimmer 1 counter, a land unit none (${sw.water}, ${land.water})`); } }
   ok(seenEbb, '2: (an Ebb came)'); }
-{ const {e, P} = mk(4); const S = spawn(e, P, 1, 'x-src'), T = spawn(e, P, 2, 'x-land'); T.water = 2; const hp0 = T.hp; hitWith(e, P, T, 2, 'shock', S.uid);
-  ok(hp0 - T.hp === 4, `2: lightning still gets +1 a Wet counter (2 + 2 = ${hp0 - T.hp})`); }
+{ const {e, P} = mk(4); const S = spawn(e, P, 1, 'x-src'), T = spawn(e, P, 2, 'x-land'); T.water = 1; const hp0 = T.hp; hitWith(e, P, T, 2, 'shock', S.uid);
+  ok(hp0 - T.hp === 3, `2: lightning gets +1 on a Wet unit (2 + 1 = ${hp0 - T.hp}; SKILLS3-7: yes / no, was +1 a counter)`); }
 ok(/function en20StatusBadges/.test(app) && /abadge en20-water/.test(app) && /abadge en20-burn/.test(app), '2: water counters and Burn show as pips');
 
 // ---- 3 Stop, Drop and Roll -------------------------------------------------------------------------------------------------

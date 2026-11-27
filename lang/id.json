@@ -4818,5 +4818,14 @@
  "When played, the allies beside it are Sturdy (takes half) for {n} rounds.": "Saat dimainkan, sekutu di sampingnya Kokoh (terima separuh) selama {n} ronde.",
  "When it dies, the allies beside it are Sturdy (takes half) for {n} rounds.": "Saat mati, sekutu di sampingnya Kokoh (terima separuh) selama {n} ronde.",
  "When played, the allies beside it are Mighty (deals double) for {n} rounds.": "Saat dimainkan, sekutu di sampingnya Perkasa (serang ganda) selama {n} ronde.",
- "When it dies, the allies beside it are Mighty (deals double) for {n} rounds.": "Saat mati, sekutu di sampingnya Perkasa (serang ganda) selama {n} ronde."
+ "When it dies, the allies beside it are Mighty (deals double) for {n} rounds.": "Saat mati, sekutu di sampingnya Perkasa (serang ganda) selama {n} ronde.",
+ "Wet: lightning deals 1 more and runs on to Wet units beside it. A fire hit or dry weather dries it.": "Basah: petir +1 dan merambat ke unit Basah di sampingnya. Serangan api atau cuaca kering mengeringkannya.",
+ "takes 1 more from lightning, which runs on to Wet units beside it. A fire hit or dry weather dries it.": "terima +1 dari petir, yang merambat ke unit Basah di sampingnya. Serangan api atau cuaca kering mengeringkannya.",
+ "Wet: a water hit, standing in water (a Swimmer or Tide unit always; any unit that isn’t Flying while the Tide is in) or Rain. A bramble is never Wet.": "Basah: serangan air, berada di air (unit Perenang atau Pasang selalu; unit apa pun yang tidak terbang saat Pasang naik) atau Hujan. Semak duri tak pernah Basah.",
+ "It is lightning: a Wet unit takes 1 more and passes it on to Wet units beside it; Resist halves it.": "Ini petir: unit Basah terima +1 dan meneruskannya ke unit Basah di sampingnya; Resist membaginya dua.",
+ "{name} is soaked: Wet. 💧": "{name} basah kuyup: Basah. 💧",
+ "{name} is dried by the fire.": "{name} dikeringkan api.",
+ "The dry weather dries every creature. 💧": "Cuaca kering mengeringkan semua makhluk. 💧",
+ "It makes the target Wet and puts out Burn. Wet: lightning deals 1 more and runs on to Wet units beside it.": "Membuat target Basah dan memadamkan Terbakar. Basah: petir +1 dan merambat ke unit Basah di sampingnya.",
+ "The shock runs on from {name} through {n} Wet unit(s). 💧": "Sengatan merambat dari {name} ke {n} unit Basah. 💧"
 }

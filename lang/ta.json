@@ -4819,5 +4819,14 @@
  "When played, the allies beside it are Sturdy (takes half) for {n} rounds.": "விளையாடும்போது, அருகிலுள்ள கூட்டாளிகள் {n} சுற்றுகளுக்கு உறுதி (பாதி சேதம் பெறும்).",
  "When it dies, the allies beside it are Sturdy (takes half) for {n} rounds.": "இறக்கும்போது, அருகிலுள்ள கூட்டாளிகள் {n} சுற்றுகளுக்கு உறுதி (பாதி சேதம் பெறும்).",
  "When played, the allies beside it are Mighty (deals double) for {n} rounds.": "விளையாடும்போது, அருகிலுள்ள கூட்டாளிகளுக்கு {n} சுற்றுகளுக்கு வல்லமை (இரட்டை சேதம்).",
- "When it dies, the allies beside it are Mighty (deals double) for {n} rounds.": "இறக்கும்போது, அருகிலுள்ள கூட்டாளிகளுக்கு {n} சுற்றுகளுக்கு வல்லமை (இரட்டை சேதம்)."
+ "When it dies, the allies beside it are Mighty (deals double) for {n} rounds.": "இறக்கும்போது, அருகிலுள்ள கூட்டாளிகளுக்கு {n} சுற்றுகளுக்கு வல்லமை (இரட்டை சேதம்).",
+ "Wet: lightning deals 1 more and runs on to Wet units beside it. A fire hit or dry weather dries it.": "நனைந்தது: மின்னல் 1 கூடுதல் சேதம், அருகிலுள்ள நனைந்த அலகுகளுக்கும் பாயும். நெருப்புத் தாக்குதல் அல்லது வறண்ட வானிலை உலர்த்தும்.",
+ "takes 1 more from lightning, which runs on to Wet units beside it. A fire hit or dry weather dries it.": "மின்னலிலிருந்து 1 கூடுதல் சேதம், அது அருகிலுள்ள நனைந்த அலகுகளுக்கும் பாயும். நெருப்புத் தாக்குதல் அல்லது வறண்ட வானிலை உலர்த்தும்.",
+ "Wet: a water hit, standing in water (a Swimmer or Tide unit always; any unit that isn’t Flying while the Tide is in) or Rain. A bramble is never Wet.": "நனைந்தது: நீர்த் தாக்குதல், நீரில் நிற்பது (நீச்சல் அல்லது அலை அலகு எப்போதும்; அலை ஏறும்போது பறக்காத எந்த அலகும்) அல்லது மழை. முட்புதர் ஒருபோதும் நனையாது.",
+ "It is lightning: a Wet unit takes 1 more and passes it on to Wet units beside it; Resist halves it.": "இது மின்னல்: நனைந்த அலகு 1 கூடுதல் சேதம் பெற்று அருகிலுள்ள நனைந்த அலகுகளுக்கும் கடத்தும்; எதிர்ப்பு பாதியாக்கும்.",
+ "{name} is soaked: Wet. 💧": "{name} நனைந்தது. 💧",
+ "{name} is dried by the fire.": "{name} நெருப்பால் உலர்ந்தது.",
+ "The dry weather dries every creature. 💧": "வறண்ட வானிலை எல்லா உயிர்களையும் உலர்த்துகிறது. 💧",
+ "It makes the target Wet and puts out Burn. Wet: lightning deals 1 more and runs on to Wet units beside it.": "இலக்கை நனைத்து எரிவை அணைக்கும். நனைந்தது: மின்னல் 1 கூடுதல், அருகிலுள்ள நனைந்த அலகுகளுக்கும் பாயும்.",
+ "The shock runs on from {name} through {n} Wet unit(s). 💧": "மின்னதிர்ச்சி {name} இலிருந்து {n} நனைந்த அலகுகளுக்குப் பாய்கிறது. 💧"
 }

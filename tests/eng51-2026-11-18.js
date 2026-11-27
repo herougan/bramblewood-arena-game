@@ -61,8 +61,9 @@ const boltOf = uid=> x=> x.type === 'bolt' && x.uid === uid;
   ok(h && h.dmgType === 'water' && h.dmg === 1 && t.hp === 499, `Water Bolt 1: 1 water damage (${h && h.dmgType} ${h && h.dmg}, hp ${t.hp})`);
   ok(t.water === 1 && ev.some(x=> x.type === 'statusFx' && x.kind === 'en20Soak' && x.targetUid === t.uid), 'its rider: water damage soaks the target (1 water counter, the Soak event)'); }
 { const {e, P} = mk(); const w = put(e, P, 1, 'e51-wb2', 0), t = put(e, P, 2, 'e51-dummy', 0); t.burn = 2;
-  fight(e, P, 1); ok(t.water === 2 && !(t.burn > 0), `Water Bolt 2: 2 water counters, Burn put out (water ${t.water}, burn ${t.burn})`);
-  fight(e, P, 2); ok(t.water === 3, `counters cap at 3 (${t.water})`); }
+  // 2026-11-27 (SKILLS3-B, SKILLS3-7 a): Wet is yes / no (no counters, no cap, no drain)
+  fight(e, P, 1); ok(t.water === 1 && !(t.burn > 0), `Water Bolt 2: Wet, Burn put out (water ${t.water}, burn ${t.burn})`);
+  fight(e, P, 2); ok(t.water === 1, `still just Wet (${t.water})`); }
 { const {e, P} = mk(); const w = put(e, P, 1, 'e51-wb1', 0); const ev = fight(e, P, 1);
   ok(ev.some(boltOf(w.uid)) && ev.some(x=> x.type === 'hitHQ' && x.attUid === w.uid), 'with no enemy unit it spits at the bramble'); }
 { const {e, P} = mk(); const w = put(e, P, 1, 'e51-wb1', 0), s = put(e, P, 1, 'e51-shock', 1), t = put(e, P, 2, 'e51-dummy', 0), t2 = put(e, P, 2, 'e51-dummy', 1);
@@ -70,7 +71,7 @@ const boltOf = uid=> x=> x.type === 'bolt' && x.uid === uid;
   ok(sh.length === 1, 'the Shock Bolt beside it fires'); }
 { // the fused form (canonical/skill-params.json kindSets) reads as waterBolt
   const {e, P} = mk(); const w = put(e, P, 1, 'e51-wbFused', 0), t = put(e, P, 2, 'e51-dummy', 0); const ev = fight(e, P, 1), b = ev.find(boltOf(w.uid));
-  ok(b && b.key === 'waterBolt' && b.amount === 2 && t.water === 2, `"arrow": {"v": 2, "type": "water", "form": "bolt"} is Water Bolt 2 (${b && b.key} ${b && b.amount})`); }
+  ok(b && b.key === 'waterBolt' && b.amount === 2 && t.water === 1 /* SKILLS3-7: Wet yes / no */, `"arrow": {"v": 2, "type": "water", "form": "bolt"} is Water Bolt 2 (${b && b.key} ${b && b.amount})`); }
 { // proves it does something: the same fight without it leaves the dummy whole and dry
   const run = id=>{ const {e, P} = mk(5); put(e, P, 1, id, 0); const t = put(e, P, 2, 'e51-dummy', 0); for(let r = 1; r <= 3; r++) fight(e, P, r); return {hp: t.hp, water: t.water || 0}; };
   const a = run('e51-wb1'), z = run('e51-dummy'); ok(a.hp < z.hp && a.water > 0 && z.water === 0, `3 rounds: ${JSON.stringify(a)} vs none ${JSON.stringify(z)}`); }
