@@ -320,7 +320,7 @@ css('field', `.fxv-field{position:absolute; inset:0; z-index:-1; pointer-events:
 html[data-fx="low"] .fxv-field, html[data-fx="none"] .fxv-field{display:none;}
 @media (prefers-reduced-motion: reduce){ .fxv-field{display:none;} }`);
 // kind: [particles, row (sideways) or column, seconds min, max, share of the second look (.s)]
-const FIELD = {rain:[22, 'c', .5, .8, 0], storm:[30, 'c', .32, .5, 0], heat:[14, 'c', 4, 7, .35], frost:[22, 'c', 7, 12, .4], sand:[18, 'r', .9, 1.6, .4], ash:[18, 'c', 8, 13, .15]};
+const FIELD = {rain:[32, 'c', .5, .8, 0], storm:[40, 'c', .32, .5, 0], heat:[14, 'c', 4, 7, .35], frost:[22, 'c', 7, 12, .4], sand:[18, 'r', .9, 1.6, .4], ash:[18, 'c', 8, 13, .15]};
 const seeded = (n, seed, fn)=>{ let x = seed; const r = ()=> (x = (x * 9301 + 49297) % 233280) / 233280; return Array.from({length:n}, (_, i)=> fn(r, i)); };
 const fieldHTML = k=>{ const [n, kind, lo, hi, share] = FIELD[k];
   return '<i class="fxv-glow"></i>' + seeded(n, k.length * 7 + 3, (r, i)=>{ const d = lo + r()*(hi - lo), at = (r()*100).toFixed(1), sec = i < n*share ? ' s' : '';
@@ -444,12 +444,15 @@ M.bossLook = function(kind, o){ o = o || {}; const castle = (()=>{ try{ return t
 // =====================================================================================================================
 const isMine = side=>{ try{ return typeof matchState !== 'undefined' && matchState && matchState.sideOf ? side === matchState.sideOf(1) : side === 'A'; }catch(e){ return side === 'A'; } };
 const boardCards = ()=> [...document.querySelectorAll('#battlefieldEl .board-card[data-defid]')];
+// a look that starts with the event starts one tick later: its one rect read then comes after the frame's layout, not right after the game's
+// own float in the same task (a forced layout)
+const tick = fn=> later(()=> fn(), 0);
 M.onEvent = function(ev, env){
   if(!ev || !env || !env.fxAtLeast('low')) return;
   const T = ev.type, el = env.el, o = {level:env.level, speed:Math.max(1, (env.match && env.match.speedMult) || 1)};
   if(T === 'hit' || T === 'evaded'){
     const af = env.fxOf(ev.attDefId);
-    if(af.swift && !ev.ranged && ev.attUid != null && env.once('fxv-swift' + ev.attUid)){ const a = el(ev.attUid); if(a) M.swiftDash(a, Object.assign({up:isMine(ev.side)}, o)); }
+    if(af.swift && !ev.ranged && ev.attUid != null && env.once('fxv-swift' + ev.attUid)){ const a = el(ev.attUid), up = isMine(ev.side); if(a) tick(()=> M.swiftDash(a, Object.assign({up}, o))); }
     if(T !== 'hit' || ev.targetUid == null) return;
     if(af.mighty && (ev.dmg || 0) > 0 && env.once('fxv-mighty' + ev.attUid)){ const t = el(ev.targetUid); if(t) env.at(env.hitAtMs(ev), ()=>{ if(t.isConnected) M.mightySlam(t, o); }); }
     else if((ev.mods || []).includes('sturdy') && env.once('fxv-sturdy' + ev.targetUid)){ const t = el(ev.targetUid); if(t) env.at(env.hitAtMs(ev), ()=>{ if(t.isConnected) M.sturdyBrace(t, o); }); }
@@ -459,11 +462,11 @@ M.onEvent = function(ev, env){
     if(carriers.length){ env.at(380, ()=> snd('tideLap')); carriers.forEach((c, i)=> env.at(400 + i*70, ()=>{ if(c.isConnected) M.tideCrest(c, Object.assign({kind:ev.tide, icon: !(fx(c).tideGrant && !fx(c).tide)}, o)); })); }
     return; }
   if(T === 'evolve' && ev.stem && ((ev.stem.attack || 0) > 0 || (ev.stem.health || 0) > 0)){ env.at(120, ()=>{ const t = el(ev.uid); if(t){ snd('shellCrack'); M.hatchPop(t, o); } }); return; }
-  if(T === 'frenzy' && ev.twin){ const a = el(ev.attUid); if(a) M.twinSlash(a, o); return; }
+  if(T === 'frenzy' && ev.twin){ const a = el(ev.attUid); if(a) tick(()=> M.twinSlash(a, o)); return; }
   if(T === 'statusFx'){
-    if(ev.kind === 'reachAim'){ const t = el(ev.targetUid); if(t){ snd('reachCreak'); M.reachArc(el(ev.attUid), t, o); } }
-    else if(ev.kind === 'sk2Berry'){ const t = el(ev.attUid); if(t){ snd('berryPlip'); M.berryPop(t, Object.assign({total:ev.total}, o)); } }
-    else if(ev.kind === 'sk2BerryEat'){ const t = el(ev.attUid); if(t){ snd('berryMunch'); M.berryEat(t, el(ev.targetUid), o); } }
+    if(ev.kind === 'reachAim'){ const t = el(ev.targetUid), a = el(ev.attUid); if(t){ snd('reachCreak'); tick(()=> M.reachArc(a, t, o)); } }
+    else if(ev.kind === 'sk2Berry'){ const t = el(ev.attUid); if(t){ snd('berryPlip'); tick(()=> M.berryPop(t, Object.assign({total:ev.total}, o))); } }
+    else if(ev.kind === 'sk2BerryEat'){ const t = el(ev.attUid), to = el(ev.targetUid); if(t){ snd('berryMunch'); tick(()=> M.berryEat(t, to, o)); } }
   }
 };
 // The weather layer follows every fight render (FX.B's darkness and field layers ride the same hooks); gone on the results.
