@@ -109,7 +109,7 @@ async def run(b, url, w):
 
     # ---------------- 00:02 SS#1: the flyer's Health bar and the artless card
     pg = await page(b, url, w)
-    await pg.evaluate(BOARD + "('m11', '20-7', [['fire-ant-raft', -1], ['ant-scout', 0], ['fire-ant-raft', 1]], [['voidfeather-scout', -1], ['ember-tetra', 0]])")
+    await pg.evaluate(BOARD + "('m11', '20-7', [['fire-ant-raft', -1], ['test-skill-quick', 0], ['fire-ant-raft', 1]], [['voidfeather-scout', -1], ['ember-tetra', 0]])")  # 2026-11-28 (TESTFIX14): Ant Scout has art now; only the test cards are artless
     r = await pg.evaluate(E("""const live = matchState.players[2].row.left[0]; live.maxHp = 7; live.hp = 6; live.baseHp = 5; renderMatchUI(); await new Promise(r=> setTimeout(r, 700));
       const el = [...document.querySelectorAll('#rowEnemy .board-card')].find(x=> x.querySelector('[data-defid="voidfeather-scout"]')); const bar = el && el.querySelector('.eq2-hpbar');
       const ys = []; if(bar) for(let i = 0; i < 8; i++){ const a = el.querySelector('.card-tile').getBoundingClientRect(), c = bar.getBoundingClientRect(); ys.push(Math.round(c.top - a.top)); await new Promise(r=> setTimeout(r, 240)); }
@@ -137,6 +137,7 @@ async def run(b, url, w):
     pg = await page(b, url, w)
     u = await pg.evaluate(BOARD + "('m1', '0-2', [['otter-kit', -1, 30], ['otter-flag-bearer', 0, 30], ['otter-kit', 1, 30, 3]], [['otter-kit', 0, 40]])")
     await pg.evaluate(E(f"""const m = matchState; m.replayCards = {{}}; [1].forEach(pid=> ['left','center','right'].forEach(s=> m.players[pid].row[s].forEach(c=>{{ m.replayCards[c.uid] = Object.assign({{}}, c); }})));
+      /* 2026-11-28 (TESTFIX14): FIX5 (2026-11-02) reads the snapshot only while a replay runs (m.replayRows), else the live unit: so a replay's rows too */ m.replayRows = {{1: {{}}, 2: {{}}}}; [1, 2].forEach(pid=> ['left','center','right'].forEach(s=>{{ m.replayRows[pid][s] = m.players[pid].row[s].map(c=> c.uid); }}));
       gsap.globalTimeline.timeScale(.12); const ev = t=> ({{type:'statusFx', kind:'inspired', side:'A', attUid:{u['1:0']}, attDefId:'otter-flag-bearer', targetUid:t, targetDefId:'otter-kit', amount:1}});
       renderVfxForEvent(ev({u['1:-1']})); renderVfxForEvent(ev({u['1:1']})); return 1;"""))
     await frames(pg, 'inspire', w, [60, 500, 1000, 1500, 2000, 2500, 3000, 3600, 4300, 5200, 6400, 8000], '#rowMine', 70)
@@ -149,11 +150,11 @@ async def run(b, url, w):
       gsap.globalTimeline.timeScale(1); await new Promise(r=> setTimeout(r, 2500)); rc.hp = 30; updateCardHpDisplay({u['1:-1']}); await new Promise(r=> setTimeout(r, 120));
       return {{upScale: up, downWrapped: !!sp().querySelector('.pl2-num'), text: sp().textContent}};"""))
     ok(abs(r['upScale'] - 1) > .03 and not r['downWrapped'] and r['text'].strip().endswith('30'), f'22:28 #5 a Health rise bounces (mid-bounce scale {r["upScale"]:.2f}); damage writes the number plainly {r}')
-    r = await pg.evaluate(E(f"""gsap.globalTimeline.timeScale(.12); const rc = matchState.replayCards[{u['1:0']}]; rc.atk = (rc.atk||2) + 2; updateCardAtkDisplay({u['1:0']}); return 1;"""))
+    r = await pg.evaluate(E(f"""gsap.globalTimeline.timeScale(.12); matchState.replayRows = null; /* TESTFIX14: #4 / #5's replay ends here (left set, the frame sheet hung); the live unit */ const rc = currentCardByUid({u['1:0']}); rc.atk = (rc.atk||2) + 2; updateCardAtkDisplay({u['1:0']}); return 1;"""))
     await frames(pg, 'stat-bounce', w, [40, 400, 800, 1300, 1900, 2600, 3400, 4500], f'.board-card[data-uid="{u["1:0"]}"]', 30, cols=8, scale=1.2)
-    await pg.evaluate("gsap.globalTimeline.timeScale(1)")
+    await pg.evaluate("gsap.globalTimeline.timeScale(1); 1")  # 2026-11-28 (TESTFIX14): return a number, not the global Timeline (serializing every tween hung the run)
     # ---------------- #7 the bars and 21:54 the bramble's hit / repair (WAAPI slowed)
-    await pg.evaluate(E("""const m = matchState; m.players[2].hq.hp = 20; m.players[2].hq.maxHp = 20; m.players[1].hq.hp = 10; m.players[1].hq.maxHp = 20; m.replayCards = null; m.resolving = false; renderMatchUI(); await new Promise(r=> setTimeout(r, 600));
+    await pg.evaluate(E("""const m = matchState; m.players[2].hq.hp = 20; m.players[2].hq.maxHp = 20; m.players[1].hq.hp = 10; m.players[1].hq.maxHp = 20; m.replayCards = null; m.replayRows = null; /* TESTFIX14: with #4's replay rows */ m.resolving = false; renderMatchUI(); await new Promise(r=> setTimeout(r, 600));
       window.__slow = rate=>{ const t0 = performance.now(); const f = ()=>{ document.getAnimations().forEach(a=>{ if(a.playbackRate !== rate) a.playbackRate = rate; }); if(performance.now() - t0 < 9000) requestAnimationFrame(f); }; f(); };
       gsap.globalTimeline.timeScale(.15); m.players[2].hq.hp = 11; hqHitBigVfx(hqTileEl('B'), 9); updateHqHpDisplay('B'); m.players[1].hq.hp = 16; rebuildVfx({type:'rebuild', side:'A', defId:null, uid:null, amount:6}); __slow(.15); return 1;"""))
     await frames(pg, 'bramble-hit-repair-bars', w, [80, 500, 1000, 1600, 2300, 3200, 4300, 5600], None, 0, cols=4, scale=.45)
@@ -243,14 +244,15 @@ async def run(b, url, w):
     ok(r['cap'] and '×3' in r['cap'] and r['cap'].endswith('Use') and 'Energy capsules' in (r['tip'] or '') and not r['words'] and not r['grow'], f'00:02 #7 the Energy panel: the count, the refill line, free Energy and 🔋×3 Use (capsules named in the tooltip) {r}')
     await shot(pg, 'energy-panel', w, '#energyPanel', 12)
     await pg.evaluate("closeEnergyPanel()")
-    r = await pg.evaluate(E("""try{ FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); }catch(e){} const p = loadConquestProgress(); mainConquestMaps().slice(0, 4).forEach(mp=> mp.nodes.forEach(n=>{ const id = conquestNodeId(mp.id, n.key); if(!p.completed.includes(id)) p.completed.push(id); })); saveConquestProgress(p);
+    r = await pg.evaluate(E("""try{ FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); }catch(e){} const p = loadConquestProgress(); mainConquestMaps().slice(0, 17).forEach(mp=> mp.nodes.forEach(n=>{ const id = conquestNodeId(mp.id, n.key); if(!p.completed.includes(id)) p.completed.push(id); })); saveConquestProgress(p);
       adminModeEnabled = false; devModeEnabled = false; const pl = {whisper: tabOpen('autobattle'), dungeons: dungeonsTabOpen(), gd: gdPlayerOpen()};
       adminModeEnabled = true; const ad = {whisper: tabOpen('autobattle'), dungeons: dungeonsTabOpen()}; adminModeEnabled = false;
       playSubTab = 'arena'; pl2ArenaPane = 'coop'; switchTab('play'); await new Promise(r=> setTimeout(r, 900));
       const tabs = [...document.querySelectorAll('.play-subtabs [data-playtab]')].map(b=> b.dataset.playtab);
       return {pl, ad, tabs, coop: !!document.querySelector('.pl2-coop-panel .dg-group'), ctabs: [...document.querySelectorAll('.pl2-arena-tabs .tab-btn')].map(b=> b.textContent.trim())};"""))
     ok(not r['pl']['whisper'] and r['ad']['whisper'], f'22:28 #6 Whisper\'s Game: Admin Mode only {r["pl"]} {r["ad"]}')
-    ok(not r['pl']['dungeons'] and r['pl']['gd'] and 'dungeons' not in r['tabs'] and r['coop'] and len(r['ctabs']) == 2, f'PL1-3 no Dungeons tab; the Arena\'s Co-op tab holds the Group Dungeon {r}')
+    # 2026-11-28 (TESTFIX14): the Group Dungeon opens after Map 16 (RES3 dd8730556, GD_OPEN_AFTER_MAP), so the setup clears Maps 0-16 (was 0-3); its Co-op tab shows once it is open; UISWEEP2 (cda8c9827, 2026-11-26): the Arena's nav is Ranked | Casual | Multiplayer (the Co-op pane), 3 tabs (was 2)
+    ok(not r['pl']['dungeons'] and r['pl']['gd'] and 'dungeons' not in r['tabs'] and r['coop'] and len(r['ctabs']) == 3, f'PL1-3 no Dungeons tab; the Arena\'s Co-op tab holds the Group Dungeon {r}')
     await shot(pg, 'arena-coop', w)
     r = await pg.evaluate(E("""pl2OpenCoopPop(); await new Promise(r=> setTimeout(r, 400)); return {pop: !!document.querySelector('.pl2-coop-pop .dg-group'), spot: !!FEATURE_SPOTS.find(s=> s.key === 'coop')};"""))
     ok(r['pop'] and r['spot'], f'PL1-3 the map\'s 👥 spot opens the Group Dungeon {r}')
@@ -258,11 +260,13 @@ async def run(b, url, w):
     await pg.evaluate("document.querySelectorAll('.pl2-coop-pop').forEach(x=> x.remove())")
     r = await pg.evaluate(E("""adminModeEnabled = true; pl2ProPreview('2-BPRO-1'); await new Promise(r=> setTimeout(r, 1500));
       const p = document.getElementById('conquestNodePanel'); return {sel: conquestSelectedNodeKey, panel: !!(p && !p.hidden), fight: !!document.getElementById('cnpFightBtn'), rewards: !!(p && p.querySelector('.cnp-rw') && p.querySelector('.cnp-rw').offsetParent), match: !!matchState};"""))
-    ok(r['sel'] == '2-BPRO-1' and r['panel'] and r['fight'] and not r['rewards'] and not r['match'], f'PRO-UI a BPRO click opens its fight panel (no rewards shown), nothing starts yet {r}')
+    # 2026-11-28 (TESTFIX14): UI10 EE2 (3f6b442da, 2026-10-31): an old PRO / BPRO link opens the map's one skirmish, 2-SK
+    ok(r['sel'] == '2-SK' and r['panel'] and r['fight'] and not r['rewards'] and not r['match'], f'PRO-UI a BPRO click opens its fight panel (no rewards shown), nothing starts yet {r}')
     await shot(pg, 'pro-preview', w)
+    await pg.evaluate("document.querySelectorAll('#packOpenOverlay, .pack-open-overlay, .levelup-overlay').forEach(e=> e.remove()); document.querySelectorAll('[inert]').forEach(e=> { e.inert = false; }); document.documentElement.classList.remove('po2-open'); 1")  # 2026-11-28 (TESTFIX14): the map clears above pay packs; their opener is modal over the panel (as TESTFIX13 in u3)
     await pg.click('#cnpFightBtn'); await pg.wait_for_timeout(1500)
     r = await pg.evaluate("({pro: matchState && matchState.proFight, admin: !!(matchState && matchState.adminTest)})")
-    ok(r['pro'] == '2-BPRO-1' and r['admin'], f'PRO-UI its Fight button starts the BPRO fight, free {r}')
+    ok(r['pro'] == '2-SK' and r['admin'], f'PRO-UI its Fight button starts the BPRO fight, free {r}')
     # ---------------- 00:02 #9 #10: the prong tings; the results' music
     r = await pg.evaluate(E("""const calls = []; const k = SoundKit; const orig = k.swipeTone; k.swipeTone = ()=> calls.push('swipe'); const o2 = k.prongTone; let kinds = []; k.prongTone = kind=>{ kinds.push(kind); };
       forkSwingVfx({type:'forkSwing', side:'A', attUid: (matchState.players[1].row.center[0]||matchState.players[1].row.left[0]||matchState.players[1].row.right[0]||{}).uid, kind:'trident', lines:[]}); await new Promise(r=> setTimeout(r, 900));
