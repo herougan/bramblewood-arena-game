@@ -3833,8 +3833,8 @@ function describeEffects(def, liveCard, opt){
     if(p.key==='stemGrant' && e.chrysalis) return; // EV (2026-10-21): the Chrysalis line already says what its braces hand over
     if(p.key==='rageGrant' && e.rage) return; // EN (2026-10-23): the Rage line already says "and {skills}"
     // CX2 (2026-10-21): Ritual's conditions at the corners of a shape; Transform's "Lycanthropy: under {Full Moon}, gain {…}"; Crepuscular's two parts
-    if(p.key==='ritual'){ const r = e.ritual || {}, cs = RITUAL_CONDS.filter(c=> r[c.k]);
-      lines.push(`<span class="ritual-line">${ic('ritual')}Ritual — ${escapeHtml(TX('ui.cx-ritual-short'))}${ritualShapeHTML(cs.map(c=> ({html: `${c.ico}<b>${r[c.k]}</b>`})), {w: 124, h: 100, r: 40, cls: 'rs-card', label: TX('ui.de-ritual', {p: r.perished||0, d: r.drawn||0, c: r.castleDamage||0})})}</span>`); return; }
+    if(p.key==='ritual'){ const r = e.ritual || {}, cs = RITUAL_CONDS.filter(c=> r[c.k]), pg = liveCard && typeof rc1InRitual === 'function' && rc1InRitual(liveCard) ? rt1Conds(liveCard) : null; // RITUAL1 (2026-11-27): in its Ritual, each corner shows have / need and its candle, lit when met
+      lines.push(`<span class="ritual-line">${ic('ritual')}Ritual — ${escapeHtml(TX('ui.cx-ritual-short'))}${ritualShapeHTML(pg && pg.length === cs.length ? pg.map(q=> ({html: `<span class="rt1-tc${q.met ? ' is-lit' : ''}"><i class="rt1-tf" aria-hidden="true"></i>${q.ico}<b>${q.have}/${q.need}</b></span>`})) : cs.map(c=> ({html: `${c.ico}<b>${r[c.k]}</b>`})), {w: 124, h: 100, r: 40, cls: 'rs-card', label: TX('ui.de-ritual', {p: r.perished||0, d: r.drawn||0, c: r.castleDamage||0})})}</span>`); return; }
     if(p.key==='transform'){ const tf = e.transform, lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null;
       lines.push(`${ic('transform')}<span class="cx-head">${escapeHtml(transformHead(tf))}</span> — ${escapeHtml(TX('ui.sk-transform-short'))}${lc && lc.transformed ? ` <span class="atk-bonus">${escapeHtml(TX('ui.tf-done'))}</span>` : ''}`); return; }
     if(p.key==='crepuscularGrant'){ const g = e.crepuscularGrant || {}; lines.push(`${ic('crepuscular')}${escapeHtml(TX('ui.eng23-crep-head', {day: grantText(g.day) || '–', night: grantText(g.night) || '–'})) /* ENG23 (2026-11-04): "Crepuscular { +1/+0 } → { Evasive }" */} — ${escapeHtml(TX('ui.sk-crepuscular-grant', {day: grantText(g.day) || TX('ui.cx-nothing'), night: grantText(g.night) || TX('ui.cx-nothing')}))}`); return; }
@@ -31722,7 +31722,8 @@ function startRaidFullBattle(def, partId, f, st){
   const vsBramble = raidBrambleOf(def, f.part && f.part.id); // 2026-10-19 (package U3): the boss card names its bramble and lists its smacks
   showVsScreen(me, Object.assign({name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · bramble ${cfg.castleHp} · ${f.rounds || cfg.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def),
     bramble: vsBramble ? {name: vsBramble.name, icon: vsBramble.icon, lines: raidBrambleAbilityLines(cfg.attacks), shield: b.raidShield && b.raidShield.shield > 0 ? TX('ui.mx-raid-shield', {n: b.raidShield.shield}) : '', shieldTip: TX('ui.mx-raid-shield-tip')} : null}, // + its Shield (2026-10-19, package MX)
-    bossBR ? {level: bossBR.total, brLabel: TX('ui.raid-br-boss'), brTip: TX('ui.raid-br-boss-tip')} : {})).then(()=>{ renderPlay(); raidScrollToHand(m0); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); setTimeout(()=>{ try{ u3TurnFlash(m0); }catch(e){} }, 600); }); // + Turn 1's tick (2026-10-19, U3)
+    bossBR ? {level: bossBR.total, brLabel: TX('ui.raid-br-boss'), brTip: TX('ui.raid-br-boss-tip')} : {})).then(()=>{ renderPlay(); raidScrollToHand(m0); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); setTimeout(()=>{ try{ u3TurnFlash(m0); }catch(e){} }, 600);
+      setTimeout(()=>{ try{ if(matchState === m0) fxHook('raidEntrance', def); }catch(e){} }, 350); }); // + Turn 1's tick (2026-10-19, U3); 2026-11-27 (VFX1): the boss's look (FX.V: the sea rises in the Abyss)
 }
 // The raid bramble's Shield line (2026-10-19, package MX, owner 22:47): "Shield N (falls as the raid weakens)" on the raid screen, N the
 // most any open part's bramble opens with now (RaidM.raidShield: 50 on a fresh raid); nothing when the raid's Shield is off.
@@ -34425,6 +34426,7 @@ function bossEntrance(node, lair){
   card.innerHTML = lair ? `<span class="bt-kicker">${escapeHtml(TX('ui.fl1-title'))}</span><span class="bt-name">${escapeHtml(node.icon||'')} ${escapeHtml(node.name)}</span><span class="bt-sub">${escapeHtml(TX('ui.fl1-sub'))}</span>`
     : `<span class="bt-kicker">${escapeHtml((KIND_LABEL[node.kind]||'Boss').replace(/^\S+\s/, ''))}</span><span class="bt-name">${escapeHtml(node.icon||'')} ${escapeHtml(node.name)}</span>`;
   (bf || document.body).appendChild(card); setTimeout(()=> card.remove(), lair ? 3500 : 1900); // FLAIR1 (2026-10-28): the lair's card stays up longer
+  try{ fxHook('bossEntrance', node, lair); }catch(e){} /* 2026-11-27 (VFX1): a sea, mage or skeleton boss's own look (FX.V.hooks.bossEntrance) */
   if(reduce || !hasGsap() || !fxAtLeast('med')) return;
   if(bf){ gsap.fromTo(bf, {x:0, y:0}, {keyframes:[{x:-7, y:3}, {x:6, y:-2}, {x:-4, y:2}, {x:3, y:-1}, {x:0, y:0}], duration:.55, ease:'none', clearProps:'x,y'}); }
   const castle = hqTileEl('B'); if(castle){
@@ -44000,8 +44002,53 @@ function rc1SyncChainPips(el, c){ const old = el.querySelector('.chain-pips'), h
   if(!html){ if(old) old.remove(); return; } if(old && old.children.length === Math.min(6, c.chains)) return;
   const t = document.createElement('div'); t.innerHTML = html; if(old) old.replaceWith(t.firstChild); else { const tile = el.querySelector('.card-tile') || el; tile.appendChild(t.firstChild); } }
 (function rc1Styles(){ if(typeof document === 'undefined' || document.getElementById('rc1Styles')) return; const st = document.createElement('style'); st.id = 'rc1Styles';
-  st.textContent = '.board-card.is-ritual .card-tile{opacity:.6; filter:saturate(.6);} .board-card .shell-up.chain-pips i{width:11px; height:13px; margin-left:-4px; background:linear-gradient(160deg,#e4e4ea,#8a8a96 55%,#55555f); filter:drop-shadow(0 0 2px rgba(0,0,0,.7));} .board-card .shell-up.chain-pips i:first-child{margin-left:0;} .board-card .shell-up + .shell-up.chain-pips{bottom:40px;}';
+  st.textContent = '.board-card.is-ritual .card-tile{opacity:.82;} .board-card .shell-up.chain-pips i{width:11px; height:13px; margin-left:-4px; background:linear-gradient(160deg,#e4e4ea,#8a8a96 55%,#55555f); filter:drop-shadow(0 0 2px rgba(0,0,0,.7));} .board-card .shell-up.chain-pips i:first-child{margin-left:0;} .board-card .shell-up + .shell-up.chain-pips{bottom:40px;}';
   document.head.appendChild(st); })();
+// 2026-11-27 (RITUAL1 in VFX1, owner 10:18): the rite over a unit in its Ritual: a translucent dark veil (the ground shows through; no filter),
+// and one brass candle per condition at that condition's corner of the ritual shape (ritualShapeHTML's geometry), unlit until it is met.
+// As it arrives the veil darkens and the candles fade in one by one (1 s for one, +0.25 s each more); a candle catches and flickers when met;
+// when the last is met the darkness lifts (rt1Lift). The markup comes with the card, so reduced motion and Effects Low still show which are
+// lit; the CSS animations (arena_template.html, .rt1-*) take a negative delay from when the uid was first drawn, so a redraw carries them on.
+// Progress is the engine's (ritualProgress at the end of the round being shown).
+const RT1 = {m: null, seen: new Map(), lit: new Map(), rite: new Map()};
+function rt1Reset(){ const m = typeof matchState !== 'undefined' ? matchState : null; if(RT1.m !== m){ RT1.m = m; RT1.seen.clear(); RT1.lit.clear(); RT1.rite.clear(); } }
+function rt1Live(c){ const m = matchState; if(!c || !m || !m.players) return null; if(c.ritualBase) return c;
+  return [m.players[1], m.players[2]].flatMap(pl=> pl ? [...pl.row.left, ...pl.row.center, ...pl.row.right] : []).find(x=> x && x.uid === c.uid) || null; }
+// its conditions: [{k, ico, have, need, met}] (only the ones it asks for), or null for a unit with no Ritual
+function rt1Conds(c){ try{ const m = matchState, live = rt1Live(c); if(!m || !m.engine || !m.engine.ritualProgress || !live) return null;
+  const pl = [m.players[1], m.players[2]].find(p=> p && [...p.row.left, ...p.row.center, ...p.row.right].includes(live)); const pr = pl && m.engine.ritualProgress(pl, live); if(!pr) return null;
+  return RITUAL_CONDS.filter(q=> pr[q.k] && pr[q.k][1] > 0).map(q=>{ const [have, need] = pr[q.k]; return {k: q.k, ico: q.ico, have: Math.min(have, need), need, met: have >= need}; }); }catch(e){ return null; } }
+// the corners in % of the card, first at the top (1 a dot at the top, 2 a line, 3 a triangle ...), as ritualShapeHTML lays them out
+function rt1Corners(n){ const cy = n === 3 ? 50 : 42, rx = 27, ry = 20;
+  return Array.from({length: n}, (_, i)=>{ const t = -Math.PI / 2 + i * 2 * Math.PI / Math.max(1, n); return n === 2 ? [50 + (i ? rx : -rx), cy] : [50 + rx * Math.cos(t), cy + ry * Math.sin(t)]; }); }
+// the rite's markup: conds as rt1Conds gives them; o.enterEl: ms since it was first drawn (it fades in), o.litEl: per candle, ms since it lit (it catches)
+function rt1RiteMarkup(conds, o){ o = o || {}; const n = conds.length, pts = rt1Corners(n), T = 1000 + 250 * (n - 1), f = v=> v.toFixed(1);
+  const shape = n >= 3 ? `<polygon points="${pts.map(p=> f(p[0]) + ',' + f(p[1])).join(' ')}"/>` : n === 2 ? `<line x1="${f(pts[0][0])}" y1="${f(pts[0][1])}" x2="${f(pts[1][0])}" y2="${f(pts[1][1])}"/>` : '';
+  const candles = conds.map((q, i)=>{ const le = (o.litEl || [])[i]; return `<i class="rt1-candle${q.met ? ' is-lit' : ''}${q.met && le != null ? ' rt1-catch' : ''}" data-k="${q.k}" style="left:${f(pts[i][0])}%; top:${f(pts[i][1])}%; --i:${i}${q.met && le != null ? `; --rt1-lit-el:${-Math.round(le)}ms` : ''}">${EN20_CANDLE_SVG}<b class="rt1-flame"></b></i>`; }).join('');
+  return `<div class="rt1-rite${o.enterEl != null ? ' rt1-enter' : ''}" data-sig="${conds.map(q=> q.met ? 1 : 0).join('')}" style="--rt1-n:${n}; --rt1-t:${T}ms; --rt1-el:${-Math.round(o.enterEl || 0)}ms" aria-hidden="true"><i class="rt1-veil"></i><svg class="rt1-shape" viewBox="0 0 100 100" preserveAspectRatio="none">${shape}</svg>${candles}</div>`; }
+// the rite for a board card (boardCardHTML, rt1Sync): '' once it is out of its Ritual, and then the darkness lifts once
+function rt1RiteHTML(c){
+  try{ rt1Reset(); const uid = String(c && c.uid); if(!c || c.cageOf) return '';
+    if(!rc1InRitual(c)){ if(RT1.rite.has(uid)){ const n = RT1.rite.get(uid); RT1.rite.delete(uid); const live = rt1Live(c); if(live && live.hp > 0) requestAnimationFrame(()=> rt1Lift(boardCardEl(uid), n)); } return ''; }
+    const conds = rt1Conds(c); if(!conds || !conds.length) return '';
+    const now = performance.now(), T = 1000 + 250 * (conds.length - 1), anim = fxAtLeast('med') && !reducedMotion();
+    if(!RT1.seen.has(uid)) RT1.seen.set(uid, now); const first = RT1.seen.get(uid) === now, enterEl = now - RT1.seen.get(uid);
+    const lit = RT1.lit.get(uid) || []; conds.forEach((q, i)=>{ if(q.met && lit[i] == null){ lit[i] = first ? -1 : now; if(!first) try{ SoundKit.candleCatch && SoundKit.candleCatch(); }catch(e){} } }); RT1.lit.set(uid, lit); RT1.rite.set(uid, conds.length);
+    return rt1RiteMarkup(conds, {enterEl: anim && enterEl < T + 400 ? enterEl : null, litEl: conds.map((q, i)=> anim && lit[i] > 0 && now - lit[i] < 650 ? now - lit[i] : null)});
+  }catch(e){ return ''; }
+}
+// the incremental path (updateCardStatusDisplay): swap the rite when a candle lights, drop it (and lift) when the Ritual is complete
+function rt1Sync(el, c){ const tile = el && el.querySelector('.card-tile'); if(!tile) return; const old = tile.querySelector(':scope > .rt1-rite'), html = rt1RiteHTML(c);
+  if(!html){ if(old) old.remove(); return; } const sig = (html.match(/data-sig="(\d*)"/) || [])[1]; if(old && old.dataset.sig === sig) return;
+  const t = document.createElement('div'); t.innerHTML = html; if(old) old.replaceWith(t.firstChild); else tile.insertBefore(t.firstChild, tile.querySelector(':scope > .ritual-chip')); }
+// the darkness lifts: a veil the card's size fades off it while its candles flare up and go out (0.6 s; Effects Medium and up)
+function rt1Lift(el, n){
+  if(!el || !fxAtLeast('med') || reducedMotion()) return; const t = el.querySelector('.card-tile') || el, r = t.getBoundingClientRect(); if(!r.width) return;
+  const box = document.createElement('div'); box.className = 'rt1-lift'; box.setAttribute('aria-hidden', 'true');
+  box.style.cssText = `left:${r.left}px; top:${r.top}px; width:${r.width}px; height:${r.height}px;`;
+  box.innerHTML = '<i class="rt1-veil"></i>' + rt1Corners(n || 1).map(p=> `<b class="rt1-flare" style="left:${p[0].toFixed(1)}%; top:${p[1].toFixed(1)}%"></b>`).join(''); document.body.appendChild(box);
+  try{ (SoundKit.riteLift || SoundKit.grace)(); }catch(e){}
+  const end = ()=> box.remove(); try{ const a = box.querySelector('.rt1-veil').animate([{opacity: 1}, {opacity: 0}], {duration: 600, easing: 'ease-out', fill: 'forwards'}); a.onfinish = end; }catch(e){} setTimeout(end, 1000); }
 function waitBadgeHTML(waitRemaining, waitTotal, frost){
   const total = Math.max(1, waitTotal||waitRemaining||1);
   const frac = Math.max(0, Math.min(1, waitRemaining/total));
@@ -44457,7 +44504,7 @@ function boardCardHTML(c, defs, opts){
       ${c.shocked>0?`<div class="status-overlay shock-overlay">🌩</div>`:''}
       ${c.staggered>0?`<div class="status-overlay stagger-overlay">💢</div>`:''}
       ${isFieryDef(d)?'<span class="heat-haze" aria-hidden="true"><i></i><i></i></span>':''}
-      ${'' /* 2026-10-08 (user): no rain on cards; cards only show effects for real statuses */}${ritualChipHTML(c, opts.pid)}${caged ? `<div class="cage-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><div class="cage-tag">⛓️ Caged</div>` : ''}`;
+      ${'' /* 2026-10-08 (user): no rain on cards; cards only show effects for real statuses */}${rt1RiteHTML(c) /* RITUAL1 (2026-11-27): the rite, before the chip */}${ritualChipHTML(c, opts.pid)}${caged ? `<div class="cage-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><div class="cage-tag">⛓️ Caged</div>` : ''}`;
   const cageCls = caged ? `is-caged ${c.cageOwner === viewerHandPid(matchState) ? 'is-mine-caged' : ''}` : '';
   // Guardian plates and Revivification wings (2026-10-11, user: "Guardianship is a strong effect. There should be a guard
   // effect around it, maybe metal like barricade/armor/sheets extending from the left and right. Revivification needs to
@@ -46508,7 +46555,7 @@ function updateCardStatusDisplay(uid){
   el.classList.toggle('is-poisoned', c.poison>0); el.classList.toggle('pl1-lethal', pl1PoisonLethal(c)); // PL1 (2026-10-24)
   el.classList.toggle('is-bled', c.bleed>0);
   el.classList.toggle('is-stunned', !!c.stunned);
-  el.classList.toggle('is-chained', !!c.chained); el.classList.toggle('is-ritual', rc1InRitual(c)); rc1SyncChainPips(el, c); // ENG-RC1 (2026-11-12)
+  el.classList.toggle('is-chained', !!c.chained); el.classList.toggle('is-ritual', rc1InRitual(c)); rc1SyncChainPips(el, c); rt1Sync(el, c); // ENG-RC1 (2026-11-12); RITUAL1 (2026-11-27): the rite's candles
   ui31FrostSync(el, c.frozen > 0); // UI31 (2026-11-07): the ice plays once going in, in reverse going out (was: a plain toggle, and a rebuilt card replayed it)
   el.classList.toggle('is-asleep', c.asleep>0); fx9ZzzSync(tile, c.asleep>0); // FX9 #8 (2026-11-13): the Zs come and go with the status (were drawn only by a rebuild)
   el.classList.toggle('is-paralyzed', c.paralyzed>0);
@@ -53893,7 +53940,7 @@ function keywordCuesForHit(ev, attEl, targetEl){
   const targetDef = ev.targetDefId ? (defs[ev.targetDefId]||{}) : null;
   const ae = attDef.effects||{}, te = (targetDef&&targetDef.effects)||{};
   if(ae.quick && attEl){ SoundKit.quick(); floatText(attEl, '⚡ Quick!', 'quick'); }
-  if(ae.swift && attEl){ SoundKit.quick(); floatText(attEl, '💨 Swift!', 'quick'); }
+  if(ae.swift && attEl){ (SoundKit.swiftZip || SoundKit.quick)(); floatText(attEl, '💨 Swift!', 'quick'); } /* 2026-11-27 (VFX1): its own cue (was Quick's); the streaks are FX.V.swiftDash */
   if(ae.rage && attEl && attEl.classList.contains('raging')) SoundKit.growl();
   if(ev.type==='hitHQ' && ae.stealth && targetEl){ SoundKit.stealthTone(); floatText(targetEl, '👻 Stealth!', 'debuff'); }
   // (Shell's own cue now comes with its shellUp event, 2026-10-12.)
@@ -56037,7 +56084,7 @@ function witherSmokeVfx(el){
 //   FX.X.onEvent(ev, env)       every replayed battle event (from renderVfxForEvent, after the built-in passes)
 //   FX.X.hooks.name(...a, env)  a named non-battle moment: fxHook('mapNodeCleared', nodeEl) at the spot in this file
 // Both are skipped with reduced motion or Effects "none", never throw, and never hold up the replay (fire and forget).
-const FX_BATCHES = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']; // + G (2026-10-16): map titles, map grandeur, the fun set (bramblewood-fx-g.js); + H (2026-11-16, FX11): crab claw, irradiated air, Healing / Worship / Gorge, Meiosis
+const FX_BATCHES = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'V']; // + G (2026-10-16): map titles, map grandeur, the fun set (bramblewood-fx-g.js); + H (2026-11-16, FX11): crab claw, irradiated air, Healing / Worship / Gorge, Meiosis; + V (2026-11-27, VFX1): skill, field and boss looks (bramblewood-fx-v.js)
 function fxEnv(){
   return {
     el: uid=> uid == null ? null : boardCardEl(uid),                       // the .board-card wrapper of a unit
@@ -56879,7 +56926,7 @@ function renderVfxForEvent(ev){
   // it requeues, so this flourish plays right before that bonus swing's own 'hit'/'hitHQ' event.
   if(ev.type==='frenzy'){
     const el = boardCardEl(ev.attUid);
-    SoundKit.frenzyTone();
+    if(ev.twin && SoundKit.twinShing) SoundKit.twinShing(); else SoundKit.frenzyTone(); /* 2026-11-27 (VFX1): Twin Strike's own cue; its blades are FX.V.twinSlash */
     if(el) floatText(el, ev.twin ? '⚔⚔ Twin Strike!' : '🔥 Frenzy!', 'quick');
   }
   // Sweep at an empty side (2026-10-12, user: "When the swipe hits an empty slot, it still looks like it hits forward. It
