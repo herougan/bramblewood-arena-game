@@ -431,7 +431,9 @@
   "wilting": "none",
   "wither": "none",
   "worship": "none",
-  "worthy": "none"
+  "worthy": "none",
+  "attunement": "none",
+  "dogfighter": "none"
  },
  "swing": [
   "boomerang",
@@ -506,7 +508,9 @@
   "weaken": "melee",
   "weaponMaster": "ranged",
   "web": "melee",
-  "wither": "melee"
+  "wither": "melee",
+  "dogfighter": "any",
+  "attunement": "any"
  },
  "against": {
   "armor": "any",

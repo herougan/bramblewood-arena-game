@@ -4826,5 +4826,20 @@
  "{name} is dried by the fire.": "{name}は炎に乾かされた。",
  "The dry weather dries every creature. 💧": "乾いた天気で全員が乾く。💧",
  "It makes the target Wet and puts out Burn. Wet: lightning deals 1 more and runs on to Wet units beside it.": "対象を濡らし、炎上を消す。濡れ：雷ダメージ+1、隣の濡れたユニットにも伝わる。",
- "The shock runs on from {name} through {n} Wet unit(s). 💧": "電撃が{name}から濡れたユニット{n}体に伝わる。💧"
+ "The shock runs on from {name} through {n} Wet unit(s). 💧": "電撃が{name}から濡れたユニット{n}体に伝わる。💧",
+ "Dogfighter": "空中戦の達人",
+ "Its hits and shots deal {n} more to Flying and Mach units.": "その攻撃と射撃は飛行・マッハのユニットに{n}多くダメージを与える。",
+ "Not on ticks or the bramble. A Flyer's swing is never dodged by a Flyer, so on a Flyer it always lands.": "継続ダメージといばらには無効。飛行ユニットは飛行ユニットの攻撃を回避しないので、必ず当たる。",
+ "Attunement": "共鳴",
+ "Fire Attunement": "炎の共鳴",
+ "Ice Attunement": "氷の共鳴",
+ "Acid Attunement": "酸の共鳴",
+ "Water Attunement": "水の共鳴",
+ "Lightning Attunement": "雷の共鳴",
+ "While it is on the field, your units' fire attacks deal {n} more.": "場にいる間、味方ユニットの炎の攻撃のダメージ+{n}。",
+ "While it is on the field, your units' ice attacks deal {n} more.": "場にいる間、味方ユニットの氷の攻撃のダメージ+{n}。",
+ "While it is on the field, your units' acid attacks deal {n} more.": "場にいる間、味方ユニットの酸の攻撃のダメージ+{n}。",
+ "While it is on the field, your units' water attacks deal {n} more.": "場にいる間、味方ユニットの水の攻撃のダメージ+{n}。",
+ "While it is on the field, your units' lightning attacks deal {n} more.": "場にいる間、味方ユニットの雷の攻撃のダメージ+{n}。",
+ "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "ユニットに当たる攻撃・射撃・スキル（継続ダメージは除く）。盤上にいる間、待機中も有効。複数は加算。"
 }

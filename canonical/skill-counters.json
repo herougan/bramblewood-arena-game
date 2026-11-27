@@ -542,6 +542,10 @@
     {
      "skill": "web",
      "why": "A Webbed unit cannot dodge as a Flyer."
+    },
+    {
+     "skill": "dogfighter",
+     "why": "Dogfighter N: its hits and shots deal N more to Flying units (SKILLS3-4)."
     }
    ],
    "source": "combatHitLands (flying roll only for non-flying, non-ranged swings), skill texts",
@@ -891,6 +895,10 @@
     {
      "skill": "spotter",
      "why": "Spotter: your attacks cannot miss or be dodged."
+    },
+    {
+     "skill": "dogfighter",
+     "why": "Dogfighter N: its hits and shots deal N more to Mach units (SKILLS3-4)."
     }
    ],
    "source": "combatHitLands (mach), dodgeCheck"
@@ -2367,6 +2375,8 @@
   "weaponMaster",
   "wilting",
   "worship",
-  "worthy"
+  "worthy",
+  "dogfighter",
+  "attunement"
  ]
 }

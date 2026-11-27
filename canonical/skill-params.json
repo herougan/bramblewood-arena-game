@@ -30,7 +30,8 @@
   "range": "how far it counts allies: 2 = within 2 slots (Sociable); default adjacent",
   "type": "the shot's damage type: fire, ice, acid, poison, shock (default: a plain arrow, physical)",
   "form": "bolt = a bolt (Speed 1, before the rest swing); default an arrow (Speed 0, after the swings)",
-  "every": "round = it delivers every round it is Ready (Delivery every round); default once"
+  "every": "round = it delivers every round it is Ready (Delivery every round); default once",
+  "el": "the element it attunes: heat (fire, the default), cold (ice), acid, water, shock (lightning) (Attunement, SKILLS3-B)"
  },
  "families": {
   "diurnal": {
@@ -1338,6 +1339,19 @@
    "stat": null,
    "ability": null,
    "about": "Embolden N (On Hit). SKILLS3-10 (2026-11-27): when play = ⬆️ every ally beside it gets N Mighty (emboldenPlay); when death = 💀 the same as it dies (emboldenDeath)."
+  },
+  "attunement": {
+   "params": {
+    "el": "attunementEl"
+   },
+   "default": "Attunement 1 – Fire: while it is on the field, your units’ fire attacks deal 1 more",
+   "number": 1,
+   "stat": {
+    "v": 1,
+    "el": "shock"
+   },
+   "ability": null,
+   "about": "SKILLS3-11 (2026-11-27, package SKILLS3-B): v = N; el = the element (heat by default, cold, acid, water, shock). Your units’ swings, shots and skills of that element that land on a unit deal N more while it is on the field, Waiting too (Venom Master is poison’s)."
   }
  },
  "_aboutKinds": "ENG39 (2026-11-09, owner decision DES2-3 a): a family may list kinds, its named versions: {\"<selector>\": {\"<value>\": \"<old key>\"}}. On a card the old skill is written as the family key with the selector, e.g. \"daunt\": {\"v\": 1, \"lasts\": \"lasting\"} (was \"weaken\": 1), \"carnage\": {\"v\": 5, \"who\": \"any\"} (was \"requiem\": 5); a kind that is itself a family keeps its parts (\"arrow\": {\"v\": 3, \"swings\": \"never\", \"style\": \"drop\"}). A kind named by two selectors at once is listed in \"kindSets\": [{\"match\": {\"type\": \"fire\", \"form\": \"bolt\"}, \"key\": \"fireBolt\"}]. Expanding gives back the old key, so its rule and its price are unchanged; old keys still read. A card that holds two versions of one family keeps the second as its old key."

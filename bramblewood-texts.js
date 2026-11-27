@@ -3971,7 +3971,22 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-harden-death": "When it dies, the allies beside it are Sturdy (takes half) for {n} rounds.",
   "ui.sk-embolden-play": "When played, the allies beside it are Mighty (deals double) for {n} rounds.",
   "ui.sk-embolden-death": "When it dies, the allies beside it are Mighty (deals double) for {n} rounds.",
-  "ui.s3b-log-wet-chain": "⚡ The shock runs on from {name} through {n} Wet unit(s). 💧"
+  "ui.s3b-log-wet-chain": "⚡ The shock runs on from {name} through {n} Wet unit(s). 💧",
+  "ui.skn-dogfighter": "Dogfighter",
+  "ui.sk-dogfighter": "Its hits and shots deal {n} more to Flying and Mach units.",
+  "ui.sk-dogfighter-codex": "Not on ticks or the bramble. A Flyer's swing is never dodged by a Flyer, so on a Flyer it always lands.",
+  "ui.skn-attunement": "Attunement",
+  "ui.skn-attunement-heat": "Fire Attunement",
+  "ui.skn-attunement-cold": "Ice Attunement",
+  "ui.skn-attunement-acid": "Acid Attunement",
+  "ui.skn-attunement-water": "Water Attunement",
+  "ui.skn-attunement-shock": "Lightning Attunement",
+  "ui.sk-attunement-heat": "While it is on the field, your units' fire attacks deal {n} more.",
+  "ui.sk-attunement-cold": "While it is on the field, your units' ice attacks deal {n} more.",
+  "ui.sk-attunement-acid": "While it is on the field, your units' acid attacks deal {n} more.",
+  "ui.sk-attunement-water": "While it is on the field, your units' water attacks deal {n} more.",
+  "ui.sk-attunement-shock": "While it is on the field, your units' lightning attacks deal {n} more.",
+  "ui.sk-attunement-codex": "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

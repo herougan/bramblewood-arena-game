@@ -4826,5 +4826,20 @@
  "{name} is dried by the fire.": "Natuyo ng apoy ang {name}.",
  "The dry weather dries every creature. 💧": "Pinatutuyo ng tuyong panahon ang lahat ng nilalang. 💧",
  "It makes the target Wet and puts out Burn. Wet: lightning deals 1 more and runs on to Wet units beside it.": "Ginagawang Basa ang target at pinapatay ang Sunog. Basa: dagdag na 1 ang kidlat at tumutuloy sa mga katabing Basang unit.",
- "The shock runs on from {name} through {n} Wet unit(s). 💧": "Tumuloy ang kuryente mula sa {name} sa {n} Basang unit. 💧"
+ "The shock runs on from {name} through {n} Wet unit(s). 💧": "Tumuloy ang kuryente mula sa {name} sa {n} Basang unit. 💧",
+ "Dogfighter": "Mandirigma sa Himpapawid",
+ "Its hits and shots deal {n} more to Flying and Mach units.": "Dagdag na {n} ang tama at palaso nito sa mga Lumilipad at Mach na unit.",
+ "Not on ticks or the bramble. A Flyer's swing is never dodged by a Flyer, so on a Flyer it always lands.": "Hindi sa tik o sa bramble. Hindi naiilagan ng Lumilipad ang tama ng kapwa Lumilipad, kaya laging tumatama sa Lumilipad.",
+ "Attunement": "Pagkakatugma",
+ "Fire Attunement": "Pagkakatugma sa Apoy",
+ "Ice Attunement": "Pagkakatugma sa Yelo",
+ "Acid Attunement": "Pagkakatugma sa Asido",
+ "Water Attunement": "Pagkakatugma sa Tubig",
+ "Lightning Attunement": "Pagkakatugma sa Kidlat",
+ "While it is on the field, your units' fire attacks deal {n} more.": "Habang nasa larangan ito, dagdag na {n} ang mga atakeng apoy ng iyong mga unit.",
+ "While it is on the field, your units' ice attacks deal {n} more.": "Habang nasa larangan ito, dagdag na {n} ang mga atakeng yelo ng iyong mga unit.",
+ "While it is on the field, your units' acid attacks deal {n} more.": "Habang nasa larangan ito, dagdag na {n} ang mga atakeng asido ng iyong mga unit.",
+ "While it is on the field, your units' water attacks deal {n} more.": "Habang nasa larangan ito, dagdag na {n} ang mga atakeng tubig ng iyong mga unit.",
+ "While it is on the field, your units' lightning attacks deal {n} more.": "Habang nasa larangan ito, dagdag na {n} ang mga atakeng kidlat ng iyong mga unit.",
+ "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "Mga tama, palaso at skill na tumatama sa unit, hindi ang tik; habang nasa board, kahit Naghihintay. Nagdaragdag ang marami."
 }

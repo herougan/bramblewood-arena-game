@@ -4827,5 +4827,20 @@
  "{name} is dried by the fire.": "{name} é seca pelo fogo.",
  "The dry weather dries every creature. 💧": "O tempo seco seca todas as criaturas. 💧",
  "It makes the target Wet and puts out Burn. Wet: lightning deals 1 more and runs on to Wet units beside it.": "Deixa o alvo Molhado e apaga a Queimadura. Molhada: o raio causa mais 1 e passa às unidades Molhadas ao lado.",
- "The shock runs on from {name} through {n} Wet unit(s). 💧": "O choque passa de {name} a {n} unidade(s) Molhada(s). 💧"
+ "The shock runs on from {name} through {n} Wet unit(s). 💧": "O choque passa de {name} a {n} unidade(s) Molhada(s). 💧",
+ "Dogfighter": "Caçador aéreo",
+ "Its hits and shots deal {n} more to Flying and Mach units.": "Seus golpes e disparos causam mais {n} a unidades Voadoras e Mach.",
+ "Not on ticks or the bramble. A Flyer's swing is never dodged by a Flyer, so on a Flyer it always lands.": "Não nos ticks nem no silvado. Um voador nunca esquiva o golpe de outro voador: num voador acerta sempre.",
+ "Attunement": "Sintonia",
+ "Fire Attunement": "Sintonia do fogo",
+ "Ice Attunement": "Sintonia do gelo",
+ "Acid Attunement": "Sintonia do ácido",
+ "Water Attunement": "Sintonia da água",
+ "Lightning Attunement": "Sintonia do raio",
+ "While it is on the field, your units' fire attacks deal {n} more.": "Enquanto estiver em campo, os ataques de fogo das tuas unidades causam mais {n}.",
+ "While it is on the field, your units' ice attacks deal {n} more.": "Enquanto estiver em campo, os ataques de gelo das tuas unidades causam mais {n}.",
+ "While it is on the field, your units' acid attacks deal {n} more.": "Enquanto estiver em campo, os ataques de ácido das tuas unidades causam mais {n}.",
+ "While it is on the field, your units' water attacks deal {n} more.": "Enquanto estiver em campo, os ataques de água das tuas unidades causam mais {n}.",
+ "While it is on the field, your units' lightning attacks deal {n} more.": "Enquanto estiver em campo, os ataques de raio das tuas unidades causam mais {n}.",
+ "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "Golpes, disparos e habilidades que atingem uma unidade, não os ticks; enquanto estiver no tabuleiro, mesmo em Espera. Várias somam-se."
 }

@@ -4826,5 +4826,20 @@
  "{name} is dried by the fire.": "{name} est séchée par le feu.",
  "The dry weather dries every creature. 💧": "Le temps sec sèche toutes les créatures. 💧",
  "It makes the target Wet and puts out Burn. Wet: lightning deals 1 more and runs on to Wet units beside it.": "Elle rend la cible Mouillée et éteint la Brûlure. Mouillée : la foudre inflige 1 de plus et passe aux unités Mouillées à côté.",
- "The shock runs on from {name} through {n} Wet unit(s). 💧": "Le choc passe de {name} à {n} unité(s) Mouillée(s). 💧"
+ "The shock runs on from {name} through {n} Wet unit(s). 💧": "Le choc passe de {name} à {n} unité(s) Mouillée(s). 💧",
+ "Dogfighter": "As du combat aérien",
+ "Its hits and shots deal {n} more to Flying and Mach units.": "Ses coups et tirs infligent {n} de plus aux unités volantes et Mach.",
+ "Not on ticks or the bramble. A Flyer's swing is never dodged by a Flyer, so on a Flyer it always lands.": "Pas sur les ticks ni sur le roncier. Un volant n’esquive jamais le coup d’un volant : sur un volant, il touche toujours.",
+ "Attunement": "Harmonie",
+ "Fire Attunement": "Harmonie du feu",
+ "Ice Attunement": "Harmonie de la glace",
+ "Acid Attunement": "Harmonie de l’acide",
+ "Water Attunement": "Harmonie de l’eau",
+ "Lightning Attunement": "Harmonie de la foudre",
+ "While it is on the field, your units' fire attacks deal {n} more.": "Tant qu’elle est sur le terrain, les attaques de feu de vos unités infligent {n} de plus.",
+ "While it is on the field, your units' ice attacks deal {n} more.": "Tant qu’elle est sur le terrain, les attaques de glace de vos unités infligent {n} de plus.",
+ "While it is on the field, your units' acid attacks deal {n} more.": "Tant qu’elle est sur le terrain, les attaques d’acide de vos unités infligent {n} de plus.",
+ "While it is on the field, your units' water attacks deal {n} more.": "Tant qu’elle est sur le terrain, les attaques d’eau de vos unités infligent {n} de plus.",
+ "While it is on the field, your units' lightning attacks deal {n} more.": "Tant qu’elle est sur le terrain, les attaques de foudre de vos unités infligent {n} de plus.",
+ "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "Coups, tirs et compétences qui touchent une unité, pas les ticks ; tant qu’elle est sur le plateau, même en Attente. Plusieurs s’additionnent."
 }

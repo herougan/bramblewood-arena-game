@@ -4827,5 +4827,20 @@
  "{name} is dried by the fire.": "{name} è asciugata dal fuoco.",
  "The dry weather dries every creature. 💧": "Il tempo secco asciuga tutte le creature. 💧",
  "It makes the target Wet and puts out Burn. Wet: lightning deals 1 more and runs on to Wet units beside it.": "Rende il bersaglio Bagnato e spegne l’Ustione. Bagnata: il fulmine infligge 1 in più e passa alle unità Bagnate accanto.",
- "The shock runs on from {name} through {n} Wet unit(s). 💧": "La scossa passa da {name} a {n} unità Bagnata/e. 💧"
+ "The shock runs on from {name} through {n} Wet unit(s). 💧": "La scossa passa da {name} a {n} unità Bagnata/e. 💧",
+ "Dogfighter": "Asso dei cieli",
+ "Its hits and shots deal {n} more to Flying and Mach units.": "I suoi colpi e tiri infliggono {n} in più alle unità Volanti e Mach.",
+ "Not on ticks or the bramble. A Flyer's swing is never dodged by a Flyer, so on a Flyer it always lands.": "Non sui tick né sul rovo. Un volante non schiva mai il colpo di un volante: su un volante va sempre a segno.",
+ "Attunement": "Sintonia",
+ "Fire Attunement": "Sintonia del fuoco",
+ "Ice Attunement": "Sintonia del ghiaccio",
+ "Acid Attunement": "Sintonia dell’acido",
+ "Water Attunement": "Sintonia dell’acqua",
+ "Lightning Attunement": "Sintonia del fulmine",
+ "While it is on the field, your units' fire attacks deal {n} more.": "Finché è in campo, gli attacchi di fuoco delle tue unità infliggono {n} in più.",
+ "While it is on the field, your units' ice attacks deal {n} more.": "Finché è in campo, gli attacchi di ghiaccio delle tue unità infliggono {n} in più.",
+ "While it is on the field, your units' acid attacks deal {n} more.": "Finché è in campo, gli attacchi di acido delle tue unità infliggono {n} in più.",
+ "While it is on the field, your units' water attacks deal {n} more.": "Finché è in campo, gli attacchi d’acqua delle tue unità infliggono {n} in più.",
+ "While it is on the field, your units' lightning attacks deal {n} more.": "Finché è in campo, gli attacchi di fulmine delle tue unità infliggono {n} in più.",
+ "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "Colpi, tiri e abilità che colpiscono un’unità, non i tick; finché è sul tabellone, anche in Attesa. Più copie si sommano."
 }

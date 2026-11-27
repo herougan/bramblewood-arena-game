@@ -4825,5 +4825,20 @@
  "{name} is dried by the fire.": "{name} wird vom Feuer getrocknet.",
  "The dry weather dries every creature. 💧": "Das trockene Wetter trocknet alle Kreaturen. 💧",
  "It makes the target Wet and puts out Burn. Wet: lightning deals 1 more and runs on to Wet units beside it.": "Es macht das Ziel nass und löscht Brand. Nass: Blitz macht 1 mehr und springt auf nasse Einheiten daneben über.",
- "The shock runs on from {name} through {n} Wet unit(s). 💧": "Der Schlag springt von {name} über {n} nasse Einheit(en). 💧"
+ "The shock runs on from {name} through {n} Wet unit(s). 💧": "Der Schlag springt von {name} über {n} nasse Einheit(en). 💧",
+ "Dogfighter": "Luftkämpfer",
+ "Its hits and shots deal {n} more to Flying and Mach units.": "Seine Treffer und Schüsse machen {n} mehr gegen fliegende und Mach-Einheiten.",
+ "Not on ticks or the bramble. A Flyer's swing is never dodged by a Flyer, so on a Flyer it always lands.": "Nicht bei Ticks oder der Dornenhecke. Ein Flieger weicht dem Schlag eines Fliegers nie aus: auf einem Flieger trifft er immer.",
+ "Attunement": "Einklang",
+ "Fire Attunement": "Feuer-Einklang",
+ "Ice Attunement": "Eis-Einklang",
+ "Acid Attunement": "Säure-Einklang",
+ "Water Attunement": "Wasser-Einklang",
+ "Lightning Attunement": "Blitz-Einklang",
+ "While it is on the field, your units' fire attacks deal {n} more.": "Solange sie auf dem Feld ist, machen die Feuer-Angriffe deiner Einheiten {n} mehr.",
+ "While it is on the field, your units' ice attacks deal {n} more.": "Solange sie auf dem Feld ist, machen die Eis-Angriffe deiner Einheiten {n} mehr.",
+ "While it is on the field, your units' acid attacks deal {n} more.": "Solange sie auf dem Feld ist, machen die Säure-Angriffe deiner Einheiten {n} mehr.",
+ "While it is on the field, your units' water attacks deal {n} more.": "Solange sie auf dem Feld ist, machen die Wasser-Angriffe deiner Einheiten {n} mehr.",
+ "While it is on the field, your units' lightning attacks deal {n} more.": "Solange sie auf dem Feld ist, machen die Blitz-Angriffe deiner Einheiten {n} mehr.",
+ "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "Schläge, Schüsse und Fähigkeiten, die eine Einheit treffen, keine Ticks; solange sie auf dem Brett ist, auch Wartend. Mehrere addieren sich."
 }

@@ -3485,6 +3485,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(attDef && attDef.effects && attDef.effects.hunter && attDef.effects.hunterVs === 'weaker' && attCard && targetCard.hp > 0 && targetCard.kind !== 'hq' && effAtk(targetCard) < effAtk(attCard)) amt += numN(attDef.effects.hunter, 1); // SKAUD1: Cull N (weaker), the old Predator
     amt += shatterBonus(attDef, targetCard); // Shatter N (2026-10-17): +N on a Frozen unit (a Brittle one 2026-10-19 to DEC20-SKILLS)
     amt += giHitBonus(attDef, targetCard, dmgType) + detonateBonus(attDef, targetCard, dmgType); // Hunter N, Executioner N, Detonate (2026-10-19, package GI)
+    if(targetCard.kind !== 'hq') amt += attuneBonus(attCard, dmgType); // Attunement N (SKILLS3-11, 2026-11-27)
     amt += wetShockBonus(targetCard, dmgType); // Wet (2026-10-17): +1 lightning damage per Wet counter (wetCountOf)
     // Siege N (2026-10-19, package SK1, owner 21:36: Demolition renamed Siege): +N on Structures (sk1SiegeN: Siege, or an old Demolisher).
     { const sgN = sk1SiegeN(attDef); if(sgN > 0){ const tdD = CARD_DEFS[targetCard.defId]; if(tdD && txIsA(tdD, 'Structure')) amt += sgN; } } // 2026-10-21 (package TX)
@@ -3725,6 +3726,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }
     amount += shatterBonus(attDef, card); // Shatter N (2026-10-17): its shots too
     amount += giB + detonateBonus(attDef, card, dmgType); // Hunter N, Executioner N, Detonate: shots too (2026-10-19, package GI)
+    if(card.kind !== 'hq') amount += attuneBonus(flatAtt, dmgType); // Attunement N (SKILLS3-11, 2026-11-27): a unit's shot or skill of that element
     amount += wetShockBonus(card, dmgType); // Wet (2026-10-17): +1 lightning damage per Wet counter, from any shock hit
     // Feeble/Mighty (2026-09-29) apply to ranged/flat hits too, same "applies everywhere"
     // precedent Expose/King Slayer just above already set for this path.
@@ -6685,6 +6687,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // hits, prongs, and the Poison Bolt). Fletcher N ("Make Arrow ... stronger"): your units' arrows (Arrow, Fire Arrow, Ice Arrow,
   // Twin Shot, Volley) deal N more. Herbalist N ("Make ... Healing stronger"): every heal on your units heals N more (applyHeal).
   function venomBoost(pid){ return curPlayers ? auraN(curPlayers[pid], 'venomMaster') : 0; }
+  // Attunement N – {element} (2026-11-27, SKILLS3-B, decision SKILLS3-11): while it is on the field (Waiting too), your units' attacks of that element
+  // (effects.attunementEl: heat / cold / acid / water / shock; fire by default) deal N more: swings, shots and skills that land on a unit, not ticks.
+  const ATTUNE_ELS = ['heat', 'cold', 'acid', 'water', 'shock'];
+  function attuneElOf(e){ return ATTUNE_ELS.includes(e && e.attunementEl) ? e.attunementEl : 'heat'; }
+  function attuneBonus(attCard, dmgType){ if(!attCard || !curPlayers || !ATTUNE_ELS.includes(dmgType)) return 0; const pl = curPlayers[ownerPidOfCard(attCard)]; if(!pl) return 0; let n = 0;
+    upkeepUnitsOf(pl).forEach(c=>{ const e = c && !c.gap && c.hp > 0 && !c.cageOf ? effectsOf(c) : null; if(e && e.attunement && attuneElOf(e) === dmgType) n += numN(e.attunement, 1); }); return n; }
   // Shatter N (2026-10-17, user: "Ice on ice, electric on water, fire on fire"): its hits deal N more to a Frozen unit (melee and
   // shots). Electric-on-water is the Wet rule (2026-10-17: +1 per Wet counter from any lightning hit, wetShockBonus); there is no
   // Burning status yet, so fire-on-fire waits for one.
@@ -6706,9 +6714,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function hunterVsOf(e){ const v = e && e.hunterVs; return GI_HUNTER_VS.includes(v) ? v : 'weak'; }
   function hunterMarked(t, vs){ if(!t || t.kind === 'hq') return false; if(vs === 'weaker') return false; if(vs === 'wounded') return sk3ExecLow(t); if(vs === 'frozen') return t.frozen > 0 || sk3ShatterMore(t);
     return vs === 'weak' ? sk3Weak(t) : vs === 'bleed' ? t.bleed > 0 : vs === 'wet' ? wetCountOf(t) > 0 : vs === 'exposed' ? t.exposed > 0 : (t.poison > 0 || t.gpoison > 0); } // + Greater Poison (EN4, 2026-10-23)
+  // Dogfighter N (2026-11-27, SKILLS3-B, decision SKILLS3-4: owner "Deal additional N damage to flying units"): its hits and shots deal N more to a
+  // Flying or Mach unit (flyLevelOf 1 or 2), as Cull does to its status.
   function giHitBonus(attDef, t, dmgType){
     const e = (attDef && attDef.effects) || {}; if(!t || t.kind === 'hq' || !(t.hp > 0) || EXPOSE_TICKS.has(dmgType)) return 0; let b = 0;
     if(e.hunter && hunterMarked(t, hunterVsOf(e))) b += numN(e.hunter, 1);
+    if(e.dogfighter && flyLevelOf(effectsOf(t)) >= 1) b += numN(e.dogfighter, 1);
     if(e.executioner && sk3ExecLow(t)) b += numN(e.executioner, 1); // 2026-10-19 (package SK3): below 25% (was half)
     return b; }
   // Detonate N (CONTENT3, 2026-10-26, owner 17:53: "Detonate N - trigger poison N times (lowering the poison count by 1 each time). its

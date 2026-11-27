@@ -4828,5 +4828,20 @@
  "{name} is dried by the fire.": "{name} நெருப்பால் உலர்ந்தது.",
  "The dry weather dries every creature. 💧": "வறண்ட வானிலை எல்லா உயிர்களையும் உலர்த்துகிறது. 💧",
  "It makes the target Wet and puts out Burn. Wet: lightning deals 1 more and runs on to Wet units beside it.": "இலக்கை நனைத்து எரிவை அணைக்கும். நனைந்தது: மின்னல் 1 கூடுதல், அருகிலுள்ள நனைந்த அலகுகளுக்கும் பாயும்.",
- "The shock runs on from {name} through {n} Wet unit(s). 💧": "மின்னதிர்ச்சி {name} இலிருந்து {n} நனைந்த அலகுகளுக்குப் பாய்கிறது. 💧"
+ "The shock runs on from {name} through {n} Wet unit(s). 💧": "மின்னதிர்ச்சி {name} இலிருந்து {n} நனைந்த அலகுகளுக்குப் பாய்கிறது. 💧",
+ "Dogfighter": "வான்போர் வீரன்",
+ "Its hits and shots deal {n} more to Flying and Mach units.": "இதன் தாக்குதல்களும் அம்புகளும் பறக்கும், மாக் அலகுகளுக்கு {n} கூடுதல் சேதம்.",
+ "Not on ticks or the bramble. A Flyer's swing is never dodged by a Flyer, so on a Flyer it always lands.": "டிக்குகளிலும் முட்புதரிலும் இல்லை. பறக்கும் அலகின் தாக்குதலைப் பறக்கும் அலகு தவிர்க்காது, எனவே எப்போதும் படும்.",
+ "Attunement": "இசைவு",
+ "Fire Attunement": "நெருப்பு இசைவு",
+ "Ice Attunement": "பனி இசைவு",
+ "Acid Attunement": "அமில இசைவு",
+ "Water Attunement": "நீர் இசைவு",
+ "Lightning Attunement": "மின்னல் இசைவு",
+ "While it is on the field, your units' fire attacks deal {n} more.": "இது களத்தில் இருக்கும்வரை, உன் அலகுகளின் நெருப்பு தாக்குதல்கள் {n} கூடுதல் சேதம் தரும்.",
+ "While it is on the field, your units' ice attacks deal {n} more.": "இது களத்தில் இருக்கும்வரை, உன் அலகுகளின் பனி தாக்குதல்கள் {n} கூடுதல் சேதம் தரும்.",
+ "While it is on the field, your units' acid attacks deal {n} more.": "இது களத்தில் இருக்கும்வரை, உன் அலகுகளின் அமில தாக்குதல்கள் {n} கூடுதல் சேதம் தரும்.",
+ "While it is on the field, your units' water attacks deal {n} more.": "இது களத்தில் இருக்கும்வரை, உன் அலகுகளின் நீர் தாக்குதல்கள் {n} கூடுதல் சேதம் தரும்.",
+ "While it is on the field, your units' lightning attacks deal {n} more.": "இது களத்தில் இருக்கும்வரை, உன் அலகுகளின் மின்னல் தாக்குதல்கள் {n} கூடுதல் சேதம் தரும்.",
+ "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "ஒரு அலகைத் தாக்கும் அடிகள், அம்புகள், திறன்கள்; டிக்குகள் அல்ல. பலகையில் இருக்கும்வரை, காத்திருந்தாலும். பல இருந்தால் கூடும்."
 }

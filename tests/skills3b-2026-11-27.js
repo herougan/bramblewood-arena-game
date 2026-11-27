@@ -37,6 +37,8 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   's3-rendDeath': U('s3-rendDeath', {rend:{v:2, when:'death'}}, {health:3}), 's3-enfDeath': U('s3-enfDeath', {enfeeble:{v:1, when:'death'}}, {health:3}),
   's3-hardDeath': U('s3-hardDeath', {harden:{v:1, when:'death'}}, {health:3}), 's3-embDeath': U('s3-embDeath', {embolden:{v:1, when:'death'}}, {health:3}),
   's3-rendAround': U('s3-rendAround', {rend:{v:1, when:'death', who:'around'}}, {health:3}),
+  's3-dog': U('s3-dog', {dogfighter:1}, {attack:2}), 's3-dogArrow': U('s3-dogArrow', {dogfighter:2, arrow:1}), 's3-mach': U('s3-mach', {mach:true}),
+  's3-attShock': U('s3-attShock', {attunement:{v:1, el:'shock'}}, {wait:3}), 's3-attFire': U('s3-attFire', {attunement:2}),
   's3-tide': U('s3-tide', {tide:true}), 's3-fly': U('s3-fly', {flying:true}), 's3-shock2': U('s3-shock2', {}, {attack:2, dmgType:'shock'}), 's3-fire1': U('s3-fire1', {}, {attack:1, dmgType:'heat'}),
 });
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
@@ -140,6 +142,25 @@ const hitOn = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid)
   ok(/class="abadge en20-water"[^`]*>💧<\/span>/.test(app) && !/💧\$\{c\.water\}/.test(app), '3. the board shows Wet as a 💧 badge, no number (SKILLS3b display rule)');
   ok(/ev\.kind === 'wetChain'\)\{/.test(app) && /ev\.kind === 'wetChain'\) return \{cls:'', text:TX\('ui\.s3b-log-wet-chain'/.test(app), '3. the board plays and logs the chain');
   ok(['ui.eng20-water-tip', 'ui.st-wet', 'ui.stx-wet', 'ui.fxx-thunderstorm', 'ui.ui32-log-soak', 'ui.ui32-log-dry', 'ui.ui32-log-drain', 'ui.sk-water-bolt-codex', 'ui.s3b-log-wet-chain'].every(k=> TX[k] && pk[TX[k].replace(/^[⚡\s]+/, '')] && !/counter/.test(TX[k])), '3. Wet texts read yes / no, translated (fr)'); }
+
+// ================= 4. Dogfighter N (SKILLS3-4) and Attunement N – {element} (SKILLS3-11) =================
+{ const {e, P} = mk(); const a = put(e, P, 1, 's3-dog', 0), f = put(e, P, 2, 's3-fly', 0); swing(e, P, a); ok(f.hp === 497, `4. Dogfighter 1: its hit deals 1 more to a Flyer (2 + 1 = ${500 - f.hp})`); }
+{ const {e, P} = mk(); const a = put(e, P, 1, 's3-dog', 0), g = put(e, P, 2, 's3-dummy', 0); swing(e, P, a); ok(g.hp === 498, `4. Dogfighter: nothing more against a ground unit (${500 - g.hp})`); }
+{ const {e, P} = mk(); const a = put(e, P, 1, 's3-dog', 0), m = put(e, P, 2, 's3-mach', 0); e.damageCardFlat(m, 2, 'physical', 's3-dog', a.uid); ok(m.hp === 497, `4. Dogfighter: a Mach unit counts too (a hit of 2: ${500 - m.hp})`); }
+{ const {e, P} = mk(); const f = put(e, P, 2, 's3-fly', 0); put(e, P, 1, 's3-dogArrow', 0); const ev = fight(e, P, 1); ok(hitOn(ev, f.uid) === 3, `4. Dogfighter rides shots too (Arrow 1 + 2 = ${hitOn(ev, f.uid)})`); }
+{ const {e, P} = mk(); put(e, P, 1, 's3-attShock', 1); const a = put(e, P, 1, 's3-shock2', 0), t = put(e, P, 2, 's3-dummy', 0); swing(e, P, a);
+  ok(t.hp === 497, `4. Lightning Attunement 1 (Waiting): your lightning swing deals 1 more (2 + 1 = ${500 - t.hp})`); }
+{ const {e, P} = mk(); put(e, P, 1, 's3-attShock', 1); const a = put(e, P, 1, 's3-hit2', 0), t = put(e, P, 2, 's3-dummy', 0); swing(e, P, a); ok(t.hp === 498, '4. not on another element (a physical swing)'); }
+{ const {e, P} = mk(); put(e, P, 2, 's3-attShock', 1); const a = put(e, P, 1, 's3-shock2', 0), t = put(e, P, 2, 's3-dummy', 0); swing(e, P, a); ok(t.hp === 498, '4. not on the enemy\'s attacks (your units only)'); }
+{ const {e, P} = mk(); put(e, P, 1, 's3-attFire', 1); const a = put(e, P, 1, 's3-fire1', 0), t = put(e, P, 2, 's3-dummy', 0); swing(e, P, a); ok(t.hp === 497 && t.burn === 1, `4. Attunement with no element is fire (Fire Attunement 2: 1 + 2 = ${500 - t.hp})`); }
+{ const SC = require('../tools/skill_costs.js'), T = SC.make(J('canonical/skill-costs.json')), S = e=> T.budget({id:'x', attack:1, health:3, effects:e, rarity:'common', level:1});
+  ok(S({dogfighter:1}).S === 0.35 && S({dogfighter:2}).S === 0.7 && S({attunement:1}).S === 3.2 && S({attunement:{v:2, el:'shock'}}).S === 6.4 && !S({attunement:{v:1, el:'cold'}}).missing.length, `4. prices: Dogfighter 0.35 a point, Attunement 3.2 a point (as Fletcher)`);
+  const D = J('canonical/skill-delivery.json'), C = J('canonical/skill-counters.json'), SP = J('canonical/skill-params.json');
+  ok(D.delivery.dogfighter === 'none' && D.delivery.attunement === 'none' && D.rides.dogfighter === 'any' && C.counters.flying.counters.some(x=> x.skill === 'dogfighter') && SP.families.attunement.params.el === 'attunementEl', '4. delivery, rides, counters (a counter to Flying and Mach), the element parameter');
+  const TX = require('../bramblewood-texts.js').TEXT, pk = J('lang/ja.json');
+  ok(['ui.skn-dogfighter', 'ui.sk-dogfighter', 'ui.sk-dogfighter-codex', 'ui.skn-attunement', 'ui.sk-attunement-codex'].concat(['heat', 'cold', 'acid', 'water', 'shock'].flatMap(el=> ['ui.skn-attunement-' + el, 'ui.sk-attunement-' + el])).every(k=> TX[k] && pk[TX[k]]), '4. texts, translated (ja)');
+  ok(/\{key:'dogfighter', category:'passive'/.test(app) && /\{key:'attunement', category:'passive', label:TX\('ui\.skn-attunement'\), kind:'selectNumber'/.test(app) && /p\.key==='attunement' \? s3bAttuneHead/.test(app), '4. the app: entries (Attunement picks its element), the "Fire Attunement 1" line');
+  ok(!J('canonical/cards.json').some(c=> [c.effects || {}].concat(Object.values(c.levelSkills || {})).some(o=> o.dogfighter || o.attunement)), '4. no carrier yet (list changes wait, owner 11-27 11:22)'); }
 
 console.log(`skills3b-2026-11-27: ${n - fail}/${n} passed`);
 process.exit(fail ? 1 : 0);

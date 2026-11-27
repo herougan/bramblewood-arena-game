@@ -4827,5 +4827,20 @@
  "{name} is dried by the fire.": "{name} dikeringkan api.",
  "The dry weather dries every creature. 💧": "Cuaca kering mengeringkan semua makhluk. 💧",
  "It makes the target Wet and puts out Burn. Wet: lightning deals 1 more and runs on to Wet units beside it.": "Membuat target Basah dan memadamkan Terbakar. Basah: petir +1 dan merambat ke unit Basah di sampingnya.",
- "The shock runs on from {name} through {n} Wet unit(s). 💧": "Sengatan merambat dari {name} ke {n} unit Basah. 💧"
+ "The shock runs on from {name} through {n} Wet unit(s). 💧": "Sengatan merambat dari {name} ke {n} unit Basah. 💧",
+ "Dogfighter": "Petarung Udara",
+ "Its hits and shots deal {n} more to Flying and Mach units.": "Serangan dan tembakannya +{n} ke unit Terbang dan Mach.",
+ "Not on ticks or the bramble. A Flyer's swing is never dodged by a Flyer, so on a Flyer it always lands.": "Tidak pada detak atau semak duri. Unit Terbang tak pernah menghindari serangan unit Terbang, jadi selalu kena.",
+ "Attunement": "Selaras",
+ "Fire Attunement": "Selaras Api",
+ "Ice Attunement": "Selaras Es",
+ "Acid Attunement": "Selaras Asam",
+ "Water Attunement": "Selaras Air",
+ "Lightning Attunement": "Selaras Petir",
+ "While it is on the field, your units' fire attacks deal {n} more.": "Selama ada di lapangan, serangan api unitmu +{n}.",
+ "While it is on the field, your units' ice attacks deal {n} more.": "Selama ada di lapangan, serangan es unitmu +{n}.",
+ "While it is on the field, your units' acid attacks deal {n} more.": "Selama ada di lapangan, serangan asam unitmu +{n}.",
+ "While it is on the field, your units' water attacks deal {n} more.": "Selama ada di lapangan, serangan air unitmu +{n}.",
+ "While it is on the field, your units' lightning attacks deal {n} more.": "Selama ada di lapangan, serangan petir unitmu +{n}.",
+ "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "Serangan, tembakan, dan skill yang mengenai unit, bukan detak; selama di papan, juga saat Menunggu. Beberapa bertambah."
 }

@@ -4828,5 +4828,20 @@
  "{name} is dried by the fire.": "{name}이(가) 불에 말랐어요.",
  "The dry weather dries every creature. 💧": "건조한 날씨에 모든 생물이 말라요. 💧",
  "It makes the target Wet and puts out Burn. Wet: lightning deals 1 more and runs on to Wet units beside it.": "대상을 적시고 화상을 꺼요. 젖음: 번개 피해 +1, 옆의 젖은 유닛에게도 이어져요.",
- "The shock runs on from {name} through {n} Wet unit(s). 💧": "전격이 {name}에서 젖은 유닛 {n}개로 이어져요. 💧"
+ "The shock runs on from {name} through {n} Wet unit(s). 💧": "전격이 {name}에서 젖은 유닛 {n}개로 이어져요. 💧",
+ "Dogfighter": "공중전 달인",
+ "Its hits and shots deal {n} more to Flying and Mach units.": "공격과 사격이 비행·마하 유닛에게 피해를 {n} 더 줘요.",
+ "Not on ticks or the bramble. A Flyer's swing is never dodged by a Flyer, so on a Flyer it always lands.": "지속 피해와 가시덤불에는 없어요. 비행 유닛은 비행 유닛의 공격을 피하지 못해 항상 맞아요.",
+ "Attunement": "조율",
+ "Fire Attunement": "불의 조율",
+ "Ice Attunement": "얼음의 조율",
+ "Acid Attunement": "산성의 조율",
+ "Water Attunement": "물의 조율",
+ "Lightning Attunement": "번개의 조율",
+ "While it is on the field, your units' fire attacks deal {n} more.": "이 유닛이 필드에 있는 동안 아군 유닛의 불 공격 피해가 {n} 늘어요.",
+ "While it is on the field, your units' ice attacks deal {n} more.": "이 유닛이 필드에 있는 동안 아군 유닛의 얼음 공격 피해가 {n} 늘어요.",
+ "While it is on the field, your units' acid attacks deal {n} more.": "이 유닛이 필드에 있는 동안 아군 유닛의 산성 공격 피해가 {n} 늘어요.",
+ "While it is on the field, your units' water attacks deal {n} more.": "이 유닛이 필드에 있는 동안 아군 유닛의 물 공격 피해가 {n} 늘어요.",
+ "While it is on the field, your units' lightning attacks deal {n} more.": "이 유닛이 필드에 있는 동안 아군 유닛의 번개 공격 피해가 {n} 늘어요.",
+ "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "유닛에 맞는 공격·사격·스킬(지속 피해 제외). 보드에 있는 동안, 대기 중에도. 여러 장이면 더해져요."
 }

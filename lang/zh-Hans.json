@@ -4826,5 +4826,20 @@
  "{name} is dried by the fire.": "{name}被火烤干了。",
  "The dry weather dries every creature. 💧": "干燥的天气让所有生物变干。💧",
  "It makes the target Wet and puts out Burn. Wet: lightning deals 1 more and runs on to Wet units beside it.": "使目标潮湿并扑灭灼烧。潮湿：雷电多造成1点，并传给身旁的潮湿单位。",
- "The shock runs on from {name} through {n} Wet unit(s). 💧": "电击从{name}传到{n}个潮湿单位。💧"
+ "The shock runs on from {name} through {n} Wet unit(s). 💧": "电击从{name}传到{n}个潮湿单位。💧",
+ "Dogfighter": "空战手",
+ "Its hits and shots deal {n} more to Flying and Mach units.": "它的攻击和射击对飞行与音速单位多造成{n}点伤害。",
+ "Not on ticks or the bramble. A Flyer's swing is never dodged by a Flyer, so on a Flyer it always lands.": "跳伤和荆棘堡不算。飞行单位从不闪避飞行单位的攻击，所以对飞行单位总能命中。",
+ "Attunement": "共鸣",
+ "Fire Attunement": "火焰共鸣",
+ "Ice Attunement": "冰霜共鸣",
+ "Acid Attunement": "酸液共鸣",
+ "Water Attunement": "流水共鸣",
+ "Lightning Attunement": "雷电共鸣",
+ "While it is on the field, your units' fire attacks deal {n} more.": "只要它在场上，你的单位的火焰攻击多造成{n}点伤害。",
+ "While it is on the field, your units' ice attacks deal {n} more.": "只要它在场上，你的单位的冰霜攻击多造成{n}点伤害。",
+ "While it is on the field, your units' acid attacks deal {n} more.": "只要它在场上，你的单位的酸液攻击多造成{n}点伤害。",
+ "While it is on the field, your units' water attacks deal {n} more.": "只要它在场上，你的单位的水攻击多造成{n}点伤害。",
+ "While it is on the field, your units' lightning attacks deal {n} more.": "只要它在场上，你的单位的雷电攻击多造成{n}点伤害。",
+ "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "命中单位的攻击、射击和技能，不含跳伤；只要它在场上，等待中也算。多个可叠加。"
 }
