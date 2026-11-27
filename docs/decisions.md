@@ -4,6 +4,12 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**ROADFIX6-1. Road fights only a list change can fix** · Decide · Balance · asked 2026-11-28
+- Deck swaps are used up. Too hard: 2-1, 2-2, 2-B-1 and Map 17 (17-3/4/6/7/8, Harbor Seal). Too easy: 15-3/4/6, 18-A-4/6/7, 20-A-4. Each needs one card added to or taken off its map's list, which you paused on 11-27.
+  - a) Propose one list change per fight for you to approve
+  - b) Leave them for now
+- **Default:** a
+
 **TESTFIX11-4. Alley Cat's pack** · Decide · Packs · asked 2026-11-26
 - Alley Cat is in Pack 4; your earlier list (#10) said Pack 1.
   - a) Pack 1
