@@ -3951,7 +3951,8 @@ function describeEffects(def, liveCard, opt){
     }
     if(t.count!=null && t.do!=='spawnCard' && t.do!=='drawCard' && !/×\d/.test(detail)) detail = detail.replace(/\.$/, '') + ` ×${t.count}.`;
     if(t.nameMatch) detail = detail.replace(/\.$/, '') + ` — only when the triggering card is named "${t.nameMatch}" (${t.matchMode==='exact'?'exact match':'contains'}).`;
-    lines.push(t.on === 'onSacrifice' ? `🦷 Sacrifice - ${detail}` : t.on === 'onPitch' ? `♻️ Scavenge - ${detail}` : `${tDef.label}: ${detail}`); // + Scavenge - {} (On Pitch, 2026-10-16) // Sacrifice - {} (2026-10-14, user: "it's framed as Sacrifice - { }")
+    // 2026-11-27 (SKILLS3-B, SKILLS3-1): On Play, On Death and On Pitch lines lead with their icon (trigLeadIcon); Sacrifice - {} and Scavenge - {} keep their framing
+    lines.push(t.on === 'onSacrifice' ? `🦷 Sacrifice - ${detail}` : t.on === 'onPitch' ? `🃏 Scavenge - ${detail}` : (t.on === 'onSpawn' || eng28DeathTrig(t)) ? `${trigLeadIcon(t)} ${tDef.label}: ${detail}` : `${tDef.label}: ${detail}`);
   });
   if(def.dmgType && def.dmgType!=='physical' && !terse) lines.push(`Its attacks deal ${dmgWord(def.dmgType)}damage.`);
   // Resist can live in the legacy top-level array or the new effects.resist box (see
@@ -10205,6 +10206,8 @@ function triggerSpent(t, live, trs){
 // ENG28 (2026-11-07, owner 11-06 22:16 #7: "Death triggers use 💀 instead of the lightning icon"): an On Death trigger (and On Death -> the killer)
 // leads its chip with the skull, as the trigger's own ring glyph already does (TRIGGER_GLYPH.onDeath).
 function eng28DeathTrig(t){ return !!(t && typeof t.on === 'string' && /^onDeath/.test(t.on)); }
+// 2026-11-27 (SKILLS3-B, SKILLS3-1): a trigger's lead icon on chips and card lines: ⬆️ On Play, 💀 On Death, 🃏 On Pitch, 🕐 each round, 🦷 Sacrifice, else ⚡.
+function trigLeadIcon(t){ const on = t && t.on; return (on === 'onRoundStart' || on === 'perTurn') ? '🕐' : on === 'onSacrifice' ? '🦷' : on === 'onPitch' ? '🃏' : eng28DeathTrig(t) ? '💀' : on === 'onSpawn' ? '⬆️' : '⚡'; }
 function triggerBadges(d, live){
   const trs = (d && d.effects && Array.isArray(d.effects.triggers)) ? d.effects.triggers : [];
   const m = typeof matchState !== 'undefined' ? matchState : null;
@@ -10214,13 +10217,13 @@ function triggerBadges(d, live){
       const at = m._spentTrig[key] || (m._spentTrig[key] = Date.now()), age = Date.now() - at;
       if(age >= SPENT_TRIG_MS) return '';
       const tip = (()=>{ try{ return triggerPreviewText(t); }catch(e){ return ''; } })() + ' (used up)';
-      return `<span class="ab-trig is-spent" style="animation-delay:-${age}ms" title="${escapeAttr(tip)}"><i class="ab-bolt">${(t.on === 'onRoundStart' || t.on === 'perTurn') ? '🕐' : eng28DeathTrig(t) ? '💀' : '⚡'}</i><i class="ab-arrow">→</i>${triggerActionEmoji(t)}</span>`;
+      return `<span class="ab-trig is-spent" style="animation-delay:-${age}ms" title="${escapeAttr(tip)}"><i class="ab-bolt">${trigLeadIcon(t)}</i><i class="ab-arrow">→</i>${triggerActionEmoji(t)}</span>`;
     }
     const off = triggerIsOff(t, live, d);
     const tip = (()=>{ try{ return triggerPreviewText(t); }catch(e){ return ''; } })() + (off ? ' (off for now: it is Waiting, Stunned, Frozen or Asleep)' : '');
     // a trigger that fires every round leads with a clock instead of the bolt (2026-10-12, user: "Cards that have triggers
     // that depend on turns like every turn, should use the clock emoji instead")
-    const clock = t.on === 'onRoundStart' || t.on === 'perTurn', lead = clock ? '🕐' : t.on === 'onSacrifice' ? '🦷' : t.on === 'onPitch' ? '♻️' : eng28DeathTrig(t) ? '💀' : '⚡'; // Sacrifice - {} leads with teeth (2026-10-14); ENG28: a death trigger, the skull
+    const clock = t.on === 'onRoundStart' || t.on === 'perTurn', lead = trigLeadIcon(t);
     return `<span class="ab-trig${off ? ' is-off' : ''}${clock ? ' is-clock' : ''}" data-hook="${escapeAttr(t.on || '')}" title="${escapeAttr(tip)}"><i class="ab-bolt">${lead}</i><i class="ab-arrow">→</i>${triggerActionEmoji(t)}</span>`;
   });
 }
@@ -53996,8 +53999,8 @@ function keywordCuesForHit(ev, attEl, targetEl){
 // Triggered abilities (2026-10-08, user: "a trigger vfx and a soft or neutral sfx whenever a
 // triggered ability triggers, like On Death or On Enemy Play"): a gold rune ring opens on the card
 // with the trigger's symbol above it, and a soft two-note chime.
-const TRIGGER_GLYPH = {onDeath:'💀', onSpawn:'✨', onAttack:'⚔️', onAttacked:'🛡️', onKill:'🗡️', onRoundStart:'🕐', perTurn:'🕐', /* 2026-10-12: turn-based triggers wear a clock */ onReady:'⚡', onExile:'🌀',
-  onEnemyPlayed:'👁️', onEnemySpawn:'👁️', onEnemyReady:'👁️', onAllyPlayed:'🤝', onAllySpawn:'🤝', onAllyReady:'🤝', onAllyDie:'🕯️', onColumnSpawn:'👁️', onHeal:'💚', onHealed:'💚', onAllyHealed:'💚', onDiscard:'🍂', onMove:'↔️', onSacrifice:'🦷', onCharge:'⏲️', onPitch:'♻️'}; // 2026-10-14: Sacrifice's teeth, Charge's clock
+const TRIGGER_GLYPH = {onDeath:'💀', onSpawn:'⬆️' /* SKILLS3-1 (2026-11-27) */, onAttack:'⚔️', onAttacked:'🛡️', onKill:'🗡️', onRoundStart:'🕐', perTurn:'🕐', /* 2026-10-12: turn-based triggers wear a clock */ onReady:'⚡', onExile:'🌀',
+  onEnemyPlayed:'👁️', onEnemySpawn:'👁️', onEnemyReady:'👁️', onAllyPlayed:'🤝', onAllySpawn:'🤝', onAllyReady:'🤝', onAllyDie:'🕯️', onColumnSpawn:'👁️', onHeal:'💚', onHealed:'💚', onAllyHealed:'💚', onDiscard:'🍂', onMove:'↔️', onSacrifice:'🦷', onCharge:'⏲️', onPitch:'🃏' /* SKILLS3-1 (2026-11-27) */}; // 2026-10-14: Sacrifice's teeth, Charge's clock
 // Stat changes (2026-10-10, user: "The improvement of stats should be clear! like esprit. The deprovement of skills
 // also."): a big gold "+N⚔ +N❤" (or a cold violet "−N⚔") over the card, and the stat pill itself swells green or
 // shrinks red. The replay snapshot is kept in step so the number on the card doesn't jump back.
