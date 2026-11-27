@@ -1,1 +1,2 @@
 {"key":"2-2","deck":null,"shieldOverride":null,"hqHp":null,"tune":{"w2":54.7,"seed2":18300,"games":300},"moves":[]}
+{"key":"2-1","deck":{"open-ocean-hermit-crab":1,"rock-pool-starfish":3,"salvager-hermit-crab":4,"limpet-clinger":4,"conch-crawler":4,"gull-thief":4},"shieldOverride":null,"hqHp":null,"tune":{"w2":77.3,"seed2":18300,"games":300},"moves":["-4 pincushion-urchin -1 rock-pool-starfish +4 gull-thief +1 conch-crawler"]}
