@@ -4218,6 +4218,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   let lastShotPull = null;
   function shotRedirect(players, sideOf, pid, shooter, t, events){
     lastShotPull = null; const enemy = players && players[otherId(pid)]; if(!enemy || !t || !(t.hp > 0) || t.cageOf) return t;
+    if(wcShy(shooter, t)){ const alt = physicalRowOrder(enemy).filter(c=> c && c.hp > 0 && c !== t && !c.cageOf && !wcShy(shooter, c) && !isInvisible(c)); // Warning Colours (SKILLS3-B): any other enemy unit
+      if(alt.length){ const to = alt[Math.floor(rnd() * alt.length)]; wcAvoidEv(events, sideOf, pid, shooter, t, to); t = to; } }
     if(shooter && !effectsOf(shooter).stealth){ const myCols = combatColumnsOf(players[pid]); let myCol = null;
       Object.keys(myCols).forEach(k=>{ const en = myCols[k]; if(en && en.kind === 'card' && en.card && en.card.uid === shooter.uid) myCol = Number(k); });
       if(myCol !== null){ const tt = tauntTargetOf(myCols, ritualOut(combatColumnsOf(enemy)) /* ENG-RC1 */, myCol);
@@ -4515,6 +4517,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const n = eng33PoisonousN(CARD_DEFS[card.defId]); if(!(n > 0) || card.killedBy == null || card.nullified) return 0;
     const foe = players[otherId(pl.id)]; const k = foe && rowsUnitsOf(foe).find(x=> x && x.uid === card.killedBy); if(!k) return 0;
     return eng33Envenom(card, k, n, sideOf(pl.id), sideOf(foe.id), events); }
+  // Warning Colours N (2026-11-27, package SKILLS3-B; NEWCARDS2, owner 11-27 10:03: "punish predators by being poisonous ... on death. Teaching
+  // predators to avoid them"): 💀 its killer (an enemy unit's blow) gets N Poison (as Poisonous: eng33Envenom), and every enemy unit on the board
+  // as it dies (it saw it) is warned until the next round ends (c.wcWarned = that round): its swing passes over your other Warning Colours units to
+  // an enemy unit one column beside, and its shot to any other enemy unit (at random), while another one exists (wcAvoid). On no card.
+  function wcN(def){ const v = def && def.effects && def.effects.warningColours; return !v ? 0 : v === true ? 1 : Math.max(0, Math.round(Number(v) || 0)); }
+  function wcDeath(players, sideOf, pl, card, events){
+    const n = wcN(CARD_DEFS[card.defId]), foe = players[otherId(pl.id)]; if(!(n > 0) || card.nullified || !foe) return;
+    const k = card.killedBy != null ? rowsUnitsOf(foe).find(x=> x && x.uid === card.killedBy) : null; if(k) eng33Envenom(card, k, n, sideOf(pl.id), sideOf(foe.id), events);
+    const saw = upkeepUnitsOf(foe).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf); saw.forEach(c=>{ c.wcWarned = Math.max(c.wcWarned || 0, turnNo + 1); });
+    if(saw.length && recordEvents && events) events.push({type:'statusFx', kind:'warningColours', side:sideOf(pl.id), attUid:card.uid, attDefId:card.defId, targetSide:sideOf(foe.id), targetUid:saw[0].uid, targetDefId:saw[0].defId, uids:saw.map(c=> c.uid), amount:n}); }
+  const wcShy = (att, c)=> !!(att && c && att.wcWarned >= turnNo && wcN(CARD_DEFS[c.defId]) > 0);
+  function wcAvoidEv(events, sideOf, attPid, att, from, to){ if(recordEvents && events) events.push({type:'statusFx', kind:'wcAvoid', side:sideOf(attPid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(otherId(attPid)), targetUid:to.uid, targetDefId:to.defId, fromUid:from.uid}); }
   function eng26UndeadHeal(card, n, side, events){
     if(!(n > 0)) return 0; healWork++;
     const dmg = damageCardFlat(card, n, 'true', null, null, {tick: true});
@@ -10860,6 +10874,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const deathEv = {type:'death', side:mySide, defId:card.defId, uid:card.uid}; if(res) deathEv.reserve = true; /* a middle- / back-row death (2026-10-19, TS) */ if(card.nullified) deathEv.nullified = true; if(rv) deathEv.revives = true; // revives (2026-10-19): the board keeps its tile for the 'revive' that follows // 2026-10-15: the replay shows a Nullify kill / exile its own way
       if(recordEvents && events) events.push(deathEv);
       eng33PoisonousDeath(players, sideOf, pl, card, events); // ENG33 (2026-11-07): Poisonous N: its killer gets N Venom
+      wcDeath(players, sideOf, pl, card, events); // Warning Colours N (SKILLS3-B, 2026-11-27): its killer's Poison, the enemies that saw it warned
       amoreBreak(players, sideOf, card, events); // Amore (2026-10-16): its partner's heart turns brown
       carrionFeed(players, sideOf, card, events); // Carrion N (2026-10-17): the scavengers on the field eat
       en8DeathFeed(players, sideOf, card, pl.id, events); // EN8 (2026-10-24): Scavenge N / Salvage N
@@ -11797,6 +11812,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const rp = (behind && behind.row > 0) ? null : eng37ReachPick(liveOwnCols, liveEnemyCols, liveSelf.col, a.att);
         if(rp){ target = rp; if(recordEvents && events) events.push({type:'statusFx', kind:'reachAim', side:sideOf(a.attId), attUid:a.att.uid, attDefId:a.att.defId, targetSide:sideOf(a.enemyId), targetUid:rp.card.uid, targetDefId:rp.card.defId}); }
       }
+      // Warning Colours (SKILLS3-B, 2026-11-27): a warned swing passes over a Warning Colours unit to an enemy unit one column beside, at random (Taunt still draws it)
+      if(target && target.kind === 'card' && !octoAtk && wcShy(a.att, target.card)){ const L = prongLanes(liveOwnCols, liveEnemyCols, liveSelf.col);
+        const alt = Object.keys(liveEnemyCols).map(Number).filter(c=>{ const en = liveEnemyCols[c]; return en && en.kind === 'card' && en.card && en.card.hp > 0 && en.card !== target.card && !wcShy(a.att, en.card) && !isInvisible(en.card) && L.dist(c) <= 1.5; });
+        if(alt.length){ const col = alt[Math.floor(rnd() * alt.length)], en = liveEnemyCols[col]; en.col = col; wcAvoidEv(events, sideOf, a.attId, a.att, target.card, en.card); target = en; } }
       // Taunt (2026-10-16, user: "Add a sheep card (basic) - it has taunt."): an enemy Taunt unit facing it or one column beside it
       // draws the swing, even one that was going to the castle. Stealth slips past it; Octolash lashes its usual 8.
       let tauntDrew = null; // the Taunt unit that drew this swing (Fork keeps it among its lines, 2026-10-17)

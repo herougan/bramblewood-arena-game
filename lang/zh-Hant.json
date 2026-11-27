@@ -4841,5 +4841,10 @@
  "While it is on the field, your units' acid attacks deal {n} more.": "只要它在場上，你的單位的酸液攻擊多造成{n}點傷害。",
  "While it is on the field, your units' water attacks deal {n} more.": "只要它在場上，你的單位的水攻擊多造成{n}點傷害。",
  "While it is on the field, your units' lightning attacks deal {n} more.": "只要它在場上，你的單位的雷電攻擊多造成{n}點傷害。",
- "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "命中單位的攻擊、射擊和技能，不含跳傷；只要它在場上，等待中也算。多個可疊加。"
+ "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "命中單位的攻擊、射擊和技能，不含跳傷；只要它在場上，等待中也算。多個可疊加。",
+ "Warning Colours": "警戒色",
+ "When an enemy kills it, the killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "被敵人擊殺時，擊殺者獲得{n}層中毒。看到它陣亡的敵人下回合會避開你其他有警戒色的單位。",
+ "Avoid: a warned swing goes to an enemy unit one column beside, a shot to any other one, while there is one. Taunt still draws it.": "避開：被警告的攻擊改打相鄰一列的敵方單位，射擊改打任意其他單位（若有）。嘲諷仍會吸引它。",
+ "{n} enemy unit(s) saw {name} fall: they avoid Warning Colours next round.": "{n}個敵方單位看到{name}倒下：下回合避開警戒色。",
+ "{att} turns away from {name}.": "{att}避開了{name}。"
 }

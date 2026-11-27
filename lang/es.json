@@ -4840,5 +4840,10 @@
  "While it is on the field, your units' acid attacks deal {n} more.": "Mientras esté en el campo, los ataques de ácido de tus unidades hacen {n} más.",
  "While it is on the field, your units' water attacks deal {n} more.": "Mientras esté en el campo, los ataques de agua de tus unidades hacen {n} más.",
  "While it is on the field, your units' lightning attacks deal {n} more.": "Mientras esté en el campo, los ataques de rayo de tus unidades hacen {n} más.",
- "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "Golpes, disparos y habilidades que alcanzan a una unidad, no los ticks; mientras esté en el tablero, también en Espera. Varias se suman."
+ "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "Golpes, disparos y habilidades que alcanzan a una unidad, no los ticks; mientras esté en el tablero, también en Espera. Varias se suman.",
+ "Warning Colours": "Colores de advertencia",
+ "When an enemy kills it, the killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "Si un enemigo la mata, el asesino recibe {n} Veneno. Los enemigos que la vieron morir evitan tus otras unidades con Colores de advertencia la ronda siguiente.",
+ "Avoid: a warned swing goes to an enemy unit one column beside, a shot to any other one, while there is one. Taunt still draws it.": "Evitar: un golpe avisado va a una unidad enemiga una columna al lado, un disparo a cualquier otra, si hay alguna. Provocar aún lo atrae.",
+ "{n} enemy unit(s) saw {name} fall: they avoid Warning Colours next round.": "{n} unidad(es) enemiga(s) vieron caer a {name}: evitan los Colores de advertencia la ronda siguiente.",
+ "{att} turns away from {name}.": "{att} se aparta de {name}."
 }

@@ -2230,6 +2230,10 @@ PASSIVE_DEFS.push(
     get:e=> e.attunement ? [s3bAttune(null, e).el, numOr(e.attunement, 1)] : undefined,
     apply:(e, vals)=>{ const el = Array.isArray(vals) ? vals[0] : 'heat', n = Number(Array.isArray(vals) ? vals[1] : vals) || 0; if(n > 0){ e.attunement = n; if(el && el !== 'heat') e.attunementEl = el; } }});
 Object.assign(SKILL_ICON, {dogfighter:'✈️', attunement:'🎐'}); // neither shared with another skill
+// Warning Colours N (2026-11-27, SKILLS3-B; NEWCARDS2, owner 11-27 10:03; rule in bramblewood-engine.js wcDeath / wcShy): 💀 its killer gets N Poison, the
+// enemies that saw it die avoid your other Warning Colours units next round. On no card yet (NEWCARDS2 adds the carriers).
+PASSIVE_DEFS.push({key:'warningColours', category:'passive', label:`💀 ${TX('ui.skn-warning-colours')}`, kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-warning-colours', {n: numOr(v, 1)}), codexNote:TX('ui.sk-warning-colours-codex')});
+SKILL_ICON.warningColours = '🐸';
 // SKIN3 (2026-11-20, owner sheet row 464; rule in bramblewood-engine.js onslaughtAfterAllyAttack): Onslaught N, +N/+0 for each ally swing while Ready. On no card.
 PASSIVE_DEFS.push({key:'onslaught', category:'passive', label:TX('ui.skn-onslaught'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-onslaught', {n: numOr(v, 1)}), codexNote:TX('ui.sk-onslaught-codex')});
 Object.assign(SKILL_ICON, {onslaught:'📈'});
@@ -55665,6 +55669,8 @@ function giLogText(ev, nm){
   if(ev.type === 'statusFx' && ev.kind === 'dismantle') return {cls:'', text: ev.ok ? TX('ui.e10-log-dismantle', {att: nm(ev.attDefId)}) : TX('ui.e10-log-dismantle-miss', {att: nm(ev.attDefId)})}; // ENG10 (PROP1-1)
   if(ev.type === 'statusFx' && ev.kind === 'detonate') return {cls:'', text:TX('ui.c3-log-detonate', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount})}; // CONTENT3 (2026-10-26): Detonate N's ticks
   if(ev.type === 'statusFx' && ev.kind === 'wetChain') return {cls:'', text:TX('ui.s3b-log-wet-chain', {name: nm(ev.targetDefId), n: (ev.uids || []).length})}; // SKILLS3-7 (2026-11-27)
+  if(ev.type === 'statusFx' && ev.kind === 'warningColours') return {cls:'', text:TX('ui.s3b-log-wc', {name: nm(ev.attDefId), n: (ev.uids || []).length})}; // Warning Colours (SKILLS3-B)
+  if(ev.type === 'statusFx' && ev.kind === 'wcAvoid') return {cls:'', text:TX('ui.s3b-log-wc-avoid', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})};
   if(ev.type === 'statusFx' && ev.kind === 'wakeful') return {cls:'', text:TX('ui.c3-log-wakeful', {name: nm(ev.targetDefId)})}; // CONTENT3 (G5)
   if(ev.type === 'statusFx' && ev.kind === 'pulverise') return {cls:'', text:TX('ui.c3-log-pulverise', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})}; // CONTENT3 (OWN-Q5)
   if(ev.type === 'statusFx' && ev.kind === 'proliferate') return {cls:'', text:TX('ui.log-proliferate', {from: nm(ev.fromDefId), name: nm(ev.targetDefId)})};
@@ -55690,6 +55696,9 @@ function giVfx(ev){
     uids.forEach((u, i)=>{ const rc = rcOf(u); if(rc) rc.hp = Math.max(0, (rc.hp || 0) - (dm[i] || 0)); try{ updateCardHpDisplay(u); }catch(e){} fl(boardCardEl(u), `⚡💧 ${dm[i] || 0}`, 'debuff'); });
     try{ const from = boardCardEl(ev.fromUid), to = uids.map(boardCardEl).filter(Boolean); if(from && to.length && !reducedMotion() && window.SkillFX && SkillFX.lightning) SkillFX.lightning(from, to, {}); else SoundKit.shockTone && SoundKit.shockTone(); }catch(e){}
     return; }
+  // Warning Colours (SKILLS3-B, 2026-11-27): the warned enemies flinch; a warned attacker turns to another target
+  if(ev.type === 'statusFx' && ev.kind === 'warningColours'){ (ev.uids || []).forEach(u=> fl(boardCardEl(u), '⚠️', 'debuff')); snd('poisonApply'); return; }
+  if(ev.type === 'statusFx' && ev.kind === 'wcAvoid'){ fl(boardCardEl(ev.attUid), '⚠️', 'faded'); return; }
   if(ev.type === 'statusFx' && ev.kind === 'proliferate'){ const rc = rcOf(ev.targetUid); if(rc) rc.poison = ev.total != null ? ev.total : (rc.poison||0) + 1; fl(boardCardEl(ev.targetUid), '🧫 +1☠', 'poison'); snd('poisonApply'); refresh(ev.targetUid); return; }
   if(ev.type === 'statusFx' && ev.kind === 'brittle'){ const rc = rcOf(ev.targetUid); if(rc) rc.brittle = Math.max(rc.brittle||0, ev.amount||1); fl(boardCardEl(ev.targetUid), TX('ui.float-brittle'), 'debuff'); snd('freezeChime'); refresh(ev.targetUid); return; }
   if(ev.type === 'statusEnd' && ev.status === 'brittle'){ const rc = rcOf(ev.uid); if(rc) rc.brittle = 0; refresh(ev.uid); return; }

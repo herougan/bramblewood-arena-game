@@ -4840,5 +4840,10 @@
  "While it is on the field, your units' acid attacks deal {n} more.": "Solange sie auf dem Feld ist, machen die Säure-Angriffe deiner Einheiten {n} mehr.",
  "While it is on the field, your units' water attacks deal {n} more.": "Solange sie auf dem Feld ist, machen die Wasser-Angriffe deiner Einheiten {n} mehr.",
  "While it is on the field, your units' lightning attacks deal {n} more.": "Solange sie auf dem Feld ist, machen die Blitz-Angriffe deiner Einheiten {n} mehr.",
- "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "Schläge, Schüsse und Fähigkeiten, die eine Einheit treffen, keine Ticks; solange sie auf dem Brett ist, auch Wartend. Mehrere addieren sich."
+ "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "Schläge, Schüsse und Fähigkeiten, die eine Einheit treffen, keine Ticks; solange sie auf dem Brett ist, auch Wartend. Mehrere addieren sich.",
+ "Warning Colours": "Warnfarben",
+ "When an enemy kills it, the killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "Tötet ein Gegner sie, erhält der Mörder {n} Gift. Gegner, die sie sterben sahen, meiden in der nächsten Runde deine anderen Warnfarben-Einheiten.",
+ "Avoid: a warned swing goes to an enemy unit one column beside, a shot to any other one, while there is one. Taunt still draws it.": "Meiden: Ein gewarnter Schlag geht an eine gegnerische Einheit eine Spalte daneben, ein Schuss an irgendeine andere, wenn es eine gibt. Spott zieht ihn trotzdem an.",
+ "{n} enemy unit(s) saw {name} fall: they avoid Warning Colours next round.": "{n} gegnerische Einheit(en) sahen {name} fallen: Sie meiden Warnfarben in der nächsten Runde.",
+ "{att} turns away from {name}.": "{att} wendet sich von {name} ab."
 }

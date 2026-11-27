@@ -4841,5 +4841,10 @@
  "While it is on the field, your units' acid attacks deal {n} more.": "Habang nasa larangan ito, dagdag na {n} ang mga atakeng asido ng iyong mga unit.",
  "While it is on the field, your units' water attacks deal {n} more.": "Habang nasa larangan ito, dagdag na {n} ang mga atakeng tubig ng iyong mga unit.",
  "While it is on the field, your units' lightning attacks deal {n} more.": "Habang nasa larangan ito, dagdag na {n} ang mga atakeng kidlat ng iyong mga unit.",
- "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "Mga tama, palaso at skill na tumatama sa unit, hindi ang tik; habang nasa board, kahit Naghihintay. Nagdaragdag ang marami."
+ "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "Mga tama, palaso at skill na tumatama sa unit, hindi ang tik; habang nasa board, kahit Naghihintay. Nagdaragdag ang marami.",
+ "Warning Colours": "Kulay ng Babala",
+ "When an enemy kills it, the killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "Kapag pinatay ito ng kaaway, may {n} Lason ang pumatay. Iiwasan ng mga kaaway na nakakita ang iba mong unit na may Kulay ng Babala sa susunod na round.",
+ "Avoid: a warned swing goes to an enemy unit one column beside, a shot to any other one, while there is one. Taunt still draws it.": "Iwas: ang babalang tama ay pupunta sa kaaway na isang hanay sa tabi, ang palaso sa iba pa, kung mayroon. Naaakit pa rin ito ng Taunt.",
+ "{n} enemy unit(s) saw {name} fall: they avoid Warning Colours next round.": "Nakita ng {n} kaaway na unit ang pagbagsak ng {name}: iiwasan nila ang Kulay ng Babala sa susunod na round.",
+ "{att} turns away from {name}.": "Umiwas ang {att} sa {name}."
 }

@@ -39,6 +39,7 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   's3-rendAround': U('s3-rendAround', {rend:{v:1, when:'death', who:'around'}}, {health:3}),
   's3-dog': U('s3-dog', {dogfighter:1}, {attack:2}), 's3-dogArrow': U('s3-dogArrow', {dogfighter:2, arrow:1}), 's3-mach': U('s3-mach', {mach:true}),
   's3-attShock': U('s3-attShock', {attunement:{v:1, el:'shock'}}, {wait:3}), 's3-attFire': U('s3-attFire', {attunement:2}),
+  's3-wc': U('s3-wc', {warningColours:2}, {health:3}), 's3-wcTough': U('s3-wcTough', {warningColours:1}), 's3-arrowWarn': U('s3-arrowWarn', {arrow:1}),
   's3-tide': U('s3-tide', {tide:true}), 's3-fly': U('s3-fly', {flying:true}), 's3-shock2': U('s3-shock2', {}, {attack:2, dmgType:'shock'}), 's3-fire1': U('s3-fire1', {}, {attack:1, dmgType:'heat'}),
 });
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
@@ -161,6 +162,33 @@ const hitOn = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid)
   ok(['ui.skn-dogfighter', 'ui.sk-dogfighter', 'ui.sk-dogfighter-codex', 'ui.skn-attunement', 'ui.sk-attunement-codex'].concat(['heat', 'cold', 'acid', 'water', 'shock'].flatMap(el=> ['ui.skn-attunement-' + el, 'ui.sk-attunement-' + el])).every(k=> TX[k] && pk[TX[k]]), '4. texts, translated (ja)');
   ok(/\{key:'dogfighter', category:'passive'/.test(app) && /\{key:'attunement', category:'passive', label:TX\('ui\.skn-attunement'\), kind:'selectNumber'/.test(app) && /p\.key==='attunement' \? s3bAttuneHead/.test(app), '4. the app: entries (Attunement picks its element), the "Fire Attunement 1" line');
   ok(!J('canonical/cards.json').some(c=> [c.effects || {}].concat(Object.values(c.levelSkills || {})).some(o=> o.dogfighter || o.attunement)), '4. no carrier yet (list changes wait, owner 11-27 11:22)'); }
+
+// ================= 5. Warning Colours N (NEWCARDS2, owner 11-27 10:03) =================
+{ const {e, P} = mk(); put(e, P, 1, 's3-wc', 0); const k = put(e, P, 2, 's3-big', 0), other = put(e, P, 2, 's3-dummy', 1); const ev = swing(e, P, k);
+  ok(k.poison === 2 && ev.some(x=> x.type === 'statusFx' && x.kind === 'poisonous' && x.targetUid === k.uid && x.amount === 2), '5. 💀 Warning Colours 2: its killer gets 2 Poison');
+  ok(k.wcWarned >= 1 && other.wcWarned >= 1 && ev.some(x=> x.type === 'statusFx' && x.kind === 'warningColours' && x.uids.length === 2), '5. every enemy unit on the board saw it die: warned'); }
+{ const {e, P} = mk(); const d = put(e, P, 1, 's3-wc', 0); put(e, P, 2, 's3-dummy', 0); e.debugDamage(P, so, d.uid, 10, {}, []); ok(!all(P[2]).some(c=> c.poison > 0), '5. no killer (a plain wound): no Poison'); }
+// a warned enemy passes over your other Warning Colours unit while another target is beside it; not when there is none
+{ const {e, P} = mk(); put(e, P, 1, 's3-wc', 0); const wc2 = put(e, P, 1, 's3-wcTough', 1), plain = put(e, P, 1, 's3-dummy', 2); const k = put(e, P, 2, 's3-big', 0), w = put(e, P, 2, 's3-hit2', 1);
+  swing(e, P, k); ok(w.wcWarned >= 1, '5. (the unit beside the killer saw it)');
+  const ev = swing(e, P, w); ok(wc2.hp === 500 && plain.hp === 498 && ev.some(x=> x.type === 'statusFx' && x.kind === 'wcAvoid' && x.fromUid === wc2.uid && x.targetUid === plain.uid), `5. its swing passes over the other Warning Colours unit to the one beside it (${wc2.hp}, ${plain.hp})`); }
+{ const {e, P} = mk(); put(e, P, 1, 's3-wc', 0); const wc2 = put(e, P, 1, 's3-wcTough', 1); const k = put(e, P, 2, 's3-big', 0), w = put(e, P, 2, 's3-hit2', 1);
+  swing(e, P, k); swing(e, P, w); ok(wc2.hp === 498, '5. with no other target beside it, it still hits the Warning Colours unit'); }
+{ const {e, P} = mk(); put(e, P, 1, 's3-wc', 0); const wc2 = put(e, P, 1, 's3-wcTough', 1), plain = put(e, P, 1, 's3-dummy', -1); const k = put(e, P, 2, 's3-big', 0), a = put(e, P, 2, 's3-arrowWarn', 1);
+  swing(e, P, k); const ev = fight(e, P, 1); ok(!ev.some(x=> x.type === 'hit' && x.attUid === a.uid && x.targetUid === wc2.uid) && ev.some(x=> x.type === 'statusFx' && x.kind === 'wcAvoid' && x.attUid === a.uid), '5. a warned shot goes to another unit'); void plain; }
+{ const {e, P} = mk(); put(e, P, 1, 's3-wc', 0); const wc2 = put(e, P, 1, 's3-wcTough', 1), plain = put(e, P, 1, 's3-dummy', 2); const k = put(e, P, 2, 's3-big', 0), w = put(e, P, 2, 's3-hit2', 1);
+  swing(e, P, k); [1, 2, 3].forEach(r=>{ e.roundStart(P, r, so, {}, []); }); const ev = swing(e, P, w); ok(wc2.hp === 498 && !ev.some(x=> x.kind === 'wcAvoid'), '5. the warning ends after the next round'); void plain; }
+{ const SC = require('../tools/skill_costs.js'), T = SC.make(J('canonical/skill-costs.json')), S = e=> T.budget({id:'x', attack:1, health:3, effects:e, rarity:'common', level:1});
+  ok(S({warningColours:1}).S === 0.9 && S({warningColours:2}).S === 1.8, '5. priced 0.9 a point (Poisonous 0.8 + the warning)');
+  const TX = require('../bramblewood-texts.js').TEXT, pk = J('lang/ko.json');
+  ok(['ui.skn-warning-colours', 'ui.sk-warning-colours', 'ui.sk-warning-colours-codex', 'ui.s3b-log-wc', 'ui.s3b-log-wc-avoid'].every(k=> TX[k] && pk[TX[k].replace(/^⚠️\s*/, '')]), '5. texts, translated (ko)');
+  ok(/\{key:'warningColours', category:'passive', label:`💀 \$\{TX\('ui\.skn-warning-colours'\)\}`/.test(app) && /ev\.kind === 'warningColours'\)\{/.test(app) && /ev\.kind === 'wcAvoid'\) return/.test(app), '5. the app: its entry (💀 Warning Colours), the board and the log');
+  ok(J('canonical/skill-delivery.json').delivery.warningColours === 'none' && J('canonical/skill-counters.json').noCounter.includes('warningColours') && !J('canonical/cards.json').some(c=> (c.effects || {}).warningColours), '5. delivery, counters; no card yet (NEWCARDS2)'); }
+
+// ================= determinism: the same seed replays the same fight with the new rules =================
+{ const run = ()=>{ const {e, P} = mk(99); put(e, P, 1, 's3-shock2', 0); put(e, P, 1, 's3-rendAround', 1); put(e, P, 1, 's3-attShock', -1); ['s3-tide', 's3-tide', 's3-wc'].forEach((id, i)=> put(e, P, 2, id, i - 1)); put(e, P, 2, 's3-dog', 2);
+    const out = []; for(let r = 1; r <= 4; r++){ e.roundStart(P, r, so, {}, out); e.resolveCombat(P, so, {}, out, r % 2 ? 1 : 2); } return JSON.stringify(out.map(x=> [x.type, x.kind, x.uid, x.targetUid, x.dmg])); };
+  ok(run() === run(), 'determinism: two runs with one seed give the same events'); }
 
 console.log(`skills3b-2026-11-27: ${n - fail}/${n} passed`);
 process.exit(fail ? 1 : 0);

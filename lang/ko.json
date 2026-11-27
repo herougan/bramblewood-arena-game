@@ -4843,5 +4843,10 @@
  "While it is on the field, your units' acid attacks deal {n} more.": "이 유닛이 필드에 있는 동안 아군 유닛의 산성 공격 피해가 {n} 늘어요.",
  "While it is on the field, your units' water attacks deal {n} more.": "이 유닛이 필드에 있는 동안 아군 유닛의 물 공격 피해가 {n} 늘어요.",
  "While it is on the field, your units' lightning attacks deal {n} more.": "이 유닛이 필드에 있는 동안 아군 유닛의 번개 공격 피해가 {n} 늘어요.",
- "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "유닛에 맞는 공격·사격·스킬(지속 피해 제외). 보드에 있는 동안, 대기 중에도. 여러 장이면 더해져요."
+ "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "유닛에 맞는 공격·사격·스킬(지속 피해 제외). 보드에 있는 동안, 대기 중에도. 여러 장이면 더해져요.",
+ "Warning Colours": "경고색",
+ "When an enemy kills it, the killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "적에게 죽으면 죽인 유닛이 독 {n}을 받아요. 죽는 것을 본 적은 다음 라운드에 다른 경고색 유닛을 피해요.",
+ "Avoid: a warned swing goes to an enemy unit one column beside, a shot to any other one, while there is one. Taunt still draws it.": "회피: 경고받은 공격은 한 칸 옆의 적 유닛에게, 사격은 다른 아무 적에게 가요(있으면). 도발은 여전히 끌어당겨요.",
+ "{n} enemy unit(s) saw {name} fall: they avoid Warning Colours next round.": "적 유닛 {n}개가 {name}의 죽음을 봤어요: 다음 라운드에 경고색을 피해요.",
+ "{att} turns away from {name}.": "{att}이(가) {name}을(를) 피해요."
 }

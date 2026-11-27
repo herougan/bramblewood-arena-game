@@ -3986,7 +3986,12 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-attunement-acid": "While it is on the field, your units' acid attacks deal {n} more.",
   "ui.sk-attunement-water": "While it is on the field, your units' water attacks deal {n} more.",
   "ui.sk-attunement-shock": "While it is on the field, your units' lightning attacks deal {n} more.",
-  "ui.sk-attunement-codex": "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up."
+  "ui.sk-attunement-codex": "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.",
+  "ui.skn-warning-colours": "Warning Colours",
+  "ui.sk-warning-colours": "When an enemy kills it, the killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.",
+  "ui.sk-warning-colours-codex": "Avoid: a warned swing goes to an enemy unit one column beside, a shot to any other one, while there is one. Taunt still draws it.",
+  "ui.s3b-log-wc": "⚠️ {n} enemy unit(s) saw {name} fall: they avoid Warning Colours next round.",
+  "ui.s3b-log-wc-avoid": "⚠️ {att} turns away from {name}."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

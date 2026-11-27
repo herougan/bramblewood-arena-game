@@ -4842,5 +4842,10 @@
  "While it is on the field, your units' acid attacks deal {n} more.": "Selama ada di lapangan, serangan asam unitmu +{n}.",
  "While it is on the field, your units' water attacks deal {n} more.": "Selama ada di lapangan, serangan air unitmu +{n}.",
  "While it is on the field, your units' lightning attacks deal {n} more.": "Selama ada di lapangan, serangan petir unitmu +{n}.",
- "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "Serangan, tembakan, dan skill yang mengenai unit, bukan detak; selama di papan, juga saat Menunggu. Beberapa bertambah."
+ "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "Serangan, tembakan, dan skill yang mengenai unit, bukan detak; selama di papan, juga saat Menunggu. Beberapa bertambah.",
+ "Warning Colours": "Warna Peringatan",
+ "When an enemy kills it, the killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "Jika musuh membunuhnya, pembunuhnya mendapat {n} Racun. Musuh yang melihatnya mati menghindari unit Warna Peringatan-mu yang lain di ronde berikutnya.",
+ "Avoid: a warned swing goes to an enemy unit one column beside, a shot to any other one, while there is one. Taunt still draws it.": "Hindari: pukulan yang diperingatkan pindah ke unit musuh satu kolom di samping, tembakan ke unit lain mana pun, jika ada. Provokasi tetap menariknya.",
+ "{n} enemy unit(s) saw {name} fall: they avoid Warning Colours next round.": "{n} unit musuh melihat {name} jatuh: mereka menghindari Warna Peringatan di ronde berikutnya.",
+ "{att} turns away from {name}.": "{att} menjauhi {name}."
 }

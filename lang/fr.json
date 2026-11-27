@@ -4841,5 +4841,10 @@
  "While it is on the field, your units' acid attacks deal {n} more.": "Tant qu’elle est sur le terrain, les attaques d’acide de vos unités infligent {n} de plus.",
  "While it is on the field, your units' water attacks deal {n} more.": "Tant qu’elle est sur le terrain, les attaques d’eau de vos unités infligent {n} de plus.",
  "While it is on the field, your units' lightning attacks deal {n} more.": "Tant qu’elle est sur le terrain, les attaques de foudre de vos unités infligent {n} de plus.",
- "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "Coups, tirs et compétences qui touchent une unité, pas les ticks ; tant qu’elle est sur le plateau, même en Attente. Plusieurs s’additionnent."
+ "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "Coups, tirs et compétences qui touchent une unité, pas les ticks ; tant qu’elle est sur le plateau, même en Attente. Plusieurs s’additionnent.",
+ "Warning Colours": "Couleurs d’alerte",
+ "When an enemy kills it, the killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "Quand un ennemi la tue, le tueur reçoit {n} Poison. Les ennemis qui l’ont vue mourir évitent vos autres unités à Couleurs d’alerte la manche suivante.",
+ "Avoid: a warned swing goes to an enemy unit one column beside, a shot to any other one, while there is one. Taunt still draws it.": "Éviter : un coup averti va à une unité ennemie d’une colonne à côté, un tir à n’importe quelle autre, s’il y en a une. La Provocation l’attire quand même.",
+ "{n} enemy unit(s) saw {name} fall: they avoid Warning Colours next round.": "{n} unité(s) ennemie(s) ont vu tomber {name} : elles évitent les Couleurs d’alerte la manche suivante.",
+ "{att} turns away from {name}.": "{att} se détourne de {name}."
 }

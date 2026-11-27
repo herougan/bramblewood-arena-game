@@ -4841,5 +4841,10 @@
  "While it is on the field, your units' acid attacks deal {n} more.": "場にいる間、味方ユニットの酸の攻撃のダメージ+{n}。",
  "While it is on the field, your units' water attacks deal {n} more.": "場にいる間、味方ユニットの水の攻撃のダメージ+{n}。",
  "While it is on the field, your units' lightning attacks deal {n} more.": "場にいる間、味方ユニットの雷の攻撃のダメージ+{n}。",
- "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "ユニットに当たる攻撃・射撃・スキル（継続ダメージは除く）。盤上にいる間、待機中も有効。複数は加算。"
+ "Swings, shots and skills that land on a unit, not ticks; while it is on the board, Waiting too. Several add up.": "ユニットに当たる攻撃・射撃・スキル（継続ダメージは除く）。盤上にいる間、待機中も有効。複数は加算。",
+ "Warning Colours": "警告色",
+ "When an enemy kills it, the killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "敵に倒されると、倒した相手に毒{n}。倒れるのを見た敵は次のラウンド、他の警告色ユニットを避ける。",
+ "Avoid: a warned swing goes to an enemy unit one column beside, a shot to any other one, while there is one. Taunt still draws it.": "回避：警告された攻撃は1列隣の敵ユニットへ、射撃は他のいずれかの敵へ（いれば）。挑発には引かれる。",
+ "{n} enemy unit(s) saw {name} fall: they avoid Warning Colours next round.": "敵ユニット{n}体が{name}の最期を見た：次のラウンド警告色を避ける。",
+ "{att} turns away from {name}.": "{att}は{name}を避けた。"
 }

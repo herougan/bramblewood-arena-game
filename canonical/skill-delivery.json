@@ -433,7 +433,8 @@
   "worship": "none",
   "worthy": "none",
   "attunement": "none",
-  "dogfighter": "none"
+  "dogfighter": "none",
+  "warningColours": "none"
  },
  "swing": [
   "boomerang",
