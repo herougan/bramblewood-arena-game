@@ -20,7 +20,7 @@
      M.berryPop(el, {total}) / M.berryEat(el, to)   Foraging: a berry pops into its pips; three berries hop to the ally it feeds
      M.sturdyBrace(target)              Sturdy: stone brackets clamp the corners as the halved blow lands
      M.twinSlash(att)                   Twin Strike: two blades cross over the card before its second swing
-   Field (fxHook matchUI / boardRendered, Effects Medium and up), one tiled CSS layer set under the cards:
+   Field (fxHook matchUI / boardRendered, Effects Medium and up), one particle layer under the cards:
      M.fieldAmbient(host, kind)         kind: rain | storm | heat | frost | sand | ash | null (clears). M.fieldKind(m) picks it.
    Bosses (Effects Low: the minimal version):
      M.cageClose(card)                  the cage's bars slam down over the caged leader, bramble vines coil, a padlock (Caged Fight,
@@ -174,7 +174,8 @@ function soundKit(){
   if(!S.__fxv){ Object.keys(CUES).forEach(k=>{ if(typeof S[k] !== 'function') S[k] = (...a)=>{ try{ CUES[k](S.prim, ...a); }catch(e){} }; }); S.__fxv = true; }
   return S;
 }
-const snd = (name, ...a)=>{ const S = soundKit(); if(S && typeof S[name] === 'function') S[name](...a); };
+// one tick after the look starts: a new cue bakes its buffers on its first play (SoundKit bakedBuf, up to ~16 ms), kept out of the look's start
+const snd = (name, ...a)=> later(()=>{ const S = soundKit(); if(S && typeof S[name] === 'function') S[name](...a); }, 0);
 M.sound = snd;
 if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', soundKit); else later(soundKit, 0);
 
@@ -199,6 +200,7 @@ M.tideCrest = function(el, o){
   if(!lowOf(o)){ const cr = pix('crest', c.x, c.y + c.h*.42, px), h = sprite('crest', px).h;
     ps.push(play(cr, [{transform:`translateY(${h}px)`, opacity:0}, {transform:'translateY(0)', opacity:1, offset:.4}, {transform:'translateY(0)', opacity:1, offset:.7},
       {transform:`translateY(${h}px)`, opacity:0}], 360/sp, {ease:steps(6)})); }
+  if(o.icon === false) return all(ps); // Tide – {…}: it gains its facets, not the stat (tideAtk / tideArmor are 0)
   const ic = pix(ebb ? 'shield' : 'sword', c.x + c.w*.3, c.y - c.h*.36, px);
   ps.push(play(ic, [{transform:'scale(0)', opacity:0}, {transform:'scale(1.3)', opacity:1, offset:.3}, {transform:'translateY(0) scale(1)', opacity:1, offset:.6},
     {transform:`translateY(${-c.h*.12}px) scale(1)`, opacity:0}], 360/sp, {ease:steps(6), delay:60/sp}));
@@ -283,67 +285,54 @@ M.twinSlash = function(att, o){
 };
 
 // =====================================================================================================================
-// 2. FIELD: one ambient layer set per weather, under the cards and over the SCENES1 floor (z-index -1 inside the battlefield, as the
-//    scene's backdrop). Tiled pixel art (crisp SVG rects) translated by exactly one tile on a loop: compositor only, no script per
-//    frame, gone at Effects Low / None and with reduced motion (CSS), still in a hidden tab (the browser stops it).
+// 2. FIELD: one ambient layer per weather, under the cards and over the SCENES1 floor (z-index -1 inside the battlefield, as the scene's
+//    backdrop). Pixel particles, each a 2 px column (or row) the board's height (or width) carrying one square drop on its end, moved by
+//    one transform loop of 100% of its own length: no layout read, no script per frame, and the composited area stays a few percent of
+//    the board (a full-board animated layer dropped a third of headless frames). Stepped at 30 fps, paused while a round resolves,
+//    gone at Effects Low / None and with reduced motion (CSS); the tints are static. Spread seeded, so a redraw looks the same.
 // =====================================================================================================================
-const tile = (w, h, rects)=> `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}' shape-rendering='crispEdges'>${rects}</svg>`)}")`;
-const rectsOf = (list, fill)=> list.map(([x, y, w, h])=> `<rect x='${x}' y='${y}' width='${w}' height='${h}' fill='${fill}'/>`).join('');
-const seeded = (n, s, fn)=>{ let x = s; const r = ()=> (x = (x * 9301 + 49297) % 233280) / 233280; return Array.from({length:n}, (_, i)=> fn(r, i)); };
-const T_RAIN = tile(48, 72, rectsOf(seeded(9, 7, r=> [Math.floor(r()*46), Math.floor(r()*64), 1, 5 + Math.floor(r()*3)]), 'rgba(205,225,255,.62)'));
-const T_RAIN2 = tile(40, 56, rectsOf(seeded(7, 11, r=> [Math.floor(r()*38), Math.floor(r()*50), 1, 3 + Math.floor(r()*2)]), 'rgba(180,205,240,.38)'));
-const T_SNOW = tile(64, 64, rectsOf(seeded(8, 3, r=> { const s = r() < .4 ? 2 : 1; return [Math.floor(r()*60), Math.floor(r()*60), s, s]; }), 'rgba(255,255,255,.85)'));
-const T_SNOW2 = tile(48, 48, rectsOf(seeded(6, 5, r=> [Math.floor(r()*46), Math.floor(r()*46), 1, 1]), 'rgba(230,240,255,.6)'));
-const T_HEAT = tile(56, 80, rectsOf(seeded(6, 13, r=> [Math.floor(r()*54), Math.floor(r()*76), 1, 1]), 'rgba(255,196,90,.7)') + rectsOf(seeded(3, 17, r=> [Math.floor(r()*54), Math.floor(r()*76), 1, 1]), 'rgba(255,240,170,.8)'));
-const T_SAND = tile(96, 40, rectsOf(seeded(10, 19, r=> [Math.floor(r()*90), Math.floor(r()*38), 2 + Math.floor(r()*5), 1]), 'rgba(236,206,150,.6)'));
-const T_SAND2 = tile(72, 32, rectsOf(seeded(7, 23, r=> [Math.floor(r()*68), Math.floor(r()*30), 1 + Math.floor(r()*3), 1]), 'rgba(210,175,120,.45)'));
-const T_ASH = tile(56, 72, rectsOf(seeded(7, 29, r=> [Math.floor(r()*54), Math.floor(r()*70), 1, 1]), 'rgba(170,165,160,.75)') + rectsOf(seeded(2, 31, r=> [Math.floor(r()*54), Math.floor(r()*70), 1, 1]), 'rgba(255,140,60,.9)'));
-// a layer: tile w x h shown at 2x (pixel scale), moved by (dx, dy) = one shown tile per loop
-const flay = (cls, img, w, h)=> `.fxv-field .${cls}{position:absolute; left:${-w*2}px; top:${-h*2}px; right:${-w*2}px; bottom:${-h*2}px; background:${img} 0 0 / ${w*2}px ${h*2}px repeat; image-rendering:pixelated; will-change:transform;}`;
 css('field', `.fxv-field{position:absolute; inset:0; z-index:-1; pointer-events:none; overflow:hidden; border-radius:inherit; contain:strict;}
-.fxv-field > .fxv-tilt{position:absolute; inset:-12%; rotate:14deg;}
-${flay('fxv-rain', T_RAIN, 48, 72)} ${flay('fxv-rain2', T_RAIN2, 40, 56)} ${flay('fxv-snow', T_SNOW, 64, 64)} ${flay('fxv-snow2', T_SNOW2, 48, 48)}
-${flay('fxv-heat', T_HEAT, 56, 80)} ${flay('fxv-sand', T_SAND, 96, 40)} ${flay('fxv-sand2', T_SAND2, 72, 32)} ${flay('fxv-ash', T_ASH, 56, 72)}
-.fxv-field .fxv-rain{animation:fxvFallR .42s linear infinite;} .fxv-field .fxv-rain2{animation:fxvFallR2 .7s linear infinite;}
-.fxv-f-storm .fxv-rain{animation-duration:.3s;} .fxv-f-storm .fxv-rain2{animation-duration:.5s;}
-@keyframes fxvFallR{to{transform:translateY(144px);}} @keyframes fxvFallR2{to{transform:translateY(112px);}}
-.fxv-field .fxv-snow{animation:fxvSnow 9s linear infinite;} .fxv-field .fxv-snow2{animation:fxvSnow2 14s linear infinite;}
-@keyframes fxvSnow{50%{transform:translate(10px, 64px);} to{transform:translate(0, 128px);}} @keyframes fxvSnow2{50%{transform:translate(-8px, 48px);} to{transform:translate(0, 96px);}}
-.fxv-field .fxv-heat{animation:fxvRise 7s linear infinite;} @keyframes fxvRise{to{transform:translateY(-160px);}}
-.fxv-field .fxv-sand{animation:fxvBlow 1.3s linear infinite;} .fxv-field .fxv-sand2{animation:fxvBlow2 2.1s linear infinite;}
-@keyframes fxvBlow{to{transform:translateX(-192px);}} @keyframes fxvBlow2{to{transform:translateX(-144px);}}
-.fxv-field .fxv-ash{animation:fxvAsh 11s linear infinite;} @keyframes fxvAsh{50%{transform:translate(-14px, 72px);} to{transform:translate(0, 144px);}}
-.fxv-field .fxv-glow{position:absolute; inset:0;}
-.fxv-f-heat .fxv-glow{background:linear-gradient(0deg, rgba(255,120,30,.16), transparent 45%), radial-gradient(ellipse 80% 40% at 50% 0%, rgba(255,230,160,.12), transparent 70%);}
-.fxv-f-heat .fxv-shim{position:absolute; left:0; right:0; height:22%; top:58%; background:repeating-linear-gradient(0deg, transparent 0 5px, rgba(255,220,170,.07) 5px 7px); animation:fxvShim 3.2s ease-in-out infinite alternate; will-change:transform;}
-@keyframes fxvShim{from{transform:translateY(0) scaleY(1);} to{transform:translateY(-10px) scaleY(1.12);}}
+.fxv-field > i{position:absolute; display:block;}
+.fxv-field .fxv-glow{inset:0;}
+.fxv-field .fxv-c{top:-12%; width:2px; height:112%; will-change:transform;}
+.fxv-field .fxv-c::before{content:''; position:absolute; left:0; top:0; width:2px;}
+.fxv-field .fxv-r{left:0; width:100%; height:2px; will-change:transform;}
+.fxv-field .fxv-r::before{content:''; position:absolute; right:0; top:0; height:1px;}
+.fxv-f-rain .fxv-c::before, .fxv-f-storm .fxv-c::before{height:10px; background:rgba(205,225,255,.6);}
+.fxv-f-rain .fxv-c, .fxv-f-storm .fxv-c{animation-name:fxvFall;} .fxv-f-storm .fxv-c{rotate:14deg; top:-20%; height:125%;}
+.fxv-f-frost .fxv-c::before{width:3px; height:3px; background:rgba(255,255,255,.88);} .fxv-f-frost .fxv-c.s::before{width:2px; height:2px; background:rgba(230,240,255,.65);} .fxv-f-frost .fxv-c{animation-name:fxvSway;}
+.fxv-f-ash .fxv-c::before{width:2px; height:2px; background:rgba(170,165,160,.8);} .fxv-f-ash .fxv-c.s::before{background:rgba(255,140,60,.95);} .fxv-f-ash .fxv-c{animation-name:fxvSway;}
+.fxv-f-heat .fxv-c{top:0; height:100%;} .fxv-f-heat .fxv-c::before{top:auto; bottom:0; height:2px; background:rgba(255,196,90,.8);} .fxv-f-heat .fxv-c.s::before{background:rgba(255,240,170,.9);} .fxv-f-heat .fxv-c{animation-name:fxvRise;}
+.fxv-f-sand .fxv-r::before{width:8px; background:rgba(236,206,150,.7);} .fxv-f-sand .fxv-r.s::before{width:4px; background:rgba(210,175,120,.5);} .fxv-f-sand .fxv-r{animation-name:fxvBlow;}
+.fxv-field .fxv-c, .fxv-field .fxv-r{animation-iteration-count:infinite;}
+@keyframes fxvFall{from{transform:translateY(0);} to{transform:translateY(100%);}}
+@keyframes fxvSway{from{transform:translate(0, 0);} 50%{transform:translate(9px, 50%);} to{transform:translate(0, 100%);}}
+@keyframes fxvRise{from{transform:translateY(0); opacity:1;} 85%{opacity:1;} to{transform:translateY(-100%); opacity:0;}}
+@keyframes fxvBlow{from{transform:translateX(0);} to{transform:translateX(-100%);}}
+.fxv-f-heat .fxv-glow{background:linear-gradient(0deg, rgba(255,120,30,.16), transparent 45%), radial-gradient(ellipse 80% 40% at 50% 0%, rgba(255,230,160,.12), transparent 70%), repeating-linear-gradient(0deg, transparent 0 5px, rgba(255,220,170,.05) 5px 7px) 0 58% / 100% 22% no-repeat;}
 .fxv-f-frost .fxv-glow{background:radial-gradient(ellipse 120% 100% at 50% 50%, transparent 55%, rgba(200,230,255,.2) 100%);}
 .fxv-f-sand .fxv-glow{background:linear-gradient(90deg, rgba(220,180,110,.14), rgba(220,180,110,.04) 60%, rgba(220,180,110,.12));}
 .fxv-f-ash .fxv-glow{background:linear-gradient(0deg, rgba(255,90,20,.14), transparent 40%);}
-.fxv-f-storm .fxv-glow{background:linear-gradient(180deg, rgba(20,24,40,.42), transparent 40%);}
-.fxv-f-storm .fxv-cloud{position:absolute; left:0; top:-6%; width:200%; height:30%; will-change:transform; animation:fxvCloud 40s linear infinite;
-  background:radial-gradient(ellipse 14% 60% at 10% 40%, rgba(30,34,52,.55), transparent 70%), radial-gradient(ellipse 18% 70% at 32% 30%, rgba(26,30,46,.5), transparent 70%),
-    radial-gradient(ellipse 14% 60% at 60% 40%, rgba(30,34,52,.55), transparent 70%), radial-gradient(ellipse 18% 70% at 82% 30%, rgba(26,30,46,.5), transparent 70%);}
-@keyframes fxvCloud{to{transform:translateX(-50%);}}
-.fxv-f-storm .fxv-flash{position:absolute; inset:0; background:#e8f0ff; opacity:0; animation:fxvFlash 11s steps(1, end) infinite; will-change:opacity;}
+.fxv-f-storm .fxv-glow{background:radial-gradient(ellipse 30% 22% at 18% 0%, rgba(20,24,40,.5), transparent 70%), radial-gradient(ellipse 34% 24% at 62% 0%, rgba(20,24,40,.5), transparent 70%), linear-gradient(180deg, rgba(20,24,40,.4), transparent 40%);}
+.fxv-f-storm .fxv-flash{inset:0; background:#e8f0ff; opacity:0; animation:fxvFlash 11s steps(1, end) infinite;}
 @keyframes fxvFlash{0%, 91%{opacity:0;} 92%{opacity:.14;} 93%{opacity:0;} 94%{opacity:.1;} 95%, 100%{opacity:0;}}
+.fxv-field.is-paused *{animation-play-state:paused;}
 html[data-fx="low"] .fxv-field, html[data-fx="none"] .fxv-field{display:none;}
 @media (prefers-reduced-motion: reduce){ .fxv-field{display:none;} }`);
-const FIELD_HTML = {
-  rain:  '<i class="fxv-rain2"></i><i class="fxv-rain"></i>',
-  storm: '<i class="fxv-glow"></i><i class="fxv-cloud"></i><i class="fxv-tilt"><i class="fxv-rain2"></i><i class="fxv-rain"></i></i><i class="fxv-flash"></i>',
-  heat:  '<i class="fxv-glow"></i><i class="fxv-shim"></i><i class="fxv-heat"></i>',
-  frost: '<i class="fxv-glow"></i><i class="fxv-snow2"></i><i class="fxv-snow"></i>',
-  sand:  '<i class="fxv-glow"></i><i class="fxv-sand2"></i><i class="fxv-sand"></i>',
-  ash:   '<i class="fxv-glow"></i><i class="fxv-ash"></i>',
-};
-M.FIELD_KINDS = Object.keys(FIELD_HTML);
-// fieldAmbient(host, kind): adds, swaps or clears the board's layer set (kind null clears). Returns the layer.
+// kind: [particles, row (sideways) or column, seconds min, max, share of the second look (.s)]
+const FIELD = {rain:[22, 'c', .5, .8, 0], storm:[30, 'c', .32, .5, 0], heat:[14, 'c', 4, 7, .35], frost:[22, 'c', 7, 12, .4], sand:[18, 'r', .9, 1.6, .4], ash:[18, 'c', 8, 13, .15]};
+const seeded = (n, seed, fn)=>{ let x = seed; const r = ()=> (x = (x * 9301 + 49297) % 233280) / 233280; return Array.from({length:n}, (_, i)=> fn(r, i)); };
+const fieldHTML = k=>{ const [n, kind, lo, hi, share] = FIELD[k];
+  return '<i class="fxv-glow"></i>' + seeded(n, k.length * 7 + 3, (r, i)=>{ const d = lo + r()*(hi - lo), at = (r()*100).toFixed(1), sec = i < n*share ? ' s' : '';
+    return `<i class="fxv-${kind}${sec}" style="${kind === 'c' ? 'left' : 'top'}:${at}%; animation-duration:${d.toFixed(2)}s; animation-delay:${(-r()*d).toFixed(2)}s; animation-timing-function:steps(${Math.max(2, Math.round(d*30))})"></i>`; }).join('')
+    + (k === 'storm' ? '<i class="fxv-flash"></i>' : ''); };
+M.FIELD_KINDS = Object.keys(FIELD);
+// fieldAmbient(host, kind): adds, swaps or clears the board's layer (kind null clears). Returns the layer.
 M.fieldAmbient = function(host, kind){
   host = host || document.getElementById('battlefieldEl'); if(!host) return null;
-  let l = host.querySelector(':scope > .fxv-field'); const want = FIELD_HTML[kind] ? kind : null;
+  let l = host.querySelector(':scope > .fxv-field'); const want = FIELD[kind] ? kind : null;
   if(l && l.dataset.kind === want) return l; if(l){ l.remove(); l = null; } if(!want) return null;
-  l = document.createElement('div'); l.className = 'fxv-field fxv-f-' + want; l.dataset.kind = want; l.setAttribute('aria-hidden', 'true'); l.innerHTML = FIELD_HTML[want];
+  l = document.createElement('div'); l.className = 'fxv-field fxv-f-' + want; l.dataset.kind = want; l.setAttribute('aria-hidden', 'true'); l.innerHTML = fieldHTML(want);
   host.insertBefore(l, host.firstChild); return l;
 };
 // The fight's weather: the field card in play first (engine.getField), then the fight's rules. Flood / High Tide (the standing tide),
@@ -363,7 +352,7 @@ M.fieldKind = function(m){
   return null;
 };
 const fieldSync = (m, env)=>{ const bf = document.getElementById('battlefieldEl'); if(!bf) return;
-  M.fieldAmbient(bf, m && env.fxAtLeast('med') ? M.fieldKind(m) : null); };
+  const l = M.fieldAmbient(bf, m && env.fxAtLeast('med') ? M.fieldKind(m) : null); if(l) l.classList.toggle('is-paused', !!(m && m.resolving)); };
 
 // =====================================================================================================================
 // 3. BOSSES
@@ -424,6 +413,9 @@ M.mageCast = function(anchor, o){
     ps.push(play(burst, [{transform:'scale(.5)', opacity:0}, {transform:'scale(.5)', opacity:1, offset:.68}, {transform:'scale(4)', opacity:0}], 1400/sp, {ease:steps(14)})); }
   return all(ps);
 };
+// crisp pixel art as an SVG tile (the water's edge)
+const tile = (w, h, rects)=> `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}' shape-rendering='crispEdges'>${rects}</svg>`)}")`;
+const rectsOf = (list, fill)=> list.map(([x, y, w, h])=> `<rect x='${x}' y='${y}' width='${w}' height='${h}' fill='${fill}'/>`).join('');
 // A sea boss: the water line rises over the bottom of the board and waves roll down each lane, then it ebbs (1.8 s)
 css('sea', `.fxv-water{border-radius:0 0 12px 12px; image-rendering:pixelated;
   background:${tile(32, 8, rectsOf([[0, 4, 32, 4], [2, 3, 6, 1], [12, 2, 8, 2], [24, 3, 6, 1]], 'rgba(120,200,255,.75)') + rectsOf([[13, 2, 6, 1], [3, 3, 4, 1]], 'rgba(255,255,255,.9)'))} 0 0 / 64px 16px repeat-x,
@@ -463,8 +455,8 @@ M.onEvent = function(ev, env){
     else if((ev.mods || []).includes('sturdy') && env.once('fxv-sturdy' + ev.targetUid)){ const t = el(ev.targetUid); if(t) env.at(env.hitAtMs(ev), ()=>{ if(t.isConnected) M.sturdyBrace(t, o); }); }
     return; }
   if(T === 'tide' && !ev.moonpull && env.once('fxv-tide')){
-    const defs = env.defs || {}, carriers = boardCards().filter(c=>{ const e = (defs[c.getAttribute('data-defid')] || {}).effects || {}; return e.tide || e.tideGrant; }).slice(0, 6);
-    if(carriers.length){ env.at(380, ()=> snd('tideLap')); carriers.forEach((c, i)=> env.at(400 + i*70, ()=>{ if(c.isConnected) M.tideCrest(c, Object.assign({kind:ev.tide}, o)); })); }
+    const defs = env.defs || {}, fx = c=> (defs[c.getAttribute('data-defid')] || {}).effects || {}, carriers = boardCards().filter(c=> fx(c).tide || fx(c).tideGrant).slice(0, 6);
+    if(carriers.length){ env.at(380, ()=> snd('tideLap')); carriers.forEach((c, i)=> env.at(400 + i*70, ()=>{ if(c.isConnected) M.tideCrest(c, Object.assign({kind:ev.tide, icon: !(fx(c).tideGrant && !fx(c).tide)}, o)); })); }
     return; }
   if(T === 'evolve' && ev.stem && ((ev.stem.attack || 0) > 0 || (ev.stem.health || 0) > 0)){ env.at(120, ()=>{ const t = el(ev.uid); if(t){ snd('shellCrack'); M.hatchPop(t, o); } }); return; }
   if(T === 'frenzy' && ev.twin){ const a = el(ev.attUid); if(a) M.twinSlash(a, o); return; }

@@ -160,3 +160,24 @@ In `SoundKit` (`arena_app.js`), baked from one buffer like the other cues.
 | # | Cue | Trigger | Mood (A, cosy/organic) | Mood (B, chiptune) | Length |
 |---|---|---|---|---|---|
 | 35 | `rallyHorn` | An Inspiring skill fires in battle (`pl2InspireFx`, the `statusFx` kind `inspired` event; once per 450 ms however many trigger) | A bright bugle "ta-ta-TAAA": G4, C5, E5, sawtooth through a low-pass that swells on each attack, slight vibrato on the held note | Same, as a square-ish blip fanfare | about 0.65 s |
+
+## VFX1 cues (2026-11-27)
+
+In `bramblewood-fx-v.js` (`CUES`, from `SoundKit.prim`); `candleCatch` and `riteLift` are played by RITUAL1 in `arena_app.js`.
+
+| Cue | Trigger | Sound | Length |
+|---|---|---|---|
+| `swiftZip` | a Swift unit's melee swing (was Quick's `quick`) | airy band-passed zip rising to 5 kHz over a triangle sweep | 0.16 s |
+| `tideLap` | the tide turns with a Tide unit on the board (once) | low-passed water lap and a bubble | 0.32 s |
+| `shellCrack` | an evolute lands on a Hatchling | crisp crack, a click, a chirp | 0.17 s |
+| `reachCreak` | Reach aims into the next lane | a bowstring creak, a lock click | 0.21 s |
+| `mightyThud` | a Mighty hit lands | deep sine thump, a stone crunch | 0.22 s |
+| `berryPlip` / `berryMunch` | Foraging gains a berry / feeds an ally | a plip; three crunches and a chime | 0.1 / 0.38 s |
+| `sturdyThunk` | a Sturdy unit halves a blow | stone on stone, drier and lower than the armour clang | 0.14 s |
+| `twinShing` | Twin Strike's second swing (Frenzy keeps `frenzyTone`) | two blade shings, the second higher | 0.19 s |
+| `cageSlam` | the Caged Fight's cage drops | an iron slam, a chain rattle | 0.37 s |
+| `boneClatter` | a skeleton boss assembles | dry bone clicks, a low rumble | 1.15 s |
+| `runeHum` | a mage boss's runes charge and burst | rising hum, a bright release | 1.25 s |
+| `seaSurge` | a sea boss's water rises | a swelling low surge, a falling wash | 1.5 s |
+| `candleCatch` | a Ritual condition is met (its candle lights) | a soft fwip and a tick | 0.16 s |
+| `riteLift` | a Ritual completes (the darkness lifts) | a rising three-note shimmer | 0.5 s |
