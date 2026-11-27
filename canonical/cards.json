@@ -28846,13 +28846,13 @@
       "tier": 4,
       "map": "m22"
     },
-    "creatorNote": "2026-10-16: placed on 20-B-1 Cinder Slopes (Volcano Lair), its card reward. 2026-10-19 (card pass, package CB): 2/4 -> 2/3 (above its common band (35-60%); 80.8% -> 55.8% at 400 games, band 35-60%). 2026-10-19 halve (BF5): was 2/3. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 1/1; took dry: a gecko keeps its Evasive. 2026-10-24 BAL2 re-fit (DF-1: Map term 0.2 a map, first main-line map): 2/5 -> 2/6. 2026-10-28 BAL7 M1 re-balance (contribution 6.5, +8.4 vs its band): 2/6 -> 2/5. 2026-11-24 (CARDS1, owner 2026-11-23 23:39 #11): resist [\"heat\"] removed (default none; not super relevant to the animal).",
+    "creatorNote": "2026-10-16: placed on 20-B-1 Cinder Slopes (Volcano Lair), its card reward. 2026-10-19 (card pass, package CB): 2/4 -> 2/3 (above its common band (35-60%); 80.8% -> 55.8% at 400 games, band 35-60%). 2026-10-19 halve (BF5): was 2/3. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 1/1; took dry: a gecko keeps its Evasive. 2026-10-24 BAL2 re-fit (DF-1: Map term 0.2 a map, first main-line map): 2/5 -> 2/6. 2026-10-28 BAL7 M1 re-balance (contribution 6.5, +8.4 vs its band): 2/6 -> 2/5. 2026-11-24 (CARDS1, owner 2026-11-23 23:39 #11): resist [\"heat\"] removed (default none; not super relevant to the animal). 2026-11-28 (CARDFIX1, owner 11-27 09:47 settled decisions): TESTFIX11-1 a: the Level 10 line was 20.06 over its cap 19.69 on Map 8 (MAPEXEC1 moved it there from Map 22); the table is re-fitted, Level 1 stats and Evasive unchanged; was 2/5 {\"evasive\":true}.",
     "levelBonus": {
       "4": {
         "health": 1
       },
       "7": {
-        "attack": 1
+        "health": 1
       },
       "10": {
         "health": 2
