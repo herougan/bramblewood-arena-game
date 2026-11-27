@@ -50676,7 +50676,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=ac6587f478", "es": "assets/lang/es.js?v=f4e04a4e2f", "fr": "assets/lang/fr.js?v=891c89a6bc", "id": "assets/lang/id.js?v=328b12d2dd", "it": "assets/lang/it.js?v=9e2ddb5053", "ja": "assets/lang/ja.js?v=f0fb00621e", "ko": "assets/lang/ko.js?v=f0745cef89", "pt": "assets/lang/pt.js?v=3b0600cd85", "ta": "assets/lang/ta.js?v=50c904e3ba", "tl": "assets/lang/tl.js?v=58f6d3d4f5", "zh-Hans": "assets/lang/zh-Hans.js?v=6c64cc0ce5", "zh-Hant": "assets/lang/zh-Hant.js?v=9466ece34a"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=1f41cdaf41", "es": "assets/lang/es.js?v=dad4ec7155", "fr": "assets/lang/fr.js?v=4635a85daf", "id": "assets/lang/id.js?v=30a2e80739", "it": "assets/lang/it.js?v=2e5f54c8d4", "ja": "assets/lang/ja.js?v=9a3f6c2761", "ko": "assets/lang/ko.js?v=89ce763a03", "pt": "assets/lang/pt.js?v=9232bda0b0", "ta": "assets/lang/ta.js?v=8fee8540e2", "tl": "assets/lang/tl.js?v=fa83798623", "zh-Hans": "assets/lang/zh-Hans.js?v=72c9d38d9c", "zh-Hant": "assets/lang/zh-Hant.js?v=8bb8e46948"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -61080,7 +61080,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '8dede3c94f19', BUILD_CARD_HASH = 'be14bab1add7cecd27788bd21fc2fa73b0924d95f6463a299e51872b3622b1c6';
+const BUILD_ID = '079a43b6f539', BUILD_CARD_HASH = 'be14bab1add7cecd27788bd21fc2fa73b0924d95f6463a299e51872b3622b1c6';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
