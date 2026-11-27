@@ -1,0 +1,35 @@
+{
+ "cards": {
+  "Blowfly Maggots": ["Asticots de mouche bleue", "Schmeißfliegenmaden", "Larvas de mosca azul", "Larve di mosca carnaria", "Larvas de mosca-varejeira", "Mga Uod ng Langaw", "நீலப்பூச்சி புழுக்கள்", "Belatung Lalat Hijau", "麗蠅蛆", "麗蠅蛆", "クロバエのウジ", "검정파리 구더기"]
+ },
+ "flavor": {
+  "One is nothing. A thousand, feeding in step, are done with a carcass by the weekend.": {
+   "fr": "Un seul n'est rien. Mille, mangeant en cadence, ont fini une carcasse avant la fin de la semaine.",
+   "de": "Eine ist nichts. Tausend, im Gleichschritt fressend, sind bis zum Wochenende mit einem Kadaver fertig.",
+   "es": "Una no es nada. Mil, comiendo al unísono, acaban con un cadáver antes del fin de semana.",
+   "it": "Una non è niente. Mille, che mangiano al passo, finiscono una carcassa entro il fine settimana.",
+   "pt": "Uma não é nada. Mil, comendo em uníssono, acabam com uma carcaça até o fim de semana.",
+   "tl": "Walang halaga ang isa. Ang isang libo, sabay-sabay kumakain, tapos na sa bangkay pagsapit ng weekend.",
+   "ta": "ஒன்று ஒன்றுமில்லை. ஆயிரம், ஒன்றாகத் தின்றால், வாரக்கடைசிக்குள் உடலை முடித்துவிடும்.",
+   "id": "Satu tak berarti. Seribu, makan serempak, menghabiskan bangkai sebelum akhir pekan.",
+   "zh-Hans": "一只不算什么。成千上万只步调一致地啃食，周末前就能吃光一具尸体。",
+   "zh-Hant": "一隻不算什麼。成千上萬隻步調一致地啃食，週末前就能吃光一具屍體。",
+   "ja": "一匹ならどうということはない。千匹が足並みをそろえて食べれば、週末までに死骸は片付く。",
+   "ko": "한 마리는 아무것도 아니다. 천 마리가 발맞춰 먹으면 주말 전에 사체 하나쯤은 끝난다."
+  },
+  "It beats its chest once. Most fights are decided right there.": {
+   "fr": "Il se frappe le torse une fois. La plupart des combats sont réglés là.",
+   "de": "Es trommelt einmal auf die Brust. Die meisten Kämpfe sind damit entschieden.",
+   "es": "Se golpea el pecho una vez. La mayoría de las peleas se deciden ahí mismo.",
+   "it": "Si batte il petto una volta. La maggior parte degli scontri si decide lì.",
+   "pt": "Bate no peito uma vez. A maioria das lutas se decide ali mesmo.",
+   "tl": "Isang beses nitong tinatambol ang dibdib. Karamihan sa laban ay napagpapasyahan na roon.",
+   "ta": "ஒருமுறை மார்பில் அடித்துக்கொள்ளும். பெரும்பாலான சண்டைகள் அங்கேயே முடிவாகிவிடும்.",
+   "id": "Ia memukul dadanya sekali. Kebanyakan pertarungan selesai saat itu juga.",
+   "zh-Hans": "它只捶一次胸。大多数战斗在那一刻就已分出胜负。",
+   "zh-Hant": "牠只捶一次胸。大多數戰鬥在那一刻就已分出勝負。",
+   "ja": "胸を一度叩くだけ。ほとんどの戦いは、そこで決まる。",
+   "ko": "가슴을 딱 한 번 친다. 대부분의 싸움은 거기서 끝난다."
+  }
+ }
+}
