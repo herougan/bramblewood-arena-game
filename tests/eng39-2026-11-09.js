@@ -36,13 +36,17 @@ const WANT = {
   midas: W1('felling', 'kind', 'midas'), prospector: W1('felling', 'res', 'metal'), timber: W1('hoard', 'kind', 'timber'),
   requiem: W1('carnage', 'who', 'any'), dirge: W1('carnage', 'who', 'yours'), tally: W1('carnage', 'who', 'foes'),
   muster: W1('throng', 'who', 'yours'), beset: W1('throng', 'who', 'theirs'), sociable: W1('formation', 'range', 2),
+  // 2026-11-27 (SKILLS3-B, SKILLS3-10): the ⬆️ / 💀 forms of the status skills are kinds "when" of their family (rendAround: when death + who around)
+  rendPlay: W1('rend', 'when', 'play'), rendDeath: W1('rend', 'when', 'death'), rendAround: ['rend', {when: 'death', who: 'around'}],
+  enfeeblePlay: W1('enfeeble', 'when', 'play'), enfeebleDeath: W1('enfeeble', 'when', 'death'), hardenPlay: W1('harden', 'when', 'play'), hardenDeath: W1('harden', 'when', 'death'),
+  emboldenPlay: W1('embolden', 'when', 'play'), emboldenDeath: W1('embolden', 'when', 'death'),
 };
 const P = J('canonical/skill-params.json'), FAM = P.families;
 const badKinds = Object.keys(WANT).filter(k=> !eq(SPL.kindOf(k), WANT[k]));
 ok(!badKinds.length, `every merged skill is a kind of its family (${Object.keys(WANT).length}; ${badKinds.map(k=> k + '=' + JSON.stringify(SPL.kindOf(k))).join(', ')})`);
 ok(Object.keys(SPL.KIND).length === Object.keys(WANT).length, `no other kinds (${Object.keys(SPL.KIND).length})`);
 const groups = new Set(Object.values(WANT).map(w=> w[0]));
-ok(groups.size === 16, '16 families hold kinds (the 15 groups, the shots fused into Arrow, Delivery every round into Delivery; ENG52 2026-11-18: less Heal)');
+ok(groups.size === 20, '20 families hold kinds (the 15 groups, the shots fused into Arrow, Delivery every round into Delivery; ENG52 2026-11-18: less Heal; SKILLS3-B 2026-11-27: + Rend, Enfeeble, Harden, Embolden)');
 ok(!FAM.iceBolt && !FAM.evolute && !FAM.supreme && !SPL.kindOf('evoluteAlpha') && !SPL.kindOf('evoluteOmega') && !SPL.kindOf('supremeTide'), 'Evolute / Alpha / Omega and Supreme / Supreme Tide stay apart (owner 23:05)');
 ok(Object.keys(FAM).every(k=> { const sels = Object.keys(FAM[k].kinds || {}).concat(...(FAM[k].kindSets || []).map(e=> Object.keys(e.match))); return sels.every(s=> !(s in (FAM[k].params || {})) && P.fields[s]); }), 'no selector shares a name with a parameter; every selector is described in fields');
 ok(eq(SPL.fuse({fireBolt: 2, fireBoltBramble: true}), {arrow: {v: 2, type: 'fire', form: 'bolt', bramble: true}}) && eq(SPL.expand({arrow: {v: 2, type: 'fire', form: 'bolt', bramble: true}}), {fireBolt: 2, fireBoltBramble: true}), 'Fire Bolt 2 – bramble <-> arrow {v 2, type fire, form bolt, bramble}: the bramble part sits beside the type (ENG35-4)');

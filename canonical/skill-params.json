@@ -19,7 +19,7 @@
   "vs": "the status it hunts",
   "style": "a look, no rules effect",
   "armor": "Armor it has while its Shield lasts",
-  "when": "when it is raised (firstHit / afterAttack)",
+  "when": "when it is raised (Shell: firstHit / afterAttack); when it goes off (Rend, Enfeeble, Harden, Embolden: play = ⬆️ On Play, death = 💀 On Death; SKILLS3-B)",
   "kind": "a named version of the skill: its own rule and price (the old skill it replaces)",
   "lasts": "how long it lasts: a round (default); lasting = for good; washed = until washed off",
   "swings": "never = it never swings, it only shoots (Archer)",
@@ -1273,6 +1273,71 @@
    "stat": null,
    "ability": null,
    "about": "SKAUD1 (2026-11-18): v = how many it steals; res = the resource (gold by default; lumber = the old Swipe N, merged into Plunder)."
+  },
+  "rend": {
+   "params": {},
+   "kinds": {
+    "when": {
+     "play": "rendPlay",
+     "death": "rendDeath"
+    }
+   },
+   "kindSets": [
+    {
+     "match": {
+      "when": "death",
+      "who": "around"
+     },
+     "key": "rendAround"
+    }
+   ],
+   "default": "Rend 1: its hits give the target 1 Vulnerable (takes double)",
+   "number": 1,
+   "stat": null,
+   "ability": null,
+   "about": "Rend N (On Hit). SKILLS3-10 (2026-11-27): when play = ⬆️ the enemy facing it gets N Vulnerable (rendPlay); when death = 💀 its killer does (rendDeath); when death, who around = 💀 every unit beside or facing it, yours too (rendAround, owner 11-27 11:22)."
+  },
+  "enfeeble": {
+   "params": {},
+   "kinds": {
+    "when": {
+     "play": "enfeeblePlay",
+     "death": "enfeebleDeath"
+    }
+   },
+   "default": "Enfeeble 1: its hits give the target 1 Feeble (deals half)",
+   "number": 1,
+   "stat": null,
+   "ability": null,
+   "about": "Enfeeble N (On Hit). SKILLS3-10 (2026-11-27): when play = ⬆️ the enemy facing it gets N Feeble (enfeeblePlay); when death = 💀 its killer does (enfeebleDeath)."
+  },
+  "harden": {
+   "params": {},
+   "kinds": {
+    "when": {
+     "play": "hardenPlay",
+     "death": "hardenDeath"
+    }
+   },
+   "default": "Harden 1: its hits give an ally beside it 1 Sturdy (takes half)",
+   "number": 1,
+   "stat": null,
+   "ability": null,
+   "about": "Harden N (On Hit). SKILLS3-10 (2026-11-27): when play = ⬆️ every ally beside it gets N Sturdy (hardenPlay); when death = 💀 the same as it dies (hardenDeath)."
+  },
+  "embolden": {
+   "params": {},
+   "kinds": {
+    "when": {
+     "play": "emboldenPlay",
+     "death": "emboldenDeath"
+    }
+   },
+   "default": "Embolden 1: its hits give an ally beside it 1 Mighty (deals double)",
+   "number": 1,
+   "stat": null,
+   "ability": null,
+   "about": "Embolden N (On Hit). SKILLS3-10 (2026-11-27): when play = ⬆️ every ally beside it gets N Mighty (emboldenPlay); when death = 💀 the same as it dies (emboldenDeath)."
   }
  },
  "_aboutKinds": "ENG39 (2026-11-09, owner decision DES2-3 a): a family may list kinds, its named versions: {\"<selector>\": {\"<value>\": \"<old key>\"}}. On a card the old skill is written as the family key with the selector, e.g. \"daunt\": {\"v\": 1, \"lasts\": \"lasting\"} (was \"weaken\": 1), \"carnage\": {\"v\": 5, \"who\": \"any\"} (was \"requiem\": 5); a kind that is itself a family keeps its parts (\"arrow\": {\"v\": 3, \"swings\": \"never\", \"style\": \"drop\"}). A kind named by two selectors at once is listed in \"kindSets\": [{\"match\": {\"type\": \"fire\", \"form\": \"bolt\"}, \"key\": \"fireBolt\"}]. Expanding gives back the old key, so its rule and its price are unchanged; old keys still read. A card that holds two versions of one family keeps the second as its old key."

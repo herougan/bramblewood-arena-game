@@ -2185,9 +2185,9 @@ PASSIVE_DEFS.push(
   {key:'poisonPowder', category:'evergreen', label:TX('ui.skn-poison-powder'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-poison-powder', {n: numOr(v, 2)})});
 Object.assign(SKILL_ICON, {sleepPowder:'😴', poisonPowder:'🍄'}); // none shared with another skill
 // ==== ENG50 (2026-11-17, owner 11-17 23:14 / 23:36, decisions OWN-1117-2 and REDESIGN3-1; rules in bramblewood-engine.js (ENG50), prices in
-// canonical/skill-costs.json): Paralysis Powder N (the third powder: Stun N), Rend N (Vulnerable tokens: x2 on the next hit), Enfeeble N (Feeble
-// tokens: its next hit x0.5), Armourer N (while Ready, each ally you play comes in +0/+N); the actions Rend, Enfeeble, Weaken and Grant {who} {what}.
-// On no card yet (the redesign fold adds them; Rend and Enfeeble are not featured on Maps 0-20).
+// canonical/skill-costs.json): Paralysis Powder N (the third powder: Stun N), Rend N (Vulnerable tokens: takes x2), Enfeeble N (Feeble tokens:
+// deals x0.5), Armourer N (while Ready, each ally you play comes in +0/+N); the actions Rend, Enfeeble, Weaken and Grant {who} {what}.
+// Rend and Enfeeble are not featured on Maps 0-20.
 PASSIVE_DEFS.push(
   {key:'paralysisPowder', category:'evergreen', label:TX('ui.skn-paralysis-powder'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-paralysis-powder', {n: numOr(v, 1)})},
   {key:'rend', category:'evergreen', label:TX('ui.skn-rend'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-rend', {n: numOr(v, 1)}), codexNote:TX('ui.sk-rend-codex')},
@@ -2200,8 +2200,8 @@ ACTION_DEFS.push(
   {key:'grant', label:TX('ui.act-grant'), fields:['grantSkill','who','sub','targets'], whoOptions:['ally','self','kin'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-grant-desc')});
 Object.assign(SKILL_ICON, {paralysisPowder:'⚡', rend:'💔', enfeeble:'🪶', armourer:'⚒️'});
 // ==== FOCUS2 (2026-11-20, owner 00:39: "regarding our 2x and halvers (4 skills total) - we need 4 skills to apply them"; rules in bramblewood-engine.js
-// (FOCUS2), prices in canonical/skill-costs.json): Harden N / Embolden N (On Play and each round, an ally beside it is Sturdy / Mighty for N rounds), the
-// Harden / Embolden actions; Enfeeble N now gives Feeble for N rounds (ENG50's tokens before), as Embrittle gives Fragile (DEC20-SKILLS).
+// (FOCUS2), prices in canonical/skill-costs.json): Harden N / Embolden N (On Hit since SKILLS3-10: an ally beside it gets N Sturdy / Mighty tokens), the
+// Harden / Embolden actions; Enfeeble N's Feeble. Tokens: one off each round, new ones add up to 3 (SKILLS3-9, 2026-11-27).
 const focus2Line = (k, v)=> numOr(v, 1) === 1 ? TX('ui.sk-' + k + '-1') : TX('ui.sk-' + k, {n: numOr(v, 1)});
 PASSIVE_DEFS.push(
   {key:'harden', category:'evergreen', label:TX('ui.skn-harden'), kind:'number', min:1, defaultValue:1, desc:v=> focus2Line('harden', v), codexNote:TX('ui.sk-harden-codex')},
@@ -2211,6 +2211,13 @@ ACTION_DEFS.push(
   {key:'harden', label:TX('ui.act-harden'), fields:['amount','who','sub'], whoOptions:['ally','self'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-harden-desc')},
   {key:'embolden', label:TX('ui.act-embolden'), fields:['amount','who','sub'], whoOptions:['ally','self'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-embolden-desc')});
 Object.assign(SKILL_ICON, {harden:'🗻', embolden:'💪'}); // neither shared with another skill
+// 2026-11-27 (SKILLS3-B, SKILLS3-10; rules in bramblewood-engine.js SK3B_FORMS, prices in canonical/skill-costs.json): the ⬆️ On Play and 💀 On Death
+// forms of the four status skills, kinds "when" of their family (the label is the skill's name after the trigger's icon). On no card.
+const S3B_FORMS = {rendPlay:['rend', '⬆️'], rendDeath:['rend', '💀'], rendAround:['rend', '💀'], enfeeblePlay:['enfeeble', '⬆️'], enfeebleDeath:['enfeeble', '💀'],
+  hardenPlay:['harden', '⬆️'], hardenDeath:['harden', '💀'], emboldenPlay:['embolden', '⬆️'], emboldenDeath:['embolden', '💀']};
+Object.keys(S3B_FORMS).forEach(k=>{ const [base, ic] = S3B_FORMS[k], tx = k.replace(/[A-Z]/g, x=> '-' + x.toLowerCase());
+  PASSIVE_DEFS.push({key:k, category:'evergreen', label:`${ic} ${TX('ui.skn-' + base)}`, kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-' + tx, {n: numOr(v, 1)}), codexNote: k === 'rendAround' ? TX('ui.sk-rend-around-codex') : undefined});
+  SKILL_ICON[k] = SKILL_ICON[base]; });
 // SKIN3 (2026-11-20, owner sheet row 464; rule in bramblewood-engine.js onslaughtAfterAllyAttack): Onslaught N, +N/+0 for each ally swing while Ready. On no card.
 PASSIVE_DEFS.push({key:'onslaught', category:'passive', label:TX('ui.skn-onslaught'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-onslaught', {n: numOr(v, 1)}), codexNote:TX('ui.sk-onslaught-codex')});
 Object.assign(SKILL_ICON, {onslaught:'📈'});
@@ -7447,7 +7454,7 @@ function sk1Vfx(ev){
   // ENG23 (2026-11-04): Feed's +Attack on each unit, the fast-forward tokens as they are granted and spent, Skitter, the Aimed Bolt
   if(ev.type === 'feed'){ (ev.uids || []).forEach(u=>{ const r = rcOf(u); if(r) r.atk = (r.atk||0) + (ev.attack||0); fl(boardCardEl(u), `🍖 +${ev.attack||0}⚔`, 'buff'); refresh(u); }); try{ const h = hqTileEl(ev.side); if(h) floatText(h, `🍖 +${ev.repair||0}❤`, 'heal'); }catch(e){} snd('healTone'); return; }
   if(ev.type === 'fastForward'){ const r = rcOf(ev.uid); if(r) r.ffCounters = 0; refresh(ev.uid); return; }
-  if(ev.type === 'statusEnd' && ['feeble', 'hardened', 'emboldened', 'scared' /* SKIN3 */].includes(ev.status)){ const r = rcOf(ev.uid); if(r) r[ev.status] = 0; refresh(ev.uid); return; } // FOCUS2 (2026-11-20)
+  if(ev.type === 'statusEnd' && ['vulnerable' /* SKILLS3-9 */, 'feeble', 'hardened', 'emboldened', 'scared' /* SKIN3 */].includes(ev.status)){ const r = rcOf(ev.uid); if(r) r[ev.status] = 0; refresh(ev.uid); return; } // FOCUS2 (2026-11-20)
   if(ev.type !== 'statusFx') return;
   const rc = rcOf(ev.targetUid), el = boardCardEl(ev.targetUid);
   if(ev.kind === 'grantFastForward'){ if(rc) rc.ffCounters = (rc.ffCounters||0) + (ev.amount||1); fl(el, `⏩ +${ev.amount||1}`, 'quick'); refresh(ev.targetUid); return; }
@@ -7456,12 +7463,14 @@ function sk1Vfx(ev){
   if(ev.kind === 'exploit'){ if(rc) rc.exploit = (rc.exploit||0) + (ev.amount||1); fl(el, TX('ui.float-exploit'), 'debuff'); snd('exposeTone'); refresh(ev.targetUid); return; }
   if(ev.kind === 'exploitHit'){ if(rc) rc.exploit = ev.amount||0; fl(el, `🩻 +${ev.bonus||1}`, 'debuff'); refresh(ev.targetUid); return; }
   if(ev.kind === 'exploitFade'){ if(rc) rc.exploit = 0; refresh(ev.targetUid); return; }
-  // ENG50 (2026-11-17): the token marks reuse the Exploit float and sound (exposeTone); a used token ticks the badge down; Grant floats its gift
-  if(ev.kind === 'rend'){ if(rc) rc.vulnerable = (rc.vulnerable||0) + (ev.amount||1); fl(el, TX('ui.float-vulnerable'), 'debuff'); snd('rendMarkTone'); refresh(ev.targetUid); return; }
+  // ENG50 (2026-11-17): the token marks reuse the Exploit float and sound (exposeTone); Grant floats its gift. SKILLS3-9 (2026-11-27): tokens add up to 3
+  // (ev.total); vulnHit / feebleHit are a fight saved before it (a token used per hit).
+  const tok3 = (f, n)=>{ if(rc) rc[f] = ev.total != null ? ev.total : Math.min(3, (rc[f]||0) + (n||1)); };
+  if(ev.kind === 'rend'){ tok3('vulnerable', ev.amount); fl(el, TX('ui.float-vulnerable'), 'debuff'); snd('rendMarkTone'); refresh(ev.targetUid); return; }
   if(ev.kind === 'vulnHit'){ if(rc) rc.vulnerable = ev.amount||0; fl(el, '💔 ×2', 'debuff'); snd('vulnTick'); refresh(ev.targetUid); return; }
-  if(ev.kind === 'enfeeble'){ if(rc) rc.feeble = Math.max(rc.feeble||0, ev.amount||1) /* FOCUS2 (2026-11-20): rounds, refreshed */; fl(el, TX('ui.float-feeble'), 'debuff'); snd('enfeebleTone'); refresh(ev.targetUid); return; }
+  if(ev.kind === 'enfeeble'){ tok3('feeble', ev.amount); fl(el, TX('ui.float-feeble'), 'debuff'); snd('enfeebleTone'); refresh(ev.targetUid); return; }
   // FOCUS2 (2026-11-20): Harden's Sturdy / Embolden's Mighty on an ally: its rounds, a float and a sound; statusEnd clears them (below)
-  if(ev.kind === 'harden' || ev.kind === 'embolden'){ const f = ev.kind === 'harden' ? 'hardened' : 'emboldened'; if(rc) rc[f] = Math.max(rc[f]||0, ev.amount||1); fl(el, TX('ui.focus2-float-' + ev.kind), 'buff'); snd(ev.kind === 'harden' ? 'shieldTone' : 'rallyTone'); refresh(ev.targetUid); return; }
+  if(ev.kind === 'harden' || ev.kind === 'embolden'){ tok3(ev.kind === 'harden' ? 'hardened' : 'emboldened', ev.amount); fl(el, TX('ui.focus2-float-' + ev.kind), 'buff'); snd(ev.kind === 'harden' ? 'shieldTone' : 'rallyTone'); refresh(ev.targetUid); return; }
   if(ev.kind === 'scared'){ if(rc) rc.scared = Math.max(rc.scared||0, ev.amount||1); fl(el, TX('ui.skin3-float-scared', {n: ev.amount||1}), 'debuff'); snd('enfeebleTone'); refresh(ev.targetUid); return; } // SKIN3 (2026-11-20)
   if(ev.kind === 'feebleHit'){ if(rc) rc.feeble = ev.amount||0; fl(el, '🪶 ×½', 'debuff'); snd('feebleTick'); refresh(ev.targetUid); return; }
   if(ev.kind === 'grant'){ fl(el, `🎁 ${(ev.skills || []).map(k=> (PASSIVE_DEFS.find(p=> p.key === k) || {}).label || k).join(', ')}`, 'buff'); snd('rallyTone'); return; }
@@ -10187,6 +10196,7 @@ function triggerActionEmoji(t){
     case 'swapPositions': return '🔄';
     case 'mindControl': return '🪢';
     case 'refine': return '✨';
+    case 'rend': return '💔'; case 'enfeeble': return '🪶'; case 'harden': return '🗻'; case 'embolden': return '💪'; // 2026-11-27 (SKILLS3-B): the status tokens' icons (were ❔)
     default: return '❔';
   }
 }

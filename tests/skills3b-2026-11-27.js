@@ -26,5 +26,85 @@ const app = rd('arena_app.js');
   ok(/onSpawn:'⬆️'/.test(app) && /onPitch:'🃏'/.test(app) && !/onPitch:'♻️'/.test(app), '1. the ring glyphs (TRIGGER_GLYPH)');
   ok((app.match(/trigLeadIcon\(t\)/g) || []).length >= 3 && /🃏 Scavenge - /.test(app), '1. chips (live and spent) and card lines use it'); }
 
+// ---- board helpers (as tests/eng50-2026-11-17.js: exact slots, swings and rounds)
+const U = (id, effects, o)=> Object.assign({id, name:id, attack:0, health:500, wait:0, cost:0, effects: effects || {}}, o || {});
+const defs = Object.assign({}, H.loadCardDefs(), {
+  's3-dummy': U('s3-dummy'), 's3-hit1': U('s3-hit1', {}, {attack:1}), 's3-hit2': U('s3-hit2', {}, {attack:2}), 's3-hit4': U('s3-hit4', {}, {attack:4}), 's3-big': U('s3-big', {}, {attack:50}),
+  's3-arrow1': U('s3-arrow1', {arrow:1}), 's3-fragile': U('s3-fragile', {fragile:true}), 's3-sturdy': U('s3-sturdy', {sturdy:true}),
+  's3-rend1': U('s3-rend1', {rend:1}, {attack:2}), 's3-enf1': U('s3-enf1', {enfeeble:1}, {attack:1}), 's3-hard1': U('s3-hard1', {harden:1}, {attack:1}), 's3-emb1': U('s3-emb1', {embolden:1}, {attack:1}),
+  's3-rendPlay': U('s3-rendPlay', {rend:{v:2, when:'play'}}), 's3-enfPlay': U('s3-enfPlay', {enfeeble:{v:1, when:'play'}}),
+  's3-hardPlay': U('s3-hardPlay', {harden:{v:2, when:'play'}}), 's3-embPlay': U('s3-embPlay', {embolden:{v:1, when:'play'}}),
+  's3-rendDeath': U('s3-rendDeath', {rend:{v:2, when:'death'}}, {health:3}), 's3-enfDeath': U('s3-enfDeath', {enfeeble:{v:1, when:'death'}}, {health:3}),
+  's3-hardDeath': U('s3-hardDeath', {harden:{v:1, when:'death'}}, {health:3}), 's3-embDeath': U('s3-embDeath', {embolden:{v:1, when:'death'}}, {health:3}),
+  's3-rendAround': U('s3-rendAround', {rend:{v:1, when:'death', who:'around'}}, {health:3}),
+});
+const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
+function mk(seed, o){ const e = E.makeSimEngine(defs, E.mulberry32(seed || 11), Object.assign({recordEvents:true, battleMode:'open'}, o || {}));
+  return {e, P:{1:e.newPlayer(1, {}, {health:500}), 2:e.newPlayer(2, {}, {health:500})}}; }
+function put(e, P, pid, id, slot, ev){ e.debugSpawnCard(P, so, pid, id, 'left', {}, ev || []);
+  const pl = P[pid], c = all(pl).filter(x=> (e.derivedDefs[x.defId] ? e.derivedDefs[x.defId].derivedFrom : x.defId) === id || x.defId === id).reduce((a, x)=> (!a || x.uid > a.uid) ? x : a, null); c.slot = slot;
+  const cs = all(pl); pl.row.center = cs.filter(x=> x.slot === 0); pl.row.left = cs.filter(x=> x.slot < 0).sort((a, b)=> b.slot - a.slot); pl.row.right = cs.filter(x=> x.slot > 0).sort((a, b)=> a.slot - b.slot);
+  e.syncPhaseStats(P, so, []); return c; }
+const fight = (e, P, r)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, r || 1); return ev; };
+const swing = (e, P, c)=>{ const ev = []; e.debugAttack(P, so, c.uid, {}, ev); return ev; };
+const fxOf = (kind, uid)=> x=> x.type === 'statusFx' && x.kind === kind && (uid == null || x.targetUid === uid);
+const hitOn = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid).reduce((t, h)=> t + (h.dmg || 0), 0);
+
+// ================= 2. status tokens (SKILLS3-9) and the ladder (SKILLS3-10) =================
+{ const {e, P} = mk(); const a = put(e, P, 1, 's3-rend1', 0), t = put(e, P, 2, 's3-dummy', 0);
+  swing(e, P, a); ok(t.vulnerable === 1 && t.hp === 498, '2. Rend 1: the hit lands (2), then 1 Vulnerable');
+  const ev = swing(e, P, a); ok(t.hp === 494 && t.vulnerable === 2 && !ev.some(fxOf('vulnHit')), `2. the next hit deals double (4) and spends none; it adds one (${500 - t.hp}, ${t.vulnerable})`);
+  swing(e, P, a); swing(e, P, a); ok(t.hp === 486 && t.vulnerable === 3, `2. every hit doubles while any remain; new tokens add, up to 3 (${t.vulnerable})`); }
+{ const {e, P} = mk(); const t = put(e, P, 2, 's3-dummy', 0); t.vulnerable = 2; t._vulnerableJustSet = true;
+  const left = [1, 2, 3, 4].map(r=>{ fight(e, P, r); return t.vulnerable; }); ok(left.join() === '2,1,0,0', `2. one comes off each upkeep, not the round it was laid (${left})`); }
+{ const {e, P} = mk(); const t = put(e, P, 2, 's3-dummy', 0); t.vulnerable = 1; t._vulnerableJustSet = true; const ev = []; put(e, P, 1, 's3-arrow1', 0);
+  const r1 = fight(e, P, 1); ok(hitOn(r1, t.uid) === 2, '2. a shot doubles too'); const r2 = fight(e, P, 2); ok(hitOn(r2, t.uid) === 2 && t.vulnerable === 0, '2. the next round: doubled, then the last token comes off'); void ev;
+  const r3 = fight(e, P, 3); ok(hitOn(r3, t.uid) === 1, '2. no token, no double'); }
+{ const {e, P} = mk(); const t = put(e, P, 2, 's3-fragile', 0); t.vulnerable = 2; const a = put(e, P, 1, 's3-hit1', 0); swing(e, P, a); ok(t.hp === 498, `2. Fragile + Vulnerable: x2, never x4 from one side (${500 - t.hp})`); }
+{ const {e, P} = mk(); const a = put(e, P, 1, 's3-enf1', 0), t = put(e, P, 2, 's3-hit4', 0); [0, 1, 2, 3].forEach(()=> swing(e, P, a)); ok(t.feeble === 3, `2. Feeble tokens add up to 3 (${t.feeble})`);
+  const w = put(e, P, 1, 's3-dummy', 0); void w; }
+// plain Harden / Embolden: On Hit only (no On Play, no round-start aura)
+{ const {e, P} = mk(); const sp = []; const ally = put(e, P, 1, 's3-dummy', -1), h = put(e, P, 1, 's3-hard1', 0, sp); put(e, P, 2, 's3-dummy', 0);
+  ok(!sp.some(fxOf('harden')) && !(ally.hardened > 0), '2. Harden: nothing when played (SKILLS3-10: no aura)');
+  swing(e, P, h); ok(ally.hardened === 1, '2. Harden 1: its hit gives the ally beside it 1 Sturdy');
+  swing(e, P, h); swing(e, P, h); swing(e, P, h); ok(ally.hardened === 3, `2. repeats add up to 3 (${ally.hardened})`); }
+{ const {e, P} = mk(); const ally = put(e, P, 1, 's3-hit2', 1), m = put(e, P, 1, 's3-emb1', 0), t = put(e, P, 2, 's3-dummy', 1); put(e, P, 2, 's3-dummy', 0);
+  const ev0 = fight(e, P, 1); void ev0; ok(ally.emboldened >= 1, '2. Embolden 1: its hit gives the ally beside it Mighty');
+  const h0 = t.hp; swing(e, P, ally); ok(h0 - t.hp === 4, `2. the Mighty ally deals double (${h0 - t.hp})`); void m; }
+// ⬆️ forms
+{ const {e, P} = mk(); const t = put(e, P, 2, 's3-dummy', 0), sp = []; put(e, P, 1, 's3-rendPlay', 0, sp); ok(t.vulnerable === 2 && sp.some(fxOf('rend', t.uid)), '2. ⬆️ Rend 2: the enemy facing it gets 2 Vulnerable when played'); }
+{ const {e, P} = mk(); const t = put(e, P, 2, 's3-hit4', 0); put(e, P, 1, 's3-enfPlay', 0); ok(t.feeble === 1, '2. ⬆️ Enfeeble 1: the enemy facing it gets 1 Feeble'); }
+{ const {e, P} = mk(); const l = put(e, P, 1, 's3-dummy', -1), r = put(e, P, 1, 's3-dummy', 1), far = put(e, P, 1, 's3-dummy', 2); put(e, P, 1, 's3-hardPlay', 0);
+  ok(l.hardened === 2 && r.hardened === 2 && !(far.hardened > 0), '2. ⬆️ Harden 2: every ally beside it gets 2 Sturdy (not one further away)'); }
+{ const {e, P} = mk(); const l = put(e, P, 1, 's3-hit2', -1); put(e, P, 1, 's3-embPlay', 0); ok(l.emboldened === 1, '2. ⬆️ Embolden 1: the ally beside it gets 1 Mighty'); }
+// 💀 forms: its killer / the allies beside it; the owner's around form hits both sides
+{ const {e, P} = mk(); put(e, P, 1, 's3-rendDeath', 0); const k = put(e, P, 2, 's3-big', 0); const ev = swing(e, P, k);
+  ok(k.vulnerable === 2 && ev.some(fxOf('rend', k.uid)), `2. 💀 Rend 2: its killer gets 2 Vulnerable (${k.vulnerable})`); }
+{ const {e, P} = mk(); const d = put(e, P, 1, 's3-rendDeath', 0); put(e, P, 2, 's3-dummy', 0); e.debugDamage(P, so, d.uid, 10, {}, []); ok(!all(P[2]).some(c=> c.vulnerable > 0), '2. 💀 Rend: no killer (a plain wound), nothing'); }
+{ const {e, P} = mk(); put(e, P, 1, 's3-enfDeath', 0); const k = put(e, P, 2, 's3-big', 0); swing(e, P, k); ok(k.feeble === 1, '2. 💀 Enfeeble 1: its killer gets 1 Feeble'); }
+{ const {e, P} = mk(); const l = put(e, P, 1, 's3-dummy', -1); put(e, P, 1, 's3-hardDeath', 0); const k = put(e, P, 2, 's3-big', 0); swing(e, P, k); ok(l.hardened === 1 && !(k.hardened > 0), '2. 💀 Harden 1: the ally beside it gets 1 Sturdy as it dies'); }
+{ const {e, P} = mk(); const l = put(e, P, 1, 's3-dummy', -1); put(e, P, 1, 's3-embDeath', 0); const k = put(e, P, 2, 's3-big', 0); swing(e, P, k); ok(l.emboldened === 1, '2. 💀 Embolden 1: the ally beside it gets 1 Mighty'); }
+{ const {e, P} = mk(); const l = put(e, P, 1, 's3-dummy', -1), r = put(e, P, 1, 's3-dummy', 1); put(e, P, 1, 's3-rendAround', 0); const k = put(e, P, 2, 's3-big', 0), side = put(e, P, 2, 's3-dummy', 1);
+  const ev = swing(e, P, k); ok(l.vulnerable === 1 && r.vulnerable === 1 && k.vulnerable === 1 && !(side.vulnerable > 0) && ev.filter(fxOf('rend')).length === 3,
+    `2. 💀 Rend (around), owner 11-27 11:22: its own neighbours and the enemy facing it get 1 Vulnerable (${l.vulnerable}, ${r.vulnerable}, ${k.vulnerable}, ${side.vulnerable || 0})`); }
+// prices, the family's kinds, registry and texts
+{ const SC = require('../tools/skill_costs.js'), T = SC.make(J('canonical/skill-costs.json')), S = e=> T.budget({id:'x', attack:1, health:3, effects:e, rarity:'common', level:1});
+  const want = {rend:4.3, enfeeble:2.1, harden:2, embolden:3.2, rendPlay:1, rendDeath:0.5, rendAround:-0.3, enfeeblePlay:0.8, enfeebleDeath:0.5, hardenPlay:1.2, hardenDeath:0.9, emboldenPlay:2.2, emboldenDeath:1.7};
+  const bad = Object.keys(want).filter(k=> { const r = S({[k]: 1}); return r.missing.length || Math.abs(r.S - want[k]) > 0.005; });
+  ok(!bad.length, '2. prices at N 1 (canonical/skill-costs.json): ' + Object.keys(want).map(k=> k + ' ' + S({[k]: 1}).S).join(', '));
+  ok(S({rend:{v:2, when:'play'}}).S === S({rendPlay:2}).S && S({harden:{v:1, when:'death'}}).S === S({hardenDeath:1}).S, '2. the fused kind reads the same price');
+  const SPL = require('../bramblewood-skillparams.js');
+  ok(JSON.stringify(SPL.expand({rend:{v:1, when:'death', who:'around'}})) === '{"rendAround":1}' && JSON.stringify(SPL.fuse({emboldenPlay:2})) === '{"embolden":{"v":2,"when":"play"}}', '2. kinds "when" of each family (skill-params.json)');
+  const D = J('canonical/skill-delivery.json').delivery, C = J('canonical/skill-counters.json');
+  ok(['rendPlay', 'rendDeath', 'rendAround', 'enfeeblePlay', 'enfeebleDeath', 'hardenPlay', 'hardenDeath', 'emboldenPlay', 'emboldenDeath'].every(k=> D[k] === 'none' && (C.applies[k] || C.noCounter.includes(k))), '2. delivery none and classified counters for every form'); }
+{ const TX = require('../bramblewood-texts.js').TEXT, pk = J('lang/de.json');
+  const keys = ['ui.sk-rend-play', 'ui.sk-rend-death', 'ui.sk-rend-around', 'ui.sk-rend-around-codex', 'ui.sk-enfeeble-play', 'ui.sk-enfeeble-death', 'ui.sk-harden-play', 'ui.sk-harden-death', 'ui.sk-embolden-play', 'ui.sk-embolden-death'];
+  ok(keys.every(k=> TX[k] && pk[TX[k]]), '2. the forms\' texts, translated (de)');
+  ok(!/each round/.test(TX['ui.sk-harden']) && /hits/.test(TX['ui.sk-harden']) && /hits/.test(TX['ui.sk-embolden']) && /up to 3/.test(TX['ui.sk-rend-codex']), '2. Harden / Embolden read On Hit; the token rule in the Codex note');
+  ok(/const S3B_FORMS = \{rendPlay:\['rend', '⬆️'\]/.test(app) && /case 'rend': return '💔'/.test(app) && /'vulnerable' \/\* SKILLS3-9 \*\/, 'feeble'/.test(app), '2. the app: form entries, the trigger chip icon, the badge clears when the tokens run out');
+  const cards = J('canonical/cards.json'), pools = J('canonical/map-pools.json'), FORM_KEYS = ['rendPlay', 'rendDeath', 'rendAround', 'enfeeblePlay', 'enfeebleDeath', 'hardenPlay', 'hardenDeath', 'emboldenPlay', 'emboldenDeath'];
+  const has = c=> [c.effects || {}].concat(Object.values(c.levelSkills || {})).some(o=> Object.keys(o).some(k=> FORM_KEYS.includes(k) || (['rend', 'enfeeble', 'harden', 'embolden'].includes(k) && o[k] && o[k].when)));
+  ok(!cards.some(has), '2. no card carries a ⬆️ / 💀 form yet (SKILLS3-3 open; no list changes, owner 11-27 11:22)'); void pools; }
+
 console.log(`skills3b-2026-11-27: ${n - fail}/${n} passed`);
 process.exit(fail ? 1 : 0);

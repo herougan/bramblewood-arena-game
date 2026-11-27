@@ -72,13 +72,14 @@ ok(BB.POWDER_FAMILY.includes('paralysisPowder') && BB.skillCountOf({paralysisPow
 // ================= 2. Rend N: Vulnerable tokens =================
 { const {e, P} = mk(); const a = put(e, P, 1, 'e50-rend', 0), t = put(e, P, 2, 'e50-dummy', 0);
   let ev = swing(e, P, a); ok(t.hp === 498 && t.vulnerable === 1 && ev.some(x=> fxOf('rend', t.uid)(x) && x.amount === 1), `Rend 1: the hit lands (2), then 1 Vulnerable token (${t.hp}, ${t.vulnerable})`);
-  ev = swing(e, P, a); ok(t.hp === 494 && t.vulnerable === 1 && ev.some(x=> fxOf('vulnHit', t.uid)(x) && x.amount === 0), `the next hit deals double (4) and uses the token; the hit puts a new one (${t.hp})`);
+  // 2026-11-27 (SKILLS3-B, SKILLS3-9): hits spend no token; a new hit adds one (up to 3); one comes off each upkeep (tests/skills3b-2026-11-27.js)
+  ev = swing(e, P, a); ok(t.hp === 494 && t.vulnerable === 2 && !ev.some(fxOf('vulnHit', t.uid)), `the next hit deals double (4), spends nothing; the hit adds one (${t.hp}, ${t.vulnerable})`);
   const hit = ev.find(x=> x.type === 'hit' && x.targetUid === t.uid); ok(hit && hit.mods && hit.mods.includes('vulnerable'), 'the doubled hit carries the vulnerable mark'); }
-{ const {e, P} = mk(); const a = put(e, P, 1, 'e50-rend3', 0), t = put(e, P, 2, 'e50-dummy', 0); swing(e, P, a); ok(t.vulnerable === 3, 'Rend 3: 3 tokens'); swing(e, P, a); ok(t.vulnerable === 5, 'tokens stack (3 - 1 used + 3)'); }
+{ const {e, P} = mk(); const a = put(e, P, 1, 'e50-rend3', 0), t = put(e, P, 2, 'e50-dummy', 0); swing(e, P, a); ok(t.vulnerable === 3, 'Rend 3: 3 tokens'); swing(e, P, a); ok(t.vulnerable === 3, 'tokens add up to 3 (SKILLS3-9, 2026-11-27; was 3 - 1 used + 3)'); }
 { const {e, P} = mk(); const t = put(e, P, 2, 'e50-dummy', 0); t.vulnerable = 1; const s = put(e, P, 1, 'e50-arrow', 0); fight(e, P);
-  ok(t.hp === 498 && t.vulnerable === 0, `a shot uses a token too: Arrow 1 deals 2 (${t.hp})`); void s; }
-{ const {e, P} = mk(); const t = put(e, P, 2, 'e50-dummy', 0); t.vulnerable = 2; t.poison = 3; fight(e, P); ok(t.vulnerable === 2, 'a Venom tick does not use one'); }
-{ const {e, P} = mk(); const t = put(e, P, 2, 'e50-fragile', 0); t.vulnerable = 1; const a = put(e, P, 1, 'e50-swing', 0); swing(e, P, a); ok(t.hp === 496, `Fragile and Vulnerable multiply: 1 x2 x2 = 4 (${500 - t.hp})`); }
+  ok(t.hp === 498 && t.vulnerable === 0, `a shot doubles too: Arrow 1 deals 2; the round's upkeep takes the token off (SKILLS3-9) (${t.hp}, ${t.vulnerable})`); void s; }
+{ const {e, P} = mk(); const t = put(e, P, 2, 'e50-dummy', 0); t.vulnerable = 2; t._vulnerableJustSet = true; t.poison = 3; const h0 = t.hp; fight(e, P); ok(t.vulnerable === 2 && h0 - t.hp === 3, `a Poison tick is not doubled (${h0 - t.hp}; SKILLS3-9: tokens wear off by the upkeep only)`); }
+{ const {e, P} = mk(); const t = put(e, P, 2, 'e50-fragile', 0); t.vulnerable = 1; const a = put(e, P, 1, 'e50-swing', 0); swing(e, P, a); ok(t.hp === 498, `Fragile and Vulnerable: still x2, never x4 from one side (SKILLS3-9, 2026-11-27; was 4) (${500 - t.hp})`); }
 { const {e, P} = mk(); const t = put(e, P, 1, 'e50-dummy', 0); t.vulnerable = 2; t.feeble = 2; put(e, P, 1, 'e50-cleanser', 1); ok(t.vulnerable === 0 && t.feeble === 0, 'Cleanse removes Vulnerable and Feeble tokens (physical)'); }
 { const {e, P} = mk(); const a = put(e, P, 1, 'e50-rend', 0), t = put(e, P, 2, 'e50-noVuln', 0); swing(e, P, a); ok(!(t.vulnerable > 0), 'Immune to Vulnerable: no tokens'); }
 // the old rend key (ignores Armor) is gone: it was Pierce's alias since 2026-10-11
@@ -174,7 +175,7 @@ const LEAD = /^[\s \u{1F000}-\u{1FAFF}☀-➿️‍↗]+/u;
 for(const L of ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko']){ const pk = J('lang/' + L + '.json'); const miss = KEYS.concat(['ui.skn-exploit', 'ui.sk-exploit', 'ui.act-cleanse-desc']).filter(k=> !pk[TX[k].replace(LEAD, '')]); ok(!miss.length, `${L}: the ENG50 texts are translated ${miss.join(', ')}`); }
 ok(/\{key:'paralysisPowder', category:'evergreen'/.test(app) && /\{key:'rend', category:'evergreen'/.test(app) && /\{key:'enfeeble', category:'evergreen'/.test(app) && /\{key:'armourer', category:'passive'/.test(app), 'the four skills are in PASSIVE_DEFS (the editor\'s picker, the Codex)');
 ok(/paralysisPowder:'⚡', rend:'💔', enfeeble:'🪶', armourer:'⚒️'/.test(app), 'icons');
-ok(/if\(ev\.kind === 'rend'\)\{ if\(rc\) rc\.vulnerable/.test(app) && /if\(ev\.kind === 'feebleHit'\)/.test(app) && /if\(ev\.kind === 'grant'\)\{ fl\(/.test(app) && /c\.vulnerable > 0\) badges\.push/.test(app), 'the effect: floats, badges and replay state for the tokens and Grant');
+ok(/if\(ev\.kind === 'rend'\)\{ tok3\('vulnerable'/.test(app) /* 2026-11-27 (SKILLS3-B): tokens add up to 3 (tok3) */ && /if\(ev\.kind === 'feebleHit'\)/.test(app) && /if\(ev\.kind === 'grant'\)\{ fl\(/.test(app) && /c\.vulnerable > 0\) badges\.push/.test(app), 'the effect: floats, badges and replay state for the tokens and Grant');
 ok(/paralysis:\{cls:'paralysis'/.test(rd('bramblewood-fx-h.js')) && /id:'sk-paralysis-powder'/.test(rd('tools/effects-lab/manifest/h.js')) && /package ENG50/.test(rd('docs/effects-catalogue.md')), 'the paralysis puff (FX.H), its Effects Lab entry and the catalogue');
 ok(/^## 2026-11-18 \(package ENG50\b/m.test(rd('docs/CHANGELOG.md')) /* 2026-11-19 (TESTFIX6): its own heading, wherever later entries put it */ && /eng50-2026-11-17/.test(rd('tests/run-all.sh')), 'CHANGELOG entry and run-all.sh');
 { const ps = rd('docs/project-state.md'); ok(['Vulnerable', 'Feeble', 'Rend', 'Enfeeble', 'Weaken', 'Grant', 'Armourer'].every(w=> new RegExp(w).test(ps)) && /OWN-1117-2/.test(ps), 'project-state names the statuses and skills with OWN-1117-2'); }

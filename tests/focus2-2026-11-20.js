@@ -24,8 +24,8 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'f2-hit4':    U('f2-hit4', {}, {attack:4}),
   'f2-feeb4':   U('f2-feeb4', {feeble:true}, {attack:4}),
   'f2-wall':    U('f2-wall', {}, {attack:0, health:500}),
-  'f2-hard':    U('f2-hard', {harden:1}),
-  'f2-emb':     U('f2-emb', {embolden:1}),
+  'f2-hard':    U('f2-hard', {harden:1}, {attack:1}), // 2026-11-27 (SKILLS3-B, SKILLS3-10): Harden / Embolden are On Hit now, so the carrier swings
+  'f2-emb':     U('f2-emb', {embolden:1}, {attack:1}),
   'f2-sturdy':  U('f2-sturdy', {sturdy:true}),
   'f2-mighty':  U('f2-mighty', {mighty:true}, {attack:2}),
   'f2-swing2':  U('f2-swing2', {}, {attack:2}),
@@ -49,7 +49,7 @@ const dealt = (f, uid)=> f.evs.map(ev=> ev.filter(x=> x.type === 'hit' && x.attU
   const d = dmgs(f, me.uid);
   ok(f.ev.some(x=> x.type === 'statusFx' && x.kind === 'enfeeble' && x.targetUid === t.uid && x.amount === 1), '1. Enfeeble 1: the statusFx enfeeble event (amount 1, the rounds)');
   ok(d.slice(1).every(x=> x === 2), `1. the unit it keeps hitting deals half from then on (${d})`);
-  ok(t.feeble === 1, `1. refreshed to 1, not stacked (${t.feeble})`); }
+  ok(t.feeble === 3, `1. repeats add up to 3 (SKILLS3-9, 2026-11-27; was refreshed to 1) (${t.feeble})`); }
 { const f = fight([['f2-enf', 'center']], [['f2-feeb4', 'center']], 3), me = byDef(f.P[1], 'f2-enf'); const d = dmgs(f, me.uid);
   ok(d.every(x=> x === 2), `1. a unit with the Feeble skill, Enfeebled: still half, never a quarter (${d})`); }
 { const f = fight([['f2-wall', 'center']], [['f2-hit4', 'center']], 1, P=>{ const t = byDef(P[2], 'f2-hit4'); t.feeble = 1; t._feebleJustSet = true; }), w = byDef(f.P[1], 'f2-wall');
@@ -61,12 +61,13 @@ const dealt = (f, uid)=> f.evs.map(ev=> ev.filter(x=> x.type === 'hit' && x.attU
   ok(t.feeble === 2, `1. the Enfeeble action: Feeble for 2 rounds (${t.feeble})`); }
 
 // ================= 2. Harden N =================
-{ const f = fight([['f2-hard', 'center'], ['f2-dummy', 'left']], [['f2-wall', 'center'], ['f2-hit4', 'left']], 2), a = byDef(f.P[1], 'f2-dummy');
-  const d = dmgs(f, a.uid), h = f.ev.filter(x=> x.type === 'hit' && x.targetUid === a.uid);
-  ok(f.sp.concat(f.ev).some(x=> x.type === 'statusFx' && x.kind === 'harden' && x.targetUid === a.uid && x.amount === 1), '2. Harden 1: the statusFx harden event on the ally beside it');
-  ok(d.every(x=> x === 2), `2. the ally beside it takes half (${d})`);
-  ok(h.every(x=> (x.mods || []).includes('sturdy')), '2. its hits are marked sturdy'); }
-{ const f = fight([['f2-hard', 'center'], ['f2-sturdy', 'left']], [['f2-wall', 'center'], ['f2-hit4', 'left']], 2), a = byDef(f.P[1], 'f2-sturdy');
+// 2026-11-27 (SKILLS3-B, SKILLS3-10): On Hit (no On Play / round-start aura): the ally is Sturdy from the round after the first hit at the latest
+{ const f = fight([['f2-hard', 'center'], ['f2-dummy', 'left']], [['f2-wall', 'center'], ['f2-hit4', 'left']], 3), a = byDef(f.P[1], 'f2-dummy');
+  const d = dmgs(f, a.uid), h = f.evs.slice(1).flat().filter(x=> x.type === 'hit' && x.targetUid === a.uid);
+  ok(f.ev.some(x=> x.type === 'statusFx' && x.kind === 'harden' && x.targetUid === a.uid && x.amount === 1) && !f.sp.some(x=> x.type === 'statusFx' && x.kind === 'harden'), '2. Harden 1: the statusFx harden event on the ally beside it, from its hit (not on play)');
+  ok(d.slice(1).every(x=> x === 2), `2. the ally beside it takes half (${d})`);
+  ok(h.length && h.every(x=> (x.mods || []).includes('sturdy')), '2. its hits are marked sturdy'); }
+{ const f = fight([['f2-hard', 'center'], ['f2-sturdy', 'left']], [['f2-wall', 'center'], ['f2-hit4', 'left']], 3), a = byDef(f.P[1], 'f2-sturdy');
   ok(dmgs(f, a.uid).every(x=> x === 2), `2. a Sturdy ally, Hardened: still half, never a quarter (${dmgs(f, a.uid)})`); }
 { const f = fight([['f2-hard', 'center']], [['f2-hit4', 'center']], 2), me = byDef(f.P[1], 'f2-hard');
   ok(dmgs(f, me.uid).every(x=> x === 4) && !(me.hardened > 0), '2. Harden is for an ally: alone it hardens nobody, itself included'); }
@@ -75,12 +76,12 @@ const dealt = (f, uid)=> f.evs.map(ev=> ev.filter(x=> x.type === 'hit' && x.attU
   ok(f.ev.some(x=> x.type === 'statusEnd' && x.status === 'hardened' && x.uid === me.uid), '2. it wears off with a statusEnd hardened'); }
 
 // ================= 3. Embolden N =================
-{ const f = fight([['f2-emb', 'center'], ['f2-swing2', 'left']], [['f2-wall', 'center'], ['f2-wall', 'left']], 2), w = byDef(f.P[1], 'f2-swing2');
-  ok(f.sp.concat(f.ev).some(x=> x.type === 'statusFx' && x.kind === 'embolden' && x.amount === 1), '3. Embolden 1: the statusFx embolden event');
-  ok(dealt(f, w.uid).every(x=> x === 4), `3. the ally beside it deals double (${dealt(f, w.uid)})`); }
+{ const f = fight([['f2-emb', 'center'], ['f2-swing2', 'left']], [['f2-wall', 'center'], ['f2-wall', 'left']], 3), w = byDef(f.P[1], 'f2-swing2');
+  ok(f.ev.some(x=> x.type === 'statusFx' && x.kind === 'embolden' && x.amount === 1), '3. Embolden 1: the statusFx embolden event (On Hit, SKILLS3-10)');
+  ok(dealt(f, w.uid).slice(1).every(x=> x === 4), `3. the ally beside it deals double (${dealt(f, w.uid)})`); }
 { const f = fight([['f2-emb', 'center']], [['f2-wall', 'center']], 1), me = byDef(f.P[1], 'f2-emb');
   ok(!(me.emboldened > 0), '3. alone it emboldens nobody, itself included'); }
-{ const f = fight([['f2-emb', 'center'], ['f2-mighty', 'left']], [['f2-wall', 'center'], ['f2-wall', 'left']], 2), w = byDef(f.P[1], 'f2-mighty');
+{ const f = fight([['f2-emb', 'center'], ['f2-mighty', 'left']], [['f2-wall', 'center'], ['f2-wall', 'left']], 3), w = byDef(f.P[1], 'f2-mighty');
   ok(w.emboldened > 0 && dealt(f, w.uid).every(x=> x === 4), `3. a Mighty ally, Emboldened: still x2, never x4 (${dealt(f, w.uid)})`); }
 
 // ================= 5. the focus swap =================
@@ -106,7 +107,8 @@ const CARRIERS = {harden: ['sworn-shieldbearer'], embolden: ['meerkat-sentry'], 
   ok(['harden', 'embolden', 'enfeeble'].every(k=> cards.filter(c=> c.effects && c.effects[k] && !/^test-/.test(c.id)).length <= 2 + (k === 'enfeeble' ? 1 : 0)), '6. 1-2 existing cards a skill (+ Tsetse Drainer, Enfeeble\'s card before)');
   const S = e=> T.budget({id:'x', attack:1, health:3, effects:e, rarity:'common', level:1}).S;
   // 2026-11-22 (SKMPRICE: SKM3-1 a, REFIT11-1 b, FOCUS2-1 from sims): Harden 2.11 -> 2.8, Embolden 3.59 -> 4.54, Enfeeble 2.5 -> 1.81
-  ok(Math.abs(S({harden:1}) - 2.8) < 0.01 && Math.abs(S({embolden:1}) - 4.54) < 0.01 && Math.abs(S({enfeeble:1}) - 1.81) < 0.01, `6. prices at N 1: Harden ${S({harden:1})}, Embolden ${S({embolden:1})}, Enfeeble ${S({enfeeble:1})}`);
+  // 2026-11-27 (SKILLS3-B, SKILLS3-9 / -10, 4-round rule): On Hit, tokens: Harden 2.8 -> 2, Embolden 4.54 -> 3.2, Enfeeble 1.81 -> 2.1
+  ok(Math.abs(S({harden:1}) - 2) < 0.01 && Math.abs(S({embolden:1}) - 3.2) < 0.01 && Math.abs(S({enfeeble:1}) - 2.1) < 0.01, `6. prices at N 1: Harden ${S({harden:1})}, Embolden ${S({embolden:1})}, Enfeeble ${S({enfeeble:1})}`);
   ok(S({harden:2}) > S({harden:1}) && S({harden:2}) < 1.2 * S({harden:1}) && S({enfeeble:2}) < 1.2 * S({enfeeble:1}), '6. N adds little (refreshed, not stacked: pow 0.2, as Embrittle)');
   const D = J('canonical/skill-delivery.json'), C = J('canonical/skill-counters.json');
   ok(D.delivery.harden === 'none' && D.delivery.embolden === 'none' && C.noCounter.includes('harden') && C.noCounter.includes('embolden'), '6. delivery none, no counter (ally buffs)');
