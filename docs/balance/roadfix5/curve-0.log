@@ -1,0 +1,6 @@
+fights off the road curve to tune 5
+15-5 76.5 -> target 66 : 67 green [{"type":"swap","out":"elderhorn-monarch","inn":"stoat-cutthroat","k":2}] null null
+18-3 90 -> target 78 : 89 OFF [{"type":"swap","out":"armadillo-guard","inn":"barrel-cactus","k":2}] null null
+19-5 47.8 -> target 60 : 52 OFF [{"type":"swap","out":"honey-badger-fury","inn":"fire-salamander","k":1}] null null
+18-A-4 99.5 -> target 77 : 98 OFF [] null null
+18-A-6 93.5 -> target 69 : 89 OFF [{"type":"swap","out":"pale-oryx","inn":"roadrunner-courier","k":2}] null null
