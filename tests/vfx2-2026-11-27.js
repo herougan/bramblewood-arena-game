@@ -30,7 +30,8 @@ const IDS = ['sk-gash', 'atk-overwhelm-hq', 'sk-pulverise', 'atk-cull', 'sk-cons
   'sk-harbinger', 'sk-carrion', 'sk-carnage', 'sk-momentum', 'sum-progeny-brood', 'sk-fletcher', 'sk-herbalist', 'sk-pack-leader', 'sk-repair', 'sk-trigger-fired',
   'sk-wet-chain', 'sk-warning-colours', 'sk-rend-around', 'st-token-tick', 'card-skin-aura'];
 { const man = rd('tools/effects-lab/manifest/vfx2b.js'), inv = JSON.parse(rd('docs/effects-inventory-2026-10-15.json')), by = Object.fromEntries(inv.map(e=> [e.id, e]));
-  ok(IDS.every(id=> man.includes(`id:'${id}'`)), 'the Effects Lab registers every VFX2 entry: ' + IDS.filter(id=> !man.includes(`id:'${id}'`)).join(', '));
+  const reg = id=> man.includes(`id:'${id}'`) || man.includes(`look('${id}',`); // R({id: …}) or the manifest's look(id, …) helper
+  ok(IDS.every(reg), 'the Effects Lab registers every VFX2 entry: ' + IDS.filter(id=> !reg(id)).join(', '));
   ok(IDS.every(id=> by[id] && (by[id].added === '2026-11-27' || by[id].updated === '2026-11-27') && /VFX2/.test(by[id].quality)), 'the inventory has every VFX2 row: ' + IDS.filter(id=> !(by[id] && /VFX2/.test(by[id].quality))).join(', ')); }
 ok(/package VFX2 \(2026-11-27\)/.test(rd('docs/effects-catalogue.md')) && /Package VFX2 \(2026-11-27/.test(rd('docs/CHANGELOG.md')) && /tests\/vfx2-2026-11-27\.js/.test(rd('tests/run-all.sh')), 'catalogue, CHANGELOG, run-all.sh');
 
