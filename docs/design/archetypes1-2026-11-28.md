@@ -102,3 +102,24 @@ Roles: **starter** (early board), **engine** (makes the deck better each round i
 | Finisher | Spitting Cobra Snipe 2 (Map 14), Bramblewood Macaque Snipe at Level 2 (Map 14), Fire Salamander, Quillback Elder fire arrows (Map 19), Marine Iguana (Eye of the Volcano 20) | - |
 | Reactive answer | Gallery Orb-Weaver Web: dodgers stop dodging (Map 8) | - |
 | Protection | Terrier Pup (Map 1), Marula Elephant (Map 14), Border Collie (Map 15) Guardians | - |
+
+## 2. Good On Death skills (10)
+
+Built = the engine runs it today (`removeDeadCardsPass`: `onDeath` triggers with any action, `who: 'killer'` for any action; `onDeathSpawn`, `landslide`, `poisonous`). ⚙️ = needs engine work. Ladder (SKILLS3-10): a status skill shows its plain On Hit form first, then ⬆️, then 💀; damage, Shield, Wait and draw actions are no status, so their 💀 forms may sit on Maps 0-20 now. Budget % = the carrier with the skill added, at Level 1.
+
+| # | 💀 Skill (player rule) | Engine | Rewards | Archetype | Real animal (card, where) | Ladder, map | Budget |
+|---|---|---|---|---|---|---|---|
+| D1 | **Sting 1**: when a blow kills it, its killer takes 1 | Built (`onDeath` damage, `who: killer`; SKILLS3 A6) | Trading: the foe chooses who kills it; finishes a hurt attacker | A1, A4 | Honey Bee (Map 0): a bee's last sting | Retaliation is plain (Thorns, Map 1): Maps 0-20, Map 1 row | 100% at 1/5 |
+| D2 | **Alarm**: every Kin ally +1 Attack for the fight | Built (`onDeath` buff, `who: kin`, `sub: all`; SKILLS3 A8) | Kill order: kill it last, or the column angers | A4 | Soldier Ant (Map 0): crushed ants release alarm scent | Maps 0-20 (Map 0 or 7) | 116% at 3/7: trim to 2/7 (98%) |
+| D3 | **Spare Shell**: every ally beside it gets 2 Shield | Built (`onDeath` grantShield `adjacent`) | Positioning: put the carry beside it; the save comes when it falls | A2, A3 | Open-Ocean Hermit Crab (Map 2): crabs queue for a dead crab's shell | Maps 0-20, Map 2 | 99% |
+| D4 | **Mobbing**: its killer gets +1 Wait | Built (`onDeath` addWait, `who: killer`) | Tempo: the kill costs the killer a round; delays the unit about to fire again | A2 | Kittiwake Flock (Map 3): colony gulls mob a predator | Maps 0-20, Map 3 | 82% |
+| D5 | **Poisonous 2**: its killer gets 2 Poison | Built (`poisonous`, ENG33; on no card) | Baiting Pounce and big melee hits into it | A6 | Monarch Wingblade, at Level 5 in place of Venomous (Map 13): monarchs are toxic to eat | Plain Venomous is Map 5's row: Maps 0-20 | unchanged |
+| D6 | **Brood 2**: two 1/1 young take its place | Built (`onDeathSpawn`); needs a Scorpling token card (data) | Sacrifice; every young feeds Harbinger, Carrion, Broodmother | A5 | Obsidian Scorpion (Basalt Foundry 19): scorpion mothers carry their young | Progeny has no row: Map 19 side map | 79% as 3/6 Venomous 1 (also fixes a glass cannon, part 4) |
+| D7 | **Cache**: draw 1 card | Built (`onDeath` drawCard; Magpie Collector, pack) | Trading cheap bodies for cards: the only refill for aggro | A1, A3 | Acorn Chipmunk (starter): its forgotten cache is found | Starter | 96% as 1/5 |
+| D8 | **Landslide 2**: 2 to the foe facing it and the foes beside that one (not Flying) | Built (`landslide`; Scree Goat today, Tutorial and packs only) | Positioning against clustered ground units; a wall that hits back as it falls | A7 | Scree Goat (to the Map 11 list, Eyrie Heights): goats knock scree loose | Maps 0-20, Map 11 | its card today |
+| D9 | **Last Lodge**: a Log Wall rises in its slot | ⚙️ small: Bulwark from its own slot on death (Log Wall ids are engine-derived, so a plain `spawnCard` can't name one) | Holding the column after the unit falls | A7 | Beaver Lumberjack (Map 4): the lodge outlives the beaver | Bulwark has no row: Map 4 | to price |
+| D10 | **The later rungs**: 💀 Embolden beside (the matriarch falls, the herd charges), 💀 Harden beside (the ring closes), 💀 Rend its killer (quills stay in) | Built (SKILLS3-B `when: death` forms) | Positioning, sacrifice | A3, A7 | Marching Elephant, Reefback Turtle, Porcupine Roller (SKILLS3b) | Maps 21+ (their plain forms start Maps 22-23) unless SKILLS3-3 b | priced (theoretical) |
+
+Also built and waiting for carriers: **💀 Warning Colours** (NEWCARDS2 adds them). Left out: 💀 stun or Blind on the killer (no true-to-life fit on the road), 💀 Nurse (a heal after the death sweep comes too late, feelings 3).
+
+Spread: D1, D2, D7 sit on Map 0 starters, D3-D4 on Maps 2-3, so the death and trading plans exist from the first maps; D5-D6, D8-D9 serve the mid and late archetypes.
