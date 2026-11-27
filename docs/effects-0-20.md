@@ -158,15 +158,15 @@ Every skill and trigger effect on a card that a Maps 0-20 list holds: the 21 mai
 | ✅ On Ready | On Ready: Give every ally 2 Shield (temporary Health). | Map 7 | 1 | Amber Cicada (L3) |
 | ✅ On Ready | On Ready: Deal 3 damage to a random enemy unit. | Map 8 Special | 1 | Echo Matriarch |
 | ✅ On Ready | On Ready: Deal 4 damage to an adjacent opponent. | Map 11 Special | 1 | Great Horned Owl |
-| ⬆️ On Play | On Spawn: Stun an adjacent opponent. | Tutorial (side, opens at 0) | 2 | Ash Cloud Condor, Gaur |
-| ⬆️ On Play | On Spawn: Gain 1 lumber. | Tutorial (side, opens at 0) | 5 | Trash Panda Trickster, Salvager Hermit Crab (L6), Glowworm Cluster |
-| ⬆️ On Play | On Spawn: Give every ally 2 Shield. | Map 5 Special | 2 | Hedgehog Matron, Alpine Marmot |
-| ⬆️ On Play | On Spawn: Delay an adjacent opponent by 2 Wait. | The Mycelium Deep (side, opens at 8) | 1 | Rot-Swollen Carcass (L3) |
-| ⬆️ On Play | On Spawn: Spawn 1 Growth Sprout. | The Undercroft (side, opens at 11) | 1 | Seed-cache Squirrel |
-| ⬆️ On Play | On Spawn: Draw 1 card. | Clovermead (side, opens at 12) | 1 | Lucky Hopper |
-| ⬆️ On Play | On Spawn: Apply 2 poison to an adjacent opponent. | The Sunken Grove (side, opens at 13) | 1 | Cottonmouth Matriarch |
+| ⬆️ On Play | ⬆️ On Spawn: Stun an adjacent opponent. | Tutorial (side, opens at 0) | 2 | Ash Cloud Condor, Gaur |
+| ⬆️ On Play | ⬆️ On Spawn: Gain 1 lumber. | Tutorial (side, opens at 0) | 5 | Trash Panda Trickster, Salvager Hermit Crab (L6), Glowworm Cluster |
+| ⬆️ On Play | ⬆️ On Spawn: Give every ally 2 Shield. | Map 5 Special | 2 | Hedgehog Matron, Alpine Marmot |
+| ⬆️ On Play | ⬆️ On Spawn: Delay an adjacent opponent by 2 Wait. | The Mycelium Deep (side, opens at 8) | 1 | Rot-Swollen Carcass (L3) |
+| ⬆️ On Play | ⬆️ On Spawn: Spawn 1 Growth Sprout. | The Undercroft (side, opens at 11) | 1 | Seed-cache Squirrel |
+| ⬆️ On Play | ⬆️ On Spawn: Draw 1 card. | Clovermead (side, opens at 12) | 1 | Lucky Hopper |
+| ⬆️ On Play | ⬆️ On Spawn: Apply 2 poison to an adjacent opponent. | The Sunken Grove (side, opens at 13) | 1 | Cottonmouth Matriarch |
 | 🎯 On Kill | On Kill: Gain 1 lumber. | The Undercroft (side, opens at 11) | 2 | Dust Hyena (L3), Beaver Feller (L3) |
-| 💀 On Death | On Death: Deal 2 fire damage to an adjacent opponent. | Map 8 | 1 | Sulfur Cinder Moth |
+| 💀 On Death | 💀 On Death: Deal 2 fire damage to an adjacent opponent. | Map 8 | 1 | Sulfur Cinder Moth |
 | 💚 On Nursed | On Nursed: Gain 1 lumber. | Map 3 | 1 | Gannet Nestweaver |
 | 🔁 On Action | On Action: Deal 1 decay damage to an adjacent opponent. | The Glimmer Depths (side, opens at 16) | 1 | Fruit Bat |
 | 🛡 On Attacked | On Attacked: Gain 1 lumber. | Map 2 | 1 | Driftwood Crab |

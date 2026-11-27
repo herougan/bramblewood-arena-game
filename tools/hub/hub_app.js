@@ -21,18 +21,54 @@
     : `<span class="th img" style="--s:${size}px;--x:${c.t % CARDS.cols};--y:${Math.floor(c.t / CARDS.cols)}" aria-hidden="true"></span>`;
   CARDS.cards.forEach(c=>{ c.hay = [c.name, c.id, c.sp, c.f, (c.ar || []).join(' '), c.sk.map(s=> (SK[s.k] ? SK[s.k].label : s.k) + ' ' + s.k).join(' '), c.where, c.r].join(' ').toLowerCase(); });
 
+  // 2026-11-27 (HUB5; owner 18:37: "Collapse the master hub ... for each tab, for each item in each tab"): every doc section, tool section and
+  // dashboard card becomes a closed <details> with a one-line title (+ a count), and each panel gets Expand all / Collapse all. A box is wrapped
+  // once, by its direct-child headings (h2, else h3; a section body is a box too, so its h3s fold as well); tabs that render later are caught by the observer.
+  // hub.go and the search call hubCollapse before looking for the target, so its ancestors open (go() below).
+  const hn = e=> /^H[1-6]$/.test(e.tagName) ? +e.tagName[1] : 9;
+  function hxWrap(box, lvl){
+    const kids = [...box.children]; let made = 0;
+    for(let i = 0; i < kids.length; i++){ const h = kids[i]; if(h.tagName !== lvl) continue;
+      const d = document.createElement('details'), sm = document.createElement('summary'), b = document.createElement('div'); d.className = 'hx'; b.className = 'hx-b';
+      box.insertBefore(d, h); sm.appendChild(h); d.append(sm, b); let j = i + 1;
+      while(j < kids.length && hn(kids[j]) > hn(h)) b.appendChild(kids[j++]);
+      i = j - 1; made++;
+      const n = b.querySelectorAll('li, tbody tr').length; if(n){ const c = document.createElement('small'); c.className = 'hx-n'; c.textContent = n; sm.appendChild(c); }
+    }
+    return made;
+  }
+  function hxBox(box){
+    if(box.dataset.hx) return; const has = t=> [...box.children].some(c=> c.tagName === t);
+    const lvl = has('H2') ? 'H2' : has('H3') ? 'H3' : ''; if(!lvl) return;
+    box.dataset.hx = 1; hxWrap(box, lvl);
+  }
+  window.hubCollapse = panel=>{
+    if(!panel) return;
+    for(let k = 0; k < 3; k++) [...new Set([...panel.querySelectorAll('h2, h3')].map(h=> h.parentElement))].forEach(b=>{ if(!b.closest('summary, .dec-head') && !b.matches('summary, .dec-head')) hxBox(b); });  // 3 passes: h2 sections, then the h3s inside them
+    // a tool tab with no headings of its own (filters and one table): its whole body folds under the title, so the tab opens closed like the rest
+    panel.querySelectorAll(':scope > .bal').forEach(bx=>{ const dh = bx.querySelector(':scope > .dec-head'), t = dh && dh.querySelector('h2');
+      if(!t || bx.dataset.hxf || bx.querySelector('details.hx') || bx.children.length < 2) return; bx.dataset.hxf = 1;
+      const d = document.createElement('details'), sm = document.createElement('summary'), b = document.createElement('div'); d.className = 'hx'; b.className = 'hx-b'; b.style.paddingLeft = 0;
+      sm.innerHTML = '<h3></h3>'; sm.firstChild.textContent = t.textContent + ': controls and tables'; const n = bx.querySelectorAll('tbody tr').length; if(n) sm.insertAdjacentHTML('beforeend', '<small class="hx-n">' + n + '</small>');
+      [...bx.children].forEach(c=>{ if(c !== dh) b.appendChild(c); }); d.append(sm, b); bx.appendChild(d); });
+    if(!panel.querySelector(':scope > .hx-tools') && panel.querySelector('details')){ const t = document.createElement('p'); t.className = 'cl-tools hx-tools';
+      t.innerHTML = '<button type="button" data-hx="open">Expand all</button> <button type="button" data-hx="close">Collapse all</button>'; panel.prepend(t); panel.querySelectorAll('details[open]').forEach(d=> d.open = false); }  // closed by default, also the blocks that used to start open
+  };
+  { let raf = 0; new MutationObserver(()=>{ if(!raf) raf = requestAnimationFrame(()=>{ raf = 0; hubCollapse(document.querySelector('.panel:not([hidden])')); }); })
+      .observe(document.querySelector('main'), {childList:true, subtree:true, attributes:true, attributeFilter:['hidden']}); hubCollapse(document.querySelector('.panel:not([hidden])')); }
+
   // ---------- go: one place that opens any target (tab, sub-tab, element, card, decision) ----------
   hub.go = j=>{
     if(j.card){ hub.show('cards'); openCard(j.card); return; }
     if(j.dec){ hub.show('decisions'); if(window.hubFindDecision) window.hubFindDecision(j.dec); return; }
-    hub.show(j.tab); if(j.sub) hub.showSub(j.sub);
+    hub.show(j.tab); if(j.sub) hub.showSub(j.sub); hubCollapse(document.getElementById('p-' + j.tab));  // 2026-11-27 (HUB5): sections exist before the target is looked up
     const el = j.el && document.getElementById(j.el); if(!el) return;
     for(let p = el; p; p = p.parentElement) if(p.tagName === 'DETAILS') p.open = true;
     el.scrollIntoView({block:'start'}); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
   };
   document.addEventListener('click', e=>{
     const g = e.target.closest('[data-go]'); if(g){ e.preventDefault(); e.stopPropagation(); closeCard(); hub.go(JSON.parse(g.dataset.go)); return; }
-    const cl = e.target.closest('[data-cl]'); if(cl){ document.querySelectorAll('#p-changelog details.cl').forEach(d=> d.open = cl.dataset.cl === 'open'); }
+    const hx = e.target.closest('[data-hx]'); if(hx){ const pn = hx.closest('.panel'); if(pn) pn.querySelectorAll('details').forEach(d=> d.open = hx.dataset.hx === 'open'); }
   }, true);
 
   // 2026-10-28 (package HUB8, L8; owner: "In the stat budget and card check sections, let the card names be clickable, opening card detail ...

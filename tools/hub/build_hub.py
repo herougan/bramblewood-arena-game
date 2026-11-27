@@ -122,7 +122,7 @@ def lazy(html):  # 2026-10-15: heavy panels ship inside <template> and are stamp
 _ai_fix = lambda h: h.replace('<span class="doc-ref" title="Project doc: claude/card-balance-2026-10-09.md">report</span>', '<a href="#balance" data-tab="balance">report</a>')
 _ai_intro, _ai_secs = split_h2(rd('docs', 'action-items.md'))
 AI = [(t, _ai_fix(md_html(b))) for t, b in _ai_secs]
-body = _ai_fix(md_html(_ai_intro)) + ''.join(f'<section class="ai-sec" id="ai-{k}"><h2>{H.escape(t)}</h2>{b}</section>' for k, (t, b) in enumerate(AI))
+body = _ai_fix(md_html(_ai_intro)) + ''.join(f'<details class="hx ai-sec" id="ai-{k}"><summary><h2>{H.escape(t)}</h2>{("<small class=hx-n>" + str(b.count("<li")) + "</small>") if "<li" in b else ""}</summary><div class="hx-b">{b}</div></details>' for k, (t, b) in enumerate(AI))
 for k, (t, b) in enumerate(AI): SEARCH.append(['Action items', t, '', _txt(b)[:6000], {'tab': 'actions', 'el': f'ai-{k}'}])
 _ai_updated = (re.search(r'_Updated ([^._]+)', _ai_intro) or [None, ''])[1]
 BAL = json.load(open(os.path.join(ROOT, 'docs', 'balance', 'card-balance.json'), encoding='utf-8'))
@@ -130,7 +130,7 @@ bal_json = json.dumps({'games': BAL['games'], 'generated': BAL['generated'], 'ro
 # 2026-10-15: one collapsible block per changelog entry (newest three open) instead of one 80,000px page.
 _cl_intro, _cl_secs = split_h2(rd('docs', 'CHANGELOG.md'))
 CL = [(t, md_html(b)) for t, b in _cl_secs]
-changelog = md_html(_cl_intro) + '<p class="cl-tools"><button type="button" data-cl="open">Open all</button> <button type="button" data-cl="close">Close all</button></p>' + ''.join(f'<details class="cl" id="cl-{k}"{" open" if k < 3 else ""}><summary>{H.escape(t)}</summary><div class="cl-b">{b}</div></details>' for k, (t, b) in enumerate(CL))
+changelog = md_html(_cl_intro) + '' + ''.join(f'<details class="cl" id="cl-{k}"><summary>{H.escape(t)}</summary><div class="cl-b">{b}</div></details>' for k, (t, b) in enumerate(CL))
 for k, (t, b) in enumerate(CL): SEARCH.append(['Changelog', t, '', _txt(b)[:1500], {'tab': 'changelog', 'el': f'cl-{k}'}])  # 2026-11-05 (release 11-05a): 8000 -> 3000 chars; 2026-11-07 (HUB3): -> 1500, the index.html was at 15.65 of 16 MiB (the entry's title and first lines still match), the page hit the 16MB publish cap
 # 2026-10-11 (user: "fight against EVERY single Skirmish ... and publish the win rate in our artefact"): the 📈 Difficulty
 # tab is its own plain file (no f-string braces), filled with docs/balance/difficulty-curve.json.
@@ -215,6 +215,7 @@ DESIGN = [
 # subtabs; picking one shows only that sheet.
 _dz = [(t, f) for t, f in DESIGN if os.path.exists(os.path.join(ROOT, 'docs', f))]
 design_html = ('<div class="doc guide"><h1>Design</h1><p class="lede">Design sheets and audits. Nothing here is built unless its status says so; reply in chat to adopt or change any of it.</p>'
+  '<a class="dash-card fx-go" href="#effects" data-go=\'{"tab":"effects","sub":"fx-effects-cards-0-20"}\'><b>🧩 Every effect, combo and count on Maps 0-20 → open the Effects tab</b></a>'  # 2026-11-27 (HUB5)
   '<nav class="subtabs" data-group="design" aria-label="Design sheets">' + ''.join('<button type="button" data-show="design-' + f[:-3] + '" aria-pressed="' + ('true' if k == 0 else 'false') + '">' + H.escape(t) + '</button>' for k, (t, f) in enumerate(_dz)) + '</nav>')
 for k, (t, f) in enumerate(_dz):
     pth = os.path.join(ROOT, 'docs', f)
@@ -795,9 +796,10 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <section class="panel" id="p-balance" role="tabpanel" aria-labelledby="t-balance" hidden><div class="bal">
 <div class="dec-head"><h2>Card balance</h2><p>Each card's win rate in simulated matches (<span id="balN"></span>). About 50% means it adds nothing over the reference deck; the band is what its rarity should deliver. The method and findings are in the 📐 Design tab → Card balance report. Click a column to sort.</p>
 <p class="hb-xlink"><b>Edit the numbers:</b> <a href="#budget" data-tab="budget">🎚️ Budget &amp; stats</a> (the budget constants, every card's Attack / Health, the special monsters) · <a href="#costs" data-tab="costs">🧮 Skill costs</a> (S of every skill, trigger and action; measured S; Combos).</p></div>
+<details class="hx"><summary><h3>Every card's win rate</h3><small class="hx-n" id="balCnt"></small></summary><div class="hx-b">
 <div class="dec-bar"><div class="dec-seg" role="group" aria-label="Verdict" id="balSeg"><button data-v="" aria-pressed="true">All</button><button data-v="strong" aria-pressed="false">Too strong</button><button data-v="weak" aria-pressed="false">Too weak</button><button data-v="ok" aria-pressed="false">In band</button><button data-v="norar" aria-pressed="false">No rarity</button><button data-v="fix" aria-pressed="false">Has a fix</button></div>
 <input type="search" id="balQ" placeholder="Search cards…" aria-label="Search cards"></div>
-<div class="bal-wrap"><table class="bal-t"><thead><tr><th data-k="name">Card</th><th data-k="rarity">Rarity</th><th data-k="cost">Cost</th><th data-k="wait">Wait</th><th data-k="attack">Atk</th><th data-k="health">HP</th><th data-k="winRate">Win %</th><th data-k="band">Band</th><th data-k="fix">Suggestion</th></tr></thead><tbody id="balBody"></tbody></table></div></div></section>
+<div class="bal-wrap"><table class="bal-t"><thead><tr><th data-k="name">Card</th><th data-k="rarity">Rarity</th><th data-k="cost">Cost</th><th data-k="wait">Wait</th><th data-k="attack">Atk</th><th data-k="health">HP</th><th data-k="winRate">Win %</th><th data-k="band">Band</th><th data-k="fix">Suggestion</th></tr></thead><tbody id="balBody"></tbody></table></div></div></details></div></section>
 <section class="panel" id="p-budget" role="tabpanel" aria-labelledby="t-budget" hidden><div class="bal hb" id="hbHost"><p class="dec-empty">Loading the budget…</p></div></section>
 <section class="panel" id="p-costs" role="tabpanel" aria-labelledby="t-costs" hidden><div class="bal sc" id="scHost"><p class="dec-empty">Loading the cost table…</p></div></section>
 <section class="panel" id="p-ucosts" role="tabpanel" aria-labelledby="t-ucosts" hidden><div class="bal sc" id="ucHost"><p class="dec-empty">Loading the upgrade costs…</p></div></section>
@@ -846,22 +848,22 @@ const DEC = {decisions_json};
     st = 'ALL'; area = ''; kind = ''; document.querySelectorAll('#decSt button').forEach(x=> x.setAttribute('aria-pressed', x.dataset.st==='ALL'));
     document.querySelectorAll('#decAreas button, #decKinds button').forEach(x=> x.setAttribute('aria-pressed', x.dataset.v===''));
     const inp = document.getElementById('decQ'); inp.value = id; q = id.toLowerCase(); render();
-    const card = [...document.querySelectorAll('#decList .dec-card')].find(c=> c.querySelector('.dec-id').textContent.toLowerCase()===q); if(card){{ card.classList.add('flash'); card.scrollIntoView({{block:'start'}}); }} }};
+    const card = [...document.querySelectorAll('#decList .dec-card')].find(c=> c.querySelector('.dec-id').textContent.toLowerCase()===q); if(card){{ card.open = true; card.classList.add('flash'); card.scrollIntoView({{block:'start'}}); }} }};
   function render(){{
     const list = inGrp().filter(i=> (st==='ALL' || i.status===st) && (!area || i.area===area) && (!kind || i.kind===kind) && (!q || JSON.stringify(i).toLowerCase().includes(q)));
-    document.getElementById('decList').innerHTML = list.length ? list.map(i=> `<article class="dec-card ${{i.status==='DONE'?'done':''}}">
-      <div class="dec-top"><span class="dec-id">${{esc(i.id)}}</span><span class="dec-title">${{esc(i.title)}}</span><span class="dec-meta"><span class="dec-tag">${{i.status==='DONE'?'✅ Done':'⏳ Yet'}}</span><span class="dec-tag">${{esc(i.kind)}}</span><span class="dec-tag">${{esc(i.area)}}</span></span></div>
+    document.getElementById('decList').innerHTML = list.length ? list.map(i=> `<details class="dec-card ${{i.status==='DONE'?'done':''}}">
+      <summary class="dec-top"><span class="dec-id">${{esc(i.id)}}</span><span class="dec-title">${{esc(i.title)}}</span><span class="dec-meta"><span class="dec-tag">${{i.status==='DONE'?'✅ Done':'⏳ Yet'}}</span><span class="dec-tag">${{esc(i.kind)}}</span><span class="dec-tag">${{esc(i.area)}}</span></span></summary>
       ${{i.body ? `<p class="dec-body">${{esc(i.body)}}</p>` : ''}}
       ${{(i.options||[]).length && i.status!=='DONE' ? `<ul class="dec-opts">${{i.options.map(o=> `<li>${{esc(o)}}</li>`).join('')}}</ul>` : ''}}
       ${{i.default && i.status!=='DONE' ? `<p class="dec-def"><b>Default:</b> ${{esc(i.default)}}</p>` : ''}}
       ${{i.outcome ? `<p class="dec-out"><b>Outcome:</b> ${{esc(i.outcome)}}</p>` : ''}}
-      <div class="dec-date">Asked ${{esc(i.asked||'—')}}${{i.decided ? ' · decided ' + esc(i.decided) : ''}}</div></article>`).join('') : '<p class="dec-empty">Nothing matches.</p>';
+      <div class="dec-date">Asked ${{esc(i.asked||'—')}}${{i.decided ? ' · decided ' + esc(i.decided) : ''}}</div></details>`).join('') : '<p class="dec-empty">Nothing matches.</p>';
   }}
   setGrp(grp, true); render();
 }})();
 (function(){{
   const B = {bal_json}, rows = B.rows, esc = s=> String(s==null?'':s).replace(/[&<>"]/g, c=> ({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}})[c]);
-  document.getElementById('balN').textContent = `${{rows.length}} cards, ${{B.games}} games each, ${{B.generated}}`;
+  document.getElementById('balCnt').textContent = rows.length; document.getElementById('balN').textContent = `${{rows.length}} cards, ${{B.games}} games each, ${{B.generated}}`;
   let v = '', q = '', key = 'winRate', dir = -1;
   const fixTxt = r=> r.suggest ? `${{r.suggest.stat==='attack'?'Atk':'HP'}} ${{r.suggest.from}} → ${{r.suggest.to}} (${{r.suggest.winRate}}%)` : r.suggestRarity ? `rarity: ${{r.suggestRarity}}` : '';
   const val = (r, k)=> k==='band' ? r.band[0] : k==='fix' ? fixTxt(r) : r[k]==null ? '' : r[k];

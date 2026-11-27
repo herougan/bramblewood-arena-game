@@ -14,6 +14,7 @@ const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..', '..'), OUT = path.join(ROOT, 'docs', 'effects-cards-0-20.md');
 const FOLD = { diurnalGrant: 'diurnal', nocturnalGrant: 'nocturnal', stormGrant: 'storm', tideGrant: 'tide', deliveryRes: 'delivery', arrowBramble: 'arrow', hunterVs: 'hunter' };
 const TRIG = { onSpawn: ['⬆️', 'On Play'], onDeath: ['💀', 'On Death'], onAttack: ['⚔️', 'On Attack'], onAttacked: ['🛡', 'On Attacked'], onReady: ['✅', 'On Ready'], onKill: ['🎯', 'On Kill'], onHealed: ['💚', 'On Nursed'], onAction: ['🔁', 'On Action'], perTurn: ['🔁', 'Every Turn'], onPitch: ['🃏', 'On Pitch'], onDiscard: ['🗑', 'On Discard'] };
+const GROUPS = require('./effects_groups.js'); // 2026-11-27 (HUB5): the by-list view's sections
 const TAGS = { glass: { icon: '🥂', label: 'Glass cannon' }, wall: { icon: '🚫', label: 'Wall' } };
 (async () => {
   const pw = require('playwright'), b = await pw.chromium.launch(), p = await b.newPage();
@@ -55,11 +56,25 @@ const TAGS = { glass: { icon: '🥂', label: 'Glass cannon' }, wall: { icon: '�
     `**${data.cards.length} cards** a player can collect by Map 20 (the game's own obtain map, ≤ 20): ${Object.entries(src).sort((a, b) => b[1] - a[1]).map(([k, n]) => `${k} ${n}`).join(', ')}. ` +
     'A card counts every effect it has at any level (Level skills included) and each trigger effect. Two tags exist only in this view: ' +
     '🥂 **Glass cannon** (Health no more than Attack at Level 0: the frailest ~6%) and 🚫 **Wall** (Attack 0).', '');
-  // 1. symbols summary
+  // 1. by section (2026-11-27 HUB5, owner 18:37: "where's my list of skills and combos and count for each section in design?"): the same sections as the by-list
+  // view (effects_groups.js), then Trigger effects, then the two tags. Each: its symbols with card counts, a section total, and its pairs (a pair that holds one
+  // of its symbols), most used first, pairs with 🥂 / 🚫 last.
   const skills = Object.keys(sym).filter(s => sym[s].kind === 'skill' && count[s]).sort(order), trigs = Object.keys(sym).filter(s => sym[s].kind === 'trigger' && count[s]).sort(order);
-  L.push(`## 1. Every symbol and its count (${skills.length} skills, ${trigs.length} trigger effects, 2 tags)`, '');
-  const per = 5, head = n => ['| ' + Array(n).fill('Symbol | Cards').join(' | ') + ' |', '|' + Array(n).fill('---|---:').join('|') + '|'];
-  L.push(...head(per), ...multi(['glass', 'wall'].concat(skills).map(s => [nm(s), String(count[s] || 0)]), per), '');
+  const pairs = {}; data.cards.forEach(c => { const s = c.syms.slice().sort(order); for (let i = 0; i < s.length; i++) for (let j = i + 1; j < s.length; j++) { const k = s[i] + '|' + s[j]; pairs[k] = (pairs[k] || 0) + 1; } });
+  const pl = Object.entries(pairs).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])), main = pl.filter(([k]) => !k.split('|').some(isTag)), tagged = pl.filter(([k]) => k.split('|').some(isTag));
+  const pr = ([k, n]) => [k.split('|').map(nm).join(' + '), String(n)];
+  const sections = GROUPS.map(([t, ks]) => [t, ks.split(' ').filter(k => skills.includes(k))]);
+  const listed = new Set([].concat(...sections.map(x => x[1]))), other = skills.filter(k => !listed.has(k)); if (other.length) sections.push(['Other (pack and faction cards, not on a map list)', other]);
+  sections.push(['Trigger effects', trigs], ['The two tags (only in this view)', ['glass', 'wall']]);
+  const per = 5, head = n => ['| ' + Array(n).fill('Symbol | Cards').join(' | ') + ' |', '|' + Array(n).fill('---|---:').join('|') + '|'], phead = ['| ' + Array(3).fill('Pair | Cards').join(' | ') + ' |', '|' + Array(3).fill('---|---:').join('|') + '|'];
+  L.push(`## 1. By section: skills, counts and pairs (${skills.length} skills, ${trigs.length} trigger effects, 2 tags)`, '',
+    'Sections as in the by-list view. Each lists its symbols with how many cards carry them, a section total, and the pairs that include one of its symbols (most used first; pairs with 🥂 / 🚫 last). A pair across two sections shows in both.', '');
+  const secTot = [], totAt = L.length; // the totals table goes first inside section 1
+  sections.forEach(([title, ks]) => { if (!ks.length) return; const set = new Set(ks), cards = data.cards.filter(c => c.syms.some(x => set.has(x))).length, uses = ks.reduce((a, x) => a + (count[x] || 0), 0);
+    const has = ([k]) => k.split('|').some(x => set.has(x)), pm = main.filter(has), pt = tagged.filter(has); secTot.push([title, ks.length, cards]);
+    L.push(`### ${title} (${ks.length} ${ks.length === 1 ? 'symbol' : 'symbols'}, ${cards} cards)`, '', `**Section total:** ${ks.length} ${ks.length === 1 ? 'symbol' : 'symbols'}, ${uses} uses on ${cards} cards (a card with two of them counts once here); ${pm.length + pt.length} pairs (${pt.length} with 🥂 / 🚫).`, '',
+      ...head(per), ...multi(ks.slice().sort(order).map(x => [nm(x), String(count[x] || 0)]), per), '');
+    if (pm.length || pt.length) L.push(...phead, ...multi(pm.concat(pt).map(pr), 3), ''); });
   // 2. every full combo used
   const combos = {}; data.cards.forEach(c => { const k = c.syms.slice().sort(order).join('+') || '(none)'; (combos[k] = combos[k] || []).push(c); });
   const cl = Object.entries(combos).sort((a, b) => b[1].length - a[1].length || b[0].split('+').length - a[0].split('+').length);
@@ -70,12 +85,7 @@ const TAGS = { glass: { icon: '🥂', label: 'Glass cannon' }, wall: { icon: '�
   L.push(`## 3. Trigger effects (${trigs.length})`, '', '| Trigger effect | Cards | Game text (first carrier) | Which |', '|---|---:|---|---|');
   trigs.forEach(s => L.push(`| ${nm(s)} | ${count[s]} | ${(sym[s].eg || '').replace(/\|/g, '/')} | ${data.cards.filter(c => c.syms.includes(s)).map(c => c.name).sort().join(', ')} |`));
   L.push('');
-  // 4. pairs used
-  const pairs = {}; data.cards.forEach(c => { const s = c.syms.slice().sort(order); for (let i = 0; i < s.length; i++) for (let j = i + 1; j < s.length; j++) { const k = s[i] + '|' + s[j]; pairs[k] = (pairs[k] || 0) + 1; } });
-  const pl = Object.entries(pairs).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])), main = pl.filter(([k]) => !k.split('|').some(isTag)), tagged = pl.filter(([k]) => k.split('|').some(isTag));
-  const pr = ([k, n]) => [k.split('|').map(nm).join(' + '), String(n)];
-  L.push(`## 4. Every pair used (${main.length} pairs; pairs with 🥂 / 🚫 after, ${tagged.length})`, '', ...['| ' + Array(3).fill('Pair | Cards').join(' | ') + ' |', '|' + Array(3).fill('---|---:').join('|') + '|'], ...multi(main.map(pr), 3), '',
-    '### With 🥂 Glass cannon or 🚫 Wall', '', ...['| ' + Array(3).fill('Pair | Cards').join(' | ') + ' |', '|' + Array(3).fill('---|---:').join('|') + '|'], ...multi(tagged.map(pr), 3), '');
+  L.splice(totAt, 0, '### Section totals', '', '| Section | Symbols | Cards with at least one |', '|---|---:|---:|', ...secTot.map(r => `| ${r[0]} | ${r[1]} | ${r[2]} |`), '');
   fs.writeFileSync(OUT, L.join('\n') + '\n');
   console.log('->', path.relative(ROOT, OUT), { cards: data.cards.length, skills: skills.length, triggers: trigs.length, combos: cl.length, pairs: main.length, tagged: tagged.length, glass: count.glass || 0, wall: count.wall || 0, src,
     unknownKeys: [...new Set([].concat(...data.cards.map(c => c.keys)).filter(k => !symOfKey(k)))] });

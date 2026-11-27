@@ -9,16 +9,7 @@
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..', '..'), OUT = path.join(ROOT, 'docs', 'effects-0-20.md');
 const FOLD = { diurnalGrant: 'diurnal', nocturnalGrant: 'nocturnal', stormGrant: 'storm', tideGrant: 'tide', deliveryRes: 'delivery', arrowBramble: 'arrow', hunterVs: 'hunter', bounty: null };
-const GROUPS = [
-  ['Strikes and attack shapes', 'pounce gash arrow fireArrow fireBolt snipe volley crabClaws trident octolash fork sweep twinStrike reach stealth siege overwhelm mighty pierce pulverise electricity wave bulldoze recoil counterattack hunter trap ambush dynamite landslide'],
-  ['Statuses its hits leave', 'poison bleed decay corrode daunt weaken web strangle tangle exploit expose brittle confuse sap intimidate'],
-  ['Each-turn powders and clouds', 'paralysisPowder poisonPowder sleepPowder smokeBomb'],
-  ['Defence', 'armor shield bulwark rampart thorns poisonBarbs guardian taunt evasive flying swift sturdy rage regen immunity slow purblind'],
-  ['Growth, deaths and new units', 'harbinger carrion carnage momentum meiosis bloomCopy offspring hatchling evolute broodkeeper onDeathSpawn parasite loneWolf throng plenty fastForward'],
-  ['Team and support', 'swarm pack packHowl packLeader leader inspiring nursing foraging herbalist repair fletcher armourer illuminate'],
-  ['Day, night, weather and senses', 'tide diurnal nocturnal storm heat dry darksight keenSense'],
-  ['Resources', 'delivery forestry'],
-];
+const GROUPS = require('./effects_groups.js'); // 2026-11-27 (HUB5): shared with effects_cards_0_20.js
 const TRIG_ICON = { onSpawn: '⬆️ On Play', onDeath: '💀 On Death', onAttack: '⚔️ On Attack', onAttacked: '🛡 On Attacked', onReady: '✅ On Ready', onKill: '🎯 On Kill', onHealed: '💚 On Nursed', onAction: '🔁 On Action', perTurn: '🔁 Every Turn', onPitch: '🃏 On Pitch' };
 (async () => {
   const pw = require('playwright'), b = await pw.chromium.launch(), p = await b.newPage();
