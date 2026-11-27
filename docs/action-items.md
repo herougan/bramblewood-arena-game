@@ -33,6 +33,7 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - Answer: yes, ART17-T version A is three layers (water, squid, glow) cut from the one existing image.
 - [ ] ART18 (art): PixelLab "Animate with text" on one eagle card (Golden Eagle): a wingbeat loop, 8 frames, with its background and a transparent-background version over a still backdrop; then the frames as a premium animated skin prototype (docs/perf/art17/). Needs Chrome automatic downloads for pixellab.ai (owner, pending since 11-25); never buy a plan or credits.
 - [ ] ART18b (code prototype, no game files): the cheaper skin: the static eagle with speed lines around it (overlay, transforms / opacity only), measured like ART17-T.
+- 2026-11-27 10:21 owner (verbatim): "I saw the speed lines you made for the static eagle. The animated version of it has 2 tiers, one with just the speed lines moving past, stage 2 with the bird actually animated." So the eagle skin ladder: static skin = still bird + still speed lines; animated tier 1 = still bird, speed lines moving past (ART18b V2); animated tier 2 = the bird animated (PixelLab wingbeat frames, ART18) with the moving lines.
 - [ ] SKINS1 (design, after ART18): card skins as cosmetics: premium = animated frames, cheaper = static + an effect (speed lines, glow), how a player gets them (ECON1), where they show (Detail card, pack reveal, hero; board tiles stay flat).
 
 ## 11-27 00:07 Owner: cool combos on Maps 0-20
