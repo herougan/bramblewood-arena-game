@@ -15,8 +15,8 @@ let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  x'
 
 // ---- 1. files
 const H = rd('bramblewood-fx-h.js'), app = rd('arena_app.js'), tpl = rd('arena_template.html'), A = rd('bramblewood-fx-a.js');
-ok(/for _b in "abcdefgh"/.test(rd('assemble_arena.py')) && /for b in 'abcdefgh'/.test(rd('tools/effects-lab/build.py')), 'fx-h is bundled by assemble_arena.py and the Lab build');
-ok(/const FX_BATCHES = \['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'\]/.test(app), 'FX_BATCHES calls FX.H');
+ok(/for _b in "abcdefgh[a-z]*"/.test(rd('assemble_arena.py')) && /for b in 'abcdefgh[a-z]*'/.test(rd('tools/effects-lab/build.py')), 'fx-h is bundled by assemble_arena.py and the Lab build'); // 2026-11-27 (VFX1): later batches (v) may follow h
+ok(/const FX_BATCHES = \['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'(, '[A-Z]')*\]/.test(app), 'FX_BATCHES calls FX.H'); // 2026-11-27 (VFX1): later batches (V) may follow H
 ok(/prim: \{tone, noise, fnoise, sweep\}/.test(app), 'SoundKit hands its primitives to the effect modules');
 ok(!/crabPinch|crab-pinch/.test(app + tpl + A) && !/'🦞 ←'|🦞 Whiff/.test(app), 'the old crab looks are gone (arrow float, .crab-pinch, FX.A.crabPinch)');
 ok(/function en2CrabClawHit\(attEl, targetEl, impactMs\)\{[^\n]*\n[^\n]*FX\.H\.crabSnap\(targetEl/.test(app) && !/en2Claw\(c\.x, c\.y, Math\.max\(30/.test(app), 'the Ironclaw Fiddler\'s claw is FX.H.crabSnap');
