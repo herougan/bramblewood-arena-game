@@ -157,6 +157,7 @@ One command a step, no Claude tokens while it runs. An agent starts a step (or `
 4. Owner calls (a constant, a held card, a named card) go to `docs/decisions.json`.
 Otherwise take the summary as the report: the changed cards are `changed` in the refit file, the new prices `changed` in the price file.
 
+- After a rule or engine change (2026-11-27, ROADMEASURE): measure the whole road, not a chosen subset. The full Maps 0-20 measure (`skirmish_pass.js measure 400 --maxmap=20`, 2 shards) takes about 25 minutes on an idle box; SKILLS3-B's 70-fight subset missed 11 fights the change reached.
 ## Checks
 `node tests/run.js --only 'level-curve|forge-curve|card-pass|raid-rb|raid-br|card-pool'`, then the card matrix. Reviewed golden changes are accepted at release.
 
