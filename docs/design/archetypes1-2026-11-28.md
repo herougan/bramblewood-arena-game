@@ -219,4 +219,17 @@ Tags as in `docs/effects-cards-0-20.md`: 🥂 = Health no more than Attack at Le
 | Krill Swarm | 0/7 W0 | Map 10 | Tide, Swarm | Designed: nothing alone, grows beside its Type | keep |
 | Bark Buckler, Dragonscale Mail, Lava Waders | 0/3-0/11 | smith | equipment | Items | the tag should skip equipment |
 
-Counts: 🥂 8 designed / 24 accidental (11 on a main list or Special: their fix moves road fights); 🚫 21 designed / 1 accidental. After the fixes the tags would hold 8 glass cannons and 21 walls, every one by design.
+Counts: 🥂 8 designed / 24 accidental (14 on a main list or Special: their fix moves road fights); 🚫 21 designed / 1 accidental. After the fixes the tags would hold 8 glass cannons and 21 walls, every one by design.
+
+## 5. Proposed owner decisions (the coordinator files them; `docs/decisions.json` is not edited)
+
+| Id | Title | Body | Options | Default |
+|---|---|---|---|---|
+| ARCH1-1 | Fix the accidental glass cannons and walls | 24 of 34 glass cannons and 1 of 25 walls only fit the stats (part 4). Each is reshaped inside its budget (1 Attack for 3 Health) or gets a kit that explains it (House Cat Pounce 1, Acorn Chipmunk 💀 draw, Obsidian Scorpion 💀 Brood). 8 glass cannons and 21 walls stay, all by design. 14 sit on main lists or Specials, so road fights move. | a) all 25; b) only cards off the lists (starters, packs, side maps); c) none | a |
+| ARCH1-2 | Seven On Death skills on road cards | Built today, on existing cards: Sting (Honey Bee), Alarm (Soldier Ant), Spare Shell (Open-Ocean Hermit Crab), Mobbing (Kittiwake Flock), Cache (Acorn Chipmunk), Poisonous (Monarch Wingblade, Level 5), Brood (Obsidian Scorpion; needs a Scorpling token). Gives the death, trading and tribe decks pieces from Map 0. Card data only; Maps 0-3, 13 and 19 fights move. | a) all seven; b) the four on Maps 0-3; c) none | a |
+| ARCH1-3 | ⬆️ Brace on Map 16 | Lift SKILLS3-3's hold for one form: ⬆️ Harden 1 on the allies beside it (Woodland Caribou, Map 16, Sturdy's row), a "halve the hit this round" answer for reactive decks. Every other x2 / x0.5 form stays Maps 21+. | a) Brace on Map 16; b) keep the hold; c) lift it as SKILLS3-3 b | a |
+| ARCH1-4 | Five reactive cards for the road | Built in the engine, pack cards today: Pufferfish Bulwark (⬆️ +1 Wait, Map 4), Cleaner Wrasse (⬆️ Cleanse every ally, Map 6 Special), Cuttlefish Illusionist (⬆️ Smoke on allies, Map 10), Sea Cucumber (stuns its attacker once, Map 10), Meerkat Burrower (✅ Shield the ally facing a unit that readies, Map 14 Special). List changes wait until the owner reopens them (11-27). | a) queue all five for the next list pass; b) Specials only; c) not now | a |
+| ARCH1-5 | Engine work for four new verbs | Hiss (+1 Wait on the enemy closest to Ready), Lure (Taunt this round), Make Way (swap with an ally beside) and 💀 Last Lodge (a Log Wall in its slot). Small engine items. The CPU then has to hold answers for a foe at Wait 1: a CPU change that moves the road. | a) all four; b) Hiss and Lure; c) none now | b |
+| ARCH1-6 | Gilded Roadwarden's instant Pounce 6 | The Map 15 common (3/29, Wait 4) Pounces 6 as it lands, 12 in Map 15's tall grass: double the size feelings F4 allows an instant. Option b turns it into a forecast at the same budget (86%). | a) Pounce 3; b) ✅ On Ready: 6 to the foe facing it, Pounce dropped; c) keep | b |
+
+If built: ARCH1-1, -2, -6 change card data on Maps 0-20 lists (road fights move: balance-analyst's road check); ARCH1-4 waits for list changes; ARCH1-5 is an engine package plus a CPU change.
