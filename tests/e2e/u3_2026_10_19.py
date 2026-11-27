@@ -45,6 +45,8 @@ async def open_page(b, w, h, phone, reduced=False):
     await pg.add_init_script(INIT)
     await pg.goto(URL); await pg.wait_for_timeout(1500)
     await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); myCurrencies.energy = 60; window.showCoachTip = function(){}; 1")
+    # 2026-11-28 (TESTFIX14): own the deck's copies, or PG's fight gate ("Your deck has 3 ..., but you own 0") stops the raid and the float fights
+    await pg.evaluate("Object.entries(myDeckCounts).forEach(([id, n])=>{ for(let k = ownedCopiesOf(id); k < n; k++) grantCardCopy(id); }); 1")
     return ctx, pg, errs
 
 async def shot(pg, name):
@@ -128,10 +130,7 @@ async def raid_part(b, w, h, phone):
     ctx, pg, errs = await open_page(b, w, h, phone)
     await pg.evaluate(RAID_OPEN[0]); await pg.wait_for_timeout(500)
     await pg.evaluate(RAID_OPEN[1]); await pg.wait_for_timeout(600)
-    rules = await pg.evaluate("(()=>{ const e = document.querySelector('.r3-bramble'); return e ? e.textContent.replace(/\\s+/g, ' ') : null; })()")
-    check(rules and "Kraken's Reef" in rules and 'Tentacle Smack: every 3 turns' in rules and 'Tail Sweep' in rules, f'{tag}: the raid rules name the bramble and its attacks ({(rules or "")[:120]})')
-    if w == 390:
-        await pg.evaluate("document.querySelector('.r3-bramble').scrollIntoView({block:'center'}); 1"); await pg.wait_for_timeout(300); await shot(pg, f'raid-rules-{tag}')
+    # 2026-11-28 (TESTFIX14): the raid screen's rules section (.r3-bramble) went in RAID2 (3b7304375, 2026-11-05, tidier raid screen); the VS card below still names the bramble and its smack
     await pg.evaluate(RAID_OPEN[2]); await pg.wait_for_timeout(1500)
     vs = await pg.evaluate("(()=>{ const e = document.querySelector('.vs-screen .vs-right'); return e ? e.textContent.replace(/\\s+/g, ' ') : null; })()")
     check(vs and "The boss's bramble: Kraken's Reef" in vs and 'Tentacle Smack: every 3 turns' in vs, f'{tag}: the VS boss card names the bramble and its smack ({(vs or "")[:160]})')
@@ -167,7 +166,7 @@ async def raid_part(b, w, h, phone):
     print(f'  {tag}: raid card {r["cw"]:.1f}x{r["ch"]:.1f}, row pitch {[round(p, 1) for p in r["pitch"]]}, bottom slots {r["slotBottom"]:.1f} vs ribbon top {r["ribTop"]:.1f}, hand {r["hand"][:1]}')
     MB2B = {390: 66.8, 430: 75.2, 1366: 61.2}  # MB2b's raid card widths (5 columns; measured before U3)
     check(r['cw'] >= MB2B[w] + 1, f'{tag}: the raid cards are bigger than before ({r["cw"]:.1f} vs {MB2B[w]})')
-    check(abs(r['slotBottom'] - r['ribTop']) <= 1.5, f'{tag}: the bottom row\'s cards meet the board\'s edge ({r["slotBottom"]:.1f} vs the ribbon at {r["ribTop"]:.1f})')
+    # 2026-11-28 (TESTFIX14): no "bottom row meets the board's edge": RAID2 (3b7304375, 2026-11-05) zooms a raid in to about 1.5 rows a side with drag-to-pan, so the back rows sit outside the frame by design
     check(all(x[1] <= r['vh'] + 1 for x in r['hand']) and r['docH'] <= r['vh'] + 1, f'{tag}: the hand is on screen, no page scroll ({r["hand"][:1]}, {r["docH"]})')
     # facing lines and floats still on the cards
     al = await pg.evaluate("""(()=>{ const m = matchState, c = m.engine.allBoardCards(m.players[1]).find(x=> x.hp > 0); if(!c) return null; showFacing(c.uid);
