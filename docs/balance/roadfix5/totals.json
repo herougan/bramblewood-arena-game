@@ -1,0 +1,309 @@
+{
+ "before": {
+  "tags": [
+   "post1125b",
+   "post1126i",
+   "post1127s"
+  ],
+  "fights": 208,
+  "green": 178,
+  "within10": 179,
+  "beyond20": 7,
+  "meanWin": 68.6,
+  "worst": [
+   {
+    "map": "m6",
+    "mapNo": 17,
+    "side": false,
+    "name": "Wolfsbane Tundra",
+    "fights": 8,
+    "green": 3,
+    "meanAbsGap": 11.9,
+    "meanGap": -11.7,
+    "beyond20": 2
+   },
+   {
+    "map": "mpd",
+    "mapNo": 18,
+    "side": true,
+    "name": "The Pale Desert",
+    "fights": 9,
+    "green": 5,
+    "meanAbsGap": 11.7,
+    "meanGap": 11.3,
+    "beyond20": 3
+   },
+   {
+    "map": "mb",
+    "mapNo": 2,
+    "side": false,
+    "name": "Pebble Beach",
+    "fights": 5,
+    "green": 3,
+    "meanAbsGap": 10.8,
+    "meanGap": -10.8,
+    "beyond20": 1
+   },
+   {
+    "map": "ml",
+    "mapNo": 15,
+    "side": false,
+    "name": "The Long Grass",
+    "fights": 7,
+    "green": 3,
+    "meanAbsGap": 10.2,
+    "meanGap": 10.2,
+    "beyond20": 0
+   },
+   {
+    "map": "mg",
+    "mapNo": 2,
+    "side": true,
+    "name": "Smugglers' Grotto",
+    "fights": 4,
+    "green": 3,
+    "meanAbsGap": 10.2,
+    "meanGap": -6.7,
+    "beyond20": 0
+   },
+   {
+    "map": "md",
+    "mapNo": 18,
+    "side": false,
+    "name": "The Glass Dunes",
+    "fights": 7,
+    "green": 4,
+    "meanAbsGap": 9.3,
+    "meanGap": 5.7,
+    "beyond20": 0
+   },
+   {
+    "map": "m2",
+    "mapNo": 4,
+    "side": false,
+    "name": "Sunken Hollow",
+    "fights": 5,
+    "green": 4,
+    "meanAbsGap": 8.1,
+    "meanGap": -8.1,
+    "beyond20": 0
+   },
+   {
+    "map": "m3",
+    "mapNo": 19,
+    "side": false,
+    "name": "Ashen Spurn",
+    "fights": 6,
+    "green": 4,
+    "meanAbsGap": 8.1,
+    "meanGap": -8.1,
+    "beyond20": 0
+   }
+  ],
+  "beyond20Fights": [
+   {
+    "code": "8-7",
+    "map": "m4",
+    "win": 24.8,
+    "target": 60,
+    "gap": -35
+   },
+   {
+    "code": "2-2",
+    "map": "mb",
+    "win": 52.8,
+    "target": 80,
+    "gap": -27
+   },
+   {
+    "code": "18-A-7",
+    "map": "mpd",
+    "win": 90,
+    "target": 64.3,
+    "gap": 26
+   },
+   {
+    "code": "18-A-6",
+    "map": "mpd",
+    "win": 93.5,
+    "target": 68.6,
+    "gap": 25
+   },
+   {
+    "code": "17-8",
+    "map": "m6",
+    "win": 16,
+    "target": 40,
+    "gap": -24
+   },
+   {
+    "code": "18-A-4",
+    "map": "mpd",
+    "win": 99.5,
+    "target": 77.1,
+    "gap": 22
+   },
+   {
+    "code": "17-7",
+    "map": "m6",
+    "win": 39.8,
+    "target": 60,
+    "gap": -20
+   }
+  ]
+ },
+ "after": {
+  "tags": [
+   "post1125b",
+   "post1126i",
+   "post1127s",
+   "post1127r"
+  ],
+  "fights": 208,
+  "green": 180,
+  "within10": 181,
+  "beyond20": 7,
+  "meanWin": 68.5,
+  "worst": [
+   {
+    "map": "m6",
+    "mapNo": 17,
+    "side": false,
+    "name": "Wolfsbane Tundra",
+    "fights": 8,
+    "green": 3,
+    "meanAbsGap": 11.9,
+    "meanGap": -11.7,
+    "beyond20": 2
+   },
+   {
+    "map": "mpd",
+    "mapNo": 18,
+    "side": true,
+    "name": "The Pale Desert",
+    "fights": 9,
+    "green": 5,
+    "meanAbsGap": 11.7,
+    "meanGap": 11.3,
+    "beyond20": 3
+   },
+   {
+    "map": "mb",
+    "mapNo": 2,
+    "side": false,
+    "name": "Pebble Beach",
+    "fights": 5,
+    "green": 3,
+    "meanAbsGap": 10.8,
+    "meanGap": -10.8,
+    "beyond20": 1
+   },
+   {
+    "map": "mg",
+    "mapNo": 2,
+    "side": true,
+    "name": "Smugglers' Grotto",
+    "fights": 4,
+    "green": 3,
+    "meanAbsGap": 10.2,
+    "meanGap": -6.7,
+    "beyond20": 0
+   },
+   {
+    "map": "ml",
+    "mapNo": 15,
+    "side": false,
+    "name": "The Long Grass",
+    "fights": 7,
+    "green": 4,
+    "meanAbsGap": 8.3,
+    "meanGap": 8.3,
+    "beyond20": 0
+   },
+   {
+    "map": "m2",
+    "mapNo": 4,
+    "side": false,
+    "name": "Sunken Hollow",
+    "fights": 5,
+    "green": 4,
+    "meanAbsGap": 8.1,
+    "meanGap": -8.1,
+    "beyond20": 0
+   },
+   {
+    "map": "m3",
+    "mapNo": 19,
+    "side": false,
+    "name": "Ashen Spurn",
+    "fights": 6,
+    "green": 4,
+    "meanAbsGap": 8.1,
+    "meanGap": -8.1,
+    "beyond20": 0
+   },
+   {
+    "map": "mr",
+    "mapNo": 13,
+    "side": false,
+    "name": "The Redwood Deep",
+    "fights": 8,
+    "green": 6,
+    "meanAbsGap": 8,
+    "meanGap": 8,
+    "beyond20": 0
+   }
+  ],
+  "beyond20Fights": [
+   {
+    "code": "8-7",
+    "map": "m4",
+    "win": 24.8,
+    "target": 60,
+    "gap": -35
+   },
+   {
+    "code": "2-2",
+    "map": "mb",
+    "win": 52.8,
+    "target": 80,
+    "gap": -27
+   },
+   {
+    "code": "18-A-7",
+    "map": "mpd",
+    "win": 90,
+    "target": 64.3,
+    "gap": 26
+   },
+   {
+    "code": "18-A-6",
+    "map": "mpd",
+    "win": 93.5,
+    "target": 68.6,
+    "gap": 25
+   },
+   {
+    "code": "17-8",
+    "map": "m6",
+    "win": 16,
+    "target": 40,
+    "gap": -24
+   },
+   {
+    "code": "18-A-4",
+    "map": "mpd",
+    "win": 99.5,
+    "target": 77.1,
+    "gap": 22
+   },
+   {
+    "code": "17-7",
+    "map": "m6",
+    "win": 39.8,
+    "target": 60,
+    "gap": -20
+   }
+  ]
+ }
+}
