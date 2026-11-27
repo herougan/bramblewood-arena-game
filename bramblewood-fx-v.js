@@ -11,7 +11,8 @@
    (fxBatchVfx / fxHook skip), and each function also returns at once under reduced motion.
 
    Skills (battle events, M.onEvent), each under 400 ms:
-     M.swiftDash(att, {up})             Swift: speed streaks trail the attacker as its swing starts, a kick of dust
+     M.swiftDash(att, {up})             Swift: speed streaks trail the attacker as its swing starts, a kick of dust (FX.A.swiftBlur's card
+                                        clones with filter + blend mode step aside)
      M.tideCrest(el, {kind})            Tide: a pixel wave crest washes up a Tide unit as the tide turns, ⚔ on Flood / High, 🛡 on Ebb
      M.hatchPop(el)                     Hatchling: an evolute lands on it: the shell halves pop off, sparks, a green plus
      M.reachArc(att, target)            Reach: a dotted aim arc bends into the next lane, a crosshair snaps on the target
@@ -22,7 +23,8 @@
    Field (fxHook matchUI / boardRendered, Effects Medium and up), one tiled CSS layer set under the cards:
      M.fieldAmbient(host, kind)         kind: rain | storm | heat | frost | sand | ash | null (clears). M.fieldKind(m) picks it.
    Bosses (Effects Low: the minimal version):
-     M.cageClose(card)                  a bramble cage slams down over the caged leader, vines coil, a padlock (Caged Fight, boardRendered)
+     M.cageClose(card)                  the cage's bars slam down over the caged leader, bramble vines coil, a padlock (Caged Fight,
+                                        boardRendered after the versus opener; FX.D.cageDrop steps aside)
      M.skeletonRise(anchor)             bones fly in and assemble under a skull, dust, the eyes light (no skeleton boss yet: Lab only)
      M.mageCast(anchor)                 a ring of runes turns, charges and bursts (The Kelp Witch, 9-7)
      M.seaRise(host)                    the water line rises over the board and waves roll down the lanes (The Drowned Colossus, raids in
@@ -87,7 +89,7 @@ function pix(name, x, y, px, extra){
 function play(el, kf, ms, o){
   o = o || {}; const d = Math.max(0, o.delay || 0); let a = null;
   try{ a = el.animate(kf, {duration: Math.max(16, ms), delay: d, easing: o.ease || 'linear', fill: 'both'}); }catch(e){}
-  return new Promise(res=>{ let done = false; const end = ()=>{ if(done) return; done = true; if(!o.keep) el.remove(); res(); };
+  return new Promise(res=>{ let done = false; const end = ()=>{ if(done) return; done = true; if(!o.keep) el.remove(); else if(a) try{ a.cancel(); }catch(e){} res(); };
     if(a) a.onfinish = end; setTimeout(end, ms + d + 400); });
 }
 const steps = n=> `steps(${n}, end)`;
@@ -366,15 +368,16 @@ const fieldSync = (m, env)=>{ const bf = document.getElementById('battlefieldEl'
 // =====================================================================================================================
 // 3. BOSSES
 // =====================================================================================================================
-// The bramble cage slams down over a caged leader: bars drop, two thorny vines coil up the sides, a padlock pops, dust (700 ms)
+// The bramble cage slams down over a caged leader: the card's own bars drop (a stand-in set where it has none), two thorny vines coil up
+// the sides, a padlock pops, dust (700 ms)
 css('cage', `.fxv-bars{border-top:4px solid #4a3220; border-bottom:4px solid #4a3220; box-sizing:border-box; image-rendering:pixelated;
   background:repeating-linear-gradient(90deg, transparent 0 9%, #3a2614 9% 13%, #7a5432 13% 15%, transparent 15% 20%);}`);
 M.cageClose = function(card, o){
   o = o || {}; if(!card || RM()) return Promise.resolve(); const c = centre(tileOf(card)); if(!c.w) return Promise.resolve();
-  const px = pxFor(c.w), sp = speedOf(o), ps = [];
-  const bars = layer('fxv-box fxv-bars'); Object.assign(bars.style, {left:(c.r.left) + 'px', top:(c.r.top) + 'px', width:c.w + 'px', height:c.h + 'px'});
-  ps.push(play(bars, [{transform:`translateY(${-c.h*1.1}px)`, opacity:1}, {transform:'translateY(0)', opacity:1, offset:.32}, {transform:`translateY(${-c.h*.05}px)`, opacity:1, offset:.4},
-    {transform:'translateY(0)', opacity:1, offset:.5}, {transform:'translateY(0)', opacity:1, offset:.85}, {transform:'translateY(0)', opacity:0}], 720/sp, {ease:steps(10)}));
+  const px = pxFor(c.w), sp = speedOf(o), ps = [], own = card.querySelector && card.querySelector('.cage-bars');
+  const bars = own || layer('fxv-box fxv-bars'); if(!own) Object.assign(bars.style, {left:(c.r.left) + 'px', top:(c.r.top) + 'px', width:c.w + 'px', height:c.h + 'px'});
+  ps.push(play(bars, [{translate:`0 ${-c.h*1.1}px`, opacity:1}, {translate:'0 0', opacity:1, offset:.32}, {translate:`0 ${-c.h*.05}px`, opacity:1, offset:.4},
+    {translate:'0 0', opacity:1, offset:.5}, {translate:'0 0', opacity:1, offset:own ? 1 : .85}].concat(own ? [] : [{translate:'0 0', opacity:0}]), 720/sp, {ease:steps(10), keep:!!own}));
   later(()=> snd('cageSlam'), 200/sp);
   const lk = pix('lock', c.x, c.y - c.h*.05, px + 1);
   ps.push(play(lk, [{transform:'scale(0)', opacity:0}, {transform:'scale(1.3)', opacity:1, offset:.35}, {transform:'scale(1)', opacity:1, offset:.7}, {transform:'scale(1)', opacity:0}], 460/sp, {ease:steps(5), delay:260/sp}));

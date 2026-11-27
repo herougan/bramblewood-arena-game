@@ -862,8 +862,8 @@
   "area": "combat-attack",
   "name": "Swift strike",
   "trigger": "hit by a Swift unit",
-  "current": "\"💨 Swift!\" float + SoundKit.quick",
-  "quality": "basic — float only",
+  "current": "FX.V.swiftDash: pixel speed streaks trail the attacker and a kick of dust as its swing starts (swiftZip; was SoundKit.quick, Quick's cue); the \"💨 Swift!\" float stays; FX.A.swiftBlur (three card clones with filter + blend mode) steps aside, Lab only",
+  "quality": "good — VFX1",
   "priority": 3,
   "themeNotes": "Hummingbird blur.",
   "variantsSuggested": false,
@@ -873,16 +873,17 @@
   ],
   "batch": "A",
   "status": "live",
-  "lab": "a.js",
-  "inGameHook": "onEvent (bramblewood-fx-a.js): hit by a Swift unit (once a round)"
+  "lab": "vfx1.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): hit / evaded by a Swift unit, melee, once a round",
+  "updated": "2026-11-27"
  },
  {
   "id": "atk-frenzy",
   "area": "combat-attack",
   "name": "Frenzy / Twin Strike second swing",
   "trigger": "frenzy {twin} (requeued attack)",
-  "current": "SkillFX.rageFlare + \"🔥 Frenzy!\" / \"⚔⚔ Twin Strike!\"",
-  "quality": "good — has its own look that plays at the right moment",
+  "current": "Twin Strike: FX.V.twinSlash (two blades cross over the card, a flash) and its own cue twinShing; Frenzy keeps \"🔥 Frenzy!\" and frenzyTone",
+  "quality": "good — VFX1",
   "priority": 3,
   "themeNotes": "",
   "variantsSuggested": false,
@@ -893,8 +894,9 @@
   ],
   "batch": "A",
   "status": "live",
-  "lab": "a.js",
-  "inGameHook": "SkillFX.rageFlare + float"
+  "lab": "vfx1.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): frenzy {twin}",
+  "updated": "2026-11-27"
  },
  {
   "id": "atk-swarm",
@@ -5519,8 +5521,8 @@
   "area": "status",
   "name": "Caged leader on the board",
   "trigger": "cage {hp, slot} (a host carries the cage)",
-  "current": "cage tile class (cageCls) + log line",
-  "quality": "basic — no cage-drop moment",
+  "current": "FX.V.cageClose: the cage's own bars slam down (steps), bramble vines coil up the sides, a padlock pops, dust (cageSlam), after the versus opener; FX.D.cageDrop steps aside, Lab only",
+  "quality": "good — VFX1",
   "priority": 2,
   "themeNotes": "Bars slam down.",
   "variantsSuggested": false,
@@ -5531,8 +5533,9 @@
   ],
   "batch": "D",
   "status": "live",
-  "lab": "d.js",
-  "inGameHook": "boardRowsBuilt (first render of an .is-caged card)"
+  "lab": "vfx1.js",
+  "inGameHook": "fxHook boardRendered (bramblewood-fx-v.js): first render of a Caged Fight's cage, the versus opener gone",
+  "updated": "2026-11-27"
  },
  {
   "id": "st-cage-broken",
@@ -8862,8 +8865,8 @@
   "area": "summon-spawn",
   "name": "Boss entrance",
   "trigger": "versus opener closes on a boss node → bossEntrance",
-  "current": "quake + dust ring + shader shockwave + \"BOSS · name\" title + bossRumble",
-  "quality": "good — has its own look that plays at the right moment",
+  "current": "quake + dust ring + shader shockwave + title + bossRumble; VFX1 adds the boss's own look by name (FX.V.bossKind): mage FX.V.mageCast (The Kelp Witch), sea FX.V.seaRise (The Drowned Colossus), skeleton FX.V.skeletonRise (no skeleton boss yet: Lab only)",
+  "quality": "good — VFX1",
   "priority": 1,
   "themeNotes": "",
   "variantsSuggested": false,
@@ -8874,8 +8877,9 @@
   ],
   "batch": "C",
   "status": "live",
-  "lab": "c.js",
-  "inGameHook": "existing: versus opener closes on a boss node → bossEntrance"
+  "lab": "vfx1.js",
+  "inGameHook": "bossEntrance → fxHook bossEntrance (bramblewood-fx-v.js)",
+  "updated": "2026-11-27"
  },
  {
   "id": "sum-trigger-spawn",
@@ -17907,8 +17911,8 @@
   "area": "raid-dungeon-pvp",
   "name": "Raid fight start roar",
   "trigger": "raid fight start",
-  "current": "bossRumble / versus",
-  "quality": "basic — a generic or reused look that does not say what happened",
+  "current": "bossRumble / versus; VFX1: FX.V.seaRise for a sea boss or a raid in the Abyss (the Goliath): the water line rises, waves down the lanes (seaSurge)",
+  "quality": "good — VFX1",
   "priority": 2,
   "themeNotes": "Deep sea groan.",
   "variantsSuggested": false,
@@ -17918,8 +17922,9 @@
   ],
   "batch": "F",
   "status": "live",
-  "lab": "f.js",
-  "inGameHook": "onEvent: raidBossUnit (once per fight)"
+  "lab": "vfx1.js",
+  "inGameHook": "startRaidFullBattle opener → fxHook raidEntrance (bramblewood-fx-v.js)",
+  "updated": "2026-11-27"
  },
  {
   "id": "raid-tentacle-smack",
@@ -21088,5 +21093,166 @@
   "current": "weakenTone (a sapping drop), float 🪓 −N⚔, SkillFX.weakenDrain",
   "themeNotes": "Was 💔 and Corrode's cue.",
   "inGameHook": "w2SkillVfx (arena_app.js)"
+ },
+ {
+  "id": "sk-tide-crest",
+  "area": "combat-skill",
+  "name": "Tide units as the tide turns",
+  "trigger": "tide (not Moonpull): each Tide / Tide-grant unit on the board",
+  "current": "FX.V.tideCrest: a pixel crest washes up the card, ⚔ on Flood / High Tide, 🛡 on Ebb (tideLap once); the field-wide lift stays",
+  "quality": "good — VFX1",
+  "priority": 2,
+  "themeNotes": "Was: every card lifted alike, nothing said which units gain the bonus.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx1.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): tide, up to 6 units 70 ms apart",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "sk-hatchling-pop",
+  "area": "combat-skill",
+  "name": "Hatchling: an evolute lands on it",
+  "trigger": "evolve {stem:{attack, health}}",
+  "current": "FX.V.hatchPop: the shell halves pop off the top, sparks, a green plus (shellCrack)",
+  "quality": "good — VFX1",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx1.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): evolve with a stem bonus, 120 ms after the evolve pop",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "atk-reach-aim",
+  "area": "combat-attack",
+  "name": "Reach strikes beside its lane",
+  "trigger": "statusFx reachAim",
+  "current": "FX.V.reachArc: a dotted aim arc into the next lane, a crosshair snaps on (reachCreak); the float stays",
+  "quality": "good — VFX1",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx1.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): statusFx reachAim",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "atk-mighty-slam",
+  "area": "combat-attack",
+  "name": "Mighty: double damage",
+  "trigger": "hit by a Mighty unit (dmg > 0)",
+  "current": "FX.V.mightySlam: a square shockwave and a x2 stamp at the impact, rock chips (mightyThud)",
+  "quality": "good — VFX1",
+  "priority": 2,
+  "themeNotes": "Was: none (a bigger number).",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx1.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): hit, at env.hitAtMs, once a round",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "sk-forage-berry",
+  "area": "combat-skill",
+  "name": "Foraging: a berry, and three feed an ally",
+  "trigger": "statusFx sk2Berry / sk2BerryEat",
+  "current": "FX.V.berryPop (a berry and its 1-3 pips; berryPlip) / FX.V.berryEat (three berries hop to the ally, a heart; berryMunch); the float stays",
+  "quality": "good — VFX1",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx1.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): statusFx sk2Berry / sk2BerryEat",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "st-sturdy-brace",
+  "area": "status",
+  "name": "Sturdy halves a blow",
+  "trigger": "hit whose mods include sturdy",
+  "current": "FX.V.sturdyBrace: stone brackets clamp the corners at the impact, a ½ mark (sturdyThunk)",
+  "quality": "good — VFX1",
+  "priority": 2,
+  "themeNotes": "Was: the 🗿 mark on the number only.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx1.js",
+  "inGameHook": "onEvent (bramblewood-fx-v.js): hit with the sturdy mark, at env.hitAtMs, once a round",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "wt-weather-layer",
+  "area": "weather-time",
+  "name": "Weather layer on the board (rain, storm, heat, frost, sand, ash)",
+  "trigger": "the field card in play or the fight's rules (FX.V.fieldKind)",
+  "current": "FX.V.fieldAmbient: tiled pixel layers under the cards, one transform loop each (no script per frame); Effects Medium and up",
+  "quality": "good — VFX1",
+  "priority": 2,
+  "themeNotes": "Flood / High Tide, Thick Fog, Full Moon and the dark keep their own layers.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-v.js"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx1.js",
+  "inGameHook": "fxHook matchUI / boardRendered (bramblewood-fx-v.js); cleared on the results",
+  "added": "2026-11-27"
+ },
+ {
+  "id": "st-ritual-rite",
+  "area": "status",
+  "name": "Ritual: the rite (dark card, candles per condition)",
+  "trigger": "a unit in its Ritual (rc1InRitual): placed, a condition met, the Ritual complete",
+  "current": "RITUAL1: a translucent dark veil, the ritual shape, one brass candle per condition at its corner (fade in one by one, 1 s + 0.25 s each more), a candle catches when met (candleCatch), the darkness lifts when complete (rt1Lift, riteLift); the hover shows the shape with have / need",
+  "quality": "good — VFX1",
+  "priority": 2,
+  "themeNotes": "Owner 2026-11-27 10:18.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js",
+   "arena_template.html"
+  ],
+  "batch": "V",
+  "status": "live",
+  "lab": "vfx1.js",
+  "inGameHook": "boardCardHTML → rt1RiteHTML; updateCardStatusDisplay → rt1Sync; fullCardHTML (describeEffects ritual line)",
+  "added": "2026-11-27"
  }
 ]

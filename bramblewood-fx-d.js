@@ -1875,7 +1875,7 @@ M.hooks.boardRowsBuilt = function(bf, env){
     const uid = el.getAttribute('data-uid'); let c = null; try{ c = look ? look(isNaN(+uid) ? uid : +uid) || look(uid) : null; }catch(e){}
     if(c) M.syncStatusLooks(el, statusStates(c, uid, env), env);
     if(boss && el.closest('#rowEnemy')){ const t = el.querySelector('.card-tile.art-extended'); if(t) t.classList.add('fxd-boss'); }
-    if(el.classList.contains('is-caged') && !seenSet(env, 'cage').has(uid)){ seenSet(env, 'cage').add(uid); if(env.fxAtLeast('med')) later(()=>{ if(el.isConnected) M.cageDrop(el); }, 250); }
+    if(el.classList.contains('is-caged') && !seenSet(env, 'cage').has(uid)){ seenSet(env, 'cage').add(uid); if(env.fxAtLeast('med') && !(FX.V && FX.V.cageClose) /* 2026-11-27 (VFX1): FX.V's bramble cage instead, after the versus opener */) later(()=>{ if(el.isConnected) M.cageDrop(el); }, 250); }
     if(el.classList.contains('raging') && !seenSet(env, 'rage').has(uid)){ seenSet(env, 'rage').add(uid); if(env.fxAtLeast('med')) later(()=>{ if(el.isConnected) M.rageEnter(el); }, 120); }
   });
 };

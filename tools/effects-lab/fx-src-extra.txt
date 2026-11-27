@@ -232,3 +232,8 @@ UI16_PITCH_MS
 PITCH_RESOURCE_META
 noteMatchFx
 floatText
+# 2026-11-27 (package VFX1, RITUAL1): the rite over a unit in its Ritual (manifest/vfx1.js st-ritual-rite)
+EN20_CANDLE_SVG
+rt1Corners
+rt1RiteMarkup
+rt1Lift
