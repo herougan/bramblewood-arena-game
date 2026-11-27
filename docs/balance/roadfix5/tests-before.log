@@ -1,0 +1,61 @@
+
+✗ road-rarity-2026-10-16 (exit 1, 2.0s) — last lines:
+  ✗ 2. 20-A-4 (dungeon, Map 20) fields ashmantle-fiend (unique), cap epic
+  road-rarity-2026-10-16: 1 failed
+
+✗ skir1-2026-11-11 (exit 1, 4.1s) — last lines:
+    ✗ 19-5: smoke-raccoon is from the fight's pool (its map's list, its own first-clear cards or leaders, in the rarity cap)
+    ✗ 19-5: K14 (honey-badger-fury x4; smoke-raccoon x4; 10 non-unique copies)
+    ✗ 19-6: honey-badger-fury is from the fight's pool (its map's list, its own first-clear cards or leaders, in the rarity cap)
+    ✗ 19-6: K14 (honey-badger-fury x4)
+    ✗ 19-6: a boss keeps its leader (a Stone leader left before Map 21)
+    ✗ 20-7: honey-badger-fury is from the fight's pool (its map's list, its own first-clear cards or leaders, in the rarity cap)
+    ✗ 20-10: honey-badger-fury is from the fight's pool (its map's list, its own first-clear cards or leaders, in the rarity cap)
+    ✗ 7-A-2: compost-grub is from the fight's pool (its map's list, its own first-clear cards or leaders, in the rarity cap)
+    ✗ 7-A-3: compost-grub is from the fight's pool (its map's list, its own first-clear cards or leaders, in the rarity cap)
+    ✗ 7-A-4: compost-grub is from the fight's pool (its map's list, its own first-clear cards or leaders, in the rarity cap)
+    ✗ 7-A-4: K14 (compost-grub x3)
+    ✗ 7-A-5: compost-grub is from the fight's pool (its map's list, its own first-clear cards or leaders, in the rarity cap)
+    ✗ 11-A-1: K14 (anvil-thrush x5)
+    ✗ 11-A-3: K14 (anvil-thrush x3)
+    ✗ 11-A-4: K14 (anvil-thrush x4)
+    ✗ m1: its decks show 0 cost1 card(s) (the pools hold 2; minimum 4)
+    ✗ m1: its decks show 3 wait1 card(s) (the pools hold 5; minimum 4)
+    ✗ m1: its decks show 1 status card(s) (the pools hold 2; minimum 2)
+    ✗ m2: its decks show 2 wait0 card(s) (the pools hold 3; minimum 3)
+    ✗ m2: its decks show 1 lumber card(s) (the pools hold 2; minimum 2)
+    ✗ mw: its decks show 0 plain card(s) (the pools hold 2; minimum 2)
+    ✗ mh: its decks show 0 plain card(s) (the pools hold 1; minimum 2)
+    ✗ m11: its decks show 1 cost0 card(s) (the pools hold 2; minimum 3)
+    ✗ my: hoopoe-herald in 5 of 5 fights besides the ones that keep it (at most 4)
+  skir1: 5549 passed, 174 failed
+
+✗ pro-2026-10-23 (exit 1, 35.3s) — last lines:
+    ✗ 1b. 16-BPRO-3: every card on mt's list (off: sworn-shieldbearer)
+    ✗ 1b. 16-WPRO-1: every card on mt's list (off: sworn-shieldbearer, taiga-lynx)
+    ✗ 1b. 16-WPRO-2: every card on mt's list (off: sworn-shieldbearer)
+    ✗ 1b. 17-PRO-1: every card on m6's list or held by then (off: alley-cat, mountain-hare)
+    ✗ 1b. 17-PRO-2: every card on m6's list or held by then (off: alley-cat)
+    ✗ 1b. 17-PRO-3: every card on m6's list or held by then (off: alley-cat, mountain-hare)
+    ✗ 1b. 17-BPRO-1: every card on m6's list (off: glacier-yak)
+    ✗ 1b. 17-BPRO-2: every card on m6's list (off: taiga-lynx)
+    ✗ 1b. 17-BPRO-3: every card on m6's list (off: walrus-icebreaker, glacier-yak)
+    ✗ 1b. 17-WPRO-1: every card on m6's list (off: glacier-yak)
+    ✗ 1b. 17-WPRO-2: every card on m6's list (off: glacier-yak, taiga-lynx)
+    ✗ 1b. 19-PRO-1: every card on m3's list or held by then (off: smoke-raccoon)
+    ✗ 1b. 19-PRO-2: every card on m3's list or held by then (off: mountain-hare, smoke-raccoon)
+    ✗ 1b. 19-BPRO-1: every card on m3's list (off: smoke-raccoon)
+    ✗ 1b. 19-BPRO-2: every card on m3's list (off: honey-badger-fury)
+    ✗ 1b. 19-BPRO-3: every card on m3's list (off: glacier-yak, walrus-icebreaker)
+    ✗ 1b. 19-WPRO-1: every card on m3's list (off: glacier-yak, honey-badger-fury, smoke-raccoon)
+    ✗ 1b. 19-WPRO-2: every card on m3's list (off: glacier-yak)
+    ✗ 1b. 20-PRO-1: every card on m11's list or held by then (off: honey-badger-fury)
+    ✗ 1b. 20-PRO-2: every card on m11's list or held by then (off: stonedrop-vulture)
+    ✗ 1b. 20-PRO-3: every card on m11's list or held by then (off: honey-badger-fury, stonedrop-vulture)
+    ✗ 1b. 20-PRO-4: every card on m11's list or held by then (off: stonedrop-vulture)
+    ✗ 1b. 20-BPRO-2: every card on m11's list (off: honey-badger-fury)
+    ✗ 1b. 20-WPRO-1: every card on m11's list (off: honey-badger-fury)
+  pro: 243/2974 FAILED
+
+tests: 3 passed, 3 failed, 0 skipped (passed before on identical inputs) · 35s · slowest: pro-2026-10-23 35s, skir1-2026-11-11 4s, ref5-2026-10-30 4s
+failing tests: tests/.last-failures.txt (3)
