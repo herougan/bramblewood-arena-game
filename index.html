@@ -49064,8 +49064,8 @@ Object.assign(SPRITES, {
   tack:    {pal:{w:'rgba(242,242,255,.95)'}, rows:['ww', 'ww']},
   glare:   {pal:{k:'#1c1410', y:'#ffe066', r:'#e0301e'}, rows:['k.......k', '.kk...kk.', '.yrk.kry.', '.yy...yy.']},
   sweat:   {pal:{b:'#8fd4ff', w:'#ffffff'}, rows:['.b.', 'bwb', 'bbb', '.b.']},
-  rot:     {pal:{g:'#7fbf3f', G:'#4f8f2a', d:'#2f4f1a'}, rows:['..gg..', '.gGGg.', 'gGddGg', '.gGGgg', '..g.g.']},
-  spore:   {pal:{s:'#c8f07a'}, rows:['ss', 'ss']},
+  rot:     {pal:{g:'#b4f04a', G:'#6fc02a', d:'#2f5a14'}, rows:['..gg..', '.gGGg.', 'gGddGg', '.gGGgg', '..g.g.']},
+  spore:   {pal:{s:'#e2ff9a'}, rows:['ss', 'ss']},
   corner:  {pal:{r:'#ff4d4d', d:'#8a1414'}, rows:['rrrr', 'rddd', 'rd..', 'rd..']},
   weak:    {pal:{r:'#ff2a2a', w:'#ffd0d0'}, rows:['..r..', '.rwr.', 'rwwwr', '.rwr.', '..r..']},
   glint:   {pal:{w:'#ffffff', c:'#bfeaff'}, rows:['.w.', 'wcw', '.w.']},
@@ -49454,7 +49454,7 @@ M.gashBleed = function(t, o){ o = o || {}; const c = begin(t); if(!c) return NON
 // Stampede: a dust trail runs from the striker through to the bramble, a hoof stamp and chips land on it (~400 ms)
 M.stampedeRun = function(from, castle, o){ o = o || {}; if(!castle || RM()) return NONE(); const b = centre(tileOf(castle)); if(!b.w) return NONE();
   const f = from && from.isConnected ? centre(tileOf(from)) : null, a = f && f.w ? f : {x:b.x, y:b.y + b.h*1.6, w:b.w}, px = pxFor(a.w), sp = speedOf(o), ps = [], n = lowOf(o) ? 3 : 6;
-  for(let i = 0; i < n; i++){ const t = (i + 1)/(n + 1); ps.push(fly('dust', a.x + (b.x - a.x)*t + (i % 2 ? 7 : -7), a.y + (b.y - a.y)*t, px, [{transform:'scale(.4)', opacity:0}, {transform:'scale(1)', opacity:.95, offset:.25}, {transform:'translateY(-4px) scale(1.8)', opacity:0}], 260/sp, {ease:steps(4), delay:(i*28)/sp})); }
+  for(let i = 0; i < n; i++){ const t = (i + 1)/(n + 1); ps.push(fly('dust', a.x + (b.x - a.x)*t + (i % 2 ? 7 : -7), a.y + (b.y - a.y)*t, px + 1, [{transform:'scale(.4)', opacity:0}, {transform:'scale(1)', opacity:.95, offset:.25}, {transform:'translateY(-4px) scale(1.8)', opacity:0}], 260/sp, {ease:steps(4), delay:(i*28)/sp})); }
   ps.push(fly('hoof', b.x, b.y + b.h*.12, px + 1, POP(1.8), 230/sp, {ease:steps(4), delay:(n*28)/sp}));
   if(!lowOf(o)) for(let i = 0; i < 4; i++){ const ang = Math.PI*(1.1 + i*.27); ps.push(fly('chip', b.x, b.y + b.h*.2, px, [{transform:'translate(0,0)', opacity:0}, {transform:'translate(0,0)', opacity:1, offset:.1}, {transform:`translate(${Math.cos(ang)*b.w*.5}px, ${Math.sin(ang)*b.h*.3}px)`, opacity:0}], 220/sp, {ease:steps(4), delay:(n*28 + 30)/sp})); }
   return all(ps); };
@@ -60979,7 +60979,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '79aa5ad5851e', BUILD_CARD_HASH = 'a66834fc0484abfb2220ea27203bf29de3a23511282b33f6b076b5da8ca7f01b';
+const BUILD_ID = '4b80b9c6547b', BUILD_CARD_HASH = 'a66834fc0484abfb2220ea27203bf29de3a23511282b33f6b076b5da8ca7f01b';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
