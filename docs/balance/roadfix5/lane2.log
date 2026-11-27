@@ -1,0 +1,7 @@
+18-3 target 78 (70-86) size 15 start {"armadillo-guard":4,"caustic-scorpion":2,"meerkat-sentry":4,"chipmunk-forager":1,"horned-lizard":4} problems []
+start {"armadillo-guard":4,"caustic-scorpion":2,"meerkat-sentry":4,"chipmunk-forager":1,"horned-lizard":4} 92.3
+round 1: cur 95/92.3; 130 legal, 60 read + 14 predicted (of 19); top: -1 caustic-scorpion +1 worker-ant 90/88.7 | -1 caustic-scorpion +1 ant-scout 90/89 | -4 armadillo-guard +4 roadrunner-courier 88.3/89.7 | -1 horned-lizard +1 ice-crevasse-wolf 91.7/91 | -4 armadillo-guard +3 barrel-cactus +1 caustic-scorpion 91.7/95.3
+round 2: cur 90/88.7; 72 legal, 72 read + 14 predicted (of 36); top: -1 chipmunk-forager +1 ice-crevasse-wolf 80/87 | -1 chipmunk-forager +1 antlion-pit 76.7/88 | -1 chipmunk-forager +1 bison-bulldozer 78.3/88.3 | -1 chipmunk-forager +1 mouse-sapper 80/89.7 | -1 chipmunk-forager +1 barrel-cactus 81.7/90.7
+round 3: cur 80/87; 72 legal, 72 read + 14 predicted (of 20); top: -1 ice-crevasse-wolf +1 antlion-pit 76.7/88 | -1 ice-crevasse-wolf +1 bison-bulldozer 78.3/88.3 | -1 ice-crevasse-wolf +1 mouse-sapper 80/89.7 | -1 ice-crevasse-wolf +1 sunbittern-strider 81.7/90 | -1 ice-crevasse-wolf +1 barrel-cactus 81.7/90.7
+no nearer move
+RESULT 18-3 {"armadillo-guard":4,"caustic-scorpion":1,"meerkat-sentry":4,"horned-lizard":4,"worker-ant":1,"ice-crevasse-wolf":1} 87 {} moves: -1 caustic-scorpion +1 worker-ant ; -1 chipmunk-forager +1 ice-crevasse-wolf problems: []
