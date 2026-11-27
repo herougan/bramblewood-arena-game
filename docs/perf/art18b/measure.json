@@ -1,0 +1,146 @@
+{
+ "c-control.html 390 x1": {
+  "cpu": 7.72,
+  "script": 1.76,
+  "style_layout": 0.0,
+  "over": 0.0,
+  "p95": 16.7,
+  "mem": 1.26,
+  "layers": 2
+ },
+ "c-control.html 390 x4": {
+  "cpu": 16.71,
+  "script": 3.72,
+  "style_layout": 0.0,
+  "over": 0.0,
+  "p95": 16.7,
+  "mem": 1.26,
+  "layers": 2
+ },
+ "c-control.html 1366 x1": {
+  "cpu": 8.1,
+  "script": 1.91,
+  "style_layout": 0.0,
+  "over": 0.0,
+  "p95": 16.8,
+  "mem": 4.0,
+  "layers": 2
+ },
+ "c-control.html 1366 x4": {
+  "cpu": 17.77,
+  "script": 3.27,
+  "style_layout": 0.0,
+  "over": 0.0,
+  "p95": 16.7,
+  "mem": 4.0,
+  "layers": 2
+ },
+ "v1-radial.html 390 x1": {
+  "cpu": 13.51,
+  "script": 1.9,
+  "style_layout": 2.7,
+  "over": 0.0,
+  "p95": 16.7,
+  "mem": 3.21,
+  "layers": 6
+ },
+ "v1-radial.html 390 x4": {
+  "cpu": 37.56,
+  "script": 3.93,
+  "style_layout": 6.92,
+  "over": 0.0,
+  "p95": 16.7,
+  "mem": 3.21,
+  "layers": 6
+ },
+ "v1-radial.html 1366 x1": {
+  "cpu": 13.58,
+  "script": 1.92,
+  "style_layout": 2.8,
+  "over": 0.0,
+  "p95": 16.8,
+  "mem": 6.44,
+  "layers": 6
+ },
+ "v1-radial.html 1366 x4": {
+  "cpu": 37.03,
+  "script": 3.49,
+  "style_layout": 6.33,
+  "over": 0.0,
+  "p95": 16.8,
+  "mem": 6.44,
+  "layers": 6
+ },
+ "v2-wind.html 390 x1": {
+  "cpu": 17.3,
+  "script": 1.85,
+  "style_layout": 3.87,
+  "over": 0.0,
+  "p95": 16.8,
+  "mem": 5.66,
+  "layers": 5
+ },
+ "v2-wind.html 390 x4": {
+  "cpu": 60.35,
+  "script": 4.3,
+  "style_layout": 13.32,
+  "over": 0.0,
+  "p95": 16.8,
+  "mem": 5.66,
+  "layers": 5
+ },
+ "v2-wind.html 1366 x1": {
+  "cpu": 16.56,
+  "script": 1.82,
+  "style_layout": 3.87,
+  "over": 0.0,
+  "p95": 16.8,
+  "mem": 9.5,
+  "layers": 5
+ },
+ "v2-wind.html 1366 x4": {
+  "cpu": 55.48,
+  "script": 3.93,
+  "style_layout": 12.29,
+  "over": 0.0,
+  "p95": 16.7,
+  "mem": 9.5,
+  "layers": 5
+ },
+ "v3-smear.html 390 x1": {
+  "cpu": 14.38,
+  "script": 1.89,
+  "style_layout": 3.18,
+  "over": 0.0,
+  "p95": 16.7,
+  "mem": 3.21,
+  "layers": 6
+ },
+ "v3-smear.html 390 x4": {
+  "cpu": 42.71,
+  "script": 4.13,
+  "style_layout": 9.66,
+  "over": 0.0,
+  "p95": 16.7,
+  "mem": 3.21,
+  "layers": 6
+ },
+ "v3-smear.html 1366 x1": {
+  "cpu": 14.5,
+  "script": 1.81,
+  "style_layout": 3.2,
+  "over": 0.0,
+  "p95": 16.8,
+  "mem": 6.44,
+  "layers": 6
+ },
+ "v3-smear.html 1366 x4": {
+  "cpu": 47.42,
+  "script": 3.75,
+  "style_layout": 11.79,
+  "over": 0.0,
+  "p95": 16.7,
+  "mem": 6.44,
+  "layers": 6
+ }
+}
