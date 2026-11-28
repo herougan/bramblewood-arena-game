@@ -47,8 +47,8 @@ const bmc = fnSrc('battlefieldMapClass');
 ok(/m\.mode === 'tutorial'\) return 'bf-tutorial'/.test(bmc), 'a tutorial fight gets the bf-tutorial board');
 ok(/\.battlefield\.bf-tutorial\{background:[^}]*#8fd16a[^}]*\}/.test(tpl), 'bf-tutorial is tinted green');
 { // with no map and no override, a tutorial match is bf-tutorial; a Conquest fight on m1 is not
-  const f = new Function('loadBattlefieldBgOverride', 'MAP_BATTLEFIELD_CLASS', 'MAP_ART_IDS', 'raidGroundOf', 'ARENA_FIGHT_MODES', bmc + '\nreturn battlefieldMapClass;')(
-    ()=> 'auto', {m1:'map-m1'}, new Set(['m1']), ()=> null, new Set());
+  const f = new Function('loadBattlefieldBgOverride', 'MAP_BATTLEFIELD_CLASS', 'MAP_ART_IDS', 'raidGroundOf', 'ARENA_FIGHT_MODES', 'sceneCls', bmc + '\nreturn battlefieldMapClass;')( // 2026-11-28 (ONBOARD3): SCENES1 added sceneCls to the function
+    ()=> 'auto', {m1:'map-m1'}, new Set(['m1']), ()=> null, new Set(), ()=> '');
   ok(f({mode:'tutorial'}) === 'bf-tutorial', 'battlefieldMapClass(tutorial) is bf-tutorial');
   ok(f({mode:'conquest', conquestNode:{mapId:'m1'}}) === 'map-m1 has-floor-art', 'a Conquest fight keeps its map ground');
 }
