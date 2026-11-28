@@ -3989,7 +3989,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-warning-colours": "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.",
   "ui.sk-warning-colours-codex": "Avoid: a warned swing goes to an enemy unit one column beside, a shot to any other one, while there is one. Taunt still draws it.",
   "ui.s3b-log-wc": "⚠️ {n} enemy unit(s) saw {name} fall: they avoid Warning Colours next round.",
-  "ui.s3b-log-wc-avoid": "⚠️ {att} turns away from {name}."
+  "ui.s3b-log-wc-avoid": "⚠️ {att} turns away from {name}.",
+  "ui.up1-gloss-lumber": "Pay it to play a card. Pitch a card from your hand for 1, once a turn.",
+  "ui.up1-gloss-res": "A resource: some cards cost it to play."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

@@ -1,0 +1,34 @@
+{
+ "tx": {
+  "ui.up1-gloss-lumber": {
+   "en": "Pay it to play a card. Pitch a card from your hand for 1, once a turn.",
+   "fr": "À payer pour jouer une carte. Défaussez une carte de votre main pour en gagner 1, une fois par tour.",
+   "de": "Zum Ausspielen von Karten nötig. Opfere einmal pro Zug eine Handkarte für 1.",
+   "es": "Se paga para jugar una carta. Descarta una carta de tu mano por 1, una vez por turno.",
+   "it": "Si paga per giocare una carta. Scarta una carta dalla mano per 1, una volta a turno.",
+   "pt": "Paga-se para jogar uma carta. Descarte uma carta da mão por 1, uma vez por turno.",
+   "tl": "Ibinabayad para maglaro ng card. Mag-pitch ng card mula sa kamay para sa 1, isang beses bawat turn.",
+   "ta": "கார்டு விளையாட இது தேவை. கையிலிருந்து ஒரு கார்டை பிட்ச் செய்தால் 1 கிடைக்கும், ஒரு முறை.",
+   "id": "Dibayar untuk memainkan kartu. Pitch satu kartu dari tangan untuk 1, sekali per giliran.",
+   "zh-Hans": "出牌所需。每回合可弃一张手牌换取1点。",
+   "zh-Hant": "出牌所需。每回合可棄一張手牌換取1點。",
+   "ja": "カードを出すために支払う。手札を1枚ピッチすると1得られる(1ターンに1回)。",
+   "ko": "카드를 내는 데 쓴다. 턴마다 한 번 손패 한 장을 피치하면 1을 얻는다."
+  },
+  "ui.up1-gloss-res": {
+   "en": "A resource: some cards cost it to play.",
+   "fr": "Une ressource : certaines cartes en coûtent pour être jouées.",
+   "de": "Eine Ressource: manche Karten kosten sie.",
+   "es": "Un recurso: algunas cartas lo cuestan.",
+   "it": "Una risorsa: alcune carte la richiedono.",
+   "pt": "Um recurso: algumas cartas o custam.",
+   "tl": "Isang resource: may mga card na may ganitong gastos.",
+   "ta": "ஒரு வளம்: சில கார்டுகளுக்கு இது செலவாகும்.",
+   "id": "Sumber daya: beberapa kartu memerlukannya.",
+   "zh-Hans": "一种资源:部分卡牌需要它。",
+   "zh-Hant": "一種資源:部分卡牌需要它。",
+   "ja": "資源の一つ。コストに使うカードがある。",
+   "ko": "자원: 일부 카드는 이것을 소모한다."
+  }
+ }
+}

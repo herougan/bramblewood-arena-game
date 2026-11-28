@@ -4848,5 +4848,7 @@
  "{att} turns away from {name}.": "{att} menjauhi {name}.",
  "takes 1 more from lightning, which runs on to Wet neighbours. Fire or dry weather dries it.": "terima +1 dari petir, yang merambat ke tetangga Basah. Api atau cuaca kering mengeringkannya.",
  "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "Pembunuhnya mendapat {n} Racun. Musuh yang melihatnya mati menghindari unit Warna Peringatan-mu yang lain di ronde berikutnya.",
- "Energy: spent to start fights, refills 1 every 5 minutes.": "Energi: dipakai untuk memulai pertarungan, pulih 1 setiap 5 menit."
+ "Energy: spent to start fights, refills 1 every 5 minutes.": "Energi: dipakai untuk memulai pertarungan, pulih 1 setiap 5 menit.",
+ "Pay it to play a card. Pitch a card from your hand for 1, once a turn.": "Dibayar untuk memainkan kartu. Pitch satu kartu dari tangan untuk 1, sekali per giliran.",
+ "A resource: some cards cost it to play.": "Sumber daya: beberapa kartu memerlukannya."
 }

@@ -3226,9 +3226,38 @@ function keywordizeHTML(html, seen){
       if(!kw) return m;
       if(kw.cs && m[0] !== m[0].toUpperCase()) return m; // "Ready", "Wait", skill names: only when written as the game word
       if(seen && kw.gloss) seen.set(kw.key, kw.gloss);
-      return kw.c ? `<b class="kw" style="--kw:${kw.c}">${m}</b>` : `<b class="kw kw-term">${m}</b>`;
+      const dk = kwGlossOf(kw.key) ? ` data-kw="${kw.key}"` : ''; // 2026-11-28 (UIPOLISH1 #2): a word with a meaning opens the one glossary window
+      return kw.c ? `<b class="kw"${dk} style="--kw:${kw.c}">${m}</b>` : `<b class="kw kw-term"${dk}>${m}</b>`;
     });
   }).join('');
+}
+/* 2026-11-28 (UIPOLISH1 #2, owner: "hovering important words in any description opens one dynamic glossary window that appears from the hovered word, a single instance"):
+   one #kwPop for the whole page, never a second; it grows out of the hovered word (transform-origin on the word) and follows the pointer to the next word. */
+const KW_RES_TIP = {Lumber:'ui.up1-gloss-lumber', Stone:'ui.up1-gloss-res', Metal:'ui.up1-gloss-res', Grace:'ui.up1-gloss-res', Prayer:'ui.up1-gloss-res', Darkness:'ui.up1-gloss-res', Echoes:'ui.up1-gloss-res', 'Elemental Energy':'ui.up1-gloss-res', Uranium:'ui.up1-gloss-res'};
+const _kwG = new Map();
+function kwGlossOf(key){
+  if(_kwG.has(key)) return _kwG.get(key);
+  const kw = keywordRegistry().list.find(x=> x.key === key); let g = null;
+  if(kw && kw.gloss) g = {name: kw.gloss.name, c: kw.gloss.c || kw.c, text: kw.gloss.text};
+  else if(kw && key.indexOf('res:') === 0 && KW_RES_TIP[key.slice(4)]) g = {name: key.slice(4), c: kw.c, text: TX(KW_RES_TIP[key.slice(4)])};
+  _kwG.set(key, g); return g;
+}
+let kwPopEl = null, kwPopFor = null;
+function kwPopHide(){ if(kwPopEl) kwPopEl.classList.remove('on'); kwPopFor = null; }
+function kwPopShow(w){
+  const g = kwGlossOf(w.dataset.kw); if(!g) return kwPopHide();
+  if(!kwPopEl){ kwPopEl = document.createElement('div'); kwPopEl.id = 'kwPop'; kwPopEl.setAttribute('role', 'tooltip'); document.body.appendChild(kwPopEl); }
+  kwPopFor = w; kwPopEl.textContent = '';
+  const nm = document.createElement('b'); nm.textContent = g.name; if(g.c) nm.style.color = g.c; kwPopEl.append(nm, ' ' + g.text);
+  const r = w.getBoundingClientRect(), pw = kwPopEl.offsetWidth, ph = kwPopEl.offsetHeight, vw = document.documentElement.clientWidth, vh = window.innerHeight;
+  const left = Math.max(6, Math.min(vw - pw - 6, r.left + r.width / 2 - pw / 2)), below = r.bottom + 8 + ph < vh || r.top - 8 - ph < 0;
+  kwPopEl.style.left = left + 'px'; kwPopEl.style.top = (below ? r.bottom + 8 : r.top - 8 - ph) + 'px';
+  kwPopEl.style.transformOrigin = (r.left + r.width / 2 - left) + 'px ' + (below ? '0' : '100%');
+  kwPopEl.classList.add('on');
+}
+if(typeof document !== 'undefined'){
+  document.addEventListener('mouseover', e=>{ const w = e.target && e.target.closest ? e.target.closest('b.kw[data-kw]') : null; if(w){ if(w !== kwPopFor) kwPopShow(w); } else if(kwPopFor) kwPopHide(); });
+  document.addEventListener('scroll', ()=>{ if(kwPopFor) kwPopHide(); }, true);
 }
 function keywordizeLines(lines){
   const seen = new Map();
@@ -36812,13 +36841,9 @@ function sandboxPanelHTML(m){
     {pid:2, side:'left', label:'Enemy ◀ Left'}, {pid:2, side:'right', label:'Enemy ▶ Right'},
   ];
   return `<div class="sandbox-panel" id="sandboxPanel">
-    <div class="sbx-target-row">${targets.map(t=>`<button type="button" class="btn small ${sandboxTarget.pid===t.pid&&sandboxTarget.side===t.side?'primary':''}" data-sbxpid="${t.pid}" data-sbxside="${t.side}">${t.label}</button>`).join('')}</div>
+    <div class="sbx-target-row">${targets.map(t=>`<button type="button" class="btn small ${sandboxTarget.pid===t.pid&&sandboxTarget.side===t.side?'primary':''}" data-sbxpid="${t.pid}" data-sbxside="${t.side}">${t.label}</button>`).join('')}<button class="btn small" id="sbxClearBtn" type="button">🧹 Clear</button><button class="btn small primary" id="sbxResolveBtn" type="button" ${m.resolving?'disabled':''}>${m.resolving?'Resolving…':'▶ Resolve board'}</button></div> /* 2026-11-28 (UIPOLISH1 #6): Clear and Resolve board sit on the top row with the Mine / Enemy sides */
     <input data-text-filter autocomplete="off" id="sbxSearch" type="text" placeholder="Search any card to spawn…" value="${escapeAttr(sandboxSearch)}">
     <div class="sandbox-results" id="sbxResults">${sandboxResultsHTML()}</div>
-    <div class="sandbox-actions">
-      <button class="btn" id="sbxClearBtn" type="button">🧹 Clear board</button>
-      <button class="btn primary" id="sbxResolveBtn" type="button" ${m.resolving?'disabled':''}>${m.resolving?'Resolving…':'▶ Resolve Round'}</button>
-    </div>
     ${adminModeEnabled ? `<div class="sbx-rule-tests" role="group" aria-label="Rule tests">${TEST_RULE_DEFS.map(r=> `<label class="admin-toggle-label" title="${escapeAttr(r.text)}"><input type="checkbox" data-sbxrule="${escapeAttr(r.key)}" ${testRuleOn(r.key) ? 'checked' : ''}> 🧪 ${r.icon} ${escapeHtml(r.name)} (test)</label>`).join('')}</div>` : ''}
   </div>`; // rule tests (2026-10-16, user: "Evade to non-swimmers for me to test."): admins only, the same switch as the Admin page's
 }
@@ -49275,6 +49300,9 @@ function fieldArtKeyOfRow(row, fr){
 }
 function fieldArtOf(key){ const a = key && FIELD_ART[key]; return a && a.art && !/^art\//.test(a.art) ? a.art : ''; } // an unbuilt repo path (no picture yet) shows the icon
 const FIELD_EFFECT_ART_KEY = {frozen:'freezing', heatwave:'scorching', rain:'rain', fog:'misty', moon:'fullmoon'};
+/* 2026-11-28 (UIPOLISH1 #5, owner: "a context pip on non-passive field effects: play, pitch, die, per turn; it lights when it triggers, then fades"): per turn, on play / cast, pitch, die. The
+   rows below are the ones the engine fires (fieldTick); the Environment card lights them (envCardsFire) and the pip glows with it. */
+const FIELD_PIP = Object.fromEntries(['sporeCloud', 'thunderstorm', 'tangledRoots', 'graspingBriars', 'quicksand', 'haunted', 'consternation', 'hail', 'glassStorm', 'landslide', 'crushingDepths', 'lavaSpout', 'mirage', 'sulphurFumes', 'ashRain', 'arrowSlits', 'awash', 'swampFever', 'frost', 'tideSpout', 'ashyAfter', 'leylines3', 'wildfire', 'eruption', 'lavaTide', 'petrify', 'lumberEvery', 'irradiated', 'immolation'].map(k=> [k, '⏱']).concat([['psychicDampener', '⬆️']]));
 function fieldCondCardHTML(m){
   const fr = matchFieldRules(m), rows = matchFieldCondRows(m, fr);
   if(m && m.mode !== 'tutorial' && !matchFieldUnrevealed(m)) rows.forEach(row=>{ if(FIELD_ROWS_AT_START.has(row.key)) markFieldRow(row.key); }); // not on Map 0 (2026-10-15)
@@ -49284,8 +49312,9 @@ function fieldCondCardHTML(m){
   const n = rows.length;
   const cards = rows.map((row, i)=>{
     const st = fieldRowState(row.key), unknown = fieldRowHidden(row.key) && !(m && m.fxLib); // admins see the line (2026-10-17) // the Effects library always shows the line (Map 0 no longer does, 2026-10-15)
-    const def = {id:'__fieldcond', name: row.name.replace(/ · .*$/, ''), icon: row.icon, art: unknown ? '' : fieldArtOf(fieldArtKeyOfRow(row, fr)), rarity:'common', field:{label:'🌿 <span class="fl-w">Environment</span>', title: unknown ? '?' : row.text}}; // 2026-10-15 (user: "Remove 'Environment Card: a rule of this battlefield'")
-    const line = `<div class="env-line">${unknown ? '?' : escapeHtml(row.short)}</div><div class="env-ribbon" aria-hidden="true">${row.selfish ? escapeHtml(TX('ui.df3-theirs')) : 'Environment'}</div>`; // a selfish boon: "Theirs" (DF3)
+    const def = {id:'__fieldcond', name: row.name.replace(/ · .*$/, ''), icon: row.icon, art: fieldArtOf(fieldArtKeyOfRow(row, fr)), rarity:'common', field:{label:'🌿 <span class="fl-w">Environment</span>', title: unknown ? '?' : row.text}}; /* 2026-11-28 (UIPOLISH1 #1): the picture shows before the rule is known */ // 2026-10-15 (user: "Remove 'Environment Card: a rule of this battlefield'")
+    const pip = FIELD_PIP[row.key] ? `<span class="env-pip" aria-hidden="true">${FIELD_PIP[row.key]}</span>` : ''; /* 2026-11-28 (UIPOLISH1 #5): the context pip of a rule that fires */
+    const line = `${pip}<div class="env-line">${unknown ? '?' : escapeHtml(row.short)}</div><div class="env-ribbon" aria-hidden="true">${row.selfish ? escapeHtml(TX('ui.df3-theirs')) : 'Environment'}</div>`; // a selfish boon: "Theirs" (DF3)
     return matchFieldTileHTML(def, `field-cond env-card biome-${fieldEnvBiome(row.key)}${st === 'new' ? ' has-new' : ''}${row.selfish ? ' is-selfish ' + (row.boonOn ? 'is-boon-on' : 'is-boon-off') : ''}`, `tabindex="0" data-fieldhover="cond:${escapeAttr(row.key)}" role="button" style="--i:${i}" aria-label="${escapeAttr('Environment: ' + row.name + '. ' + (unknown ? fieldRowQTip(row) : row.text))}"`, line);
   }).join('');
   return `<div class="env-stack${n > 1 ? ' is-fanned' : ''}" id="fieldCondCard" style="--n:${n}" role="group" aria-label="Environment cards">${cards}</div>`;
@@ -49295,7 +49324,9 @@ function fieldCondHoverHTML(key){
   const fr = matchFieldRules(m) || {}, rows = matchFieldCondRows(m, fr).filter(r=> !key || r.key === key);
   if(!rows.length) return '';
   const head = rows.length === 1 ? `${rows[0].icon} ${rows[0].name}` : 'Environment';
-  return `<div class="field-hover env-hover"><div class="fh-head"><span class="fh-ico" aria-hidden="true">🌿</span><b>${escapeHtml(head.trim())}</b></div><ul class="fcr-list">${fieldRowsListHTML(rows)}</ul></div>`; // 2026-10-15 (user: "Remove 'Environment Card: a rule of this battlefield'"): the footer line is gone
+  /* 2026-11-28 (UIPOLISH1 #1): the hover opens the card itself (art and name, even before the rule is known), then the rule */
+  const r0 = rows[0], card1 = rows.length === 1 ? `<div class="env-hover-card">${matchFieldTileHTML({id:'__fieldcond', name: r0.name.replace(/ · .*$/, ''), icon: r0.icon, art: fieldArtOf(fieldArtKeyOfRow(r0, fr)), rarity:'common', field:{label:'🌿 <span class="fl-w">Environment</span>', title: ''}}, `field-cond env-card biome-${fieldEnvBiome(r0.key)}`, 'aria-hidden="true"', `<div class="env-ribbon" aria-hidden="true">Environment</div>`)}</div>` : '';
+  return `<div class="field-hover env-hover">${card1}<div class="fh-head"><span class="fh-ico" aria-hidden="true">🌿</span><b>${escapeHtml(head.trim())}</b></div><ul class="fcr-list">${fieldRowsListHTML(rows)}</ul></div>`; // 2026-10-15 (user: "Remove 'Environment Card: a rule of this battlefield'"): the footer line is gone
 }
 function fieldEffectCardHTML(m){
   const id = fieldEffectOf(m), f = id && m.engine.getField(); if(!f) return '';
@@ -53012,7 +53043,7 @@ function floatText(el, text, cls, opts){
   const onBar = !!(el.classList && el.classList.contains('hq-float-anchor'));
   const dx = onBar ? 0 : Math.random()*spread*2 - spread;
   const dy0 = Math.random()*10-5;
-  const top0 = enemyRow ? 12 : 40;
+  const top0 = o.top0 != null ? o.top0 : enemyRow ? 12 : 40; // 2026-11-28 (UIPOLISH1 #7): a resource gain starts higher up the card (floatResourceGain)
   const travel = 0.9 + Math.random()*0.2;
   let big = calm ? 1.1 : classes.includes('crit') ? 1.75 : heavyHit ? 1.6 : 1.45;
   el.appendChild(f);
@@ -57431,7 +57462,7 @@ function renderVfxForEvent(ev){
     const flavorCls = RESOURCE_FLOAT_CLASS[pillId] || 'lumber';
     // a death that pays the OTHER side (the old Worthy cause, 2026-10-12): float it on their Lumber pill, not over the falling card
     const cardEl = (ev.uid!=null && ev.cause !== 'worthyDeath') ? boardCardEl(ev.uid) : null;
-    if(cardEl) floatText(cardEl, `+${ev.amount}${glyph}`, flavorCls);
+    if(cardEl) floatText(cardEl, `+${ev.amount}${glyph}`, flavorCls, {top0: ((cardEl.closest('.top-play-row') || cardEl.closest('#rowEnemy')) ? 3 : 14)});
     const pillEl = document.getElementById(pillId);
     if(pillEl){
       pillEl.classList.remove('bing'); void pillEl.offsetWidth; // restart if already mid-bing

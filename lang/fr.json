@@ -4847,5 +4847,7 @@
  "{att} turns away from {name}.": "{att} se détourne de {name}.",
  "takes 1 more from lightning, which runs on to Wet neighbours. Fire or dry weather dries it.": "subit 1 de plus de la foudre, qui passe aux voisines Mouillées. Le feu ou un temps sec la sèche.",
  "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "Son tueur reçoit {n} Poison. Les ennemis qui l’ont vue mourir évitent vos autres unités à Couleurs d’alerte la manche suivante.",
- "Energy: spent to start fights, refills 1 every 5 minutes.": "Énergie : dépensée pour lancer des combats, +1 toutes les 5 minutes."
+ "Energy: spent to start fights, refills 1 every 5 minutes.": "Énergie : dépensée pour lancer des combats, +1 toutes les 5 minutes.",
+ "Pay it to play a card. Pitch a card from your hand for 1, once a turn.": "À payer pour jouer une carte. Défaussez une carte de votre main pour en gagner 1, une fois par tour.",
+ "A resource: some cards cost it to play.": "Une ressource : certaines cartes en coûtent pour être jouées."
 }

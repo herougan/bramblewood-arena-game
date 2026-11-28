@@ -4846,5 +4846,7 @@
  "{att} turns away from {name}.": "{att} wendet sich von {name} ab.",
  "takes 1 more from lightning, which runs on to Wet neighbours. Fire or dry weather dries it.": "nimmt 1 mehr von Blitzen, die auf nasse Nachbarn überspringen. Feuer oder trockenes Wetter trocknet sie.",
  "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "Ihr Mörder erhält {n} Gift. Gegner, die sie sterben sahen, meiden in der nächsten Runde deine anderen Warnfarben-Einheiten.",
- "Energy: spent to start fights, refills 1 every 5 minutes.": "Energie: wird für Kampfstarts verbraucht, füllt sich alle 5 Minuten um 1 auf."
+ "Energy: spent to start fights, refills 1 every 5 minutes.": "Energie: wird für Kampfstarts verbraucht, füllt sich alle 5 Minuten um 1 auf.",
+ "Pay it to play a card. Pitch a card from your hand for 1, once a turn.": "Zum Ausspielen von Karten nötig. Opfere einmal pro Zug eine Handkarte für 1.",
+ "A resource: some cards cost it to play.": "Eine Ressource: manche Karten kosten sie."
 }

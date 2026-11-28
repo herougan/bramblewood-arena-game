@@ -4847,5 +4847,7 @@
  "{att} turns away from {name}.": "Umiwas ang {att} sa {name}.",
  "takes 1 more from lightning, which runs on to Wet neighbours. Fire or dry weather dries it.": "dagdag na 1 mula sa kidlat, na tumutuloy sa mga Basang katabi. Natutuyo sa apoy o tuyong panahon.",
  "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "May {n} Lason ang pumatay rito. Iiwasan ng mga kaaway na nakakita ang iba mong unit na may Kulay ng Babala sa susunod na round.",
- "Energy: spent to start fights, refills 1 every 5 minutes.": "Energy: nagagastos sa pagsisimula ng laban, +1 kada 5 minuto."
+ "Energy: spent to start fights, refills 1 every 5 minutes.": "Energy: nagagastos sa pagsisimula ng laban, +1 kada 5 minuto.",
+ "Pay it to play a card. Pitch a card from your hand for 1, once a turn.": "Ibinabayad para maglaro ng card. Mag-pitch ng card mula sa kamay para sa 1, isang beses bawat turn.",
+ "A resource: some cards cost it to play.": "Isang resource: may mga card na may ganitong gastos."
 }

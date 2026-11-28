@@ -4847,5 +4847,7 @@
  "{att} turns away from {name}.": "{att}避開了{name}。",
  "takes 1 more from lightning, which runs on to Wet neighbours. Fire or dry weather dries it.": "受到雷電多1點傷害，雷電還會傳給相鄰的潮溼單位。火焰或乾燥天氣會使其變乾。",
  "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "擊殺者獲得{n}層中毒。看到它陣亡的敵人下回合會避開你其他有警戒色的單位。",
- "Energy: spent to start fights, refills 1 every 5 minutes.": "能量：開始戰鬥時消耗，每 5 分鐘恢復 1 點。"
+ "Energy: spent to start fights, refills 1 every 5 minutes.": "能量：開始戰鬥時消耗，每 5 分鐘恢復 1 點。",
+ "Pay it to play a card. Pitch a card from your hand for 1, once a turn.": "出牌所需。每回合可棄一張手牌換取1點。",
+ "A resource: some cards cost it to play.": "一種資源:部分卡牌需要它。"
 }

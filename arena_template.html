@@ -1867,6 +1867,16 @@
     display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
   .card-tile.env-card .nm{margin-top:4px;}
   .env-hover .fh-left{font-style:italic;}
+  /* 2026-11-28 (UIPOLISH1 #2): the one glossary window; it grows out of the hovered word */
+  #kwPop{position:fixed; z-index:100000; max-width:240px; padding:8px 10px; border-radius:10px; background:var(--surface); color:var(--ink); border:1px solid var(--surface-border); box-shadow:0 6px 18px rgba(0,0,0,.28); font-size:13px; line-height:1.35; pointer-events:none; opacity:0; transform:scale(.3); transition:opacity .14s, transform .18s cubic-bezier(.2,.9,.3,1.2);}
+  #kwPop.on{opacity:1; transform:none;}
+  html[data-fx="none"] #kwPop{transition:none;} @media (prefers-reduced-motion: reduce){ #kwPop{transition:none;} }
+  /* 2026-11-28 (UIPOLISH1 #5): the context pip on an Environment card that fires; dim until the rule triggers, then it lights and fades back */
+  .card-tile.env-card .env-pip{position:absolute; top:3px; right:3px; z-index:6; width:1.7em; height:1.7em; display:grid; place-items:center; border-radius:50%; font-size:11px; line-height:1; background:rgba(20,18,14,.78); opacity:.6; transition:opacity .7s ease, transform .7s ease, box-shadow .7s ease; pointer-events:none;}
+  .card-tile.env-card.is-firing .env-pip{opacity:1; transform:scale(1.35); box-shadow:0 0 0 2px #ffd75e, 0 0 12px 4px rgba(255,215,94,.85); transition:none;}
+  @media (prefers-reduced-motion: reduce){ .card-tile.env-card .env-pip{transition:none;} }
+  /* 2026-11-28 (UIPOLISH1 #1): the Environment card in its hover */
+  .env-hover .env-hover-card{display:flex; justify-content:center; margin-bottom:8px;} .env-hover .env-hover-card .card-tile{width:150px; pointer-events:none;}
   @media (max-width:560px){
     .env-stack{width:calc(var(--match-card-w) + (var(--n, 1) - 1) * var(--match-card-w) * .58 / var(--env-tight)); margin-top:4px;}
     .env-stack .env-card{left:calc(var(--i, 0) * var(--match-card-w) * .58 / var(--env-tight));}
@@ -5983,8 +5993,8 @@
      the card's top-right corner on a slow loop (transform / opacity, no filter); Low and reduced motion: two still Zs; Effects None: one; waking fades them. */
   .card-tile > .fx9-zzz{position:absolute; right:24%; top:14%; width:0; height:0; z-index:7; pointer-events:none; transition:opacity .45s ease;}
   .fx9-zzz > i{position:absolute; left:0; bottom:0; font:800 clamp(15px, 30cqw, 23px)/1 'Baloo 2', system-ui, sans-serif; font-style:normal; color:#b4e6ff;
-    -webkit-text-stroke:1px #0b3566; text-shadow:0 1px 0 #0b3566, 0 0 6px rgba(150,215,255,.95); opacity:0; animation:fx9Zzz 3.6s linear infinite; will-change:transform, opacity;}
-  .fx9-zzz > i:nth-child(2){animation-delay:-1.2s;} .fx9-zzz > i:nth-child(3){animation-delay:-2.4s;}
+    -webkit-text-stroke:1px #0b3566; text-shadow:0 1px 0 #0b3566, 0 0 6px rgba(150,215,255,.95); opacity:0; animation:fx9Zzz 5.4s linear infinite; will-change:transform, opacity;}
+  .fx9-zzz > i:nth-child(2){animation-delay:-1.8s;} .fx9-zzz > i:nth-child(3){animation-delay:-3.6s;} /* 2026-11-28 (UIPOLISH1 #4): slower, 5.4 s a Z, each recycled at the corner */
   @keyframes fx9Zzz{0%{opacity:0; transform:translate(0, 0) rotate(-14deg) scale(.45);} 12%{opacity:1;} 50%{transform:translate(.5em, -1.1em) rotate(-2deg) scale(.85);} 78%{opacity:.95;} 100%{opacity:0; transform:translate(1.1em, -2.2em) rotate(10deg) scale(1.2);}}
   .card-tile > .fx9-zzz.is-waking{opacity:0;}
   html[data-fx="low"] .fx9-zzz > i, html[data-fx="none"] .fx9-zzz > i{animation:none;}
@@ -15594,6 +15604,14 @@ html[data-fx="none"] .map-node.is-lair-final:not(.done), html[data-fx="none"] .f
 .board-card.has-shield .stats .hp i.sg{filter:hue-rotate(200deg) saturate(1.3) brightness(1.15);}
 /* #13/#34/#38 GET! (first copy owned) beside NEW! (never seen); both: NEW! comes in, then GET! lands on top */
 .rw-new.ui23-get, .po2-new-tag.ui23-get, .po2-new b.ui23-get{background:linear-gradient(135deg, #2fae5a, #8fe36b) !important; color:#fff !important; text-shadow:0 .1em 0 #165a2b !important;}
+
+/* 2026-11-28 (UIPOLISH1 #3, owner: overlapping bordered rectangles and cut lines on the Zs and the Get! / New! labels): clean floating text. No box, no
+   gradient plate, no text-stroke (Baloo's overlapping contours showed as cut lines); the outline is a ring of text-shadows over a soft glow. */
+.fx9-zzz > i{-webkit-text-stroke:0 !important; color:#d6f0ff; text-shadow:1px 0 #0b3566, -1px 0 #0b3566, 0 1px #0b3566, 0 -1px #0b3566, 0 0 7px rgba(150,215,255,.95) !important;}
+.po2-new b, .po2-new-tag, .board-card .seen-new, .rr-new, .rw-new{background:none !important; box-shadow:none !important; border:0 !important; -webkit-text-stroke:0 !important; padding:0 !important; border-radius:0 !important; color:#ffe27a !important;
+  text-shadow:1px 0 #7a1530, -1px 0 #7a1530, 0 1px #7a1530, 0 -1px #7a1530, 0 .1em 0 #7a1530, 0 0 .7em rgba(255,215,94,.85) !important;}
+.rw-new.rw-spare{color:#d8f1ff !important; text-shadow:1px 0 #1d3f7a, -1px 0 #1d3f7a, 0 1px #1d3f7a, 0 -1px #1d3f7a, 0 .1em 0 #1d3f7a, 0 0 .7em rgba(140,200,255,.85) !important;}
+.rw-new.ui23-get, .po2-new-tag.ui23-get, .po2-new b.ui23-get{color:#c9ffb4 !important; text-shadow:1px 0 #165a2b, -1px 0 #165a2b, 0 1px #165a2b, 0 -1px #165a2b, 0 .1em 0 #165a2b, 0 0 .7em rgba(143,227,107,.85) !important;}
 .rw-new.ui23-late{top:calc(22% + 22px);} .po2-new-tag.ui23-late{top:14px;}
 .rw-card.shown .rw-new.ui23-late{transition-delay:.45s;} .po2-new-tag.ui23-late{animation:ui23Late .5s cubic-bezier(.3,1.6,.5,1) .45s both;}
 .po2-new b.ui23-late{margin-top:.15em; animation:ui23Late .5s cubic-bezier(.3,1.6,.5,1) .5s both;}
