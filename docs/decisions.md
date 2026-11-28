@@ -4,6 +4,34 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**CARDDESIGN2-1. Eleven card redesigns that add a decision** · Decide · Cards · asked 2026-11-28
+- Eleven dull or duplicate Maps 0-20 cards get a timing, lane or kill-order choice from built skills. Nine keep their stats; Wild Yak and Pinecone Sapper lose 1 Health to fit. Ten are on road lists, so road fights move and get re-measured.
+  - a) All eleven
+  - b) The eight that need no CPU change
+  - c) None
+- **Default:** a
+
+**CARDDESIGN2-2. 💀 Rend on Quillguard (Map 12)** · Decide · Cards · asked 2026-11-28
+- At Level 5, Quillguard dying puts Rend 1 on every unit beside or facing it, yours too. The form is built but held off Maps 0-20 by SKILLS3-3. This lifts the hold for this one form, as ARCH1-3 does for Brace.
+  - a) Lift it for Quillguard
+  - b) Keep the hold (Quillguard keeps Bulldoze)
+  - c) Lift all 💀 forms (SKILLS3-3 b)
+- **Default:** a
+
+**CARDDESIGN2-3. Bring far-over cards down by redesign** · Decide · Cards · asked 2026-11-28
+- Shellwright Apprentice (+59) and Alpine Marmot (+39) swap a flat passive for a placed effect: an Armor grant to one neighbour, and a Shield on the ally facing each foe that readies. Both land at 86-99% of budget with their stats kept.
+  - a) Redesign both
+  - b) Keep the skills, trim stats
+  - c) Leave both
+- **Default:** a
+
+**CARDDESIGN2-4. Three new rules for duplicate cards** · Decide · Engine · asked 2026-11-28
+- Three duplicate groups need a new rule: Pounce only into a Wet or Waiting target (Pine Marten, Fishing Cat), Stealth that ends after its first bramble hit (the Stealth flyers), and On Attacked aimed at the attacker (Bombardier Beetle). Each is a small engine item.
+  - a) All three
+  - b) Timed Stealth only
+  - c) Not now, after ARCH1-5
+- **Default:** c
+
 **CPU2-1. Run the turn planner on the road CPU** · Decide · Engine · asked 2026-11-28
 - Maps 0-20 road fights use the Basic CPU, which skips the turn planner. Your note #26 already asks the CPU to score every option each turn (A1, not built). Using the planner makes the CPU stronger (not measured yet) and moves every map's band; balance then re-tunes.
   - a) Planner at Basic, noise kept; retune
