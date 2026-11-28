@@ -1,0 +1,744 @@
+{
+ "generated": "2026-11-28",
+ "games": 400,
+ "mode": "open",
+ "filler": [
+  "warren-scout",
+  "fawn-scout",
+  "bee-sentry",
+  "mouse-sapper",
+  "poison-dart-croaker",
+  "termite-forager",
+  "land-tiller"
+ ],
+ "bands": {
+  "starter": [
+   0.2,
+   0.48
+  ],
+  "common": [
+   0.35,
+   0.6
+  ],
+  "uncommon": [
+   0.45,
+   0.68
+  ],
+  "quest": [
+   0.45,
+   0.68
+  ],
+  "rare": [
+   0.52,
+   0.75
+  ],
+  "veryrare": [
+   0.56,
+   0.8
+  ],
+  "superrare": [
+   0.6,
+   0.84
+  ],
+  "epic": [
+   0.62,
+   0.87
+  ],
+  "heroic": [
+   0.64,
+   0.89
+  ],
+  "unique": [
+   0.66,
+   0.92
+  ],
+  "questunique": [
+   0.66,
+   0.92
+  ],
+  "legendary": [
+   0.7,
+   0.97
+  ],
+  "mythic": [
+   0.72,
+   1
+  ],
+  "ancient": [
+   0.75,
+   1
+  ]
+ },
+ "method": {
+  "basic": "k copies of the card + filler (with 2 Lumber cards) vs 20 filler, a random day/night and field per game; seeds 7700 + 131g",
+  "advanced": "same test deck vs 20 cards from the top 40% pool (min(4, rarity copy limit) copies, top-rank caps), drawn per game",
+  "count": "a game counts only if the test side played the card at least once (winRate / advRate over played games; winRateAll over all games)",
+  "lowSampleUnder": 20,
+  "workers": 2,
+  "seconds": {
+   "basic": 75,
+   "total": 161
+  }
+ },
+ "advanced": {
+  "seed": 2211,
+  "topShare": 0.4,
+  "poolCards": 20,
+  "restFrom": null,
+  "poolFrom": "docs/balance/bal25/card-power.json (2026-11-28, 400 games)",
+  "pool": [
+   "abyss-lantern-squid",
+   "adder-ambusher",
+   "alligator-gar",
+   "alpine-marmot",
+   "antlion-pit",
+   "anvil-thrush",
+   "apollo-butterfly",
+   "arctic-tern",
+   "ash-cloud-condor",
+   "ash-moth",
+   "barrel-cactus",
+   "basalt-boar",
+   "bear-cub",
+   "beaver-feller",
+   "bee-drone",
+   "birdlime-dauber",
+   "bison-bulldozer",
+   "blue-ringed-octopus",
+   "bombardier-beetle",
+   "booming-bittern",
+   "border-collie",
+   "burrow-rabbit",
+   "caldera-snow-leopard",
+   "caldera-wyrm",
+   "camouflage-frog",
+   "carrion-beetle",
+   "chamois-leaper",
+   "cinder-gecko",
+   "clap-net-trapper",
+   "cobalt-talon-honour-guard",
+   "conch-herald",
+   "coral-current-eel",
+   "cormorant",
+   "cottonmouth-matriarch",
+   "dawn-bellringer",
+   "dolphin-knight",
+   "drowned-matriarch",
+   "duck-paddler",
+   "dust-devil-kestrel",
+   "dust-hyena",
+   "eagle-owl-quartermaster",
+   "echo-matriarch",
+   "electric-ray",
+   "farm-dog",
+   "fathom-leviathan",
+   "feral-tomcat",
+   "fire-salamander",
+   "ford-kingfisher",
+   "fox-kit",
+   "fumarole-ibex",
+   "fungus-gnat-cloud",
+   "gale-swift",
+   "gallery-orb-weaver",
+   "gangrenous-leech",
+   "giant-cave-huntsman",
+   "glass-golem",
+   "gold-throat-elder",
+   "gold-throated-acolyte",
+   "golden-eagle-diver",
+   "grass-viper",
+   "grindstone-boar",
+   "harbor-seal",
+   "hawk-arrowkeeper",
+   "hedgehog-herbalist",
+   "helmeted-otter",
+   "hercules-beetle",
+   "heron-hag",
+   "honey-badger-fury",
+   "honeyjoe-brewer",
+   "hoopoe-herald",
+   "horned-lizard",
+   "horseshoe-crab",
+   "ibex-rockcaller",
+   "ice-crevasse-wolf",
+   "inside-out-hedgehog",
+   "irradiated-axolotl",
+   "kinkajou-lurker",
+   "ladybird-guard",
+   "lantern-spark-fly",
+   "legate-of-rivergate",
+   "leopard-slug",
+   "magma-salamander",
+   "mallard-halberdier",
+   "mangrove-monitor",
+   "mangrove-mudskipper",
+   "millipede-hauler",
+   "mirror-moth",
+   "mist-net-otter",
+   "monarch-wingblade",
+   "mouse-sapper",
+   "mudpuppy",
+   "net-thrower",
+   "newt-doctor",
+   "nightjar-drifter",
+   "octopus-tactician",
+   "old-shell",
+   "old-willow-of-the-ford",
+   "optio-of-the-ford",
+   "ossuary-lammergeier",
+   "otter-ferryman",
+   "otter-flag-bearer",
+   "otter-lantern-bearer",
+   "otter-royal-guard",
+   "otter-shieldback",
+   "owl-sentinel",
+   "peak-condor",
+   "peat-cutter-vole",
+   "peregrine-stooper",
+   "pike-lancer",
+   "plains-zebra",
+   "planarian-splitter",
+   "pride-queen",
+   "puddle-skimmer",
+   "puffin-diver",
+   "pumice-beetle",
+   "quicksand-queen",
+   "quillguard",
+   "redwood-woodpecker",
+   "reef-admiral",
+   "river-carp",
+   "river-mink",
+   "rivergate-recruit",
+   "riverstone-slinger",
+   "robin-redbreast",
+   "ruby-throat-duelist",
+   "sandstorm-roc",
+   "savanna-cheetah",
+   "sergeant-bramblefox",
+   "shell-cracker",
+   "shellwright-apprentice",
+   "shoal-shark",
+   "siege-rhino",
+   "sleepless-shrew",
+   "snapstick-turtle",
+   "snow-ermine",
+   "soldier-ant",
+   "spitting-cobra",
+   "stoat-cutthroat",
+   "sunbittern-strider",
+   "sunspire-envoy",
+   "sunspire-sky-sovereign",
+   "taiga-lynx",
+   "tasmanian-devil",
+   "teatime-toad",
+   "the-contradiction",
+   "tide-spirit",
+   "tiny-cave-dweller",
+   "tunnel-ant",
+   "two-headed-calf",
+   "upside-down-bat",
+   "ur-elk",
+   "voidfeather-scout",
+   "walrus-icebreaker",
+   "wandering-traveller",
+   "whip-spider",
+   "wolfsbane-alpha",
+   "woodland-caribou",
+   "wound-reaver"
+  ],
+  "measured": 6,
+  "complete": true,
+  "matchSeeds": "102202 + 131g"
+ },
+ "rows": [
+  {
+   "id": "alpine-marmot",
+   "name": "Alpine Marmot",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 8,
+   "skills": [
+    "guardian"
+   ],
+   "winRate": 62.5,
+   "advRate": 9.3,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 250,
+   "winRateAll": 62.5,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 37,
+    "rateAll": 9.3
+   },
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "startsAt0": false,
+   "budget": {
+    "N": 18.35,
+    "S": 0,
+    "x1": 14,
+    "x2": 16,
+    "N2": 58.74,
+    "ok": true
+   },
+   "map": 7,
+   "rarityClass": "common",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     137.5
+    ],
+    "day": [
+     94,
+     50.5
+    ],
+    "night": [
+     90,
+     62
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     18.5
+    ],
+    "day": [
+     94,
+     10.5
+    ],
+    "night": [
+     90,
+     8
+    ]
+   },
+   "N": 18.35,
+   "power": 35.9,
+   "expected": 28,
+   "forBudget": 7.9
+  },
+  {
+   "id": "caldera-snow-leopard",
+   "name": "Caldera Snow Leopard",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 13,
+   "skills": [],
+   "winRate": 83.5,
+   "advRate": 23.5,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 334,
+   "winRateAll": 83.5,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 94,
+    "rateAll": 23.5
+   },
+   "band": [
+    56.00000000000001,
+    80
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "startsAt0": false,
+   "budget": {
+    "N": 27.97,
+    "S": 0,
+    "x1": 22,
+    "x2": 39,
+    "N2": 136.47,
+    "ok": true
+   },
+   "map": 14,
+   "rarityClass": "veryrare",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     179.5
+    ],
+    "day": [
+     94,
+     74.5
+    ],
+    "night": [
+     90,
+     80
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     46.5
+    ],
+    "day": [
+     94,
+     23.5
+    ],
+    "night": [
+     90,
+     24
+    ]
+   },
+   "N": 27.97,
+   "power": 53.5,
+   "expected": 31.2,
+   "forBudget": 22.3
+  },
+  {
+   "id": "chipmunk-hoarder",
+   "name": "Chipmunk Hoarder",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 5,
+   "skills": [
+    "triggers"
+   ],
+   "winRate": 27,
+   "advRate": 4.8,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 108,
+   "winRateAll": 27,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 19,
+    "rateAll": 4.8
+   },
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "pack",
+   "startsAt0": false,
+   "budget": {
+    "N": 18.35,
+    "S": 11.44,
+    "x1": 22.44,
+    "x2": 42.72,
+    "N2": 58.74,
+    "ok": false
+   },
+   "map": 7,
+   "rarityClass": "common",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     48.5
+    ],
+    "day": [
+     94,
+     27.5
+    ],
+    "night": [
+     90,
+     32
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     6.5
+    ],
+    "day": [
+     94,
+     3.5
+    ],
+    "night": [
+     90,
+     9
+    ]
+   },
+   "N": 18.35,
+   "power": 15.9,
+   "expected": 28,
+   "forBudget": -12.1
+  },
+  {
+   "id": "cunning-vixen",
+   "name": "Cunning Vixen",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 1,
+   "health": 12,
+   "skills": [
+    "stealth",
+    "triggers"
+   ],
+   "winRate": 27.8,
+   "advRate": 5.3,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 111,
+   "winRateAll": 27.8,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 21,
+    "rateAll": 5.3
+   },
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false,
+   "budget": {
+    "N": 23.84,
+    "S": 12.55,
+    "x1": 27.55,
+    "x2": 51.38,
+    "N2": 99.14,
+    "ok": false
+   },
+   "map": 12,
+   "rarityClass": "uncommon",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     54.5
+    ],
+    "day": [
+     94,
+     28.5
+    ],
+    "night": [
+     90,
+     28
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     8.5
+    ],
+    "day": [
+     94,
+     6.5
+    ],
+    "night": [
+     90,
+     6
+    ]
+   },
+   "N": 23.84,
+   "power": 16.6,
+   "expected": 29.8,
+   "forBudget": -13.2
+  },
+  {
+   "id": "elder-willow",
+   "name": "Elder Willow",
+   "rarity": "common",
+   "cost": 3,
+   "wait": 5,
+   "attack": 0,
+   "health": 36,
+   "skills": [
+    "forestry",
+    "triggers"
+   ],
+   "winRate": 51.3,
+   "advRate": 9.2,
+   "played": 357,
+   "games": 400,
+   "playedShare": 0.893,
+   "wins": 183,
+   "winRateAll": 48.8,
+   "adv": {
+    "played": 346,
+    "games": 400,
+    "playedShare": 0.865,
+    "wins": 32,
+    "rateAll": 8.8
+   },
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false,
+   "budget": {
+    "N": 48.59,
+    "S": 13.13,
+    "x1": 49.13,
+    "x2": 43.1,
+    "N2": 411.86,
+    "ok": false
+   },
+   "map": 0,
+   "rarityClass": "common",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     204,
+     108.5
+    ],
+    "day": [
+     77,
+     42.5
+    ],
+    "night": [
+     76,
+     32
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     201,
+     14.5
+    ],
+    "day": [
+     77,
+     7.5
+    ],
+    "night": [
+     68,
+     10
+    ]
+   },
+   "N": 48.59,
+   "power": 30.3,
+   "expected": 38.2,
+   "forBudget": -7.9
+  },
+  {
+   "id": "yeti",
+   "name": "Wild Yak",
+   "rarity": "common",
+   "cost": 3,
+   "wait": 5,
+   "attack": 5,
+   "health": 28,
+   "skills": [
+    "daunt",
+    "triggers"
+   ],
+   "winRate": 61.3,
+   "advRate": 22.3,
+   "played": 357,
+   "games": 400,
+   "playedShare": 0.893,
+   "wins": 219,
+   "winRateAll": 57.8,
+   "adv": {
+    "played": 346,
+    "games": 400,
+    "playedShare": 0.865,
+    "wins": 77,
+    "rateAll": 20
+   },
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "startsAt0": false,
+   "budget": {
+    "N": 50.23,
+    "S": 12.64,
+    "x1": 55.64,
+    "x2": 179.94,
+    "N2": 440.13,
+    "ok": false
+   },
+   "map": 7,
+   "rarityClass": "common",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     204,
+     128.5
+    ],
+    "day": [
+     77,
+     50.5
+    ],
+    "night": [
+     76,
+     40
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     201,
+     36.5
+    ],
+    "day": [
+     77,
+     21.5
+    ],
+    "night": [
+     68,
+     19
+    ]
+   },
+   "N": 50.23,
+   "power": 41.8,
+   "expected": 38.7,
+   "forBudget": 3.1
+  }
+ ],
+ "v": 3,
+ "scope": {
+  "maxMap": 20,
+  "rule": "card-obtain-maps.json map <= 20, plus unlisted faction / Starter / Base-source cards and unlisted (Map 0) cards the game hands out",
+  "cards": 6,
+  "maps0to20": 6
+ },
+ "env": {
+  "phases": {
+   "cycle": 0.5,
+   "day": 0.25,
+   "night": 0.25
+  },
+  "fields": "tools/skill_test_robust.js FIELDS / FIELD_CONFIG (Day/Night replaced by the phase roll)"
+ },
+ "fit": {
+  "formula": "expected = a + b × N",
+  "a": 21.796,
+  "b": 0.338,
+  "n": 6,
+  "r2": 0.113,
+  "rmse": 12.6,
+  "leftOut": [],
+  "power": "mean of winRate and advRate (winRate alone without an advanced pass)",
+  "N": "bramblewood-budget.js N at the measured level (Faction-Starter: Level 0, one rank below Starter)"
+ }
+}

@@ -33,7 +33,59 @@ const REDESIGN = {
   'quillguard': d=> ({levelSkills: {5: {rendAround: 1}}}), // #11 Thorns 2; L5 💀 Rend 1 around (was L5 Bulldoze). NEEDS CARDDESIGN2-2
 };
 const IDS = Object.keys(REDESIGN);
-function redesigned(c){ const f = REDESIGN[c.id]; if(!f) return c; const ch = f(c), o = Object.assign({}, c, ch); if(ch.levelSkills === null) delete o.levelSkills; return o; }
+// CD2b (2026-11-28): the refinement rounds. Each set replaces some rows of REDESIGN (the rest stay as the doc's); [description, fields].
+// Pick one with CD2_SET=<set> (preload) or --set=<set> (road); `power --variant=<set>` measures only the set's cards.
+// Stats are kept (Yak 5/28 and Sapper 0/14 as the doc); only skill numbers, the level a skill comes, or which built skill change.
+const WILLOW = n=> ({effects: {forestry: 1, triggers: [{on: 'onReady', do: 'grantShield', allies: n}]}});
+const MARMOT = n=> ({effects: {guardian: true, triggers: [{on: 'onEnemyReady', do: 'shield', amount: n, who: 'ally', sub: 'subjectFacing'}]}});
+const HOARD = (l, d)=> ({effects: {triggers: [{on: 'onDeath', do: 'gain', resource: 'lumber', amount: l}, {on: 'onDeath', do: 'drawCard', count: d}]}});
+const YAK = (dn, w)=> ({health: 28, effects: {daunt: dn, triggers: [{on: 'onReady', do: 'addWait', amount: w, who: 'enemy', sub: 'all'}]}});
+const VIX = (extra, l)=> ({effects: Object.assign({stealth: true, triggers: [{on: 'onAttack', do: 'gain', amount: l || 1, resource: 'lumber'}].concat(extra.draw ? [{on: 'onAttack', do: 'drawCard', count: extra.draw}] : [])}, extra.evasive ? {evasive: true} : {}), levelSkills: null});
+const SHELL = n=> ({effects: n ? {triggers: [{on: 'onSpawn', do: 'grant', who: 'ally', sub: 'adjacent', skill: 'armor', armor: n}]} : {}});
+const REFINE = {
+  r1a: {'elder-willow': ['On Ready: 6 Shield to every ally', WILLOW(6)], 'shellwright-apprentice': ['On Play: Grant Armor 1 beside', SHELL(1)],
+    'wound-reaver': ['Poison 1; L6 💀 Poisonous 2', {effects: {poison: 1}, levelSkills: {6: {poisonous: 2}}}], 'alpine-marmot': ['Guardian + facing ally 2 Shield', MARMOT(2)],
+    'caldera-snow-leopard': ['Ambush 2', {effects: {ambush: 2}}], 'quillguard': ['Thorns 1; L5 💀 Rend 1 around', {effects: {thorns: 1}, levelSkills: {5: {rendAround: 1}}}],
+    'chipmunk-hoarder': ['💀 2 Lumber, draw 2', HOARD(2, 2)], 'yeti': ['Daunt 1 + On Ready +2 Wait all foes', YAK(1, 2)], 'cunning-vixen': ['Stealth + On Attack 2 Lumber', VIX({}, 2)]},
+  r1b: {'elder-willow': ['Forestry 2 + On Ready 6 Shield every ally', {effects: {forestry: 2, triggers: [{on: 'onReady', do: 'grantShield', allies: 6}]}}], 'shellwright-apprentice': ['no skill (floor)', SHELL(0)],
+    'wound-reaver': ['no skill at L1 (floor); L6 💀 Poisonous 2', {effects: {}, levelSkills: {6: {poisonous: 2}}}], 'alpine-marmot': ['Guardian + facing ally 1 Shield', MARMOT(1)],
+    'caldera-snow-leopard': ['Ambush 1', {effects: {ambush: 1}}], 'quillguard': ['no skill at L1 (floor); L5 💀 Rend 1 around', {effects: {}, levelSkills: {5: {rendAround: 1}}}],
+    'chipmunk-hoarder': ['💀 4 Lumber, draw 2', HOARD(4, 2)], 'yeti': ['Daunt 2 + On Ready +1 Wait all foes', YAK(2, 1)], 'cunning-vixen': ['Stealth + Evasive + On Attack 1 Lumber', VIX({evasive: true})]},
+  r1c: {'elder-willow': ['On Ready: 10 Shield to every ally', WILLOW(10)], 'alpine-marmot': ['Guardian only (floor)', {effects: {guardian: true}}], 'caldera-snow-leopard': ['no skill (floor)', {effects: {}}],
+    'chipmunk-hoarder': ['💀 2 Lumber, draw 3', HOARD(2, 3)], 'yeti': ['Daunt 2 + On Ready +2 Wait all foes', YAK(2, 2)], 'cunning-vixen': ['Stealth + On Attack 1 Lumber, draw 1', VIX({draw: 1})]},
+  // round 2. card_balance reads `effects` as the Level 1 card (the engine applies no levelSkills); the road builds levels through effectsAtLevel
+  r2a: {'alpine-marmot': ['facing ally 1 Shield at L1; Guardian at L3', {effects: {triggers: MARMOT(1).effects.triggers}, levelSkills: {3: {guardian: true}}}],
+    'quillguard': ['💀 Rend 1 around at L1; Thorns 1 at L3, 2 at L5', {effects: {rendAround: 1}, levelSkills: {3: {thorns: 1}, 5: {thorns: 2}}}],
+    'elder-willow': ['On Play 3 Shield + On Ready 6 Shield, every ally', {effects: {forestry: 1, triggers: [{on: 'onSpawn', do: 'grantShield', allies: 3}, {on: 'onReady', do: 'grantShield', allies: 6}]}}],
+    'yeti': ['Daunt 2 + On Ready +3 Wait all foes', YAK(2, 3)],
+    'chipmunk-hoarder': ['💀 2 Lumber, draw 1, 2 Shield every ally', {effects: {triggers: HOARD(2, 1).effects.triggers.concat([{on: 'onDeath', do: 'grantShield', allies: 2}])}}],
+    'cunning-vixen': ['Stealth + Evasive + On Attack 1 Lumber, +1 Wait on a foe', {effects: {stealth: true, evasive: true, triggers: [{on: 'onAttack', do: 'gain', amount: 1, resource: 'lumber'}, {on: 'onAttack', do: 'addWait', amount: 1, who: 'enemy'}]}, levelSkills: null}]},
+  r2b: {'alpine-marmot': ['Guardian at L1; facing ally 1 Shield at L3', {effects: {guardian: true}, levelSkills: {3: {triggers: MARMOT(1).effects.triggers}}}],
+    'elder-willow': ['On Ready: 20 Shield to every ally', WILLOW(20)], 'yeti': ['Daunt 1 + On Ready +3 Wait all foes', YAK(1, 3)],
+    'chipmunk-hoarder': ['💀 2 Lumber, draw 1, 4 Shield every ally', {effects: {triggers: HOARD(2, 1).effects.triggers.concat([{on: 'onDeath', do: 'grantShield', allies: 4}])}}],
+    'cunning-vixen': ['Stealth + Evasive + On Attack 1 Lumber, 1 Shield self', {effects: {stealth: true, evasive: true, triggers: [{on: 'onAttack', do: 'gain', amount: 1, resource: 'lumber'}, {on: 'onAttack', do: 'grantShield', amount: 1}]}, levelSkills: null}]},
+  // round 3
+  r3a: {'elder-willow': ['On Play 3 Shield + On Ready 10 Shield, every ally', {effects: {forestry: 1, triggers: [{on: 'onSpawn', do: 'grantShield', allies: 3}, {on: 'onReady', do: 'grantShield', allies: 10}]}}],
+    'quillguard': ['Thorns 1 + 💀 Rend 1 around at L1; Thorns 2 at L5', {effects: {thorns: 1, rendAround: 1}, levelSkills: {5: {thorns: 2}}}],
+    'cunning-vixen': ['Stealth + On Attack 1 Lumber, +1 Wait on a foe', {effects: {stealth: true, triggers: [{on: 'onAttack', do: 'gain', amount: 1, resource: 'lumber'}, {on: 'onAttack', do: 'addWait', amount: 1, who: 'enemy'}]}, levelSkills: null}]},
+  r3b: {'elder-willow': ['On Play 5 Shield + On Ready 6 Shield, every ally', {effects: {forestry: 1, triggers: [{on: 'onSpawn', do: 'grantShield', allies: 5}, {on: 'onReady', do: 'grantShield', allies: 6}]}}]},
+  // the final set: every row as picked (PICKED 2-4) + Quillguard's r1b Level 1 card with Thorns back at L3 (1) and L7 (2); Wolf and Sapper as the doc
+  r4final: {'quillguard': ['no skill at L1; Thorns 1 at L3, 💀 Rend 1 around at L5, Thorns 2 at L7', {effects: {}, levelSkills: {3: {thorns: 1}, 5: {rendAround: 1}, 7: {thorns: 2}}}]},
+  // road attribution only: the final set with Quillguard as the doc (Thorns 2; L5 💀 Rend), since its Level 1 cut moves the reference decks
+  r4alt: {'quillguard': ['as the doc: Thorns 2; L5 💀 Rend 1 around', {levelSkills: {5: {rendAround: 1}}}]},
+};
+const SETNAME = process.env.CD2_SET || ((process.argv.find(a=> a.startsWith('--set=')) || '').slice(6)) || 'cd2';
+if(SETNAME !== 'cd2' && !REFINE[SETNAME]) throw new Error('bench_cd2: unknown set ' + SETNAME);
+// rows settled in an earlier round: later rounds' sets lay them under their own rows (so the advanced pool holds them), but measure only their own
+const PICKED = {2: {'shellwright-apprentice': 'r1a', 'wound-reaver': 'r1a'},
+  3: {'caldera-snow-leopard': 'r1b', 'alpine-marmot': 'r2b', 'chipmunk-hoarder': 'r2a', 'yeti': 'r2b', 'cunning-vixen': 'r2a'},
+  4: {'elder-willow': 'r3b'}};
+const roundOf = s=> +((/^r(\d)/.exec(s) || [])[1] || 0);
+const picksFor = name=> Object.assign({}, ...Object.keys(PICKED).filter(r=> +r <= roundOf(name)).map(r=> PICKED[r])), picks = picksFor(SETNAME);
+const descOf = (s, id)=> (REFINE[s] || {})[id] ? REFINE[s][id][0] : picksFor(s)[id] ? REFINE[picksFor(s)[id]][id][0] : 'CARDDESIGN2 doc';
+const rowsOf = s=> Object.fromEntries(Object.entries(REFINE[s] || {}).map(([id, [, ch]])=> [id, ()=> ch]));
+const SET = Object.assign({}, REDESIGN, Object.fromEntries(Object.entries(picks).map(([id, s])=> [id, ()=> REFINE[s][id][1]])), rowsOf(SETNAME));
+function redesigned(c){ const f = SET[c.id]; if(!f) return c; const ch = f(c), o = Object.assign({}, c, ch); if(ch.levelSkills === null) delete o.levelSkills; return o; }
 const patchCards = arr=> arr.map(redesigned);
 
 // ---- preload mode (node -r tools/bench_cd2/bench.js <script>): the card_balance children of `power`
@@ -57,9 +109,21 @@ const f1 = x=> x == null ? '-' : (Math.round(x * 10) / 10).toFixed(1);
 if(CMD === 'power'){
   const variant = opt('variant', 'base'), games = nums[0] || 400, out = path.join(OUTDIR, 'power-' + variant);
   const { spawnSync } = require('child_process');
-  const r = spawnSync('nice', ['-n', '19', process.execPath, '-r', __filename, path.join(ROOT, 'tools', 'card_balance.js'), '--v3', String(games), '--only=' + IDS.join(','), '--workers=2'],
-    {cwd: ROOT, stdio: 'inherit', env: Object.assign({}, process.env, {CD2_PATCH: variant === 'cd2' ? '1' : '0', CD2_OUT: out})});
+  const only = opt('cards') ? opt('cards').split(',') : REFINE[variant] ? Object.keys(REFINE[variant]) : IDS; // CD2b: a refine set measures its own cards
+  const r = spawnSync('nice', ['-n', '19', process.execPath, '-r', __filename, path.join(ROOT, 'tools', 'card_balance.js'), '--v3', String(games), '--only=' + only.join(','), '--workers=2'],
+    {cwd: ROOT, stdio: 'inherit', env: Object.assign({}, process.env, {CD2_PATCH: variant === 'base' ? '0' : '1', CD2_SET: variant === 'base' ? 'cd2' : variant, CD2_OUT: out})});
   process.exit(r.status || 0);
+} else if(CMD === 'refine-report'){
+  // CD2b: power vs expected per card for each set (--sets=r1a,r1b,...); the cd2 row is BENCH-CD2's. Writes docs/balance/bench-cd2/refine-summary.json
+  const fit = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bal25', 'card-power.json'), 'utf8')).fit;
+  const sets = ['cd2'].concat(opt('sets', '').split(',').filter(Boolean)), out = {};
+  for(const s of sets){ const f = path.join(OUTDIR, 'power-' + s, 'card-power-partial.json'); if(!fs.existsSync(f)) continue;
+    for(const r of JSON.parse(fs.readFileSync(f, 'utf8')).rows){ if(s !== 'cd2' && s !== 'r4final' && !(REFINE[s] || {})[r.id]) continue; // the final set: every card
+      const hasA = r.advRate != null && !(r.adv && r.adv.lowSample), pw = r.winRate == null ? null : hasA ? (r.winRate + r.advRate) / 2 : r.winRate, ex = fit.a + fit.b * r.N;
+      (out[r.id] = out[r.id] || []).push({set: s, desc: s === 'cd2' ? 'CARDDESIGN2 doc' : descOf(s, r.id), basic: r.winRate, adv: r.advRate, played: r.played, N: r.N,
+        power: Math.round(pw * 10) / 10, expected: Math.round(ex * 10) / 10, gap: Math.round((pw - ex) * 10) / 10}); } }
+  fs.writeFileSync(path.join(OUTDIR, 'refine-summary.json'), JSON.stringify({generated: '2026-11-28', games: 400, fit: {a: fit.a, b: fit.b}, sets, cards: out}, null, 1) + '\n');
+  for(const [id, rows] of Object.entries(out)){ console.log(id); rows.forEach(r=> console.log(`  ${r.set.padEnd(5)} ${f1(r.power)} vs ${f1(r.expected)} gap ${r.gap >= 0 ? '+' : ''}${f1(r.gap)}  (${f1(r.basic)}/${f1(r.adv)}, played ${r.played})  ${r.desc}`)); }
 } else if(CMD === 'power-report'){
   const full = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bal25', 'card-power.json'), 'utf8')), fit = full.fit;
   const load = v=> JSON.parse(fs.readFileSync(path.join(OUTDIR, 'power-' + v, 'card-power-partial.json'), 'utf8')).rows;

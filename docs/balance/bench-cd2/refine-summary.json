@@ -1,0 +1,714 @@
+{
+ "generated": "2026-11-28",
+ "games": 400,
+ "fit": {
+  "a": 28.096,
+  "b": 0.471
+ },
+ "sets": [
+  "cd2",
+  "r1a",
+  "r1b",
+  "r1c",
+  "r2a",
+  "r2b",
+  "r3a",
+  "r3b",
+  "r4final"
+ ],
+ "cards": {
+  "alpine-marmot": [
+   {
+    "set": "cd2",
+    "desc": "CARDDESIGN2 doc",
+    "basic": 84.9,
+    "adv": 38.5,
+    "played": 400,
+    "N": 18.35,
+    "power": 61.7,
+    "expected": 36.7,
+    "gap": 25
+   },
+   {
+    "set": "r1a",
+    "desc": "Guardian + facing ally 2 Shield",
+    "basic": 79.8,
+    "adv": 27.6,
+    "played": 400,
+    "N": 18.35,
+    "power": 53.7,
+    "expected": 36.7,
+    "gap": 17
+   },
+   {
+    "set": "r1b",
+    "desc": "Guardian + facing ally 1 Shield",
+    "basic": 73,
+    "adv": 18.5,
+    "played": 400,
+    "N": 18.35,
+    "power": 45.8,
+    "expected": 36.7,
+    "gap": 9
+   },
+   {
+    "set": "r1c",
+    "desc": "Guardian only (floor)",
+    "basic": 62.5,
+    "adv": 9.3,
+    "played": 400,
+    "N": 18.35,
+    "power": 35.9,
+    "expected": 36.7,
+    "gap": -0.8
+   },
+   {
+    "set": "r2a",
+    "desc": "facing ally 1 Shield at L1; Guardian at L3",
+    "basic": 75,
+    "adv": 18.1,
+    "played": 400,
+    "N": 18.35,
+    "power": 46.6,
+    "expected": 36.7,
+    "gap": 9.8
+   },
+   {
+    "set": "r2b",
+    "desc": "Guardian at L1; facing ally 1 Shield at L3",
+    "basic": 62.5,
+    "adv": 9.5,
+    "played": 400,
+    "N": 18.35,
+    "power": 36,
+    "expected": 36.7,
+    "gap": -0.7
+   },
+   {
+    "set": "r4final",
+    "desc": "Guardian at L1; facing ally 1 Shield at L3",
+    "basic": 62.5,
+    "adv": 9.5,
+    "played": 400,
+    "N": 18.35,
+    "power": 36,
+    "expected": 36.7,
+    "gap": -0.7
+   }
+  ],
+  "caldera-snow-leopard": [
+   {
+    "set": "cd2",
+    "desc": "CARDDESIGN2 doc",
+    "basic": 94.6,
+    "adv": 44.6,
+    "played": 400,
+    "N": 26.64,
+    "power": 69.6,
+    "expected": 40.6,
+    "gap": 29
+   },
+   {
+    "set": "r1a",
+    "desc": "Ambush 2",
+    "basic": 93.8,
+    "adv": 38.8,
+    "played": 400,
+    "N": 26.64,
+    "power": 66.3,
+    "expected": 40.6,
+    "gap": 25.7
+   },
+   {
+    "set": "r1b",
+    "desc": "Ambush 1",
+    "basic": 89,
+    "adv": 30,
+    "played": 400,
+    "N": 26.64,
+    "power": 59.5,
+    "expected": 40.6,
+    "gap": 18.9
+   },
+   {
+    "set": "r1c",
+    "desc": "no skill (floor)",
+    "basic": 83.5,
+    "adv": 23.5,
+    "played": 400,
+    "N": 27.97,
+    "power": 53.5,
+    "expected": 41.3,
+    "gap": 12.2
+   },
+   {
+    "set": "r4final",
+    "desc": "Ambush 1",
+    "basic": 89,
+    "adv": 29.8,
+    "played": 400,
+    "N": 26.64,
+    "power": 59.4,
+    "expected": 40.6,
+    "gap": 18.8
+   }
+  ],
+  "chipmunk-hoarder": [
+   {
+    "set": "cd2",
+    "desc": "CARDDESIGN2 doc",
+    "basic": 27.5,
+    "adv": 4,
+    "played": 400,
+    "N": 18.35,
+    "power": 15.8,
+    "expected": 36.7,
+    "gap": -21
+   },
+   {
+    "set": "r1a",
+    "desc": "💀 2 Lumber, draw 2",
+    "basic": 27.8,
+    "adv": 5.5,
+    "played": 400,
+    "N": 18.35,
+    "power": 16.7,
+    "expected": 36.7,
+    "gap": -20.1
+   },
+   {
+    "set": "r1b",
+    "desc": "💀 4 Lumber, draw 2",
+    "basic": 27,
+    "adv": 5.3,
+    "played": 400,
+    "N": 18.35,
+    "power": 16.2,
+    "expected": 36.7,
+    "gap": -20.6
+   },
+   {
+    "set": "r1c",
+    "desc": "💀 2 Lumber, draw 3",
+    "basic": 27,
+    "adv": 4.8,
+    "played": 400,
+    "N": 18.35,
+    "power": 15.9,
+    "expected": 36.7,
+    "gap": -20.8
+   },
+   {
+    "set": "r2a",
+    "desc": "💀 2 Lumber, draw 1, 2 Shield every ally",
+    "basic": 54.8,
+    "adv": 13.3,
+    "played": 400,
+    "N": 18.35,
+    "power": 34.1,
+    "expected": 36.7,
+    "gap": -2.7
+   },
+   {
+    "set": "r2b",
+    "desc": "💀 2 Lumber, draw 1, 4 Shield every ally",
+    "basic": 65.8,
+    "adv": 26.8,
+    "played": 400,
+    "N": 18.35,
+    "power": 46.3,
+    "expected": 36.7,
+    "gap": 9.6
+   },
+   {
+    "set": "r4final",
+    "desc": "💀 2 Lumber, draw 1, 2 Shield every ally",
+    "basic": 54.8,
+    "adv": 14,
+    "played": 400,
+    "N": 18.35,
+    "power": 34.4,
+    "expected": 36.7,
+    "gap": -2.3
+   }
+  ],
+  "cunning-vixen": [
+   {
+    "set": "cd2",
+    "desc": "CARDDESIGN2 doc",
+    "basic": 25.3,
+    "adv": 4.8,
+    "played": 400,
+    "N": 23.84,
+    "power": 15.1,
+    "expected": 39.3,
+    "gap": -24.3
+   },
+   {
+    "set": "r1a",
+    "desc": "Stealth + On Attack 2 Lumber",
+    "basic": 24.8,
+    "adv": 5.8,
+    "played": 400,
+    "N": 23.84,
+    "power": 15.3,
+    "expected": 39.3,
+    "gap": -24
+   },
+   {
+    "set": "r1b",
+    "desc": "Stealth + Evasive + On Attack 1 Lumber",
+    "basic": 46.3,
+    "adv": 15.3,
+    "played": 400,
+    "N": 23.84,
+    "power": 30.8,
+    "expected": 39.3,
+    "gap": -8.5
+   },
+   {
+    "set": "r1c",
+    "desc": "Stealth + On Attack 1 Lumber, draw 1",
+    "basic": 27.8,
+    "adv": 5.3,
+    "played": 400,
+    "N": 23.84,
+    "power": 16.6,
+    "expected": 39.3,
+    "gap": -22.8
+   },
+   {
+    "set": "r2a",
+    "desc": "Stealth + Evasive + On Attack 1 Lumber, +1 Wait on a foe",
+    "basic": 55.5,
+    "adv": 24.8,
+    "played": 400,
+    "N": 23.84,
+    "power": 40.2,
+    "expected": 39.3,
+    "gap": 0.8
+   },
+   {
+    "set": "r2b",
+    "desc": "Stealth + Evasive + On Attack 1 Lumber, 1 Shield self",
+    "basic": 63.8,
+    "adv": 31.9,
+    "played": 400,
+    "N": 23.84,
+    "power": 47.8,
+    "expected": 39.3,
+    "gap": 8.5
+   },
+   {
+    "set": "r3a",
+    "desc": "Stealth + On Attack 1 Lumber, +1 Wait on a foe",
+    "basic": 31.8,
+    "adv": 11.8,
+    "played": 400,
+    "N": 23.84,
+    "power": 21.8,
+    "expected": 39.3,
+    "gap": -17.5
+   },
+   {
+    "set": "r4final",
+    "desc": "Stealth + Evasive + On Attack 1 Lumber, +1 Wait on a foe",
+    "basic": 55.5,
+    "adv": 24.5,
+    "played": 400,
+    "N": 23.84,
+    "power": 40,
+    "expected": 39.3,
+    "gap": 0.7
+   }
+  ],
+  "elder-willow": [
+   {
+    "set": "cd2",
+    "desc": "CARDDESIGN2 doc",
+    "basic": 40.3,
+    "adv": 4.7,
+    "played": 357,
+    "N": 48.59,
+    "power": 22.5,
+    "expected": 51,
+    "gap": -28.5
+   },
+   {
+    "set": "r1a",
+    "desc": "On Ready: 6 Shield to every ally",
+    "basic": 47.6,
+    "adv": 7.8,
+    "played": 357,
+    "N": 48.59,
+    "power": 27.7,
+    "expected": 51,
+    "gap": -23.3
+   },
+   {
+    "set": "r1b",
+    "desc": "Forestry 2 + On Ready 6 Shield every ally",
+    "basic": 47.6,
+    "adv": 9.9,
+    "played": 357,
+    "N": 48.59,
+    "power": 28.8,
+    "expected": 51,
+    "gap": -22.2
+   },
+   {
+    "set": "r1c",
+    "desc": "On Ready: 10 Shield to every ally",
+    "basic": 51.3,
+    "adv": 9.2,
+    "played": 357,
+    "N": 48.59,
+    "power": 30.3,
+    "expected": 51,
+    "gap": -20.7
+   },
+   {
+    "set": "r2a",
+    "desc": "On Play 3 Shield + On Ready 6 Shield, every ally",
+    "basic": 61.6,
+    "adv": 20.3,
+    "played": 357,
+    "N": 48.59,
+    "power": 41,
+    "expected": 51,
+    "gap": -10
+   },
+   {
+    "set": "r2b",
+    "desc": "On Ready: 20 Shield to every ally",
+    "basic": 53.5,
+    "adv": 13.7,
+    "played": 357,
+    "N": 48.59,
+    "power": 33.6,
+    "expected": 51,
+    "gap": -17.4
+   },
+   {
+    "set": "r3a",
+    "desc": "On Play 3 Shield + On Ready 10 Shield, every ally",
+    "basic": 62.5,
+    "adv": 23.1,
+    "played": 357,
+    "N": 48.59,
+    "power": 42.8,
+    "expected": 51,
+    "gap": -8.2
+   },
+   {
+    "set": "r3b",
+    "desc": "On Play 5 Shield + On Ready 6 Shield, every ally",
+    "basic": 68.1,
+    "adv": 27.6,
+    "played": 357,
+    "N": 48.59,
+    "power": 47.8,
+    "expected": 51,
+    "gap": -3.1
+   },
+   {
+    "set": "r4final",
+    "desc": "On Play 5 Shield + On Ready 6 Shield, every ally",
+    "basic": 68.1,
+    "adv": 28.8,
+    "played": 357,
+    "N": 48.59,
+    "power": 48.4,
+    "expected": 51,
+    "gap": -2.5
+   }
+  ],
+  "ice-crevasse-wolf": [
+   {
+    "set": "cd2",
+    "desc": "CARDDESIGN2 doc",
+    "basic": 73.5,
+    "adv": 12.8,
+    "played": 400,
+    "N": 25.47,
+    "power": 43.2,
+    "expected": 40.1,
+    "gap": 3.1
+   },
+   {
+    "set": "r4final",
+    "desc": "CARDDESIGN2 doc",
+    "basic": 73.5,
+    "adv": 15.5,
+    "played": 400,
+    "N": 25.47,
+    "power": 44.5,
+    "expected": 40.1,
+    "gap": 4.4
+   }
+  ],
+  "pinecone-sapper": [
+   {
+    "set": "cd2",
+    "desc": "CARDDESIGN2 doc",
+    "basic": 64,
+    "adv": 18.8,
+    "played": 400,
+    "N": 19.99,
+    "power": 41.4,
+    "expected": 37.5,
+    "gap": 3.9
+   },
+   {
+    "set": "r4final",
+    "desc": "CARDDESIGN2 doc",
+    "basic": 64,
+    "adv": 20,
+    "played": 400,
+    "N": 19.99,
+    "power": 42,
+    "expected": 37.5,
+    "gap": 4.5
+   }
+  ],
+  "quillguard": [
+   {
+    "set": "cd2",
+    "desc": "CARDDESIGN2 doc",
+    "basic": 92,
+    "adv": 60.5,
+    "played": 400,
+    "N": 29.39,
+    "power": 76.3,
+    "expected": 41.9,
+    "gap": 34.3
+   },
+   {
+    "set": "r1a",
+    "desc": "Thorns 1; L5 💀 Rend 1 around",
+    "basic": 81.5,
+    "adv": 31.8,
+    "played": 400,
+    "N": 29.39,
+    "power": 56.7,
+    "expected": 41.9,
+    "gap": 14.7
+   },
+   {
+    "set": "r1b",
+    "desc": "no skill at L1 (floor); L5 💀 Rend 1 around",
+    "basic": 59.5,
+    "adv": 12.8,
+    "played": 400,
+    "N": 30.86,
+    "power": 36.2,
+    "expected": 42.6,
+    "gap": -6.5
+   },
+   {
+    "set": "r2a",
+    "desc": "💀 Rend 1 around at L1; Thorns 1 at L3, 2 at L5",
+    "basic": 53,
+    "adv": 8,
+    "played": 400,
+    "N": 29.39,
+    "power": 30.5,
+    "expected": 41.9,
+    "gap": -11.4
+   },
+   {
+    "set": "r3a",
+    "desc": "Thorns 1 + 💀 Rend 1 around at L1; Thorns 2 at L5",
+    "basic": 79.5,
+    "adv": 30,
+    "played": 400,
+    "N": 29.39,
+    "power": 54.8,
+    "expected": 41.9,
+    "gap": 12.8
+   },
+   {
+    "set": "r4final",
+    "desc": "no skill at L1; Thorns 1 at L3, 💀 Rend 1 around at L5, Thorns 2 at L7",
+    "basic": 59.5,
+    "adv": 11.3,
+    "played": 400,
+    "N": 30.86,
+    "power": 35.4,
+    "expected": 42.6,
+    "gap": -7.2
+   }
+  ],
+  "shellwright-apprentice": [
+   {
+    "set": "cd2",
+    "desc": "CARDDESIGN2 doc",
+    "basic": 81.3,
+    "adv": 34.9,
+    "played": 400,
+    "N": 17.88,
+    "power": 58.1,
+    "expected": 36.5,
+    "gap": 21.6
+   },
+   {
+    "set": "r1a",
+    "desc": "On Play: Grant Armor 1 beside",
+    "basic": 68.5,
+    "adv": 14.6,
+    "played": 400,
+    "N": 17.88,
+    "power": 41.6,
+    "expected": 36.5,
+    "gap": 5
+   },
+   {
+    "set": "r1b",
+    "desc": "no skill (floor)",
+    "basic": 45.1,
+    "adv": 8.3,
+    "played": 400,
+    "N": 18.77,
+    "power": 26.7,
+    "expected": 36.9,
+    "gap": -10.2
+   },
+   {
+    "set": "r4final",
+    "desc": "On Play: Grant Armor 1 beside",
+    "basic": 68.5,
+    "adv": 16,
+    "played": 400,
+    "N": 17.88,
+    "power": 42.3,
+    "expected": 36.5,
+    "gap": 5.7
+   }
+  ],
+  "wound-reaver": [
+   {
+    "set": "cd2",
+    "desc": "CARDDESIGN2 doc",
+    "basic": 83.5,
+    "adv": 36.3,
+    "played": 400,
+    "N": 25.71,
+    "power": 59.9,
+    "expected": 40.2,
+    "gap": 19.7
+   },
+   {
+    "set": "r1a",
+    "desc": "Poison 1; L6 💀 Poisonous 2",
+    "basic": 70.3,
+    "adv": 14.8,
+    "played": 400,
+    "N": 25.71,
+    "power": 42.6,
+    "expected": 40.2,
+    "gap": 2.3
+   },
+   {
+    "set": "r1b",
+    "desc": "no skill at L1 (floor); L6 💀 Poisonous 2",
+    "basic": 53.8,
+    "adv": 8.3,
+    "played": 400,
+    "N": 27,
+    "power": 31.1,
+    "expected": 40.8,
+    "gap": -9.8
+   },
+   {
+    "set": "r4final",
+    "desc": "Poison 1; L6 💀 Poisonous 2",
+    "basic": 70.3,
+    "adv": 15,
+    "played": 400,
+    "N": 25.71,
+    "power": 42.7,
+    "expected": 40.2,
+    "gap": 2.4
+   }
+  ],
+  "yeti": [
+   {
+    "set": "cd2",
+    "desc": "CARDDESIGN2 doc",
+    "basic": 55.2,
+    "adv": 14,
+    "played": 357,
+    "N": 50.23,
+    "power": 34.6,
+    "expected": 51.8,
+    "gap": -17.2
+   },
+   {
+    "set": "r1a",
+    "desc": "Daunt 1 + On Ready +2 Wait all foes",
+    "basic": 61.3,
+    "adv": 20.3,
+    "played": 357,
+    "N": 50.23,
+    "power": 40.8,
+    "expected": 51.8,
+    "gap": -11
+   },
+   {
+    "set": "r1b",
+    "desc": "Daunt 2 + On Ready +1 Wait all foes",
+    "basic": 55.2,
+    "adv": 15.7,
+    "played": 357,
+    "N": 50.23,
+    "power": 35.5,
+    "expected": 51.8,
+    "gap": -16.3
+   },
+   {
+    "set": "r1c",
+    "desc": "Daunt 2 + On Ready +2 Wait all foes",
+    "basic": 61.3,
+    "adv": 22.3,
+    "played": 357,
+    "N": 50.23,
+    "power": 41.8,
+    "expected": 51.8,
+    "gap": -10
+   },
+   {
+    "set": "r2a",
+    "desc": "Daunt 2 + On Ready +3 Wait all foes",
+    "basic": 66.1,
+    "adv": 30.7,
+    "played": 357,
+    "N": 50.23,
+    "power": 48.4,
+    "expected": 51.8,
+    "gap": -3.4
+   },
+   {
+    "set": "r2b",
+    "desc": "Daunt 1 + On Ready +3 Wait all foes",
+    "basic": 66.1,
+    "adv": 31.1,
+    "played": 357,
+    "N": 50.23,
+    "power": 48.6,
+    "expected": 51.8,
+    "gap": -3.2
+   },
+   {
+    "set": "r4final",
+    "desc": "Daunt 1 + On Ready +3 Wait all foes",
+    "basic": 66.1,
+    "adv": 32.1,
+    "played": 357,
+    "N": 50.23,
+    "power": 49.1,
+    "expected": 51.8,
+    "gap": -2.7
+   }
+  ]
+ }
+}

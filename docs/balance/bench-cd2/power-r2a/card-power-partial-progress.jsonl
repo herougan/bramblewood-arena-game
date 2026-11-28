@@ -1,0 +1,13 @@
+{"settings":{"games":400,"mode":"open","seed":2211,"only":"alpine-marmot,chipmunk-hoarder,cunning-vixen,elder-willow,quillguard,yeti","filler":"warren-scout,fawn-scout,bee-sentry,mouse-sapper,poison-dart-croaker,termite-forager,land-tiller","v":3,"top":0.4,"advMix":20,"scopeMaxMap":20,"phases":"cycle:0.5,day:0.25,night:0.25","fields":true}}
+{"phase":"basic","id":"chipmunk-hoarder","m":{"games":400,"played":400,"wins":219,"rate":0.5475,"rateAll":0.5475,"byPhase":{"cycle":[216,121.5],"day":[94,48.5],"night":[90,49]}}}
+{"phase":"basic","id":"alpine-marmot","m":{"games":400,"played":400,"wins":300,"rate":0.75,"rateAll":0.75,"byPhase":{"cycle":[216,165.5],"day":[94,64.5],"night":[90,70]}}}
+{"phase":"basic","id":"elder-willow","m":{"games":400,"played":357,"wins":220,"rate":0.6162464985994398,"rateAll":0.58,"byPhase":{"cycle":[204,127.5],"day":[77,52.5],"night":[76,40]}}}
+{"phase":"basic","id":"cunning-vixen","m":{"games":400,"played":400,"wins":222,"rate":0.555,"rateAll":0.555,"byPhase":{"cycle":[216,127.5],"day":[94,43.5],"night":[90,51]}}}
+{"phase":"basic","id":"quillguard","m":{"games":400,"played":400,"wins":212,"rate":0.53,"rateAll":0.53,"byPhase":{"cycle":[216,116.5],"day":[94,43.5],"night":[90,52]}}}
+{"phase":"basic","id":"yeti","m":{"games":400,"played":357,"wins":236,"rate":0.6610644257703081,"rateAll":0.62,"byPhase":{"cycle":[204,139.5],"day":[77,51.5],"night":[76,45]}}}
+{"phase":"adv","id":"alpine-marmot","m":{"games":400,"played":400,"wins":72.5,"rate":0.18125,"rateAll":0.18125,"byPhase":{"cycle":[216,32.5],"day":[94,22.5],"night":[90,17.5]}}}
+{"phase":"adv","id":"chipmunk-hoarder","m":{"games":400,"played":400,"wins":53,"rate":0.1325,"rateAll":0.1325,"byPhase":{"cycle":[216,25.5],"day":[94,13.5],"night":[90,14]}}}
+{"phase":"adv","id":"cunning-vixen","m":{"games":400,"played":400,"wins":99,"rate":0.2475,"rateAll":0.2475,"byPhase":{"cycle":[216,48.5],"day":[94,24.5],"night":[90,26]}}}
+{"phase":"adv","id":"elder-willow","m":{"games":400,"played":345,"wins":70,"rate":0.2028985507246377,"rateAll":0.185,"byPhase":{"cycle":[201,36.5],"day":[76,13.5],"night":[68,20]}}}
+{"phase":"adv","id":"quillguard","m":{"games":400,"played":400,"wins":32,"rate":0.08,"rateAll":0.08,"byPhase":{"cycle":[216,15.5],"day":[94,10.5],"night":[90,6]}}}
+{"phase":"adv","id":"yeti","m":{"games":400,"played":345,"wins":106,"rate":0.3072463768115942,"rateAll":0.275,"byPhase":{"cycle":[201,58.5],"day":[76,23.5],"night":[68,24]}}}

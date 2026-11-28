@@ -1,0 +1,7 @@
+{"settings":{"games":400,"mode":"open","seed":2211,"only":"cunning-vixen,elder-willow,quillguard","filler":"warren-scout,fawn-scout,bee-sentry,mouse-sapper,poison-dart-croaker,termite-forager,land-tiller","v":3,"top":0.4,"advMix":20,"scopeMaxMap":20,"phases":"cycle:0.5,day:0.25,night:0.25","fields":true}}
+{"phase":"basic","id":"cunning-vixen","m":{"games":400,"played":400,"wins":127,"rate":0.3175,"rateAll":0.3175,"byPhase":{"cycle":[216,68.5],"day":[94,31.5],"night":[90,27]}}}
+{"phase":"basic","id":"elder-willow","m":{"games":400,"played":357,"wins":223,"rate":0.6246498599439776,"rateAll":0.5875,"byPhase":{"cycle":[204,131.5],"day":[77,52.5],"night":[76,39]}}}
+{"phase":"basic","id":"quillguard","m":{"games":400,"played":400,"wins":318,"rate":0.795,"rateAll":0.795,"byPhase":{"cycle":[216,178.5],"day":[94,70.5],"night":[90,69]}}}
+{"phase":"adv","id":"cunning-vixen","m":{"games":400,"played":400,"wins":47,"rate":0.1175,"rateAll":0.1175,"byPhase":{"cycle":[216,19.5],"day":[94,14.5],"night":[90,13]}}}
+{"phase":"adv","id":"elder-willow","m":{"games":400,"played":347,"wins":80,"rate":0.23054755043227665,"rateAll":0.2075,"byPhase":{"cycle":[201,44.5],"day":[77,16.5],"night":[69,19]}}}
+{"phase":"adv","id":"quillguard","m":{"games":400,"played":400,"wins":120,"rate":0.3,"rateAll":0.3,"byPhase":{"cycle":[216,64.5],"day":[94,32.5],"night":[90,23]}}}

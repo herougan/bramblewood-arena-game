@@ -1,0 +1,11 @@
+{"settings":{"games":400,"mode":"open","seed":2211,"only":"alpine-marmot,chipmunk-hoarder,cunning-vixen,elder-willow,yeti","filler":"warren-scout,fawn-scout,bee-sentry,mouse-sapper,poison-dart-croaker,termite-forager,land-tiller","v":3,"top":0.4,"advMix":20,"scopeMaxMap":20,"phases":"cycle:0.5,day:0.25,night:0.25","fields":true}}
+{"phase":"basic","id":"chipmunk-hoarder","m":{"games":400,"played":400,"wins":263,"rate":0.6575,"rateAll":0.6575,"byPhase":{"cycle":[216,145.5],"day":[94,58.5],"night":[90,59]}}}
+{"phase":"basic","id":"alpine-marmot","m":{"games":400,"played":400,"wins":250,"rate":0.625,"rateAll":0.625,"byPhase":{"cycle":[216,137.5],"day":[94,50.5],"night":[90,62]}}}
+{"phase":"basic","id":"elder-willow","m":{"games":400,"played":357,"wins":191,"rate":0.5350140056022409,"rateAll":0.5075,"byPhase":{"cycle":[204,113.5],"day":[77,44.5],"night":[76,33]}}}
+{"phase":"basic","id":"cunning-vixen","m":{"games":400,"played":400,"wins":255,"rate":0.6375,"rateAll":0.6375,"byPhase":{"cycle":[216,135.5],"day":[94,58.5],"night":[90,61]}}}
+{"phase":"basic","id":"yeti","m":{"games":400,"played":357,"wins":236,"rate":0.6610644257703081,"rateAll":0.62,"byPhase":{"cycle":[204,139.5],"day":[77,51.5],"night":[76,45]}}}
+{"phase":"adv","id":"alpine-marmot","m":{"games":400,"played":400,"wins":38,"rate":0.095,"rateAll":0.095,"byPhase":{"cycle":[216,18.5],"day":[94,10.5],"night":[90,9]}}}
+{"phase":"adv","id":"chipmunk-hoarder","m":{"games":400,"played":400,"wins":107,"rate":0.2675,"rateAll":0.2675,"byPhase":{"cycle":[216,48.5],"day":[94,24.5],"night":[90,34]}}}
+{"phase":"adv","id":"elder-willow","m":{"games":400,"played":344,"wins":47,"rate":0.13662790697674418,"rateAll":0.1275,"byPhase":{"cycle":[201,22.5],"day":[76,10.5],"night":[67,14]}}}
+{"phase":"adv","id":"cunning-vixen","m":{"games":400,"played":400,"wins":127.5,"rate":0.31875,"rateAll":0.31875,"byPhase":{"cycle":[216,56],"day":[94,35.5],"night":[90,36]}}}
+{"phase":"adv","id":"yeti","m":{"games":400,"played":344,"wins":107,"rate":0.311046511627907,"rateAll":0.2775,"byPhase":{"cycle":[201,58.5],"day":[76,23.5],"night":[67,25]}}}
