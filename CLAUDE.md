@@ -53,6 +53,7 @@ Docs named `*-2026-10-*.md` are dated snapshots (history). When one disagrees wi
 | Testing, debugging, releases | `docs/workflows/release.md` |
 
 ## Working style
+- When the owner says "continue": follow `.claude/skills/continue/SKILL.md` (default work tracks, background CPU, roadmap step, short reports; owner 2026-11-28).
 - Search before reading: `docs/code-map.md`, then `grep -n`. `arena_app.js` is about 66k lines (index: `docs/guides/arena-app-index.md`); read only the region you need.
 - Specialist agents: `.claude/agents/` (brief them by name); short guides: `docs/guides/` (start with `arena-app-index.md` and `token-savings.md`).
 - Batch work of the same kind. Run agents in parallel only if they touch different files. Most packages touch `arena_app.js` and the 12 language packs, so run those in sequence.
