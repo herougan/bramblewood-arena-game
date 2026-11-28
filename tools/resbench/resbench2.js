@@ -153,7 +153,23 @@ function cmdReport(o) {
     CARDS2.forEach(id => { const re = V.find(v => v.card === id && v.kind === 'real'), tw = V.find(v => v.card === id && v.kind === 'twin'); if (!re || !tw || !has(re) || !has(tw)) return;
       r.cards[id] = Object.assign(pts(R1.dif(A(re), A(tw))), { level: re.level, vsSlot: R1.mean(R1.dif(A(re), a0)) }); });
   }
+  // pooled readings: the mean over contexts (independent games), SE = sqrt(sum se^2) / k; "room" = A-0 between 10% and 90% (ref0f 98% and
+  // ref9f 5% sit at the ceiling / floor, where the slope is tiny and the ratio is noise)
+  const room = id => res.ctx[id] && res.ctx[id].a0.wr > 0.1 && res.ctx[id].a0.wr < 0.9;
+  const pool = (ids, get) => { const xs = ids.filter(room).map(id => get(res.ctx[id])).filter(Boolean); if (!xs.length) return null;
+    return { ctx: ids.filter(room).filter(id => get(res.ctx[id])), pts: xs.reduce((t, x) => t + x.pts, 0) / xs.length, ptsSe: Math.sqrt(xs.reduce((t, x) => t + x.ptsSe * x.ptsSe, 0)) / xs.length }; };
+  const refs = CTX.filter(c => c.opp !== 'mirror').map(c => c.id);
+  res.pooled = {
+    onAttackHomeRefs: pool(['ref0f', 'ref2f', 'ref3f'], r => r.skills['onAttackGain1-0']), onAttackHomeAll: pool(['ref0f', 'mirror0f', 'ref2f', 'ref3f'], r => r.skills['onAttackGain1-0']),
+    forestryHomeRefs: pool(['ref0f', 'ref2f', 'ref3f'], r => r.skills['forestry1-0']),
+    onAttackedHomeRefs: pool(['ref2f', 'ref8f', 'ref9f'], r => r.skills['onAttackedGain1-0']), onAttackedHomeAll: pool(['ref2f', 'ref8f', 'ref9f', 'mirror9f'], r => r.skills['onAttackedGain1-0']),
+    gullThiefHomeRefs: pool(['ref0f', 'ref2f', 'ref3f'], r => r.cards['gull-thief']), driftwoodHomeRefs: pool(['ref2f', 'ref8f', 'ref9f'], r => r.cards['driftwood-crab']),
+    lumberNewRefs: pool(['ref2', 'ref4'], r => r.lumber), lumberAllRefs: pool(refs, r => r.lumber && r.lumber.skills === EVERY.length ? r.lumber : null), lumberAll: pool(CTX.map(c => c.id), r => r.lumber && r.lumber.skills === EVERY.length ? r.lumber : null),
+    taxNewRefs: pool(['ref2', 'ref4'], r => r.tax), taxAll: pool(CTX.map(c => c.id), r => r.tax),
+    clamTide: pool(['mirrorTide', 'ref2f', 'ref9f', 'ref10f'], r => r.cards['giant-clam']),
+  };
   const f = path.join(OUT, 'resbench2-' + res.date + '.json'); fs.writeFileSync(f, JSON.stringify(res, null, 1));
+  Object.entries(res.pooled).forEach(([k, x]) => x && console.log(`pooled ${k.padEnd(20)} ${p(x.pts)} ± ${(1.96 * x.ptsSe).toFixed(1)} pts (${x.ctx.join(', ')})`));
   res.scan.forEach(s => console.log(`scan ${s.ctx.padEnd(6)} A-0 ${(s.wr * 100).toFixed(1)}% ± ${(196 * s.se).toFixed(1)} (${s.games})`));
   Object.entries(res.ctx).forEach(([id, r]) => { console.log(`\n${id} (${r.games} games): A-0 ${(r.a0.wr * 100).toFixed(1)}%, slope ${(r.slope * 100).toFixed(2)} [${(r.slopeLo * 100).toFixed(2)}, ${(r.slopeHi * 100).toFixed(2)}]`);
     Object.entries(r.skills).forEach(([k, x]) => console.log(`  ${k.padEnd(18)} ${p(x.pts)} ± ${(1.96 * x.ptsSe).toFixed(1)} pts [${p(x.lo)}, ${p(x.hi)}]`));
