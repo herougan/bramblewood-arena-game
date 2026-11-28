@@ -5,9 +5,9 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 ## Waiting on you
 
 **CARDDESIGN2-1. Eleven card redesigns that add a decision** · Decide · Cards · asked 2026-11-28
-- Eleven dull or duplicate Maps 0-20 cards get a timing, lane or kill-order choice from built skills; nine keep stats. Measured: only Ice-Crevasse Wolf and Pinecone Sapper land near budget; Willow, Hoarder, Yak and Vixen stay well under. Road mean +0.1; fights 12-5, 12-6 and 17-5 would need retunes.
-  - a) All eleven
-  - b) The eight that need no CPU change
+- Eleven dull or duplicate Maps 0-20 cards get a timing, lane or kill-order choice. After tuning in simulation, 8 land within 5 of budget with stats kept; Snow Leopard and Quillguard would need a stat change. Road mean -0.2 with Quillguard as proposed; 12-2, 12-4, 12-5, 12-6, 17-5 and 11-A-4 need swap retunes.
+  - a) The tuned eight now, Leopard and Quillguard later
+  - b) All eleven, with stat changes
   - c) None
 - **Default:** a
 
