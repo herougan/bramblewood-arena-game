@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-28 Release (batch-1023e, owner 11-28 12:50: "Release when ready")
+- **Shipped since 11-27:** SKILLS3-B (⬆️ / 💀 / 🃏 trigger icons; Wet yes/no with the shock chain; status tokens lose one each upkeep; the plain / ⬆️ / 💀 ladder; Dogfighter, Attunement, Warning Colours), VFX1 + RITUAL1 + VFX2 (38 new skill, trigger, weather and boss effects; ritual candles), UISWEEP3 (one top bar, curtain / fade transitions, two breakpoints, one Home and one back) and UIORDER1 (one skill-line order), CARDFIX1 (Blowfly Maggots, Ironback Gorilla, Orca Vanguard, Matamata, Raccoon Nightcrew, Hedgerow Shrew, Cinder Gecko, the seven new species trimmed), ROADFIX5 / 6 / 7 (road 179 in band of 208; 8-7 without its Mine; 20-A-4 under the Epic cap), TESTFIX13 / 14 (e2e tests on the new bar and in the runner; phone bar button sizes).
+- **Tests:** smoke cached (passed on identical inputs); build pair ok; GitHub runs the full suite on push.
+
 ## 2026-11-28 Package ROADFIX7 (road re-fit after CARDFIX1)
 - **Road fights (player-visible):** six fights CARDFIX1 made too easy get list swaps (leaders, first-clear cards, size kept; no Shield, Health or level change): 10-4 Riptide Channel 87 -> 83.8, 10-7 Eel Nest 79.8 -> 63.5, 5-A-2 Gator Hollow 80.5 -> 67.5, 7-A-3 Silk Gallery 80 -> 71, 8-8 The Stalactite Warden 52 -> 46 (in band on seeds 9100 and 5100); 10-9 The Orca Vanguard King 55.3 -> 52.5 (nearer, still easy, target 40).
 - Full measure `post1128d`: 179 in band / 181 within 10 / 6 beyond 20 of 208 (was 174 / 178 / 6 at `post1128c`). Doc: `docs/balance/roadfix7-2026-11-28.md`.
