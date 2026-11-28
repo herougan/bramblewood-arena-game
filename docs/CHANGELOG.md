@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-28 Package TESTFIX15 (vfx tests flaky under load)
+- No game change: every vfx1 / vfx2 / vfx3 failure was timing (the look drew after the fixed wait; same on the build before VFX3). With polling, both builds pass 99/99 and 168/168.
+- `tests/vfx1-2026-11-27.js`, `vfx2`, `vfx3`: the node counts (and vfx1's cage and rite lift) wait up to 8 s for the nodes the look should draw, then until none has come for 400 ms; the counts checked are unchanged.
+
 ## 2026-11-28 Package VFX3 (the shared looks VFX1 left, the undead rise)
 - **Fights (pixel looks, Effects Low smaller, nothing at None / reduced motion):** Keen Sense sniffs out a target it would have missed (scent wisps, a twitching nose, a glint: dark, fog, blinding sand, Evasive); Siege drives a battering ram into a Structure or the bramble (splinters, bricks); Bulwark's Log Walls go up as a palisade of three stakes on the hammer's beats; Lone Wolf / Throng / Plenty count up in pips, then a wolf's head / a crowd / a fan of cards.
 - **Undead rise:** an enemy undead card (subtype or species Undead, now with Magma / Pall Wraith) rises as bones locking under a skull (FX.V.skeletonRise, its bone clatter); burrowers keep the dirt; Lichen Tortoise no longer counts as a riser.

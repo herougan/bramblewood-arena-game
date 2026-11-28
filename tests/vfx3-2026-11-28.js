@@ -46,6 +46,12 @@ const BOARD = `(async()=>{ adminModeEnabled = true; switchTab('play'); startConq
   window.__u = uids; window.__cnt = 0; new MutationObserver(ms=> ms.forEach(x=> x.addedNodes.forEach(a=>{ if(a.classList && a.classList.contains('fxv')) window.__cnt++; }))).observe(document.body, {childList: true});
   return uids; })()`;
 const U = k=> `window.__u['${k}']`;
+// 2026-11-28 (package TESTFIX15): under machine load a look draws late (its gsap tick or hit timer slips): wait up to 8 s for the nodes it
+// should draw, then until none has come for 400 ms
+const SETTLE = async want=>{ const t0 = performance.now(), nap = ()=> new Promise(r=> setTimeout(r, 50));
+  while(window.__cnt < want && performance.now() - t0 < 8000) await nap();
+  let last = window.__cnt, since = performance.now(); while(performance.now() - since < 400){ await nap(); if(window.__cnt !== last){ last = window.__cnt; since = performance.now(); } }
+  return last; };
 const hit = (a, ad, t, td, more)=> `{type:'hit', side:'${a[0] === '1' ? 'A' : 'B'}', attUid:${U(a)}, attDefId:'${ad}', targetSide:'${t[0] === '1' ? 'A' : 'B'}', targetUid:${U(t)}, targetDefId:'${td}', dmg:3, dmgType:'physical'${more || ''}}`;
 const state = (name, on)=> `{type:'statusFx', kind:'stateSkill', name:'${name}', on:${on}, side:'B', attUid:${U('2:1')}, attDefId:'lone-grey-wolf', targetUid:${U('2:1')}, targetDefId:'lone-grey-wolf'}`;
 // the Lone Grey Wolf's bonus (the engine's packBonus) rises from 0 to 3 between two board draws
@@ -72,13 +78,13 @@ const EVENTS = [
     pg.on('pageerror', e=> errs.push(String(e))); await pg.addInitScript(SKIP); await pg.goto(`http://127.0.0.1:${port}/`);
     await pg.waitForFunction(()=> typeof startConquestMatch === 'function' && window.FX && FX.V, null, {timeout: 120000}); await pg.evaluate(OWNJS); await pg.evaluate(BOARD); return pg; };
   const level = (pg, l)=> pg.evaluate(l=>{ localStorage.setItem('bramblewood_fx_level', l); applyFxLevel(); }, l);
-  const count = async(pg, js, ms)=>{ await pg.evaluate(()=>{ document.querySelectorAll('.fxv:not(style)').forEach(e=> e.remove()); window.__cnt = 0; matchState.round = (matchState.round || 1) + 1; }); await pg.evaluate(js); await pg.waitForTimeout(ms); return pg.evaluate(()=> window.__cnt); };
+  const count = async(pg, js, ms, want)=>{ await pg.evaluate(()=>{ document.querySelectorAll('.fxv:not(style)').forEach(e=> e.remove()); window.__cnt = 0; matchState.round = (matchState.round || 1) + 1; }); await pg.evaluate(js); await pg.waitForTimeout(ms); return pg.evaluate(SETTLE, want || 0); };
   try{
     const pg = await open(false);
     ok(await pg.evaluate(()=> typeof SoundKit.sniff === 'function' && typeof SoundKit.countTick === 'function' && typeof SoundKit.siegeTone === 'function' && typeof SoundKit.constructTone === 'function'), 'the cues are on SoundKit');
     for(const [name, js, ms, hi, lo] of EVENTS){
-      await level(pg, 'high'); const h = await count(pg, js, ms); await pg.waitForTimeout(800);
-      await level(pg, 'low'); const l = await count(pg, js, ms); await pg.waitForTimeout(800);
+      await level(pg, 'high'); const h = await count(pg, js, ms, hi); await pg.waitForTimeout(800);
+      await level(pg, 'low'); const l = await count(pg, js, ms, lo); await pg.waitForTimeout(800);
       await level(pg, 'none'); const z = await count(pg, js, ms);
       ok(h >= hi, `${name}: draws at Effects High (${h} nodes, at least ${hi})`); ok(l === lo, `${name}: its smaller version at Effects Low (${l} nodes, ${lo})`); ok(z === 0, `${name}: nothing at Effects None (${z})`); }
     await level(pg, 'high');

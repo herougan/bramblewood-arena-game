@@ -60,6 +60,12 @@ const BOARD = `(async()=>{ adminModeEnabled = true; switchTab('play'); startConq
   window.__u = uids; window.__cnt = 0; new MutationObserver(ms=> ms.forEach(x=> x.addedNodes.forEach(a=>{ if(a.classList && a.classList.contains('fxv')) window.__cnt++; }))).observe(document.body, {childList: true});
   return uids; })()`;
 const U = k=> `window.__u['${k}']`;
+// 2026-11-28 (package TESTFIX15): under machine load a look draws late (its gsap tick or hit timer slips): wait up to 8 s for the nodes it
+// should draw, then until none has come for 400 ms
+const SETTLE = async want=>{ const t0 = performance.now(), nap = ()=> new Promise(r=> setTimeout(r, 50));
+  while(window.__cnt < want && performance.now() - t0 < 8000) await nap();
+  let last = window.__cnt, since = performance.now(); while(performance.now() - since < 400){ await nap(); if(window.__cnt !== last){ last = window.__cnt; since = performance.now(); } }
+  return last; };
 // [name, js through the game's gate, ms to wait, nodes at High (at least), nodes at Low (exactly, or null = at least 1)]
 const EVENTS = [
   ['Swift', `fxBatchVfx({type:'hit', side:'A', attUid:${U('1:0')}, attDefId:'jackrabbit-sprinter', targetSide:'B', targetUid:${U('2:0')}, targetDefId:'acacia-giraffe', dmg:2, dmgType:'physical'})`, 120, 2, 1],
@@ -84,14 +90,14 @@ const EVENTS = [
     pg.on('pageerror', e=> errs.push(String(e))); await pg.addInitScript(SKIP); await pg.goto(`http://127.0.0.1:${port}/`);
     await pg.waitForFunction(()=> typeof startConquestMatch === 'function' && window.FX && FX.V, null, {timeout: 120000}); await pg.evaluate(OWN); await pg.evaluate(BOARD); return pg; };
   const level = (pg, l)=> pg.evaluate(l=>{ localStorage.setItem('bramblewood_fx_level', l); applyFxLevel(); }, l);
-  const count = async(pg, js, ms)=>{ await pg.evaluate(()=>{ document.querySelectorAll('.fxv:not(style)').forEach(e=> e.remove()); window.__cnt = 0; matchState.round = (matchState.round || 1) + 1; /* a fresh round: the once-a-round looks may play again */ }); await pg.evaluate(js); await pg.waitForTimeout(ms); return pg.evaluate(()=> window.__cnt); };
+  const count = async(pg, js, ms, want)=>{ await pg.evaluate(()=>{ document.querySelectorAll('.fxv:not(style)').forEach(e=> e.remove()); window.__cnt = 0; matchState.round = (matchState.round || 1) + 1; /* a fresh round: the once-a-round looks may play again */ }); await pg.evaluate(js); await pg.waitForTimeout(ms); return pg.evaluate(SETTLE, want || 0); };
   try{
     const pg = await open(false);
     ok(await pg.evaluate(c=> c.every(k=> typeof SoundKit[k] === 'function'), CUES.filter(c=> c !== 'candleCatch' && c !== 'riteLift').concat(['candleCatch', 'riteLift'])), 'every cue is on SoundKit');
     // the effects through the gate at High, Low, None
     for(const [name, js, ms, hi, lo] of EVENTS){
-      await level(pg, 'high'); const h = await count(pg, js, ms); await pg.waitForTimeout(1900);
-      await level(pg, 'low'); const l = await count(pg, js, ms); await pg.waitForTimeout(1900);
+      await level(pg, 'high'); const h = await count(pg, js, ms, hi); await pg.waitForTimeout(1900);
+      await level(pg, 'low'); const l = await count(pg, js, ms, lo == null ? 1 : lo); await pg.waitForTimeout(1900);
       await level(pg, 'none'); const z = await count(pg, js, ms);
       ok(h >= hi, `${name}: draws at Effects High (${h} nodes, at least ${hi})`); ok(lo == null ? l >= 1 : l === lo, `${name}: its minimal version at Effects Low (${l} nodes, ${lo})`); ok(z === 0, `${name}: nothing at Effects None (${z})`);
       ok(l < h, `${name}: Low draws less than High (${l} < ${h})`); }
@@ -116,9 +122,9 @@ const EVENTS = [
     ok(fl.k === 'frost' && fl.on !== 'none' && fl.z === '-1', `the frost layer is on the board under the cards (${JSON.stringify(fl)})`);
     ok(fl.hid === 'none' && fl.gone && fl.cleared, 'hidden at Effects Low, not added there, cleared on the results');
     // the Caged Fight: the cage slams once the opener is gone, once a fight
-    const cage = await pg.evaluate(async(u)=>{ const m = matchState, c = m.players[2].row.right.find(x=> x.uid === u); c.cageOf = 'wandering-traveller'; m.caged = {level: 1};
-      window.__cnt = 0; lastBoardSig = {1: null, 2: null}; renderBoard(); await new Promise(r=> setTimeout(r, 700)); const a = window.__cnt;
-      lastBoardSig = {1: null, 2: null}; renderBoard(); await new Promise(r=> setTimeout(r, 700)); const b2 = window.__cnt - a; delete c.cageOf; m.caged = null; lastBoardSig = {1: null, 2: null}; renderBoard(); return {a, b2}; }, await pg.evaluate(()=> window.__u['2:1']));
+    const cage = await pg.evaluate(async([u, SETTLE])=>{ const m = matchState, c = m.players[2].row.right.find(x=> x.uid === u); c.cageOf = 'wandering-traveller'; m.caged = {level: 1}; SETTLE = eval(SETTLE);
+      window.__cnt = 0; lastBoardSig = {1: null, 2: null}; renderBoard(); const a = await SETTLE(4);
+      lastBoardSig = {1: null, 2: null}; renderBoard(); await new Promise(r=> setTimeout(r, 700)); const b2 = await SETTLE(0) - a; delete c.cageOf; m.caged = null; lastBoardSig = {1: null, 2: null}; renderBoard(); return {a, b2}; }, [await pg.evaluate(()=> window.__u['2:1']), String(SETTLE)]);
     ok(cage.a >= 4 && cage.b2 === 0, `the cage slams on its first render, not again (${cage.a}, then ${cage.b2})`);
     // RITUAL1: the rite on The Sixfold
     const rite = await pg.evaluate(async(u)=>{ RT1.seen.clear(); RT1.lit.clear(); lastBoardSig = {1: null, 2: null}; renderBoard(); const el = boardCardEl(u), r = el && el.querySelector('.card-tile > .rt1-rite');
@@ -130,7 +136,7 @@ const EVENTS = [
       await new Promise(r2=> setTimeout(r2, 300)); matchState.players[1].castleDealt = 6; updateCardStatusDisplay(u); const r2 = el.querySelector('.card-tile > .rt1-rite');
       out.lit2 = r2 ? [...r2.querySelectorAll('.rt1-candle')].map(c=> c.classList.contains('is-lit') ? 1 : 0).join('') : ''; out.catch = r2 ? r2.querySelectorAll('.rt1-candle.rt1-catch').length : -1;
       window.__lift = 0; new MutationObserver(ms=> ms.forEach(x=> x.addedNodes.forEach(a=>{ if(a.classList && a.classList.contains('rt1-lift')) window.__lift++; }))).observe(document.body, {childList: true});
-      live.ritualDone = true; updateCardStatusDisplay(u); await new Promise(r3=> setTimeout(r3, 120));
+      live.ritualDone = true; updateCardStatusDisplay(u); for(let i = 0; i < 160 && !window.__lift; i++) await new Promise(r3=> setTimeout(r3, 50)); await new Promise(r3=> setTimeout(r3, 120)); // the lift waits a frame (TESTFIX15)
       out.after = !el.querySelector('.rt1-rite') && !el.classList.contains('is-ritual'); out.lift = window.__lift; return out; }, await pg.evaluate(()=> window.__u['1:1']));
     ok(rite.inRitual && rite.rite && rite.veil && rite.candles === 3 && rite.shape === 1, `the rite: dark veil, a triangle, three candles (${JSON.stringify(rite)})`);
     ok(rite.lit === '010' && rite.enter && rite.t === '1500ms' && rite.chipLow, 'drawn 6/6 is lit, the others not; it fades in over 1.5 s; the chip moves below');
