@@ -1,0 +1,74 @@
+[
+ {
+  "key": "10-4",
+  "target": 77.1,
+  "lo": 69.1,
+  "hi": 85.1,
+  "b9": 87,
+  "b5": 87.8,
+  "a9": 83.8,
+  "a5": 84.5,
+  "keep": true,
+  "why": "in band on both"
+ },
+ {
+  "key": "10-7",
+  "target": 64.3,
+  "lo": 56.3,
+  "hi": 72.3,
+  "b9": 79.8,
+  "b5": 78,
+  "a9": 63.5,
+  "a5": 66.5,
+  "keep": true,
+  "why": "in band on both"
+ },
+ {
+  "key": "10-9",
+  "target": 40,
+  "lo": 30,
+  "hi": 49,
+  "b9": 55.3,
+  "b5": 54.3,
+  "a9": 52.5,
+  "a5": 48.8,
+  "keep": true,
+  "why": "closer on both"
+ },
+ {
+  "key": "5-A-2",
+  "target": 65,
+  "lo": 57,
+  "hi": 73,
+  "b9": 80.5,
+  "b5": 76.8,
+  "a9": 67.5,
+  "a5": 66,
+  "keep": true,
+  "why": "in band on both"
+ },
+ {
+  "key": "7-A-3",
+  "target": 70,
+  "lo": 62,
+  "hi": 78,
+  "b9": 80,
+  "b5": 81.5,
+  "a9": 71,
+  "a5": 68.3,
+  "keep": true,
+  "why": "in band on both"
+ },
+ {
+  "key": "8-8",
+  "target": 40,
+  "lo": 30,
+  "hi": 49,
+  "b9": 52,
+  "b5": 49.5,
+  "a9": 46,
+  "a5": 43,
+  "keep": true,
+  "why": "in band on both"
+ }
+]
