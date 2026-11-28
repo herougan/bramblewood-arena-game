@@ -122,7 +122,7 @@ ok(/fx9ZzzSync\(tile, c\.asleep>0\)/.test(fnSrc('updateCardStatusDisplay')), '#8
   ok(/right:24%; top:14%/.test(z) && /translate\(1\.1em, -2\.2em\)/.test(kf), '#8 they start near the top-right corner and drift up and right, out of the card');
   ok(/color:#b4e6ff/.test(z) && /-webkit-text-stroke:1px #0b3566/.test(z) && /clamp\(15px, 30cqw, 23px\)/.test(z), '#8 light blue with a dark edge and a glow, at least 15 px (readable at 390)');
   ok(!/filter:/.test(z) && kf && !/(left|top|width|height|filter|margin)\s*:/.test(kf), '#8 no filter; the loop animates transform and opacity only');
-  ok(/animation:fx9Zzz 3\.6s linear infinite/.test(z), '#8 a slow loop (3.6 s)');
+  ok(/animation:fx9Zzz 5\.4s linear infinite/.test(z), '#8 a slow loop (5.4 s; UIPOLISH1 #4 slowed it from 3.6 s)');
   ok(/html\[data-fx="low"\] \.fx9-zzz > i, html\[data-fx="none"\] \.fx9-zzz > i\{animation:none;\}/.test(tpl) && /prefers-reduced-motion: reduce\)\{ \.fx9-zzz > i\{animation:none;\}/.test(tpl), '#8 Low, None and reduced motion: still Zs'); }
 
 // ---------------------------------------------------------------- #14 the tortoise shell

@@ -20744,7 +20744,7 @@ function enterSubMap(id, el, body){
   abandonMapLayoutEdit();
   const mainEl = document.getElementById('conquestMain');
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const go = ()=>{ conquestSelectedMap = id; conquestSelectedNodeKey = null; conquestSubZoom = reduce ? null : 'in'; renderConquestSubTab(body); };
+  const go = ()=>{ if(UIP1_JUNGLE_MAPS.has(id)) try{ uip1Zoom('jungle'); }catch(e){} /* 2026-11-28 (UIPOLISH1 #8): the rainforest's eerie grass parts */ conquestSelectedMap = id; conquestSelectedNodeKey = null; conquestSubZoom = reduce ? null : 'in'; renderConquestSubTab(body); };
   if(!mainEl || reduce || !mainEl.animate || !el) return go();
   const mr = mainEl.getBoundingClientRect(), r = el.getBoundingClientRect();
   // A side map in daylight (2026-10-14, user: "If the submap is not dark, don't need to darken the screen - just zoom into the
@@ -20812,6 +20812,33 @@ function subMapIris(rect, cx, cy){
   w.style.cssText = `left:${rect.left}px; top:${rect.top}px; width:${rect.width}px; height:${rect.height}px;`;
   w.innerHTML = `<span style="left:${cx}px; top:${cy}px;"></span>`;
   document.body.appendChild(w); return w;
+}
+/* 2026-11-28 (UIPOLISH1 #8, owner: "a skull-opening zoom transition into the multiplayer dungeon (like entering a submap); and one for the Deep Jungle: dark purple and dark blue
+   grass among the dark green, eerie"): uip1Zoom('skull') black screen, a skull appears and the camera dives through its eye sockets; uip1Zoom('jungle') a wall of dark grass
+   (green, with purple and blue blades) that parts. One overlay at a time, transform / opacity only (about 1.1 s), nothing at Effects None or with reduced motion. It covers at once
+   (before the page behind swaps) and opens after. Returns the ms it plays (0 = nothing played). */
+const UIP1_SKULL = '<svg viewBox="0 0 100 120" class="uip1-skull" aria-hidden="true"><path fill="#e9e2cf" d="M50 8C22 8 10 30 12 52c1 10 6 16 12 20v20q0 6 6 6h40q6 0 6-6V72c6-4 11-10 12-20C90 30 78 8 50 8z"/><circle cx="36" cy="55" r="11" fill="#05080b"/><circle cx="64" cy="55" r="11" fill="#05080b"/><path fill="#05080b" d="M50 66l-6 14h12z"/><path stroke="#05080b" stroke-width="2.5" d="M38 98V86M50 98V86M62 98V86"/></svg>';
+const UIP1_JUNGLE_MAPS = new Set(['my']); // The Canopy, the rainforest side map (no map is named Deep Jungle yet)
+function uip1Zoom(kind){
+  if(reducedMotion() || !fxAtLeast('low') || typeof document === 'undefined') return 0;
+  document.querySelectorAll('.uip1-zoom').forEach(e=> e.remove());
+  const o = document.createElement('div'); o.className = 'uip1-zoom uip1-k-' + kind; o.setAttribute('aria-hidden', 'true');
+  let anims = [];
+  if(kind === 'skull'){
+    o.innerHTML = UIP1_SKULL; const sk = o.firstChild;
+    anims.push(sk.animate([{transform:'scale(.4) rotate(-6deg)', opacity:0}, {transform:'scale(1) rotate(0deg)', opacity:1, offset:.25}, {transform:'scale(1.15)', opacity:1, offset:.4}, {transform:'scale(34)', opacity:1}], {duration:1100, easing:'cubic-bezier(.5,0,.9,.5)', fill:'forwards'}));
+    anims.push(o.animate([{opacity:1}, {opacity:1, offset:.8}, {opacity:0}], {duration:1100 + 350, fill:'forwards'}));
+  } else {
+    const cols = ['#0d2616', '#12301c', '#0a1c10', '#1d2c55', '#2a2260', '#3b2160', '#173a24'], N = 46; let h = '';
+    for(let i = 0; i < N; i++){ const x = (i / (N - 1)) * 112 - 6, hh = 70 + ((i * 37) % 40), w = 10 + ((i * 13) % 8); h += `<i style="left:${x.toFixed(1)}%; height:${hh}%; width:${w}%; background:${cols[(i * 5) % cols.length]}; animation-delay:${((i * 53) % 700) - 700}ms"></i>`; }
+    o.innerHTML = '<b class="uip1-glow"></b><div class="uip1-L">' + h + '</div><div class="uip1-R">' + h + '</div>';
+    anims.push(o.querySelector('.uip1-L').animate([{transform:'none'}, {transform:'none', offset:.35}, {transform:'translateX(-105%)'}], {duration:1100, easing:'cubic-bezier(.6,0,.3,1)', fill:'forwards'}));
+    anims.push(o.querySelector('.uip1-R').animate([{transform:'none'}, {transform:'none', offset:.35}, {transform:'translateX(105%)'}], {duration:1100, easing:'cubic-bezier(.6,0,.3,1)', fill:'forwards'}));
+    anims.push(o.querySelector('.uip1-glow').animate([{opacity:0}, {opacity:.9, offset:.4}, {opacity:0}], {duration:1100, fill:'forwards'}));
+  }
+  document.body.appendChild(o); try{ SoundKit && SoundKit.play && SoundKit.play('whoosh'); }catch(e){}
+  setTimeout(()=> o.remove(), 1600);
+  return 1100;
 }
 function leaveSubMap(sm, body){
   const mainEl = document.getElementById('conquestMain');
@@ -28447,15 +28474,14 @@ function dailyDungeonsOpen(){ try{ return !!(dungeonsAdminView() || unlockedDail
 // co-op dungeon] It'll be just a dungeon on the map, and itl appear in arena, under coop tab."): the Dungeons tab is gone for players; it
 // stays in Admin Mode (and Dev Mode) for the daily dungeons' testing. The Group Dungeon is the Arena's Co-op pane (pl2ArenaTabsHTML) and a
 // 👥 spot on Map GD_OPEN_AFTER_MAP after its last fight (FEATURE_SPOTS 'coop', pl2OpenCoopPop). Was: dailyDungeonsOpen() || gdPlayerOpen().
-function dungeonsTabOpen(){ try{ return dungeonsAdminView(); }catch(e){ return false; } }
+function dungeonsTabOpen(){ try{ return dungeonsAdminView() || gdPlayerOpen(); }catch(e){ return false; } } // 2026-11-28 (UIPOLISH1, owner: "The Arena's multiplayer dungeon should be moved to the page with raids, dailies"): the multiplayer dungeon is on the Dungeons & Raids page, once open
 let pl2ArenaPane = 'modes';
 function pl2CoopPaneOn(){ try{ return pl2ArenaPane === 'coop' && gdPlayerOpen(); }catch(e){ return false; } }
-function sw2ArenaPane(){ return pl2CoopPaneOn() ? 'coop' : pl2ArenaPane === 'casual' ? 'casual' : 'modes'; } // 2026-11-26 (UISWEEP2): the Arena's panes: modes (Ranked), casual, coop (Multiplayer)
+function sw2ArenaPane(){ return pl2ArenaPane === 'casual' ? 'casual' : 'modes'; } // 2026-11-26 (UISWEEP2): the Arena's panes: modes (Ranked), casual, coop (Multiplayer)
 function pl2ArenaTabsHTML(){
   let open = false; try{ open = gdPlayerOpen(); }catch(e){}
   const pane = sw2ArenaPane(), on = pane === 'coop', b = (k, ico, label, sel)=> `<button type="button" class="tab-btn ${sel ? 'active' : ''}" role="tab" aria-selected="${sel}" data-pl2-arena="${k}"><span class="tab-emoji" aria-hidden="true">${ico}</span> ${escapeHtml(label)}</button>`;
-  return `<div class="pl2-arena-tabs" role="tablist">${b('modes', '🏅', TX('ui.sw2-ranked'), pane === 'modes')}${b('casual', '👥', TX('ui.sw2-casual'), pane === 'casual')}${open ? b('coop', '🤝', TX('ui.pl2-coop'), on) : ''}</div>`
-    + (on ? `<section class="ar3-panel pl2-coop-panel dungeons-panel" aria-label="${escapeAttr(TX('ui.pl2-coop'))}"><div class="dg-list">${groupDungeonCardsHTML() /* DUNGEON1: every open dungeon, a card each */}</div></section>` : '');
+  return `<div class="pl2-arena-tabs" role="tablist">${b('modes', '🏅', TX('ui.sw2-ranked'), pane === 'modes')}${b('casual', '👥', TX('ui.sw2-casual'), pane === 'casual')}</div>`; // 2026-11-28 (UIPOLISH1): no Multiplayer pane in the Arena (it is on the Dungeons & Raids page)
 }
 // the map's 👥 spot opens the Group Dungeon's card over the map (its buttons are the same delegated [data-gd-open] ones)
 function pl2OpenCoopPop(id){ // + DUNGEON1: the spot's own dungeon
@@ -28587,15 +28613,16 @@ function groupDungeonCardHTML(id){
       <p class="dg-sub gd-facts">${escapeHtml(TX('ui.coop2-group-facts', {floors: dg.floors.length, n: dg.players, energy: gdCost()}))}</p><p class="dg-sub">${gdPayLineHTML()}</p>
       <p class="dg-sub gd-people-line">${(()=>{ const c = mine ? gdRoomCounts() : null; return c ? gdPeopleHTML(c) : gdPeopleHTML({fixed: true, size: dg.players}); })()}</p>${GD.s && !mine ? '' : inv}
       ${GD.s ? (mine ? `<div class="dg-acts"><button type="button" class="btn primary" data-gd-open="show">👥 ${escapeHtml(TX('ui.ar3-room-title', {code: GD.code}))}</button></div>` : '') : `<div class="dg-acts gd-acts">
-        <button type="button" class="btn primary" data-gd-open="create" data-gd-type="${escapeAttr(id)}">👥 ${escapeHtml(TX('ui.ar3-create'))}</button>
-        <button type="button" class="btn" data-gd-open="solo" data-gd-type="${escapeAttr(id)}">🤖 ${escapeHtml(TX('ui.ar3-solo'))}</button>
-        <span class="gd-join"><input id="${inp}" class="gd-code-in" maxlength="6" autocomplete="off" spellcheck="false" placeholder="${escapeAttr(TX('ui.ar3-code-ph'))}" aria-label="${escapeAttr(TX('ui.ar3-code-ph'))}"><button type="button" class="btn" data-gd-open="join">${escapeHtml(TX('ui.ar3-join'))}</button></span>
+        <button type="button" class="btn primary" data-gd-open="solo" data-gd-type="${escapeAttr(id)}">▶ ${escapeHtml(TX('ui.up1-play'))}</button>
+        <button type="button" class="btn" data-gd-open="private" data-gd-type="${escapeAttr(id)}">🔒 ${escapeHtml(TX('ui.up1-private'))}</button>
+         /* 2026-11-28 (UIPOLISH1 #10): Play and Private (the room code, Host or Join, is in the Private window) */
         ${signed ? `<label class="gd-local-opt"><input type="checkbox" id="gdLocalOpt"> ${escapeHtml(TX('ui.ar3-local-opt'))}</label>` : ''}</div>`}</div></div>`;
 }
 document.addEventListener('click', e=>{
   const b = e.target && e.target.closest && e.target.closest('[data-gd-open]'); if(!b) return;
   e.preventDefault(); const k = b.dataset.gdOpen;
   if(k === 'show') return gdShow();
+  if(k === 'private') return gdPrivateOpen(b.dataset.gdType); // 2026-11-28 (UIPOLISH1 #10)
   if(k === 'join'){ const card = b.closest('.dg-card'), inp = (card && card.querySelector('.gd-code-in')) || document.getElementById('gdJoinCode'); return gdJoin(String(b.dataset.code || (inp && inp.value) || '').trim().toUpperCase()); } // + DUNGEON1: that card's box
   gdCreate(k === 'solo', b.dataset.gdType); // + DUNGEON1: that card's dungeon
 });
@@ -28608,35 +28635,72 @@ async function gdProbeServer4p(){
   try{ const { error } = await sbClient.rpc('join_coop_room_v2', {p_code: 'ZZZZZZ'}); GD.server4p = !(error && rpcMissing(error)); }catch(e){ GD.server4p = false; }
   return GD.server4p;
 }
-async function gdCreate(solo, typeId){
+/* 2026-11-28 (UIPOLISH1 #10, owner: "Multiplayer entry: Play and Private; Private opens a sub-window: enter a room code, then Host or Join, with all good and bad paths (no room with that
+   code; a room already has that code). The code reads ****-**: 4 characters required, up to 6, letters and digits, hidden, with an eye button to show them."): the code is cleaned to
+   upper-case letters and digits (6 at most); the server's rows and the local channels are the code padded to 6 with 0 (the table's check wants 6, so no SQL change is needed). */
+function gdCodeClean(v){ return String(v || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6); }
+function gdCodeValid(v){ return /^[A-Z0-9]{4,6}$/.test(String(v || '')); }
+function gdRoomKey(code){ return String(code || '').padEnd(6, '0'); }
+const GD_LOCAL_CODES_KEY = 'bramblewood_gd_local_codes';
+function gdLocalCodes(){ try{ const o = JSON.parse(localStorage.getItem(GD_LOCAL_CODES_KEY) || '{}'), now = Date.now(); Object.keys(o).forEach(k=>{ if(!(o[k] > now)) delete o[k]; }); return o; }catch(e){ return {}; } }
+function gdLocalTaken(key){ return !!gdLocalCodes()[key]; }
+function gdLocalTake(key){ try{ const o = gdLocalCodes(); o[key] = Date.now() + 30 * 60000; localStorage.setItem(GD_LOCAL_CODES_KEY, JSON.stringify(o)); }catch(e){} }
+function gdLocalFree(key){ try{ const o = gdLocalCodes(); delete o[key]; localStorage.setItem(GD_LOCAL_CODES_KEY, JSON.stringify(o)); }catch(e){} }
+// a refusal: in the Private window when it is up (or reopened with the message when a join finds no room), else a toast
+function gdNote(msg){ const e = document.getElementById('gdPrivErr'); if(e){ e.textContent = msg; return; } if(GD.priv){ gdPrivateOpen(GD.priv.typeId, GD.priv.code, msg); return; } showToast(msg, 'warn'); }
+function gdPrivateClose(){ document.querySelectorAll('.gd-priv').forEach(x=> x.remove()); }
+function gdPrivateOpen(typeId, code, msg){
+  gdPrivateClose(); GD.priv = {typeId: typeId || 'hollow', code: gdCodeClean(code)};
+  const w = document.createElement('div'); w.className = 'gd-priv'; w.setAttribute('role', 'dialog'); w.setAttribute('aria-label', TX('ui.up1-private-title'));
+  w.innerHTML = `<div class="gd-priv-back" data-gd-priv-x></div><div class="panel gd-priv-box"><button type="button" class="pl2-coop-x" data-gd-priv-x aria-label="✕">✕</button>
+    <h3>🔒 ${escapeHtml(TX('ui.up1-private-title'))}</h3><label for="gdPrivCode">${escapeHtml(TX('ui.ar3-code-label'))}</label>
+    <div class="gd-priv-row"><input id="gdPrivCode" class="gd-code-in is-hidden" maxlength="7" autocomplete="off" spellcheck="false" placeholder="****-**" value="${escapeAttr(GD.priv.code)}" aria-describedby="gdPrivErr gdPrivHint"><button type="button" class="btn small" id="gdPrivEye" aria-pressed="false" aria-label="${escapeAttr(TX('ui.up1-show-code'))}" title="${escapeAttr(TX('ui.up1-show-code'))}">👁</button></div>
+    <p class="gd-priv-hint" id="gdPrivHint">${escapeHtml(TX('ui.up1-code-hint'))}</p><p class="gd-priv-err" id="gdPrivErr" role="alert">${escapeHtml(msg || '')}</p>
+    <div class="gd-priv-acts"><button type="button" class="btn primary" id="gdPrivHost" disabled>${escapeHtml(TX('ui.up1-host'))}</button><button type="button" class="btn" id="gdPrivJoin" disabled>${escapeHtml(TX('ui.ar3-join'))}</button></div></div>`;
+  document.body.appendChild(w);
+  const inp = w.querySelector('#gdPrivCode'), host = w.querySelector('#gdPrivHost'), join = w.querySelector('#gdPrivJoin'), eye = w.querySelector('#gdPrivEye'), err = w.querySelector('#gdPrivErr');
+  const sync = ()=>{ const c = gdCodeClean(inp.value); if(inp.value !== c) inp.value = c; GD.priv.code = c; host.disabled = join.disabled = !gdCodeValid(c); if(!msg || inp.dataset.edited) err.textContent = ''; };
+  inp.addEventListener('input', ()=>{ inp.dataset.edited = '1'; sync(); }); sync();
+  const go = h=>{ const c = gdCodeClean(inp.value); if(!gdCodeValid(c)){ err.textContent = TX('ui.up1-code-bad'); return; } err.textContent = ''; GD.priv.code = c; if(h) gdCreate(false, GD.priv.typeId, c); else gdJoin(c); };
+  host.addEventListener('click', ()=> go(true)); join.addEventListener('click', ()=> go(false));
+  inp.addEventListener('keydown', e=>{ if(e.key === 'Enter' && !join.disabled){ e.preventDefault(); go(false); } });
+  eye.addEventListener('click', ()=>{ const on = inp.classList.toggle('is-hidden') === false; eye.setAttribute('aria-pressed', String(on)); eye.textContent = on ? '🙈' : '👁'; const t = TX(on ? 'ui.up1-hide-code' : 'ui.up1-show-code'); eye.setAttribute('aria-label', t); eye.title = t; });
+  w.addEventListener('click', e=>{ if(e.target.closest('[data-gd-priv-x]')){ GD.priv = null; gdPrivateClose(); } });
+  setTimeout(()=>{ try{ inp.focus(); }catch(e){} }, 30);
+}
+async function gdCreate(solo, typeId, custom){
   if(!CoopM) return; if(GD.s) return gdShow();
   GD.typeId = CoopM.DUNGEONS[typeId] ? typeId : 'hollow'; // DUNGEON1: the room is for this dungeon
   if(!gdDeckOk() || !gdEnergyOk()) return;
-  const code = CoopM.newRoomCode();
+  const code = custom || CoopM.newRoomCode(), key = gdRoomKey(code); // 2026-11-28 (UIPOLISH1 #10): a private code of 4 to 6 characters; the room's channel / row is the code padded to 6
   let kind = solo ? 'solo' : gdWantLocal() ? 'local' : 'live';
+  if(custom && kind === 'local' && gdLocalTaken(key)) return gdNote(TX('ui.up1-code-taken'));
   if(kind === 'live'){
-    try{ const { data, error } = await sbClient.from('coop_rooms').insert({code, casual: false, plan_seconds: 30}).select('id').maybeSingle(); if(error) throw error; GD.roomId = data && data.id; await gdProbeServer4p(); }
-    catch(e){ console.warn('coop_rooms', e); kind = 'local'; showToast(TX('ui.ar3-live-off'), 'warn'); }
+    try{ if(custom) try{ await sbClient.rpc('free_coop_code', {p_code: key}); }catch(e0){} /* UIPOLISH1: frees a finished room's code (supabase/proposed/uipolish1-2026-11-28.sql); absent today, ignored */
+      const { data, error } = await sbClient.from('coop_rooms').insert({code: key, casual: false, plan_seconds: 30}).select('id').maybeSingle(); if(error) throw error; GD.roomId = data && data.id; await gdProbeServer4p(); }
+    catch(e){ if(custom && e && (e.code === '23505' || /duplicate|unique/i.test(String(e.message || '')))) return gdNote(TX('ui.up1-code-taken')); /* UIPOLISH1: someone has that code */ console.warn('coop_rooms', e); kind = 'local'; showToast(TX('ui.ar3-live-off'), 'warn'); }
   }
-  gdBegin(kind, code, true);
+  if(custom && kind === 'local') gdLocalTake(key);
+  gdBegin(kind, code, true, {key});
 }
 async function gdJoin(code){
   if(!CoopM) return; if(GD.s) return gdShow();
-  if(!/^[A-Z0-9]{6}$/.test(code)){ showToast(TX('ui.ar3-not-found'), 'warn'); return; }
+  if(!/^[A-Z0-9]{4,6}$/.test(code)){ gdNote(TX('ui.up1-code-bad')); return; } // 2026-11-28 (UIPOLISH1 #10): 4 to 6 letters or digits
+  const key = gdRoomKey(code);
   if(!gdDeckOk()) return;
   let kind = gdWantLocal() ? 'local' : 'live';
   if(kind === 'live'){
-    let res; try{ res = await sbClient.rpc('join_coop_room_v2', {p_code: code}); if(res.error && rpcMissing(res.error)){ GD.server4p = false; res = await sbClient.rpc('join_coop_room', {p_code: code}); } else if(!res.error) GD.server4p = true; }catch(e){ res = {error: e}; }
+    let res; try{ res = await sbClient.rpc('join_coop_room_v2', {p_code: key}); if(res.error && rpcMissing(res.error)){ GD.server4p = false; res = await sbClient.rpc('join_coop_room', {p_code: key}); } else if(!res.error) GD.server4p = true; }catch(e){ res = {error: e}; }
     if(res && res.error){ const m = String(res.error.message || '');
-      if(/friends only/i.test(m)) return showToast(TX('ui.ar3-friends-only'), 'warn');
-      if(/full/i.test(m)) return showToast(TX('ui.ar3-full'), 'warn');
+      if(/friends only/i.test(m)) return gdNote(TX('ui.ar3-friends-only'));
+      if(/full/i.test(m)) return gdNote(TX('ui.ar3-full'));
       if(/sign in/i.test(m)) return requireSignIn(TX('ui.ar-group-name'), ()=> gdJoin(code));
       if(/not found/i.test(m)) kind = 'local'; // no such online room: maybe a room in another tab of this browser
       else return showToast(TX('ui.ar3-live-off'), 'warn'); }
     else GD.roomId = res && res.data;
   }
   GD.typeId = 'hollow'; // DUNGEON1: until the host's roster names the room's dungeon (gdOnEvent 'roster')
-  gdBegin(kind, code, false);
+  gdBegin(kind, code, false, {key});
 }
 // opts (tests): {transport, peerId} to join an in-page hub instead
 // 2026-10-30 (package COOP3, owner W4: "The allies should play their cards first if CPU btw, taking a random amount of time between 0.5 to 3.0s.
@@ -28649,8 +28713,8 @@ async function gdJoin(code){
 function gdCpuDelay(T, seat){ const first = !T || (T.round | 0) <= 1, ms = Math.round(first ? 500 + Math.random() * 1000 : 500 + Math.random() * 2500); try{ (GD.cpuDrawn = GD.cpuDrawn || []).push({round: T ? T.round : 0, seat, ms}); if(GD.cpuDrawn.length > 60) GD.cpuDrawn.shift(); }catch(e){} return ms; }
 function gdBegin(kind, code, host, opts){
   opts = opts || {};
-  let transport = opts.transport || (kind === 'live' ? CoopM.supabaseTransport(sbClient, code, {private: !!GD.server4p}) : kind === 'local' ? CoopM.broadcastChannelTransport(code) : null);
-  if(!transport){ if(!host){ showToast(TX('ui.ar3-not-found'), 'warn'); return; } GD.hub = CoopM.createHub(); kind = 'solo'; }
+  let transport = opts.transport || (kind === 'live' ? CoopM.supabaseTransport(sbClient, opts.key || code, {private: !!GD.server4p}) : kind === 'local' ? CoopM.broadcastChannelTransport(opts.key || code) : null);
+  if(!transport){ if(!host){ gdNote(TX('ui.ar3-not-found')); return; } GD.hub = CoopM.createHub(); kind = 'solo'; }
   const peerId = opts.peerId || (kind === 'live' ? cloudUserId : gdLocalPeerId());
   if(!transport) transport = GD.hub.connect(peerId);
   Object.assign(GD, {kind, code, paid: [], energyPaid: 0, floorEnd: null, endInfo: null, leaveArm: 0, note: ''});
@@ -28658,13 +28722,13 @@ function gdBegin(kind, code, host, opts){
   gdDefs();
   GD.s = CoopM.createSession({transport, me: {peerId, name: gdMyName(), deck: publicDeck(myDeckCounts), leader: matchLeaderId(), castle: myCharacterId, castleHp: gdCastleHp(), avatar: (()=>{ try{ return loadAvatar(); }catch(e){ return null; } })() /* ENG18 (UI16-4): my profile look for the others' lobby */}, host, code,
     typeId: GD.typeId || 'hollow' /* DUNGEON1 */, deps: gdDeps(), maxHumans, onEvent: gdOnEvent, apply: gdApply, batchMs: opts.batchMs, cpuDelay: opts.cpuDelay || gdCpuDelay}); // + COOP3: the CPU allies take their time
-  GD.phase = host ? 'lobby' : 'connecting';
-  if(!host){ clearTimeout(GD.joinTimer); GD.joinTimer = setTimeout(()=>{ if(GD.phase === 'connecting'){ showToast(TX('ui.ar3-not-found'), 'warn'); gdClose(true); } }, 6000); }
+  GD.phase = host ? 'lobby' : 'connecting'; gdPrivateClose(); if(host) GD.priv = null; // 2026-11-28 (UIPOLISH1 #10): the Private window waits while a join connects (it comes back with the answer)
+  if(!host){ clearTimeout(GD.joinTimer); GD.joinTimer = setTimeout(()=>{ if(GD.phase === 'connecting'){ gdClose(true); gdNote(TX('ui.ar3-not-found')); } }, 6000); }
   gdShow();
 }
 function gdOnEvent(kind, d){
   const S = GD.s; if(!S) return;
-  if(kind === 'roster'){ if(d && d.typeId && CoopM.DUNGEONS[d.typeId]) GD.typeId = d.typeId; /* DUNGEON1: the host's dungeon */ if(GD.phase === 'connecting'){ GD.phase = 'lobby'; clearTimeout(GD.joinTimer); } if(GD.phase === 'lobby') gdRender(); else gdRenderCoopBar(); return; }
+  if(kind === 'roster'){ if(d && d.typeId && CoopM.DUNGEONS[d.typeId]) GD.typeId = d.typeId; /* DUNGEON1: the host's dungeon */ if(GD.phase === 'connecting'){ GD.phase = 'lobby'; clearTimeout(GD.joinTimer); GD.priv = null; gdPrivateClose(); } if(GD.phase === 'lobby') gdRender(); else gdRenderCoopBar(); return; }
   if(kind === 'full'){ showToast(TX('ui.ar3-full'), 'warn'); gdClose(true); return; } // the vault seats its 2 (the live room takes 2 with no new SQL)
   if(kind === 'start'){ GD.startSeed = d.seed >>> 0; gdFillCpuSeats(d); // 2026-10-29 (UI3, S9): the CPU allies' random decks, before the first floor's table is built
     if(spendEnergy(gdCost())) GD.energyPaid = gdCost();
@@ -28699,6 +28763,7 @@ function gdStartFloorMatch(T){
     battleMode: 'open', leaderDefId: null, leaderUid: T.leaderUids[seat] != null ? T.leaderUids[seat] : null, raidRoundCap: T.cap, coopRoundOffset: (T.partStart || 1) - 1 /* DUNGEON1: the part's own turn count */, opponentName: gdFloorName(T.floorIdx, T.typeId),
     aiLevel: T.aiLevel, playRows: 'any', standard: true, enemyBehaviour: null, coop: {T, seat, origins: {}}};
   lastBoardSig = {1: null, 2: null}; knownBoardUids = new Set();
+  if(!(T.floorIdx > 0) && !(T.round > 1)) try{ uip1Zoom('skull'); }catch(e){} // 2026-11-28 (UIPOLISH1 #8): the run's first part opens through the skull
   GD.phase = 'fight'; gdHide(); gdRewardsClose(); GD.turnAt = performance.now(); centreFieldInFs._gdN = 0; // + COOP3: the floor's rewards window goes; the CPU's clock; a fresh fit
   try{ if(currentTab !== 'play') switchTab('play'); }catch(e){}
   renderPlay(); gdRenderCoopBar();
@@ -28903,8 +28968,11 @@ function gdRunEnded(how){
   if(how === 'hostLeft') showToast(TX('ui.ar3-host-left'), 'warn');
   if(GD.kind === 'live' && S && S.isHost && GD.roomId) try{ sbClient.from('coop_rooms').update({status: 'done', updated_at: new Date().toISOString()}).eq('id', GD.roomId).then(()=>{}, ()=>{}); }catch(e){}
 }
+/* 2026-11-28 (UIPOLISH1 #15, owner: "when a multiplayer dungeon is completed, the players come out onto the Conquest map that holds that dungeon"): its map (the vault: Map 16) */
+function gdMapId(id){ try{ const d = CoopM && CoopM.DUNGEONS[id || 'hollow']; return mapIdAt(id === 'hollow' || !id ? GD_OPEN_AFTER_MAP : d && d.mapNumber); }catch(e){ return null; } }
 function gdClose(silent){
   const S = GD.s;
+  if(S && S.isHost && GD.kind === 'local' && GD.code) gdLocalFree(gdRoomKey(GD.code)); // 2026-11-28 (UIPOLISH1 #10): the private code is free again
   // 2026-10-29 (package UI3, S9; owner 23:01: "Pressing back brings you back to the arena page, at the coop section."): leaving a run on its floors or its end screen
   // (Back, Leave) lands on the Arena page with the Co-op pane open; a silent close (an error toast, a refused join) and the lobby keep their old place
   const toArena = !silent && !!S && (GD.phase === 'end' || GD.phase === 'floorEnd' || GD.phase === 'fight');
@@ -28913,7 +28981,7 @@ function gdClose(silent){
   gdHide(); const bar = document.getElementById('coopBar'); if(bar) bar.remove();
   if(matchState && matchState.coop) endMatch({coopKeep: true});
   try{ const body = document.getElementById('playSubBody'); if(body && currentTab === 'play' && playSubTab === 'dungeons' && !matchState) renderDungeonsSubTab(body); }catch(e){}
-  if(toArena){ try{ pl2ArenaPane = 'coop'; playSubTab = 'arena'; }catch(e){} try{ exitConquestImmersive(); }catch(e){} try{ if(currentTab !== 'play') switchTab('play'); else renderPlay(); }catch(e){} } // 2026-10-29 (UI3, S9)
+  if(toArena){ try{ const mid = gdMapId(GD.typeId); if(mid){ conquestSelectedMap = mid; conquestSelectedNodeKey = null; conquestWorldView = false; } playSubTab = 'conquest'; }catch(e){} try{ exitConquestImmersive(); }catch(e){} try{ if(currentTab !== 'play') switchTab('play'); else renderPlay(); }catch(e){} } // 2026-10-29 (UI3, S9)
 }
 function gdHide(){ const ov = document.getElementById('gdOverlay'); if(ov){ ov.hidden = true; ov.innerHTML = ''; } document.body.classList.remove('gd-open'); }
 function gdShow(){
@@ -43547,7 +43615,9 @@ function rzGeom(m){
     const r = id=>{ const e = document.getElementById(id); if(!e) return null; const q = e.getBoundingClientRect(); return q.height ? q : null; };
     const re = r('rowEnemy'), rm = r('rowMine'), e1 = r('resEnemy1'), m1 = r('resMine1');
     let top = ir.top, bot = ir.bottom;
-    if(re && rm){ top = re.top - 0.5 * (e1 ? e1.height : re.height); bot = rm.bottom + 0.5 * (m1 ? m1.height : rm.height); }
+    /* 2026-11-28 (UIPOLISH1 #12, owner: the magnifying glass shows row 1 vs row 1, with a glimpse of row 2 only if it exists): half a row of the second row shows only when a unit stands in it */
+    const has2 = e=> !!(e && e.querySelector && e.querySelector('.board-card')), g1 = document.getElementById('resEnemy1'), g2 = document.getElementById('resMine1');
+    if(re && rm){ top = re.top - (has2(g1) ? 0.5 * (e1 ? e1.height : re.height) : 0); bot = rm.bottom + (has2(g2) ? 0.5 * (m1 ? m1.height : rm.height) : 0); }
     { const k = rzBackRow(m), eb = k ? r('resEnemy' + k) : null; if(eb) top = Math.min(top, eb.top); } // DUNGEON2: the live enemy back row fits whole
     const xs = [...document.querySelectorAll('#battlefieldInner .board-card[data-uid]')].map(c=>{ const q = c.getBoundingClientRect(); return q.width ? q.left + q.width / 2 : null; }).filter(v=> v != null);
     const xc = xs.length ? (Math.min(...xs) + Math.max(...xs)) / 2 : ir.left + ir.width / 2;
@@ -45133,7 +45203,7 @@ function aiActNow(){
   // 2026-10-12 (user: "When the enemy plays a card, it should look like it came from their hand"): their hand is just above
   // the top of their row, in the middle, so every enemy play flies in from there (not from wherever a default put it).
   try{ const re = document.getElementById('rowEnemy'); if(re){ const r = re.getBoundingClientRect();
-    events.filter(ev=> ev.type==='play' && ev.side==='B' && ev.uid!=null).forEach(ev=> pendingEntranceOrigins.set(String(ev.uid), {x: r.left + r.width/2, y: Math.max(-60, r.top - 150), rotate: 0, kind:'hand', enemyHand:true})); } }catch(e){}
+    events.filter(ev=> ev.type==='play' && ev.side==='B' && ev.uid!=null).forEach(ev=> pendingEntranceOrigins.set(String(ev.uid), {x: r.left + r.width/2, y: Math.max(-60, r.top - 150), rotate: 0, kind: uip1Riser(ev.defId) ? 'rise' : 'hand' /* 2026-11-28 (UIPOLISH1 #14): skeletons, the undead and the burrowers rise out of the ground */, enemyHand:true})); } }catch(e){}
   fightSafe(()=> ui14NoteArrivalSpawns(events), 'ui14NoteArrivalSpawns'); // 2026-11-02 (package UI14, JJ13)
   now.concat(later.filter(ev=> ARRIVAL_NOW.has(ev.type))).forEach(ev=> fightSafe(()=>{ pushLog(ev); renderVfxForEvent(ev); }, 'ai event ' + ev.type)); // 2026-10-16: never stops the turn
   m.aiArrivalEvents = deferred;
@@ -48094,6 +48164,8 @@ async function resolveRoundCore(opts){
   // outright — recentering any later than this would just get skipped straight to instead of
   // actually animating).
   if(battlefieldCameraFollowedThisRound) recenterBattlefieldPan(0);
+  if(!over && matchState === m) await roundEndSettle(m); // 2026-11-28 (UIPOLISH1 #13, #16): the round's own animations finish and clear, then a 1.5 s read, before the Next round banner
+  if(matchState !== m) return;
   // Wait-timer rework (2026-09-20) continued: the "next turn" beat itself. Runs BEFORE the final
   // sync render below (m.replayRows is still live, and m.replayCards still holds each card's
   // PRE-decrement Wait) so updateCardWaitDisplay/playReadyFlourish below have an old value to
@@ -48700,6 +48772,18 @@ function ui14TurnGlow(){
   const top = Math.max(0, Math.min(b.height * 0.75, r.top - b.top));
   const g = document.createElement('div'); g.className = 'ui14-turn-glow'; g.setAttribute('aria-hidden', 'true'); g.style.top = Math.round(top) + 'px';
   bf.prepend(g); setTimeout(()=> g.remove(), 1900); // first child: under the board's rows, over the field's art
+}
+/* 2026-11-28 (UIPOLISH1 #13 and #16, owner: "finish the end-of-round animations first, clearing pips, symbols and effects, before Next round shows" and "on round end, pause 1.5 s at 1x speed
+   (scaled with game speed) before the next round, on autoplay and in normal play, so the end-of-round effects can be read"): up to ROUND_END_SETTLE_MS for the floating numbers and effect layers
+   still on screen to finish (they are dropped after it; the weather and aura layers stay), then the lit pips and shines are cleared, then the pause. Automation (navigator.webdriver) skips the pause unless window.__bwRoundPause is set. */
+const ROUND_END_PAUSE_MS = 1500, ROUND_END_SETTLE_MS = 1600;
+function roundEndPauseMs(m){ try{ if(!m || m.mode === 'sandbox' || m.testKit) return 0; if(navigator.webdriver && !window.__bwRoundPause) return 0; }catch(e){} return Math.round(ROUND_END_PAUSE_MS / Math.max(0.25, (m && m.speedMult) || 1)); }
+function roundEndClear(){ document.querySelectorAll('.dmg-float').forEach(e=> e.remove()); document.querySelectorAll('.env-card.is-firing, .env-card.is-firing-out').forEach(c=> c.classList.remove('is-firing', 'is-firing-out')); document.querySelectorAll('.env-shine').forEach(e=> e.remove()); }
+async function roundEndSettle(m){
+  const t0 = performance.now(), cap = Math.round(ROUND_END_SETTLE_MS / Math.max(0.25, m.speedMult || 1));
+  while(matchState === m && performance.now() - t0 < cap && document.querySelector('.dmg-float')) await sleep(60);
+  try{ roundEndClear(); }catch(e){}
+  const pause = roundEndPauseMs(m); if(pause > 0 && matchState === m) await sleep(pause);
 }
 function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
 // Card drag trail (2026-10-06, effects "Coming next"): a faint sparkle trail follows a hand card
@@ -52671,12 +52755,19 @@ function bloomCopyVfx(srcUid, copyUid){
 // Web Animations API (transform and opacity only, nothing read per frame); the host removes itself, and nothing runs after it. Effects
 // Medium and up for the bugs, Low and up for the puff and dust; reduced motion: no bugs, an opacity-only puff, no dust.
 // Bulwark's dust: a few specks kicked up at the foot of a Log Wall as it rises (riseUpFx; the rise itself is in renderBoard).
+/* 2026-11-28 (UIPOLISH1 #14, owner: "show the opponents playing each card, not just spawning; skeletons and similar creatures rise from the ground (dirt kicked up, soft crawling sounds from the sound library)"):
+   a card that is undead or lives underground rises through the floor (the Bulwark wall's rise, with more dirt) and the library's own cues play: the bone clatter (undead) or the bush rustle. */
+function uip1Riser(defId){ try{ const d = getCardDefs()[defId]; return !!d && (d.subtype === 'undead' || /worm|grub|maggot|mole|larva|burrow|meerkat|skeleton|revenant|ghoul|lich/i.test(String(d.animal || '') + ' ' + defId)); }catch(e){ return false; } }
+function uip1DefOf(el){ const q = el && (el.dataset && el.dataset.defid ? el : el.querySelector && el.querySelector('[data-defid]')); return q ? q.dataset.defid : null; }
+function uip1RiseSound(el){ try{ const d = getCardDefs()[uip1DefOf(el)]; if(!d || !uip1Riser(d.id)) return; (d.subtype === 'undead' && SoundKit.boneClatter ? SoundKit.boneClatter : SoundKit.bushRustle || SoundKit.skitterPatter)(); }catch(e){} }
 function riseUpFx(el){
   if(!el || !el.isConnected || reducedMotion() || !fxAtLeast('low') || !el.animate) return;
+  try{ if(typeof uip1RiseSound === 'function') uip1RiseSound(el); }catch(e){}
   const r = ui23Rect(el.getBoundingClientRect()); if(!r) return;
   const host = fxHostAt(el, 950, r);
-  for(let i = 0; i < 6; i++){ const d = document.createElement('i'); d.className = 'fx6-dust'; d.style.left = (10 + i*16) + '%'; host.appendChild(d);
-    const dx = (i - 2.5)*9 + (i % 2 ? 4 : -4);
+  const dirt = (typeof uip1Riser === 'function' && uip1Riser(uip1DefOf(el))) ? 11 : 6; // UIPOLISH1 #14: a riser kicks up more dirt
+  for(let i = 0; i < dirt; i++){ const d = document.createElement('i'); d.className = 'fx6-dust'; d.style.left = (6 + i*(88/dirt)) + '%'; host.appendChild(d);
+    const dx = (i - dirt/2 + .5)*9 + (i % 2 ? 4 : -4);
     d.animate([{transform:'translate(-50%, 0) scale(.4)', opacity:0}, {transform:`translate(calc(-50% + ${dx*.4}px), -8px) scale(1)`, opacity:.75, offset:.25}, {transform:`translate(calc(-50% + ${dx}px), -26px) scale(1.7)`, opacity:0}], {duration:700 + (i % 3)*60, delay:i*35, easing:'ease-out', fill:'forwards'}); }
 }
 // Swarm and Spawn-on-death: small bug silhouettes scatter out from the unit, crawl a little (two turns), and are gone by 1 s.

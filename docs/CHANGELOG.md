@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-28 Package UIPOLISH1 (owner's UI polish list, items 1-16)
+- **Fights:** the Environment card's hover is the card itself (art, name, then the rule), its picture shows before the rule is known; a context pip (⏱ per turn, ⬆️ on a play) on every card whose rule fires, lit while it fires; Zs, New! and Get! are plain floating text (no plate, ring or stroke), the Zs slower; resource gains float from higher on the card; Lab: Clear and Resolve board on the top row.
+- **Round end:** the round's numbers and lit pips finish and clear, then a 1.5 s pause (0.75 s at 2x; skipped under automation) before the Next round banner; the enemy's skeletons, undead and burrowers rise out of the ground (more dirt, the bone clatter / bush rustle cues); the magnifying glass shows row 1 vs row 1, a half row of row 2 only when one stands there.
+- **Words:** one glossary window for any keyword with a meaning (e.g. Lumber), growing out of the hovered word.
+- **Multiplayer dungeon:** on the Dungeons & Raids page (not the Arena); Play and Private (code window: ****-**, 4 to 6 letters or digits, hidden with an eye, Host or Join, taken / not found messages); the run opens through a skull zoom; leaving a finished run lands on its Conquest map (Map 16). The rainforest side map (The Canopy) opens through eerie grass. SQL proposal: `supabase/proposed/uipolish1-2026-11-28.sql` (not applied; a short code is padded to 6 for the server, so none is needed).
+- Not done: item 9 (menu look), see the action list. Test `tests/uipolish1-2026-11-28.js`; shots `docs/screens/uipolish1/`.
+
 ## 2026-11-28 Release (batch-1023e, owner 11-28 12:50: "Release when ready")
 - **Shipped since 11-27:** SKILLS3-B (⬆️ / 💀 / 🃏 trigger icons; Wet yes/no with the shock chain; status tokens lose one each upkeep; the plain / ⬆️ / 💀 ladder; Dogfighter, Attunement, Warning Colours), VFX1 + RITUAL1 + VFX2 (38 new skill, trigger, weather and boss effects; ritual candles), UISWEEP3 (one top bar, curtain / fade transitions, two breakpoints, one Home and one back) and UIORDER1 (one skill-line order), CARDFIX1 (Blowfly Maggots, Ironback Gorilla, Orca Vanguard, Matamata, Raccoon Nightcrew, Hedgerow Shrew, Cinder Gecko, the seven new species trimmed), ROADFIX5 / 6 / 7 (road 179 in band of 208; 8-7 without its Mine; 20-A-4 under the Epic cap), TESTFIX13 / 14 (e2e tests on the new bar and in the runner; phone bar button sizes).
 - **Tests:** smoke cached (passed on identical inputs); build pair ok; GitHub runs the full suite on push.

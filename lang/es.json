@@ -4848,5 +4848,12 @@
  "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "Su asesino recibe {n} Veneno. Los enemigos que la vieron morir evitan tus otras unidades con Colores de advertencia la ronda siguiente.",
  "Energy: spent to start fights, refills 1 every 5 minutes.": "Energía: se gasta al iniciar combates y recupera 1 cada 5 minutos.",
  "Pay it to play a card. Pitch a card from your hand for 1, once a turn.": "Se paga para jugar una carta. Descarta una carta de tu mano por 1, una vez por turno.",
- "A resource: some cards cost it to play.": "Un recurso: algunas cartas lo cuestan."
+ "A resource: some cards cost it to play.": "Un recurso: algunas cartas lo cuestan.",
+ "Private": "Privada",
+ "Private room": "Sala privada",
+ "4 to 6 letters or digits": "De 4 a 6 letras o dígitos",
+ "The code needs 4 to 6 letters or digits.": "El código necesita de 4 a 6 letras o dígitos.",
+ "That code is already taken. Pick another.": "Ese código ya está en uso. Elige otro.",
+ "Show code": "Mostrar código",
+ "Hide code": "Ocultar código"
 }

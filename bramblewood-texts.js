@@ -3991,7 +3991,16 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.s3b-log-wc": "⚠️ {n} enemy unit(s) saw {name} fall: they avoid Warning Colours next round.",
   "ui.s3b-log-wc-avoid": "⚠️ {att} turns away from {name}.",
   "ui.up1-gloss-lumber": "Pay it to play a card. Pitch a card from your hand for 1, once a turn.",
-  "ui.up1-gloss-res": "A resource: some cards cost it to play."
+  "ui.up1-gloss-res": "A resource: some cards cost it to play.",
+  "ui.up1-play": "Play",
+  "ui.up1-private": "Private",
+  "ui.up1-private-title": "Private room",
+  "ui.up1-host": "Host",
+  "ui.up1-code-hint": "4 to 6 letters or digits",
+  "ui.up1-code-bad": "The code needs 4 to 6 letters or digits.",
+  "ui.up1-code-taken": "That code is already taken. Pick another.",
+  "ui.up1-show-code": "Show code",
+  "ui.up1-hide-code": "Hide code"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

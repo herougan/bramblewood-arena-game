@@ -4849,5 +4849,12 @@
  "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "击杀者获得{n}层中毒。看到它阵亡的敌人下回合会避开你其他有警戒色的单位。",
  "Energy: spent to start fights, refills 1 every 5 minutes.": "能量：开始战斗时消耗，每 5 分钟恢复 1 点。",
  "Pay it to play a card. Pitch a card from your hand for 1, once a turn.": "出牌所需。每回合可弃一张手牌换取1点。",
- "A resource: some cards cost it to play.": "一种资源:部分卡牌需要它。"
+ "A resource: some cards cost it to play.": "一种资源:部分卡牌需要它。",
+ "Private": "私人",
+ "Private room": "私人房间",
+ "4 to 6 letters or digits": "4到6个字母或数字",
+ "The code needs 4 to 6 letters or digits.": "代码需要4到6个字母或数字。",
+ "That code is already taken. Pick another.": "该代码已被占用,请换一个。",
+ "Show code": "显示代码",
+ "Hide code": "隐藏代码"
 }

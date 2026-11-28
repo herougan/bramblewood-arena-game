@@ -4850,5 +4850,12 @@
  "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "Pembunuhnya mendapat {n} Racun. Musuh yang melihatnya mati menghindari unit Warna Peringatan-mu yang lain di ronde berikutnya.",
  "Energy: spent to start fights, refills 1 every 5 minutes.": "Energi: dipakai untuk memulai pertarungan, pulih 1 setiap 5 menit.",
  "Pay it to play a card. Pitch a card from your hand for 1, once a turn.": "Dibayar untuk memainkan kartu. Pitch satu kartu dari tangan untuk 1, sekali per giliran.",
- "A resource: some cards cost it to play.": "Sumber daya: beberapa kartu memerlukannya."
+ "A resource: some cards cost it to play.": "Sumber daya: beberapa kartu memerlukannya.",
+ "Private": "Pribadi",
+ "Private room": "Ruang pribadi",
+ "4 to 6 letters or digits": "4 sampai 6 huruf atau angka",
+ "The code needs 4 to 6 letters or digits.": "Kode harus 4 sampai 6 huruf atau angka.",
+ "That code is already taken. Pick another.": "Kode itu sudah dipakai. Pilih yang lain.",
+ "Show code": "Tampilkan kode",
+ "Hide code": "Sembunyikan kode"
 }

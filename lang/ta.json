@@ -4851,5 +4851,12 @@
  "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "அதைக் கொன்றதற்கு {n} நஞ்சு. இது இறந்ததைப் பார்த்த எதிரிகள் அடுத்த சுற்றில் உன் மற்ற எச்சரிக்கை நிற அலகுகளைத் தவிர்க்கும்.",
  "Energy: spent to start fights, refills 1 every 5 minutes.": "ஆற்றல்: சண்டைகளைத் தொடங்கச் செலவாகும், 5 நிமிடத்துக்கு 1 நிரம்பும்.",
  "Pay it to play a card. Pitch a card from your hand for 1, once a turn.": "கார்டு விளையாட இது தேவை. கையிலிருந்து ஒரு கார்டை பிட்ச் செய்தால் 1 கிடைக்கும், ஒரு முறை.",
- "A resource: some cards cost it to play.": "ஒரு வளம்: சில கார்டுகளுக்கு இது செலவாகும்."
+ "A resource: some cards cost it to play.": "ஒரு வளம்: சில கார்டுகளுக்கு இது செலவாகும்.",
+ "Private": "தனிப்பட்ட",
+ "Private room": "தனிப்பட்ட அறை",
+ "4 to 6 letters or digits": "4 முதல் 6 எழுத்துகள் அல்லது இலக்கங்கள்",
+ "The code needs 4 to 6 letters or digits.": "குறியீடு 4 முதல் 6 எழுத்துகள் அல்லது இலக்கங்கள் வேண்டும்.",
+ "That code is already taken. Pick another.": "அந்தக் குறியீடு ஏற்கனவே எடுக்கப்பட்டது. வேறொன்றைத் தேர்ந்தெடுக்கவும்.",
+ "Show code": "குறியீட்டைக் காட்டு",
+ "Hide code": "குறியீட்டை மறை"
 }

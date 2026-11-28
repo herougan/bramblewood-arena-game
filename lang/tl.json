@@ -4849,5 +4849,12 @@
  "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "May {n} Lason ang pumatay rito. Iiwasan ng mga kaaway na nakakita ang iba mong unit na may Kulay ng Babala sa susunod na round.",
  "Energy: spent to start fights, refills 1 every 5 minutes.": "Energy: nagagastos sa pagsisimula ng laban, +1 kada 5 minuto.",
  "Pay it to play a card. Pitch a card from your hand for 1, once a turn.": "Ibinabayad para maglaro ng card. Mag-pitch ng card mula sa kamay para sa 1, isang beses bawat turn.",
- "A resource: some cards cost it to play.": "Isang resource: may mga card na may ganitong gastos."
+ "A resource: some cards cost it to play.": "Isang resource: may mga card na may ganitong gastos.",
+ "Private": "Pribado",
+ "Private room": "Pribadong kuwarto",
+ "4 to 6 letters or digits": "4 hanggang 6 letra o numero",
+ "The code needs 4 to 6 letters or digits.": "Kailangan ng code ng 4 hanggang 6 letra o numero.",
+ "That code is already taken. Pick another.": "Gamit na ang code na iyon. Pumili ng iba.",
+ "Show code": "Ipakita ang code",
+ "Hide code": "Itago ang code"
 }

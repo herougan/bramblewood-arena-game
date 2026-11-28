@@ -4851,5 +4851,12 @@
  "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "죽인 유닛이 독 {n}을 받아요. 죽는 것을 본 적은 다음 라운드에 다른 경고색 유닛을 피해요.",
  "Energy: spent to start fights, refills 1 every 5 minutes.": "에너지: 전투를 시작할 때 쓰며 5분마다 1씩 차오릅니다.",
  "Pay it to play a card. Pitch a card from your hand for 1, once a turn.": "카드를 내는 데 쓴다. 턴마다 한 번 손패 한 장을 피치하면 1을 얻는다.",
- "A resource: some cards cost it to play.": "자원: 일부 카드는 이것을 소모한다."
+ "A resource: some cards cost it to play.": "자원: 일부 카드는 이것을 소모한다.",
+ "Private": "비공개",
+ "Private room": "비공개 방",
+ "4 to 6 letters or digits": "영문 또는 숫자 4~6자",
+ "The code needs 4 to 6 letters or digits.": "코드는 영문 또는 숫자 4~6자여야 합니다.",
+ "That code is already taken. Pick another.": "이미 사용 중인 코드입니다. 다른 코드를 고르세요.",
+ "Show code": "코드 보기",
+ "Hide code": "코드 숨기기"
 }

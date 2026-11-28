@@ -1875,6 +1875,18 @@
   .card-tile.env-card .env-pip{position:absolute; top:3px; right:3px; z-index:6; width:1.7em; height:1.7em; display:grid; place-items:center; border-radius:50%; font-size:11px; line-height:1; background:rgba(20,18,14,.78); opacity:.6; transition:opacity .7s ease, transform .7s ease, box-shadow .7s ease; pointer-events:none;}
   .card-tile.env-card.is-firing .env-pip{opacity:1; transform:scale(1.35); box-shadow:0 0 0 2px #ffd75e, 0 0 12px 4px rgba(255,215,94,.85); transition:none;}
   @media (prefers-reduced-motion: reduce){ .card-tile.env-card .env-pip{transition:none;} }
+  /* 2026-11-28 (UIPOLISH1 #8): the skull zoom into the multiplayer dungeon and the eerie grass of the jungle; transform / opacity only */
+  .uip1-zoom{position:fixed; inset:0; z-index:2100; pointer-events:none; overflow:hidden;}
+  .uip1-skull{position:absolute; left:50%; top:50%; width:min(46vmin, 360px); margin:calc(min(46vmin, 360px) * -.52) 0 0 calc(min(46vmin, 360px) * -.5); transform-origin:50% 46%; will-change:transform;} .uip1-k-skull{background:#05080b;}
+  .uip1-k-jungle .uip1-L, .uip1-k-jungle .uip1-R{position:absolute; top:0; bottom:0; width:50%; background:linear-gradient(180deg,#0a1c10,#102a18); will-change:transform;} .uip1-k-jungle .uip1-L{left:0;} .uip1-k-jungle .uip1-R{right:0;}
+  .uip1-k-jungle .uip1-L > i, .uip1-k-jungle .uip1-R > i{position:absolute; bottom:-4%; clip-path:polygon(0 100%, 50% 0, 100% 100%); transform-origin:50% 100%; animation:uip1Sway 2.4s ease-in-out infinite alternate;}
+  .uip1-k-jungle .uip1-glow{position:absolute; inset:0; background:radial-gradient(60% 60% at 50% 55%, rgba(120,80,220,.55), rgba(30,60,160,.3) 55%, transparent 75%); opacity:0;}
+  @keyframes uip1Sway{from{transform:rotate(-4deg);}to{transform:rotate(4deg);}}
+  /* 2026-11-28 (UIPOLISH1 #10): the Private room window (code, eye, Host / Join) */
+  .gd-priv{position:fixed; inset:0; z-index:9700; display:flex; align-items:center; justify-content:center; padding:16px;} .gd-priv-back{position:absolute; inset:0; background:rgba(0,0,0,.5);}
+  .gd-priv-box{position:relative; width:min(360px, 100%); padding:16px; animation:coachIn .22s ease-out;} .gd-priv-box h3{margin:0 0 8px;} .gd-priv-box label{font-size:13px; color:var(--ink-muted);}
+  .gd-priv-row{display:flex; gap:8px; align-items:center; margin:4px 0;} .gd-priv-row .gd-code-in{flex:1; width:auto; font-size:20px;} .gd-code-in.is-hidden{-webkit-text-security:disc; text-security:disc;}
+  .gd-priv .gd-code-in{background:var(--surface-2); color:var(--ink);} .gd-priv-hint{margin:2px 0; font-size:12px; color:var(--ink-muted);} .gd-priv-err{margin:4px 0; min-height:1.3em; font-size:13px; font-weight:700; color:var(--attack);} .gd-priv-acts{display:flex; gap:8px; margin-top:8px;} .gd-priv-acts .btn{flex:1;}
   /* 2026-11-28 (UIPOLISH1 #1): the Environment card in its hover */
   .env-hover .env-hover-card{display:flex; justify-content:center; margin-bottom:8px;} .env-hover .env-hover-card .card-tile{width:150px; pointer-events:none;}
   @media (max-width:560px){
@@ -13686,6 +13698,17 @@ button.ar3-mode:hover{border-color:var(--accent); transform:translateY(-2px);}
 }
 @media (prefers-reduced-motion: reduce){ .ar3-motes{display:none;} .ar3-skel span, .ar3-skel-cards i, .ar3-mode.live-queue-status .ar3-mode-ico{animation:none;} .ar3-field .match-field-tile, .ar3-tip{transition:none;} .ar3-pvp-btn::before{display:none;} }
 
+/* 2026-11-28 (UIPOLISH1 #9, owner: the main menu and the Collection / Standard PvP buttons look dull; spice them up a little, still simple, more inviting): a soft top light, a lit rim and a
+   darker foot on each tile, a lift on hover, the icon larger with a soft shadow, a slow glow behind the Play tile (opacity only). No new colours. */
+.home-menu-btn.home-tile{background-image:radial-gradient(120% 90% at 18% 0%, rgba(255,255,255,.14), transparent 58%), linear-gradient(155deg, color-mix(in srgb, var(--accent) 100%, white 14%), var(--accent-strong)); box-shadow:inset 0 1px 0 rgba(255,255,255,.3), inset 0 -3px 0 rgba(0,0,0,.16), 0 6px 14px rgba(0,0,0,.28); transition:transform .18s ease, box-shadow .18s ease; position:relative;}
+.home-menu-btn.home-tile:hover:not(:disabled){transform:translateY(-2px); box-shadow:inset 0 1px 0 rgba(255,255,255,.34), inset 0 -3px 0 rgba(0,0,0,.16), 0 10px 20px rgba(0,0,0,.34);}
+.home-menu-btn.home-tile .tab-emoji{font-size:1.45em; text-shadow:0 2px 5px rgba(0,0,0,.35);}
+.home-menu-btn.home-play::after{content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:radial-gradient(70% 90% at 50% 38%, rgba(255,230,160,.4), transparent 70%); opacity:0; animation:uip1PlayGlow 3.6s ease-in-out infinite;}
+@keyframes uip1PlayGlow{0%,100%{opacity:0;}50%{opacity:1;}}
+.ar3-pvp-btn.is-collection, .ar3-pvp-btn.is-standard{background-image:radial-gradient(120% 80% at 20% 0%, rgba(255,255,255,.13), transparent 60%), linear-gradient(160deg, transparent 40%, rgba(0,0,0,.16)) !important; box-shadow:0 10px 24px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.3), inset 0 0 0 1.5px rgba(255,235,190,.32), inset 0 -4px 0 rgba(0,0,0,.18); transition:transform .18s ease, box-shadow .18s ease;}
+.ar3-pvp-btn:hover:not(:disabled){transform:translateY(-3px);} .ar3-pvp-btn .ar3-pvp-ico{display:inline-block; transition:transform .22s cubic-bezier(.3,1.6,.5,1);} .ar3-pvp-btn:hover:not(:disabled) .ar3-pvp-ico{transform:translateY(-3px) scale(1.12);}
+@media (prefers-reduced-motion: reduce){ .home-menu-btn.home-play::after{animation:none; opacity:.35;} .home-menu-btn.home-tile, .ar3-pvp-btn{transition:none;} .ar3-pvp-btn:hover:not(:disabled), .home-menu-btn.home-tile:hover:not(:disabled){transform:none;} }
+html[data-fx="none"] .home-menu-btn.home-play::after{animation:none; opacity:.3;}
 /* The raid menu: the boss as a card, your week at a glance, the parts, how the rows work, the field, the rewards. */
 .raid3{position:relative; overflow:hidden;}
 .raid3::before{content:''; position:absolute; inset:0 0 auto 0; height:210px; pointer-events:none; z-index:0; image-rendering:pixelated; opacity:.9;
@@ -15611,7 +15634,7 @@ html[data-fx="none"] .map-node.is-lair-final:not(.done), html[data-fx="none"] .f
 .po2-new b, .po2-new-tag, .board-card .seen-new, .rr-new, .rw-new{background:none !important; box-shadow:none !important; border:0 !important; -webkit-text-stroke:0 !important; padding:0 !important; border-radius:0 !important; color:#ffe27a !important;
   text-shadow:1px 0 #7a1530, -1px 0 #7a1530, 0 1px #7a1530, 0 -1px #7a1530, 0 .1em 0 #7a1530, 0 0 .7em rgba(255,215,94,.85) !important;}
 .rw-new.rw-spare{color:#d8f1ff !important; text-shadow:1px 0 #1d3f7a, -1px 0 #1d3f7a, 0 1px #1d3f7a, 0 -1px #1d3f7a, 0 .1em 0 #1d3f7a, 0 0 .7em rgba(140,200,255,.85) !important;}
-.rw-new.ui23-get, .po2-new-tag.ui23-get, .po2-new b.ui23-get{color:#c9ffb4 !important; text-shadow:1px 0 #165a2b, -1px 0 #165a2b, 0 1px #165a2b, 0 -1px #165a2b, 0 .1em 0 #165a2b, 0 0 .7em rgba(143,227,107,.85) !important;}
+.rw-new.ui23-get, .po2-new-tag.ui23-get, .po2-new b.ui23-get{background:none !important; box-shadow:none !important; color:#c9ffb4 !important; text-shadow:1px 0 #165a2b, -1px 0 #165a2b, 0 1px #165a2b, 0 -1px #165a2b, 0 .1em 0 #165a2b, 0 0 .7em rgba(143,227,107,.85) !important;}
 .rw-new.ui23-late{top:calc(22% + 22px);} .po2-new-tag.ui23-late{top:14px;}
 .rw-card.shown .rw-new.ui23-late{transition-delay:.45s;} .po2-new-tag.ui23-late{animation:ui23Late .5s cubic-bezier(.3,1.6,.5,1) .45s both;}
 .po2-new b.ui23-late{margin-top:.15em; animation:ui23Late .5s cubic-bezier(.3,1.6,.5,1) .5s both;}

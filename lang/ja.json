@@ -4849,5 +4849,12 @@
  "Its killer gets {n} Poison. Enemies that saw it die avoid your other Warning Colours units next round.": "倒した相手に毒{n}。倒れるのを見た敵は次のラウンド、他の警告色ユニットを避ける。",
  "Energy: spent to start fights, refills 1 every 5 minutes.": "エネルギー: 戦闘開始に使い、5分ごとに1回復します。",
  "Pay it to play a card. Pitch a card from your hand for 1, once a turn.": "カードを出すために支払う。手札を1枚ピッチすると1得られる(1ターンに1回)。",
- "A resource: some cards cost it to play.": "資源の一つ。コストに使うカードがある。"
+ "A resource: some cards cost it to play.": "資源の一つ。コストに使うカードがある。",
+ "Private": "プライベート",
+ "Private room": "プライベートルーム",
+ "4 to 6 letters or digits": "英数字4〜6文字",
+ "The code needs 4 to 6 letters or digits.": "コードは英数字4〜6文字です。",
+ "That code is already taken. Pick another.": "そのコードは使用中です。別のコードを選んでください。",
+ "Show code": "コードを表示",
+ "Hide code": "コードを隠す"
 }
