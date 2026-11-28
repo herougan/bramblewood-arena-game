@@ -1484,13 +1484,13 @@ M.onEvent = function(ev, env){
     if(ev.guardianRedirect && med) env.at(Math.max(0, hitMs - 220), ()=> M.guardPull(att, tgt));
     if(ev.boomerang && ev.friendly && med) env.at(hitMs, ()=> M.friendlyBonk(tgt));
     if(castle){ const below = att ? centre(att).y > centre(castle).y : ev.targetSide === 'B';
-      if(ev.siege && med) env.at(Math.max(0, hitMs - 120), ()=> M.siegeRam(castle, {fromBelow:below}));
+      if(ev.siege && med && !(FX.V && FX.V.owns && FX.V.owns(ev)) /* 2026-11-28 (VFX3): FX.V.siegeBatter instead */) env.at(Math.max(0, hitMs - 120), ()=> M.siegeRam(castle, {fromBelow:below}));
       if(ev.bulwark > 0 && med) env.at(Math.max(0, hitMs - 80), ()=> M.bulwarkWall(castle, {fromBelow:below}));
       if(af.rainrunner && med){ let rain = false; try{ const fl = m.engine && m.engine.getField && m.engine.getField(); rain = !!(fl && fl.id === 'rain'); }catch(e){} if(rain && att) M.puddleSkim(att, castle); } }
     if(ev.festerBonus > 0 && med) env.at(hitMs + 60, ()=> M.festerBoils(tgt));
     if(ev.ruptureBonus > 0 && med) env.at(hitMs + 60, ()=> M.ruptureBurst(tgt));
     if(af.reload && att && med) env.at(A.strike + 60, ()=> M.reloadDial(att));
-    if(T === 'hit' && (Number(af.demolisher) > 0 || !!af.siege) /* Siege N is the old Demolisher too (2026-10-19, SK1) */ && ((defs[ev.targetDefId] || {}).archetypes || []).includes('Structure') && med) env.at(hitMs, ()=> M.demolishCrack(tgt));
+    if(T === 'hit' && (Number(af.demolisher) > 0 || !!af.siege) /* Siege N is the old Demolisher too (2026-10-19, SK1) */ && ((defs[ev.targetDefId] || {}).archetypes || []).includes('Structure') && med && !(FX.V && FX.V.owns && FX.V.owns(ev)) /* 2026-11-28 (VFX3): FX.V.siegeBatter instead */) env.at(hitMs, ()=> M.demolishCrack(tgt));
     if(af.supreme && med && env.once('supreme' + ev.attUid + ':' + (ev.targetUid || ev.targetSide))) env.at(hitMs, ()=> M.supremeSparkle(tgt));
     return;
   }

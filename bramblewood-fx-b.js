@@ -1631,7 +1631,7 @@ M.onEvent = function(ev, env){
     // Darkness: the lantern and keen noses that kept this swing from missing.
     const dk = darkLvl(m);
     if(dk && ev.attUid != null && !ae.darksight && med){ const mine = isMineSide(m, ev.side);
-      if(ae.keenSense && !te.flying){ if(env.once('fxb-keen' + ev.attUid)){ const a = el(ev.attUid); if(a) M.keenSense(a, {label:'👃 Smells it out'}); } }
+      if(ae.keenSense && !te.flying){ if(!(FX.V && FX.V.owns && FX.V.owns(ev)) /* 2026-11-28 (VFX3): FX.V.keenSniff instead */ && env.once('fxb-keen' + ev.attUid)){ const a = el(ev.attUid); if(a) M.keenSense(a, {label:'👃 Smells it out'}); } }
       else if(dk !== 'absolute' && litSide(mine, defs) && env.once('fxb-lsave' + ev.attUid)){ const a = el(ev.attUid); if(a) M.lanternSave(a); } }
     // Hit modifiers the number alone doesn't explain.
     if(rcA.staggered > 0 && !ev.ranged) later2(t=> M.staggerWeakHit(t, {att:el(ev.attUid)}));

@@ -52757,12 +52757,16 @@ function bloomCopyVfx(srcUid, copyUid){
 // Bulwark's dust: a few specks kicked up at the foot of a Log Wall as it rises (riseUpFx; the rise itself is in renderBoard).
 /* 2026-11-28 (UIPOLISH1 #14, owner: "show the opponents playing each card, not just spawning; skeletons and similar creatures rise from the ground (dirt kicked up, soft crawling sounds from the sound library)"):
    a card that is undead or lives underground rises through the floor (the Bulwark wall's rise, with more dirt) and the library's own cues play: the bone clatter (undead) or the bush rustle. */
-function uip1Riser(defId){ try{ const d = getCardDefs()[defId]; return !!d && (d.subtype === 'undead' || /worm|grub|maggot|mole|larva|burrow|meerkat|skeleton|revenant|ghoul|lich/i.test(String(d.animal || '') + ' ' + defId)); }catch(e){ return false; } }
+// 2026-11-28 (VFX3): the undead (subtype undead or species Undead, which adds the two wraiths) rise as FX.V.skeletonRise; "lich\b" so Lichen Tortoise stays down.
+function uip1Bones(d){ return !!d && (d.subtype === 'undead' || (d.species || []).includes('Undead')); }
+function uip1Riser(defId){ try{ const d = getCardDefs()[defId]; return !!d && (uip1Bones(d) || /worm|grub|maggot|mole|larva|burrow|meerkat|skeleton|revenant|ghoul|lich\b/i.test(String(d.animal || '') + ' ' + defId)); }catch(e){ return false; } }
 function uip1DefOf(el){ const q = el && (el.dataset && el.dataset.defid ? el : el.querySelector && el.querySelector('[data-defid]')); return q ? q.dataset.defid : null; }
 function uip1RiseSound(el){ try{ const d = getCardDefs()[uip1DefOf(el)]; if(!d || !uip1Riser(d.id)) return; (d.subtype === 'undead' && SoundKit.boneClatter ? SoundKit.boneClatter : SoundKit.bushRustle || SoundKit.skitterPatter)(); }catch(e){} }
 function riseUpFx(el){
   if(!el || !el.isConnected || reducedMotion() || !fxAtLeast('low') || !el.animate) return;
-  try{ if(typeof uip1RiseSound === 'function') uip1RiseSound(el); }catch(e){}
+  let bones = false; try{ bones = uip1Bones(getCardDefs()[uip1DefOf(el)]) && !!(window.FX && FX.V && FX.V.skeletonRise); }catch(e){} // VFX3: bones assemble under a skull as it comes up (its own bone clatter)
+  if(bones){ const go = ()=>{ if(el.isConnected) FX.V.skeletonRise(el, {level: fxLevel(), speed: 1.6}); }; if(hasGsap()) gsap.delayedCall(.2, go); else go(); }
+  else try{ if(typeof uip1RiseSound === 'function') uip1RiseSound(el); }catch(e){}
   const r = ui23Rect(el.getBoundingClientRect()); if(!r) return;
   const host = fxHostAt(el, 950, r);
   const dirt = (typeof uip1Riser === 'function' && uip1Riser(uip1DefOf(el))) ? 11 : 6; // UIPOLISH1 #14: a riser kicks up more dirt
@@ -56583,7 +56587,7 @@ function en5StateVfx(ev){
   if(!el) return; const s = EN5_STATE_KEYS[ev.name] || {ico:'✨'};
   try{ floatText(el, `${s.ico} ${en5StateName(ev.name)}`, ev.on ? 'buff' : 'faded'); }catch(e){}
   if(ev.on){ try{ tintPulse(el, 'en5-state-pulse'); }catch(e){} try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){}
-    if(hasGsap() && !reducedMotion() && fxAtLeast('low')){ const c = en2Ctr(el), ic = en2Layer(s.ico, 'en5-state-ico'); gsap.set(ic, {x:c.x, y:c.y, xPercent:-50, yPercent:-50, scale:.4, opacity:0});
+    if(hasGsap() && !reducedMotion() && fxAtLeast('low') && !(window.FX && FX.V && FX.V.owns && FX.V.owns(ev)) /* 2026-11-28 (VFX3): Throng / Plenty count up (FX.V.countUp) */){ const c = en2Ctr(el), ic = en2Layer(s.ico, 'en5-state-ico'); gsap.set(ic, {x:c.x, y:c.y, xPercent:-50, yPercent:-50, scale:.4, opacity:0});
       gsap.timeline({onComplete:()=> ic.remove()}).to(ic, {opacity:1, scale:1.5, duration:.2, ease:'back.out(2)'}).to(ic, {y:c.y - c.h * .45, scale:.8, opacity:0, duration:.5, delay:.15}); try{ en2Ring(c.x, c.y, c.w * 1.2); }catch(e){} } }
 }
 function en5Vfx(ev){

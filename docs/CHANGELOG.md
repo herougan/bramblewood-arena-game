@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-28 Package VFX3 (the shared looks VFX1 left, the undead rise)
+- **Fights (pixel looks, Effects Low smaller, nothing at None / reduced motion):** Keen Sense sniffs out a target it would have missed (scent wisps, a twitching nose, a glint: dark, fog, blinding sand, Evasive); Siege drives a battering ram into a Structure or the bramble (splinters, bricks); Bulwark's Log Walls go up as a palisade of three stakes on the hammer's beats; Lone Wolf / Throng / Plenty count up in pips, then a wolf's head / a crowd / a fan of cards.
+- **Undead rise:** an enemy undead card (subtype or species Undead, now with Magma / Pall Wraith) rises as bones locking under a skull (FX.V.skeletonRise, its bone clatter); burrowers keep the dirt; Lichen Tortoise no longer counts as a riser.
+- Step aside: FX.A.siegeRam / demolishCrack, FX.B.keenSense in the dark, the state skill's icon and ring (its float stays). New cues `sniff`, `countTick`; Siege / Bulwark keep siegeTone / constructTone.
+- Files: `bramblewood-fx-v.js` section 6, `arena_app.js` (riseUpFx, uip1Riser, en5StateVfx), FX.A / FX.B guards; Lab `manifest/vfx3.js`; catalogue; GIFs `docs/screens/vfx3/`; test `tests/vfx3-2026-11-28.js`.
+
 ## 2026-11-28 Package UIPOLISH1 (owner's UI polish list, items 1-16)
 - **Fights:** the Environment card's hover is the card itself (art, name, then the rule), its picture shows before the rule is known; a context pip (⏱ per turn, ⬆️ on a play) on every card whose rule fires, lit while it fires; Zs, New! and Get! are plain floating text (no plate, ring or stroke), the Zs slower; resource gains float from higher on the card; Lab: Clear and Resolve board on the top row.
 - **Round end:** the round's numbers and lit pips finish and clear, then a 1.5 s pause (0.75 s at 2x; skipped under automation) before the Next round banner; the enemy's skeletons, undead and burrowers rise out of the ground (more dirt, the bone clatter / bush rustle cues); the magnifying glass shows row 1 vs row 1, a half row of row 2 only when one stands there.

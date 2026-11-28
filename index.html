@@ -37457,13 +37457,13 @@ M.onEvent = function(ev, env){
     if(ev.guardianRedirect && med) env.at(Math.max(0, hitMs - 220), ()=> M.guardPull(att, tgt));
     if(ev.boomerang && ev.friendly && med) env.at(hitMs, ()=> M.friendlyBonk(tgt));
     if(castle){ const below = att ? centre(att).y > centre(castle).y : ev.targetSide === 'B';
-      if(ev.siege && med) env.at(Math.max(0, hitMs - 120), ()=> M.siegeRam(castle, {fromBelow:below}));
+      if(ev.siege && med && !(FX.V && FX.V.owns && FX.V.owns(ev)) /* 2026-11-28 (VFX3): FX.V.siegeBatter instead */) env.at(Math.max(0, hitMs - 120), ()=> M.siegeRam(castle, {fromBelow:below}));
       if(ev.bulwark > 0 && med) env.at(Math.max(0, hitMs - 80), ()=> M.bulwarkWall(castle, {fromBelow:below}));
       if(af.rainrunner && med){ let rain = false; try{ const fl = m.engine && m.engine.getField && m.engine.getField(); rain = !!(fl && fl.id === 'rain'); }catch(e){} if(rain && att) M.puddleSkim(att, castle); } }
     if(ev.festerBonus > 0 && med) env.at(hitMs + 60, ()=> M.festerBoils(tgt));
     if(ev.ruptureBonus > 0 && med) env.at(hitMs + 60, ()=> M.ruptureBurst(tgt));
     if(af.reload && att && med) env.at(A.strike + 60, ()=> M.reloadDial(att));
-    if(T === 'hit' && (Number(af.demolisher) > 0 || !!af.siege) /* Siege N is the old Demolisher too (2026-10-19, SK1) */ && ((defs[ev.targetDefId] || {}).archetypes || []).includes('Structure') && med) env.at(hitMs, ()=> M.demolishCrack(tgt));
+    if(T === 'hit' && (Number(af.demolisher) > 0 || !!af.siege) /* Siege N is the old Demolisher too (2026-10-19, SK1) */ && ((defs[ev.targetDefId] || {}).archetypes || []).includes('Structure') && med && !(FX.V && FX.V.owns && FX.V.owns(ev)) /* 2026-11-28 (VFX3): FX.V.siegeBatter instead */) env.at(hitMs, ()=> M.demolishCrack(tgt));
     if(af.supreme && med && env.once('supreme' + ev.attUid + ':' + (ev.targetUid || ev.targetSide))) env.at(hitMs, ()=> M.supremeSparkle(tgt));
     return;
   }
@@ -39197,7 +39197,7 @@ M.onEvent = function(ev, env){
     // Darkness: the lantern and keen noses that kept this swing from missing.
     const dk = darkLvl(m);
     if(dk && ev.attUid != null && !ae.darksight && med){ const mine = isMineSide(m, ev.side);
-      if(ae.keenSense && !te.flying){ if(env.once('fxb-keen' + ev.attUid)){ const a = el(ev.attUid); if(a) M.keenSense(a, {label:'👃 Smells it out'}); } }
+      if(ae.keenSense && !te.flying){ if(!(FX.V && FX.V.owns && FX.V.owns(ev)) /* 2026-11-28 (VFX3): FX.V.keenSniff instead */ && env.once('fxb-keen' + ev.attUid)){ const a = el(ev.attUid); if(a) M.keenSense(a, {label:'👃 Smells it out'}); } }
       else if(dk !== 'absolute' && litSide(mine, defs) && env.once('fxb-lsave' + ev.attUid)){ const a = el(ev.attUid); if(a) M.lanternSave(a); } }
     // Hit modifiers the number alone doesn't explain.
     if(rcA.staggered > 0 && !ev.ranged) later2(t=> M.staggerWeakHit(t, {att:el(ev.attUid)}));
@@ -48998,7 +48998,8 @@ M.hooks.fieldRes = function(m, pid, p, mine, env){
    Bosses (Effects Low: the minimal version):
      M.cageClose(card)                  the cage's bars slam down over the caged leader, bramble vines coil, a padlock (Caged Fight,
                                         boardRendered after the versus opener; FX.D.cageDrop steps aside)
-     M.skeletonRise(anchor)             bones fly in and assemble under a skull, dust, the eyes light (no skeleton boss yet: Lab only)
+     M.skeletonRise(anchor)             bones fly in and assemble under a skull, dust, the eyes light (no skeleton boss yet; VFX3: an
+                                        undead card rising out of the ground as it is played, arena_app.js riseUpFx)
      M.mageCast(anchor)                 a ring of runes turns, charges and bursts (The Kelp Witch, 9-7)
      M.seaRise(host)                    the water line rises over the board and waves roll down the lanes (The Drowned Colossus, raids in
                                         the Abyss)
@@ -49021,6 +49022,8 @@ M.hooks.fieldRes = function(m, pid, p, mine, env){
      SKILLS3-B shockHop (wetChain) [wetZap] · warningPulse (warningColours) [warnPulse] · rendAround / rendMark (💀 Rend {around})
                [rendBurst] · tokenTick (a status token badge counts down: fxHook cardStatusShown / boardRendered) [tokenTock]
      skins     skinAura(card, 'ember' | 'frost' | 'sparkle', {moving}): Lab only until SKINS1 (Detail card / pack reveal, never a board tile)
+   2026-11-28 (package VFX3): section 6, one look a family: keenSniff [sniff], siegeBatter [siegeTone], bulwarkPalisade [constructTone],
+   countUp for Lone Wolf / Throng / Plenty [countTick]; Lab: manifest/vfx3.js, GIFs docs/screens/vfx3/.
    ============================================================ */
 (function(root){
 'use strict';
@@ -49176,6 +49179,19 @@ SPRITES.ringY = {pal:{w:'#ffe066', y:'#1a1208'}, rows:SPRITES.ring.rows};
 SPRITES.ringR = {pal:{w:'#ff7a7a', y:'#b0101e'}, rows:SPRITES.ring.rows};
 SPRITES.podL = {pal:{s:'#a8b86a', e:'#6f7f3a', o:'#3f4a1e'}, rows:SPRITES.shellL.rows};
 SPRITES.podR = {pal:{s:'#a8b86a', e:'#6f7f3a', o:'#3f4a1e'}, rows:SPRITES.shellR.rows};
+/* 2026-11-28 (VFX3): the art of the VFX3 looks (section 6) */
+Object.assign(SPRITES, {
+  nose:    {pal:{k:'#3a2420', p:'#e88a9a', h:'#ffd0d8'}, rows:['.kkkkk.', 'kpphppk', 'kpppppk', 'pkkpkkp', '.ppppp.']},
+  ram:     {pal:{w:'#b07a3e', d:'#7a4e22', k:'#3e2610', i:'#8d939c', I:'#d6dbe2'}, rows:['.kkkkkkkkkkkk...', 'kwwwwdwwwwwdwkII', 'kwdwwwwwdwwwwkiI', 'kwwwdwwwwwdwwkiI', 'kddddddddddddkII', '.kkkkkkkkkkkk...']},
+  brick:   {pal:{r:'#c4622e', d:'#7a3412'}, rows:['rrrd', 'rrrd', 'dddd']},
+  splint:  {pal:{w:'#c8935a', d:'#6e4520'}, rows:['w..', '.wd', '..d']},
+  stake:   {pal:{w:'#c08a4a', b:'#8a5a2a', k:'#4a2e14'}, rows:['..k..', '.kwk.', 'kwwbk', 'kwbbk', 'kwwbk', 'kwbbk', 'kwwbk', 'kbbbk', 'kkkkk']},
+  lash:    {pal:{r:'#d9c08a', d:'#8a7040'}, rows:['rdrdrdrdrdrdrdr']},
+  wolf:    {pal:{k:'#2e3440', g:'#8b95a5', l:'#c9d0db', y:'#ffd23a', w:'#f2f2f2'}, rows:['k.....k', 'kk...kk', 'kgkkkgk', 'kgggggk', 'kgykygk', '.kglgk.', '..kwk..', '...k...']},
+  crowd:   {pal:{o:'#e8a04a', b:'#8a5226'}, rows:['.bb..oo..bb.', '.bb..oo..bb.', '....oooo....', 'bbbboooobbbb', 'bbbboooobbbb', 'bbbboooobbbb']},
+  cardB:   {pal:{k:'#3a2a14', b:'#6a4ac4', y:'#ffd23a'}, rows:['kkkkk', 'kbbbk', 'kbybk', 'kbbbk', 'kbybk', 'kbbbk', 'kkkkk']},
+});
+SPRITES.scent = {pal:{v:'rgba(255,214,140,.95)'}, rows:SPRITES.wisp.rows};
 
 // ---- sounds: each cue a named SoundKit method built from SoundKit.prim (tone / noise / fnoise / sweep), behind the same volume gate ----
 const CUES = {
@@ -49236,6 +49252,12 @@ Object.assign(CUES, {
   rendBurst(P){ P.fnoise(0.18, 0.09, {type:'bandpass', freq:1600, freqEnd:500, q:1, attack:0.002}); P.sweep(600, 200, 0.22, 'sawtooth', 0.025, 0.02); },
   tokenTock(P){ P.tone(1100, 0.03, 'square', 0.02); P.tone(740, 0.06, 'sine', 0.025, 0.04); },
   iceCrack(P){ P.fnoise(0.04, 0.1, {type:'highpass', freq:3500, attack:0.001}); P.fnoise(0.05, 0.07, {type:'highpass', freq:2800, attack:0.001, delay:0.08}); P.tone(3200, 0.12, 'sine', 0.02, 0.12); },
+});
+/* 2026-11-28 (VFX3): Keen Sense's sniff and the count skills' ticks (Siege keeps SoundKit.siegeTone, Bulwark SoundKit.constructTone) */
+Object.assign(CUES, {
+  sniff(P){ [0, 0.13].forEach(d=> P.fnoise(0.07, 0.05, {type:'bandpass', freq:2200, freqEnd:3400, q:1.6, attack:0.01, delay:d})); P.tone(1480, 0.08, 'sine', 0.025, 0.27); },
+  countTick(P, n){ n = Math.max(1, Math.min(10, n | 0 || 4)); for(let i = 0; i < n; i++) P.tone(880 + i*70, 0.025, 'square', 0.016, i*0.045);
+    P.tone(1320, 0.14, 'sine', 0.03, n*0.045 + 0.02); P.tone(1760, 0.12, 'sine', 0.02, n*0.045 + 0.07); },
 });
 M.CUES = Object.keys(CUES);
 function soundKit(){
@@ -49739,6 +49761,68 @@ M.skinAura = function(card, kind, o){ o = o || {}; if(!card) return null; const 
   const l = document.createElement('div'); l.className = `fxv-aura fxv-au-${kind}${o.moving && !RM() ? ' is-moving' : ''}${lowOf(o) ? ' is-low' : ''}`; l.setAttribute('aria-hidden', 'true'); l.innerHTML = auraHTML(kind);
   card.insertBefore(l, card.firstChild); return l; };
 
+// =====================================================================================================================
+// 6. VFX3 (2026-11-28): the shared looks VFX1's inventory still left (docs/design/vfx1-2026-11-27.md), one look a family. Same rules as
+//    sections 1 and 5. Keen Sense and Siege replace FX.B.keenSense (the dark) and FX.A.siegeRam / demolishCrack (M.owns); the count look
+//    replaces the state skill's icon and ring (en5StateVfx; its float stays).
+//     keenSniff(att, target) [sniff] · siegeBatter(target, {fromBelow}) [SoundKit.siegeTone] · bulwarkPalisade(wall) [SoundKit.constructTone] ·
+//     countUp(el, {kind: loneWolf | throng | plenty, n}) [countTick]
+// =====================================================================================================================
+// Keen Sense: scent wisps drift off the target to the striker, its nose twitches, a glint on the target it found (380 ms)
+M.keenSniff = function(att, tgt, o){ o = o || {}; const b = begin(tgt); if(!b) return NONE(); const a = att && att.isConnected ? centre(tileOf(att)) : null, px = pxFor(b.w) + 1, sp = speedOf(o), ps = [];
+  const has = !!(a && a.w), dy = has ? (Math.sign(b.y - a.y) || -1) : -1, n = has ? a : b;
+  if(has && !lowOf(o)) for(let i = 0; i < 3; i++){ const f = (i - 1)*.22, x0 = b.x + f*b.w, y0 = b.y, dx = a.x + f*a.w*.5 - x0, dyy = a.y + dy*a.h*.3 - y0;
+    ps.push(fly('scent', x0, y0, px - 1, [{transform:'translate(0,0) scaleY(.5)', opacity:0}, {transform:`translate(${(dx*.35).toFixed(1)}px, ${(dyy*.35).toFixed(1)}px) scaleY(1)`, opacity:.95, offset:.35},
+      {transform:`translate(${(dx*.8).toFixed(1)}px, ${(dyy*.8).toFixed(1)}px) scaleY(1.2)`, opacity:0}], 340/sp, {ease:steps(6), delay:(i*30)/sp})); }
+  ps.push(fly('nose', n.x, n.y + dy*n.h*.32, px, [{transform:'scale(.3)', opacity:0}, {transform:'scale(1.1)', opacity:1, offset:.3}, {transform:'scale(.9, 1.1)', opacity:1, offset:.45},
+    {transform:'scale(1.1, .9)', opacity:1, offset:.6}, {transform:'scale(1)', opacity:1, offset:.8}, {transform:'scale(1)', opacity:0}], 380/sp, {ease:steps(7)}));
+  ps.push(fly('glint', b.x, b.y - b.h*.1, px, [{transform:'scale(.2) rotate(0deg)', opacity:0}, {transform:'scale(1.5) rotate(45deg)', opacity:1, offset:.5}, {transform:'scale(.6) rotate(90deg)', opacity:0}], 220/sp, {ease:steps(5), delay:160/sp}));
+  return all(ps); };
+// Siege: a battering ram drives into the Structure or the bramble from the striker's side; splinters and bricks fly off it (420 ms)
+M.siegeBatter = function(t, o){ o = o || {}; const c = begin(t); if(!c) return NONE(); const px = pxFor(c.w) + 2, sp = speedOf(o), dir = o.fromBelow === false ? -1 : 1, s = sprite('ram', px), ps = [];
+  const rot = `rotate(${dir > 0 ? -90 : 90}deg)`, y = c.y + dir*(c.h*.5 + s.w*.5 + 4), Y = v=> `translateY(${v.toFixed(1)}px) ${rot}`, edge = c.y + dir*c.h*.42;
+  ps.push(fly('ram', c.x, y, px, [{transform:Y(dir*s.w*.5), opacity:0}, {transform:Y(dir*s.w*.35), opacity:1, offset:.25}, {transform:Y(-dir*(6 + c.h*.08)), opacity:1, offset:.45},
+    {transform:Y(dir*8), opacity:1, offset:.62}, {transform:Y(dir*20), opacity:0}], 420/sp, {ease:steps(8)}));
+  nudge(t, [{translate:'0 0'}, {translate:`0 ${-dir*6}px`, offset:.3}, {translate:`0 ${dir*2}px`, offset:.6}, {translate:'0 0'}], 260/sp, 190/sp);
+  ps.push(fly('flash', c.x, edge, px, [{transform:'scale(.4)', opacity:0}, {transform:'scale(1.6)', opacity:1, offset:.4}, {transform:'scale(2)', opacity:0}], 160/sp, {ease:steps(4), delay:180/sp}));
+  if(!lowOf(o)) for(let i = 0; i < 6; i++){ const a = -Math.PI/2*dir + (i - 2.5)*.45, R = c.w*(.35 + (i % 3)*.12);
+    ps.push(fly(i % 2 ? 'brick' : 'splint', c.x + (i - 2.5)*c.w*.06, edge, px, [{transform:'translate(0,0) rotate(0deg)', opacity:0}, {transform:'translate(0,0) rotate(0deg)', opacity:1, offset:.1},
+      {transform:`translate(${(Math.cos(a)*R).toFixed(1)}px, ${(Math.sin(a)*R*.7 + c.h*.1).toFixed(1)}px) rotate(${(i % 2 ? 1 : -1)*160}deg)`, opacity:0}], 300/sp, {ease:steps(6), delay:190/sp})); }
+  return all(ps); };
+// Bulwark: a Log Wall goes up as a palisade: three stakes knock up out of the floor on constructTone's three beats, a lashing binds them (~570 ms)
+M.bulwarkPalisade = function(wall, o){ o = o || {}; const c = begin(wall); if(!c) return NONE(); const px = pxFor(c.w) + 1, sp = speedOf(o), s = sprite('stake', px), foot = c.r.bottom - s.h*.5 - 2, ps = [], beats = [0, 120, 250];
+  [-.3, 0, .3].forEach((f, i)=>{ const x = c.x + f*c.w;
+    ps.push(fly('stake', x, foot, px, [{transform:`translateY(${s.h}px) scaleY(.2)`, opacity:0}, {transform:'translateY(-3px) scaleY(1.1)', opacity:1, offset:.3}, {transform:'translateY(0) scaleY(1)', opacity:1, offset:.45},
+      {transform:'translateY(0) scaleY(1)', opacity:1, offset:.85}, {transform:'translateY(0) scaleY(1)', opacity:0}], 320/sp, {ease:steps(6), delay:beats[i]/sp}));
+    if(!lowOf(o)) ps.push(fly('dust', x, c.r.bottom - 2, px - 1, [{transform:'scale(.5)', opacity:0}, {transform:'scale(.7)', opacity:.9, offset:.2}, {transform:`translate(${f*20}px, -6px) scale(1.5)`, opacity:0}], 300/sp, {ease:steps(4), delay:beats[i]/sp})); });
+  if(!lowOf(o)){ const k = (c.w*.75)/sprite('lash', px).w;
+    ps.push(fly('lash', c.x, foot - s.h*.15, px, [{transform:'scale(0, 1)', opacity:0}, {transform:'scale(0, 1)', opacity:1, offset:.6}, {transform:`scale(${k.toFixed(3)}, 1)`, opacity:1, offset:.75}, {transform:`scale(${k.toFixed(3)}, 1)`, opacity:0}], 520/sp, {ease:steps(6)})); }
+  return all(ps); };
+// Lone Wolf / Throng / Plenty: the count that turned it on ticks up in pips over the card (the empty slots round it, the units on the field, the
+// cards in hand), then its sign stamps in with a ring: a wolf's head, a crowd, a fan of cards (n x 45 + 320 ms; Effects Low: the sign only)
+const COUNT = {loneWolf:'wolf', throng:'crowd', plenty:'cardB'};
+M.COUNT_KINDS = Object.keys(COUNT);
+M.countUp = function(el, o){ o = o || {}; const c = begin(el); if(!c) return NONE(); const kind = COUNT[o.kind] ? o.kind : 'throng', px = pxFor(c.w), sp = speedOf(o), ps = [], lo = lowOf(o);
+  const n = Math.max(1, Math.min(10, o.n | 0 || 1)), gap = Math.min(px*3, (c.w*.9)/n), y = c.y - c.h*.42, T0 = lo ? 0 : n*45, total = T0 + 320, sy = c.y - c.h*.12, d = T0/sp;
+  if(!lo) for(let i = 0; i < n; i++){ const x = c.x + (i - (n - 1)/2)*gap, t = (i*45)/total;
+    ps.push(fly('dot', x, y, Math.max(2, px - 1), [{transform:'scale(0)', opacity:0, offset:0}, {transform:'scale(0)', opacity:0, offset:t}, {transform:'scale(1.4)', opacity:1, offset:t + .04},
+      {transform:'scale(1)', opacity:1, offset:T0/total}, {transform:`translate(${(c.x - x).toFixed(1)}px, ${(sy - y).toFixed(1)}px) scale(.4)`, opacity:0}], total/sp, {ease:steps(10)})); }
+  if(kind === 'plenty') [-1, 0, 1].forEach(k=> ps.push(fly('cardB', c.x + k*px*3, sy, px + 1, [{transform:'rotate(0deg) scale(.3)', opacity:0}, {transform:`rotate(${k*22}deg) translateY(${-px*2}px) scale(1.1)`, opacity:1, offset:.35},
+    {transform:`rotate(${k*22}deg) translateY(${-px*2}px) scale(1)`, opacity:1, offset:.75}, {transform:`rotate(${k*22}deg) translateY(${-px*4}px) scale(1)`, opacity:0}], 320/sp, {ease:steps(6), delay:d})));
+  else ps.push(fly(COUNT[kind], c.x, sy, kind === 'throng' ? px : px + 1, POP(.3, -c.h*.1), 320/sp, {ease:steps(6), delay:d}));
+  if(!lo) ps.push(fly('ring', c.x, sy, px, [{transform:'scale(.4)', opacity:0}, {transform:'scale(.5)', opacity:1, offset:.1}, {transform:'scale(2.2)', opacity:0}], 300/sp, {ease:steps(6), delay:d}));
+  return all(ps); };
+// When the VFX3 looks play. Siege: a Siege unit's hit on a Structure (its +N) or its swing at the bramble. Keen Sense: a grounded target it
+// smelled out through the dark, fog, a blinding sandstorm or its camouflage (Evasive): the swings it would otherwise have missed.
+const defsNow = ()=>{ try{ return typeof getCardDefs === 'function' ? getCardDefs() : {}; }catch(e){ return {}; } };
+const fxIn = (defs, id)=> ((defs && defs[id]) || {}).effects || {};
+const structural = d=> !!d && ((d.archetypes || []).includes('Structure') || d.type === 'Structure');
+const siegeHit = (ev, defs)=>{ if(ev.type === 'hitHQ') return !!ev.siege; if(ev.type !== 'hit' || !((ev.dmg || 0) > 0)) return false;
+  const af = fxIn(defs, ev.attDefId); return !!(af.siege || Number(af.demolisher) > 0) && structural(defs[ev.targetDefId]); };
+const keenHit = (ev, defs, m)=>{ if(ev.type !== 'hit' || ev.friendly || ev.targetUid == null) return false; const af = fxIn(defs, ev.attDefId), tf = fxIn(defs, ev.targetDefId);
+  if(!af.keenSense || tf.flying) return false; const r = rulesOf(m), f = fieldOf(m);
+  return !!(tf.evasive || (r.dark && !af.darksight) || r.fog || r.misty || f === 'fog' || r.sandstorm === 'blind'); };
+
 // Which events FX.V draws a look of its own for, at the level now: the game's shared look for them steps aside (the trigger badge, Bind's
 // vines, the spawn portal, the shared drip, SkillFX.lightning, FX.A's chevrons and paw prints, FX.B's mould). False under reduced motion /
 // Effects None, so the shared look (or none) stays there.
@@ -49748,6 +49832,8 @@ M.owns = function(ev){
   if(T === 'triggerFired') return !!TRIG[ev.hook];
   if(T === 'gash' || T === 'overwhelmHQ' || T === 'decayTick') return true;
   if(T === 'spawn') return (ev.cause === 'onDeathSpawn' && ev.kind !== 'meiosis') || ev.kind === 'offspring';
+  if(T === 'hit' || T === 'hitHQ'){ const d = defsNow(); return siegeHit(ev, d) || keenHit(ev, d, typeof matchState !== 'undefined' ? matchState : null); } // VFX3
+  if(T === 'statusFx' && ev.kind === 'stateSkill') return !!(ev.on && COUNT[ev.name]); // VFX3
   return T === 'statusFx' && ['constrict', 'webbed', 'momentum', 'wetChain'].includes(ev.kind);
 };
 
@@ -49815,10 +49901,30 @@ function vfx2Event(ev, env, o){
   else if(K === 'momentum'){ const a = el(ev.attUid), mm = memo(env.match).mom, k = String(ev.attUid), n = (mm.get(k) || 0) + 1; mm.set(k, n);
     if(a) now('flameUp', ()=> M.momentumFlame(a, Object.assign({stacks:n}, o))); }
 }
+// 2026-11-28 (VFX3): the VFX3 looks' events (Lone Wolf has none: loneSync below reads its bonus as the board draws)
+function vfx3Event(ev, env, o){
+  const T = ev.type, el = env.el, d = env.defs || defsNow();
+  if((T === 'hit' || T === 'hitHQ') && siegeHit(ev, d)){ const castle = T === 'hitHQ' ? hq(ev.targetSide) : null, t = castle || el(ev.targetUid), a = el(ev.attUid);
+    if(t && env.once('fxv-siege' + ev.attUid + ':' + (castle ? 'hq' : ev.targetUid))) env.at(Math.max(0, env.hitAtMs(ev) - 110), ()=>{ if(!t.isConnected) return;
+      const below = a && a.isConnected ? centre(tileOf(a)).y > centre(tileOf(t)).y : ev.targetSide === 'B';
+      if(!castle) snd('siegeTone'); /* the bramble's siegeTone plays with its "Siege!" float */ M.siegeBatter(t, Object.assign({fromBelow:below}, o)); }); }
+  if(T === 'hit' && keenHit(ev, d, env.match) && env.once('fxv-keen' + ev.attUid)){ const a = el(ev.attUid), t = el(ev.targetUid);
+    if(t) env.at(Math.max(0, env.hitAtMs(ev) - 200), ()=>{ if(t.isConnected){ snd('sniff'); M.keenSniff(a, t, o); } }); }
+  if(T === 'spawn' && ev.kind === 'bulwark') (ev.uids || []).slice(0, 4).forEach((u, i)=> env.at(160 + i*80, ()=>{ const w = el(u); if(w && w.isConnected) M.bulwarkPalisade(w, o); }));
+  if(T === 'statusFx' && ev.kind === 'stateSkill' && ev.on && COUNT[ev.name]){ const t = el(ev.targetUid);
+    if(t) tick(()=>{ const n = ev.name === 'plenty' ? 4 : Math.min(10, boardCards().length); snd('countTick', n); M.countUp(t, Object.assign({kind:ev.name, n}, o)); }); }
+}
+// Lone Wolf: its bonus (the engine's packBonus, on the replay's card or the live unit) is read off each Lone Wolf unit as the board draws; a
+// rise plays the count of the empty slots round it now. Per fight and unit, like the token ticks.
+function loneSync(root, env){ const m = env.match; if(!m || !root || !root.querySelectorAll) return; const s = memo(m), seen = s.lone || (s.lone = new Map()), ups = [];
+  (root.matches && root.matches('.board-card[data-uid]') ? [root] : [...root.querySelectorAll('.board-card[data-uid]')]).forEach(card=>{ const lw = env.fxOf(card.getAttribute('data-defid')).loneWolf; if(!lw) return;
+    const uid = card.getAttribute('data-uid'), live = typeof eqLiveUnit === 'function' ? (eqLiveUnit(m, Number(uid)) || eqLiveUnit(m, uid)) : null, rc = (m.resolving && m.replayCards && m.replayCards[uid]) || live || (m.replayCards && m.replayCards[uid]);
+    if(!rc) return; const a = Math.max(1, Number(Array.isArray(lw) ? lw[0] : lw) || 1), v = Math.round((rc.packBonus || 0)/a), was = seen.get(uid); seen.set(uid, v); if(v > (was || 0)) ups.push([card, v]); });
+  if(ups.length) later(()=> ups.slice(0, 3).forEach(([c, n])=>{ if(c.isConnected){ snd('countTick', n); M.countUp(c, {kind:'loneWolf', n, level:env.level}); } }), 0); }
 M.onEvent = function(ev, env){
   if(!ev || !env || !env.fxAtLeast('low')) return;
   const T = ev.type, el = env.el, o = {level:env.level, speed:Math.max(1, (env.match && env.match.speedMult) || 1)};
-  vfx2Event(ev, env, o);
+  vfx2Event(ev, env, o); vfx3Event(ev, env, o);
   if(T === 'hit' || T === 'evaded'){
     const af = env.fxOf(ev.attDefId);
     if(af.swift && !ev.ranged && ev.attUid != null && env.once('fxv-swift' + ev.attUid)){ const a = el(ev.attUid), up = isMine(ev.side); if(a) tick(()=> M.swiftDash(a, Object.assign({up}, o))); }
@@ -49842,7 +49948,7 @@ M.onEvent = function(ev, env){
 M.hooks.matchUI = (m, env)=> fieldSync(m, env);
 const CAGED = new WeakSet();
 M.hooks.boardRendered = (m, env)=>{
-  fieldSync(m, env); tokenSync(document.getElementById('battlefieldEl'), env); // + VFX2's token ticks
+  fieldSync(m, env); tokenSync(document.getElementById('battlefieldEl'), env); loneSync(document.getElementById('battlefieldEl'), env); // + VFX2's token ticks, VFX3's Lone Wolf
   // the Caged Fight: the cage is placed before the fight (no replayed event), so its slam plays the first time it is on screen
   if(m && m.caged && !CAGED.has(m) && !document.querySelector('.vs-screen')){
     const cages = [...document.querySelectorAll('#battlefieldEl .board-card .cage-bars')].map(b=> b.closest('.board-card')).filter(Boolean);
@@ -49858,7 +49964,7 @@ function tokenSync(root, env){ const m = env.match; if(!m || !root || !root.quer
     TOKS.forEach(f=>{ const b = card.querySelector('.abadge.' + f), key = uid + ':' + f; if(!b){ seen.delete(key); return; }
       const v = parseInt(String(b.textContent).replace(/\D+/g, ''), 10) || 0, was = seen.get(key); seen.set(key, v); if(was > v) ticks.push(b); }); });
   if(ticks.length) later(()=>{ snd('tokenTock'); ticks.slice(0, 6).forEach(b=>{ if(b.isConnected) M.tokenTick(b, {level:env.level}); }); }, 0); }
-M.hooks.cardStatusShown = (el, c, env)=> tokenSync(el, env);
+M.hooks.cardStatusShown = (el, c, env)=>{ tokenSync(el, env); loneSync(el, env); };
 // bossEntrance (arena_app.js) as a boss's versus opener closes; the raid's opener (startRaidFullBattle) for a raid part
 M.hooks.bossEntrance = (node, lair, env)=>{ const k = M.bossKind(node); if(k) later(()=> M.bossLook(k, {level:env.level}), 300); };
 M.hooks.raidEntrance = (def, env)=>{ let k = M.bossKind(def);
@@ -61161,7 +61267,7 @@ function cheat2Boot(){
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '7f94b6c6ad46', BUILD_CARD_HASH = 'be14bab1add7cecd27788bd21fc2fa73b0924d95f6463a299e51872b3622b1c6';
+const BUILD_ID = '2c6aff8ada9f', BUILD_CARD_HASH = 'be14bab1add7cecd27788bd21fc2fa73b0924d95f6463a299e51872b3622b1c6';
 try{ cheat2Boot(); }catch(e){} // CHEAT2 (2026-11-16): the seal check before the game's first save, and the clock
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 const VERSION_CHECK_MS = 20 * 60e3; // 2026-11-16 (coordinator): an open, visible tab re-checks every 5 minutes (it used to wait an hour, so a deploy went unnoticed until a manual refresh) // 2026-11-18 (package POLL1, owner OWN-1117-3): 20 minutes (was 5); a tab coming back to the screen or the window gaining focus checks as soon as that has passed
@@ -109600,12 +109706,16 @@ function bloomCopyVfx(srcUid, copyUid){
 // Bulwark's dust: a few specks kicked up at the foot of a Log Wall as it rises (riseUpFx; the rise itself is in renderBoard).
 /* 2026-11-28 (UIPOLISH1 #14, owner: "show the opponents playing each card, not just spawning; skeletons and similar creatures rise from the ground (dirt kicked up, soft crawling sounds from the sound library)"):
    a card that is undead or lives underground rises through the floor (the Bulwark wall's rise, with more dirt) and the library's own cues play: the bone clatter (undead) or the bush rustle. */
-function uip1Riser(defId){ try{ const d = getCardDefs()[defId]; return !!d && (d.subtype === 'undead' || /worm|grub|maggot|mole|larva|burrow|meerkat|skeleton|revenant|ghoul|lich/i.test(String(d.animal || '') + ' ' + defId)); }catch(e){ return false; } }
+// 2026-11-28 (VFX3): the undead (subtype undead or species Undead, which adds the two wraiths) rise as FX.V.skeletonRise; "lich\b" so Lichen Tortoise stays down.
+function uip1Bones(d){ return !!d && (d.subtype === 'undead' || (d.species || []).includes('Undead')); }
+function uip1Riser(defId){ try{ const d = getCardDefs()[defId]; return !!d && (uip1Bones(d) || /worm|grub|maggot|mole|larva|burrow|meerkat|skeleton|revenant|ghoul|lich\b/i.test(String(d.animal || '') + ' ' + defId)); }catch(e){ return false; } }
 function uip1DefOf(el){ const q = el && (el.dataset && el.dataset.defid ? el : el.querySelector && el.querySelector('[data-defid]')); return q ? q.dataset.defid : null; }
 function uip1RiseSound(el){ try{ const d = getCardDefs()[uip1DefOf(el)]; if(!d || !uip1Riser(d.id)) return; (d.subtype === 'undead' && SoundKit.boneClatter ? SoundKit.boneClatter : SoundKit.bushRustle || SoundKit.skitterPatter)(); }catch(e){} }
 function riseUpFx(el){
   if(!el || !el.isConnected || reducedMotion() || !fxAtLeast('low') || !el.animate) return;
-  try{ if(typeof uip1RiseSound === 'function') uip1RiseSound(el); }catch(e){}
+  let bones = false; try{ bones = uip1Bones(getCardDefs()[uip1DefOf(el)]) && !!(window.FX && FX.V && FX.V.skeletonRise); }catch(e){} // VFX3: bones assemble under a skull as it comes up (its own bone clatter)
+  if(bones){ const go = ()=>{ if(el.isConnected) FX.V.skeletonRise(el, {level: fxLevel(), speed: 1.6}); }; if(hasGsap()) gsap.delayedCall(.2, go); else go(); }
+  else try{ if(typeof uip1RiseSound === 'function') uip1RiseSound(el); }catch(e){}
   const r = ui23Rect(el.getBoundingClientRect()); if(!r) return;
   const host = fxHostAt(el, 950, r);
   const dirt = (typeof uip1Riser === 'function' && uip1Riser(uip1DefOf(el))) ? 11 : 6; // UIPOLISH1 #14: a riser kicks up more dirt
@@ -113426,7 +113536,7 @@ function en5StateVfx(ev){
   if(!el) return; const s = EN5_STATE_KEYS[ev.name] || {ico:'✨'};
   try{ floatText(el, `${s.ico} ${en5StateName(ev.name)}`, ev.on ? 'buff' : 'faded'); }catch(e){}
   if(ev.on){ try{ tintPulse(el, 'en5-state-pulse'); }catch(e){} try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){}
-    if(hasGsap() && !reducedMotion() && fxAtLeast('low')){ const c = en2Ctr(el), ic = en2Layer(s.ico, 'en5-state-ico'); gsap.set(ic, {x:c.x, y:c.y, xPercent:-50, yPercent:-50, scale:.4, opacity:0});
+    if(hasGsap() && !reducedMotion() && fxAtLeast('low') && !(window.FX && FX.V && FX.V.owns && FX.V.owns(ev)) /* 2026-11-28 (VFX3): Throng / Plenty count up (FX.V.countUp) */){ const c = en2Ctr(el), ic = en2Layer(s.ico, 'en5-state-ico'); gsap.set(ic, {x:c.x, y:c.y, xPercent:-50, yPercent:-50, scale:.4, opacity:0});
       gsap.timeline({onComplete:()=> ic.remove()}).to(ic, {opacity:1, scale:1.5, duration:.2, ease:'back.out(2)'}).to(ic, {y:c.y - c.h * .45, scale:.8, opacity:0, duration:.5, delay:.15}); try{ en2Ring(c.x, c.y, c.w * 1.2); }catch(e){} } }
 }
 function en5Vfx(ev){
