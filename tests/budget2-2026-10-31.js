@@ -66,7 +66,7 @@ ok(js('docs/balance/listfix1-pending-budget-2026-10-29.json').count === 0, '2. L
 // ---- 4. the logic prices at 3A + H
 const sk = id=> table.skills.find(s=> s.id === id) || {};
 // 2026-11-22 (package SKMPRICE, SKM4-1 b): Assault re-priced from its 1,000-fight reading (Assault 2 reads 6.78): 3.39 a point, BUDGET2's 2.7 kept in skmpriceWas
-ok(sk('assault').value === 3.39 && sk('assault').skmpriceWas.value === 2.7 && sk('assault').prevValue === 1.8 && sk('liege').value === 1.62, '4. Assault 3.39 a point (SKMPRICE; BUDGET2 2.7 = 0.9 x 3), Liege 1.62 (0.3 x Assault 2)');
+ok(sk('assault').value === 3.39 && sk('assault').skmpriceWas.value === 2.7 && sk('assault').prevValue === 1.8 && sk('liege').value === 2.03 /* 2026-11-28 CARDFIX1 (TESTFIX11-2 a): Liege keeps 0.3 x Assault 2 = 0.3 x 2 x 3.39 */, '4. Assault 3.39 a point (SKMPRICE; BUDGET2 2.7 = 0.9 x 3), Liege 2.03 (0.3 x Assault 2)');
 ok(['requiem', 'dirge', 'carnage', 'muster', 'beset', 'throng'].every(k=> near(sk(k).value, BB.thrS(k, true, {[k]: true}).S, 0.02)), '4. the threshold skills\' table values are thrS\'s default prices');
 
 // ---- 5. the canon skill set (X14)
