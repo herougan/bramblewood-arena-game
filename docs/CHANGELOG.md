@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-28 Package ROADFIX7 (road re-fit after CARDFIX1)
+- **Road fights (player-visible):** six fights CARDFIX1 made too easy get list swaps (leaders, first-clear cards, size kept; no Shield, Health or level change): 10-4 Riptide Channel 87 -> 83.8, 10-7 Eel Nest 79.8 -> 63.5, 5-A-2 Gator Hollow 80.5 -> 67.5, 7-A-3 Silk Gallery 80 -> 71, 8-8 The Stalactite Warden 52 -> 46 (in band on seeds 9100 and 5100); 10-9 The Orca Vanguard King 55.3 -> 52.5 (nearer, still easy, target 40).
+- Full measure `post1128d`: 179 in band / 181 within 10 / 6 beyond 20 of 208 (was 174 / 178 / 6 at `post1128c`). Doc: `docs/balance/roadfix7-2026-11-28.md`.
+
 ## 2026-11-28 Package CARDFIX1 (the card builds the settled decisions need)
 - **Cards (player-visible):** Cinder Gecko's Level 7 step is Health, not Attack (back under its Map 8 cap); Hedgerow Shrew has Diurnal instead of Foraging (no longer the Dormouse); Raccoon Nightcrew Foraging 2, Matamata Pounce 2 + Armor, Orca Vanguard 8/8 Wave + Tide (skills from their own map's row); Rot-Swollen Carcass is now **Blowfly Maggots** (Swarm + Parasite, Insect; the art is still the carcass until a new one is made); Ironback Gorilla Intimidate + Sturdy (no Bludgeon, no Rainrunner card left); seven new species (Blobfish, Glass Frog, Leafy Sea Dragon, Okapi, Red Panda, Saiga, Sunfish) trimmed toward fair (on no list). Liege's skill price 2.03 (0.3 x Assault 2 at 3.39; no card carries it).
 - **Not built:** Barkplate Beetle, Quill-Thorn Boar, Bramblewood Lynx: they are the only carriers of Recoil / Twin Strike on Maps 12 / 13, so re-skilling them empties those rows; needs a list change (cancelled for now). Design: `docs/design/cardfix1-2026-11-28.md`. Road re-measured (`post1128c`, 400 games): 180 -> 174 of 208 in band; the card-matrix golden updated once (only these cards' duels and matches moved).
