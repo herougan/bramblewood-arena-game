@@ -33,7 +33,7 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 - **Default:** c
 
 **CPU2-1. Run the turn planner on the road CPU** · Decide · Engine · asked 2026-11-28
-- Maps 0-20 road fights use the Basic CPU, which skips the turn planner. Your note #26 already asks the CPU to score every option each turn (A1, not built). Using the planner makes the CPU stronger (not measured yet) and moves every map's band; balance then re-tunes.
+- Road fights on Maps 0-20 use the Basic CPU, which skips the turn planner (your note #26 asks for it; A1, not built). Measured: with it, players win 2.9 ± 0.4 points less on Basic fights; road 107 → 84 of 131 in band, mostly Map 1 (1-2 drops 32). Map 1 would need a retune first.
   - a) Planner at Basic, noise kept; retune
   - b) Add a Smart-lite level between Basic and Smart
   - c) Leave it
