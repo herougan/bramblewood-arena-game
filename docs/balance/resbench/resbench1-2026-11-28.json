@@ -125,6 +125,7 @@
    },
    "firstPts": 5.105666729006919,
    "firstPtsSe": 0.5490539988041271,
+   "knee90": 6.199999999999986,
    "marg1Pts": 4.874154257606657,
    "perCopyAtNstar": 1.8280142189021515,
    "firstNet": {
@@ -234,6 +235,7 @@
    },
    "firstPts": 8.475406770151485,
    "firstPtsSe": 0.5904105953492284,
+   "knee90": 4.399999999999992,
    "marg1Pts": 8.314572622637527,
    "perCopyAtNstar": 1.6436168630683154,
    "firstNet": {
@@ -343,6 +345,7 @@
    },
    "firstPts": 3.0634000374041515,
    "firstPtsSe": 0.5813784784902379,
+   "knee90": 7.599999999999981,
    "marg1Pts": 3.3808785244446424,
    "perCopyAtNstar": 1.4261601137089348,
    "firstNet": {
@@ -452,6 +455,7 @@
    },
    "firstPts": 2.042266691602768,
    "firstPtsSe": 0.39573065325235063,
+   "knee90": 9.750000000000004,
    "marg1Pts": 2.2346400818454537,
    "perCopyAtNstar": 1.4322956385795684,
    "firstNet": {
@@ -561,6 +565,7 @@
    },
    "firstPts": -4.033476715915467,
    "firstPtsSe": 0.5624360339525265,
+   "knee90": 0,
    "marg1Pts": -3.9951859197943342,
    "perCopyAtNstar": null,
    "firstNet": {
@@ -670,6 +675,7 @@
    },
    "firstPts": 5.105666729006919,
    "firstPtsSe": 0.5490539988041271,
+   "knee90": 6.199999999999986,
    "marg1Pts": 4.874154257606657,
    "perCopyAtNstar": 1.8280142189021515,
    "firstNet": {
@@ -779,6 +785,7 @@
    },
    "firstPts": 8.577520104731624,
    "firstPtsSe": 0.5885620467128811,
+   "knee90": 4.399999999999992,
    "marg1Pts": 8.458615606399999,
    "perCopyAtNstar": 1.6468728043987781,
    "firstNet": {
@@ -888,6 +895,7 @@
    },
    "firstPts": 3.3186833738544976,
    "firstPtsSe": 0.5863377648092477,
+   "knee90": 7.4499999999999815,
    "marg1Pts": 3.7180307648031334,
    "perCopyAtNstar": 1.4452421710090702,
    "firstNet": {
@@ -997,6 +1005,7 @@
    },
    "firstPts": 1.7869833551524217,
    "firstPtsSe": 0.3804943885880783,
+   "knee90": 9.700000000000003,
    "marg1Pts": 2.0746594641961162,
    "perCopyAtNstar": 1.3168880709437876,
    "firstNet": {
@@ -1106,6 +1115,7 @@
    },
    "firstPts": -4.033476715915467,
    "firstPtsSe": 0.5530769466900713,
+   "knee90": 0,
    "marg1Pts": -4.21783080631103,
    "perCopyAtNstar": null,
    "firstNet": {
@@ -1215,6 +1225,7 @@
    },
    "firstPts": 7.505330091640172,
    "firstPtsSe": 0.5688728506087198,
+   "knee90": 4.94999999999999,
    "marg1Pts": 7.416515183991988,
    "perCopyAtNstar": 1.6370669477299447,
    "firstNet": {
@@ -1324,6 +1335,7 @@
    },
    "firstPts": 1.8890966897325603,
    "firstPtsSe": 0.5626448226129327,
+   "knee90": 9.45,
    "marg1Pts": 2.152694036838071,
    "perCopyAtNstar": 1.2960116321919093,
    "firstNet": {
@@ -1433,6 +1445,7 @@
    },
    "firstPts": 3.114456704694221,
    "firstPtsSe": 0.5650980844022662,
+   "knee90": 9.149999999999995,
    "marg1Pts": 2.495395946338291,
    "perCopyAtNstar": 1.248925626957529,
    "firstNet": {
@@ -1542,6 +1555,7 @@
    },
    "firstPts": 0.255283336450346,
    "firstPtsSe": 0.2339431523703697,
+   "knee90": 4.399999999999992,
    "marg1Pts": 0.3495305828960013,
    "perCopyAtNstar": 0.18729869949480063
   },
@@ -1643,6 +1657,7 @@
    },
    "firstPts": 2.7650236326806215,
    "firstPtsSe": 0.4936652556301789,
+   "knee90": 9.700000000000003,
    "marg1Pts": 2.244559302376792,
    "perCopyAtNstar": 1.415571472528527,
    "firstNet": {
@@ -1752,6 +1767,7 @@
    },
    "firstPts": 5.530047265361243,
    "firstPtsSe": 0.5957072869981493,
+   "knee90": 6.849999999999984,
    "marg1Pts": 5.310252482789582,
    "perCopyAtNstar": 1.666383635963397,
    "firstNet": {
@@ -1861,6 +1877,7 @@
    },
    "firstPts": 1.2903443619176231,
    "firstPtsSe": 0.5305015324716812,
+   "knee90": 6.849999999999984,
    "marg1Pts": 1.700784320324284,
    "perCopyAtNstar": 0.8749547563071199,
    "firstNet": {
@@ -1970,6 +1987,7 @@
    },
    "firstPts": 1.2903443619176231,
    "firstPtsSe": 0.37119255507471915,
+   "knee90": 7.499999999999981,
    "marg1Pts": 0.8309312956075193,
    "perCopyAtNstar": 0.29574269898639927,
    "firstNet": {
@@ -2079,6 +2097,7 @@
    },
    "firstPts": -2.396353814989872,
    "firstPtsSe": 0.4883917459671813,
+   "knee90": 0,
    "marg1Pts": -2.6647909981108406,
    "perCopyAtNstar": null,
    "firstNet": {
@@ -2188,6 +2207,7 @@
    },
    "firstPts": 2.7650236326806215,
    "firstPtsSe": 0.4936652556301789,
+   "knee90": 9.700000000000003,
    "marg1Pts": 2.244559302376792,
    "perCopyAtNstar": 1.415571472528527,
    "firstNet": {
@@ -2297,6 +2317,7 @@
    },
    "firstPts": 5.714382174206618,
    "firstPtsSe": 0.5838941465010147,
+   "knee90": 6.0499999999999865,
    "marg1Pts": 5.646014653699037,
    "perCopyAtNstar": 1.834813668055144,
    "firstNet": {
@@ -2406,6 +2427,7 @@
    },
    "firstPts": 1.7819041188386224,
    "firstPtsSe": 0.5358191768537385,
+   "knee90": 6.8999999999999835,
    "marg1Pts": 1.942213367599115,
    "perCopyAtNstar": 0.9982993253640591,
    "firstNet": {
@@ -2515,6 +2537,7 @@
    },
    "firstPts": 0.798784604996624,
    "firstPtsSe": 0.32989014499881736,
+   "knee90": 10.15000000000001,
    "marg1Pts": 0.8963759405651238,
    "perCopyAtNstar": 0.6356218498562174,
    "firstNet": {
@@ -2624,6 +2647,7 @@
    },
    "firstPts": -2.0891289669142474,
    "firstPtsSe": 0.49399537213455186,
+   "knee90": 0,
    "marg1Pts": -2.471710217307937,
    "perCopyAtNstar": null,
    "firstNet": {
@@ -2733,6 +2757,7 @@
    },
    "firstPts": 3.072248480756246,
    "firstPtsSe": 0.48752505129624324,
+   "knee90": 8.09999999999998,
    "marg1Pts": 3.2818403994980474,
    "perCopyAtNstar": 1.3478241920036822,
    "firstNet": {
@@ -2842,6 +2867,7 @@
    },
    "firstPts": -0.7373396353814989,
    "firstPtsSe": 0.4988119813866023,
+   "knee90": 0,
    "marg1Pts": -0.9557586853501435,
    "perCopyAtNstar": null,
    "firstNet": {
@@ -2951,6 +2977,7 @@
    },
    "firstPts": 2.212018906144497,
    "firstPtsSe": 0.5009294462541404,
+   "knee90": 9.700000000000003,
    "marg1Pts": 1.9150203328332758,
    "perCopyAtNstar": 1.2187905119908677,
    "firstNet": {
@@ -3060,6 +3087,7 @@
    },
    "firstPts": -0.06144496961512492,
    "firstPtsSe": 0.2534932684276246,
+   "knee90": 0.15000000000000002,
    "marg1Pts": -0.17857010738583437,
    "perCopyAtNstar": null
   }
@@ -3235,11 +3263,14 @@
     "d": -0.00625,
     "se": 0.004839209057829809
    },
-   "vsSlot": null,
+   "vsSlot": {
+    "d": -0.01375,
+    "se": 0.004483447166870904
+   },
    "vsTwinPts": -0.255283336450346,
    "vsTwinPtsSe": 0.19765910945016463,
-   "vsSlotPts": null,
-   "vsSlotPtsSe": null,
+   "vsSlotPts": -0.5616233401907611,
+   "vsSlotPtsSe": 0.18312789624922488,
    "printed": {
     "cost": 0,
     "wait": 1,
@@ -3316,11 +3347,14 @@
     "d": 0.00125,
     "se": 0.004844055942334395
    },
-   "vsSlot": null,
+   "vsSlot": {
+    "d": -0.00375,
+    "se": 0.0037500000000000038
+   },
    "vsTwinPts": 0.0510566672900692,
    "vsTwinPtsSe": 0.19785708206579986,
-   "vsSlotPts": null,
-   "vsSlotPtsSe": null,
+   "vsSlotPts": -0.15317000187020757,
+   "vsSlotPtsSe": 0.15317000187020774,
    "printed": {
     "cost": 0,
     "wait": 0,
@@ -3341,6 +3375,5130 @@
     "attack": 2,
     "health": 7,
     "N": 13.57
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "lodge-engineer",
+   "skill": "delivery1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.39,
+   "vsTwin": {
+    "d": -0.04125,
+    "se": 0.00949596037556598
+   },
+   "vsSlot": {
+    "d": -0.11125,
+    "se": 0.015170018414569327
+   },
+   "vsTwinPts": -1.6848700205722835,
+   "vsTwinPtsSe": 0.38786567159596225,
+   "vsSlotPts": -4.544043388816158,
+   "vsSlotPtsSe": 0.6196244663815113,
+   "printed": {
+    "cost": 2,
+    "wait": 2,
+    "rarity": "uncommon",
+    "attack": 3,
+    "health": 14,
+    "effects": {
+     "delivery": 1
+    }
+   },
+   "budget": {
+    "N": 29.27,
+    "x1": 28.3,
+    "S": 5.3
+   },
+   "twin": {
+    "attack": 5,
+    "health": 15,
+    "N": 30.73
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "lodge-engineer",
+   "skill": "delivery1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 11,
+   "cost": 0,
+   "wr": 0.945,
+   "vsTwin": {
+    "d": -0.00375,
+    "se": 0.005450417937609767
+   },
+   "vsSlot": {
+    "d": -0.02625,
+    "se": 0.006671342097488887
+   },
+   "vsTwinPts": -0.15317000187020757,
+   "vsTwinPtsSe": 0.22262414018589358,
+   "vsSlotPts": -1.072190013091453,
+   "vsSlotPtsSe": 0.272493195079778,
+   "printed": {
+    "cost": 2,
+    "wait": 2,
+    "rarity": "uncommon",
+    "attack": 3,
+    "health": 14,
+    "effects": {
+     "delivery": 1
+    }
+   },
+   "budget": {
+    "N": 29.27,
+    "x1": 28.3,
+    "S": 5.3
+   },
+   "twin": {
+    "attack": 5,
+    "health": 15,
+    "N": 30.73
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "pack-mule",
+   "skill": "delivery1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.56625,
+   "vsTwin": {
+    "d": -0.06625,
+    "se": 0.012846496115792281
+   },
+   "vsSlot": {
+    "d": 0.065,
+    "se": 0.013273619937032743
+   },
+   "vsTwinPts": -2.7060033663736673,
+   "vsTwinPtsSe": 0.5247194224217382,
+   "vsSlotPts": 2.6549466990835984,
+   "vsSlotPtsSe": 0.542165437487928,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 1,
+    "health": 9,
+    "effects": {
+     "delivery": 1
+    }
+   },
+   "budget": {
+    "N": 17.59,
+    "x1": 17.25,
+    "S": 5.25
+   },
+   "twin": {
+    "attack": 3,
+    "health": 9,
+    "N": 18.47
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "pack-mule",
+   "skill": "delivery1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 11,
+   "cost": 0,
+   "wr": 0.96625,
+   "vsTwin": {
+    "d": -0.0075,
+    "se": 0.00394641041884807
+   },
+   "vsSlot": {
+    "d": -0.005,
+    "se": 0.0030586670798538494
+   },
+   "vsTwinPts": -0.30634000374041515,
+   "vsTwinPtsSe": 0.16119245099615082,
+   "vsSlotPts": -0.2042266691602768,
+   "vsSlotPtsSe": 0.1249322779577484,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 1,
+    "health": 9,
+    "effects": {
+     "delivery": 1
+    }
+   },
+   "budget": {
+    "N": 17.59,
+    "x1": 17.25,
+    "S": 5.25
+   },
+   "twin": {
+    "attack": 3,
+    "health": 9,
+    "N": 18.47
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "muskrat-lodgekeeper",
+   "skill": "delivery1",
+   "level": 2,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.48375,
+   "vsTwin": {
+    "d": -0.0725,
+    "se": 0.011852438055515264
+   },
+   "vsSlot": {
+    "d": -0.0175,
+    "se": 0.014996609963187735
+   },
+   "vsTwinPts": -2.961286702824013,
+   "vsTwinPtsSe": 0.48411678910127803,
+   "vsSlotPts": -0.7147933420609688,
+   "vsSlotPtsSe": 0.6125415402955304,
+   "printed": {
+    "cost": 1,
+    "wait": 2,
+    "rarity": "uncommon",
+    "attack": 3,
+    "health": 7,
+    "effects": {
+     "tide": true,
+     "delivery": 2
+    }
+   },
+   "budget": {
+    "N": 26.32,
+    "x1": 23.7,
+    "S": 7.7
+   },
+   "twin": {
+    "attack": 5,
+    "health": 13,
+    "N": 28.64
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "muskrat-lodgekeeper",
+   "skill": "delivery1",
+   "level": 2,
+   "ctx": "A-n*",
+   "n": 11,
+   "cost": 0,
+   "wr": 0.95875,
+   "vsTwin": {
+    "d": -0.00375,
+    "se": 0.004507806814610331
+   },
+   "vsSlot": {
+    "d": -0.0125,
+    "se": 0.005576159470733746
+   },
+   "vsTwinPts": -0.15317000187020757,
+   "vsTwinPtsSe": 0.18412287419317305,
+   "vsSlotPts": -0.510566672900692,
+   "vsSlotPtsSe": 0.22776009508289696,
+   "printed": {
+    "cost": 1,
+    "wait": 2,
+    "rarity": "uncommon",
+    "attack": 3,
+    "health": 7,
+    "effects": {
+     "tide": true,
+     "delivery": 2
+    }
+   },
+   "budget": {
+    "N": 26.32,
+    "x1": 23.7,
+    "S": 7.7
+   },
+   "twin": {
+    "attack": 5,
+    "health": 13,
+    "N": 28.64
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "giant-clam",
+   "skill": "delivery1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.31375,
+   "vsTwin": {
+    "d": -0.24875,
+    "se": 0.015395228585636748
+   },
+   "vsSlot": {
+    "d": -0.1875,
+    "se": 0.015414333901016127
+   },
+   "vsTwinPts": -10.16027679072377,
+   "vsTwinPtsSe": 0.6288232510011343,
+   "vsSlotPts": -7.658500093510379,
+   "vsSlotPtsSe": 0.6296036139857718,
+   "printed": {
+    "cost": 1,
+    "wait": 2,
+    "rarity": "common",
+    "attack": 5,
+    "health": 4,
+    "effects": {
+     "tide": true,
+     "delivery": {
+      "v": 1,
+      "res": "pearl"
+     }
+    }
+   },
+   "budget": {
+    "N": 25.88,
+    "x1": 23.19,
+    "S": 4.19
+   },
+   "twin": {
+    "attack": 4,
+    "health": 15,
+    "N": 27.17
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "giant-clam",
+   "skill": "delivery1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 11,
+   "cost": 0,
+   "wr": 0.85375,
+   "vsTwin": {
+    "d": -0.11375,
+    "se": 0.01123260371007694
+   },
+   "vsSlot": {
+    "d": -0.1175,
+    "se": 0.011796870143452381
+   },
+   "vsTwinPts": -4.646156723396297,
+   "vsTwinPtsSe": 0.4587994483412762,
+   "vsSlotPts": -4.799326725266504,
+   "vsSlotPtsSe": 0.4818470991827193,
+   "printed": {
+    "cost": 1,
+    "wait": 2,
+    "rarity": "common",
+    "attack": 5,
+    "health": 4,
+    "effects": {
+     "tide": true,
+     "delivery": {
+      "v": 1,
+      "res": "pearl"
+     }
+    }
+   },
+   "budget": {
+    "N": 25.88,
+    "x1": 23.19,
+    "S": 4.19
+   },
+   "twin": {
+    "attack": 4,
+    "health": 15,
+    "N": 27.17
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "irradiated-axolotl",
+   "skill": "delivery1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.51,
+   "vsTwin": {
+    "d": -0.09,
+    "se": 0.01042885186341168
+   },
+   "vsSlot": {
+    "d": 0.00875,
+    "se": 0.01556903305805958
+   },
+   "vsTwinPts": -3.6760800448849817,
+   "vsTwinPtsSe": 0.42596993584610265,
+   "vsSlotPts": 0.3573966710304844,
+   "vsSlotPtsSe": 0.6359223526987492,
+   "printed": {
+    "cost": 1,
+    "wait": 1,
+    "rarity": "uncommon",
+    "attack": 4,
+    "health": 9,
+    "effects": {
+     "delivery": {
+      "v": 1,
+      "res": "uranium"
+     }
+    }
+   },
+   "budget": {
+    "N": 24.07,
+    "x1": 24.69,
+    "S": 3.69
+   },
+   "twin": {
+    "attack": 4,
+    "health": 13,
+    "N": 25.27
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "irradiated-axolotl",
+   "skill": "delivery1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 11,
+   "cost": 0,
+   "wr": 0.96375,
+   "vsTwin": {
+    "d": -0.0075,
+    "se": 0.0030522668487773597
+   },
+   "vsSlot": {
+    "d": -0.0075,
+    "se": 0.005587370659676238
+   },
+   "vsTwinPts": -0.30634000374041515,
+   "vsTwinPtsSe": 0.12467085838282688,
+   "vsSlotPts": -0.30634000374041515,
+   "vsSlotPtsSe": 0.2282180198379073,
+   "printed": {
+    "cost": 1,
+    "wait": 1,
+    "rarity": "uncommon",
+    "attack": 4,
+    "health": 9,
+    "effects": {
+     "delivery": {
+      "v": 1,
+      "res": "uranium"
+     }
+    }
+   },
+   "budget": {
+    "N": 24.07,
+    "x1": 24.69,
+    "S": 3.69
+   },
+   "twin": {
+    "attack": 4,
+    "health": 13,
+    "N": 25.27
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "muskrat-reedgatherer",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.63125,
+   "vsTwin": {
+    "d": 0.11625,
+    "se": 0.01382602149799703
+   },
+   "vsSlot": {
+    "d": 0.13,
+    "se": 0.014718892867980147
+   },
+   "vsTwinPts": 4.748270057976435,
+   "vsTwinPtsSe": 0.5647284636548627,
+   "vsSlotPts": 5.309893398167197,
+   "vsSlotPtsSe": 0.6011980928309077,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 1,
+    "health": 7,
+    "effects": {
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 16.72,
+    "x1": 16.52,
+    "S": 6.52
+   },
+   "twin": {
+    "attack": 3,
+    "health": 8,
+    "N": 17.56
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "muskrat-reedgatherer",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.98375,
+   "vsTwin": {
+    "d": 0,
+    "se": 0.0017688728441930626
+   },
+   "vsSlot": {
+    "d": -0.0025,
+    "se": 0.0017666603694757917
+   },
+   "vsTwinPts": 0,
+   "vsTwinPtsSe": 0.07225020182752288,
+   "vsSlotPts": -0.1021133345801384,
+   "vsSlotPtsSe": 0.07215983255910097,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 1,
+    "health": 7,
+    "effects": {
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 16.72,
+    "x1": 16.52,
+    "S": 6.52
+   },
+   "twin": {
+    "attack": 3,
+    "health": 8,
+    "N": 17.56
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "nutria-reedcutter",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.465,
+   "vsTwin": {
+    "d": -0.1325,
+    "se": 0.014148495057442905
+   },
+   "vsSlot": {
+    "d": -0.03625,
+    "se": 0.014258297432796916
+   },
+   "vsTwinPts": -5.412006732747335,
+   "vsTwinPtsSe": 0.5779000038424407,
+   "vsSlotPts": -1.4806433514120065,
+   "vsSlotPtsSe": 0.5823849185193279,
+   "printed": {
+    "cost": 0,
+    "wait": 2,
+    "rarity": "common",
+    "attack": 3,
+    "health": 6,
+    "effects": {
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 21.1,
+    "x1": 21.65,
+    "S": 6.65
+   },
+   "twin": {
+    "attack": 4,
+    "health": 10,
+    "N": 22.16
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "nutria-reedcutter",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.97375,
+   "vsTwin": {
+    "d": -0.015,
+    "se": 0.004300216835351324
+   },
+   "vsSlot": {
+    "d": -0.0125,
+    "se": 0.003930521434674468
+   },
+   "vsTwinPts": -0.6126800074808303,
+   "vsTwinPtsSe": 0.17564379219014944,
+   "vsSlotPts": -0.510566672900692,
+   "vsSlotPtsSe": 0.1605434601333278,
+   "printed": {
+    "cost": 0,
+    "wait": 2,
+    "rarity": "common",
+    "attack": 3,
+    "health": 6,
+    "effects": {
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 21.1,
+    "x1": 21.65,
+    "S": 6.65
+   },
+   "twin": {
+    "attack": 4,
+    "health": 10,
+    "N": 22.16
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "sunfeather-scout",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.61625,
+   "vsTwin": {
+    "d": 0.05375,
+    "se": 0.013511268068950507
+   },
+   "vsSlot": {
+    "d": 0.115,
+    "se": 0.014447479436829107
+   },
+   "vsTwinPts": 2.1954366934729754,
+   "vsTwinPtsSe": 0.5518722547706734,
+   "vsSlotPts": 4.6972133906863665,
+   "vsSlotPtsSe": 0.59011212062904,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 1,
+    "health": 4,
+    "effects": {
+     "flying": true,
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 17.88,
+    "x1": 14.98,
+    "S": 6.65
+   },
+   "twin": {
+    "attack": 3,
+    "health": 9,
+    "N": 18.77
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "sunfeather-scout",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.98375,
+   "vsTwin": {
+    "d": 0.00125,
+    "se": 0.002796483913389696
+   },
+   "vsSlot": {
+    "d": -0.0025,
+    "se": 0.002500000000000015
+   },
+   "vsTwinPts": 0.0510566672900692,
+   "vsTwinPtsSe": 0.11422331899837472,
+   "vsSlotPts": -0.1021133345801384,
+   "vsSlotPtsSe": 0.10211333458013899,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 1,
+    "health": 4,
+    "effects": {
+     "flying": true,
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 17.88,
+    "x1": 14.98,
+    "S": 6.65
+   },
+   "twin": {
+    "attack": 3,
+    "health": 9,
+    "N": 18.77
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "chipmunk-hoarder",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.57,
+   "vsTwin": {
+    "d": -0.02625,
+    "se": 0.012904818472173516
+   },
+   "vsSlot": {
+    "d": 0.06875,
+    "se": 0.014218192329420521
+   },
+   "vsTwinPts": -1.072190013091453,
+   "vsTwinPtsSe": 0.5271016185380019,
+   "vsSlotPts": 2.808116700953806,
+   "vsSlotPtsSe": 0.58074681218355,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 2,
+    "health": 5,
+    "effects": {
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 18.35,
+    "x1": 17.65,
+    "S": 6.65
+   },
+   "twin": {
+    "attack": 3,
+    "health": 10,
+    "N": 19.27
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "chipmunk-hoarder",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.985,
+   "vsTwin": {
+    "d": -0.0025,
+    "se": 0.0025000000000000126
+   },
+   "vsSlot": {
+    "d": -0.00125,
+    "se": 0.0012500000000000028
+   },
+   "vsTwinPts": -0.1021133345801384,
+   "vsTwinPtsSe": 0.10211333458013891,
+   "vsSlotPts": -0.0510566672900692,
+   "vsSlotPtsSe": 0.05105666729006931,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 2,
+    "health": 5,
+    "effects": {
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 18.35,
+    "x1": 17.65,
+    "S": 6.65
+   },
+   "twin": {
+    "attack": 3,
+    "health": 10,
+    "N": 19.27
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "coral-polyp-colony",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.65625,
+   "vsTwin": {
+    "d": 0.03875,
+    "se": 0.013106306343033699
+   },
+   "vsSlot": {
+    "d": 0.155,
+    "se": 0.015460191522176415
+   },
+   "vsTwinPts": 1.5827566859921451,
+   "vsTwinPtsSe": 0.535331457886396,
+   "vsSlotPts": 6.331026743968581,
+   "vsSlotPtsSe": 0.6314766838308077,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "uncommon",
+    "attack": 0,
+    "health": 12,
+    "effects": {
+     "tide": true,
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 20.22,
+    "x1": 19.28,
+    "S": 7.28
+   },
+   "twin": {
+    "attack": 3,
+    "health": 12,
+    "N": 21.23
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "coral-polyp-colony",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.985,
+   "vsTwin": {
+    "d": -0.005,
+    "se": 0.002495302219463217
+   },
+   "vsSlot": {
+    "d": -0.00125,
+    "se": 0.0027964839133896705
+   },
+   "vsTwinPts": -0.2042266691602768,
+   "vsTwinPtsSe": 0.10192145216584376,
+   "vsSlotPts": -0.0510566672900692,
+   "vsSlotPtsSe": 0.11422331899837367,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "uncommon",
+    "attack": 0,
+    "health": 12,
+    "effects": {
+     "tide": true,
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 20.22,
+    "x1": 19.28,
+    "S": 7.28
+   },
+   "twin": {
+    "attack": 3,
+    "health": 12,
+    "N": 21.23
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "old-willow-of-the-ford",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.55875,
+   "vsTwin": {
+    "d": -0.0025,
+    "se": 0.008843921991698202
+   },
+   "vsSlot": {
+    "d": 0.0575,
+    "se": 0.016844044638974053
+   },
+   "vsTwinPts": -0.1021133345801384,
+   "vsTwinPtsSe": 0.36123294613556894,
+   "vsSlotPts": 2.3486066953431832,
+   "vsSlotPtsSe": 0.6880006263609375,
+   "printed": {
+    "cost": 1,
+    "wait": 4,
+    "rarity": "legendary",
+    "attack": 2,
+    "health": 25,
+    "effects": {
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 45.27,
+    "x1": 37.65,
+    "S": 6.65
+   },
+   "twin": {
+    "attack": 8,
+    "health": 23,
+    "N": 47.53
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "old-willow-of-the-ford",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.985,
+   "vsTwin": {
+    "d": 0,
+    "se": 0.0017688728441930626
+   },
+   "vsSlot": {
+    "d": -0.00125,
+    "se": 0.0027964839133896783
+   },
+   "vsTwinPts": 0,
+   "vsTwinPtsSe": 0.07225020182752288,
+   "vsSlotPts": -0.0510566672900692,
+   "vsSlotPtsSe": 0.11422331899837398,
+   "printed": {
+    "cost": 1,
+    "wait": 4,
+    "rarity": "legendary",
+    "attack": 2,
+    "health": 25,
+    "effects": {
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 45.27,
+    "x1": 37.65,
+    "S": 6.65
+   },
+   "twin": {
+    "attack": 8,
+    "health": 23,
+    "N": 47.53
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "elder-willow",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.31375,
+   "vsTwin": {
+    "d": -0.015,
+    "se": 0.004649814616730731
+   },
+   "vsSlot": {
+    "d": -0.1875,
+    "se": 0.015414333901016127
+   },
+   "vsTwinPts": -0.6126800074808303,
+   "vsTwinPtsSe": 0.18992323027753724,
+   "vsSlotPts": -7.658500093510379,
+   "vsSlotPtsSe": 0.6296036139857718,
+   "printed": {
+    "cost": 3,
+    "wait": 5,
+    "rarity": "common",
+    "attack": 0,
+    "health": 36,
+    "effects": {
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 48.59,
+    "x1": 42.65,
+    "S": 6.65
+   },
+   "twin": {
+    "attack": 8,
+    "health": 27,
+    "N": 51.02
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "elder-willow",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.91,
+   "vsTwin": {
+    "d": -0.0325,
+    "se": 0.007826637708638198
+   },
+   "vsSlot": {
+    "d": -0.07625,
+    "se": 0.009554267471064248
+   },
+   "vsTwinPts": -1.3274733495417992,
+   "vsTwinPtsSe": 0.31968162999188,
+   "vsSlotPts": -3.114456704694221,
+   "vsSlotPtsSe": 0.3902472443763665,
+   "printed": {
+    "cost": 3,
+    "wait": 5,
+    "rarity": "common",
+    "attack": 0,
+    "health": 36,
+    "effects": {
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 48.59,
+    "x1": 42.65,
+    "S": 6.65
+   },
+   "twin": {
+    "attack": 8,
+    "health": 27,
+    "N": 51.02
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "dormouse",
+   "skill": "foraging1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.46,
+   "vsTwin": {
+    "d": -0.04125,
+    "se": 0.011842121502378625
+   },
+   "vsSlot": {
+    "d": -0.04125,
+    "se": 0.011842121502378625
+   },
+   "vsTwinPts": -1.6848700205722835,
+   "vsTwinPtsSe": 0.48369540604441585,
+   "vsSlotPts": -1.6848700205722835,
+   "vsSlotPtsSe": 0.48369540604441585,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 2,
+    "health": 5,
+    "effects": {
+     "foraging": 1
+    }
+   },
+   "budget": {
+    "N": 12.92,
+    "x1": 12.68,
+    "S": 1.68
+   },
+   "twin": {
+    "attack": 2,
+    "health": 7,
+    "N": 13.57
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "dormouse",
+   "skill": "foraging1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.89875,
+   "vsTwin": {
+    "d": -0.01,
+    "se": 0.006841674549282336
+   },
+   "vsSlot": {
+    "d": -0.00875,
+    "se": 0.005443237356219683
+   },
+   "vsTwinPts": -0.4084533383205536,
+   "vsTwinPtsSe": 0.27945048093571384,
+   "vsSlotPts": -0.3573966710304844,
+   "vsSlotPtsSe": 0.22233084694190738,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 2,
+    "health": 5,
+    "effects": {
+     "foraging": 1
+    }
+   },
+   "budget": {
+    "N": 12.92,
+    "x1": 12.68,
+    "S": 1.68
+   },
+   "twin": {
+    "attack": 2,
+    "health": 7,
+    "N": 13.57
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "chipmunk-forager",
+   "skill": "foraging1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.48625,
+   "vsTwin": {
+    "d": 0.02375,
+    "se": 0.013386800585367353
+   },
+   "vsSlot": {
+    "d": -0.015,
+    "se": 0.012370733357596725
+   },
+   "vsTwinPts": 0.9700766785113147,
+   "vsTwinPtsSe": 0.5467883388524836,
+   "vsSlotPts": -0.6126800074808303,
+   "vsSlotPtsSe": 0.5052867337383813,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "starter",
+    "attack": 1,
+    "health": 8,
+    "effects": {
+     "foraging": 1
+    }
+   },
+   "budget": {
+    "N": 11.75,
+    "x1": 12.68,
+    "S": 1.68
+   },
+   "twin": {
+    "attack": 2,
+    "health": 6,
+    "N": 12.34
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "chipmunk-forager",
+   "skill": "foraging1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.90125,
+   "vsTwin": {
+    "d": 0.0025,
+    "se": 0.007292713286826399
+   },
+   "vsSlot": {
+    "d": -0.00625,
+    "se": 0.0059944631837285335
+   },
+   "vsTwinPts": 0.1021133345801384,
+   "vsTwinPtsSe": 0.29787330874188994,
+   "vsSlotPts": -0.255283336450346,
+   "vsSlotPtsSe": 0.24484584988335734,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "starter",
+    "attack": 1,
+    "health": 8,
+    "effects": {
+     "foraging": 1
+    }
+   },
+   "budget": {
+    "N": 11.75,
+    "x1": 12.68,
+    "S": 1.68
+   },
+   "twin": {
+    "attack": 2,
+    "health": 6,
+    "N": 12.34
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "raccoon-nightcrew",
+   "skill": "foraging1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.44625,
+   "vsTwin": {
+    "d": -0.10875,
+    "se": 0.013090779484407658
+   },
+   "vsSlot": {
+    "d": -0.055,
+    "se": 0.014347510718929053
+   },
+   "vsTwinPts": -4.44193005423602,
+   "vsTwinPtsSe": 0.5346972581624523,
+   "vsSlotPts": -2.2464933607630444,
+   "vsSlotPtsSe": 0.5860288649736497,
+   "printed": {
+    "cost": 1,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 3,
+    "health": 7,
+    "effects": {
+     "foraging": 2
+    }
+   },
+   "budget": {
+    "N": 21.5,
+    "x1": 19.36,
+    "S": 3.36
+   },
+   "twin": {
+    "attack": 4,
+    "health": 10,
+    "N": 22.58
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "raccoon-nightcrew",
+   "skill": "foraging1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.89125,
+   "vsTwin": {
+    "d": -0.02375,
+    "se": 0.006913187548273044
+   },
+   "vsSlot": {
+    "d": -0.01625,
+    "se": 0.008555636769151534
+   },
+   "vsTwinPts": -0.9700766785113147,
+   "vsTwinPtsSe": 0.28237145325282076,
+   "vsSlotPts": -0.6637366747708996,
+   "vsSlotPtsSe": 0.34945783998180197,
+   "printed": {
+    "cost": 1,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 3,
+    "health": 7,
+    "effects": {
+     "foraging": 2
+    }
+   },
+   "budget": {
+    "N": 21.5,
+    "x1": 19.36,
+    "S": 3.36
+   },
+   "twin": {
+    "attack": 4,
+    "health": 10,
+    "N": 22.58
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "glowworm-cluster",
+   "skill": "onPlayGain1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.55625,
+   "vsTwin": {
+    "d": -0.04,
+    "se": 0.013628358859617202
+   },
+   "vsSlot": {
+    "d": 0.055,
+    "se": 0.014456139698021325
+   },
+   "vsTwinPts": -1.6338133532822143,
+   "vsTwinPtsSe": 0.5566548672041138,
+   "vsSlotPts": 2.2464933607630444,
+   "vsSlotPtsSe": 0.5904658518885089,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 1,
+    "health": 11,
+    "effects": {
+     "nocturnal": true,
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 1
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 18.35,
+    "x1": 18.2,
+    "S": 4.2
+   },
+   "twin": {
+    "attack": 3,
+    "health": 10,
+    "N": 19.27
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "glowworm-cluster",
+   "skill": "onPlayGain1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 11,
+   "cost": 0,
+   "wr": 0.9625,
+   "vsTwin": {
+    "d": -0.00625,
+    "se": 0.004839209057829825
+   },
+   "vsSlot": {
+    "d": -0.00875,
+    "se": 0.004499122080959192
+   },
+   "vsTwinPts": -0.255283336450346,
+   "vsTwinPtsSe": 0.19765910945016527,
+   "vsSlotPts": -0.3573966710304844,
+   "vsSlotPtsSe": 0.18376814334794978,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 1,
+    "health": 11,
+    "effects": {
+     "nocturnal": true,
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 1
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 18.35,
+    "x1": 18.2,
+    "S": 4.2
+   },
+   "twin": {
+    "attack": 3,
+    "health": 10,
+    "N": 19.27
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "trash-panda-trickster",
+   "skill": "onPlayGain1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.53,
+   "vsTwin": {
+    "d": -0.015,
+    "se": 0.013344149763703402
+   },
+   "vsSlot": {
+    "d": 0.02875,
+    "se": 0.013834505368768919
+   },
+   "vsTwinPts": -0.6126800074808303,
+   "vsTwinPtsSe": 0.545046251803408,
+   "vsSlotPts": 1.1743033476715916,
+   "vsSlotPtsSe": 0.5650749901887285,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 2,
+    "health": 4,
+    "effects": {
+     "nocturnal": 1,
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 1
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 14.56,
+    "x1": 14.17,
+    "S": 4.17
+   },
+   "twin": {
+    "attack": 2,
+    "health": 9,
+    "N": 15.29
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "trash-panda-trickster",
+   "skill": "onPlayGain1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 11,
+   "cost": 0,
+   "wr": 0.9575,
+   "vsTwin": {
+    "d": -0.01,
+    "se": 0.0052948129149910286
+   },
+   "vsSlot": {
+    "d": -0.01375,
+    "se": 0.004483447166870888
+   },
+   "vsTwinPts": -0.4084533383205536,
+   "vsTwinPtsSe": 0.2162684010910867,
+   "vsSlotPts": -0.5616233401907611,
+   "vsSlotPtsSe": 0.18312789624922424,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 2,
+    "health": 4,
+    "effects": {
+     "nocturnal": 1,
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 1
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 14.56,
+    "x1": 14.17,
+    "S": 4.17
+   },
+   "twin": {
+    "attack": 2,
+    "health": 9,
+    "N": 15.29
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "cone-cutter-squirrel",
+   "skill": "onPlayGain1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.64125,
+   "vsTwin": {
+    "d": 0.03625,
+    "se": 0.011729957875657799
+   },
+   "vsSlot": {
+    "d": 0.14,
+    "se": 0.01449612610631233
+   },
+   "vsTwinPts": 1.4806433514120065,
+   "vsTwinPtsSe": 0.47911404526718965,
+   "vsSlotPts": 5.71834673648775,
+   "vsSlotPtsSe": 0.5920991100838999,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 3,
+    "health": 5,
+    "effects": {
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 2
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 19.99,
+    "x1": 18.28,
+    "S": 4.28
+   },
+   "twin": {
+    "attack": 3,
+    "health": 11,
+    "N": 20.99
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "cone-cutter-squirrel",
+   "skill": "onPlayGain1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 11,
+   "cost": 0,
+   "wr": 0.9675,
+   "vsTwin": {
+    "d": -0.00625,
+    "se": 0.0037458257952834428
+   },
+   "vsSlot": {
+    "d": -0.00375,
+    "se": 0.0033065977773349404
+   },
+   "vsTwinPts": -0.255283336450346,
+   "vsTwinPtsSe": 0.15299950508507645,
+   "vsSlotPts": -0.15317000187020757,
+   "vsSlotPtsSe": 0.13505909006357789,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 3,
+    "health": 5,
+    "effects": {
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 2
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 19.99,
+    "x1": 18.28,
+    "S": 4.28
+   },
+   "twin": {
+    "attack": 3,
+    "health": 11,
+    "N": 20.99
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "pumice-beetle",
+   "skill": "onPlayGain1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.62,
+   "vsTwin": {
+    "d": 0.02,
+    "se": 0.008991721961325689
+   },
+   "vsSlot": {
+    "d": 0.11875,
+    "se": 0.015608173041939793
+   },
+   "vsTwinPts": 0.8169066766411072,
+   "vsTwinPtsSe": 0.3672698852353713,
+   "vsSlotPts": 4.850383392556573,
+   "vsSlotPtsSe": 0.6375210384065177,
+   "printed": {
+    "cost": 1,
+    "wait": 1,
+    "rarity": "uncommon",
+    "attack": 3,
+    "health": 10,
+    "effects": {
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 2
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 24.31,
+    "x1": 23.24,
+    "S": 4.24
+   },
+   "twin": {
+    "attack": 4,
+    "health": 13,
+    "N": 25.53
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "pumice-beetle",
+   "skill": "onPlayGain1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 11,
+   "cost": 0,
+   "wr": 0.97125,
+   "vsTwin": {
+    "d": 0,
+    "se": 0.003537745688386125
+   },
+   "vsSlot": {
+    "d": 0,
+    "se": 0.0046799976466303465
+   },
+   "vsTwinPts": 0,
+   "vsTwinPtsSe": 0.14450040365504577,
+   "vsSlotPts": 0,
+   "vsSlotPtsSe": 0.19115606620984993,
+   "printed": {
+    "cost": 1,
+    "wait": 1,
+    "rarity": "uncommon",
+    "attack": 3,
+    "health": 10,
+    "effects": {
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 2
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 24.31,
+    "x1": 23.24,
+    "S": 4.24
+   },
+   "twin": {
+    "attack": 4,
+    "health": 13,
+    "N": 25.53
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "salvager-hermit-crab",
+   "skill": "onPlayGain1",
+   "level": 6,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.6275,
+   "vsTwin": {
+    "d": 0.0225,
+    "se": 0.013094140221303946
+   },
+   "vsSlot": {
+    "d": 0.12625,
+    "se": 0.015126125461079845
+   },
+   "vsTwinPts": 0.9190200112212454,
+   "vsTwinPtsSe": 0.5348345285829029,
+   "vsSlotPts": 5.1567233962969885,
+   "vsSlotPtsSe": 0.6178316440433586,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 1,
+    "health": 10,
+    "effects": {
+     "armor": 2,
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 1
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 19.87,
+    "x1": 19.29,
+    "S": 6.29
+   },
+   "twin": {
+    "attack": 3,
+    "health": 11,
+    "N": 20.86
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "salvager-hermit-crab",
+   "skill": "onPlayGain1",
+   "level": 6,
+   "ctx": "A-n*",
+   "n": 11,
+   "cost": 0,
+   "wr": 0.97125,
+   "vsTwin": {
+    "d": -0.0025,
+    "se": 0.003062500798191544
+   },
+   "vsSlot": {
+    "d": 0,
+    "se": 0.0030637776382712507
+   },
+   "vsTwinPts": -0.1021133345801384,
+   "vsTwinPtsSe": 0.1250888674630696,
+   "vsSlotPts": 0,
+   "vsSlotPtsSe": 0.12514102042237538,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 1,
+    "health": 10,
+    "effects": {
+     "armor": 2,
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 1
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 19.87,
+    "x1": 19.29,
+    "S": 6.29
+   },
+   "twin": {
+    "attack": 3,
+    "health": 11,
+    "N": 20.86
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "forager-ant",
+   "skill": "onAttackGain1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.5625,
+   "vsTwin": {
+    "d": 0.06125,
+    "se": 0.011599190635740709
+   },
+   "vsSlot": {
+    "d": 0.06125,
+    "se": 0.011599190635740709
+   },
+   "vsTwinPts": 2.5017766972133906,
+   "vsTwinPtsSe": 0.4737728136984797,
+   "vsSlotPts": 2.5017766972133906,
+   "vsSlotPtsSe": 0.4737728136984797,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 1,
+    "health": 5,
+    "effects": {
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onAttack",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 12.92,
+    "x1": 9.35,
+    "S": 1.35
+   },
+   "twin": {
+    "attack": 2,
+    "health": 7,
+    "N": 13.57
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "forager-ant",
+   "skill": "onAttackGain1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.9825,
+   "vsTwin": {
+    "d": -0.0025,
+    "se": 0.0017666603694757917
+   },
+   "vsSlot": {
+    "d": -0.00375,
+    "se": 0.0021623520951105633
+   },
+   "vsTwinPts": -0.1021133345801384,
+   "vsTwinPtsSe": 0.07215983255910097,
+   "vsSlotPts": -0.15317000187020757,
+   "vsSlotPtsSe": 0.08832199318723527,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 1,
+    "health": 5,
+    "effects": {
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onAttack",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 12.92,
+    "x1": 9.35,
+    "S": 1.35
+   },
+   "twin": {
+    "attack": 2,
+    "health": 7,
+    "N": 13.57
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "gull-thief",
+   "skill": "onAttackGain1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.6925,
+   "vsTwin": {
+    "d": 0.19125,
+    "se": 0.014785637142414052
+   },
+   "vsSlot": {
+    "d": 0.19125,
+    "se": 0.014785637142414052
+   },
+   "vsTwinPts": 7.811670095380587,
+   "vsTwinPtsSe": 0.6039242850015389,
+   "vsSlotPts": 7.811670095380587,
+   "vsSlotPtsSe": 0.6039242850015389,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 1,
+    "health": 7,
+    "effects": {
+     "flying": true,
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onAttack",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 12.92,
+    "x1": 12.79,
+    "S": 0.89
+   },
+   "twin": {
+    "attack": 2,
+    "health": 7,
+    "N": 13.57
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "gull-thief",
+   "skill": "onAttackGain1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.985,
+   "vsTwin": {
+    "d": 0,
+    "se": 0.0025015639663713
+   },
+   "vsSlot": {
+    "d": -0.00125,
+    "se": 0.002165966559973554
+   },
+   "vsTwinPts": 0,
+   "vsTwinPtsSe": 0.10217721530867624,
+   "vsSlotPts": -0.0510566672900692,
+   "vsSlotPtsSe": 0.08846962721118837,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 1,
+    "health": 7,
+    "effects": {
+     "flying": true,
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onAttack",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 12.92,
+    "x1": 12.79,
+    "S": 0.89
+   },
+   "twin": {
+    "attack": 2,
+    "health": 7,
+    "N": 13.57
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "ferry-toll-frog",
+   "skill": "onKillGain1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.44875,
+   "vsTwin": {
+    "d": -0.05625,
+    "se": 0.012156979973562458
+   },
+   "vsSlot": {
+    "d": -0.0525,
+    "se": 0.012113550682507288
+   },
+   "vsTwinPts": -2.297550028053114,
+   "vsTwinPtsSe": 0.4965559054097701,
+   "vsSlotPts": -2.144380026182906,
+   "vsSlotPtsSe": 0.4947820215185322,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 2,
+    "health": 6,
+    "effects": {
+     "triggers": [
+      {
+       "on": "onKill",
+       "do": "gain",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 14.09,
+    "x1": 13.2,
+    "S": 1.2
+   },
+   "twin": {
+    "attack": 2,
+    "health": 8,
+    "N": 14.79
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "ferry-toll-frog",
+   "skill": "onKillGain1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.8475,
+   "vsTwin": {
+    "d": -0.02,
+    "se": 0.007040025031244586
+   },
+   "vsSlot": {
+    "d": -0.02625,
+    "se": 0.0075513210723304955
+   },
+   "vsTwinPts": -0.8169066766411072,
+   "vsTwinPtsSe": 0.28755217258721105,
+   "vsSlotPts": -1.072190013091453,
+   "vsSlotPtsSe": 0.3084362300723733,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 2,
+    "health": 6,
+    "effects": {
+     "triggers": [
+      {
+       "on": "onKill",
+       "do": "gain",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 14.09,
+    "x1": 13.2,
+    "S": 1.2
+   },
+   "twin": {
+    "attack": 2,
+    "health": 8,
+    "N": 14.79
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "beaver-feller",
+   "skill": "onKillGain1",
+   "level": 3,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.55625,
+   "vsTwin": {
+    "d": -0.04875,
+    "se": 0.01330180323627861
+   },
+   "vsSlot": {
+    "d": 0.055,
+    "se": 0.013212189539987195
+   },
+   "vsTwinPts": -1.9912100243126987,
+   "vsTwinPtsSe": 0.5433165937541141,
+   "vsSlotPts": 2.2464933607630444,
+   "vsSlotPtsSe": 0.5396562924131668,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 2,
+    "health": 9,
+    "effects": {
+     "repair": 2,
+     "triggers": [
+      {
+       "on": "onKill",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 1
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 17.96,
+    "x1": 19.17,
+    "S": 4.17
+   },
+   "twin": {
+    "attack": 3,
+    "health": 11,
+    "N": 20.69
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "beaver-feller",
+   "skill": "onKillGain1",
+   "level": 3,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.88,
+   "vsTwin": {
+    "d": -0.0075,
+    "se": 0.008661608790146437
+   },
+   "vsSlot": {
+    "d": 0.00625,
+    "se": 0.009604894031778955
+   },
+   "vsTwinPts": -0.30634000374041515,
+   "vsTwinPtsSe": 0.35378630255619636,
+   "vsSlotPts": 0.255283336450346,
+   "vsSlotPtsSe": 0.39231510314952756,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 2,
+    "health": 9,
+    "effects": {
+     "repair": 2,
+     "triggers": [
+      {
+       "on": "onKill",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 1
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 17.96,
+    "x1": 19.17,
+    "S": 4.17
+   },
+   "twin": {
+    "attack": 3,
+    "health": 11,
+    "N": 20.69
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "dust-hyena",
+   "skill": "onKillGain1",
+   "level": 3,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.57875,
+   "vsTwin": {
+    "d": -0.07875,
+    "se": 0.013817532418187329
+   },
+   "vsSlot": {
+    "d": 0.0775,
+    "se": 0.011544859992234598
+   },
+   "vsTwinPts": -3.2165700392743592,
+   "vsTwinPtsSe": 0.5643817243561086,
+   "vsSlotPts": 3.1655133719842903,
+   "vsSlotPtsSe": 0.4715536604271621,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "uncommon",
+    "attack": 2,
+    "health": 7,
+    "effects": {
+     "carnage": 3,
+     "triggers": [
+      {
+       "on": "onKill",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 1
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 15.16,
+    "x1": 15.89,
+    "S": 2.89
+   },
+   "twin": {
+    "attack": 3,
+    "health": 10,
+    "N": 19.58
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "dust-hyena",
+   "skill": "onKillGain1",
+   "level": 3,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.88125,
+   "vsTwin": {
+    "d": -0.0225,
+    "se": 0.007870490345133634
+   },
+   "vsSlot": {
+    "d": 0.0075,
+    "se": 0.005587370659676237
+   },
+   "vsTwinPts": -0.9190200112212454,
+   "vsTwinPtsSe": 0.32147280556895186,
+   "vsSlotPts": 0.30634000374041515,
+   "vsSlotPtsSe": 0.22821801983790724,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "uncommon",
+    "attack": 2,
+    "health": 7,
+    "effects": {
+     "carnage": 3,
+     "triggers": [
+      {
+       "on": "onKill",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 1
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 15.16,
+    "x1": 15.89,
+    "S": 2.89
+   },
+   "twin": {
+    "attack": 3,
+    "health": 10,
+    "N": 19.58
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "driftwood-crab",
+   "skill": "onAttackedGain1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.5625,
+   "vsTwin": {
+    "d": 0.0875,
+    "se": 0.01286999352823335
+   },
+   "vsSlot": {
+    "d": 0.06125,
+    "se": 0.01601776382090464
+   },
+   "vsTwinPts": 3.5739667103048434,
+   "vsTwinPtsSe": 0.5256791820770831,
+   "vsSlotPts": 2.5017766972133906,
+   "vsSlotPtsSe": 0.6542509105078685,
+   "printed": {
+    "cost": 1,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 2,
+    "health": 10,
+    "effects": {
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onAttacked",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ],
+     "crabClaws": true
+    }
+   },
+   "budget": {
+    "N": 20.34,
+    "x1": 17.15,
+    "S": 1.15
+   },
+   "twin": {
+    "attack": 3,
+    "health": 12,
+    "N": 21.36
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "driftwood-crab",
+   "skill": "onAttackedGain1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.9875,
+   "vsTwin": {
+    "d": 0.00125,
+    "se": 0.0021659665599735524
+   },
+   "vsSlot": {
+    "d": 0.0025,
+    "se": 0.0017666603694757885
+   },
+   "vsTwinPts": 0.0510566672900692,
+   "vsTwinPtsSe": 0.0884696272111883,
+   "vsSlotPts": 0.1021133345801384,
+   "vsSlotPtsSe": 0.07215983255910084,
+   "printed": {
+    "cost": 1,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 2,
+    "health": 10,
+    "effects": {
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onAttacked",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ],
+     "crabClaws": true
+    }
+   },
+   "budget": {
+    "N": 20.34,
+    "x1": 17.15,
+    "S": 1.15
+   },
+   "twin": {
+    "attack": 3,
+    "health": 12,
+    "N": 21.36
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "gannet-nestweaver",
+   "skill": null,
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.46625,
+   "vsTwin": {
+    "d": -0.04875,
+    "se": 0.012700134394645315
+   },
+   "vsSlot": {
+    "d": -0.035,
+    "se": 0.012320043804678124
+   },
+   "vsTwinPts": -1.9912100243126987,
+   "vsTwinPtsSe": 0.5187412290612562,
+   "vsSlotPts": -1.4295866841219376,
+   "vsSlotPtsSe": 0.5032163020276234,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 1,
+    "health": 7,
+    "effects": {
+     "flying": true,
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onHealed",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 16.72,
+    "x1": 12.9,
+    "S": 1
+   },
+   "twin": {
+    "attack": 3,
+    "health": 8,
+    "N": 17.56
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "riverside-peddler",
+   "skill": "bounty1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.475,
+   "vsTwin": {
+    "d": -0.03,
+    "se": 0.01366046340082971
+   },
+   "vsSlot": {
+    "d": -0.02625,
+    "se": 0.013612781002913871
+   },
+   "vsTwinPts": -1.2253600149616606,
+   "vsTwinPtsSe": 0.5579661879074638,
+   "vsSlotPts": -1.072190013091453,
+   "vsSlotPtsSe": 0.5560185844466784,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 1,
+    "health": 7,
+    "effects": {
+     "bounty": 1
+    }
+   },
+   "budget": {
+    "N": 14.09,
+    "x1": 11.8,
+    "S": 1.8
+   },
+   "twin": {
+    "attack": 2,
+    "health": 8,
+    "N": 14.79
+   }
+  },
+  {
+   "opp": "mirror",
+   "card": "riverside-peddler",
+   "skill": "bounty1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.86125,
+   "vsTwin": {
+    "d": 0.00625,
+    "se": 0.005994463183728545
+   },
+   "vsSlot": {
+    "d": -0.0075,
+    "se": 0.004996087330177839
+   },
+   "vsTwinPts": 0.255283336450346,
+   "vsTwinPtsSe": 0.24484584988335778,
+   "vsSlotPts": -0.30634000374041515,
+   "vsSlotPtsSe": 0.204066854855216,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 1,
+    "health": 7,
+    "effects": {
+     "bounty": 1
+    }
+   },
+   "budget": {
+    "N": 14.09,
+    "x1": 11.8,
+    "S": 1.8
+   },
+   "twin": {
+    "attack": 2,
+    "health": 8,
+    "N": 14.79
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "beaver-lumberjack",
+   "skill": "delivery1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.30625,
+   "vsTwin": {
+    "d": -0.01,
+    "se": 0.010000000000000094
+   },
+   "vsSlot": {
+    "d": -0.00875,
+    "se": 0.011252780910636149
+   },
+   "vsTwinPts": -0.49155975692099935,
+   "vsTwinPtsSe": 0.49155975692100395,
+   "vsSlotPts": -0.4301147873058745,
+   "vsSlotPtsSe": 0.5531414249117567,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 3,
+    "health": 4,
+    "effects": {
+     "delivery": 1
+    }
+   },
+   "budget": {
+    "N": 16.72,
+    "x1": 17.62,
+    "S": 4.62
+   },
+   "twin": {
+    "attack": 3,
+    "health": 8,
+    "N": 17.56
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "beaver-lumberjack",
+   "skill": "delivery1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.64125,
+   "vsTwin": {
+    "d": -0.005,
+    "se": 0.005864020243550626
+   },
+   "vsSlot": {
+    "d": -0.02,
+    "se": 0.007258847262442841
+   },
+   "vsTwinPts": -0.24577987846049967,
+   "vsTwinPtsSe": 0.2882516365499565,
+   "vsSlotPts": -0.9831195138419987,
+   "vsSlotPtsSe": 0.35681571958530645,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 3,
+    "health": 4,
+    "effects": {
+     "delivery": 1
+    }
+   },
+   "budget": {
+    "N": 16.72,
+    "x1": 17.62,
+    "S": 4.62
+   },
+   "twin": {
+    "attack": 3,
+    "health": 8,
+    "N": 17.56
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "pika-hoarder",
+   "skill": "delivery1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.3525,
+   "vsTwin": {
+    "d": 0.0375,
+    "se": 0.010966655000608849
+   },
+   "vsSlot": {
+    "d": 0.0375,
+    "se": 0.010966655000608849
+   },
+   "vsTwinPts": 1.8433490884537476,
+   "vsTwinPtsSe": 0.5390766266335747,
+   "vsSlotPts": 1.8433490884537476,
+   "vsSlotPtsSe": 0.5390766266335747,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 2,
+    "health": 5,
+    "effects": {
+     "delivery": 1,
+     "foraging": 1
+    }
+   },
+   "budget": {
+    "N": 12.92,
+    "x1": 17.93,
+    "S": 6.93
+   },
+   "twin": {
+    "attack": 2,
+    "health": 7,
+    "N": 13.57
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "pika-hoarder",
+   "skill": "delivery1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.63875,
+   "vsTwin": {
+    "d": -0.005,
+    "se": 0.008842595171198493
+   },
+   "vsSlot": {
+    "d": -0.0225,
+    "se": 0.007870490345133627
+   },
+   "vsTwinPts": -0.24577987846049967,
+   "vsTwinPtsSe": 0.4346663932905134,
+   "vsSlotPts": -1.1060094530722484,
+   "vsSlotPtsSe": 0.3868816320902958,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 2,
+    "health": 5,
+    "effects": {
+     "delivery": 1,
+     "foraging": 1
+    }
+   },
+   "budget": {
+    "N": 12.92,
+    "x1": 17.93,
+    "S": 6.93
+   },
+   "twin": {
+    "attack": 2,
+    "health": 7,
+    "N": 13.57
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "lodge-engineer",
+   "skill": "delivery1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.24875,
+   "vsTwin": {
+    "d": -0.03,
+    "se": 0.007429265945610902
+   },
+   "vsSlot": {
+    "d": -0.06625,
+    "se": 0.01142866746059689
+   },
+   "vsTwinPts": -1.4746792707629979,
+   "vsTwinPtsSe": 0.36519281623259536,
+   "vsSlotPts": -3.2565833896016207,
+   "vsSlotPtsSe": 0.5617872998861942,
+   "printed": {
+    "cost": 2,
+    "wait": 2,
+    "rarity": "uncommon",
+    "attack": 3,
+    "health": 14,
+    "effects": {
+     "delivery": 1
+    }
+   },
+   "budget": {
+    "N": 29.27,
+    "x1": 28.3,
+    "S": 5.3
+   },
+   "twin": {
+    "attack": 5,
+    "health": 15,
+    "N": 30.73
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "lodge-engineer",
+   "skill": "delivery1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.57875,
+   "vsTwin": {
+    "d": -0.05375,
+    "se": 0.009903219884466968
+   },
+   "vsSlot": {
+    "d": -0.0825,
+    "se": 0.01177031702859741
+   },
+   "vsTwinPts": -2.6421336934503716,
+   "vsTwinPtsSe": 0.486802435914379,
+   "vsSlotPts": -4.055367994598245,
+   "vsSlotPtsSe": 0.5785814177460442,
+   "printed": {
+    "cost": 2,
+    "wait": 2,
+    "rarity": "uncommon",
+    "attack": 3,
+    "health": 14,
+    "effects": {
+     "delivery": 1
+    }
+   },
+   "budget": {
+    "N": 29.27,
+    "x1": 28.3,
+    "S": 5.3
+   },
+   "twin": {
+    "attack": 5,
+    "health": 15,
+    "N": 30.73
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "pack-mule",
+   "skill": "delivery1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.33125,
+   "vsTwin": {
+    "d": -0.105,
+    "se": 0.01220265877181595
+   },
+   "vsSlot": {
+    "d": 0.01625,
+    "se": 0.010816823769970006
+   },
+   "vsTwinPts": -5.161377447670493,
+   "vsTwinPtsSe": 0.5998335979663748,
+   "vsSlotPts": 0.798784604996624,
+   "vsSlotPtsSe": 0.5317115263023744,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 1,
+    "health": 9,
+    "effects": {
+     "delivery": 1
+    }
+   },
+   "budget": {
+    "N": 17.59,
+    "x1": 17.25,
+    "S": 5.25
+   },
+   "twin": {
+    "attack": 3,
+    "health": 9,
+    "N": 18.47
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "pack-mule",
+   "skill": "delivery1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.6375,
+   "vsTwin": {
+    "d": -0.05625,
+    "se": 0.010793657891945634
+   },
+   "vsSlot": {
+    "d": -0.02375,
+    "se": 0.007765810107985593
+   },
+   "vsTwinPts": -2.7650236326806215,
+   "vsTwinPtsSe": 0.5305727849653222,
+   "vsSlotPts": -1.1674544226873735,
+   "vsSlotPtsSe": 0.3817359728976038,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 1,
+    "health": 9,
+    "effects": {
+     "delivery": 1
+    }
+   },
+   "budget": {
+    "N": 17.59,
+    "x1": 17.25,
+    "S": 5.25
+   },
+   "twin": {
+    "attack": 3,
+    "health": 9,
+    "N": 18.47
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "muskrat-lodgekeeper",
+   "skill": "delivery1",
+   "level": 2,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.2825,
+   "vsTwin": {
+    "d": -0.06375,
+    "se": 0.010594702994394176
+   },
+   "vsSlot": {
+    "d": -0.0325,
+    "se": 0.011542149453958863
+   },
+   "vsTwinPts": -3.133693450371371,
+   "vsTwinPtsSe": 0.5207929628574585,
+   "vsSlotPts": -1.597569209993248,
+   "vsSlotPtsSe": 0.5673656179933865,
+   "printed": {
+    "cost": 1,
+    "wait": 2,
+    "rarity": "uncommon",
+    "attack": 3,
+    "health": 7,
+    "effects": {
+     "tide": true,
+     "delivery": 2
+    }
+   },
+   "budget": {
+    "N": 26.32,
+    "x1": 23.7,
+    "S": 7.7
+   },
+   "twin": {
+    "attack": 5,
+    "health": 13,
+    "N": 28.64
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "muskrat-lodgekeeper",
+   "skill": "delivery1",
+   "level": 2,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.57625,
+   "vsTwin": {
+    "d": -0.07,
+    "se": 0.011192926427101365
+   },
+   "vsSlot": {
+    "d": -0.085,
+    "se": 0.012140963872555356
+   },
+   "vsTwinPts": -3.440918298446996,
+   "vsTwinPtsSe": 0.5501992193740577,
+   "vsSlotPts": -4.178257933828495,
+   "vsSlotPtsSe": 0.5968009249979945,
+   "printed": {
+    "cost": 1,
+    "wait": 2,
+    "rarity": "uncommon",
+    "attack": 3,
+    "health": 7,
+    "effects": {
+     "tide": true,
+     "delivery": 2
+    }
+   },
+   "budget": {
+    "N": 26.32,
+    "x1": 23.7,
+    "S": 7.7
+   },
+   "twin": {
+    "attack": 5,
+    "health": 13,
+    "N": 28.64
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "giant-clam",
+   "skill": "delivery1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.22875,
+   "vsTwin": {
+    "d": -0.07875,
+    "se": 0.01119004326221588
+   },
+   "vsSlot": {
+    "d": -0.08625,
+    "se": 0.011803084888753129
+   },
+   "vsTwinPts": -3.87103308575287,
+   "vsTwinPtsSe": 0.5500574945910304,
+   "vsSlotPts": -4.239702903443619,
+   "vsSlotPtsSe": 0.5801921538833409,
+   "printed": {
+    "cost": 1,
+    "wait": 2,
+    "rarity": "common",
+    "attack": 5,
+    "health": 4,
+    "effects": {
+     "tide": true,
+     "delivery": {
+      "v": 1,
+      "res": "pearl"
+     }
+    }
+   },
+   "budget": {
+    "N": 25.88,
+    "x1": 23.19,
+    "S": 4.19
+   },
+   "twin": {
+    "attack": 4,
+    "health": 15,
+    "N": 27.17
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "giant-clam",
+   "skill": "delivery1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.525,
+   "vsTwin": {
+    "d": -0.1125,
+    "se": 0.011725038727716797
+   },
+   "vsSlot": {
+    "d": -0.13625,
+    "se": 0.013823758253105474
+   },
+   "vsTwinPts": -5.530047265361243,
+   "vsTwinPtsSe": 0.5763557186885772,
+   "vsSlotPts": -6.697501688048616,
+   "vsSlotPtsSe": 0.6795203246631185,
+   "printed": {
+    "cost": 1,
+    "wait": 2,
+    "rarity": "common",
+    "attack": 5,
+    "health": 4,
+    "effects": {
+     "tide": true,
+     "delivery": {
+      "v": 1,
+      "res": "pearl"
+     }
+    }
+   },
+   "budget": {
+    "N": 25.88,
+    "x1": 23.19,
+    "S": 4.19
+   },
+   "twin": {
+    "attack": 4,
+    "health": 15,
+    "N": 27.17
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "irradiated-axolotl",
+   "skill": "delivery1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.2975,
+   "vsTwin": {
+    "d": -0.05125,
+    "se": 0.007800984943108363
+   },
+   "vsSlot": {
+    "d": -0.0175,
+    "se": 0.011029244888182682
+   },
+   "vsTwinPts": -2.5192437542201214,
+   "vsTwinPtsSe": 0.38346502623787226,
+   "vsSlotPts": -0.860229574611749,
+   "vsSlotPtsSe": 0.5421532936257254,
+   "printed": {
+    "cost": 1,
+    "wait": 1,
+    "rarity": "uncommon",
+    "attack": 4,
+    "health": 9,
+    "effects": {
+     "delivery": {
+      "v": 1,
+      "res": "uranium"
+     }
+    }
+   },
+   "budget": {
+    "N": 24.07,
+    "x1": 24.69,
+    "S": 3.69
+   },
+   "twin": {
+    "attack": 4,
+    "health": 13,
+    "N": 25.27
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "irradiated-axolotl",
+   "skill": "delivery1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.63,
+   "vsTwin": {
+    "d": -0.04375,
+    "se": 0.007857932664333262
+   },
+   "vsSlot": {
+    "d": -0.03125,
+    "se": 0.01077552489654193
+   },
+   "vsTwinPts": -2.150573936529372,
+   "vsTwinPtsSe": 0.3862643470381239,
+   "vsSlotPts": -1.536124240378123,
+   "vsSlotPtsSe": 0.5296814398840328,
+   "printed": {
+    "cost": 1,
+    "wait": 1,
+    "rarity": "uncommon",
+    "attack": 4,
+    "health": 9,
+    "effects": {
+     "delivery": {
+      "v": 1,
+      "res": "uranium"
+     }
+    }
+   },
+   "budget": {
+    "N": 24.07,
+    "x1": 24.69,
+    "S": 3.69
+   },
+   "twin": {
+    "attack": 4,
+    "health": 13,
+    "N": 25.27
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "muskrat-reedgatherer",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.35,
+   "vsTwin": {
+    "d": 0.03375,
+    "se": 0.010910429355020332
+   },
+   "vsSlot": {
+    "d": 0.035,
+    "se": 0.011532996684107944
+   },
+   "vsTwinPts": 1.6590141796083728,
+   "vsTwinPtsSe": 0.536312800165753,
+   "vsSlotPts": 1.720459149223498,
+   "vsSlotPtsSe": 0.5669157046610792,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 1,
+    "health": 7,
+    "effects": {
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 16.72,
+    "x1": 16.52,
+    "S": 6.52
+   },
+   "twin": {
+    "attack": 3,
+    "health": 8,
+    "N": 17.56
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "muskrat-reedgatherer",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.7125,
+   "vsTwin": {
+    "d": -0.01,
+    "se": 0.004666607067978673
+   },
+   "vsSlot": {
+    "d": -0.01125,
+    "se": 0.004827880737499591
+   },
+   "vsTwinPts": -0.49155975692099935,
+   "vsTwinPtsSe": 0.2293916235981414,
+   "vsSlotPts": -0.5530047265361242,
+   "vsSlotPtsSe": 0.23731918817688738,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 1,
+    "health": 7,
+    "effects": {
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 16.72,
+    "x1": 16.52,
+    "S": 6.52
+   },
+   "twin": {
+    "attack": 3,
+    "health": 8,
+    "N": 17.56
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "nutria-reedcutter",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.30125,
+   "vsTwin": {
+    "d": -0.02,
+    "se": 0.010881084389750427
+   },
+   "vsSlot": {
+    "d": -0.01375,
+    "se": 0.010821161850963835
+   },
+   "vsTwinPts": -0.9831195138419987,
+   "vsTwinPtsSe": 0.5348703197662601,
+   "vsSlotPts": -0.6758946657663741,
+   "vsSlotPtsSe": 0.5319247689062574,
+   "printed": {
+    "cost": 0,
+    "wait": 2,
+    "rarity": "common",
+    "attack": 3,
+    "health": 6,
+    "effects": {
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 21.1,
+    "x1": 21.65,
+    "S": 6.65
+   },
+   "twin": {
+    "attack": 4,
+    "health": 10,
+    "N": 22.16
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "nutria-reedcutter",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.68875,
+   "vsTwin": {
+    "d": 0,
+    "se": 0.007910639846338163
+   },
+   "vsSlot": {
+    "d": -0.035,
+    "se": 0.006966305460192417
+   },
+   "vsTwinPts": 0,
+   "vsTwinPtsSe": 0.3888552199955559,
+   "vsSlotPts": -1.720459149223498,
+   "vsSlotPtsSe": 0.3424355418649615,
+   "printed": {
+    "cost": 0,
+    "wait": 2,
+    "rarity": "common",
+    "attack": 3,
+    "health": 6,
+    "effects": {
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 21.1,
+    "x1": 21.65,
+    "S": 6.65
+   },
+   "twin": {
+    "attack": 4,
+    "health": 10,
+    "N": 22.16
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "sunfeather-scout",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.34,
+   "vsTwin": {
+    "d": 0.00125,
+    "se": 0.01153155530857808
+   },
+   "vsSlot": {
+    "d": 0.025,
+    "se": 0.01156550695771637
+   },
+   "vsTwinPts": 0.06144496961512492,
+   "vsTwinPtsSe": 0.56684485244057,
+   "vsSlotPts": 1.2288993923024985,
+   "vsSlotPtsSe": 0.5685137788803185,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 1,
+    "health": 4,
+    "effects": {
+     "flying": true,
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 17.88,
+    "x1": 14.98,
+    "S": 6.65
+   },
+   "twin": {
+    "attack": 3,
+    "health": 9,
+    "N": 18.77
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "sunfeather-scout",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.72125,
+   "vsTwin": {
+    "d": 0.00375,
+    "se": 0.006962795597183665
+   },
+   "vsSlot": {
+    "d": -0.0025,
+    "se": 0.005866020819116875
+   },
+   "vsTwinPts": 0.18433490884537473,
+   "vsTwinPtsSe": 0.3422630111242207,
+   "vsSlotPts": -0.12288993923024984,
+   "vsSlotPtsSe": 0.2883499767938612,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 1,
+    "health": 4,
+    "effects": {
+     "flying": true,
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 17.88,
+    "x1": 14.98,
+    "S": 6.65
+   },
+   "twin": {
+    "attack": 3,
+    "health": 9,
+    "N": 18.77
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "chipmunk-hoarder",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.33,
+   "vsTwin": {
+    "d": -0.03,
+    "se": 0.011950042024213833
+   },
+   "vsSlot": {
+    "d": 0.015,
+    "se": 0.011451317209486896
+   },
+   "vsTwinPts": -1.4746792707629979,
+   "vsTwinPtsSe": 0.5874159752618279,
+   "vsSlotPts": 0.7373396353814989,
+   "vsSlotPtsSe": 0.5629006703920635,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 2,
+    "health": 5,
+    "effects": {
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 18.35,
+    "x1": 17.65,
+    "S": 6.65
+   },
+   "twin": {
+    "attack": 3,
+    "health": 10,
+    "N": 19.27
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "chipmunk-hoarder",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.71625,
+   "vsTwin": {
+    "d": -0.00125,
+    "se": 0.006963918945813083
+   },
+   "vsSlot": {
+    "d": -0.0075,
+    "se": 0.004672470168105934
+   },
+   "vsTwinPts": -0.06144496961512492,
+   "vsTwinPtsSe": 0.3423182304221421,
+   "vsSlotPts": -0.36866981769074947,
+   "vsSlotPtsSe": 0.2296798300054774,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 2,
+    "health": 5,
+    "effects": {
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 18.35,
+    "x1": 17.65,
+    "S": 6.65
+   },
+   "twin": {
+    "attack": 3,
+    "health": 10,
+    "N": 19.27
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "coral-polyp-colony",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.37125,
+   "vsTwin": {
+    "d": -0.01,
+    "se": 0.011458146071212325
+   },
+   "vsSlot": {
+    "d": 0.05625,
+    "se": 0.012027603707250827
+   },
+   "vsTwinPts": -0.49155975692099935,
+   "vsTwinPtsSe": 0.5632363497530434,
+   "vsSlotPts": 2.7650236326806215,
+   "vsSlotPtsSe": 0.5912285954678327,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "uncommon",
+    "attack": 0,
+    "health": 12,
+    "effects": {
+     "tide": true,
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 20.22,
+    "x1": 19.28,
+    "S": 7.28
+   },
+   "twin": {
+    "attack": 3,
+    "health": 12,
+    "N": 21.23
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "coral-polyp-colony",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.66875,
+   "vsTwin": {
+    "d": -0.05875,
+    "se": 0.009707772552698017
+   },
+   "vsSlot": {
+    "d": -0.055,
+    "se": 0.009973368794263231
+   },
+   "vsTwinPts": -2.887913571910871,
+   "vsTwinPtsSe": 0.47719503162485866,
+   "vsSlotPts": -2.7035786630654965,
+   "vsSlotPtsSe": 0.49025067401915146,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "uncommon",
+    "attack": 0,
+    "health": 12,
+    "effects": {
+     "tide": true,
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 20.22,
+    "x1": 19.28,
+    "S": 7.28
+   },
+   "twin": {
+    "attack": 3,
+    "health": 12,
+    "N": 21.23
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "old-willow-of-the-ford",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.28625,
+   "vsTwin": {
+    "d": -0.05125,
+    "se": 0.009434806109979968
+   },
+   "vsSlot": {
+    "d": -0.02875,
+    "se": 0.01162209698367172
+   },
+   "vsTwinPts": -2.5192437542201214,
+   "vsTwinPtsSe": 0.4637770998018513,
+   "vsSlotPts": -1.4132343011478732,
+   "vsSlotPtsSe": 0.5712955168205951,
+   "printed": {
+    "cost": 1,
+    "wait": 4,
+    "rarity": "legendary",
+    "attack": 2,
+    "health": 25,
+    "effects": {
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 45.27,
+    "x1": 37.65,
+    "S": 6.65
+   },
+   "twin": {
+    "attack": 8,
+    "health": 23,
+    "N": 47.53
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "old-willow-of-the-ford",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.6675,
+   "vsTwin": {
+    "d": -0.0425,
+    "se": 0.009238445409915613
+   },
+   "vsSlot": {
+    "d": -0.05625,
+    "se": 0.011764583658626713
+   },
+   "vsTwinPts": -2.0891289669142474,
+   "vsTwinPtsSe": 0.4541247980026041,
+   "vsSlotPts": -2.7650236326806215,
+   "vsSlotPtsSe": 0.5782995883511308,
+   "printed": {
+    "cost": 1,
+    "wait": 4,
+    "rarity": "legendary",
+    "attack": 2,
+    "health": 25,
+    "effects": {
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 45.27,
+    "x1": 37.65,
+    "S": 6.65
+   },
+   "twin": {
+    "attack": 8,
+    "health": 23,
+    "N": 47.53
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "elder-willow",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.21375,
+   "vsTwin": {
+    "d": 0.00125,
+    "se": 0.0012500000000000124
+   },
+   "vsSlot": {
+    "d": -0.10125,
+    "se": 0.011517980583457434
+   },
+   "vsTwinPts": 0.06144496961512492,
+   "vsTwinPtsSe": 0.06144496961512553,
+   "vsSlotPts": -4.977042538825119,
+   "vsSlotPtsSe": 0.5661775735825126,
+   "printed": {
+    "cost": 3,
+    "wait": 5,
+    "rarity": "common",
+    "attack": 0,
+    "health": 36,
+    "effects": {
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 48.59,
+    "x1": 42.65,
+    "S": 6.65
+   },
+   "twin": {
+    "attack": 8,
+    "health": 27,
+    "N": 51.02
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "elder-willow",
+   "skill": "forestry1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.62,
+   "vsTwin": {
+    "d": -0.02,
+    "se": 0.007878933747420712
+   },
+   "vsSlot": {
+    "d": -0.10375,
+    "se": 0.01290118104925218
+   },
+   "vsTwinPts": -0.9831195138419987,
+   "vsTwinPtsSe": 0.38729667576787835,
+   "vsSlotPts": -5.099932478055368,
+   "vsSlotPtsSe": 0.6341701420564205,
+   "printed": {
+    "cost": 3,
+    "wait": 5,
+    "rarity": "common",
+    "attack": 0,
+    "health": 36,
+    "effects": {
+     "forestry": 1
+    }
+   },
+   "budget": {
+    "N": 48.59,
+    "x1": 42.65,
+    "S": 6.65
+   },
+   "twin": {
+    "attack": 8,
+    "health": 27,
+    "N": 51.02
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "dormouse",
+   "skill": "foraging1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.295,
+   "vsTwin": {
+    "d": -0.02,
+    "se": 0.007677804755092519
+   },
+   "vsSlot": {
+    "d": -0.02,
+    "se": 0.007677804755092519
+   },
+   "vsTwinPts": -0.9831195138419987,
+   "vsTwinPtsSe": 0.3774099839100171,
+   "vsSlotPts": -0.9831195138419987,
+   "vsSlotPtsSe": 0.3774099839100171,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 2,
+    "health": 5,
+    "effects": {
+     "foraging": 1
+    }
+   },
+   "budget": {
+    "N": 12.92,
+    "x1": 12.68,
+    "S": 1.68
+   },
+   "twin": {
+    "attack": 2,
+    "health": 7,
+    "N": 13.57
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "dormouse",
+   "skill": "foraging1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.38125,
+   "vsTwin": {
+    "d": -0.01125,
+    "se": 0.007800984943108368
+   },
+   "vsSlot": {
+    "d": -0.00375,
+    "se": 0.005730267605752977
+   },
+   "vsTwinPts": -0.5530047265361242,
+   "vsTwinPtsSe": 0.38346502623787254,
+   "vsSlotPts": -0.18433490884537473,
+   "vsSlotPtsSe": 0.281676895137621,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 2,
+    "health": 5,
+    "effects": {
+     "foraging": 1
+    }
+   },
+   "budget": {
+    "N": 12.92,
+    "x1": 12.68,
+    "S": 1.68
+   },
+   "twin": {
+    "attack": 2,
+    "health": 7,
+    "N": 13.57
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "chipmunk-forager",
+   "skill": "foraging1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.2725,
+   "vsTwin": {
+    "d": -0.0325,
+    "se": 0.00894593341445259
+   },
+   "vsSlot": {
+    "d": -0.0425,
+    "se": 0.009067522398818056
+   },
+   "vsTwinPts": -1.597569209993248,
+   "vsTwinPtsSe": 0.4397460854639761,
+   "vsSlotPts": -2.0891289669142474,
+   "vsSlotPtsSe": 0.4457229106238721,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "starter",
+    "attack": 1,
+    "health": 8,
+    "effects": {
+     "foraging": 1
+    }
+   },
+   "budget": {
+    "N": 11.75,
+    "x1": 12.68,
+    "S": 1.68
+   },
+   "twin": {
+    "attack": 2,
+    "health": 6,
+    "N": 12.34
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "chipmunk-forager",
+   "skill": "foraging1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.36625,
+   "vsTwin": {
+    "d": -0.02125,
+    "se": 0.008167400437862085
+   },
+   "vsSlot": {
+    "d": -0.01875,
+    "se": 0.0059617509985499485
+   },
+   "vsTwinPts": -1.0445644834571237,
+   "vsTwinPtsSe": 0.40147653739119504,
+   "vsSlotPts": -0.9216745442268738,
+   "vsSlotPtsSe": 0.29305568716707375,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "starter",
+    "attack": 1,
+    "health": 8,
+    "effects": {
+     "foraging": 1
+    }
+   },
+   "budget": {
+    "N": 11.75,
+    "x1": 12.68,
+    "S": 1.68
+   },
+   "twin": {
+    "attack": 2,
+    "health": 6,
+    "N": 12.34
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "raccoon-nightcrew",
+   "skill": "foraging1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.27625,
+   "vsTwin": {
+    "d": -0.03375,
+    "se": 0.009027210811973151
+   },
+   "vsSlot": {
+    "d": -0.03875,
+    "se": 0.009832669964118627
+   },
+   "vsTwinPts": -1.6590141796083728,
+   "vsTwinPtsSe": 0.44374135524081393,
+   "vsSlotPts": -1.9047940580688725,
+   "vsSlotPtsSe": 0.4833344857446564,
+   "printed": {
+    "cost": 1,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 3,
+    "health": 7,
+    "effects": {
+     "foraging": 2
+    }
+   },
+   "budget": {
+    "N": 21.5,
+    "x1": 19.36,
+    "S": 3.36
+   },
+   "twin": {
+    "attack": 4,
+    "health": 10,
+    "N": 22.58
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "raccoon-nightcrew",
+   "skill": "foraging1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.36625,
+   "vsTwin": {
+    "d": -0.04125,
+    "se": 0.009659305078174198
+   },
+   "vsSlot": {
+    "d": -0.01875,
+    "se": 0.010518381163604939
+   },
+   "vsTwinPts": -2.0276839972991225,
+   "vsTwinPtsSe": 0.4748125656253083,
+   "vsSlotPts": -0.9216745442268738,
+   "vsSlotPtsSe": 0.5170412887984062,
+   "printed": {
+    "cost": 1,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 3,
+    "health": 7,
+    "effects": {
+     "foraging": 2
+    }
+   },
+   "budget": {
+    "N": 21.5,
+    "x1": 19.36,
+    "S": 3.36
+   },
+   "twin": {
+    "attack": 4,
+    "health": 10,
+    "N": 22.58
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "glowworm-cluster",
+   "skill": "onPlayGain1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.3175,
+   "vsTwin": {
+    "d": -0.0425,
+    "se": 0.010799906711690968
+   },
+   "vsSlot": {
+    "d": 0.0025,
+    "se": 0.011598937739977257
+   },
+   "vsTwinPts": -2.0891289669142474,
+   "vsTwinPtsSe": 0.5308799517968281,
+   "vsSlotPts": 0.12288993923024984,
+   "vsSlotPtsSe": 0.5701571016005026,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 1,
+    "health": 11,
+    "effects": {
+     "nocturnal": true,
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 1
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 18.35,
+    "x1": 18.2,
+    "S": 4.2
+   },
+   "twin": {
+    "attack": 3,
+    "health": 10,
+    "N": 19.27
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "glowworm-cluster",
+   "skill": "onPlayGain1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.615,
+   "vsTwin": {
+    "d": -0.035,
+    "se": 0.010688149778240503
+   },
+   "vsSlot": {
+    "d": -0.04625,
+    "se": 0.010260129614172747
+   },
+   "vsTwinPts": -1.720459149223498,
+   "vsTwinPtsSe": 0.5253864306927134,
+   "vsSlotPts": -2.2734638757596217,
+   "vsSlotPtsSe": 0.5043466819120702,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 1,
+    "health": 11,
+    "effects": {
+     "nocturnal": true,
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 1
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 18.35,
+    "x1": 18.2,
+    "S": 4.2
+   },
+   "twin": {
+    "attack": 3,
+    "health": 10,
+    "N": 19.27
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "trash-panda-trickster",
+   "skill": "onPlayGain1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.33875,
+   "vsTwin": {
+    "d": 0,
+    "se": 0.011046607371406957
+   },
+   "vsSlot": {
+    "d": 0.02375,
+    "se": 0.01136414764465914
+   },
+   "vsTwinPts": 0,
+   "vsTwinPtsSe": 0.5430067634290523,
+   "vsSlotPts": 1.1674544226873735,
+   "vsSlotPtsSe": 0.5586157653822994,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 2,
+    "health": 4,
+    "effects": {
+     "nocturnal": 1,
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 1
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 14.56,
+    "x1": 14.17,
+    "S": 4.17
+   },
+   "twin": {
+    "attack": 2,
+    "health": 9,
+    "N": 15.29
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "trash-panda-trickster",
+   "skill": "onPlayGain1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.62625,
+   "vsTwin": {
+    "d": -0.02,
+    "se": 0.009333214135957347
+   },
+   "vsSlot": {
+    "d": -0.035,
+    "se": 0.008203833164944769
+   },
+   "vsTwinPts": -0.9831195138419987,
+   "vsTwinPtsSe": 0.45878324719628283,
+   "vsSlotPts": -1.720459149223498,
+   "vsSlotPtsSe": 0.40326742363806833,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 2,
+    "health": 4,
+    "effects": {
+     "nocturnal": 1,
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 1
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 14.56,
+    "x1": 14.17,
+    "S": 4.17
+   },
+   "twin": {
+    "attack": 2,
+    "health": 9,
+    "N": 15.29
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "cone-cutter-squirrel",
+   "skill": "onPlayGain1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.39,
+   "vsTwin": {
+    "d": 0.0125,
+    "se": 0.011455073587219453
+   },
+   "vsSlot": {
+    "d": 0.075,
+    "se": 0.012350482501608064
+   },
+   "vsTwinPts": 0.6144496961512492,
+   "vsTwinPtsSe": 0.5630853188045755,
+   "vsSlotPts": 3.686698176907495,
+   "vsSlotPtsSe": 0.6071000176347515,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 3,
+    "health": 5,
+    "effects": {
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 2
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 19.99,
+    "x1": 18.28,
+    "S": 4.28
+   },
+   "twin": {
+    "attack": 3,
+    "health": 11,
+    "N": 20.99
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "cone-cutter-squirrel",
+   "skill": "onPlayGain1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.645,
+   "vsTwin": {
+    "d": -0.025,
+    "se": 0.009808874426859683
+   },
+   "vsSlot": {
+    "d": -0.01625,
+    "se": 0.007789947109574177
+   },
+   "vsTwinPts": -1.2288993923024985,
+   "vsTwinPtsSe": 0.4821647928935753,
+   "vsSlotPts": -0.798784604996624,
+   "vsSlotPtsSe": 0.3829224507609724,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 3,
+    "health": 5,
+    "effects": {
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 2
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 19.99,
+    "x1": 18.28,
+    "S": 4.28
+   },
+   "twin": {
+    "attack": 3,
+    "health": 11,
+    "N": 20.99
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "pumice-beetle",
+   "skill": "onPlayGain1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.39,
+   "vsTwin": {
+    "d": 0.04125,
+    "se": 0.010586578362567604
+   },
+   "vsSlot": {
+    "d": 0.075,
+    "se": 0.012724824220369331
+   },
+   "vsTwinPts": 2.0276839972991225,
+   "vsTwinPtsSe": 0.5203935886528842,
+   "vsSlotPts": 3.686698176907495,
+   "vsSlotPtsSe": 0.6255011500627193,
+   "printed": {
+    "cost": 1,
+    "wait": 1,
+    "rarity": "uncommon",
+    "attack": 3,
+    "health": 10,
+    "effects": {
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 2
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 24.31,
+    "x1": 23.24,
+    "S": 4.24
+   },
+   "twin": {
+    "attack": 4,
+    "health": 13,
+    "N": 25.53
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "pumice-beetle",
+   "skill": "onPlayGain1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.67625,
+   "vsTwin": {
+    "d": 0.0025,
+    "se": 0.009525261190693796
+   },
+   "vsSlot": {
+    "d": 0.015,
+    "se": 0.010147534951010409
+   },
+   "vsTwinPts": 0.12288993923024984,
+   "vsTwinPtsSe": 0.4682235075506471,
+   "vsSlotPts": 0.7373396353814989,
+   "vsSlotPtsSe": 0.49881198138660215,
+   "printed": {
+    "cost": 1,
+    "wait": 1,
+    "rarity": "uncommon",
+    "attack": 3,
+    "health": 10,
+    "effects": {
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 2
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 24.31,
+    "x1": 23.24,
+    "S": 4.24
+   },
+   "twin": {
+    "attack": 4,
+    "health": 13,
+    "N": 25.53
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "salvager-hermit-crab",
+   "skill": "onPlayGain1",
+   "level": 6,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.36375,
+   "vsTwin": {
+    "d": -0.01375,
+    "se": 0.010226529188784457
+   },
+   "vsSlot": {
+    "d": 0.04875,
+    "se": 0.011806398081954826
+   },
+   "vsTwinPts": -0.6758946657663741,
+   "vsTwinPtsSe": 0.5026950202184393,
+   "vsSlotPts": 2.396353814989872,
+   "vsSlotPtsSe": 0.5803550171278267,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 1,
+    "health": 10,
+    "effects": {
+     "armor": 2,
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 1
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 19.87,
+    "x1": 19.29,
+    "S": 6.29
+   },
+   "twin": {
+    "attack": 3,
+    "health": 11,
+    "N": 20.86
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "salvager-hermit-crab",
+   "skill": "onPlayGain1",
+   "level": 6,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.64125,
+   "vsTwin": {
+    "d": -0.02875,
+    "se": 0.009875535662979988
+   },
+   "vsSlot": {
+    "d": -0.02,
+    "se": 0.009333214135957342
+   },
+   "vsTwinPts": -1.4132343011478732,
+   "vsTwinPtsSe": 0.48544159099591033,
+   "vsSlotPts": -0.9831195138419987,
+   "vsSlotPtsSe": 0.4587832471962826,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 1,
+    "health": 10,
+    "effects": {
+     "armor": 2,
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 1
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 19.87,
+    "x1": 19.29,
+    "S": 6.29
+   },
+   "twin": {
+    "attack": 3,
+    "health": 11,
+    "N": 20.86
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "forager-ant",
+   "skill": "onAttackGain1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.34,
+   "vsTwin": {
+    "d": 0.025,
+    "se": 0.007659444095678096
+   },
+   "vsSlot": {
+    "d": 0.025,
+    "se": 0.007659444095678096
+   },
+   "vsTwinPts": 1.2288993923024985,
+   "vsTwinPtsSe": 0.37650744778215084,
+   "vsSlotPts": 1.2288993923024985,
+   "vsSlotPtsSe": 0.37650744778215084,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 1,
+    "health": 5,
+    "effects": {
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onAttack",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 12.92,
+    "x1": 9.35,
+    "S": 1.35
+   },
+   "twin": {
+    "attack": 2,
+    "health": 7,
+    "N": 13.57
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "forager-ant",
+   "skill": "onAttackGain1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 11,
+   "cost": 0,
+   "wr": 0.72125,
+   "vsTwin": {
+    "d": -0.00125,
+    "se": 0.0037520853609285584
+   },
+   "vsSlot": {
+    "d": -0.00875,
+    "se": 0.005443237356219652
+   },
+   "vsTwinPts": -0.06144496961512492,
+   "vsTwinPtsSe": 0.18443741679648823,
+   "vsSlotPts": -0.4301147873058745,
+   "vsSlotPtsSe": 0.26756764316866355,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 1,
+    "health": 5,
+    "effects": {
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onAttack",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 12.92,
+    "x1": 9.35,
+    "S": 1.35
+   },
+   "twin": {
+    "attack": 2,
+    "health": 7,
+    "N": 13.57
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "gull-thief",
+   "skill": "onAttackGain1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.43125,
+   "vsTwin": {
+    "d": 0.11625,
+    "se": 0.012394028271550523
+   },
+   "vsSlot": {
+    "d": 0.11625,
+    "se": 0.012394028271550523
+   },
+   "vsTwinPts": 5.714382174206618,
+   "vsTwinPtsSe": 0.6092405524435369,
+   "vsSlotPts": 5.714382174206618,
+   "vsSlotPtsSe": 0.6092405524435369,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 1,
+    "health": 7,
+    "effects": {
+     "flying": true,
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onAttack",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 12.92,
+    "x1": 12.79,
+    "S": 0.89
+   },
+   "twin": {
+    "attack": 2,
+    "health": 7,
+    "N": 13.57
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "gull-thief",
+   "skill": "onAttackGain1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 11,
+   "cost": 0,
+   "wr": 0.72625,
+   "vsTwin": {
+    "d": 0.00375,
+    "se": 0.008573902940875261
+   },
+   "vsSlot": {
+    "d": -0.00375,
+    "se": 0.008007813573178294
+   },
+   "vsTwinPts": 0.18433490884537473,
+   "vsTwinPtsSe": 0.42145856454808844,
+   "vsSlotPts": -0.18433490884537473,
+   "vsSlotPtsSe": 0.39363188935002014,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 1,
+    "health": 7,
+    "effects": {
+     "flying": true,
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onAttack",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 12.92,
+    "x1": 12.79,
+    "S": 0.89
+   },
+   "twin": {
+    "attack": 2,
+    "health": 7,
+    "N": 13.57
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "ferry-toll-frog",
+   "skill": "onKillGain1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.29875,
+   "vsTwin": {
+    "d": -0.01625,
+    "se": 0.007586459307940666
+   },
+   "vsSlot": {
+    "d": -0.01625,
+    "se": 0.00837078308085535
+   },
+   "vsTwinPts": -0.798784604996624,
+   "vsTwinPtsSe": 0.37291980933023666,
+   "vsSlotPts": -0.798784604996624,
+   "vsSlotPtsSe": 0.411474009646367,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 2,
+    "health": 6,
+    "effects": {
+     "triggers": [
+      {
+       "on": "onKill",
+       "do": "gain",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 14.09,
+    "x1": 13.2,
+    "S": 1.2
+   },
+   "twin": {
+    "attack": 2,
+    "health": 8,
+    "N": 14.79
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "ferry-toll-frog",
+   "skill": "onKillGain1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.44625,
+   "vsTwin": {
+    "d": -0.01125,
+    "se": 0.006952677292015563
+   },
+   "vsSlot": {
+    "d": -0.02,
+    "se": 0.00681417942980862
+   },
+   "vsTwinPts": -0.5530047265361242,
+   "vsTwinPtsSe": 0.3417656359613322,
+   "vsSlotPts": -0.9831195138419987,
+   "vsSlotPtsSe": 0.3349576384132799,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 2,
+    "health": 6,
+    "effects": {
+     "triggers": [
+      {
+       "on": "onKill",
+       "do": "gain",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 14.09,
+    "x1": 13.2,
+    "S": 1.2
+   },
+   "twin": {
+    "attack": 2,
+    "health": 8,
+    "N": 14.79
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "beaver-feller",
+   "skill": "onKillGain1",
+   "level": 3,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.31,
+   "vsTwin": {
+    "d": -0.0675,
+    "se": 0.011071716946579714
+   },
+   "vsSlot": {
+    "d": -0.005,
+    "se": 0.009847078561443737
+   },
+   "vsTwinPts": -3.3180283592167457,
+   "vsTwinPtsSe": 0.5442410490958833,
+   "vsSlotPts": -0.24577987846049967,
+   "vsSlotPtsSe": 0.48404275440452676,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 2,
+    "health": 9,
+    "effects": {
+     "repair": 2,
+     "triggers": [
+      {
+       "on": "onKill",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 1
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 17.96,
+    "x1": 19.17,
+    "S": 4.17
+   },
+   "twin": {
+    "attack": 3,
+    "health": 11,
+    "N": 20.69
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "beaver-feller",
+   "skill": "onKillGain1",
+   "level": 3,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.43625,
+   "vsTwin": {
+    "d": -0.05625,
+    "se": 0.01107975058231042
+   },
+   "vsSlot": {
+    "d": -0.03,
+    "se": 0.009299629233461441
+   },
+   "vsTwinPts": -2.7650236326806215,
+   "vsTwinPtsSe": 0.544635950298581,
+   "vsSlotPts": -1.4746792707629979,
+   "vsSlotPtsSe": 0.45713234854557255,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 2,
+    "health": 9,
+    "effects": {
+     "repair": 2,
+     "triggers": [
+      {
+       "on": "onKill",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 1
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 17.96,
+    "x1": 19.17,
+    "S": 4.17
+   },
+   "twin": {
+    "attack": 3,
+    "health": 11,
+    "N": 20.69
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "dust-hyena",
+   "skill": "onKillGain1",
+   "level": 3,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.35,
+   "vsTwin": {
+    "d": -0.095,
+    "se": 0.012924881651571607
+   },
+   "vsSlot": {
+    "d": 0.035,
+    "se": 0.008934121286055068
+   },
+   "vsTwinPts": -4.669817690749494,
+   "vsTwinPtsSe": 0.6353351682879224,
+   "vsSlotPts": 1.720459149223498,
+   "vsSlotPtsSe": 0.43916544876759556,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "uncommon",
+    "attack": 2,
+    "health": 7,
+    "effects": {
+     "carnage": 3,
+     "triggers": [
+      {
+       "on": "onKill",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 1
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 15.16,
+    "x1": 15.89,
+    "S": 2.89
+   },
+   "twin": {
+    "attack": 3,
+    "health": 10,
+    "N": 19.58
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "dust-hyena",
+   "skill": "onKillGain1",
+   "level": 3,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.46125,
+   "vsTwin": {
+    "d": -0.08875,
+    "se": 0.011646301657731539
+   },
+   "vsSlot": {
+    "d": -0.005,
+    "se": 0.007291104185945611
+   },
+   "vsTwinPts": -4.362592842673869,
+   "vsTwinPtsSe": 0.5724853211903147,
+   "vsSlotPts": -0.24577987846049967,
+   "vsSlotPtsSe": 0.35840134013291053,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "uncommon",
+    "attack": 2,
+    "health": 7,
+    "effects": {
+     "carnage": 3,
+     "triggers": [
+      {
+       "on": "onKill",
+       "do": "gain",
+       "resource": "lumber",
+       "amount": 1
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 15.16,
+    "x1": 15.89,
+    "S": 2.89
+   },
+   "twin": {
+    "attack": 3,
+    "health": 10,
+    "N": 19.58
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "driftwood-crab",
+   "skill": "onAttackedGain1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.32375,
+   "vsTwin": {
+    "d": 0.0225,
+    "se": 0.010874972127480035
+   },
+   "vsSlot": {
+    "d": 0.00875,
+    "se": 0.013054877792139926
+   },
+   "vsTwinPts": 1.1060094530722484,
+   "vsTwinPtsSe": 0.5345698655506729,
+   "vsSlotPts": 0.4301147873058745,
+   "vsSlotPtsSe": 0.6417252554137655,
+   "printed": {
+    "cost": 1,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 2,
+    "health": 10,
+    "effects": {
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onAttacked",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ],
+     "crabClaws": true
+    }
+   },
+   "budget": {
+    "N": 20.34,
+    "x1": 17.15,
+    "S": 1.15
+   },
+   "twin": {
+    "attack": 3,
+    "health": 12,
+    "N": 21.36
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "driftwood-crab",
+   "skill": "onAttackedGain1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.6175,
+   "vsTwin": {
+    "d": -0.0375,
+    "se": 0.010677532468905534
+   },
+   "vsSlot": {
+    "d": -0.0275,
+    "se": 0.011422248999880407
+   },
+   "vsTwinPts": -1.8433490884537476,
+   "vsTwinPtsSe": 0.5248645264931282,
+   "vsSlotPts": -1.3517893315327483,
+   "vsSlotPtsSe": 0.561471794187234,
+   "printed": {
+    "cost": 1,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 2,
+    "health": 10,
+    "effects": {
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onAttacked",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ],
+     "crabClaws": true
+    }
+   },
+   "budget": {
+    "N": 20.34,
+    "x1": 17.15,
+    "S": 1.15
+   },
+   "twin": {
+    "attack": 3,
+    "health": 12,
+    "N": 21.36
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "gannet-nestweaver",
+   "skill": null,
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.28125,
+   "vsTwin": {
+    "d": -0.035,
+    "se": 0.009770520909785729
+   },
+   "vsSlot": {
+    "d": -0.03375,
+    "se": 0.009367409317503553
+   },
+   "vsTwinPts": -1.720459149223498,
+   "vsTwinPtsSe": 0.48027948834058143,
+   "vsSlotPts": -1.6590141796083728,
+   "vsSlotPtsSe": 0.4604641447091551,
+   "printed": {
+    "cost": 0,
+    "wait": 1,
+    "rarity": "common",
+    "attack": 1,
+    "health": 7,
+    "effects": {
+     "flying": true,
+     "triggers": [
+      {
+       "do": "gain",
+       "on": "onHealed",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ]
+    }
+   },
+   "budget": {
+    "N": 16.72,
+    "x1": 12.9,
+    "S": 1
+   },
+   "twin": {
+    "attack": 3,
+    "health": 8,
+    "N": 17.56
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "riverside-peddler",
+   "skill": "bounty1",
+   "level": 1,
+   "ctx": "A-0",
+   "n": 0,
+   "wr": 0.30625,
+   "vsTwin": {
+    "d": -0.00875,
+    "se": 0.010534729352392445
+   },
+   "vsSlot": {
+    "d": -0.00875,
+    "se": 0.010682201723759133
+   },
+   "vsTwinPts": -0.4301147873058745,
+   "vsTwinPtsSe": 0.5178448999690547,
+   "vsSlotPts": -0.4301147873058745,
+   "vsSlotPtsSe": 0.525094048271212,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 1,
+    "health": 7,
+    "effects": {
+     "bounty": 1
+    }
+   },
+   "budget": {
+    "N": 14.09,
+    "x1": 11.8,
+    "S": 1.8
+   },
+   "twin": {
+    "attack": 2,
+    "health": 8,
+    "N": 14.79
+   }
+  },
+  {
+   "opp": "ref8",
+   "card": "riverside-peddler",
+   "skill": "bounty1",
+   "level": 1,
+   "ctx": "A-n*",
+   "n": 12,
+   "cost": 0,
+   "wr": 0.6025,
+   "vsTwin": {
+    "d": -0.00125,
+    "se": 0.0067355219504453235
+   },
+   "vsSlot": {
+    "d": -0.00375,
+    "se": 0.005450417937609766
+   },
+   "vsTwinPts": -0.06144496961512492,
+   "vsTwinPtsSe": 0.33109115326969585,
+   "vsSlotPts": -0.18433490884537473,
+   "vsSlotPtsSe": 0.26792061165293113,
+   "printed": {
+    "cost": 0,
+    "wait": 0,
+    "rarity": "common",
+    "attack": 1,
+    "health": 7,
+    "effects": {
+     "bounty": 1
+    }
+   },
+   "budget": {
+    "N": 14.09,
+    "x1": 11.8,
+    "S": 1.8
+   },
+   "twin": {
+    "attack": 2,
+    "health": 8,
+    "N": 14.79
    }
   }
  ],
