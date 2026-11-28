@@ -1,0 +1,497 @@
+{
+ "post1128d": {
+  "fights": 208,
+  "green": 179,
+  "within10": 181,
+  "beyond20": 6,
+  "meanWin": 68.7,
+  "worst": [
+   {
+    "map": "m6",
+    "mapNo": 17,
+    "side": false,
+    "name": "Wolfsbane Tundra",
+    "fights": 8,
+    "green": 3,
+    "meanAbsGap": 11.9,
+    "meanGap": -11.7,
+    "beyond20": 2
+   },
+   {
+    "map": "mpd",
+    "mapNo": 18,
+    "side": true,
+    "name": "The Pale Desert",
+    "fights": 9,
+    "green": 5,
+    "meanAbsGap": 11.7,
+    "meanGap": 11.3,
+    "beyond20": 3
+   },
+   {
+    "map": "mb",
+    "mapNo": 2,
+    "side": false,
+    "name": "Pebble Beach",
+    "fights": 5,
+    "green": 3,
+    "meanAbsGap": 10.8,
+    "meanGap": -10.8,
+    "beyond20": 1
+   },
+   {
+    "map": "mg",
+    "mapNo": 2,
+    "side": true,
+    "name": "Smugglers' Grotto",
+    "fights": 4,
+    "green": 3,
+    "meanAbsGap": 8.9,
+    "meanGap": -4.4,
+    "beyond20": 0
+   },
+   {
+    "map": "m2",
+    "mapNo": 4,
+    "side": false,
+    "name": "Sunken Hollow",
+    "fights": 5,
+    "green": 4,
+    "meanAbsGap": 8.1,
+    "meanGap": -8.1,
+    "beyond20": 0
+   },
+   {
+    "map": "m3",
+    "mapNo": 19,
+    "side": false,
+    "name": "Ashen Spurn",
+    "fights": 6,
+    "green": 4,
+    "meanAbsGap": 8.1,
+    "meanGap": -8.1,
+    "beyond20": 0
+   },
+   {
+    "map": "mr",
+    "mapNo": 13,
+    "side": false,
+    "name": "The Redwood Deep",
+    "fights": 8,
+    "green": 6,
+    "meanAbsGap": 8,
+    "meanGap": 8,
+    "beyond20": 0
+   },
+   {
+    "map": "ml",
+    "mapNo": 15,
+    "side": false,
+    "name": "The Long Grass",
+    "fights": 7,
+    "green": 4,
+    "meanAbsGap": 8,
+    "meanGap": 8,
+    "beyond20": 0
+   }
+  ],
+  "maps": [
+   {
+    "map": "m6",
+    "mapNo": 17,
+    "side": false,
+    "name": "Wolfsbane Tundra",
+    "fights": 8,
+    "green": 3,
+    "meanAbsGap": 11.9,
+    "meanGap": -11.7,
+    "beyond20": 2
+   },
+   {
+    "map": "mpd",
+    "mapNo": 18,
+    "side": true,
+    "name": "The Pale Desert",
+    "fights": 9,
+    "green": 5,
+    "meanAbsGap": 11.7,
+    "meanGap": 11.3,
+    "beyond20": 3
+   },
+   {
+    "map": "mb",
+    "mapNo": 2,
+    "side": false,
+    "name": "Pebble Beach",
+    "fights": 5,
+    "green": 3,
+    "meanAbsGap": 10.8,
+    "meanGap": -10.8,
+    "beyond20": 1
+   },
+   {
+    "map": "mg",
+    "mapNo": 2,
+    "side": true,
+    "name": "Smugglers' Grotto",
+    "fights": 4,
+    "green": 3,
+    "meanAbsGap": 8.9,
+    "meanGap": -4.4,
+    "beyond20": 0
+   },
+   {
+    "map": "m2",
+    "mapNo": 4,
+    "side": false,
+    "name": "Sunken Hollow",
+    "fights": 5,
+    "green": 4,
+    "meanAbsGap": 8.1,
+    "meanGap": -8.1,
+    "beyond20": 0
+   },
+   {
+    "map": "m3",
+    "mapNo": 19,
+    "side": false,
+    "name": "Ashen Spurn",
+    "fights": 6,
+    "green": 4,
+    "meanAbsGap": 8.1,
+    "meanGap": -8.1,
+    "beyond20": 0
+   },
+   {
+    "map": "mr",
+    "mapNo": 13,
+    "side": false,
+    "name": "The Redwood Deep",
+    "fights": 8,
+    "green": 6,
+    "meanAbsGap": 8,
+    "meanGap": 8,
+    "beyond20": 0
+   },
+   {
+    "map": "ml",
+    "mapNo": 15,
+    "side": false,
+    "name": "The Long Grass",
+    "fights": 7,
+    "green": 4,
+    "meanAbsGap": 8,
+    "meanGap": 8,
+    "beyond20": 0
+   },
+   {
+    "map": "md",
+    "mapNo": 18,
+    "side": false,
+    "name": "The Glass Dunes",
+    "fights": 7,
+    "green": 5,
+    "meanAbsGap": 7.7,
+    "meanGap": 4.1,
+    "beyond20": 0
+   },
+   {
+    "map": "m1",
+    "mapNo": 0,
+    "side": false,
+    "name": "Bramblewood Outskirts",
+    "fights": 4,
+    "green": 4,
+    "meanAbsGap": 7.1,
+    "meanGap": -5.8,
+    "beyond20": 0
+   },
+   {
+    "map": "mj",
+    "mapNo": 10,
+    "side": true,
+    "name": "The Sunken Depths",
+    "fights": 5,
+    "green": 3,
+    "meanAbsGap": 7,
+    "meanGap": 7,
+    "beyond20": 0
+   },
+   {
+    "map": "ms",
+    "mapNo": 5,
+    "side": true,
+    "name": "The Sunken Grove",
+    "fights": 4,
+    "green": 3,
+    "meanAbsGap": 5.9,
+    "meanGap": 5.9,
+    "beyond20": 0
+   },
+   {
+    "map": "mq",
+    "mapNo": 1,
+    "side": true,
+    "name": "Clovermead",
+    "fights": 5,
+    "green": 4,
+    "meanAbsGap": 5.6,
+    "meanGap": -2.6,
+    "beyond20": 0
+   },
+   {
+    "map": "me",
+    "mapNo": 20,
+    "side": true,
+    "name": "Eye of the Volcano",
+    "fights": 7,
+    "green": 6,
+    "meanAbsGap": 5.2,
+    "meanGap": 3.8,
+    "beyond20": 0
+   },
+   {
+    "map": "m7",
+    "mapNo": 10,
+    "side": false,
+    "name": "Coral Current",
+    "fights": 9,
+    "green": 8,
+    "meanAbsGap": 5.1,
+    "meanGap": 2,
+    "beyond20": 0
+   },
+   {
+    "map": "mt",
+    "mapNo": 16,
+    "side": false,
+    "name": "The Pinewood Taiga",
+    "fights": 7,
+    "green": 7,
+    "meanAbsGap": 4.6,
+    "meanGap": -0.3,
+    "beyond20": 0
+   },
+   {
+    "map": "mw",
+    "mapNo": 5,
+    "side": false,
+    "name": "Gatorback Swamp",
+    "fights": 7,
+    "green": 6,
+    "meanAbsGap": 4,
+    "meanGap": -3.4,
+    "beyond20": 0
+   },
+   {
+    "map": "my",
+    "mapNo": 14,
+    "side": true,
+    "name": "The Canopy",
+    "fights": 5,
+    "green": 5,
+    "meanAbsGap": 4,
+    "meanGap": -3.8,
+    "beyond20": 0
+   },
+   {
+    "map": "m11",
+    "mapNo": 20,
+    "side": false,
+    "name": "The Sundered Peak",
+    "fights": 10,
+    "green": 10,
+    "meanAbsGap": 3.7,
+    "meanGap": 0.5,
+    "beyond20": 0
+   },
+   {
+    "map": "mc",
+    "mapNo": 3,
+    "side": false,
+    "name": "Gannet Cliffs",
+    "fights": 7,
+    "green": 7,
+    "meanAbsGap": 3.6,
+    "meanGap": -2.7,
+    "beyond20": 0
+   },
+   {
+    "map": "mz",
+    "mapNo": 7,
+    "side": true,
+    "name": "The Mycelium Deep",
+    "fights": 5,
+    "green": 5,
+    "meanAbsGap": 3.6,
+    "meanGap": 1,
+    "beyond20": 0
+   },
+   {
+    "map": "mf",
+    "mapNo": 1,
+    "side": false,
+    "name": "Thistlewood",
+    "fights": 5,
+    "green": 5,
+    "meanAbsGap": 3.5,
+    "meanGap": -0.5,
+    "beyond20": 0
+   },
+   {
+    "map": "m8",
+    "mapNo": 6,
+    "side": false,
+    "name": "Sable Swampmire",
+    "fights": 8,
+    "green": 8,
+    "meanAbsGap": 3.5,
+    "meanGap": -2.4,
+    "beyond20": 0
+   },
+   {
+    "map": "mk",
+    "mapNo": 9,
+    "side": false,
+    "name": "The Kelp Mangroves",
+    "fights": 7,
+    "green": 7,
+    "meanAbsGap": 3.4,
+    "meanGap": -2.9,
+    "beyond20": 0
+   },
+   {
+    "map": "m10",
+    "mapNo": 11,
+    "side": false,
+    "name": "Eyrie Heights",
+    "fights": 10,
+    "green": 10,
+    "meanAbsGap": 3.2,
+    "meanGap": -0.9,
+    "beyond20": 0
+   },
+   {
+    "map": "mu",
+    "mapNo": 7,
+    "side": false,
+    "name": "The Morel Hollow",
+    "fights": 6,
+    "green": 6,
+    "meanAbsGap": 3.1,
+    "meanGap": 0.3,
+    "beyond20": 0
+   },
+   {
+    "map": "m4",
+    "mapNo": 8,
+    "side": false,
+    "name": "Caves & Alcoves",
+    "fights": 8,
+    "green": 8,
+    "meanAbsGap": 3,
+    "meanGap": 1.2,
+    "beyond20": 0
+   },
+   {
+    "map": "mp",
+    "mapNo": 2,
+    "side": true,
+    "name": "Lilypad Reach",
+    "fights": 7,
+    "green": 7,
+    "meanAbsGap": 3,
+    "meanGap": -0.2,
+    "beyond20": 0
+   },
+   {
+    "map": "mh",
+    "mapNo": 12,
+    "side": false,
+    "name": "The Briar Maze",
+    "fights": 7,
+    "green": 7,
+    "meanAbsGap": 2.6,
+    "meanGap": -1.4,
+    "beyond20": 0
+   },
+   {
+    "map": "m5",
+    "mapNo": 14,
+    "side": false,
+    "name": "Savanna Reaches",
+    "fights": 8,
+    "green": 8,
+    "meanAbsGap": 2.4,
+    "meanGap": -1.6,
+    "beyond20": 0
+   },
+   {
+    "map": "mv",
+    "mapNo": 11,
+    "side": true,
+    "name": "The Aerie Vault",
+    "fights": 4,
+    "green": 4,
+    "meanAbsGap": 2.3,
+    "meanGap": 2.1,
+    "beyond20": 0
+   },
+   {
+    "map": "mn",
+    "mapNo": 8,
+    "side": true,
+    "name": "The Glimmer Depths",
+    "fights": 4,
+    "green": 4,
+    "meanAbsGap": 1.8,
+    "meanGap": 0.2,
+    "beyond20": 0
+   }
+  ],
+  "beyond20Fights": [
+   {
+    "code": "2-2",
+    "map": "mb",
+    "win": 52.8,
+    "target": 80,
+    "gap": -27
+   },
+   {
+    "code": "18-A-7",
+    "map": "mpd",
+    "win": 90,
+    "target": 64.3,
+    "gap": 26
+   },
+   {
+    "code": "18-A-6",
+    "map": "mpd",
+    "win": 93.5,
+    "target": 68.6,
+    "gap": 25
+   },
+   {
+    "code": "17-8",
+    "map": "m6",
+    "win": 16,
+    "target": 40,
+    "gap": -24
+   },
+   {
+    "code": "18-A-4",
+    "map": "mpd",
+    "win": 99.5,
+    "target": 77.1,
+    "gap": 22
+   },
+   {
+    "code": "17-7",
+    "map": "m6",
+    "win": 39.8,
+    "target": 60,
+    "gap": -20
+   }
+  ]
+ }
+}
