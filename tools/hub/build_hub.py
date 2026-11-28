@@ -450,9 +450,13 @@ LINKS = [('🎯', 'actions', 'Action items', 'Everything done and waiting, newes
   ('🧠', 'guide', "Claude's guide", 'Standing rules, skills, docs to read first')]
 LINKS = [(i, 'curve' if t == 'difficulty' else t, n, d) for i, t, n, d in LINKS]
 _built = datetime.date.today().isoformat()  # date only: the build machine's clock is UTC, the docs use your local time
+# 2026-11-28 (HUB7, owner 12:20): "Where we are" on Home, with the roadmap step (.claude/skills/continue/SKILL.md).
+WHERE_WE_ARE = ('<section class="dash-card dash-where"><p class="dash-h">Where we are</p><p>We are redesigning cards so they are much more <b>strategic, diverse and fun</b>. '
+  'Maps 0-20 exist to explore the whole design space we created, give players the options they imagine in a card game, and show what is lacking.</p>'
+  '<p class="road"><small>Roadmap:</small> Prototype → <b>Balance (now)</b> → Content and polish → Closed playtest → Post on user-testing forums → Open beta → Launch</p></section>')
 home_html = (f'<div class="dash"><div class="dash-hero"><div><h1>Bramblewood Arena</h1><p class="lede">Your home base. Hub built {_built}; action items updated {H.escape(_ai_updated)}.</p></div>'
-  '<div class="dash-cta"><a class="btn pri" href="https://bramblewood-arena.vercel.app" target="_blank" rel="noopener">🎮 Play the live game ↗</a>'
-  '<a class="btn" href="#actions" data-tab="actions">🎯 All action items</a></div></div>'
+  '<div class="dash-cta"><a class="btn pri" href="#actions" data-tab="actions">🎯 All action items</a></div></div>'
+  + WHERE_WE_ARE +
   f'<div class="stats">{STATS}</div>'
   f'<div class="dash-grid"><div class="dash-col">{CALLS}</div>'
   f'<div class="dash-col"><section class="dash-card"><h2>Open decisions <small>{len(_open_dec)}</small></h2><ul class="dash-dec">{_dec_rows}</ul>'
@@ -740,12 +744,17 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 .dk-t s{{opacity:.6;}} .dk-two{{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px;}} .dk-two > div{{min-width:0; overflow-x:auto;}}
 .dk-order li{{margin:6px 0;}} #p-decks details{{margin:4px 0;}} #p-decks summary{{cursor:pointer; padding:4px 0;}} .dk-map > details{{margin-left:16px;}}
 </style><style>{HUB_CSS}</style><style>{UT_CSS}</style><style>{HB_CSS}</style><style>{CH_CSS}</style><style>{CT_CSS}</style><style>{CV_CSS}</style><style>{PP_CSS}</style><style>{LIB_CSS}</style></head><body>
-<header><h1><a href="#master" data-tab="master">🌿 Bramblewood</a></h1>
+<header><h1>🌿 Bramblewood</h1>
 <div class="hs" role="search"><input type="search" id="hubQ" placeholder="Search cards, changes, decisions, docs…  ( / )" aria-label="Search the hub" autocomplete="off" aria-controls="hubRes" aria-expanded="false"><div class="hs-res" id="hubRes" role="listbox" hidden></div></div>
-<button type="button" class="thm" id="hubTheme" aria-label="Colour theme" title="Colour theme: auto / light / dark">🌓 Auto</button>
-<a class="play" href="https://bramblewood-arena.vercel.app" target="_blank" rel="noopener">🎮 <span>Play ↗</span></a></header>
+<button type="button" class="thm" id="hubTheme" aria-label="Colour theme: auto" title="Colour theme: auto / light / dark">🌓</button></header>
 <nav role="tablist" aria-label="Pages" aria-orientation="vertical">
 <!-- 2026-11-27 (owner 09:47: "Condense tabs uneeded"): the ten tabs in daily use stay in the bar; the rest sit behind ⋯ More (nothing removed) -->
+<button role="tab" id="g-home" data-grp="home" aria-controls="p-master">🏠 Home</button>
+<button role="tab" id="g-work" data-grp="work" aria-controls="p-actions">🎯 Work</button>
+<button role="tab" id="g-cards" data-grp="cards" aria-controls="p-cards">🎴 Cards</button>
+<button role="tab" id="g-design" data-grp="design" aria-controls="p-design">📐 Design</button>
+<!-- 2026-11-28 (HUB7, owner 12:20): Home, Work, Cards, Design, ⋯ More; the old tab buttons live on in #memberTabs (hidden) so show() and every deep link work; each grouped panel gets a sub-view bar -->
+<div id="memberTabs" hidden>
 <button role="tab" id="t-master" aria-controls="p-master" data-tab="master">🏠 Home</button>
 <button role="tab" id="t-actions" aria-controls="p-actions" data-tab="actions">🎯 Action items</button>
 <button role="tab" id="t-decisions" aria-controls="p-decisions" data-tab="decisions">🗳️ Decisions</button>
@@ -755,9 +764,10 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <button role="tab" id="t-balance" aria-controls="p-balance" data-tab="balance">⚖️ Balance</button>
 <button role="tab" id="t-feelings" aria-controls="p-feelings" data-tab="feelings">💭 Feelings</button>
 <button role="tab" id="t-design" aria-controls="p-design" data-tab="design">📐 Design</button>
-<button role="tab" id="t-changelog" aria-controls="p-changelog" data-tab="changelog">🗒️ Changelog</button>
-<button type="button" class="more-btn" id="moreBtn" aria-expanded="false" aria-controls="moreTabs">⋯ More (18)</button>
+</div>
+<button type="button" class="more-btn" id="moreBtn" aria-expanded="false" aria-controls="moreTabs">⋯ More (19)</button>
 <div class="more-tabs" id="moreTabs">
+<button role="tab" id="t-changelog" aria-controls="p-changelog" data-tab="changelog">🗒️ Changelog</button>
 <button role="tab" id="t-budget" aria-controls="p-budget" data-tab="budget">🎚️ Budget &amp; stats</button>
 <button role="tab" id="t-costs" aria-controls="p-costs" data-tab="costs">🧮 Skill costs</button>
 <button role="tab" id="t-ucosts" aria-controls="p-ucosts" data-tab="ucosts">💰 Upgrade costs</button>
@@ -821,6 +831,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <section class="panel" id="p-design" role="tabpanel" aria-labelledby="t-design" hidden>{lazy(design_html)}</section>
 <section class="panel" id="p-guide" role="tabpanel" aria-labelledby="t-guide" hidden>{lazy(guide)}</section>
 </main>
+<footer class="hubfoot"><a href="https://bramblewood-arena.vercel.app" target="_blank" rel="noopener">🎮 Play the live game ↗</a></footer>
 <script>
 const DEC = {decisions_json};
 (function(){{
@@ -884,7 +895,11 @@ const DEC = {decisions_json};
   window.hubBalRender = render;
   render();
 }})();
-const tabs = [...document.querySelectorAll('[role=tab]')];
+const tabs = [...document.querySelectorAll('[role=tab][data-tab]')];
+// 2026-11-28 (HUB7): top-level groups; member tabs stay the real tabs (hidden buttons), a sub-view bar inside each grouped panel switches them
+const GRP = {{home:[['master','Home']], work:[['actions','🎯 Action items'],['decisions','🗳️ Decisions']], cards:[['cards','Cards'],['effects','🧩 Effects 0-20'],['mapcards','🗺️ Map cards'],['balance','⚖️ Balance']], design:[['feelings','💭 Feelings'],['design','📐 Design']]}};
+const grpOf = id=> Object.keys(GRP).find(g=> GRP[g].some(m=> m[0]===id));
+const grpLast = {{}};
 {{ const mb = document.getElementById('moreBtn'); if(mb) mb.addEventListener('click', ()=>{{ const nv = mb.closest('nav'), on = nv.classList.toggle('show-more'); mb.setAttribute('aria-expanded', String(on)); }}); }} // 2026-11-27: ⋯ More
 // 2026-10-15: lazy panels are stamped from their <template> on first show; the open tab is kept in #hash and
 // localStorage (the artifact frame may drop the hash); hub.onShow lets the Cards tab render on first open.
@@ -901,7 +916,10 @@ function show(id, keepScroll){{
   if(!document.getElementById('p-'+id)) id = 'master';
   tabs.forEach(t=>{{ const on = t.dataset.tab===id; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; document.getElementById('p-'+t.dataset.tab).hidden = !on; }});
   const p = document.getElementById('p-'+id); stamp(p); if(hub.onShow[id]) hub.onShow[id]();
-  const cur = tabs.find(t=> t.dataset.tab===id); if(cur && cur.closest('.more-tabs')){{ const nv = cur.closest('nav'); nv.classList.add('show-more'); document.getElementById('moreBtn').setAttribute('aria-expanded','true'); }} if(cur) cur.scrollIntoView({{inline:'nearest', block:'nearest'}});
+  const gk = grpOf(id); if(gk) grpLast[gk] = id;
+  document.querySelectorAll('[data-grp]').forEach(b=>{{ const on = b.dataset.grp===gk; b.setAttribute('aria-selected', on); b.tabIndex = on ? 0 : -1; }});
+  if(gk && GRP[gk].length > 1){{ let bar = p.querySelector(':scope > .grpbar'); if(!bar){{ bar = document.createElement('nav'); bar.className = 'subtabs grpbar'; bar.setAttribute('aria-label', 'Views'); bar.innerHTML = GRP[gk].map(m=> '<button type="button" data-tab="'+m[0]+'" aria-pressed="false">'+m[1]+'</button>').join(''); }} if(p.firstChild !== bar) p.prepend(bar); bar.querySelectorAll('button').forEach(b=> b.setAttribute('aria-pressed', String(b.dataset.tab===id))); }}
+  const cur = tabs.find(t=> t.dataset.tab===id); if(cur && cur.closest('.more-tabs')){{ const nv = cur.closest('nav'); nv.classList.add('show-more'); document.getElementById('moreBtn').setAttribute('aria-expanded','true'); }} const vb = document.querySelector('[data-grp][aria-selected=true]') || cur; if(vb) vb.scrollIntoView({{inline:'nearest', block:'nearest'}});
   const fr = document.querySelector('#p-'+id+' iframe'); if(fr && !fr.src) fr.src = fr.dataset.src;
   try{{ history.replaceState(null, '', '#'+id); }}catch(e){{}}
   try{{ localStorage.setItem('hub.tab', id); }}catch(e){{}}
@@ -914,11 +932,12 @@ function showSub(id){{ const pane = document.getElementById(id); if(!pane) retur
 document.addEventListener('click', e=>{{ const sb = e.target.closest('.subtabs button[data-show]'); if(sb){{ showSub(sb.dataset.show); return; }}
   const j = e.target.closest('a.jump'); if(j){{ e.preventDefault(); showSub(j.getAttribute('href').slice(1)); const d = document.querySelector(j.getAttribute('href')); if(d) d.scrollIntoView({{behavior:'smooth', block:'nearest'}}); return; }}
   const dj = e.target.closest('[data-dec]'); if(dj){{ e.preventDefault(); hub.go({{tab:'decisions', dec: dj.dataset.dec}}); return; }}
+  const gb = e.target.closest('[data-grp]'); if(gb){{ e.preventDefault(); show(grpLast[gb.dataset.grp] || GRP[gb.dataset.grp][0][0]); return; }}
   const t = e.target.closest('[data-tab]'); if(!t) return; e.preventDefault(); show(t.dataset.tab); }});
 document.querySelector('[role=tablist]').addEventListener('keydown', e=>{{
-  const i = tabs.findIndex(t=> t.getAttribute('aria-selected')==='true'); let j = i;
-  if(e.key==='ArrowRight'||e.key==='ArrowDown') j = (i+1)%tabs.length; else if(e.key==='ArrowLeft'||e.key==='ArrowUp') j = (i-1+tabs.length)%tabs.length; else return;
-  e.preventDefault(); show(tabs[j].dataset.tab); tabs[j].focus();
+  const vis = [...document.querySelectorAll('nav[role=tablist] [role=tab]')].filter(t=> t.offsetParent), i = vis.findIndex(t=> t.getAttribute('aria-selected')==='true'); let j = i;
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') j = (i+1)%vis.length; else if(e.key==='ArrowLeft'||e.key==='ArrowUp') j = (i-1+vis.length)%vis.length; else return;
+  e.preventDefault(); vis[j].click(); vis[j].focus();
 }});
 </script>
 <script>const CARDS = {CARDS_JSON};

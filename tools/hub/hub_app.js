@@ -200,8 +200,9 @@
 
   // ---------- theme toggle: auto -> light -> dark ----------
   const tb = $('hubTheme'), root = document.documentElement;
+  // 2026-11-28 (HUB7): the theme button shows an emoji only
   const setTheme = t=>{ if(t === 'light' || t === 'dark') root.dataset.theme = t; else delete root.dataset.theme;
-    tb.textContent = t === 'light' ? '☀️ Light' : t === 'dark' ? '🌙 Dark' : '🌓 Auto'; tb.title = 'Colour theme: ' + (t || 'auto'); try{ localStorage.setItem('hub.theme', t || 'auto'); }catch(e){} };
+    tb.textContent = t === 'light' ? '☀️' : t === 'dark' ? '🌙' : '🌓'; tb.title = tb.ariaLabel = 'Colour theme: ' + (t || 'auto'); try{ localStorage.setItem('hub.theme', t || 'auto'); }catch(e){} };
   setTheme(root.dataset.theme || 'auto');
   tb.addEventListener('click', ()=>{ const cur = root.dataset.theme || 'auto'; setTheme(cur === 'auto' ? 'light' : cur === 'light' ? 'dark' : 'auto'); });
 })();

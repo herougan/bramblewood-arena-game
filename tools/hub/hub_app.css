@@ -4,11 +4,10 @@
    for tables, decision cards and filter bars found in the audit. Colours only come from the theme tokens on :root. */
 
 /* ---------- layout: header on top, tabs in a sidebar (desktop) or a strip (phone) ---------- */
-body{display:grid; grid-template-columns:208px minmax(0,1fr); grid-template-rows:auto minmax(0,1fr); height:100%;}
+body{display:grid; grid-template-columns:208px minmax(0,1fr); grid-template-rows:auto minmax(0,1fr) auto; height:100%;}
 header{grid-column:1 / -1; grid-row:1; flex-wrap:nowrap; align-items:center; gap:12px; padding:8px 16px;}
 header h1{margin:0; font-size:19px;}
 header h1 a{color:inherit; text-decoration:none;}
-header .play{order:0; margin:0 0 0 auto;}
 .thm{order:0; flex:0 0 auto; height:32px; padding:0 10px; border-radius:999px; border:1px solid var(--line); background:var(--bg); color:var(--ink-muted); font:700 12.5px Nunito,system-ui,sans-serif; cursor:pointer; line-height:1; white-space:nowrap;}
 .thm:focus-visible, #hubQ:focus-visible, .cd:focus-visible, .st:focus-visible, .pg:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
 nav[role=tablist]{grid-column:1; grid-row:2; order:0; flex-direction:column; gap:2px; overflow-y:auto; overflow-x:hidden; padding:10px 8px 24px;
@@ -18,11 +17,10 @@ nav[role=tablist] button:hover{background:var(--surface-2); color:var(--ink);}
 nav[role=tablist] button[aria-selected=true]{background:var(--bg); color:var(--ink); margin:0; box-shadow:inset 3px 0 0 var(--accent);}
 main{grid-column:2; grid-row:2; min-height:0; min-width:0; position:relative;}
 @media (max-width:860px){
-  body{grid-template-columns:minmax(0,1fr); grid-template-rows:auto auto minmax(0,1fr);}
+  body{grid-template-columns:minmax(0,1fr); grid-template-rows:auto auto minmax(0,1fr) auto;}
   header{flex-wrap:wrap; padding:8px 12px; gap:8px 10px;}
   header h1{font-size:17px;}
   .hs{order:5; flex:1 1 100%; max-width:none; margin:0;}
-  header .play span{display:none;}
   nav[role=tablist]{grid-column:1; grid-row:2; flex-direction:row; overflow-x:auto; overflow-y:hidden; padding:6px 8px; border-right:0; border-bottom:1px solid var(--line);
     -webkit-mask-image:linear-gradient(90deg,#000 85%,transparent); mask-image:linear-gradient(90deg,#000 85%,transparent);}
   nav[role=tablist] button{white-space:nowrap; padding:6px 10px; font-size:14px;}
@@ -241,3 +239,13 @@ details.dec-card[open] > summary{margin-bottom:6px;}
 .dash-card > details.hx > .hx-b{padding-left:0;}
 .fx-go{display:block; margin:10px 0 4px; padding:12px 16px; text-decoration:none; color:var(--ink); border-color:var(--accent);}
 .fx-go:hover{background:var(--surface-2);}
+
+/* ---------- 2026-11-28 (HUB7, owner 12:20): group sub-view bar, emoji-only theme button, footer, Where we are ---------- */
+.thm{margin-left:auto; width:36px; padding:0; font-size:17px; line-height:1;}
+.grpbar{padding:10px 16px 0; margin:0; }
+.hubfoot{grid-column:1 / -1; grid-row:3; padding:4px 16px; font-size:12.5px; border-top:1px solid var(--line); background:var(--surface); color:var(--ink-muted); text-align:right;}
+.hubfoot a{color:var(--link); text-decoration:none;}
+.dash-where p{margin:6px 0; font-size:15px;}
+.dash-where .road{color:var(--ink-muted); font-size:13.5px;}
+.dash-where .road b{color:var(--ink);}
+@media (max-width:860px){.hubfoot{grid-row:4;}}
