@@ -1,0 +1,7 @@
+10-9 target 40 (30-49) size 20 start {"clownfish-scout":4,"giant-clam":4,"ironclaw-fiddler":1,"moon-jelly":4,"orca-vanguard":4,"pincushion-urchin":1,"crown-of-thorns-star":2} problems []
+start {"clownfish-scout":4,"giant-clam":4,"ironclaw-fiddler":1,"moon-jelly":4,"orca-vanguard":4,"pincushion-urchin":1,"crown-of-thorns-star":2} 53.3
+round 1: cur 45/53.3; 38 legal, 38 read + 14 predicted (of 46); top: -2 giant-clam +2 crown-of-thorns-star 41.7/51 | -2 giant-clam -1 pincushion-urchin +2 crown-of-thorns-star +1 coral-current-eel 40/53.3 | -1 ironclaw-fiddler +1 conch-crawler 38.3/53.3 | -4 giant-clam +4 reef-shark 41.7/53.7 | -1 ironclaw-fiddler +1 crown-of-thorns-star 40/54.3
+round 2: cur 41.7/51; 38 legal, 38 read + 14 predicted (of 43); top: -2 giant-clam +2 sea-turtle-elder 40/49.7 | -1 pincushion-urchin +1 conch-crawler 40/49.7 | -2 giant-clam +2 reef-shark 38.3/49.7 | -1 pincushion-urchin +1 coral-current-eel 40/53.3 | -1 ironclaw-fiddler +1 giant-clam 40/54.7
+round 3: cur 40/49.7; 38 legal, 38 read + 14 predicted (of 44); top: -2 orca-vanguard +2 sea-turtle-elder 40/49.3 | -1 orca-vanguard +1 sea-turtle-elder 41.7/51 | -1 ironclaw-fiddler +1 reef-shark 41.7/52.3 | -1 crown-of-thorns-star +1 sea-turtle-elder 40/52.7 | -1 pincushion-urchin +1 riptide-eel 40/53.7
+no nearer move
+RESULT 10-9 {"clownfish-scout":4,"ironclaw-fiddler":1,"moon-jelly":4,"orca-vanguard":4,"pincushion-urchin":1,"crown-of-thorns-star":4,"sea-turtle-elder":2} 49.7 {} moves: -2 giant-clam +2 crown-of-thorns-star ; -2 giant-clam +2 sea-turtle-elder problems: []
