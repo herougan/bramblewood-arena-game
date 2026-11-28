@@ -4,6 +4,27 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**CPU2-1. Run the turn planner on the road CPU** · Decide · Engine · asked 2026-11-28
+- Maps 0-20 road fights use the Basic CPU, which skips the turn planner. Your note #26 already asks the CPU to score every option each turn (A1, not built). Using the planner makes the CPU stronger (not measured yet) and moves every map's band; balance then re-tunes.
+  - a) Planner at Basic, noise kept; retune
+  - b) Add a Smart-lite level between Basic and Smart
+  - c) Leave it
+- **Default:** a
+
+**CPU2-2. Should the CPU read On Death skills** · Decide · Engine · asked 2026-11-28
+- No CPU term reads On Death. It feeds Rend units and ignores Sting, Alarm, Brood. Reading them makes ARCH1-2's death cards matter, and the CPU slightly stronger.
+  - a) Read them in kill and doom checks
+  - b) Only for its own plays
+  - c) Not yet
+- **Default:** a
+
+**CPU2-3. Held answers for the round a foe readies** · Decide · Engine · asked 2026-11-28
+- Needed before ARCH1-4's reactive cards help CPU decks: the CPU keeps Shield-all, Stun and +Wait cards until a foe is at Wait 1. Smart CPU only, or every level.
+  - a) Smart and Smartest only
+  - b) Every level
+  - c) Not now
+- **Default:** a
+
 **SKINS1-1. How are skins earned for now?** · Decide · Art · asked 2026-11-28
 - No purchases exist. Skins and foils come from play: clears, card levels, events. Packs never cost Maple Leaves.
   - a) Earned only: S1 and S2 by play, S3 rare milestones.
