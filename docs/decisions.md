@@ -4,6 +4,27 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**ONBOARD2-1. Where does the first Lumber lesson sit?** · Decide · UI · asked 2026-11-28
+- Lumber and pitching first show after Map 1 is cleared. A new player meets cost-0 cards only until then.
+  - a) Add a Lumber step to T-2 (one cost-1 card, one timed tip).
+  - b) Open pitching mid Map 1.
+  - c) Leave it.
+- **Default:** a
+
+**ONBOARD2-2. How much do triggers get taught?** · Decide · UI · asked 2026-11-28
+- One tip says 'read the card'. The four icons (⬆️ 💀 🃏 ⏱️) are never named.
+  - a) One line naming the four icons.
+  - b) Keep it as is; the glossary does the rest.
+  - c) A short step in T-2.
+- **Default:** a
+
+**ONBOARD2-3. Phones and the glossary** · Decide · UI · asked 2026-11-28
+- The glossary pop opens on hover only. Phones cannot hover.
+  - a) Tap opens it, with a one-time hint.
+  - b) Tap opens it, no hint.
+  - c) Desktop only.
+- **Default:** a
+
 **CARDDESIGN2-1. Eleven card redesigns that add a decision** · Decide · Cards · asked 2026-11-28
 - Eleven dull or duplicate Maps 0-20 cards get a timing, lane or kill-order choice. After tuning in simulation, 8 land within 5 of budget with stats kept; Snow Leopard and Quillguard would need a stat change. Road mean -0.2 with Quillguard as proposed; 12-2, 12-4, 12-5, 12-6, 17-5 and 11-A-4 need swap retunes.
   - a) The tuned eight now, Leopard and Quillguard later
