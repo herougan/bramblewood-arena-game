@@ -4858,5 +4858,6 @@
  "The code needs 4 to 6 letters or digits.": "코드는 영문 또는 숫자 4~6자여야 합니다.",
  "That code is already taken. Pick another.": "이미 사용 중인 코드입니다. 다른 코드를 고르세요.",
  "Show code": "코드 보기",
- "Hide code": "코드 숨기기"
+ "Hide code": "코드 숨기기",
+ "Pitch": "버리기"
 }

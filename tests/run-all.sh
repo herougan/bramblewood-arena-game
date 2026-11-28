@@ -24,6 +24,7 @@ run node tests/equipment.js
 run node tests/when-ready.js
 run node tests/keen-eye.js
 run node tests/statuses-2026-10-11.js
+run node tests/onboard3-2026-11-28.js
 run node tests/keywords-2026-10-11.js
 run node tests/keywords-2026-10-12.js
 run node tests/keywords-2026-10-14.js

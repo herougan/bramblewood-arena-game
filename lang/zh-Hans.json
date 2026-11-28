@@ -4856,5 +4856,6 @@
  "The code needs 4 to 6 letters or digits.": "代码需要4到6个字母或数字。",
  "That code is already taken. Pick another.": "该代码已被占用,请换一个。",
  "Show code": "显示代码",
- "Hide code": "隐藏代码"
+ "Hide code": "隐藏代码",
+ "Pitch": "弃牌"
 }

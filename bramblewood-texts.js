@@ -4000,7 +4000,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.up1-code-bad": "The code needs 4 to 6 letters or digits.",
   "ui.up1-code-taken": "That code is already taken. Pick another.",
   "ui.up1-show-code": "Show code",
-  "ui.up1-hide-code": "Hide code"
+  "ui.up1-hide-code": "Hide code",
+  "ui.onboard3-pitch": "🃏 Pitch"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

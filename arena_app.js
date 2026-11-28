@@ -49788,7 +49788,7 @@ function coachBoardEl(pred, pid){
 // playing a card, then the enemy castle; combat once the first round has been fought; the deck a round after that. Part 2
 // teaches initiative. A step only blocks the steps after it in its own part (`stage`).
 const GUIDED_STEPS = [
-  {id:'g-hand', stage:1, block:true, text:TX('coach.these-are-your-cards'), anchor:()=> document.getElementById('handStrip')},
+  {id:'g-hand', stage:1, block:true, noDim:true /* 2026-11-28 (package ONBOARD3, fix 8): the hand isn't shadowed */, text:TX('coach.these-are-your-cards'), anchor:()=> document.getElementById('handStrip')},
   {id:'g-play', stage:1, action:true, text:TX('coach.drag-a-card-onto-the-field'), anchor:()=>{ const h = coachHighlightTile(); return (h && h.classList.contains('playable')) ? h : document.querySelector('#handStrip .card-tile.playable'); } /* 2026-10-18: the hint points at the highlighted card when it can be played */, done:m=> [1].some(p=> ['left','center','right'].some(s=> m.players[p].row[s].length))},
   {id:'g-castle', stage:1, block:true, text:TX('coach.the-enemy-castle-break-it-to'), anchor:()=> hqTileEl('B')},
   // g-mycastle removed 2026-10-12 (user: "In the tutorial, you talked about my castle health - skip that one").
@@ -49873,6 +49873,12 @@ const STATUS_TIPS = [
   {id:'st-smoke', test:c=> c.smoke>0, text:TX('coach.smoke-attacks-at-this-card-miss')},
   {id:'st-chained', test:c=> c.chained, text:TX('coach.chained-can-t-attack-until-its')},
   {id:'st-daunted', test:c=> (c.daunts||[]).length > 0, text:TX('coach.daunted-this-card-has-less-attack')},
+  // 2026-11-28 (package ONBOARD3, fix 3): the glossary's own words for the other board statuses (Weakened has no engine key: skipped)
+  {id:'st-wet', test:c=> c.water>0 && c.kind!=='hq', text:'💧 Wet: '+TX('ui.st-wet')},
+  {id:'st-burning', test:c=> c.burn>0, text:'🔥 '+TX('ui.eng20-burn-tip', {n:1})},
+  {id:'st-shocked', test:c=> c.shocked>0, text:'⚡ Shocked: '+STATUS_KEYWORDS.find(k=> k.k === 'shock').text},
+  {id:'st-exposed', test:c=> c.exposed>0, text:'👁️ Exposed: '+TX('ui.st-exposed')},
+  {id:'st-fragile', test:c=> c.brittle>0, text:'🪟 Fragile: '+TX('ui.st-brittle')},
 ];
 function passiveTipCandidates(){
   const m = matchState; if(!m) return [];
@@ -50104,6 +50110,7 @@ function showCoachTip(tip, anchorEl){
     document.body.appendChild(coachShield);
   }
   document.body.appendChild(b);
+  if(tip.id === 'pl-need'){ const z = document.getElementById('dropDiscard'); if(z && !z.querySelector('.pitch-nudge')){ const t = document.createElement('span'); t.className = 'pitch-nudge'; t.setAttribute('aria-hidden', 'true'); t.textContent = TX('ui.onboard3-pitch'); z.appendChild(t); } } // 2026-11-28 (package ONBOARD3, fix 6): name the drop zone while the pitch lesson is up
   // Spotlight (2026-10-12, user: "During the tutorial, darken the screen, and point using a mouse or red markers to where
   // they should click"): guided steps dim everything but their target and point at it with a bobbing red marker. Neither
   // takes clicks; the shield and tutorialLock decide what can be pressed.
@@ -50281,6 +50288,7 @@ function hideCoachTip(){
   const a = coachOpen.anchorEl; if(a) a.classList.remove('coach-anchor','coach-locked');
   document.querySelectorAll('.coach-also').forEach(e=> e.classList.remove('coach-anchor', 'coach-also')); // 2026-11-19 (package REL3)
   if(coachOpen.fadeT) clearTimeout(coachOpen.fadeT);
+  document.querySelectorAll('.pitch-nudge').forEach(e=> e.remove()); // ONBOARD3 (fix 6)
   coachOpen = null;
   // 2026-10-31 (package UI12, GG1): a timed tutorial tip waits a moment after the tip before it; look again once that time is up
   coachLastClosedAt = Date.now();

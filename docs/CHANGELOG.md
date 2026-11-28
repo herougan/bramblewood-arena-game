@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-28 Package ONBOARD3 (first-minutes fixes 3, 6, 8)
+- Status tips now also teach Wet, Burning, Shocked, Exposed and Fragile (existing glossary text; Weakened has no engine status, skipped).
+- The Graveyard drop zone reads "Pitch" while the pitch lesson tip is up (new `ui.onboard3-pitch`, 12 packs).
+- T-1's first step ("These are your cards") no longer dims the board. Shots: `docs/screens/onboard3/`.
+
 ## 2026-11-28 Package TESTFIX15 (vfx tests flaky under load)
 - No game change: every vfx1 / vfx2 / vfx3 failure was timing (the look drew after the fixed wait; same on the build before VFX3). With polling, both builds pass 99/99 and 168/168.
 - `tests/vfx1-2026-11-27.js`, `vfx2`, `vfx3`: the node counts (and vfx1's cage and rite lift) wait up to 8 s for the nodes the look should draw, then until none has come for 400 ms; the counts checked are unchanged.

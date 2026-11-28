@@ -4856,5 +4856,6 @@
  "The code needs 4 to 6 letters or digits.": "コードは英数字4〜6文字です。",
  "That code is already taken. Pick another.": "そのコードは使用中です。別のコードを選んでください。",
  "Show code": "コードを表示",
- "Hide code": "コードを隠す"
+ "Hide code": "コードを隠す",
+ "Pitch": "捨てる"
 }
