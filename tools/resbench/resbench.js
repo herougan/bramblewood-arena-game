@@ -295,4 +295,6 @@ if (require.main === module) {
   if (process.argv.includes('--renstar')) o.renstar = true;
   ({ plan: cmdPlan, run: cmdRun, report: cmdReport })[o.cmd](o);
 }
-module.exports = { SKILLS, CARDS, OPPS, testDefs, sizeBody, variants, quadFit, nStarOf };
+module.exports = { SKILLS, CARDS, OPPS, testDefs, sizeBody, variants, quadFit, nStarOf,
+  // 2026-11-28 (RESBENCH2): the pieces resbench2.js re-uses (same decks, same test creatures, same statistics)
+  gm, ctxDefs, realOf, deckA, mineOf, slotKey, arr, mean, se, dif, quant, LEVEL, BRAMBLE, AI, VERSION, fingerprint, loadAll, OUT };
