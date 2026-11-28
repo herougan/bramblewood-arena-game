@@ -5,7 +5,7 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 ## Waiting on you
 
 **CARDDESIGN2-1. Eleven card redesigns that add a decision** · Decide · Cards · asked 2026-11-28
-- Eleven dull or duplicate Maps 0-20 cards get a timing, lane or kill-order choice from built skills. Nine keep their stats; Wild Yak and Pinecone Sapper lose 1 Health to fit. Ten are on road lists, so road fights move and get re-measured.
+- Eleven dull or duplicate Maps 0-20 cards get a timing, lane or kill-order choice from built skills; nine keep stats. Measured: only Ice-Crevasse Wolf and Pinecone Sapper land near budget; Willow, Hoarder, Yak and Vixen stay well under. Road mean +0.1; fights 12-5, 12-6 and 17-5 would need retunes.
   - a) All eleven
   - b) The eight that need no CPU change
   - c) None
@@ -19,7 +19,7 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 - **Default:** a
 
 **CARDDESIGN2-3. Bring far-over cards down by redesign** · Decide · Cards · asked 2026-11-28
-- Shellwright Apprentice (+59) and Alpine Marmot (+39) swap a flat passive for a placed effect: an Armor grant to one neighbour, and a Shield on the ally facing each foe that readies. Both land at 86-99% of budget with their stats kept.
+- Shellwright Apprentice and Alpine Marmot swap a flat passive for a placed effect (Armor to one neighbour; a Shield facing each foe that readies), stats kept. Measured: Shellwright 59 → 22 over its budget, Marmot 40 → 25 over. Both come down but stay strong.
   - a) Redesign both
   - b) Keep the skills, trim stats
   - c) Leave both
