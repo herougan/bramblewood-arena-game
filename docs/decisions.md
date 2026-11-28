@@ -4,6 +4,31 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**RES1-1. On Attack: gain 1 is far underpriced** · Decide · Balance · asked 2026-11-28
+- Re-checked on its home maps with their fields: worth 3.8-5.1 points (matches Forestry within 0.8 in all 11 tests); priced 1.35.
+  - a) Price it like Forestry (6.65)
+  - b) Price it ~4
+  - c) Keep
+- **Default:** a
+
+**RES1-2. On Attacked: gain 1 is underpriced** · Decide · Balance · asked 2026-11-28
+- Re-checked on its home maps: worth ~3.2-4.2 points; priced 1.9.
+  - a) Price it 3.5
+  - b) Keep
+- **Default:** a
+
+**RES1-3. Delivery 1 is overpriced** · Decide · Balance · asked 2026-11-28
+- Measured about 3.9 points; priced 5.25. At Wait 0 it plays exactly like On Play: gain (priced 2.59).
+  - a) Price it 3.9
+  - b) Keep
+- **Default:** a
+
+**RES1-4. What one Lumber of cost is worth** · Decide · Balance · asked 2026-11-28
+- Two more reference decks read 3.8 ± 0.7, and the budget's value sits inside that range. The first 4.7 came from income creatures, which lose time when they cost Lumber.
+  - a) Keep the budget's Lumber value
+  - b) Raise it
+- **Default:** a
+
 **ARCH1-1. Fix the accidental glass cannons and walls** · Decide · Cards · asked 2026-11-28
 - 24 of 34 glass cannons and 1 of 25 walls only fit the stats. Each is reshaped inside its budget or gets a kit that explains it (e.g. Acorn Chipmunk 💀 draw). 8 glass cannons and 21 walls are by design and stay. 14 are on road lists, so road fights move.
   - a) all 25
