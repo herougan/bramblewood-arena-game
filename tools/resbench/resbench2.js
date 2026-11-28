@@ -21,17 +21,19 @@ const OUT = R1.OUT, VERSION = '2.0.0 (2026-11-28, RESBENCH2)';
 const gm = R1.gm, G = () => gm().G;
 
 // ---------------------------------------------------------------- contexts: {id, opp: 'mirror' | map number (its reference deck), field: null | map number (its first fight's rules) | 'tide'}
-const SCAN = [0, 1, 2, 3, 4, 9, 10, 11, 12, 13, 14].flatMap(m => [{ id: 'ref' + m, opp: m, field: null }, { id: 'ref' + m + 'f', opp: m, field: m }]);
+const SCAN = [0, 1, 2, 3, 4, 8, 9, 10, 11, 12, 13, 14].flatMap(m => [{ id: 'ref' + m, opp: m, field: null }, { id: 'ref' + m + 'f', opp: m, field: m }]);
 // the run's contexts (RES1-4's two extra decks picked from the scan: A-0 at 30-70% with no field, as RESBENCH1's Map 8)
 const CTX = [
-  { id: 'ref0f', opp: 0, field: 0, why: 'home of Gull Thief / Forager Ant (Map 0 list)' },
+  { id: 'ref0f', opp: 0, field: 0, why: 'home of Gull Thief / Forager Ant (Map 0 list); A-0 wins 99% here, so the readings sit at the ceiling' },
+  { id: 'mirror0f', opp: 'mirror', field: 0, why: 'the A-0 mirror under Map 0\'s field (room to read, where the Map 0 deck is at the ceiling)' },
   { id: 'ref2f', opp: 2, field: 2, why: 'home of Gull Thief and Driftwood Crab (Map 2 list and fights)' },
   { id: 'ref3f', opp: 3, field: 3, why: 'home of Gull Thief (Map 3 list and fights)' },
   { id: 'ref8f', opp: 8, field: 8, why: 'home of Driftwood Crab (Map 8 list)' },
-  { id: 'ref9f', opp: 9, field: 9, why: 'home of Driftwood Crab (Map 9 list)' },
+  { id: 'ref9f', opp: 9, field: 9, why: 'home of Driftwood Crab (Map 9 list); A-0 wins 6% here, so the readings sit at the floor' },
+  { id: 'mirror9f', opp: 'mirror', field: 9, why: 'the A-0 mirror under Map 9\'s field (room to read, where the Map 9 deck is at the floor)' },
   { id: 'ref10f', opp: 10, field: 10, why: 'home of Giant Clam (Map 10 list and fights), Tide on' },
   { id: 'mirrorTide', opp: 'mirror', field: 'tide', why: 'the A-0 mirror with only the Tide on (Giant Clam)' },
-  ...(process.env.RB2_LUMBER || 'ref1,ref4').split(',').map(id => ({ id, opp: +id.replace('ref', ''), field: null, why: 'RES1-4: one more reference deck, no field' })),
+  ...(process.env.RB2_LUMBER || 'ref2,ref4' /* the scan: A-0 48% / 33% with no field (ref3 71%, ref1 25%) */).split(',').map(id => ({ id, opp: +id.replace('ref', ''), field: null, why: 'RES1-4: one more reference deck, no field' })),
 ];
 const CARDS2 = ['gull-thief', 'forager-ant', 'driftwood-crab', 'giant-clam', 'muskrat-lodgekeeper', 'coral-polyp-colony'];
 const EVERY = R1.SKILLS.filter(s => s.every).map(s => s.id);
@@ -89,8 +91,9 @@ function play(c, v, g) {
 // ---------------------------------------------------------------- saved games
 function fingerprint(ctxs) {
   const h = crypto.createHash('sha1'); h.update(VERSION); h.update(R1.fingerprint());
+  // the data the games read: every scanned map's first-fight rules and reference deck (fixed list, so adding a context keeps the games)
   const D = gm().D, used = new Set(CARDS2);
-  ctxs.forEach(c => { h.update(c.id + JSON.stringify(rulesOf(c))); if (c.opp !== 'mirror') { const r = refOf(c.opp); h.update(JSON.stringify(r)); Object.keys(r.deck).forEach(id => used.add(id)); } });
+  [...new Set(SCAN.map(c => c.opp))].sort((a, b) => a - b).forEach(m => { const r = refOf(m); h.update(m + JSON.stringify(rulesOf({ field: m })) + JSON.stringify(r)); Object.keys(r.deck).forEach(id => used.add(id)); });
   [...used].sort().forEach(id => h.update(JSON.stringify(D[id] || null)));
   return h.digest('hex').slice(0, 10);
 }
