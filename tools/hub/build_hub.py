@@ -125,6 +125,10 @@ AI = [(t, _ai_fix(md_html(b))) for t, b in _ai_secs]
 body = _ai_fix(md_html(_ai_intro)) + ''.join(f'<details class="hx ai-sec" id="ai-{k}"><summary><h2>{H.escape(t)}</h2>{("<small class=hx-n>" + str(b.count("<li")) + "</small>") if "<li" in b else ""}</summary><div class="hx-b">{b}</div></details>' for k, (t, b) in enumerate(AI))
 for k, (t, b) in enumerate(AI): SEARCH.append(['Action items', t, '', _txt(b)[:6000], {'tab': 'actions', 'el': f'ai-{k}'}])
 _ai_updated = (re.search(r'_Updated ([^._]+)', _ai_intro) or [None, ''])[1]
+if not _ai_updated:  # 2026-11-28: the intro lost its '_Updated' line; fall back to the file's last commit date
+    try:
+        import subprocess as _sp; _ai_updated = _sp.run(['git', 'log', '-1', '--format=%cs', '--', 'docs/action-items.md'], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+    except Exception: _ai_updated = ''
 BAL = json.load(open(os.path.join(ROOT, 'docs', 'balance', 'card-balance.json'), encoding='utf-8'))
 bal_json = json.dumps({'games': BAL['games'], 'generated': BAL['generated'], 'rows': [{k: r.get(k) for k in ('id','name','rarity','cost','wait','attack','health','skills','winRate','band','verdict','source','suggest','suggestRarity')} for r in BAL['rows']]}, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
 # 2026-10-15: one collapsible block per changelog entry (newest three open) instead of one 80,000px page.
