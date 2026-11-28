@@ -26,3 +26,5 @@ RESULT 10-4 {"giant-clam":4,"orca-vanguard":3,"riptide-eel":3,"sea-turtle-elder"
 start {"fungus-gnat-cloud":4,"garden-snail":2,"hawthorn-shieldbug":3,"sleepless-shrew":1,"bombardier-beetle":3,"compost-grub":1,"rot-swollen-carcass":2} 80
 round 1: cur 85/80; 82 legal, 82 read + 14 predicted (of 41); top: -2 hawthorn-shieldbug -1 bombardier-beetle +2 garden-snail +1 sleepless-shrew 70/69.7 | -3 hawthorn-shieldbug +3 planarian-splitter 70/68 | -1 fungus-gnat-cloud -2 hawthorn-shieldbug +1 sleepless-shrew +2 garden-snail 70/67 | -4 fungus-gnat-cloud +2 earthworm +2 sleepless-shrew 70/66.7 | -3 hawthorn-shieldbug +2 garden-snail +1 sleepless-shrew 70/64
 RESULT 7-A-3 {"fungus-gnat-cloud":4,"garden-snail":4,"hawthorn-shieldbug":1,"sleepless-shrew":2,"bombardier-beetle":2,"compost-grub":1,"rot-swollen-carcass":2} 69.7 {} moves: -2 hawthorn-shieldbug -1 bombardier-beetle +2 garden-snail +1 sleepless-shrew problems: []
+LANE 1 DONE
+ALLDONE
