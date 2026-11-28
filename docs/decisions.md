@@ -4,6 +4,34 @@ _Generated from `decisions.json` (2026-11-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**SKINS1-1. How are skins earned for now?** · Decide · Art · asked 2026-11-28
+- No purchases exist. Skins and foils come from play: clears, card levels, events. Packs never cost Maple Leaves.
+  - a) Earned only: S1 and S2 by play, S3 rare milestones.
+  - b) Also a pack foil roll for S1.
+  - c) Wait until the shop plan.
+- **Default:** a
+
+**SKINS1-2. Do skins show on board tiles?** · Decide · UI · asked 2026-11-28
+- Board tiles stay flat today (speed). Skins could still add a still rim, or nothing.
+  - a) Flat tiles, a rim pulse on play only.
+  - b) Full skins on board, Medium+ graphics.
+  - c) Flat, no rim.
+- **Default:** a
+
+**SKINS1-3. Tribe flourishes: on by default?** · Decide · UI · asked 2026-11-28
+- 3+ of one tribe on a side plays a small overlay. Costs at most 24 particles, off under Low graphics.
+  - a) On, with a settings switch.
+  - b) Off until the player turns it on.
+  - c) Skip flourishes.
+- **Default:** a
+
+**SKINS1-4. How many S3 animated cards first?** · Decide · Art · asked 2026-11-28
+- Each S3 card is a PixelLab frame loop (credits are never bought). The eagle comes first.
+  - a) The eagle only, then measure.
+  - b) Five cards, one per big tribe.
+  - c) Hold S3 until frames are cheap.
+- **Default:** a
+
 **RES1-1. On Attack: gain 1 is far underpriced** · Decide · Balance · asked 2026-11-28
 - Re-checked on its home maps with their fields: worth 3.8-5.1 points (matches Forestry within 0.8 in all 11 tests); priced 1.35.
   - a) Price it like Forestry (6.65)
