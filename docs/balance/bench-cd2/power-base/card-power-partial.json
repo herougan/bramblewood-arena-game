@@ -1,0 +1,1129 @@
+{
+ "generated": "2026-11-28",
+ "games": 400,
+ "mode": "open",
+ "filler": [
+  "warren-scout",
+  "fawn-scout",
+  "bee-sentry",
+  "mouse-sapper",
+  "poison-dart-croaker",
+  "termite-forager",
+  "land-tiller"
+ ],
+ "bands": {
+  "starter": [
+   0.2,
+   0.48
+  ],
+  "common": [
+   0.35,
+   0.6
+  ],
+  "uncommon": [
+   0.45,
+   0.68
+  ],
+  "quest": [
+   0.45,
+   0.68
+  ],
+  "rare": [
+   0.52,
+   0.75
+  ],
+  "veryrare": [
+   0.56,
+   0.8
+  ],
+  "superrare": [
+   0.6,
+   0.84
+  ],
+  "epic": [
+   0.62,
+   0.87
+  ],
+  "heroic": [
+   0.64,
+   0.89
+  ],
+  "unique": [
+   0.66,
+   0.92
+  ],
+  "questunique": [
+   0.66,
+   0.92
+  ],
+  "legendary": [
+   0.7,
+   0.97
+  ],
+  "mythic": [
+   0.72,
+   1
+  ],
+  "ancient": [
+   0.75,
+   1
+  ]
+ },
+ "method": {
+  "basic": "k copies of the card + filler (with 2 Lumber cards) vs 20 filler, a random day/night and field per game; seeds 7700 + 131g",
+  "advanced": "same test deck vs 20 cards from the top 40% pool (min(4, rarity copy limit) copies, top-rank caps), drawn per game",
+  "count": "a game counts only if the test side played the card at least once (winRate / advRate over played games; winRateAll over all games)",
+  "lowSampleUnder": 20,
+  "workers": 2,
+  "seconds": {
+   "basic": 145,
+   "total": 341
+  }
+ },
+ "advanced": {
+  "seed": 2211,
+  "topShare": 0.4,
+  "poolCards": 20,
+  "restFrom": null,
+  "poolFrom": "docs/balance/bal25/card-power.json (2026-11-28, 400 games)",
+  "pool": [
+   "abyss-lantern-squid",
+   "adder-ambusher",
+   "alligator-gar",
+   "alpine-marmot",
+   "antlion-pit",
+   "anvil-thrush",
+   "apollo-butterfly",
+   "arctic-tern",
+   "ash-cloud-condor",
+   "ash-moth",
+   "barrel-cactus",
+   "basalt-boar",
+   "bear-cub",
+   "beaver-feller",
+   "bee-drone",
+   "birdlime-dauber",
+   "bison-bulldozer",
+   "blue-ringed-octopus",
+   "bombardier-beetle",
+   "booming-bittern",
+   "border-collie",
+   "burrow-rabbit",
+   "caldera-snow-leopard",
+   "caldera-wyrm",
+   "camouflage-frog",
+   "carrion-beetle",
+   "chamois-leaper",
+   "cinder-gecko",
+   "clap-net-trapper",
+   "cobalt-talon-honour-guard",
+   "conch-herald",
+   "coral-current-eel",
+   "cormorant",
+   "cottonmouth-matriarch",
+   "dawn-bellringer",
+   "dolphin-knight",
+   "drowned-matriarch",
+   "duck-paddler",
+   "dust-devil-kestrel",
+   "dust-hyena",
+   "eagle-owl-quartermaster",
+   "echo-matriarch",
+   "electric-ray",
+   "farm-dog",
+   "fathom-leviathan",
+   "feral-tomcat",
+   "fire-salamander",
+   "ford-kingfisher",
+   "fox-kit",
+   "fumarole-ibex",
+   "fungus-gnat-cloud",
+   "gale-swift",
+   "gallery-orb-weaver",
+   "gangrenous-leech",
+   "giant-cave-huntsman",
+   "glass-golem",
+   "gold-throat-elder",
+   "gold-throated-acolyte",
+   "golden-eagle-diver",
+   "grass-viper",
+   "grindstone-boar",
+   "harbor-seal",
+   "hawk-arrowkeeper",
+   "hedgehog-herbalist",
+   "helmeted-otter",
+   "hercules-beetle",
+   "heron-hag",
+   "honey-badger-fury",
+   "honeyjoe-brewer",
+   "hoopoe-herald",
+   "horned-lizard",
+   "horseshoe-crab",
+   "ibex-rockcaller",
+   "ice-crevasse-wolf",
+   "inside-out-hedgehog",
+   "irradiated-axolotl",
+   "kinkajou-lurker",
+   "ladybird-guard",
+   "lantern-spark-fly",
+   "legate-of-rivergate",
+   "leopard-slug",
+   "magma-salamander",
+   "mallard-halberdier",
+   "mangrove-monitor",
+   "mangrove-mudskipper",
+   "millipede-hauler",
+   "mirror-moth",
+   "mist-net-otter",
+   "monarch-wingblade",
+   "mouse-sapper",
+   "mudpuppy",
+   "net-thrower",
+   "newt-doctor",
+   "nightjar-drifter",
+   "octopus-tactician",
+   "old-shell",
+   "old-willow-of-the-ford",
+   "optio-of-the-ford",
+   "ossuary-lammergeier",
+   "otter-ferryman",
+   "otter-flag-bearer",
+   "otter-lantern-bearer",
+   "otter-royal-guard",
+   "otter-shieldback",
+   "owl-sentinel",
+   "peak-condor",
+   "peat-cutter-vole",
+   "peregrine-stooper",
+   "pike-lancer",
+   "plains-zebra",
+   "planarian-splitter",
+   "pride-queen",
+   "puddle-skimmer",
+   "puffin-diver",
+   "pumice-beetle",
+   "quicksand-queen",
+   "quillguard",
+   "redwood-woodpecker",
+   "reef-admiral",
+   "river-carp",
+   "river-mink",
+   "rivergate-recruit",
+   "riverstone-slinger",
+   "robin-redbreast",
+   "ruby-throat-duelist",
+   "sandstorm-roc",
+   "savanna-cheetah",
+   "sergeant-bramblefox",
+   "shell-cracker",
+   "shellwright-apprentice",
+   "shoal-shark",
+   "siege-rhino",
+   "sleepless-shrew",
+   "snapstick-turtle",
+   "snow-ermine",
+   "soldier-ant",
+   "spitting-cobra",
+   "stoat-cutthroat",
+   "sunbittern-strider",
+   "sunspire-envoy",
+   "sunspire-sky-sovereign",
+   "taiga-lynx",
+   "tasmanian-devil",
+   "teatime-toad",
+   "the-contradiction",
+   "tide-spirit",
+   "tiny-cave-dweller",
+   "tunnel-ant",
+   "two-headed-calf",
+   "upside-down-bat",
+   "ur-elk",
+   "voidfeather-scout",
+   "walrus-icebreaker",
+   "wandering-traveller",
+   "whip-spider",
+   "wolfsbane-alpha",
+   "woodland-caribou",
+   "wound-reaver"
+  ],
+  "measured": 11,
+  "complete": true,
+  "matchSeeds": "102202 + 131g"
+ },
+ "rows": [
+  {
+   "id": "alpine-marmot",
+   "name": "Alpine Marmot",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 8,
+   "skills": [
+    "guardian",
+    "triggers"
+   ],
+   "winRate": 96.3,
+   "advRate": 56.9,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 385,
+   "winRateAll": 96.3,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 227.5,
+    "rateAll": 56.9
+   },
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "startsAt0": false,
+   "budget": {
+    "N": 18.35,
+    "S": 4.08,
+    "x1": 18.08,
+    "x2": 20.16,
+    "N2": 58.74,
+    "ok": true
+   },
+   "map": 7,
+   "rarityClass": "common",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     208
+    ],
+    "day": [
+     94,
+     91
+    ],
+    "night": [
+     90,
+     86
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     118
+    ],
+    "day": [
+     94,
+     58.5
+    ],
+    "night": [
+     90,
+     51
+    ]
+   },
+   "N": 18.35,
+   "power": 76.6,
+   "expected": 56.2,
+   "forBudget": 20.4
+  },
+  {
+   "id": "caldera-snow-leopard",
+   "name": "Caldera Snow Leopard",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 13,
+   "skills": [
+    "pounce"
+   ],
+   "winRate": 95,
+   "advRate": 40.5,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 380,
+   "winRateAll": 95,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 162,
+    "rateAll": 40.5
+   },
+   "band": [
+    56.00000000000001,
+    80
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "startsAt0": false,
+   "budget": {
+    "N": 26.64,
+    "S": 4.15,
+    "x1": 26.15,
+    "x2": 43.31,
+    "N2": 123.8,
+    "ok": true
+   },
+   "map": 14,
+   "rarityClass": "veryrare",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     207.5
+    ],
+    "day": [
+     94,
+     90.5
+    ],
+    "night": [
+     90,
+     82
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     78.5
+    ],
+    "day": [
+     94,
+     44.5
+    ],
+    "night": [
+     90,
+     39
+    ]
+   },
+   "N": 26.64,
+   "power": 67.8,
+   "expected": 48.4,
+   "forBudget": 19.4
+  },
+  {
+   "id": "chipmunk-hoarder",
+   "name": "Chipmunk Hoarder",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 5,
+   "skills": [
+    "forestry"
+   ],
+   "winRate": 27,
+   "advRate": 3.4,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 108,
+   "winRateAll": 27,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 13.5,
+    "rateAll": 3.4
+   },
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "pack",
+   "startsAt0": false,
+   "budget": {
+    "N": 18.35,
+    "S": 6.65,
+    "x1": 17.65,
+    "x2": 21.06,
+    "N2": 58.74,
+    "ok": true
+   },
+   "map": 7,
+   "rarityClass": "common",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     59.5
+    ],
+    "day": [
+     94,
+     23.5
+    ],
+    "night": [
+     90,
+     25
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     4
+    ],
+    "day": [
+     94,
+     3.5
+    ],
+    "night": [
+     90,
+     6
+    ]
+   },
+   "N": 18.35,
+   "power": 15.2,
+   "expected": 56.2,
+   "forBudget": -41
+  },
+  {
+   "id": "cunning-vixen",
+   "name": "Cunning Vixen",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 1,
+   "health": 12,
+   "skills": [
+    "stealth"
+   ],
+   "winRate": 19,
+   "advRate": 5,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 76,
+   "winRateAll": 19,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 20,
+    "rateAll": 5
+   },
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false,
+   "budget": {
+    "N": 23.84,
+    "S": 6.88,
+    "x1": 21.88,
+    "x2": 23.83,
+    "N2": 99.14,
+    "ok": true
+   },
+   "map": 12,
+   "rarityClass": "uncommon",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     49.5
+    ],
+    "day": [
+     94,
+     13.5
+    ],
+    "night": [
+     90,
+     13
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     9.5
+    ],
+    "day": [
+     94,
+     7.5
+    ],
+    "night": [
+     90,
+     3
+    ]
+   },
+   "N": 23.84,
+   "power": 12,
+   "expected": 51.1,
+   "forBudget": -39.1
+  },
+  {
+   "id": "elder-willow",
+   "name": "Elder Willow",
+   "rarity": "common",
+   "cost": 3,
+   "wait": 5,
+   "attack": 0,
+   "health": 36,
+   "skills": [
+    "forestry"
+   ],
+   "winRate": 28.3,
+   "advRate": 2.6,
+   "played": 357,
+   "games": 400,
+   "playedShare": 0.893,
+   "wins": 101,
+   "winRateAll": 28.3,
+   "adv": {
+    "played": 343,
+    "games": 400,
+    "playedShare": 0.858,
+    "wins": 9,
+    "rateAll": 3
+   },
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false,
+   "budget": {
+    "N": 48.59,
+    "S": 6.65,
+    "x1": 42.65,
+    "x2": 11.06,
+    "N2": 411.86,
+    "ok": true
+   },
+   "map": 0,
+   "rarityClass": "common",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     204,
+     58.5
+    ],
+    "day": [
+     77,
+     20.5
+    ],
+    "night": [
+     76,
+     22
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     201,
+     4.5
+    ],
+    "day": [
+     76,
+     1.5
+    ],
+    "night": [
+     66,
+     3
+    ]
+   },
+   "N": 48.59,
+   "power": 15.5,
+   "expected": 27.8,
+   "forBudget": -12.3
+  },
+  {
+   "id": "ice-crevasse-wolf",
+   "name": "Ice-Crevasse Wolf",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "attack": 1,
+   "health": 17,
+   "skills": [
+    "bleed"
+   ],
+   "winRate": 86.5,
+   "advRate": 30.8,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 346,
+   "winRateAll": 86.5,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 123,
+    "rateAll": 30.8
+   },
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "startsAt0": false,
+   "budget": {
+    "N": 25.47,
+    "S": 4.87,
+    "x1": 24.87,
+    "x2": 22.93,
+    "N2": 113.17,
+    "ok": true
+   },
+   "map": 14,
+   "rarityClass": "rare",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     189.5
+    ],
+    "day": [
+     94,
+     77.5
+    ],
+    "night": [
+     90,
+     79
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     68.5
+    ],
+    "day": [
+     94,
+     25.5
+    ],
+    "night": [
+     90,
+     29
+    ]
+   },
+   "N": 25.47,
+   "power": 58.7,
+   "expected": 49.5,
+   "forBudget": 9.2
+  },
+  {
+   "id": "pinecone-sapper",
+   "name": "Pinecone Sapper",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 0,
+   "health": 15,
+   "skills": [
+    "sturdy"
+   ],
+   "winRate": 19.5,
+   "advRate": 5,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 78,
+   "winRateAll": 19.5,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 20,
+    "rateAll": 5
+   },
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "pack",
+   "startsAt0": false,
+   "budget": {
+    "N": 19.99,
+    "S": 2.81,
+    "x1": 17.81,
+    "x2": 1.97,
+    "N2": 69.71,
+    "ok": true
+   },
+   "map": 14,
+   "rarityClass": "common",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     48.5
+    ],
+    "day": [
+     94,
+     14.5
+    ],
+    "night": [
+     90,
+     15
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     11.5
+    ],
+    "day": [
+     94,
+     6.5
+    ],
+    "night": [
+     90,
+     2
+    ]
+   },
+   "N": 19.99,
+   "power": 12.3,
+   "expected": 54.7,
+   "forBudget": -42.4
+  },
+  {
+   "id": "quillguard",
+   "name": "Quillguard",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 2,
+   "attack": 2,
+   "health": 18,
+   "skills": [
+    "thorns"
+   ],
+   "winRate": 92,
+   "advRate": 56.8,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 368,
+   "winRateAll": 92,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 227,
+    "rateAll": 56.8
+   },
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false,
+   "budget": {
+    "N": 29.39,
+    "S": 5.08,
+    "x1": 29.08,
+    "x2": 42.45,
+    "N2": 150.68,
+    "ok": true
+   },
+   "map": 12,
+   "rarityClass": "rare",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     201.5
+    ],
+    "day": [
+     94,
+     83.5
+    ],
+    "night": [
+     90,
+     83
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     114.5
+    ],
+    "day": [
+     94,
+     63.5
+    ],
+    "night": [
+     90,
+     49
+    ]
+   },
+   "N": 29.39,
+   "power": 74.4,
+   "expected": 45.8,
+   "forBudget": 28.6
+  },
+  {
+   "id": "shellwright-apprentice",
+   "name": "Shellwright Apprentice",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 8,
+   "skills": [
+    "fortify"
+   ],
+   "winRate": 99.6,
+   "advRate": 91.6,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 398.5,
+   "winRateAll": 99.6,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 366.5,
+    "rateAll": 91.6
+   },
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "pack",
+   "startsAt0": false,
+   "budget": {
+    "N": 17.88,
+    "S": 9.06,
+    "x1": 23.06,
+    "x2": 36.52,
+    "N2": 55.77,
+    "ok": false
+   },
+   "map": 5,
+   "rarityClass": "common",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     215
+    ],
+    "day": [
+     94,
+     93.5
+    ],
+    "night": [
+     90,
+     90
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     201
+    ],
+    "day": [
+     94,
+     85
+    ],
+    "night": [
+     90,
+     80.5
+    ]
+   },
+   "N": 17.88,
+   "power": 95.6,
+   "expected": 56.7,
+   "forBudget": 38.9
+  },
+  {
+   "id": "wound-reaver",
+   "name": "Gila Monster",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "attack": 1,
+   "health": 17,
+   "skills": [
+    "bleed"
+   ],
+   "winRate": 91.8,
+   "advRate": 43.5,
+   "played": 400,
+   "games": 400,
+   "playedShare": 1,
+   "wins": 367,
+   "winRateAll": 91.8,
+   "adv": {
+    "played": 400,
+    "games": 400,
+    "playedShare": 1,
+    "wins": 174,
+    "rateAll": 43.5
+   },
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false,
+   "budget": {
+    "N": 25.71,
+    "S": 4.87,
+    "x1": 24.87,
+    "x2": 22.93,
+    "N2": 115.31,
+    "ok": true
+   },
+   "map": 15,
+   "rarityClass": "rare",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     216,
+     200.5
+    ],
+    "day": [
+     94,
+     84.5
+    ],
+    "night": [
+     90,
+     82
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     216,
+     88.5
+    ],
+    "day": [
+     94,
+     44.5
+    ],
+    "night": [
+     90,
+     41
+    ]
+   },
+   "N": 25.71,
+   "power": 67.7,
+   "expected": 49.3,
+   "forBudget": 18.4
+  },
+  {
+   "id": "yeti",
+   "name": "Wild Yak",
+   "rarity": "common",
+   "cost": 3,
+   "wait": 5,
+   "attack": 5,
+   "health": 29,
+   "skills": [
+    "daunt"
+   ],
+   "winRate": 45.7,
+   "advRate": 6.7,
+   "played": 357,
+   "games": 400,
+   "playedShare": 0.893,
+   "wins": 163,
+   "winRateAll": 43.8,
+   "adv": {
+    "played": 343,
+    "games": 400,
+    "playedShare": 0.858,
+    "wins": 23,
+    "rateAll": 6.5
+   },
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "pack",
+   "startsAt0": false,
+   "budget": {
+    "N": 50.23,
+    "S": 2.56,
+    "x1": 46.56,
+    "x2": 146.64,
+    "N2": 440.13,
+    "ok": true
+   },
+   "map": 7,
+   "rarityClass": "common",
+   "measuredAt": 1,
+   "byPhase": {
+    "cycle": [
+     204,
+     95.5
+    ],
+    "day": [
+     77,
+     39.5
+    ],
+    "night": [
+     76,
+     28
+    ]
+   },
+   "advByPhase": {
+    "cycle": [
+     201,
+     7.5
+    ],
+    "day": [
+     76,
+     2.5
+    ],
+    "night": [
+     66,
+     13
+    ]
+   },
+   "N": 50.23,
+   "power": 26.2,
+   "expected": 26.3,
+   "forBudget": -0.1
+  }
+ ],
+ "v": 3,
+ "scope": {
+  "maxMap": 20,
+  "rule": "card-obtain-maps.json map <= 20, plus unlisted faction / Starter / Base-source cards and unlisted (Map 0) cards the game hands out",
+  "cards": 11,
+  "maps0to20": 11
+ },
+ "env": {
+  "phases": {
+   "cycle": 0.5,
+   "day": 0.25,
+   "night": 0.25
+  },
+  "fields": "tools/skill_test_robust.js FIELDS / FIELD_CONFIG (Day/Night replaced by the phase roll)"
+ },
+ "fit": {
+  "formula": "expected = a + b × N",
+  "a": 73.454,
+  "b": -0.939,
+  "n": 11,
+  "r2": 0.117,
+  "rmse": 28.1,
+  "leftOut": [],
+  "power": "mean of winRate and advRate (winRate alone without an advanced pass)",
+  "N": "bramblewood-budget.js N at the measured level (Faction-Starter: Level 0, one rank below Starter)"
+ }
+}

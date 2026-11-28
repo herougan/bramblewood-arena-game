@@ -1,0 +1,475 @@
+{
+ "generated": "2026-11-28",
+ "games": 400,
+ "fit": {
+  "a": 28.096,
+  "b": 0.471,
+  "from": "docs/balance/bal25/card-power.json 2026-11-28"
+ },
+ "rows": [
+  {
+   "id": "elder-willow",
+   "name": "Elder Willow",
+   "N": [
+    48.59,
+    48.59
+   ],
+   "basic": [
+    28.3,
+    40.3
+   ],
+   "adv": [
+    2.6,
+    4.7
+   ],
+   "played": [
+    357,
+    357
+   ],
+   "advPlayed": [
+    343,
+    343
+   ],
+   "power": [
+    15.450000000000001,
+    22.5
+   ],
+   "expected": [
+    51,
+    51
+   ],
+   "forBudget": [
+    -35.5,
+    -28.5
+   ],
+   "budgetUseL1": [
+    87.8,
+    91.8
+   ],
+   "unpricedAfter": [],
+   "change": 7
+  },
+  {
+   "id": "shellwright-apprentice",
+   "name": "Shellwright Apprentice",
+   "N": [
+    17.88,
+    17.88
+   ],
+   "basic": [
+    99.6,
+    81.3
+   ],
+   "adv": [
+    91.6,
+    34.9
+   ],
+   "played": [
+    400,
+    400
+   ],
+   "advPlayed": [
+    400,
+    400
+   ],
+   "power": [
+    95.6,
+    58.099999999999994
+   ],
+   "expected": [
+    36.5,
+    36.5
+   ],
+   "forBudget": [
+    59.1,
+    21.6
+   ],
+   "budgetUseL1": [
+    129,
+    98.9
+   ],
+   "unpricedAfter": [],
+   "change": -37.5
+  },
+  {
+   "id": "chipmunk-hoarder",
+   "name": "Chipmunk Hoarder",
+   "N": [
+    18.35,
+    18.35
+   ],
+   "basic": [
+    27,
+    27.5
+   ],
+   "adv": [
+    3.4,
+    4
+   ],
+   "played": [
+    400,
+    400
+   ],
+   "advPlayed": [
+    400,
+    400
+   ],
+   "power": [
+    15.2,
+    15.75
+   ],
+   "expected": [
+    36.7,
+    36.7
+   ],
+   "forBudget": [
+    -21.5,
+    -21
+   ],
+   "budgetUseL1": [
+    96.2,
+    86.5
+   ],
+   "unpricedAfter": [],
+   "change": 0.6
+  },
+  {
+   "id": "yeti",
+   "name": "Wild Yak",
+   "N": [
+    50.23,
+    50.23
+   ],
+   "basic": [
+    45.7,
+    55.2
+   ],
+   "adv": [
+    6.7,
+    14
+   ],
+   "played": [
+    357,
+    357
+   ],
+   "advPlayed": [
+    343,
+    343
+   ],
+   "power": [
+    26.200000000000003,
+    34.6
+   ],
+   "expected": [
+    51.8,
+    51.8
+   ],
+   "forBudget": [
+    -25.6,
+    -17.2
+   ],
+   "budgetUseL1": [
+    92.7,
+    99.1
+   ],
+   "unpricedAfter": [],
+   "change": 8.4
+  },
+  {
+   "id": "wound-reaver",
+   "name": "Gila Monster",
+   "N": [
+    25.71,
+    25.71
+   ],
+   "basic": [
+    91.8,
+    83.5
+   ],
+   "adv": [
+    43.5,
+    36.3
+   ],
+   "played": [
+    400,
+    400
+   ],
+   "advPlayed": [
+    400,
+    400
+   ],
+   "power": [
+    67.65,
+    59.9
+   ],
+   "expected": [
+    40.2,
+    40.2
+   ],
+   "forBudget": [
+    27.4,
+    19.7
+   ],
+   "budgetUseL1": [
+    96.7,
+    96.3
+   ],
+   "unpricedAfter": [],
+   "change": -7.8
+  },
+  {
+   "id": "ice-crevasse-wolf",
+   "name": "Ice-Crevasse Wolf",
+   "N": [
+    25.47,
+    25.47
+   ],
+   "basic": [
+    86.5,
+    73.5
+   ],
+   "adv": [
+    30.8,
+    12.8
+   ],
+   "played": [
+    400,
+    400
+   ],
+   "advPlayed": [
+    400,
+    400
+   ],
+   "power": [
+    58.65,
+    43.15
+   ],
+   "expected": [
+    40.1,
+    40.1
+   ],
+   "forBudget": [
+    18.6,
+    3.1
+   ],
+   "budgetUseL1": [
+    97.6,
+    95.8
+   ],
+   "unpricedAfter": [],
+   "change": -15.5
+  },
+  {
+   "id": "cunning-vixen",
+   "name": "Cunning Vixen",
+   "N": [
+    23.84,
+    23.84
+   ],
+   "basic": [
+    19,
+    25.3
+   ],
+   "adv": [
+    5,
+    4.8
+   ],
+   "played": [
+    400,
+    400
+   ],
+   "advPlayed": [
+    400,
+    400
+   ],
+   "power": [
+    12,
+    15.05
+   ],
+   "expected": [
+    39.3,
+    39.3
+   ],
+   "forBudget": [
+    -27.3,
+    -24.3
+   ],
+   "budgetUseL1": [
+    91.8,
+    97.4
+   ],
+   "unpricedAfter": [],
+   "change": 3.1
+  },
+  {
+   "id": "alpine-marmot",
+   "name": "Alpine Marmot",
+   "N": [
+    18.35,
+    18.35
+   ],
+   "basic": [
+    96.3,
+    84.9
+   ],
+   "adv": [
+    56.9,
+    38.5
+   ],
+   "played": [
+    400,
+    400
+   ],
+   "advPlayed": [
+    400,
+    400
+   ],
+   "power": [
+    76.6,
+    61.7
+   ],
+   "expected": [
+    36.7,
+    36.7
+   ],
+   "forBudget": [
+    39.9,
+    25
+   ],
+   "budgetUseL1": [
+    98.5,
+    86.1
+   ],
+   "unpricedAfter": [],
+   "change": -14.9
+  },
+  {
+   "id": "caldera-snow-leopard",
+   "name": "Caldera Snow Leopard",
+   "N": [
+    26.64,
+    26.64
+   ],
+   "basic": [
+    95,
+    94.6
+   ],
+   "adv": [
+    40.5,
+    44.6
+   ],
+   "played": [
+    400,
+    400
+   ],
+   "advPlayed": [
+    400,
+    400
+   ],
+   "power": [
+    67.75,
+    69.6
+   ],
+   "expected": [
+    40.6,
+    40.6
+   ],
+   "forBudget": [
+    27.1,
+    29
+   ],
+   "budgetUseL1": [
+    98.2,
+    91.5
+   ],
+   "unpricedAfter": [],
+   "change": 1.8
+  },
+  {
+   "id": "pinecone-sapper",
+   "name": "Pinecone Sapper",
+   "N": [
+    19.99,
+    19.99
+   ],
+   "basic": [
+    19.5,
+    64
+   ],
+   "adv": [
+    5,
+    18.8
+   ],
+   "played": [
+    400,
+    400
+   ],
+   "advPlayed": [
+    400,
+    400
+   ],
+   "power": [
+    12.25,
+    41.4
+   ],
+   "expected": [
+    37.5,
+    37.5
+   ],
+   "forBudget": [
+    -25.3,
+    3.9
+   ],
+   "budgetUseL1": [
+    89.1,
+    110.8
+   ],
+   "unpricedAfter": [
+    "skill:dynamiteDmg"
+   ],
+   "change": 29.2
+  },
+  {
+   "id": "quillguard",
+   "name": "Quillguard",
+   "N": [
+    29.39,
+    29.39
+   ],
+   "basic": [
+    92,
+    92
+   ],
+   "adv": [
+    56.8,
+    60.5
+   ],
+   "played": [
+    400,
+    400
+   ],
+   "advPlayed": [
+    400,
+    400
+   ],
+   "power": [
+    74.4,
+    76.25
+   ],
+   "expected": [
+    41.9,
+    41.9
+   ],
+   "forBudget": [
+    32.5,
+    34.3
+   ],
+   "budgetUseL1": [
+    98.9,
+    98.9
+   ],
+   "unpricedAfter": [],
+   "change": 1.8
+  }
+ ]
+}
