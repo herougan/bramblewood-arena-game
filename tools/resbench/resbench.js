@@ -96,8 +96,10 @@ function variants(phase, nstar) {
   OPPS.forEach(o => {
     if (phase === 'curve') { add(o.id, 'base', 'A-0', deckA(0, null));
       SKILLS.forEach(s => (s.every ? [0, 1] : [0]).forEach(c => NS.forEach(n => add(o.id, 'curve', s.id + '-' + c + ' n' + n, deckA(n, 'rb-' + s.id + '-' + c), { skill: s.id, cost: c, n })))); }
-    if (phase === 'calib') [['rb-v0-a1', 3], ['rb-v0-h2', 2]].forEach(([id, pts]) => [4, 12].forEach(k => add(o.id, 'calib', id + ' x' + k, deckA(0, null, { at: 'v0', id, k }), { bump: id, k, pts: pts * k }))); // the bumped copies first
+    if (phase === 'calib') [['rb-v0-a1', 3], ['rb-v0-h2', 2]].forEach(([id, pts]) => [1, 2, 4, 12].forEach(k => add(o.id, 'calib', id + ' x' + k, deckA(0, null, { at: 'v0', id, k }), { bump: id, k, pts: pts * k }))); // the bumped copies first
     if (phase === 'cards') { const { defs } = ctxDefs();
+      // the A-n* decks themselves when n* is not on the curve's grid (the "vs slot" base of the A-n* swaps)
+      SKILLS.filter(s => nstar && nstar[o.id] && nstar[o.id][s.id] && !NS.includes(nstar[o.id][s.id].n)).forEach(s => { const ns = nstar[o.id][s.id]; add(o.id, 'cards', s.id + '-' + ns.cost + ' n' + ns.n + ' (A-n* base)', deckA(ns.n, 'rb-' + s.id + '-' + ns.cost), { skill: s.id, cost: ns.cost, n: ns.n, kind: 'base' }); });
       CARDS.forEach(([id, sk, L]) => { const R = realOf(defs, id, L), ns = nstar && nstar[o.id] && nstar[o.id][sk];
         [[R.did, 'real'], [R.twin, 'twin']].forEach(([did, kind]) => { // a card with no test skill (sk null) plays in A-0 only
           add(o.id, 'cards', id + ' ' + kind + ' in A-0', deckA(0, null, { at: 'v0', id: did, k: 1 }), { card: id, kind, ctx: 'A-0', skill: sk, level: L });
@@ -156,6 +158,19 @@ function quadFit(xs, ys) {
   return [M[0][3] / M[0][0], M[1][3] / M[1][1], M[2][3] / M[2][2]];
 }
 const qAt = (b, x) => b[0] + b[1] * x + b[2] * x * x;
+// the saturating fit (2026-11-28): d(n) = a (1 - e^(-n/tau)) + b n through d(0) = 0: a steep first copies that level off (a) and a late
+// straight trend (b, - when too many resource bodies crowd out the rest). The A-n curves rise fastest at n = 1-3 and flatten, which a
+// quadratic misses (it under-reads the first copies and puts n* where the curve has long flattened). tau on a log grid, a and b by least squares.
+function satFit(xs, ds) {
+  let best = null;
+  for (let t = 0.25; t <= 60; t *= 1.04) { const f = xs.map(x => 1 - Math.exp(-x / t));
+    let sff = 0, sfx = 0, sxx = 0, sfy = 0, sxy = 0; xs.forEach((x, i) => { sff += f[i] * f[i]; sfx += f[i] * x; sxx += x * x; sfy += f[i] * ds[i]; sxy += x * ds[i]; });
+    const det = sff * sxx - sfx * sfx; if (Math.abs(det) < 1e-12) continue; const a = (sfy * sxx - sfx * sxy) / det, b = (sff * sxy - sfx * sfy) / det;
+    let e = 0; xs.forEach((x, i) => { const r = a * f[i] + b * x - ds[i]; e += r * r; }); if (!best || e < best.e) best = { a, b, tau: t, e }; }
+  return best;
+}
+const sAt = (p, x) => p.a * (1 - Math.exp(-x / p.tau)) + p.b * x;
+function nStarSat(p) { let best = 0, bv = 0; for (let x = 0; x <= 12.0001; x += 0.05) { const v = sAt(p, x); if (v > bv + 1e-9) { bv = v; best = x; } } return { n: best, gain: bv }; }
 function nStarOf(b) { let best = 0, bv = qAt(b, 0); for (let x = 0; x <= 12.0001; x += 0.05) { const v = qAt(b, x); if (v > bv) { bv = v; best = x; } } return { n: best, gain: bv - qAt(b, 0) }; }
 function rng(seed) { return O.mulberry(seed); }
 function quant(a, q) { const v = a.slice().sort((x, y) => x - y); return v[Math.min(v.length - 1, Math.max(0, Math.round(q * (v.length - 1))))]; }
@@ -201,19 +216,20 @@ function cmdReport(o) {
     // the calibration line (WR points per budget point), through the origin
     const cal = variants('calib', null).filter(v => v.opp === op.id && has(v, M));
     const boots = Array.from({ length: B }, () => Array.from({ length: M }, () => Math.floor(R.next() * M)));
-    const slopeOf = idx => { let sxy = 0, sxx = 0; cal.forEach(v => { const a = arr(all[v.key], M); let d = 0; idx.forEach(i => { d += a[i] - a0[i]; }); d /= idx.length; sxy += v.pts * d; sxx += v.pts * v.pts; }); return sxx ? sxy / sxx : null; };
-    const id0 = Array.from({ length: M }, (_, i) => i), slope = slopeOf(id0), slopeB = cal.length ? boots.map(slopeOf) : [];
-    res.calib[op.id] = { slope, lo: slopeB.length ? quant(slopeB, 0.025) : null, hi: slopeB.length ? quant(slopeB, 0.975) : null, points: cal.map(v => { const d = dif(arr(all[v.key], M), a0); return { variant: v.label, pts: v.pts, d: mean(d), se: se(d) }; }) };
+    const slopeOf = (idx, only) => { let sxy = 0, sxx = 0; cal.filter(v => v.k <= 4 && (!only || v.bump === only)).forEach(v => { const a = arr(all[v.key], M); let d = 0; idx.forEach(i => { d += a[i] - a0[i]; }); d /= idx.length; sxy += v.pts * d; sxx += v.pts * v.pts; }); return sxx ? sxy / sxx : null; };
+    const id0 = Array.from({ length: M }, (_, i) => i), slope = slopeOf(id0), slopeB = cal.length ? boots.map(ix => slopeOf(ix)) : [];
+    res.calib[op.id] = { slopeA: slopeOf(id0, 'rb-v0-a1'), slopeH: slopeOf(id0, 'rb-v0-h2'), slope, lo: slopeB.length ? quant(slopeB, 0.025) : null, hi: slopeB.length ? quant(slopeB, 0.975) : null, points: cal.map(v => { const d = dif(arr(all[v.key], M), a0); return { variant: v.label, pts: v.pts, d: mean(d), se: se(d) }; }) };
     for (const s of SKILLS) for (const c of (s.every ? [0, 1] : [0])) {
       const pts = curve.filter(v => v.skill === s.id && v.cost === c && has(v, M)); if (!pts.length) continue;
       const xs = [0].concat(pts.map(v => v.n)), A = [a0].concat(pts.map(v => arr(all[v.key], M)));
-      const fitIdx = idx => quadFit(xs, A.map(a => { let t = 0; idx.forEach(i => { t += a[i]; }); return t / idx.length; }));
-      const b = fitIdx(id0), st = nStarOf(b), bs = boots.map(idx => { const bb = fitIdx(idx); return nStarOf(bb); });
+      const meansOf = idx => A.map(a => { let t = 0; idx.forEach(i => { t += a[i]; }); return t / idx.length; });
+      const fitIdx = idx => { const m = meansOf(idx); return satFit(xs, m.map(v => v - m[0])); };
+      const b = fitIdx(id0), st = nStarSat(b), bs = boots.map(idx => nStarSat(fitIdx(idx))), qb = quadFit(xs, meansOf(id0)), qs = nStarOf(qb);
       const first = dif(A[1], a0), d = BL.budgetOf(defs['rb-' + s.id + '-' + c], LEVEL);
-      const row = { skill: s.id, label: s.label, cost: c, price: d.S, fit: b, nstar: st.n, gain: st.gain, nstarLo: quant(bs.map(x => x.n), 0.025), nstarHi: quant(bs.map(x => x.n), 0.975), gainLo: quant(bs.map(x => x.gain), 0.025), gainHi: quant(bs.map(x => x.gain), 0.975),
+      const row = { skill: s.id, label: s.label, cost: c, price: d.S, fit: b, quad: { fit: qb, nstar: qs.n, gain: qs.gain }, nstar: st.n, gain: st.gain, nstarLo: quant(bs.map(x => x.n), 0.025), nstarHi: quant(bs.map(x => x.n), 0.975), gainLo: quant(bs.map(x => x.gain), 0.025), gainHi: quant(bs.map(x => x.gain), 0.975),
         points: xs.map((n, i) => { const dd = dif(A[i], a0); return { n, wr: mean(A[i]), se: se(A[i]), d: mean(dd), dse: i ? se(dd) : 0 }; }),
         first: { d: mean(first), se: se(first) }, firstPts: slope ? mean(first) / slope : null, firstPtsSe: slope ? se(first) / slope : null };
-      row.marg1Pts = slope ? (qAt(b, 1) - qAt(b, 0)) / slope : null; // the fitted first copy, in budget points
+      row.marg1Pts = slope ? sAt(b, 1) / slope : null; // the fitted first copy, in budget points
       row.perCopyAtNstar = st.n > 0.5 && slope ? st.gain / st.n / slope : null;
       res.skills.push(Object.assign({ opp: op.id }, row));
       const key = s.id, cur = nstar[op.id][key]; const ni = Math.max(1, Math.min(12, Math.round(st.n))); // at least A-1, so every card has a resource context
@@ -224,13 +240,13 @@ function cmdReport(o) {
     if (pl) res.skills.filter(r => r.opp === op.id && r.skill !== 'placebo').forEach(r => {
       const v1 = curve.find(v => v.skill === r.skill && v.cost === r.cost && v.n === 1), p1v = plV.find(v => v.n === 1);
       if (v1 && p1v && has(v1, M)) { const d = dif(arr(all[v1.key], M), arr(all[p1v.key], M)); r.firstNet = { d: mean(d), se: se(d) }; r.firstNetPts = slope ? mean(d) / slope : null; r.firstNetPtsSe = slope ? se(d) / slope : null; }
-      r.marg1NetPts = slope ? ((qAt(r.fit, 1) - qAt(r.fit, 0)) - (qAt(pl.fit, 1) - qAt(pl.fit, 0))) / slope : null;
-      const ni = r.nstar; r.gainNet = qAt(r.fit, ni) - qAt(pl.fit, ni); });
+      r.marg1NetPts = slope ? (sAt(r.fit, 1) - sAt(pl.fit, 1)) / slope : null;
+      const ni = r.nstar; r.gainNet = sAt(r.fit, ni) - sAt(pl.fit, ni); });
     // the real cards
     const cv = fs.existsSync(nstarFile()) ? variants('cards', JSON.parse(fs.readFileSync(nstarFile(), 'utf8'))).filter(v => v.opp === op.id) : [];
     for (const [id, sk, L] of CARDS) for (const cx of ['A-0', 'A-n*']) {
       const re = cv.find(v => v.card === id && v.kind === 'real' && v.ctx === cx), tw = cv.find(v => v.card === id && v.kind === 'twin' && v.ctx === cx); if (!re || !tw || !has(re, M) || !has(tw, M)) continue;
-      const ar = arr(all[re.key], M), at = arr(all[tw.key], M), ref = cx === 'A-0' ? a0 : (() => { const bv = curve.find(v => v.skill === sk && v.cost === re.cost && v.n === re.n); return bv && has(bv, M) ? arr(all[bv.key], M) : null; })();
+      const ar = arr(all[re.key], M), at = arr(all[tw.key], M), ref = cx === 'A-0' ? a0 : (() => { const k = op.id + '|' + slotKey(deckA(re.n, 'rb-' + sk + '-' + re.cost)); return (all[k] || '').length >= M ? arr(all[k], M) : null; })();
       const dTw = dif(ar, at), dRef = ref ? dif(ar, ref) : null, rr = realOf(defs, id, L);
       res.cards.push({ opp: op.id, card: id, skill: sk, level: L, ctx: cx, n: re.n || 0, cost: re.cost, wr: mean(ar), vsTwin: { d: mean(dTw), se: se(dTw) }, vsSlot: dRef ? { d: mean(dRef), se: se(dRef) } : null,
         vsTwinPts: slope ? mean(dTw) / slope : null, vsTwinPtsSe: slope ? se(dTw) / slope : null, vsSlotPts: slope && dRef ? mean(dRef) / slope : null, vsSlotPtsSe: slope && dRef ? se(dRef) / slope : null,
@@ -259,12 +275,12 @@ function mdTables(res) {
   const L = [], dN = res.testCreatures[1].N - res.testCreatures[0].N + 0; // what 1 Lumber of cost adds to N, read on the vanillas (plain bonus on both)
   L.push('### Test creatures (Level ' + res.level + ', Common, Wait 0, Map 0, plain)', '', '| Id | Lumber | N | Body | Copies in A-0 |', '|---|---:|---:|---|---:|');
   res.testCreatures.forEach(t => L.push(`| ${t.id} | ${t.cost} | ${t.N} | ${t.attack}/${t.health} | ${t.copies} |`));
-  L.push('', '### Baselines and calibration', '', '| Opponent | A-0 win rate | Games | Slope (WR points per budget point) [95%] | Calibration points (ΔWR vs A-0 ± 95%) |', '|---|---:|---:|---|---|');
+  L.push('', '### Baselines and calibration', '', '| Opponent | A-0 win rate | Games | Slope (WR points per budget point, bumps on 1-4 copies) [95%] | +1 Attack alone | +2 Health alone | Calibration points (ΔWR vs A-0 ± 95%) |', '|---|---:|---:|---|---:|---:|---|');
   res.opps.forEach(o => { const b = res.base && res.base[o.id], c = res.calib[o.id]; if (!b) return;
-    L.push(`| ${o.id} | ${pp(b.wr).replace('+', '')}% ± ${(1.96 * b.se * 100).toFixed(1)} | ${b.games} | ${c.slope != null ? (c.slope * 100).toFixed(2) : '-'} [${c.lo != null ? (c.lo * 100).toFixed(2) : '-'}, ${c.hi != null ? (c.hi * 100).toFixed(2) : '-'}] | ${c.points.map(p => `${p.variant} (${p.pts} pts) ${ci(p.d, p.se)}`).join('; ')} |`); });
-  L.push('', '### The A-n curves', '', 'ΔWR of A-n over A-0 in win-rate points (paired, same games), the quadratic fit\'s n* and gain with 95% bootstrap intervals, the first copy in budget points (the fit at n = 1 over A-0, divided by the slope) and the price table\'s S for the test creature.', '',
-    '| Skill | Cost | Opp | ΔWR at n = ' + res.ns.join(' / ') + ' | n* [95%] | Gain at n* [95%] | Gain net of placebo | First copy (pts, fit) | First copy net of placebo (pts ± 95%) | Price S | Budget says (S, or S − ' + dN.toFixed(2) + ' for 1 Lumber) |', '|---|---:|---|---|---|---|---:|---:|---:|---:|---:|');
-  res.skills.forEach(r => L.push(`| ${r.skill} | ${r.cost} | ${r.opp} | ${r.points.slice(1).map(p => pp(p.d)).join(' / ')} | ${r.nstar.toFixed(1)} [${r.nstarLo.toFixed(1)}, ${r.nstarHi.toFixed(1)}] | ${pp(r.gain)} [${pp(r.gainLo)}, ${pp(r.gainHi)}] | ${pp(r.gainNet)} | ${p1(r.marg1Pts)} | ${r.firstNetPts != null ? p1(r.firstNetPts) + ' ± ' + (1.96 * r.firstNetPtsSe).toFixed(1) : '-'} | ${r.price} | ${p1(r.cost ? r.price - dN : r.price)} |`));
+    L.push(`| ${o.id} | ${pp(b.wr).replace('+', '')}% ± ${(1.96 * b.se * 100).toFixed(1)} | ${b.games} | ${c.slope != null ? (c.slope * 100).toFixed(2) : '-'} [${c.lo != null ? (c.lo * 100).toFixed(2) : '-'}, ${c.hi != null ? (c.hi * 100).toFixed(2) : '-'}] | ${(c.slopeA * 100).toFixed(2)} | ${(c.slopeH * 100).toFixed(2)} | ${c.points.map(p => `${p.variant} (${p.pts} pts) ${ci(p.d, p.se)}`).join('; ')} |`); });
+  L.push('', '### The A-n curves', '', 'ΔWR of A-n over A-0 in win-rate points (paired, same games), the saturating fit\'s n* and gain with 95% bootstrap intervals (the quadratic\'s n* beside it), the first copy in budget points (A-1 over A-0 on the same games, divided by the slope; and net of the placebo\'s A-1) and the price table\'s S for the test creature.', '',
+    '| Skill | Cost | Opp | ΔWR at n = ' + res.ns.join(' / ') + ' | n* [95%] | Quadratic n* | Gain at n* [95%] | Gain net of placebo | First copy (pts ± 95%) | First copy net of placebo (pts ± 95%) | Price S | Budget says (S, or S − ' + dN.toFixed(2) + ' for 1 Lumber) |', '|---|---:|---|---|---|---:|---|---:|---:|---:|---:|---:|');
+  res.skills.forEach(r => L.push(`| ${r.skill} | ${r.cost} | ${r.opp} | ${r.points.slice(1).map(p => pp(p.d)).join(' / ')} | ${r.nstar.toFixed(1)} [${r.nstarLo.toFixed(1)}, ${r.nstarHi.toFixed(1)}] | ${r.quad.nstar.toFixed(1)} | ${pp(r.gain)} [${pp(r.gainLo)}, ${pp(r.gainHi)}] | ${pp(r.gainNet)} | ${p1(r.firstPts)} ± ${(1.96 * r.firstPtsSe).toFixed(1)} | ${r.firstNetPts != null ? p1(r.firstNetPts) + ' ± ' + (1.96 * r.firstNetPtsSe).toFixed(1) : '-'} | ${r.price} | ${p1(r.cost ? r.price - dN : r.price)} |`));
   L.push('', '### Real cards', '', 'Each card at the level its resource skill is live, one copy. "vs twin": the card against a plain body of its own cost, Wait, rarity and map sized by the budget (+ = stronger than its budget buys), in budget points ± 95%. "vs slot": the card against the test creature it replaced (a vanilla 0-Lumber in A-0, a resource test creature in A-n*), ΔWR.', '',
     '| Card | Skill | L | Printed | Cap-1 use | Opp | A-0 vs twin (pts) | A-n* vs twin (pts) | A-0 vs slot (ΔWR) | A-n* vs slot (ΔWR) |', '|---|---|---:|---|---:|---|---:|---:|---:|---:|');
   const byCard = {}; res.cards.forEach(r => { const k = r.card + '|' + r.opp; (byCard[k] = byCard[k] || {})[r.ctx] = r; });
